@@ -1,0 +1,33 @@
+package cn.cerc.db.cache;
+
+import cn.cerc.db.redis.JedisFactory;
+import redis.clients.jedis.Jedis;
+
+public class Redis {
+
+    public static String get(String key) {
+        try (Jedis jedis = JedisFactory.getJedis()) {
+            return jedis.get(key);
+        }
+    }
+
+    public static void set(String key, Object value) {
+        set(key, value, 3600);
+    }
+
+    public static void set(String key, Object value, int expires) {
+        try (Jedis jedis = JedisFactory.getJedis()) {
+            if (value instanceof String)
+                jedis.set(key, (String) value);
+            else
+                jedis.set(key, value.toString());
+            jedis.expire(key, expires);
+        }
+    }
+
+    public static void delete(String key) {
+        try (Jedis jedis = JedisFactory.getJedis()) {
+            jedis.del(key);
+        }
+    }
+}
