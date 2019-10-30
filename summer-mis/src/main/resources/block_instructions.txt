@@ -1,0 +1,12 @@
+1、phone-block.css文件为块的默认样式。
+2、使用Block601块需引用block601文件夹下的swiper.min.css、swiper.min.js两个文件，
+       并且把phone-block.css中block601的样式加入到页面，然后再把以下js代码放入页面头部既可
+	$(function(){
+		new Swiper('.block601', {
+		    pagination: '.swiper-pagination',
+		    paginationClickable: '.swiper-pagination',
+		    nextButton: '.swiper-button-next',
+		    prevButton: '.swiper-button-prev',
+		    spaceBetween: 30
+		});
+	}

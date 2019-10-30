@@ -94,15 +94,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <!-- Java 源代码的路径配置 -->
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
-        <!-- 测试代码的路径配置 -->
-        <testSourceDirectory>src/test/java</testSourceDirectory>
-        <!-- 源码编译后的 class 文件的路径配置 -->
-        <outputDirectory>target/classes</outputDirectory>
-        <!-- 测试源码编译后的 class 文件的路径配置 -->
-        <testOutputDirectory>target/test-classes</testOutputDirectory>
     </build>
     <dependencies>
         <dependency>

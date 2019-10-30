@@ -100,9 +100,9 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>cn.cerc</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>summer-core</artifactId>
-            <version>2.1.0</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
