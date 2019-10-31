@@ -14,6 +14,7 @@
         <module>summer-core</module>
         <module>summer-db</module>
         <module>summer-mis</module>
+        <module>summer-security</module>
     </modules>
 
     <dependencies>
