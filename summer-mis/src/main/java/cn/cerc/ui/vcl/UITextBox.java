@@ -72,7 +72,8 @@ public class UITextBox extends UIComponent {
             html.print(" required");
         if (this.readonly)
             html.print(" readonly='readonly'");
-        html.println(" />");
+        super.outputCss(html);
+        html.println("/>");
     }
 
     public UISpan getCaption() {

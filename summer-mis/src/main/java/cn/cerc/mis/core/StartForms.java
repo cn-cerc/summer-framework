@@ -112,6 +112,10 @@ public class StartForms implements Filter {
                 }
             } catch (Exception e) {
                 outputErrorPage(req, resp, e);
+            } finally {
+                if (handle != null) {
+                    handle.close();
+                }
             }
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
@@ -376,8 +380,7 @@ public class StartForms implements Filter {
         if (err == null) {
             err = e;
         }
-        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage",
-                "appErrorPageDefault");
+        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
         if (errorPage != null) {
             String result = errorPage.getErrorPage(request, response, err);
             if (result != null) {

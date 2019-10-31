@@ -22,7 +22,10 @@ public class UIContent extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.println("<section role='content'>");
+        html.print("<section role='content'");
+        super.outputCss(html);
+        html.println(">");
+
         super.output(html);
         // 输出追加过来的内容
         for (HtmlContent content : contents) {

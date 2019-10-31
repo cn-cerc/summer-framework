@@ -1,15 +1,13 @@
 package cn.cerc.mis.core;
 
-import java.io.Serializable;
-
-import javax.servlet.http.HttpServletRequest;
-
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
@@ -88,15 +86,15 @@ public class ClientDevice implements IClient, Serializable {
     }
 
     public void setSid(String value) {
-        String tmp = value == null || "".equals(value) ? null : value;
+        String tmp = (value == null || "".equals(value)) ? null : value;
         if (tmp != null) {
             // device_id = (String)
             // req.getSession().getAttribute(deviceId_key);
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, tmp)) {
                 // 设备ID
-                deviceId = getValue(buff, deviceId_key, deviceId);
+                deviceId = getValue(buff, this.deviceId_key, this.deviceId);
                 // 设备样式
-                deviceType = getValue(buff, deviceType_key, deviceType);
+                deviceType = getValue(buff, this.deviceType_key, this.deviceType);
             }
         } else if (tmp == null) {
             if (this.sid != null && !"".equals(this.sid)) {

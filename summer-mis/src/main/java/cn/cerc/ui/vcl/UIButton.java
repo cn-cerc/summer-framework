@@ -36,6 +36,7 @@ public class UIButton extends UIComponent {
         if (onclick != null) {
             html.print(String.format(" onclick=\"%s\"", onclick));
         }
+        super.outputCss(html);
         html.print(">");
         html.print(text);
         html.println("</button>");

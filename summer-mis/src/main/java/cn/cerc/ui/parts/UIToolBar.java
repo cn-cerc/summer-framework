@@ -26,8 +26,11 @@ public class UIToolBar extends UIComponent {
     public void output(HtmlWriter html) {
         html.print("\n<aside role='toolBar' id='%s'", this.getId());
         if (isEmpty()) {
-            html.print(" style='display:none'");
+            // html.print(" style='display:none'");
+            // FIXME: 2019/6/16 此处需改进
+            this.cssStyle="display:none";
         }
+        super.outputCss(html);
         html.println(">");
         html.println("<div style='overflow-y: auto; height: 100%;'>");
 

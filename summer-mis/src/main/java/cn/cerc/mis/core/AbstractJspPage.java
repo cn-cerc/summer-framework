@@ -1,15 +1,5 @@
 package cn.cerc.mis.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
@@ -27,6 +17,15 @@ import cn.cerc.ui.parts.UIDocument;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UIToolBar;
+
+import javax.servlet.ServletException;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractJspPage extends UIComponent implements IPage {
     private String jspFile;
@@ -314,6 +313,21 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
             out.println("<span id='back-bottom' style='display: none'>底部</span>");
         }
         out.println("</body>");
+    }
+
+    public String getHtmlBody() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<body>");
+        builder.append(this.getHeader());
+        builder.append(this.getDocument());
+        builder.append(this.getToolBar());
+        builder.append(this.getFooter());
+        if (getForm().getClient().isPhone()) {
+            builder.append("<span id='back-top' style='display: none'>顶部</span>");
+            builder.append("<span id='back-bottom' style='display: none'>底部</span>");
+        }
+        builder.append("</body>");
+        return builder.toString();
     }
 
     public final UIContent getContent() {

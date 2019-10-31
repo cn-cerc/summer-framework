@@ -22,15 +22,13 @@ public class UISpan extends UIComponent {
         html.print("<span");
         if (getId() != null)
             html.print(" id='%s'", this.getId());
-        if (cssClass != null)
-            html.print(" class='%s'", this.cssClass);
-        if (cssStyle != null)
-            html.print(" style='%s'", this.cssStyle);
+        super.outputCss(html);
         if (role != null)
             html.print(" role='%s'", this.role);
         if (onclick != null)
             html.print(" onclick='%s'", this.onclick);
         html.print(">");
+
         if (this.url != null) {
             html.print("<a href='%s' target='_blank'>", this.url);
         }

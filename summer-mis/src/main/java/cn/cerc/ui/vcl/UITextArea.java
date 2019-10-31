@@ -51,6 +51,7 @@ public class UITextArea extends UIComponent {
         if (readonly) {
             html.print("readonly='readonly'");
         }
+        super.outputCss(html);
         html.print(">");
 
         if (text != null) {

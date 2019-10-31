@@ -30,8 +30,7 @@ public class UILabel extends UIComponent {
             html.print("<label");
             if (focusTarget != null)
                 html.print(" for='%s'", focusTarget);
-            if (cssClass != null)
-                html.print(" class='%s'", cssClass);
+            super.outputCss(html);
             html.print(">%s</label>", this.caption);
         } else
             html.print("<a href='%s'>%s</a>", this.url, this.caption);

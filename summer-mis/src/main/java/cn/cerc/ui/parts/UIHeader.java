@@ -43,7 +43,9 @@ public class UIHeader extends UIComponent {
         if (this.leftBottom.size() > MAX_MENUS)
             throw new RuntimeException(String.format("底部菜单区最多只支持 %d 个菜单项", MAX_MENUS));
 
-        html.println("<header role='header'>");
+        html.print("<header role='header'");
+        super.outputCss(html);
+        html.println(">");
         if (advertisement != null) {
             html.println("<section role='advertisement'>");
             html.println(advertisement.toString());
@@ -59,7 +61,7 @@ public class UIHeader extends UIComponent {
             for (UrlRecord menu : leftMenus) {
                 html.print("<li>");
                 if (i > 1)
-                    html.println("<span>→</span>");
+                    html.println("<span>-></span>");
                 html.print("<a href=\"%s\">%s</a>", menu.getUrl(), menu.getName());
                 i++;
                 html.print("</li>");

@@ -13,10 +13,12 @@ public class UIRadioButton extends UIComponent {
     public void output(HtmlWriter html) {
         if (label != null)
             label.output(html);
-        html.print("<input type='radio' ");
+        html.print("<input type='radio'");
         if (isSelected)
             html.print(" checked=checked");
-        html.print(" name='%s' value='%s'>", name, value);
+        html.print(" name='%s' value='%s'", name, value);
+        super.outputCss(html);
+        html.println("/>");
     }
 
     public UIRadioButton(UIComponent owner) {

@@ -2,12 +2,13 @@ package cn.cerc.mis.other;
 
 import java.io.Serializable;
 
-public class UserRecord implements Serializable {
+public class DataRecordSample implements Serializable {
     private static final long serialVersionUID = 4744827168403991038L;
     private String id;
     private String corpNo;
     private String code;
     private String name;
+    private String headImgAdd;
     private int showInUP;
     private int showOutUP;
     private int showWholesaleUP;
@@ -153,4 +154,11 @@ public class UserRecord implements Serializable {
         this.admin = admin;
     }
 
+    public String getHeadImgAdd() {
+        return headImgAdd;
+    }
+
+    public void setHeadImgAdd(String headImgAdd) {
+        this.headImgAdd = headImgAdd;
+    }
 }

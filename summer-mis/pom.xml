@@ -120,12 +120,12 @@
         <dependency>
             <groupId>cn.cerc</groupId>
             <artifactId>summer-db</artifactId>
-            <version>2.0.0</version>
+            <version>2.1.0</version>
         </dependency>
         <dependency>
             <groupId>cn.cerc</groupId>
             <artifactId>summer-security</artifactId>
-            <version>2.0.0</version>
+            <version>2.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -260,12 +260,6 @@
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>
             <version>2.4</version>
-        </dependency>
-        <!-- 支付宝支持 -->
-        <dependency>
-            <groupId>alipay</groupId>
-            <artifactId>alipay-sdk</artifactId>
-            <version>java20170411150054</version>
         </dependency>
         <dependency>
             <groupId>cn.jpush.api</groupId>

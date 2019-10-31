@@ -35,7 +35,7 @@ public class UIDocument extends UIComponent {
         html.println(content.toString());
         // 必须存在
         html.println(message.toString());
-
+        super.outputCss(html);
         html.print("</article>");
     }
 

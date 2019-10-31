@@ -92,6 +92,10 @@ public class StartFormDefault implements ApplicationContextAware {
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
+        } finally {
+            if (handle != null) {
+                handle.close();
+            }
         }
     }
 

@@ -23,9 +23,8 @@ import cn.cerc.ui.parts.UIFormVertical;
 
 /**
  * 主体子页面(公用)
- * 
- * @author 张弓
  *
+ * @author 张弓
  */
 public class UIPageModify extends AbstractJspPage {
     private String searchWaitingId = "";
@@ -83,7 +82,8 @@ public class UIPageModify extends AbstractJspPage {
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");
-
+        out.println("<meta name=\"format-detection\" content=\"telephone=no\" />");
+        out.println("<meta name=\"format-detection\" content=\"email=no\" />");
         out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
         out.printf(

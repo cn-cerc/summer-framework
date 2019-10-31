@@ -45,4 +45,10 @@ public class UIComponent extends Component {
         return html.toString();
     }
 
+    protected void outputCss(HtmlWriter html) {
+        if (this.cssClass != null)
+            html.print(" class='%s'", cssClass);
+        if (this.cssStyle != null)
+            html.print(" style='%s'", cssStyle);
+    }
 }

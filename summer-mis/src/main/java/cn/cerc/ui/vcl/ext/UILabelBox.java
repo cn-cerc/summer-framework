@@ -26,6 +26,7 @@ public class UILabelBox extends UIComponent {
         if (forid != null) {
             html.print(" for='%s'", this.forid);
         }
+        super.outputCss(html);
         html.print(">");
         html.print(text);
         html.println("</label>");

@@ -11,12 +11,14 @@ public class UIMessage extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.print("<section role='message'>");
+        html.print("<section role='message'");
+        super.outputCss(html);
+        html.print(">");
         if (!"".equals(text))
             html.print(text);
         else
             super.output(html);
-        html.print("</section>");
+        html.println("</section>");
     }
 
     public String getText() {

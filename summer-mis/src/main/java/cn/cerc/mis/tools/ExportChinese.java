@@ -33,7 +33,7 @@ public class ExportChinese {
 
     /**
      * 扫描指定路径的java文件
-     * 
+     *
      * @param srcPath 路径
      */
     public void scanFile(String srcPath) {
@@ -49,12 +49,11 @@ public class ExportChinese {
             try {
                 // 输入流
                 buffReader = new BufferedReader(new FileReader(file));
-                log.info(file.getName());
                 // 按行读取
                 while ((line = buffReader.readLine()) != null) {
                     String word = getChinese(line);
                     if (word != null) {
-                        log.info(word);
+                        log.info("{} {}", file.getName(), word);
                         items.add(word);
                     }
                 }
@@ -72,7 +71,7 @@ public class ExportChinese {
 
     /**
      * 写入字典
-     * 
+     *
      * @param handle 上下文环境
      */
     public void writeDict(IHandle handle) {

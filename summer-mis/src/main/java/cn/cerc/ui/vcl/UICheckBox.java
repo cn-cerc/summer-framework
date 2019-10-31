@@ -44,6 +44,7 @@ public class UICheckBox extends UIComponent {
             html.print(" role='%s'", this.role);
         if (checked)
             html.print(" checked='checked'");
+        super.outputCss(html);
         html.println("/>");
     }
 
