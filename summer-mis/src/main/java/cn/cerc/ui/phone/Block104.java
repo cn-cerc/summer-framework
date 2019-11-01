@@ -11,9 +11,8 @@ public class Block104 extends UIComponent {
 
     /**
      * 通用搜索条件框
-     * 
-     * @param owner
-     *            内容显示区域
+     *
+     * @param owner 内容显示区域
      */
     public Block104(UIComponent owner) {
         super(owner);

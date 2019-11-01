@@ -1,22 +1,18 @@
 package cn.cerc.mis.language;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
-import cn.cerc.mis.task.AbstractTask;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class R {
-    
+
     public static String getLanguage(IHandle handle) {
         Object temp = handle.getProperty(Application.deviceLanguage);
         if (temp == null || "".equals(temp)) {

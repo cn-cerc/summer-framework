@@ -1,14 +1,5 @@
 package cn.cerc.mis.task;
 
-import java.util.Calendar;
-import java.util.TimerTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
@@ -17,16 +8,29 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+import java.util.Calendar;
+import java.util.TimerTask;
 
 @Slf4j
 @Deprecated // 请改使用 StartTaskDefault
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
-    private static boolean isRunning = false;
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
+    private static boolean isRunning = false;
     private static String lock;
     // 运行环境
     private ApplicationContext context;
+
+    public static AbstractTask getTask(IHandle handle, String beanId) {
+        AbstractTask task = Application.getBean(beanId, AbstractTask.class);
+        if (task != null)
+            task.setHandle(handle);
+        return task;
+    }
 
     // 循环反复执行
     @Override
@@ -93,13 +97,6 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 log.error(e.getMessage());
             }
         }
-    }
-
-    public static AbstractTask getTask(IHandle handle, String beanId) {
-        AbstractTask task = Application.getBean(beanId, AbstractTask.class);
-        if (task != null)
-            task.setHandle(handle);
-        return task;
     }
 
     @Override

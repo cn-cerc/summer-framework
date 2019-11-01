@@ -5,19 +5,17 @@ import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
- * 
  * 单行文本输入框
- * 
- * @author 张弓
  *
+ * @author 张弓
  */
 public class UITextBox extends UIComponent {
+    // 正则过滤
+    protected String pattern;
     private UISpan caption;
     private String name;
     private String type;
     private String value;
-    // 正则过滤
-    protected String pattern;
     private String maxlength;
     private String placeholder;
     // 自动完成（默认为 off）

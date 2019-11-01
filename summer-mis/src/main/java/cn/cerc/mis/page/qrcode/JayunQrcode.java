@@ -1,23 +1,17 @@
 package cn.cerc.mis.page.qrcode;
 
+import cn.cerc.core.MD5;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.security.sapi.JayunAPI;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-
-import cn.cerc.core.MD5;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.task.AbstractTask;
-import cn.cerc.security.sapi.JayunAPI;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JayunQrcode {
@@ -31,6 +25,17 @@ public class JayunQrcode {
     public JayunQrcode(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
+    }
+
+    public static String getSign(String appKey, String appSecret, String action, long timestamp) {
+        Map<String, Object> tmp = new TreeMap<>();
+        tmp.put("action", action);
+        tmp.put("appKey", appKey);
+        tmp.put("appSecret", appSecret);
+        tmp.put("timestamp", timestamp);
+        // 比较两者的签名
+        Gson gson = new Gson();
+        return MD5.get(gson.toJson(tmp)).toUpperCase();
     }
 
     public void execute(JayunEasyLogin sender) {
@@ -103,17 +108,6 @@ public class JayunQrcode {
             log.error("绑定回调地址 {}", socket_url);
             echo(new JayunMessage(false, "没有找到相对应的Socket客户端"));
         }
-    }
-
-    public static String getSign(String appKey, String appSecret, String action, long timestamp) {
-        Map<String, Object> tmp = new TreeMap<>();
-        tmp.put("action", action);
-        tmp.put("appKey", appKey);
-        tmp.put("appSecret", appSecret);
-        tmp.put("timestamp", timestamp);
-        // 比较两者的签名
-        Gson gson = new Gson();
-        return MD5.get(gson.toJson(tmp)).toUpperCase();
     }
 
     private void echo(JayunMessage msg) {

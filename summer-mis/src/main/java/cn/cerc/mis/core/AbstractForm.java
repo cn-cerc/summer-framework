@@ -1,18 +1,18 @@
 package cn.cerc.mis.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import cn.cerc.core.IHandle;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import cn.cerc.core.IHandle;
+import java.util.HashMap;
+import java.util.Map;
 
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 public abstract class AbstractForm extends AbstractHandle implements IForm {
+    @Autowired
+    public ISystemTable systemTable;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private IClient client;
@@ -20,8 +20,6 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     private String caption;
     private String parent;
     private String permission;
-    @Autowired
-    public ISystemTable systemTable;
 
     public Map<String, String> getParams() {
         return params;
@@ -48,13 +46,13 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     }
 
     @Override
-    public void setRequest(HttpServletRequest request) {
-        this.request = request;
+    public HttpServletRequest getRequest() {
+        return this.request;
     }
 
     @Override
-    public HttpServletRequest getRequest() {
-        return this.request;
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
     }
 
     @Override

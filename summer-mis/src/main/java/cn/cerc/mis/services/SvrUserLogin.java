@@ -35,9 +35,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrUserLogin extends CustomService {
+    public static int TimeOut = 5; // 效验代码超时时间（分钟）
     private static String GuidNull = "";
     private static int Max_Viability = 1;
-    public static int TimeOut = 5; // 效验代码超时时间（分钟）
 
     /*
      * 用户登录入口

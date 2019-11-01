@@ -18,6 +18,12 @@ import java.util.TreeMap;
 @Slf4j
 public class WxpayAPI {
 
+    // 连接配置参数
+    public static final String config_appId = "wx.Open_AppID";
+    public static final String config_appSecret = "wx.Open_ApiKey";
+    // 商户代码
+    public static final String config_appMachId = "wx.Open_MchId";
+    public static final String config_appRootSite = "app.rootSite";
     // 申请支付金额
     private String amount;
     // 申请支付订单号
@@ -28,13 +34,6 @@ public class WxpayAPI {
     private String corpNo = "000000";
     // 回调网址, 微信支付成功后通知地址 必须要求80端口并且地址不能带参数
     private String notifyUrl;
-    // 连接配置参数
-    public static final String config_appId = "wx.Open_AppID";
-    public static final String config_appSecret = "wx.Open_ApiKey";
-    // 商户代码
-    public static final String config_appMachId = "wx.Open_MchId";
-    public static final String config_appRootSite = "app.rootSite";
-
     private String appId;
     private String appSecret;
     private String appMachId;
@@ -50,6 +49,36 @@ public class WxpayAPI {
         if (handle != null) {
             this.corpNo = handle.getCorpNo();
         }
+    }
+
+    public static void main(String[] args) {
+        WxpayAPI pay = new WxpayAPI(null, new IConfig() {
+
+            @Override
+            public String getProperty(String key) {
+                return this.getProperty(key, null);
+            }
+
+            @Override
+            public String getProperty(String key, String def) {
+                if (config_appId.equals(key))
+                    return "wx8302b6636974854e";
+                else if (config_appSecret.equals(key))
+                    return "529da5a3e26339bbf960e91879dfad5c";
+                else if (config_appMachId.equals(key))
+                    return "1262880401";
+                else if (config_appRootSite.equals(key))
+                    return "m.diteng.site";
+                else
+                    return null;
+            }
+        });
+
+        pay.setAmount("0.01");
+        pay.setOrderNo("165491961984");
+        pay.setNotifyUrl("http://115.28.150.165/forms/FrmWxMessage");
+        Map<String, String> result = pay.requestPay("测试");
+        System.out.println(new Gson().toJson(result));
     }
 
     @SuppressWarnings({"static-access", "unchecked"})
@@ -139,35 +168,5 @@ public class WxpayAPI {
 
     public void setNotifyUrl(String notifyUrl) {
         this.notifyUrl = notifyUrl;
-    }
-
-    public static void main(String[] args) {
-        WxpayAPI pay = new WxpayAPI(null, new IConfig() {
-
-            @Override
-            public String getProperty(String key) {
-                return this.getProperty(key, null);
-            }
-
-            @Override
-            public String getProperty(String key, String def) {
-                if (config_appId.equals(key))
-                    return "wx8302b6636974854e";
-                else if (config_appSecret.equals(key))
-                    return "529da5a3e26339bbf960e91879dfad5c";
-                else if (config_appMachId.equals(key))
-                    return "1262880401";
-                else if (config_appRootSite.equals(key))
-                    return "m.diteng.site";
-                else
-                    return null;
-            }
-        });
-
-        pay.setAmount("0.01");
-        pay.setOrderNo("165491961984");
-        pay.setNotifyUrl("http://115.28.150.165/forms/FrmWxMessage");
-        Map<String, String> result = pay.requestPay("测试");
-        System.out.println(new Gson().toJson(result));
     }
 }

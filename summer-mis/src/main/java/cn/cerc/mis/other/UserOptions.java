@@ -1,12 +1,12 @@
 package cn.cerc.mis.other;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.LocalService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserOptions {
     // 用户级参数
@@ -70,6 +70,7 @@ public class UserOptions {
     public static final String AllowBCMaxDiscount = "AllowBCMaxDiscount";
 
     private static Map<String, String> option = new HashMap<>();
+
     static {
         option.put(ShowInUP, "设置进货价查看、修改权限");
         option.put(ShowOutUP, "设置零售价（会员价）查看、修改权限（若关闭此项的查看权限，则出厂价、批发价会同时关闭）");

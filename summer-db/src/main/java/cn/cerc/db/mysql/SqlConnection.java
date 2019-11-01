@@ -16,9 +16,9 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
     protected String url;
     protected String user;
     protected String pwd;
-    private int tag;
     protected Connection connection;
     protected IConfig config;
+    private int tag;
 
     public SqlConnection() {
         config = ServerConfig.getInstance();

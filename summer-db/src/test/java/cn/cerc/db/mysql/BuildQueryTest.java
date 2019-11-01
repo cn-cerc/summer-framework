@@ -1,14 +1,12 @@
 package cn.cerc.db.mysql;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.db.core.StubHandle;
 import org.junit.Before;
 import org.junit.Test;
 
-import cn.cerc.db.core.StubHandle;
+import static org.junit.Assert.assertEquals;
 
 public class BuildQueryTest {
-    // private static final Logger log = Logger.getLogger(BuildSQLTest.class);
 
     private BuildQuery bs;
     private StubHandle handle;

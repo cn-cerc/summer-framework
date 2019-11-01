@@ -1,9 +1,9 @@
 package cn.cerc.security.sapi;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Ignore;
 import org.junit.Test;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class JayunSecurityTest {
     private JayunSecurity api = new JayunSecurity(null);

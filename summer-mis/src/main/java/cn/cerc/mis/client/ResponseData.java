@@ -1,9 +1,5 @@
 package cn.cerc.mis.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import cn.cerc.mis.task.AbstractTask;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
@@ -24,12 +20,12 @@ public class ResponseData {
         this.state = result;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getData() {

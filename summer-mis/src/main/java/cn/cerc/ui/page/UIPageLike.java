@@ -1,12 +1,11 @@
 package cn.cerc.ui.page;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
-import cn.cerc.ui.parts.UIMenuList;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.RequestData;
+import cn.cerc.ui.parts.UIMenuList;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 系统登录页
@@ -32,6 +31,10 @@ public class UIPageLike extends UIPageDialog {
         return menus;
     }
 
+    public void setMenus(Object value) {
+        super.put("menus", value);
+    }
+
     public void setDisableAccountSave(boolean value) {
         super.put("disableAccountSave", value);
     }
@@ -50,10 +53,6 @@ public class UIPageLike extends UIPageDialog {
 
     public void setSessionKey(Object value) {
         super.put(RequestData.appSession_Key, value);
-    }
-
-    public void setMenus(Object value) {
-        super.put("menus", value);
     }
 
     public void setOnlineUsers(int value) {

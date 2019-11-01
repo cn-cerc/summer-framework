@@ -11,11 +11,6 @@ public class TickCount {
         this.lastTime = System.currentTimeMillis();
     }
 
-    public void print(String message) {
-        log.info(String.format("%s tickCount: %s", message, System.currentTimeMillis() - lastTime));
-        this.lastTime = System.currentTimeMillis();
-    }
-
     public static void main(String[] args) {
         TickCount tick = new TickCount();
         for (int i = 0; i < 3; i++) {
@@ -26,5 +21,10 @@ public class TickCount {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void print(String message) {
+        log.info(String.format("%s tickCount: %s", message, System.currentTimeMillis() - lastTime));
+        this.lastTime = System.currentTimeMillis();
     }
 }

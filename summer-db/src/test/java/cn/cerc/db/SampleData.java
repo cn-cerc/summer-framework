@@ -4,9 +4,8 @@ import cn.cerc.core.DataSet;
 
 /**
  * 专用于建立测试类数据
- * 
- * @author 张弓
  *
+ * @author 张弓
  */
 public class SampleData {
 

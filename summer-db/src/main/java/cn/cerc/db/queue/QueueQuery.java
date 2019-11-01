@@ -60,7 +60,6 @@ public class QueueQuery extends DataQuery {
     }
 
     /**
-     * 
      * @return 移除消息队列
      */
     public boolean remove() {
@@ -73,7 +72,7 @@ public class QueueQuery extends DataQuery {
 
     /**
      * 创建消息队列
-     * 
+     *
      * @param queueCode 队列代码
      * @return 返回创建的队列
      */

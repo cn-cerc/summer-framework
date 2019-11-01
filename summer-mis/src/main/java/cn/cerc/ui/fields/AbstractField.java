@@ -13,29 +13,14 @@ import cn.cerc.ui.vcl.UIText;
 import net.sf.json.JSONObject;
 
 public abstract class AbstractField extends UIComponent implements IField {
-    private String htmlTag = "input";
-    private String htmType;
-    private String name;
-    private String shortName;
-    private String align;
-    private int width;
     // 数据库相关
     protected String field;
     // 自定义取值
     protected BuildText buildText;
-    // 手机专用样式
-    private String CSSClass_phone;
-    // value
-    private String value;
-    // 只读否
-    private boolean readonly;
-    // 自动完成（默认为 off）
-    private boolean autocomplete = false;
     // 焦点否
     protected boolean autofocus;
     //
     protected boolean required;
-
     // 用于文件上传是否可以选则多个文件
     protected boolean multiple = false;
     //
@@ -50,19 +35,29 @@ public abstract class AbstractField extends UIComponent implements IField {
     protected DialogField dialog;
     // dialog 小图标
     protected String icon;
-    // 栏位说明
-    private UIText mark;
     //
     protected BuildUrl buildUrl;
     //
     protected DataSource dataSource;
-
-    private boolean visible = true;
-
     protected String oninput;
-
     protected String onclick;
-
+    private String htmlTag = "input";
+    private String htmType;
+    private String name;
+    private String shortName;
+    private String align;
+    private int width;
+    // 手机专用样式
+    private String CSSClass_phone;
+    // value
+    private String value;
+    // 只读否
+    private boolean readonly;
+    // 自动完成（默认为 off）
+    private boolean autocomplete = false;
+    // 栏位说明
+    private UIText mark;
+    private boolean visible = true;
     // TODO 专用于textarea标签，需要拆分该标签出来，黄荣君 2016-05-31
     // 最大字符串数
     private int maxlength;
@@ -110,29 +105,19 @@ public abstract class AbstractField extends UIComponent implements IField {
         return width;
     }
 
+    public AbstractField setWidth(int width) {
+        this.width = width;
+        return this;
+    }
+
     public String getShortName() {
         if (this.shortName != null)
             return this.shortName;
         return this.getName();
     }
 
-    public AbstractField setWidth(int width) {
-        this.width = width;
-        return this;
-    }
-
     public AbstractField setShortName(String shortName) {
         this.shortName = shortName;
-        return this;
-    }
-
-    public AbstractField setAlign(String align) {
-        this.align = align;
-        return this;
-    }
-
-    public AbstractField setName(String name) {
-        this.name = name;
         return this;
     }
 
@@ -150,8 +135,18 @@ public abstract class AbstractField extends UIComponent implements IField {
         return align;
     }
 
+    public AbstractField setAlign(String align) {
+        this.align = align;
+        return this;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public AbstractField setName(String name) {
+        this.name = name;
+        return this;
     }
 
     @Override
@@ -169,7 +164,6 @@ public abstract class AbstractField extends UIComponent implements IField {
     public abstract String getText(Record ds);
 
     /**
-     * 
      * @param rs 当前记录集
      * @return 返回输出文本
      */
@@ -466,23 +460,6 @@ public abstract class AbstractField extends UIComponent implements IField {
         return this.getName();
     }
 
-    public class Editor {
-        private String xtype;
-
-        public Editor(String xtype) {
-            super();
-            this.xtype = xtype;
-        }
-
-        public String getXtype() {
-            return xtype;
-        }
-
-        public void setXtype(String xtype) {
-            this.xtype = xtype;
-        }
-    }
-
     public boolean isVisible() {
         return visible;
     }
@@ -589,47 +566,6 @@ public abstract class AbstractField extends UIComponent implements IField {
         return result != null ? result : def;
     }
 
-    public class Title {
-        private String name;
-        private String type;
-        private String dateFormat;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getDateFormat() {
-            return dateFormat;
-        }
-
-        public void setDateFormat(String dateFormat) {
-            this.dateFormat = dateFormat;
-        }
-
-        @Override
-        public String toString() {
-            JSONObject json = new JSONObject();
-            json.put("name", this.name);
-            if (this.type != null)
-                json.put("type", this.type);
-            if (this.dateFormat != null)
-                json.put("dateFormat", this.dateFormat);
-            return json.toString().replace("\"", "'");
-        }
-    }
-
     public String getIcon() {
         return icon;
     }
@@ -680,6 +616,64 @@ public abstract class AbstractField extends UIComponent implements IField {
 
     public void setMultiple(boolean multiple) {
         this.multiple = multiple;
+    }
+
+    public class Editor {
+        private String xtype;
+
+        public Editor(String xtype) {
+            super();
+            this.xtype = xtype;
+        }
+
+        public String getXtype() {
+            return xtype;
+        }
+
+        public void setXtype(String xtype) {
+            this.xtype = xtype;
+        }
+    }
+
+    public class Title {
+        private String name;
+        private String type;
+        private String dateFormat;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getDateFormat() {
+            return dateFormat;
+        }
+
+        public void setDateFormat(String dateFormat) {
+            this.dateFormat = dateFormat;
+        }
+
+        @Override
+        public String toString() {
+            JSONObject json = new JSONObject();
+            json.put("name", this.name);
+            if (this.type != null)
+                json.put("type", this.type);
+            if (this.dateFormat != null)
+                json.put("dateFormat", this.dateFormat);
+            return json.toString().replace("\"", "'");
+        }
     }
 
 }

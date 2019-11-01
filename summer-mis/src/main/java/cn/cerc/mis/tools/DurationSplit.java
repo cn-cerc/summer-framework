@@ -1,9 +1,9 @@
 package cn.cerc.mis.tools;
 
+import cn.cerc.core.TDateTime;
+
 import java.util.Calendar;
 import java.util.Iterator;
-
-import cn.cerc.core.TDateTime;
 
 public class DurationSplit implements Iterable<DurationSection>, Iterator<DurationSection> {
     private TDateTime beginDate;
@@ -17,6 +17,13 @@ public class DurationSplit implements Iterable<DurationSection>, Iterator<Durati
         this.endDate = endDate;
         if (beginDate == null)
             throw new RuntimeException("beginDate is null");
+    }
+
+    public static void main(String[] args) {
+        DurationSplit duration = new DurationSplit(TDateTime.fromDate("2016-07-01"), TDateTime.fromYearMonth("201609"));
+        for (DurationSection section : duration) {
+            System.out.println(String.format("beginDate: %s, endDate: %s", section.getDateFrom(), section.getDateTo()));
+        }
     }
 
     public TDateTime getDateFrom() {
@@ -70,12 +77,5 @@ public class DurationSplit implements Iterable<DurationSection>, Iterator<Durati
             dateTo.setData(cal.getTime());
         }
         return new DurationSection(dateFrom, dateTo);
-    }
-
-    public static void main(String[] args) {
-        DurationSplit duration = new DurationSplit(TDateTime.fromDate("2016-07-01"), TDateTime.fromYearMonth("201609"));
-        for (DurationSection section : duration) {
-            System.out.println(String.format("beginDate: %s, endDate: %s", section.getDateFrom(), section.getDateTo()));
-        }
     }
 }

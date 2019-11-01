@@ -1,24 +1,24 @@
 package cn.cerc.mis.pay.wxpay;
 
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IHandle;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IHandle;
-import cn.cerc.mis.task.AbstractTask;
-import lombok.extern.slf4j.Slf4j;
-
 //微信支付（网页JS版）
 @Slf4j
 public class WxpayJs {
 
+    // 连接配置参数
+    public static final String config_appId = "wx.AppID";
+    public static final String config_appSecret = "wx.AppSecret";
+    // 商户代码
+    public static final String config_appMachId = "wx.MchId";
     // 申请支付金额
     private String amount;
     // 申请支付订单号
@@ -31,11 +31,6 @@ public class WxpayJs {
     private String userCode = "testUser";
     // 回调网址, 微信支付成功后通知地址 必须要求80端口并且地址不能带参数
     private String notifyUrl = "";
-    // 连接配置参数
-    public static final String config_appId = "wx.AppID";
-    public static final String config_appSecret = "wx.AppSecret";
-    // 商户代码
-    public static final String config_appMachId = "wx.MchId";
     private String appId;
     private String appSecret;
     private String appMachId;
@@ -51,6 +46,35 @@ public class WxpayJs {
         }
     }
 
+    public static void main(String[] args) {
+        WxpayJs pay = new WxpayJs(null, new IConfig() {
+
+            @Override
+            public String getProperty(String key) {
+                return this.getProperty(key, null);
+            }
+
+            @Override
+            public String getProperty(String key, String def) {
+                if (config_appId.equals(key))
+                    return "wx8302b6636974854e";
+                else if (config_appSecret.equals(key))
+                    return "529da5a3e26339bbf960e91879dfad5c";
+                else if (config_appMachId.equals(key))
+                    return "1262880401";
+                else
+                    return null;
+            }
+        });
+
+        pay.setAmount("0.01");
+        pay.setOrderNo("165491961984");
+        pay.setUserCode("oy1AuwRNd08Fkr9pvgUTmuPiHuu4");
+        pay.setNotifyUrl("http://115.28.150.165/forms/FrmWxMessage");
+        String result = pay.requestPay("测试");
+        log.info(result);
+    }
+
     @SuppressWarnings("static-access")
     public String requestPay(String body) {
         String trade_type = "JSAPI";
@@ -59,7 +83,7 @@ public class WxpayJs {
         // 随机字符串
         String nonce_str = Sha1Util.getNonceStr();
         String totalFee = String.valueOf(new BigDecimal(amount).multiply(new BigDecimal(100)).intValue());// 金额
-                                                                                                          // 微信是以分为单位的;
+        // 微信是以分为单位的;
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("appid", this.appId);
         packageParams.put("attach", corpNo);
@@ -146,35 +170,6 @@ public class WxpayJs {
 
     public void setUserCode(String userCode) {
         this.userCode = userCode;
-    }
-
-    public static void main(String[] args) {
-        WxpayJs pay = new WxpayJs(null, new IConfig() {
-
-            @Override
-            public String getProperty(String key) {
-                return this.getProperty(key, null);
-            }
-
-            @Override
-            public String getProperty(String key, String def) {
-                if (config_appId.equals(key))
-                    return "wx8302b6636974854e";
-                else if (config_appSecret.equals(key))
-                    return "529da5a3e26339bbf960e91879dfad5c";
-                else if (config_appMachId.equals(key))
-                    return "1262880401";
-                else
-                    return null;
-            }
-        });
-
-        pay.setAmount("0.01");
-        pay.setOrderNo("165491961984");
-        pay.setUserCode("oy1AuwRNd08Fkr9pvgUTmuPiHuu4");
-        pay.setNotifyUrl("http://115.28.150.165/forms/FrmWxMessage");
-        String result = pay.requestPay("测试");
-        log.info(result);
     }
 
 }

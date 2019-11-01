@@ -213,6 +213,11 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
     }
 
     @Override
+    public boolean getActive() {
+        return active;
+    }
+
+    @Override
     public DaoQuery<T> setActive(boolean value) {
         if (value) {
             if (!this.active)
@@ -222,11 +227,6 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
             this.close();
         }
         return this;
-    }
-
-    @Override
-    public boolean getActive() {
-        return active;
     }
 
     @Override
@@ -339,13 +339,13 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
     }
 
     @Override
-    public void setSqlText(SqlText sqlText) {
-        super.setSqlText(sqlText);
+    public SqlText getSqlText() {
+        return super.getSqlText();
     }
 
     @Override
-    public SqlText getSqlText() {
-        return super.getSqlText();
+    public void setSqlText(SqlText sqlText) {
+        super.setSqlText(sqlText);
     }
 
     @Override

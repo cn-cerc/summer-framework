@@ -35,13 +35,6 @@ public class SqlQuery extends DataQuery {
     // 仅当batchSave为true时，delList才有记录存在
     private List<Record> delList = new ArrayList<>();
 
-    @Override
-    public void close() {
-        this.active = false;
-        this.operator = null;
-        super.close();
-    }
-
     public SqlQuery(IHandle handle) {
         super(handle);
         this.session = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
@@ -49,6 +42,13 @@ public class SqlQuery extends DataQuery {
 
         this.dataSource = (DataSource) handle.getProperty(MysqlConnection.dataSource);
         this.slaveDataSource = (DataSource) handle.getProperty(SlaveMysqlConnection.slaveDataSource);
+    }
+
+    @Override
+    public void close() {
+        this.active = false;
+        this.operator = null;
+        super.close();
     }
 
     private Statement getStatement(boolean isSlave) throws SQLException {
@@ -190,6 +190,11 @@ public class SqlQuery extends DataQuery {
     }
 
     @Override
+    public boolean getActive() {
+        return active;
+    }
+
+    @Override
     public SqlQuery setActive(boolean value) {
         if (value) {
             if (!this.active)
@@ -199,11 +204,6 @@ public class SqlQuery extends DataQuery {
             this.close();
         }
         return this;
-    }
-
-    @Override
-    public boolean getActive() {
-        return active;
     }
 
     @Override
@@ -332,13 +332,13 @@ public class SqlQuery extends DataQuery {
     }
 
     @Override
-    public void setSqlText(SqlText sqlText) {
-        super.setSqlText(sqlText);
+    public SqlText getSqlText() {
+        return super.getSqlText();
     }
 
     @Override
-    public SqlText getSqlText() {
-        return super.getSqlText();
+    public void setSqlText(SqlText sqlText) {
+        super.setSqlText(sqlText);
     }
 
     @Override

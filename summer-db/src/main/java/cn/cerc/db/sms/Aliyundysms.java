@@ -14,13 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Aliyundysms {
-    // 常量设置
-    private static final String product = "Dysmsapi";
-    private static final String domain = "dysmsapi.aliyuncs.com";
     public static final String SingName = "dayu.singName";
     public static final String aliyun_accessKeyId = "oss.accessKeyId";
     public static final String aliyun_accessSecret = "oss.accessKeySecret";
-
+    // 常量设置
+    private static final String product = "Dysmsapi";
+    private static final String domain = "dysmsapi.aliyuncs.com";
     // 环境配置
     private String accessKeyId;
     private String accessSecret;

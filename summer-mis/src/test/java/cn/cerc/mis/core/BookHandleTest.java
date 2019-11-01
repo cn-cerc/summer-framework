@@ -1,12 +1,11 @@
 package cn.cerc.mis.core;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.core.IHandle;
+import cn.cerc.mis.rds.StubHandle;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cn.cerc.mis.rds.StubHandle;
-import cn.cerc.core.IHandle;
+import static org.junit.Assert.assertEquals;
 
 public class BookHandleTest {
     private StubHandle handle = new StubHandle();

@@ -6,14 +6,10 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
-import cn.cerc.mis.task.AbstractTask;
-import lombok.extern.slf4j.Slf4j;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -25,14 +21,13 @@ import java.util.Map;
 @Slf4j
 public class DataListSample implements IDataList {
     private static final int Version = 4;
-    private IHandle handle;
-    private Map<String, DataRecordSample> buff = new HashMap<>();
-    private String buffKey;
-
     private static final String ShowInUP = "ShowInUP";
     private static final String ShowOutUP = "ShowOutUP";
     private static final String ShowWholesaleUP = "ShowWholesaleUP";
     private static final String ShowBottomUP = "ShowBottomUP";
+    private IHandle handle;
+    private Map<String, DataRecordSample> buff = new HashMap<>();
+    private String buffKey;
 
     public DataListSample(IHandle handle) {
         super();

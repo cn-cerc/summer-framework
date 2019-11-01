@@ -25,12 +25,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public abstract class BigTable<T extends BigRecord> {
 
-    // 所有内存数据
-    private Map<String, T> items = new ConcurrentHashMap<>();
     // 有变动待保存数据，保存完后会自动清除
     protected Map<T, T> updateList = new ConcurrentHashMap<>();
     protected Map<String, T> updateOldList = new ConcurrentHashMap<>();
     protected Map<String, T> deleteList = new ConcurrentHashMap<>();
+    // 所有内存数据
+    private Map<String, T> items = new ConcurrentHashMap<>();
     // 数据集名称，可为空
     private String tableId;
     // 要管理的对象
@@ -47,6 +47,21 @@ public abstract class BigTable<T extends BigRecord> {
         initClazz();
         storage = new BigStorage(this);
         this.setControl(control);
+    }
+
+    public static Object cloneObject(Object obj1) {
+        Object obj2 = null;
+        try {
+            obj2 = obj1.getClass().newInstance();
+            Map<String, Object> items = new LinkedHashMap<>();
+            BigOperator.copy(obj1, (key, value) -> {
+                items.put(key, value);
+            });
+            BigOperator.copy(items, obj2);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return obj2;
     }
 
     @SuppressWarnings("unchecked")
@@ -336,21 +351,6 @@ public abstract class BigTable<T extends BigRecord> {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public static Object cloneObject(Object obj1) {
-        Object obj2 = null;
-        try {
-            obj2 = obj1.getClass().newInstance();
-            Map<String, Object> items = new LinkedHashMap<>();
-            BigOperator.copy(obj1, (key, value) -> {
-                items.put(key, value);
-            });
-            BigOperator.copy(items, obj2);
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        return obj2;
     }
 
     private void put(T value) {

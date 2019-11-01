@@ -47,6 +47,28 @@ public class SqlOperator implements IDataOperator {
         }
     }
 
+    // 根据 sql 获取数据库表名
+    public static String findTableName(String sql) {
+        String result = null;
+        String[] items = sql.split("[ \r\n]");
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].toLowerCase().contains("from")) {
+                // 如果取到form后 下一个记录为数据库表名
+                while (items[i + 1] == null || "".equals(items[i + 1].trim())) {
+                    // 防止取到空值
+                    i++;
+                }
+                result = items[++i]; // 获取数据库表名
+                break;
+            }
+        }
+
+        if (result == null)
+            throw new RuntimeException("SQL语句异常");
+
+        return result;
+    }
+
     private Connection getConnection() {
         return conntion;
     }
@@ -345,28 +367,6 @@ public class SqlOperator implements IDataOperator {
 
     public List<String> getSearchKeys() {
         return searchKeys;
-    }
-
-    // 根据 sql 获取数据库表名
-    public static String findTableName(String sql) {
-        String result = null;
-        String[] items = sql.split("[ \r\n]");
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].toLowerCase().contains("from")) {
-                // 如果取到form后 下一个记录为数据库表名
-                while (items[i + 1] == null || "".equals(items[i + 1].trim())) {
-                    // 防止取到空值
-                    i++;
-                }
-                result = items[++i]; // 获取数据库表名
-                break;
-            }
-        }
-
-        if (result == null)
-            throw new RuntimeException("SQL语句异常");
-
-        return result;
     }
 
     public UpdateMode getUpdateMode() {

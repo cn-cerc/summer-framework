@@ -1,14 +1,10 @@
 package cn.cerc.mis.other;
 
-import static org.junit.Assert.assertEquals;
-
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import cn.cerc.mis.task.AbstractTask;
-import lombok.extern.slf4j.Slf4j;
+import static org.junit.Assert.assertEquals;
 
 @Slf4j
 public class MemoryBufferTest {

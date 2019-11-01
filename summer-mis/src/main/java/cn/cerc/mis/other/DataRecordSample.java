@@ -22,6 +22,10 @@ public class DataRecordSample implements Serializable {
     private boolean enabled;
     private boolean admin;
 
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
     public String getCode() {
         return code;
     }
@@ -76,10 +80,6 @@ public class DataRecordSample implements Serializable {
 
     public void setLastRemindDate(String lastRemindDate) {
         this.lastRemindDate = lastRemindDate;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
     public String getEmail() {

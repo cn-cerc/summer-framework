@@ -37,6 +37,18 @@ public class LocalConfig implements IConfig {
         }
     }
 
+    public synchronized static LocalConfig getInstance() {
+        if (instance == null) {
+            new LocalConfig();
+        }
+        return instance;
+    }
+
+    public static void main(String[] args) {
+        LocalConfig config = new LocalConfig();
+        System.out.println(config.getProperty("key"));
+    }
+
     @Override
     public String getProperty(String key, String def) {
         String result = null;
@@ -49,17 +61,5 @@ public class LocalConfig implements IConfig {
     @Override
     public String getProperty(String key) {
         return getProperty(key, null);
-    }
-
-    public synchronized static LocalConfig getInstance() {
-        if (instance == null) {
-            new LocalConfig();
-        }
-        return instance;
-    }
-
-    public static void main(String[] args) {
-        LocalConfig config = new LocalConfig();
-        System.out.println(config.getProperty("key"));
     }
 }

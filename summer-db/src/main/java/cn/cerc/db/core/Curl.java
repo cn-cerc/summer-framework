@@ -313,20 +313,20 @@ public class Curl {
         return this.connectTimeOut;
     }
 
-    public int getReadTimeOut() {
-        return this.readTimeOut;
-    }
-
-    public String getRequestEncoding() {
-        return requestEncoding;
-    }
-
     public void setConnectTimeOut(int connectTimeOut) {
         this.connectTimeOut = connectTimeOut;
     }
 
+    public int getReadTimeOut() {
+        return this.readTimeOut;
+    }
+
     public void setReadTimeOut(int readTimeOut) {
         this.readTimeOut = readTimeOut;
+    }
+
+    public String getRequestEncoding() {
+        return requestEncoding;
     }
 
     public void setRequestEncoding(String requestEncoding) {

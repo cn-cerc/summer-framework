@@ -1,18 +1,16 @@
 package cn.cerc.ui.phone;
 
-import org.apache.commons.lang.StringUtils;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.ext.UISpan;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * 两组左边图标右边文字
- * 
- * @author 郭向军
  *
+ * @author 郭向军
  */
 public class Block119 extends UIComponent {
     private UISpan leftTitle = new UISpan();

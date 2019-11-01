@@ -243,24 +243,24 @@ public class CURL {
         return CURL.connectTimeOut;
     }
 
-    // 读取数据超时(毫秒)
-    public static int getReadTimeOut() {
-        return CURL.readTimeOut;
-    }
-
-    // 请求编码
-    public static String getRequestEncoding() {
-        return requestEncoding;
-    }
-
     // 连接超时(毫秒)
     public static void setConnectTimeOut(int connectTimeOut) {
         CURL.connectTimeOut = connectTimeOut;
     }
 
     // 读取数据超时(毫秒)
+    public static int getReadTimeOut() {
+        return CURL.readTimeOut;
+    }
+
+    // 读取数据超时(毫秒)
     public static void setReadTimeOut(int readTimeOut) {
         CURL.readTimeOut = readTimeOut;
+    }
+
+    // 请求编码
+    public static String getRequestEncoding() {
+        return requestEncoding;
     }
 
     // 请求编码

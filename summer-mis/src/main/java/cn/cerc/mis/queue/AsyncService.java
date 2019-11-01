@@ -1,11 +1,5 @@
 package cn.cerc.mis.queue;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -16,15 +10,26 @@ import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.message.MessageLevel;
 import cn.cerc.mis.message.MessageRecord;
-import cn.cerc.mis.task.AbstractTask;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class AsyncService implements IServiceProxy {
 
     // 状态列表
     private static List<String> processTiles = new ArrayList<>();
+
+    static {
+        processTiles.add("中止执行");
+        processTiles.add("排队中");
+        processTiles.add("正在执行中");
+        processTiles.add("执行成功");
+        processTiles.add("执行失败");
+    }
+
     private String corpNo;
     private String userCode;
     // 预约的服务
@@ -46,14 +51,6 @@ public class AsyncService implements IServiceProxy {
     //
     private String msgId;
 
-    static {
-        processTiles.add("中止执行");
-        processTiles.add("排队中");
-        processTiles.add("正在执行中");
-        processTiles.add("执行成功");
-        processTiles.add("执行失败");
-    }
-
     public AsyncService(IHandle handle) {
         this.handle = handle;
         if (handle != null) {
@@ -65,6 +62,10 @@ public class AsyncService implements IServiceProxy {
     public AsyncService(IHandle handle, String service) {
         this(handle);
         this.setService(service);
+    }
+
+    public static String getProcessTitle(int process) {
+        return processTiles.get(process);
     }
 
     public AsyncService read(String jsonString) {
@@ -185,10 +186,6 @@ public class AsyncService implements IServiceProxy {
 
     public int getProcess() {
         return process;
-    }
-
-    public static String getProcessTitle(int process) {
-        return processTiles.get(process);
     }
 
     public void setProcess(int process) {

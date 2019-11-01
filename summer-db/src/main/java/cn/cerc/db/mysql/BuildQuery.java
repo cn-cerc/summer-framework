@@ -1,36 +1,30 @@
 package cn.cerc.db.mysql;
 
-import static cn.cerc.core.Utils.safeString;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import static cn.cerc.core.Utils.safeString;
+
 /**
  * 用于组合生成select指令，便于多条件查询编写
- * 
- * @author 张弓
  *
+ * @author 张弓
  */
 public class BuildQuery {
+    public static final String vbCrLf = "\r\n";
     // private static final Logger log = Logger.getLogger(BuildSQL.class);
     private SqlQuery dataSet;
     private List<String> sqlWhere = new ArrayList<String>();
     private List<String> sqlText = new ArrayList<String>();
-    public static final String vbCrLf = "\r\n";
-
     private String orderText;
     private String sql;
     private IHandle handle;
-
-    public void setDataSet(SqlQuery dataSet) {
-        this.dataSet = dataSet;
-    }
 
     public BuildQuery(IHandle handle) {
         super();
@@ -39,7 +33,7 @@ public class BuildQuery {
 
     /**
      * 增加自定义查询条件，须自行解决注入攻击！
-     * 
+     *
      * @param param 要加入的查询条件
      * @return 返回自身
      */
@@ -210,6 +204,10 @@ public class BuildQuery {
         return this.dataSet;
     }
 
+    public void setDataSet(SqlQuery dataSet) {
+        this.dataSet = dataSet;
+    }
+
     protected String getSelectCommand() {
         if (this.sql != null) {
             sql = sql.replaceFirst("%s", "");
@@ -316,11 +314,11 @@ public class BuildQuery {
         return this;
     }
 
-    public void setOrderText(String orderText) {
-        this.orderText = orderText;
-    }
-
     public String getOrderText() {
         return this.orderText;
+    }
+
+    public void setOrderText(String orderText) {
+        this.orderText = orderText;
     }
 }

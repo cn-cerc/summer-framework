@@ -27,10 +27,6 @@ public class JuheSMS {
     public static final int DEF_CONN_TIMEOUT = 5000;
     public static final int DEF_READ_TIMEOUT = 5000;
     public static final String userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
-    //
-    private String mobile;
-    private String message;
-
     // 配置您申请的KEY
     public static String APPKEY = "";
 
@@ -38,6 +34,10 @@ public class JuheSMS {
         ServerConfig config = ServerConfig.getInstance();
         APPKEY = config.getProperty("juhe.sms");// juhe sms
     }
+
+    //
+    private String mobile;
+    private String message;
 
     public JuheSMS(String mobile) {
         this.mobile = mobile;

@@ -6,7 +6,7 @@ import cn.cerc.mis.core.LocalService;
 
 /**
  * 专用于消息发送
- * 
+ * <p>
  * 注意：公司别和用户代码必须配套
  */
 public class MessageRecord {
@@ -77,6 +77,11 @@ public class MessageRecord {
         return content.toString();
     }
 
+    public MessageRecord setContent(String content) {
+        this.content = new StringBuilder(content);
+        return this;
+    }
+
     public void append(String content) {
         this.content.append(content);
     }
@@ -123,11 +128,6 @@ public class MessageRecord {
 
     public MessageRecord setSubject(String format, Object... args) {
         this.subject = String.format(format, args);
-        return this;
-    }
-
-    public MessageRecord setContent(String content) {
-        this.content = new StringBuilder(content);
         return this;
     }
 

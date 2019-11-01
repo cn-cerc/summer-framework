@@ -1,22 +1,7 @@
 package cn.cerc.mis.page;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
-import cn.cerc.core.SupportHandle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
-
 import cn.cerc.core.IHandle;
+import cn.cerc.core.SupportHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
@@ -27,13 +12,21 @@ import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
-import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.page.qrcode.SocketTool;
-import cn.cerc.mis.task.AbstractTask;
 import cn.cerc.security.sapi.JayunAPI;
 import cn.cerc.security.sapi.JayunSecurity;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Slf4j
 @Component
@@ -147,7 +140,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         req.setAttribute("needVerify", "false");
 
         IUserLoginCheck obj = Application.getBean("userLoginCheck", IUserLoginCheck.class);
-        if (obj != null ) {
+        if (obj != null) {
             if (obj instanceof SupportHandle) {
                 if (form instanceof AbstractForm)
                     ((SupportHandle) obj).init((AbstractForm) form);

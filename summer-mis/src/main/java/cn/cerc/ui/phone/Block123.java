@@ -9,9 +9,8 @@ import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
  * 一组左边图标右边文字
- * 
- * @author 郭向军
  *
+ * @author 郭向军
  */
 public class Block123 extends UIComponent {
     private UISpan title = new UISpan();

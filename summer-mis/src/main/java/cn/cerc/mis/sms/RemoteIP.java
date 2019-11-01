@@ -1,13 +1,9 @@
 package cn.cerc.mis.sms;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.IHandle;
-import cn.cerc.mis.task.AbstractTask;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 获取操作的ip

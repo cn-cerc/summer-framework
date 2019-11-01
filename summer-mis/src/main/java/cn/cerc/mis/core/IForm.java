@@ -1,26 +1,26 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.IHandle;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import cn.cerc.core.IHandle;
 
 public interface IForm {
     // 页面标题
     public String getTitle();
 
-    public void setRequest(HttpServletRequest request);
-
     public HttpServletRequest getRequest();
 
-    public void setResponse(HttpServletResponse response);
+    public void setRequest(HttpServletRequest request);
 
     public HttpServletResponse getResponse();
 
-    // 数据库连接
-    public void setHandle(IHandle handle);
+    public void setResponse(HttpServletResponse response);
 
     public IHandle getHandle();
+
+    // 数据库连接
+    public void setHandle(IHandle handle);
 
     // 是否有登录
     public boolean logon();

@@ -1,8 +1,7 @@
 package cn.cerc.mis.core;
 
-import java.io.IOException;
-
 import javax.servlet.ServletException;
+import java.io.IOException;
 
 public interface IAppLogin {
 

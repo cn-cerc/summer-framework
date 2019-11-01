@@ -24,11 +24,10 @@ public class AliyunQueueConnection implements IConnection {
     public static final String SecurityToken = "mns.securitytoken";
     // IHandle中识别码
     public static final String sessionId = "aliyunQueueSession";
-    // 默认不可见时间
-    private static int visibilityTimeout = 50;
     // 默认消息队列
     public static final String defaultQueue = QueueDB.SUMMER;
-
+    // 默认不可见时间
+    private static int visibilityTimeout = 50;
     private static MNSClient client;
     private static CloudAccount account;
     private IConfig config;

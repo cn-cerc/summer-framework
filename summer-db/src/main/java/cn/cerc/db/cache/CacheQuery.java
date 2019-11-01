@@ -22,6 +22,30 @@ public class CacheQuery implements IRecord {
     // 缓存对象
     private boolean connected;
 
+    public final void post() {
+        if (this.modified) {
+            try {
+                Redis.set(key, record.toString(), this.expires);
+                log.debug("cache set:" + key.toString() + ":" + record.toString());
+                this.modified = false;
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        }
+    }
+
+    public boolean isNull() {
+        return !this.existsData;
+    }
+
+    public void setNull(String field) {
+        setField(field, null);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
     public CacheQuery setKey(String key) {
         if (this.key != null)
             throw new RuntimeException("[CacheQuery]错误的初始化参数！");
@@ -43,26 +67,6 @@ public class CacheQuery implements IRecord {
             }
         }
         return this;
-    }
-
-    public final void post() {
-        if (this.modified) {
-            try {
-                Redis.set(key, record.toString(), this.expires);
-                log.debug("cache set:" + key.toString() + ":" + record.toString());
-                this.modified = false;
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
-        }
-    }
-
-    public boolean isNull() {
-        return !this.existsData;
-    }
-
-    public String getKey() {
-        return key;
     }
 
     public void clear() {
@@ -127,10 +131,6 @@ public class CacheQuery implements IRecord {
         this.modified = true;
         record.setField(field, value);
         return this;
-    }
-
-    public void setNull(String field) {
-        setField(field, null);
     }
 
     @Override

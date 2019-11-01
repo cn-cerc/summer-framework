@@ -1,10 +1,10 @@
 package cn.cerc.ui.fields;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.Record;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RadioField extends AbstractField {
     private List<String> items = new ArrayList<>();

@@ -17,8 +17,14 @@ import java.util.Map;
 
 @Slf4j
 public class ResourceJstl extends SimpleTagSupport {
-    private String toId = null;
     private static Map<String, ResourceBuffer> items = new HashMap<>();
+    private String toId = null;
+
+    public static void clearBuffer() {
+        for (String lang : items.keySet()) {
+            items.get(lang).clear();
+        }
+    }
 
     @Override
     public void doTag() throws JspException, IOException {
@@ -100,11 +106,5 @@ public class ResourceJstl extends SimpleTagSupport {
 
     public void setToId(String toId) {
         this.toId = toId;
-    }
-
-    public static void clearBuffer() {
-        for (String lang : items.keySet()) {
-            items.get(lang).clear();
-        }
     }
 }

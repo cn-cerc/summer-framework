@@ -7,9 +7,8 @@ import cn.cerc.ui.vcl.UIImage;
 
 /**
  * 右侧带数据角标 + 导航链接
- * 
- * @author HuangRongjun
  *
+ * @author HuangRongjun
  */
 
 public class Block127 extends UIComponent {

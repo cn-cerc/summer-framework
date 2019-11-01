@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 /**
  * 用于组件组合，原命名为Component
- * 
- * @author 张弓
  *
+ * @author 张弓
  */
 public class HtmlComponent {
     private ArrayList<HtmlComponent> components = new ArrayList<HtmlComponent>();

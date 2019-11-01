@@ -29,14 +29,27 @@ import java.util.Map;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/services")
 public class StartServiceDefault {
+    private static final String sessionId = "sessionId";
+    private static Map<String, String> services;
+    public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
     @Autowired
     private HttpServletRequest req;
     @Autowired
     private HttpServletResponse resp;
 
-    public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
-    private static Map<String, String> services;
-    private static final String sessionId = "sessionId";
+    private static void loadServices(HttpServletRequest req) {
+        if (services != null)
+            return;
+        services = new HashMap<>();
+        for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
+            IRestful service = Application.getBean(serviceCode, IRestful.class);
+            String path = service.getRestPath();
+            if (null != path && !"".equals(path)) {
+                services.put(path, serviceCode);
+                log.info("restful service " + serviceCode + ": " + path);
+            }
+        }
+    }
 
     @RequestMapping("/")
     @ResponseBody
@@ -208,20 +221,6 @@ public class StartServiceDefault {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             return null;
-        }
-    }
-
-    private static void loadServices(HttpServletRequest req) {
-        if (services != null)
-            return;
-        services = new HashMap<>();
-        for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
-            IRestful service = Application.getBean(serviceCode, IRestful.class);
-            String path = service.getRestPath();
-            if (null != path && !"".equals(path)) {
-                services.put(path, serviceCode);
-                log.info("restful service " + serviceCode + ": " + path);
-            }
         }
     }
 }

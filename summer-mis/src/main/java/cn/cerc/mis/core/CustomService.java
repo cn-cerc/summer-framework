@@ -1,28 +1,24 @@
 package cn.cerc.mis.core;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
-import cn.cerc.mis.task.AbstractTask;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 @Slf4j
 public class CustomService extends AbstractHandle implements IService, IRestful {
 
+    @Autowired
+    public ISystemTable systemTable;
     protected DataSet dataIn = null; // request
     protected DataSet dataOut = null; // response
     protected String funcCode;
     private String message = "";
     private StringBuffer msg = null;
     private String restPath;
-    @Autowired
-    public ISystemTable systemTable;
 
     @Override
     public void init(IHandle handle) {
@@ -166,12 +162,12 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
     }
 
     @Override
-    public void setRestPath(String restPath) {
-        this.restPath = restPath;
+    public String getRestPath() {
+        return restPath;
     }
 
     @Override
-    public String getRestPath() {
-        return restPath;
+    public void setRestPath(String restPath) {
+        this.restPath = restPath;
     }
 }

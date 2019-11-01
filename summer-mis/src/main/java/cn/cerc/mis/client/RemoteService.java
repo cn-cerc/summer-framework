@@ -128,12 +128,16 @@ public class RemoteService implements IServiceProxy {
         return dataOut;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    protected void setDataOut(DataSet dataOut) {
+        this.dataOut = dataOut;
     }
 
     public String getHost() {
         return this.host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     @Override
@@ -153,9 +157,5 @@ public class RemoteService implements IServiceProxy {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    protected void setDataOut(DataSet dataOut) {
-        this.dataOut = dataOut;
     }
 }

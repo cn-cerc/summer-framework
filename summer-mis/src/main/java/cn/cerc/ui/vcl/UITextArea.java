@@ -6,9 +6,8 @@ import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
  * 多行文本输入框
- * 
- * @author 黄荣君
  *
+ * @author 黄荣君
  */
 public class UITextArea extends UIComponent {
     private UISpan caption;

@@ -19,6 +19,7 @@ public final class Base64 {
     static private final boolean fDebug = false;
     static final private byte[] base64Alphabet = new byte[BASELENGTH];
     static final private char[] lookUpBase64Alphabet = new char[LOOKUPLENGTH];
+
     static {
         for (int i = 0; i < BASELENGTH; ++i) {
             base64Alphabet[i] = -1;

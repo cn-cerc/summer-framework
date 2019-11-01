@@ -1,13 +1,13 @@
 package cn.cerc.mis.pay.alipay;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.ServerConfig;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
-
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.core.IHandle;
 
 public class AlipayNotify {
     // 合作身份者ID
@@ -22,10 +22,30 @@ public class AlipayNotify {
     }
 
     /**
+     * 获取远程服务器ATN结果
+     *
+     * @param urlvalue 指定URL路径地址
+     * @return 服务器ATN结果 验证结果集： invalid命令参数不对 出现这个错误，请检测返回处理中partner和key是否为空 true
+     * 返回正确信息 false 请检查防火墙或者是服务器阻止端口问题以及验证时间是否超过一分钟
+     */
+    private static String checkUrl(String urlvalue) {
+        String inputLine = "";
+        try {
+            URL url = new URL(urlvalue);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            inputLine = in.readLine().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            inputLine = "";
+        }
+        return inputLine;
+    }
+
+    /**
      * 验证消息是否是支付宝发出的合法消息
-     * 
-     * @param params
-     *            通知返回来的参数数组
+     *
+     * @param params 通知返回来的参数数组
      * @return 验证结果
      */
     public boolean verify(Map<String, String> params) {
@@ -48,11 +68,9 @@ public class AlipayNotify {
 
     /**
      * 根据反馈回来的信息，生成签名结果
-     * 
-     * @param Params
-     *            通知返回来的参数数组
-     * @param sign
-     *            比对的签名结果
+     *
+     * @param Params 通知返回来的参数数组
+     * @param sign   比对的签名结果
      * @return 生成的签名结果
      */
     private boolean getSignVeryfy(Map<String, String> Params, String sign) {
@@ -64,37 +82,14 @@ public class AlipayNotify {
 
     /**
      * 获取远程服务器ATN结果,验证返回URL
-     * 
-     * @param notify_id
-     *            通知校验ID
+     *
+     * @param notify_id 通知校验ID
      * @return 服务器ATN结果 验证结果集： invalid命令参数不对 出现这个错误，请检测返回处理中partner和key是否为空 true
-     *         返回正确信息 false 请检查防火墙或者是服务器阻止端口问题以及验证时间是否超过一分钟
+     * 返回正确信息 false 请检查防火墙或者是服务器阻止端口问题以及验证时间是否超过一分钟
      */
     private String verifyResponse(String notify_id) {
         String partner = this.partner;
         String veryfy_url = AlipayConfig.HTTPS_VERIFY_URL + "partner=" + partner + "&notify_id=" + notify_id;
         return checkUrl(veryfy_url);
-    }
-
-    /**
-     * 获取远程服务器ATN结果
-     * 
-     * @param urlvalue
-     *            指定URL路径地址
-     * @return 服务器ATN结果 验证结果集： invalid命令参数不对 出现这个错误，请检测返回处理中partner和key是否为空 true
-     *         返回正确信息 false 请检查防火墙或者是服务器阻止端口问题以及验证时间是否超过一分钟
-     */
-    private static String checkUrl(String urlvalue) {
-        String inputLine = "";
-        try {
-            URL url = new URL(urlvalue);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            inputLine = in.readLine().toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            inputLine = "";
-        }
-        return inputLine;
     }
 }
