@@ -1,19 +1,18 @@
 package cn.cerc.db.mysql;
 
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IConnection;
+import cn.cerc.db.core.ServerConfig;
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IConnection;
-import cn.cerc.db.core.ServerConfig;
-
+@Slf4j
 public abstract class SqlConnection implements IConnection, AutoCloseable {
-    private static final Logger log = (SqlConnection.class);
+
     protected String url;
     protected String user;
     protected String pwd;

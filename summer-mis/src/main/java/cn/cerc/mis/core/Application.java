@@ -14,9 +14,12 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Application {
-    private static final Logger log = (Application.class);
+    
     private static ApplicationContext context;
 
     // Tomcat JSESSION.ID

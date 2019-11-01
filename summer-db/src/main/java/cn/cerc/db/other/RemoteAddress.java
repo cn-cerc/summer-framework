@@ -1,12 +1,11 @@
 package cn.cerc.db.other;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+@Slf4j
 public class RemoteAddress {
-    private static final Logger log = (RemoteAddress.class);
 
     // 获取最终访问者的ip地址
     public static String get(HttpServletRequest request) {

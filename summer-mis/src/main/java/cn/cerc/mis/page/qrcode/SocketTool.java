@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SocketTool {
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
-    private static final Logger log = (SocketTool.class);
+@Slf4j
+public class SocketTool {
 
     // FIXME 改为参数传入
     private static List<String> items = new ArrayList<>();

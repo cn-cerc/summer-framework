@@ -16,10 +16,11 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Deprecated // 请改使用 StartTaskDefault
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
-    private static final Logger log = (ProcessTimerTask.class);
     private static boolean isRunning = false;
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;

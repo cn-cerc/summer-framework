@@ -15,11 +15,12 @@ import com.google.gson.Gson;
 
 import cn.cerc.core.MD5;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.task.AbstractTask;
 import cn.cerc.security.sapi.JayunAPI;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JayunQrcode {
-
-    private static final Logger log = (JayunQrcode.class);
 
     private static final String ACTION_LOGIN = "login";
     private static final String ACTION_BIND = "bind";

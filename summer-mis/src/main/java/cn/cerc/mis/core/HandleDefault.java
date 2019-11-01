@@ -21,12 +21,14 @@ import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
 public class HandleDefault implements IHandle {
-    private static final Logger log = (HandleDefault.class);
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
 

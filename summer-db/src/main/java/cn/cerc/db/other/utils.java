@@ -1,20 +1,18 @@
 package cn.cerc.db.other;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
 @Deprecated
 public class utils {
-    static final Logger log = (utils.class);
+
     @Deprecated // 已移至 Utils
     public static final String vbCrLf = "\r\n";
 
@@ -70,9 +68,8 @@ public class utils {
 
     /**
      * 保障查询安全，防范注入攻击 (已停用，请改使用cn.cerc.jdb.core.Utils.safeString)
-     * 
+     *
      * @param value 用户输入值
-     * 
      * @return 经过处理后的值
      */
     @Deprecated

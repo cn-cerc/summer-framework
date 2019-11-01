@@ -6,8 +6,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JuheSMSTest {
-    private static final Logger log = (JuheSMSTest.class);
 
     @Before
     public void setUp() throws Exception {

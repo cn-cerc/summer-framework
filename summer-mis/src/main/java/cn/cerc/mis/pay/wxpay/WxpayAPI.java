@@ -1,23 +1,23 @@
 package cn.cerc.mis.pay.wxpay;
 
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IHandle;
+import cn.cerc.mis.core.Application;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IHandle;
-import cn.cerc.mis.core.Application;
-
-//APP支付
+/**
+ * 微信App支付
+ */
+@Slf4j
 public class WxpayAPI {
-    private static Logger log = (WxpayAPI.class);
+
     // 申请支付金额
     private String amount;
     // 申请支付订单号
@@ -52,14 +52,14 @@ public class WxpayAPI {
         }
     }
 
-    @SuppressWarnings({ "static-access", "unchecked" })
+    @SuppressWarnings({"static-access", "unchecked"})
     public Map<String, String> requestPay(String body) {
         String notify_url = String.format("%s/%s/%s", rootSite, Application.getAppConfig().getPathForms(),
                 this.notifyUrl);
         String trade_type = "APP";
         String nonce_str = Sha1Util.getNonceStr();
         String total_fee = String.valueOf(new BigDecimal(amount).multiply(new BigDecimal(100)).intValue());// 金额
-                                                                                                           // 微信是以分为单位的;
+        // 微信是以分为单位的;
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("appid", this.appId);
         // 商户号

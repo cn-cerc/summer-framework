@@ -30,14 +30,15 @@ import cn.cerc.mis.core.IUserLoginCheck;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.page.qrcode.SocketTool;
+import cn.cerc.mis.task.AbstractTask;
 import cn.cerc.security.sapi.JayunAPI;
 import cn.cerc.security.sapi.JayunSecurity;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
-
-    private static final Logger log = (AppLoginDefault.class);
 
     // 配置在服务器的用户名下面 summer-application.properties
     public static final String Notify_Url = "app.notify_url";

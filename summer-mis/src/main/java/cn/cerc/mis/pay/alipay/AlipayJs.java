@@ -16,10 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 import cn.cerc.core.IHandle;
 
+@Slf4j
 public class AlipayJs {
-    private static Logger log = (AlipayJs.class);
+
     // 申请支付金额
     private String amount;
     // 申请支付订单号

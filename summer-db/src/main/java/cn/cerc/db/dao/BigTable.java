@@ -1,5 +1,14 @@
 package cn.cerc.db.dao;
 
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.core.SqlText;
+import cn.cerc.core.Utils;
+import cn.cerc.db.mysql.UpdateMode;
+import cn.cerc.db.redis.JedisFactory;
+import lombok.extern.slf4j.Slf4j;
+import redis.clients.jedis.Jedis;
+
 import java.io.IOException;
 import java.lang.Thread.State;
 import java.lang.reflect.Field;
@@ -13,19 +22,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.core.SqlText;
-import cn.cerc.core.Utils;
-import cn.cerc.db.mysql.UpdateMode;
-import cn.cerc.db.redis.JedisFactory;
-import redis.clients.jedis.Jedis;
-
+@Slf4j
 public abstract class BigTable<T extends BigRecord> {
-    private static final Logger log = (BigTable.class);
+
     // 所有内存数据
     private Map<String, T> items = new ConcurrentHashMap<>();
     // 有变动待保存数据，保存完后会自动清除
@@ -63,7 +62,7 @@ public abstract class BigTable<T extends BigRecord> {
 
     /**
      * 执行指定的sql，并返回结果集
-     * 
+     *
      * @param sqlText 要执行的 SqlText
      * @return 返回载入的笔数
      */
@@ -84,7 +83,7 @@ public abstract class BigTable<T extends BigRecord> {
 
     /**
      * 载入所有的记录
-     * 
+     *
      * @return 返回载入的笔数
      */
     public int open() {
@@ -218,7 +217,7 @@ public abstract class BigTable<T extends BigRecord> {
 
     /**
      * 立即保存到数据库，主要适用于 app
-     * 
+     *
      * @param record 要保存的对象
      */
     public void postUpdate(T record) {
@@ -228,7 +227,7 @@ public abstract class BigTable<T extends BigRecord> {
 
     /**
      * 立即保存到数据库，主要适用于 app
-     * 
+     *
      * @param record 要保存的对象
      */
     public void postDelete(T record) {
@@ -243,7 +242,7 @@ public abstract class BigTable<T extends BigRecord> {
 
     /**
      * 保存到数据库
-     * 
+     *
      * @param maxSize 最大保存笔数
      */
     public synchronized void post(int maxSize) {

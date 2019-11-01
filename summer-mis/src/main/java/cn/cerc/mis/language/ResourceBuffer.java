@@ -9,9 +9,12 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.mis.core.LocalService;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ResourceBuffer {
-    private static final Logger log = (ResourceBuffer.class);
+
     private String lang;
     private static Map<String, String> items = new HashMap<>();
 

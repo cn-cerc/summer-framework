@@ -12,10 +12,11 @@ import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
+@Slf4j
 public class ProcessQueueDefault extends AbstractTask {
-    private static final Logger log = (ProcessQueueDefault.class);
 
     @Override
     public void execute() throws Exception {

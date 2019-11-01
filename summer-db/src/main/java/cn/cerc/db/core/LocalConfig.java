@@ -1,18 +1,17 @@
 package cn.cerc.db.core;
 
+import cn.cerc.core.IConfig;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import cn.cerc.core.IConfig;
-
+@Slf4j
 public class LocalConfig implements IConfig {
-    private static final Logger log = (LocalConfig.class);
+
     private static Properties properties = new Properties();
     private static LocalConfig instance;
 

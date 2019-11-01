@@ -1,11 +1,5 @@
 package cn.cerc.mis.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.MD5;
@@ -29,14 +23,18 @@ import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * 用于用户登录
  */
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrUserLogin extends CustomService {
-    private static final Logger log = (SvrUserLogin.class);
     private static String GuidNull = "";
     private static int Max_Viability = 1;
     public static int TimeOut = 5; // 效验代码超时时间（分钟）
@@ -227,9 +225,8 @@ public class SvrUserLogin extends CustomService {
 
     /**
      * 退出系统
-     * 
+     *
      * @return 暂未使用
-     * 
      */
     @Webfunc
     public boolean ExitSystem() {
@@ -437,7 +434,7 @@ public class SvrUserLogin extends CustomService {
         cdsTmp.add("where CorpNo_='%s'and UserCode_='%s'", corpNo, userCode);
         /*
          * FIXME MachineType_代表设备类型，6-iOS、7-Android，用于极光推送 JPushRecord
-         * 
+         *
          * 黄荣君 2017-06-19
          */
         cdsTmp.add("and Used_=1 and MachineType_ in (6,7)");

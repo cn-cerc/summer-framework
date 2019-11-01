@@ -5,8 +5,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class YunpianSMSTest {
-    private static final Logger log = (YunpianSMSTest.class);
 
     @Before
     public void setUp() throws Exception {

@@ -13,11 +13,14 @@ import cn.cerc.mis.book.IBookManage;
 import cn.cerc.mis.book.UpdateBook;
 import cn.cerc.mis.book.VirtualData;
 import cn.cerc.mis.other.BookOptions;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 
+@Slf4j
 public class UpdateManager implements IBookManage {
-    private static final Logger log = (UpdateManager.class);
+
     private IHandle handle;
     private String initMonth;
     private List<UpdateBook> books = new ArrayList<>();

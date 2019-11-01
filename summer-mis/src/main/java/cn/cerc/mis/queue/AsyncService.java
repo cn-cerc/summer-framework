@@ -16,10 +16,13 @@ import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.message.MessageLevel;
 import cn.cerc.mis.message.MessageRecord;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
+@Slf4j
 public class AsyncService implements IServiceProxy {
-    private static final Logger log = (AsyncService.class);
+
     // 状态列表
     private static List<String> processTiles = new ArrayList<>();
     private String corpNo;

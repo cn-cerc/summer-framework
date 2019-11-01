@@ -8,9 +8,11 @@ import cn.cerc.mis.core.AbstractHandle;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ISystemTable;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class AbstractTask extends AbstractHandle implements Runnable {
-    private static final Logger log = (AbstractTask.class);
+
     private String describe;
     /** 缓存时间/秒 **/
     private int interval;

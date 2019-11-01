@@ -1,21 +1,19 @@
 package cn.cerc.db.dao;
 
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.db.mysql.MysqlConnection;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import lombok.extern.slf4j.Slf4j;
+
 import java.beans.PropertyVetoException;
 import java.io.Closeable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.db.mysql.MysqlConnection;
-
+@Slf4j
 public class BigConnection implements Closeable {
-    private static final Logger log = (BigConnection.class);
+
     private Connection connection;
     private boolean debugConnection = false;
     // 饿汉式
@@ -95,7 +93,7 @@ public class BigConnection implements Closeable {
 
     /**
      * dao使用本方法来获取连接
-     * 
+     *
      * @return 返回数据库连接
      */
     public static Connection popConnection() {
@@ -122,7 +120,7 @@ public class BigConnection implements Closeable {
 
     /**
      * 开启事务
-     * 
+     *
      * @throws SQLException SQL异常
      */
     public static void beginTransaction() throws SQLException {
@@ -136,7 +134,7 @@ public class BigConnection implements Closeable {
 
     /**
      * 提交事务
-     * 
+     *
      * @throws SQLException SQL异常
      */
     public static void commitTransaction() throws SQLException {
@@ -151,7 +149,7 @@ public class BigConnection implements Closeable {
 
     /**
      * 回滚事务
-     * 
+     *
      * @throws SQLException SQL异常
      */
     public static void rollbackTransaction() throws SQLException {
@@ -166,7 +164,7 @@ public class BigConnection implements Closeable {
 
     /**
      * 释放Connection
-     * 
+     *
      * @param connection 连接对象
      * @throws SQLException Sql异常
      */

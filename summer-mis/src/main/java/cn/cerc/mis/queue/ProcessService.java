@@ -11,6 +11,7 @@ import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.rds.StubHandle;
 import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 处理后台异步任务
@@ -18,8 +19,8 @@ import cn.cerc.mis.task.AbstractTask;
  * @author ZhangGong
  *
  */
+@Slf4j
 public class ProcessService extends AbstractTask {
-    private static final Logger log = (ProcessService.class);
 
     @Override
     public void execute() {

@@ -15,9 +15,12 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BookOptions {
-    private static final Logger log = (BookOptions.class);
+
     private IHandle handle;
     public static final String BookInfo_Set = "_BookInfoSet_";
     public static final String HideLoginInfo = "_HideLoginInfo_";

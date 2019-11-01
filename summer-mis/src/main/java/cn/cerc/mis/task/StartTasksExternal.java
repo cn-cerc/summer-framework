@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Deprecated // 请改使用 StartTaskDefault
 public class StartTasksExternal implements Filter {
-    private static final Logger log = (StartTasksExternal.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

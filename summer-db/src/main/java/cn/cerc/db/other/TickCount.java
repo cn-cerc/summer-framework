@@ -1,10 +1,10 @@
 package cn.cerc.db.other;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TickCount {
-    private static final Logger log = (TickCount.class);
+
     private long lastTime;
 
     public TickCount() {

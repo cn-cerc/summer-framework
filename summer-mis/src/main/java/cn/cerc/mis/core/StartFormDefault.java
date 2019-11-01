@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.cerc.core.IHandle;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/forms")
+@Slf4j
 public class StartFormDefault implements ApplicationContextAware {
-    private static final Logger log = (StartFormDefault.class);
+
     private ApplicationContext context;
     @Autowired
     private HttpServletRequest request;

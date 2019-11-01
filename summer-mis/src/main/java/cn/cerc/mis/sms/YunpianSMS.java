@@ -21,10 +21,13 @@ import cn.cerc.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.language.R;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
+@Slf4j
 public class YunpianSMS {
-    private static final Logger log = (YunpianSMS.class);
+
     private String mobile;
     private String apiurl;
     private String apikey;

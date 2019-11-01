@@ -12,10 +12,13 @@ import com.google.gson.Gson;
 
 import cn.cerc.core.IConfig;
 import cn.cerc.core.IHandle;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
 //微信支付（网页JS版）
+@Slf4j
 public class WxpayJs {
-    private static Logger log = (WxpayJs.class);
+
     // 申请支付金额
     private String amount;
     // 申请支付订单号

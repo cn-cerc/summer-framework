@@ -1,15 +1,13 @@
 package cn.cerc.db.nas;
 
+import cn.cerc.db.core.StubHandle;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import cn.cerc.db.core.StubHandle;
-
+@Slf4j
 public class NasQueryTest {
 
-    private static final Logger log = (NasQueryTest.class);
     private NasQuery ds;
     private StubHandle handle;
 

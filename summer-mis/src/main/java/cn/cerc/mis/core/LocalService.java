@@ -19,9 +19,12 @@ import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.Microservice;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class LocalService implements IServiceProxy {
-    private static final Logger log = (LocalService.class);
+
     private String serviceCode;
 
     private String message;

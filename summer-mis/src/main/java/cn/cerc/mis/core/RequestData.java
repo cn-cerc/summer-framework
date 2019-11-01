@@ -10,8 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class RequestData {
-    private static final Logger log = (RequestData.class);
+
     public static final String appSession_Key = "sid";
     public static final String webclient = "webclient";
     private String sid;

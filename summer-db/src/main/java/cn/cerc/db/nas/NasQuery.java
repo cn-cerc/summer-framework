@@ -1,21 +1,20 @@
 package cn.cerc.db.nas;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.CharEncoding;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.queue.QueueOperator;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.CharEncoding;
+import org.apache.commons.lang.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
+
+@Slf4j
 public class NasQuery extends DataQuery {
+
     private static final long serialVersionUID = 1L;
-    private static final Logger log = (NasQuery.class);
 
     @SuppressWarnings("unused")
     private IHandle handle;
@@ -95,7 +94,7 @@ public class NasQuery extends DataQuery {
         super.add(sql);
         return this;
     }
-    
+
     public NasQuery add(String format, Object... args) {
         super.add(format, args);
         return this;

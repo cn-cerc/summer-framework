@@ -1,20 +1,18 @@
 package cn.cerc.db.oss;
 
-import java.io.File;
-import java.io.InputStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import cn.cerc.core.IHandle;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.CopyObjectResult;
 import com.aliyun.oss.model.ObjectMetadata;
+import lombok.extern.slf4j.Slf4j;
 
-import cn.cerc.core.IHandle;
+import java.io.File;
+import java.io.InputStream;
 
+@Slf4j
 public class OssDisk {
-    private static final Logger log = (OssDisk.class);
+
     private OssConnection connection;
     private OSSClient client;
     private String localPath;

@@ -11,10 +11,12 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class R {
-    private static final Logger log = (R.class);
-
+    
     public static String getLanguage(IHandle handle) {
         Object temp = handle.getProperty(Application.deviceLanguage);
         if (temp == null || "".equals(temp)) {

@@ -25,10 +25,12 @@ import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.page.JspPage;
 import cn.cerc.mis.page.RedirectPage;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Deprecated // 请改使用 StartFormDefault
 public class StartForms implements Filter {
-    private static final Logger log = (StartForms.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

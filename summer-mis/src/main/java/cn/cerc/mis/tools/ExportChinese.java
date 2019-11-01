@@ -21,14 +21,16 @@ import cn.cerc.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 扫描待翻译的中文
  */
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ExportChinese {
-    private static final Logger log = (ExportChinese.class);
     private Set<String> items = new TreeSet<>();
 
     /**

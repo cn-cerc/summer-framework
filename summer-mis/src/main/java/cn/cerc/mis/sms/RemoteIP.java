@@ -6,15 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.IHandle;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 获取操作的ip
- * 
- * @author 欧阳军
- *
  */
+@Slf4j
 public class RemoteIP {
-    private static final Logger log = (RemoteIP.class);
 
     public static String get(IHandle handle) {
         HttpServletRequest request = (HttpServletRequest) handle.getProperty("request");

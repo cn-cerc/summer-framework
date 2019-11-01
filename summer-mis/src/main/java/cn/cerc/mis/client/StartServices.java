@@ -23,10 +23,13 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
+import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
-    private static final Logger log = (StartServices.class);
+
     private static final long serialVersionUID = 1L;
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
     private static Map<String, String> services;

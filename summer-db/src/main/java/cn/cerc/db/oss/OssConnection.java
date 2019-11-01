@@ -1,18 +1,8 @@
 package cn.cerc.db.oss;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IConnection;
+import cn.cerc.db.core.ServerConfig;
 import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
@@ -20,15 +10,23 @@ import com.aliyun.oss.model.Bucket;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IConnection;
-import cn.cerc.db.core.ServerConfig;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class OssConnection implements IConnection {
-    private static final Logger log = (OssConnection.class);
+
     // 设置连接地址
     public static final String oss_endpoint = "oss.endpoint";
     // 连接区域
@@ -137,7 +135,7 @@ public class OssConnection implements IConnection {
 
     /**
      * 判断指定的文件名是否存在
-     * 
+     *
      * @param fileName 带完整路径的文件名
      * @return 若存在则返回true
      */
@@ -152,7 +150,7 @@ public class OssConnection implements IConnection {
 
     /**
      * 返回可用的文件名称
-     * 
+     *
      * @param fileName 带完整路径的文件名
      * @param def      默认值
      * @return 若存在则返回路径，否则返回默认值

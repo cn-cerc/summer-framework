@@ -1,18 +1,17 @@
 package cn.cerc.db.redis;
 
+import cn.cerc.core.TDateTime;
+import lombok.extern.slf4j.Slf4j;
+import redis.clients.jedis.Jedis;
+
 import java.io.Closeable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import cn.cerc.core.TDateTime;
-import redis.clients.jedis.Jedis;
-
+@Slf4j
 public class Locker implements Closeable {
-    private static final Logger log = (Locker.class);
+
     private String group;
     private String message;
     private Map<String, Boolean> items = new HashMap<>();
