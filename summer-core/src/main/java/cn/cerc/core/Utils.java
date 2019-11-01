@@ -244,6 +244,10 @@ public class Utils {
         return text.matches("[0-9,.]*");
     }
 
+    public static boolean isNotNumeric(String text) {
+        return !Utils.isNumeric(text);
+    }
+
     // 兼容 delphi 代码
     public static boolean assigned(Object object) {
         return object != null;
