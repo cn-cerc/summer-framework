@@ -17,7 +17,7 @@ import cn.cerc.mis.core.Application;
 
 //APP支付
 public class WxpayAPI {
-    private static Logger log = LoggerFactory.getLogger(WxpayAPI.class);
+    private static Logger log = (WxpayAPI.class);
     // 申请支付金额
     private String amount;
     // 申请支付订单号

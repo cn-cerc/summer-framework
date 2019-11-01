@@ -10,7 +10,7 @@ import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ISystemTable;
 
 public abstract class AbstractTask extends AbstractHandle implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(AbstractTask.class);
+    private static final Logger log = (AbstractTask.class);
     private String describe;
     /** 缓存时间/秒 **/
     private int interval;

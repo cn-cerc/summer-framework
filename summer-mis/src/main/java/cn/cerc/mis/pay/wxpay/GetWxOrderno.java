@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("deprecation")
 public class GetWxOrderno {
-    private static final Logger log = LoggerFactory.getLogger(GetWxOrderno.class);
+    private static final Logger log = (GetWxOrderno.class);
     public static DefaultHttpClient httpclient;
 
     static {

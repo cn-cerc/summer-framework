@@ -1,5 +1,7 @@
 package cn.cerc.db.core;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,9 +17,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * HTTP请求代理类
  *
@@ -25,19 +24,32 @@ import org.slf4j.LoggerFactory;
  * @version 1.0, 2018-1-1
  */
 //FIXME 需重构调用方式初始化直接创建url  new Curl(url);
+@Slf4j
 public class Curl {
-    private static final Logger log = LoggerFactory.getLogger(Curl.class);
-    /** 请求编码 */
+
+    /**
+     * 请求编码
+     */
     private String requestEncoding = "UTF-8";
-    /** 返回的内容编码 */
+    /**
+     * 返回的内容编码
+     */
     private String recvEncoding = "UTF-8";
-    /** 连接超时, 默认5秒 */
+    /**
+     * 连接超时, 默认5秒
+     */
     private int connectTimeOut = 5000;
-    /** 读取数据超时，默认10秒 */
+    /**
+     * 读取数据超时，默认10秒
+     */
     private int readTimeOut = 10000;
-    /** 调用参数 */
+    /**
+     * 调用参数
+     */
     private Map<String, Object> parameters = new HashMap<>();
-    /** 返回内容 */
+    /**
+     * 返回内容
+     */
     private String responseContent = null;
 
     public String sendGet(String reqUrl) {
@@ -106,7 +118,7 @@ public class Curl {
         HttpURLConnection url_con = null;
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 params.append(element.getKey().toString());
                 params.append("=");
@@ -224,7 +236,7 @@ public class Curl {
     public String doPost(String reqUrl) {
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 Object val = element.getValue();
                 if (val != null) {

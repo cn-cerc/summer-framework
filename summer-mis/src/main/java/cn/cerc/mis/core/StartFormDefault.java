@@ -19,7 +19,7 @@ import cn.cerc.core.IHandle;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/forms")
 public class StartFormDefault implements ApplicationContextAware {
-    private static final Logger log = LoggerFactory.getLogger(StartFormDefault.class);
+    private static final Logger log = (StartFormDefault.class);
     private ApplicationContext context;
     @Autowired
     private HttpServletRequest request;

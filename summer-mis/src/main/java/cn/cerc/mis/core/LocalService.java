@@ -21,7 +21,7 @@ import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 
 public class LocalService implements IServiceProxy {
-    private static final Logger log = LoggerFactory.getLogger(LocalService.class);
+    private static final Logger log = (LocalService.class);
     private String serviceCode;
 
     private String message;

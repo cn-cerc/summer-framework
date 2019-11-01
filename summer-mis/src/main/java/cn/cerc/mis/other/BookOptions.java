@@ -17,7 +17,7 @@ import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
 
 public class BookOptions {
-    private static final Logger log = LoggerFactory.getLogger(BookOptions.class);
+    private static final Logger log = (BookOptions.class);
     private IHandle handle;
     public static final String BookInfo_Set = "_BookInfoSet_";
     public static final String HideLoginInfo = "_HideLoginInfo_";

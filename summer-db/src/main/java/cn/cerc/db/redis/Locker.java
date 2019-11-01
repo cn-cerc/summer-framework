@@ -12,7 +12,7 @@ import cn.cerc.core.TDateTime;
 import redis.clients.jedis.Jedis;
 
 public class Locker implements Closeable {
-    private static final Logger log = LoggerFactory.getLogger(Locker.class);
+    private static final Logger log = (Locker.class);
     private String group;
     private String message;
     private Map<String, Boolean> items = new HashMap<>();

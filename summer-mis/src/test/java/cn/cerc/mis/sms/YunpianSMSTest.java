@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class YunpianSMSTest {
-    private static final Logger log = LoggerFactory.getLogger(YunpianSMSTest.class);
+    private static final Logger log = (YunpianSMSTest.class);
 
     @Before
     public void setUp() throws Exception {

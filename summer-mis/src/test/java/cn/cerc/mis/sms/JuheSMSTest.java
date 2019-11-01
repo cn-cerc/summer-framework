@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JuheSMSTest {
-    private static final Logger log = LoggerFactory.getLogger(JuheSMSTest.class);
+    private static final Logger log = (JuheSMSTest.class);
 
     @Before
     public void setUp() throws Exception {

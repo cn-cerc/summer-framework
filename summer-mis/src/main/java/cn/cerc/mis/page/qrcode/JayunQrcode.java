@@ -19,7 +19,7 @@ import cn.cerc.security.sapi.JayunAPI;
 
 public class JayunQrcode {
 
-    private static final Logger log = LoggerFactory.getLogger(JayunQrcode.class);
+    private static final Logger log = (JayunQrcode.class);
 
     private static final String ACTION_LOGIN = "login";
     private static final String ACTION_BIND = "bind";

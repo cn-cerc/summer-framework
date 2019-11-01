@@ -19,7 +19,7 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.core.IHandle;
 
 public class AlipayJs {
-    private static Logger log = LoggerFactory.getLogger(AlipayJs.class);
+    private static Logger log = (AlipayJs.class);
     // 申请支付金额
     private String amount;
     // 申请支付订单号

@@ -16,7 +16,7 @@ import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
 
 public class Application {
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
+    private static final Logger log = (Application.class);
     private static ApplicationContext context;
 
     // Tomcat JSESSION.ID

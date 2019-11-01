@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class SocketTool {
 
-    private static final Logger log = LoggerFactory.getLogger(SocketTool.class);
+    private static final Logger log = (SocketTool.class);
 
     // FIXME 改为参数传入
     private static List<String> items = new ArrayList<>();

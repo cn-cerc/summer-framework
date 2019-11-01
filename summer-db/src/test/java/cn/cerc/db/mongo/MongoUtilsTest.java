@@ -17,7 +17,7 @@ import cn.cerc.db.core.StubHandle;
 
 public class MongoUtilsTest {
 
-    private static final Logger log = LoggerFactory.getLogger(MongoUtilsTest.class);
+    private static final Logger log = (MongoUtilsTest.class);
 
     private static MongoUtils utils;
 

@@ -28,7 +28,7 @@ import cn.cerc.mis.page.RedirectPage;
 
 @Deprecated // 请改使用 StartFormDefault
 public class StartForms implements Filter {
-    private static final Logger log = LoggerFactory.getLogger(StartForms.class);
+    private static final Logger log = (StartForms.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

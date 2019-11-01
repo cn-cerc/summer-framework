@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TickCount {
-    private static final Logger log = LoggerFactory.getLogger(TickCount.class);
+    private static final Logger log = (TickCount.class);
     private long lastTime;
 
     public TickCount() {

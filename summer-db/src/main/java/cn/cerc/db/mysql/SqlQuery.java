@@ -23,7 +23,7 @@ import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 
 public class SqlQuery extends DataQuery {
-    private static final Logger log = LoggerFactory.getLogger(SqlQuery.class);
+    private static final Logger log = (SqlQuery.class);
 
     private static final long serialVersionUID = 7316772894058168187L;
     private SqlConnection session;

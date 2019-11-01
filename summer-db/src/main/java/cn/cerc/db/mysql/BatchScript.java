@@ -7,7 +7,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
 
 public class BatchScript {
-    private static final Logger log = LoggerFactory.getLogger(BatchScript.class);
+    private static final Logger log = (BatchScript.class);
     private StringBuffer items = new StringBuffer();
     private IHandle handle;
     private MysqlConnection connection;

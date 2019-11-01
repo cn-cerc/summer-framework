@@ -12,7 +12,7 @@ import java.util.Properties;
 
 @Component
 public class ServerConfig implements IConfig {
-    private static final Logger log = LoggerFactory.getLogger(ServerConfig.class);
+    private static final Logger log = (ServerConfig.class);
     private static final String confFile = "/application.properties";
     private static Properties properties = new Properties();
     private static ServerConfig instance;

@@ -20,7 +20,7 @@ import java.util.Map;
  * 以用户表为原型，增加从缓存读取数据的模板
  */
 public class DataListSample implements IDataList {
-    private static final Logger log = LoggerFactory.getLogger(DataListSample.class);
+    private static final Logger log = (DataListSample.class);
     private static final int Version = 4;
     private IHandle handle;
     private Map<String, DataRecordSample> buff = new HashMap<>();

@@ -15,7 +15,7 @@ import cn.cerc.mis.task.AbstractTask;
 import net.sf.json.JSONObject;
 
 public class ProcessQueueDefault extends AbstractTask {
-    private static final Logger log = LoggerFactory.getLogger(ProcessQueueDefault.class);
+    private static final Logger log = (ProcessQueueDefault.class);
 
     @Override
     public void execute() throws Exception {

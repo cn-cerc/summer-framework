@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 public class RequestData {
-    private static final Logger log = LoggerFactory.getLogger(RequestData.class);
+    private static final Logger log = (RequestData.class);
     public static final String appSession_Key = "sid";
     public static final String webclient = "webclient";
     private String sid;

@@ -9,7 +9,7 @@ import cn.cerc.db.core.StubHandle;
 
 public class NasQueryTest {
 
-    private static final Logger log = LoggerFactory.getLogger(NasQueryTest.class);
+    private static final Logger log = (NasQueryTest.class);
     private NasQuery ds;
     private StubHandle handle;
 

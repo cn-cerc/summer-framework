@@ -14,7 +14,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 import cn.cerc.core.IHandle;
 
 public class OssDisk {
-    private static final Logger log = LoggerFactory.getLogger(OssDisk.class);
+    private static final Logger log = (OssDisk.class);
     private OssConnection connection;
     private OSSClient client;
     private String localPath;

@@ -21,7 +21,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
 
 public class SvrAutoLogin {
-    private static final Logger log = LoggerFactory.getLogger(SvrAutoLogin.class);
+    private static final Logger log = (SvrAutoLogin.class);
 
     private IHandle handle;
     private String message;

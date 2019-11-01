@@ -19,7 +19,7 @@ import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 
 public class JiguangPush {
-    private static final Logger log = LoggerFactory.getLogger(JiguangPush.class);
+    private static final Logger log = (JiguangPush.class);
     private JiguangConnection connection;
     // 消息id，回调时使用
     private String msgId;

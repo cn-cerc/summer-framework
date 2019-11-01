@@ -19,7 +19,7 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.core.IHandle;
 
 public class ResourceJstl extends SimpleTagSupport {
-    private static final Logger log = LoggerFactory.getLogger(ResourceJstl.class);
+    private static final Logger log = (ResourceJstl.class);
     private String toId = null;
     private static Map<String, ResourceBuffer> items = new HashMap<>();
 

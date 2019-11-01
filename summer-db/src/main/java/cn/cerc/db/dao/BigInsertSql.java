@@ -23,7 +23,7 @@ import cn.cerc.core.ClassFactory;
 import cn.cerc.db.mysql.BuildStatement;
 
 public class BigInsertSql {
-    private static final Logger log = LoggerFactory.getLogger(BigInsertSql.class);
+    private static final Logger log = (BigInsertSql.class);
 
     public static boolean exec(Connection conn, Object oldRecord, boolean preview) {
         String lastCommand = null;

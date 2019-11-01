@@ -17,7 +17,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 
 public class UpdateManager implements IBookManage {
-    private static final Logger log = LoggerFactory.getLogger(UpdateManager.class);
+    private static final Logger log = (UpdateManager.class);
     private IHandle handle;
     private String initMonth;
     private List<UpdateBook> books = new ArrayList<>();

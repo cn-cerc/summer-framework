@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.mis.rds.StubHandle;
 
 public class PhoneVerifyTest {
-    private static final Logger log = LoggerFactory.getLogger(PhoneVerifyTest.class);
+    private static final Logger log = (PhoneVerifyTest.class);
 
     private StubHandle handle;
     private PhoneVerify obj;

@@ -17,7 +17,7 @@ import cn.cerc.core.IConfig;
 
 public class Aliyundysms {
     // 常量设置
-    private static final Logger log = LoggerFactory.getLogger(Aliyundysms.class);
+    private static final Logger log = (Aliyundysms.class);
     private static final String product = "Dysmsapi";
     private static final String domain = "dysmsapi.aliyuncs.com";
     public static final String SingName = "dayu.singName";

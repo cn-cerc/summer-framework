@@ -43,7 +43,7 @@ public class CURL {
      */
     private static String requestEncoding = "UTF-8";
 
-    private static Logger log = LoggerFactory.getLogger(CURL.class);
+    private static Logger log = (CURL.class);
 
     // 发送带参数的GET的HTTP请求, reqUrl HTTP请求URL param parameters 参数映射表 return
     // HTTP响应的字符串

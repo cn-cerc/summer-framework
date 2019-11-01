@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 @WebListener
 public class AppListener implements HttpSessionListener {
-    private static final Logger log = LoggerFactory.getLogger(AppListener.class);
+    private static final Logger log = (AppListener.class);
 
     @Override
     public void sessionCreated(HttpSessionEvent hse) {

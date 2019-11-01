@@ -19,7 +19,7 @@ import cn.cerc.mis.task.AbstractTask;
  *
  */
 public class ProcessService extends AbstractTask {
-    private static final Logger log = LoggerFactory.getLogger(ProcessService.class);
+    private static final Logger log = (ProcessService.class);
 
     @Override
     public void execute() {

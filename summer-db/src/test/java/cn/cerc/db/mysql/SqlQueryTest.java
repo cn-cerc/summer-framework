@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.db.core.StubHandle;
 
 public class SqlQueryTest {
-    private static final Logger log = LoggerFactory.getLogger(SqlQueryTest.class);
+    private static final Logger log = (SqlQueryTest.class);
     private String userInfo;
     private SqlQuery ds;
     private StubHandle handle;

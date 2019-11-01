@@ -15,7 +15,7 @@ import cn.cerc.core.IHandle;
 
 //微信支付（网页JS版）
 public class WxpayJs {
-    private static Logger log = LoggerFactory.getLogger(WxpayJs.class);
+    private static Logger log = (WxpayJs.class);
     // 申请支付金额
     private String amount;
     // 申请支付订单号

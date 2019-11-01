@@ -29,7 +29,7 @@ import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlOperator;
 
 public abstract class DaoQuery<T extends Serializable> extends DataQuery {
-    private static final Logger log = LoggerFactory.getLogger(DaoQuery.class);
+    private static final Logger log = (DaoQuery.class);
     private static final long serialVersionUID = -7323397340337332570L;
     private MysqlConnection session;
     private SlaveMysqlConnection slaveSession;

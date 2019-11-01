@@ -14,7 +14,7 @@ import cn.cerc.core.Utils;
 
 @Deprecated
 public class utils {
-    static final Logger log = LoggerFactory.getLogger(utils.class);
+    static final Logger log = (utils.class);
     @Deprecated // 已移至 Utils
     public static final String vbCrLf = "\r\n";
 

@@ -13,7 +13,7 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 
 public class R {
-    private static final Logger log = LoggerFactory.getLogger(R.class);
+    private static final Logger log = (R.class);
 
     public static String getLanguage(IHandle handle) {
         Object temp = handle.getProperty(Application.deviceLanguage);

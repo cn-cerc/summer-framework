@@ -11,7 +11,7 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.core.LocalService;
 
 public class ResourceBuffer {
-    private static final Logger log = LoggerFactory.getLogger(ResourceBuffer.class);
+    private static final Logger log = (ResourceBuffer.class);
     private String lang;
     private static Map<String, String> items = new HashMap<>();
 

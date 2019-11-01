@@ -14,7 +14,7 @@ import cn.cerc.core.IHandle;
  *
  */
 public class RemoteIP {
-    private static final Logger log = LoggerFactory.getLogger(RemoteIP.class);
+    private static final Logger log = (RemoteIP.class);
 
     public static String get(IHandle handle) {
         HttpServletRequest request = (HttpServletRequest) handle.getProperty("request");

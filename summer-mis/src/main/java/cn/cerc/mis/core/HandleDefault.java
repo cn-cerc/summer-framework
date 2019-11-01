@@ -26,7 +26,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
 public class HandleDefault implements IHandle {
-    private static final Logger log = LoggerFactory.getLogger(HandleDefault.class);
+    private static final Logger log = (HandleDefault.class);
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
 

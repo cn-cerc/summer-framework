@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import net.sf.json.JSONObject;
 
 public class ResponseData {
-    private static final Logger log = LoggerFactory.getLogger(ResponseData.class);
+    private static final Logger log = (ResponseData.class);
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
 
     private boolean state;

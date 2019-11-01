@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 public class CurlTest {
 
-    private static final Logger log = LoggerFactory.getLogger(Curl.class);
+    private static final Logger log = (Curl.class);
 
     @Test
     public void test() {

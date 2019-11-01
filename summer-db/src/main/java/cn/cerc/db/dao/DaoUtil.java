@@ -20,7 +20,7 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.db.mysql.SqlQuery;
 
 public class DaoUtil {
-    private static final Logger log = LoggerFactory.getLogger(DaoUtil.class);
+    private static final Logger log = (DaoUtil.class);
 
     private static int PUBLIC = 1;
     private static int PRIVATE = 2;

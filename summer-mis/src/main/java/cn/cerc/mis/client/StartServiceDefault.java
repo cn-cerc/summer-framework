@@ -36,7 +36,7 @@ public class StartServiceDefault {
     @Autowired
     private HttpServletResponse resp;
 
-    private static final Logger log = LoggerFactory.getLogger(StartServiceDefault.class);
+    private static final Logger log = (StartServiceDefault.class);
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
     private static Map<String, String> services;
     private static final String sessionId = "sessionId";

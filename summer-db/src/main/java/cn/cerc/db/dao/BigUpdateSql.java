@@ -17,7 +17,7 @@ import cn.cerc.db.mysql.BuildStatement;
 import cn.cerc.db.mysql.UpdateMode;
 
 public class BigUpdateSql {
-    private static final Logger log = LoggerFactory.getLogger(BigUpdateSql.class);
+    private static final Logger log = (BigUpdateSql.class);
 
     public static boolean exec(Connection conn, Object oldRecord, Object curRecord, UpdateMode updateMode,
             boolean preview) throws Exception {

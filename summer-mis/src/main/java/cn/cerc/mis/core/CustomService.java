@@ -11,7 +11,7 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 
 public class CustomService extends AbstractHandle implements IService, IRestful {
-    private static final Logger log = LoggerFactory.getLogger(CustomService.class);
+    private static final Logger log = (CustomService.class);
     protected DataSet dataIn = null; // request
     protected DataSet dataOut = null; // response
     protected String funcCode;

@@ -13,7 +13,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.language.R;
 
 public class PhoneVerify {
-    private static final Logger log = LoggerFactory.getLogger(PhoneVerify.class);
+    private static final Logger log = (PhoneVerify.class);
 
     public static final String ERROR_1 = " 分钟内验证码有效，可继续使用，请勿頻繁发送";
     public static final String ERROR_2 = "没有发送验证码";

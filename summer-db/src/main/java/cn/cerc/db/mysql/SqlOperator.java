@@ -20,7 +20,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 
 public class SqlOperator implements IDataOperator {
-    private static final Logger log = LoggerFactory.getLogger(SqlOperator.class);
+    private static final Logger log = (SqlOperator.class);
     private String updateKey = "UID_";
     private String tableName;
     private String lastCommand;

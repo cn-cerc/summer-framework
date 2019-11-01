@@ -24,7 +24,7 @@ import cn.cerc.mis.language.R;
 import net.sf.json.JSONObject;
 
 public class YunpianSMS {
-    private static final Logger log = LoggerFactory.getLogger(YunpianSMS.class);
+    private static final Logger log = (YunpianSMS.class);
     private String mobile;
     private String apiurl;
     private String apikey;

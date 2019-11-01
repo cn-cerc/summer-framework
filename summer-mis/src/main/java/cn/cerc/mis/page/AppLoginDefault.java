@@ -37,7 +37,7 @@ import cn.cerc.security.sapi.JayunSecurity;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
 
-    private static final Logger log = LoggerFactory.getLogger(AppLoginDefault.class);
+    private static final Logger log = (AppLoginDefault.class);
 
     // 配置在服务器的用户名下面 summer-application.properties
     public static final String Notify_Url = "app.notify_url";

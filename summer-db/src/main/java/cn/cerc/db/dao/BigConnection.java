@@ -15,7 +15,7 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.mysql.MysqlConnection;
 
 public class BigConnection implements Closeable {
-    private static final Logger log = LoggerFactory.getLogger(BigConnection.class);
+    private static final Logger log = (BigConnection.class);
     private Connection connection;
     private boolean debugConnection = false;
     // 饿汉式

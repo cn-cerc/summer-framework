@@ -13,7 +13,7 @@ import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
 
 public abstract class SqlConnection implements IConnection, AutoCloseable {
-    private static final Logger log = LoggerFactory.getLogger(SqlConnection.class);
+    private static final Logger log = (SqlConnection.class);
     protected String url;
     protected String user;
     protected String pwd;

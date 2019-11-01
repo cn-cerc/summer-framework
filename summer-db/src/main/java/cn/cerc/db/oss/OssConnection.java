@@ -28,7 +28,7 @@ import cn.cerc.db.core.ServerConfig;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class OssConnection implements IConnection {
-    private static final Logger log = LoggerFactory.getLogger(OssConnection.class);
+    private static final Logger log = (OssConnection.class);
     // 设置连接地址
     public static final String oss_endpoint = "oss.endpoint";
     // 连接区域

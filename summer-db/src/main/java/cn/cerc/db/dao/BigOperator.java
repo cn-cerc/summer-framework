@@ -15,7 +15,7 @@ import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 
 public class BigOperator {
-    private static final Logger log = LoggerFactory.getLogger(BigOperator.class);
+    private static final Logger log = (BigOperator.class);
 
     public static void copy(Object object, ReadFieldEvent event) {
         if (object == null) {

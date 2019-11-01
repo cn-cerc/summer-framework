@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 @Deprecated // 请改使用 StartTaskDefault
 public class StartTasksExternal implements Filter {
-    private static final Logger log = LoggerFactory.getLogger(StartTasksExternal.class);
+    private static final Logger log = (StartTasksExternal.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

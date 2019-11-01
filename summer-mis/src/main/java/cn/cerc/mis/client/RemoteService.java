@@ -19,7 +19,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class RemoteService implements IServiceProxy {
-    private static final Logger log = LoggerFactory.getLogger(RemoteService.class);
+    private static final Logger log = (RemoteService.class);
     private String host = "127.0.0.1";
     private String service;
     private DataSet dataIn;

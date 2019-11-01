@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.IHandle;
 
 public class Transaction implements AutoCloseable {
-    private static final Logger log = LoggerFactory.getLogger(Transaction.class);
+    private static final Logger log = (Transaction.class);
     private Connection conn;
     private boolean active = false;
     private boolean locked = false;

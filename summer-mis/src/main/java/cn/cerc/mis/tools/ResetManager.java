@@ -19,7 +19,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 
 public class ResetManager implements IBookManage {
-    private static final Logger log = LoggerFactory.getLogger(ResetManager.class);
+    private static final Logger log = (ResetManager.class);
     private IHandle handle;
     private String initMonth;
     private List<IBookSource> sources = new ArrayList<>();

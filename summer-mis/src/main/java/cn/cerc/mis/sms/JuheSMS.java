@@ -23,7 +23,7 @@ import net.sf.json.JSONObject;
  **/
 
 public class JuheSMS {
-    private static final Logger log = LoggerFactory.getLogger(JuheSMS.class);
+    private static final Logger log = (JuheSMS.class);
     public static final String DEF_CHATSET = "UTF-8";
     public static final int DEF_CONN_TIMEOUT = 5000;
     public static final int DEF_READ_TIMEOUT = 5000;

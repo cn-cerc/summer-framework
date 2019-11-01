@@ -14,7 +14,7 @@ import cn.cerc.core.ClassFactory;
 import cn.cerc.db.mysql.BuildStatement;
 
 public class BigDeleteSql {
-    private static final Logger log = LoggerFactory.getLogger(BigDeleteSql.class);
+    private static final Logger log = (BigDeleteSql.class);
 
     public static boolean exec(Connection conn, Object curRecord, boolean preview) {
         String lastCommand = null;

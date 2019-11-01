@@ -15,7 +15,7 @@ import cn.cerc.db.queue.QueueOperator;
 
 public class NasQuery extends DataQuery {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(NasQuery.class);
+    private static final Logger log = (NasQuery.class);
 
     @SuppressWarnings("unused")
     private IHandle handle;

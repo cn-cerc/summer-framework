@@ -11,7 +11,7 @@ import com.aliyun.mns.model.Message;
 import cn.cerc.core.Utils;
 
 public class Queue {
-    private static final Logger log = LoggerFactory.getLogger(Queue.class);
+    private static final Logger log = (Queue.class);
     private CloudQueue client;
     private String receiptHandle;
     private Message message;

@@ -26,7 +26,7 @@ import cn.cerc.mis.core.IStatus;
 
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
-    private static final Logger log = LoggerFactory.getLogger(StartServices.class);
+    private static final Logger log = (StartServices.class);
     private static final long serialVersionUID = 1L;
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
     private static Map<String, String> services;

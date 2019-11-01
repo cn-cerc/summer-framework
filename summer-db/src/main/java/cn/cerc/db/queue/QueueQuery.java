@@ -1,17 +1,15 @@
 package cn.cerc.db.queue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import cn.cerc.core.DataQuery;
+import cn.cerc.core.IHandle;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
 import com.google.gson.JsonSyntaxException;
+import lombok.extern.slf4j.Slf4j;
 
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
-
+@Slf4j
 public class QueueQuery extends DataQuery {
-    private static final Logger log = LoggerFactory.getLogger(QueueQuery.class);
+
     private static final long serialVersionUID = 7781788221337787366L;
     private QueueOperator operator;
     private String queueCode;

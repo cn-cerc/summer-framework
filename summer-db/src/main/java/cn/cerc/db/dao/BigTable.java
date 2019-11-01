@@ -25,7 +25,7 @@ import cn.cerc.db.redis.JedisFactory;
 import redis.clients.jedis.Jedis;
 
 public abstract class BigTable<T extends BigRecord> {
-    private static final Logger log = LoggerFactory.getLogger(BigTable.class);
+    private static final Logger log = (BigTable.class);
     // 所有内存数据
     private Map<String, T> items = new ConcurrentHashMap<>();
     // 有变动待保存数据，保存完后会自动清除

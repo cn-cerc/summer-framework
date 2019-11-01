@@ -36,7 +36,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrUserLogin extends CustomService {
-    private static final Logger log = LoggerFactory.getLogger(SvrUserLogin.class);
+    private static final Logger log = (SvrUserLogin.class);
     private static String GuidNull = "";
     private static int Max_Viability = 1;
     public static int TimeOut = 5; // 效验代码超时时间（分钟）

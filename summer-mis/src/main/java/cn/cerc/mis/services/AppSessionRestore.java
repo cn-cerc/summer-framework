@@ -14,7 +14,7 @@ import cn.cerc.mis.other.UserNotFindException;
 import cn.cerc.mis.core.HandleDefault;
 
 public class AppSessionRestore extends CustomService {
-    private static final Logger log = LoggerFactory.getLogger(AppSessionRestore.class);
+    private static final Logger log = (AppSessionRestore.class);
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();

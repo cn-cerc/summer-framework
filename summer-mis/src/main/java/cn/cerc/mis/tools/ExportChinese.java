@@ -28,7 +28,7 @@ import cn.cerc.mis.core.ISystemTable;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ExportChinese {
-    private static final Logger log = LoggerFactory.getLogger(ExportChinese.class);
+    private static final Logger log = (ExportChinese.class);
     private Set<String> items = new TreeSet<>();
 
     /**
