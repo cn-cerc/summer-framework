@@ -16,6 +16,7 @@ import static org.junit.Assert.assertThat;
 public class utilsTest2 {
     private double value;
     private double expecked;
+
     public utilsTest2(double value, double expecked) {
         this.value = value;
         this.expecked = expecked;

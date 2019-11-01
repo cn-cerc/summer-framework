@@ -19,6 +19,7 @@ public class DataGrid extends AbstractGrid {
     private AbstractGridLine expender;
     // 输出每列时的事件
     private OutputEvent beforeOutput;
+
     public DataGrid(IForm form, UIComponent owner) {
         super(form, owner);
     }

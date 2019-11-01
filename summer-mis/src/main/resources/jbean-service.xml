@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
     <!-- 根据token，取得当前用户代码、帐套等基本资料 -->
     <bean id="AppSessionRestore.byToken" class="cn.cerc.mis.services.AppSessionRestore" scope="prototype">
-        <property name="funcCode" value="byToken" />
+        <property name="funcCode" value="byToken"/>
     </bean>
     <!-- 根据用户帐号，取得当前用户姓名、帐套等基本资料 -->
     <bean id="AppSessionRestore.byUserCode" class="cn.cerc.mis.services.AppSessionRestore" scope="prototype">
-        <property name="funcCode" value="byUserCode" />
+        <property name="funcCode" value="byUserCode"/>
     </bean>
     <!-- 获取用户参数 -->
     <bean id="SvrUserOption" class="cn.cerc.mis.services.SvrUserOption" scope="prototype"></bean>
