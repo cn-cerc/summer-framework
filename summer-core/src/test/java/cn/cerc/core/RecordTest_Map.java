@@ -25,7 +25,7 @@ public class RecordTest_Map {
     public void test() {
         int i = 0;
         for (@SuppressWarnings("unused")
-            String key : rs.getItems().keySet()) {
+                String key : rs.getItems().keySet()) {
             i++;
         }
         assertEquals(i, rs.size());

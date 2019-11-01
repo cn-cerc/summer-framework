@@ -1,6 +1,10 @@
 package cn.cerc.core;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity(name = "s_user")
 @Select("select * from s_userInfo")

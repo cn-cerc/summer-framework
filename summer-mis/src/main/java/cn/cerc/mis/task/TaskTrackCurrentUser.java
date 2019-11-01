@@ -1,11 +1,10 @@
 package cn.cerc.mis.task;
 
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.mysql.MysqlConnection;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import cn.cerc.core.TDateTime;
-import cn.cerc.db.mysql.MysqlConnection;
 
 /**
  * 清理在线用户记录表

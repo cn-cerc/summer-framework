@@ -7,7 +7,6 @@ import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
  * @author 善贵
- *
  */
 public class Block115 extends UIComponent {
     private UISpan title = new UISpan();
@@ -15,9 +14,8 @@ public class Block115 extends UIComponent {
 
     /**
      * 分段标题，带一个图标
-     * 
-     * @param owner
-     *            内容显示区
+     *
+     * @param owner 内容显示区
      */
     public Block115(UIComponent owner) {
         super(owner);

@@ -1,5 +1,13 @@
 package cn.cerc.mis.pay.alipay;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.ServerConfig;
+import lombok.extern.slf4j.Slf4j;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,18 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.core.IHandle;
-
+@Slf4j
 public class AlipayJs {
-    private static Logger log = LoggerFactory.getLogger(AlipayJs.class);
+
     // 申请支付金额
     private String amount;
     // 申请支付订单号
@@ -71,9 +70,8 @@ public class AlipayJs {
 
     /**
      * 生成签名结果
-     * 
-     * @param sPara
-     *            要签名的数组
+     *
+     * @param sPara 要签名的数组
      * @return String 签名结果字符串
      */
     private String buildRequestMysign(Map<String, String> sPara) {
@@ -84,9 +82,8 @@ public class AlipayJs {
 
     /**
      * 生成要请求给支付宝的参数数组
-     * 
-     * @param sParaTemp
-     *            请求前的参数数组
+     *
+     * @param sParaTemp 请求前的参数数组
      * @return String 要请求的参数数组
      */
     private Map<String, String> buildRequestPara(Map<String, String> sParaTemp) {
@@ -99,13 +96,10 @@ public class AlipayJs {
 
     /**
      * 建立请求，以表单HTML形式构造（默认）
-     * 
-     * @param sParaTemp
-     *            请求参数数组
-     * @param strMethod
-     *            提交方式。两个值可选：post、get
-     * @param strButtonName
-     *            确认按钮显示文字
+     *
+     * @param sParaTemp     请求参数数组
+     * @param strMethod     提交方式。两个值可选：post、get
+     * @param strButtonName 确认按钮显示文字
      * @return String 提交表单HTML文本
      */
     private String buildRequest(Map<String, String> sParaTemp, String strMethod, String strButtonName) {

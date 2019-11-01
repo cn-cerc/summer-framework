@@ -9,6 +9,14 @@ public class UIRadioButton extends UIComponent {
     private boolean isSelected = false;
     private UILabel label;
 
+    public UIRadioButton(UIComponent owner) {
+        super(owner);
+    }
+
+    public UIRadioButton() {
+        super();
+    }
+
     @Override
     public void output(HtmlWriter html) {
         if (label != null)
@@ -19,14 +27,6 @@ public class UIRadioButton extends UIComponent {
         html.print(" name='%s' value='%s'", name, value);
         super.outputCss(html);
         html.println("/>");
-    }
-
-    public UIRadioButton(UIComponent owner) {
-        super(owner);
-    }
-
-    public UIRadioButton() {
-        super();
     }
 
     public String getName() {

@@ -1,17 +1,15 @@
 package cn.cerc.mis.core;
 
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-
+@Slf4j
 public class RequestData {
-    private static final Logger log = LoggerFactory.getLogger(RequestData.class);
+
     public static final String appSession_Key = "sid";
     public static final String webclient = "webclient";
     private String sid;

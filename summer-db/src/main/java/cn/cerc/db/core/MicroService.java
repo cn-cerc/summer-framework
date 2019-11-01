@@ -4,21 +4,45 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class MicroService extends Curl {
-    /** 服务主机的地址 */
+    /**
+     * 服务主机的地址
+     */
     private String host = "http://127.0.0.1";
-    /** 服务主机的port */
+    /**
+     * 服务主机的port
+     */
     private int port = 80;
-    /** 服务前缀 */
+    /**
+     * 服务前缀
+     */
     private String path;
-    /** 返回结果 */
+    /**
+     * 返回结果
+     */
     private boolean result;
-    /** 返回消息 */
+    /**
+     * 返回消息
+     */
     private String message;
-    /** 返回内容转为gson */
+    /**
+     * 返回内容转为gson
+     */
     private JsonObject response;
+
+    public static void main(String[] args) {
+        MicroService service = new MicroService();
+        service.putParameter("appKey", "asdfsdf");
+
+        System.out.println(service.post("server.getIP"));
+        System.out.println(service.isResult());
+        System.out.println(service.getMessage());
+        System.out.println(service.getResponseContent());
+        System.out.println(service.getResponse());
+    }
 
     /**
      * 执行指定的服务
+     *
      * @param serviceCode 服务代码
      * @return 返回成功与否
      */
@@ -35,6 +59,7 @@ public class MicroService extends Curl {
 
     /**
      * 执行指定的服务
+     *
      * @param serviceCode 服务代码
      * @return 返回成功与否
      */
@@ -94,16 +119,5 @@ public class MicroService extends Curl {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public static void main(String[] args) {
-        MicroService service = new MicroService();
-        service.putParameter("appKey", "asdfsdf");
-        
-        System.out.println(service.post("server.getIP"));
-        System.out.println(service.isResult());
-        System.out.println(service.getMessage());
-        System.out.println(service.getResponseContent());
-        System.out.println(service.getResponse());
     }
 }

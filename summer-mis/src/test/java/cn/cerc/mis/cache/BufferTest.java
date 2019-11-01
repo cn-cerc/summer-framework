@@ -1,8 +1,7 @@
 package cn.cerc.mis.cache;
 
-import org.junit.Test;
-
 import cn.cerc.db.cache.Buffer;
+import org.junit.Test;
 
 public class BufferTest {
 

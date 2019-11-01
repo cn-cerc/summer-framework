@@ -1,11 +1,5 @@
 package cn.cerc.mis.other;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDate;
@@ -15,10 +9,14 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
+import java.util.Map;
+
+@Slf4j
 public class BookOptions {
-    private static final Logger log = LoggerFactory.getLogger(BookOptions.class);
-    private IHandle handle;
+
     public static final String BookInfo_Set = "_BookInfoSet_";
     public static final String HideLoginInfo = "_HideLoginInfo_";
     public static final String AllowERPSynchro = "AllowERPSynchro";
@@ -52,7 +50,6 @@ public class BookOptions {
     // public static final String ERPVersion = "ERPVersion";
     public static final String ScanBCAdminControl = "ScanBCAdminControl";
     public static final String ScanBCAdminAccount = "ScanBCAdminAccount";
-
     // public static final String StockReadFromERP = "StockReadFromERP";
     // public static final String OutUPReadFromERP = "OutUPReadFromERP";
     // public static final String InUPReadFromERP = "InUPReadFromERP";
@@ -109,7 +106,6 @@ public class BookOptions {
     public static final String EnableWorkPieceToOP = "EnableWorkPieceToOP";
     public static final String StudentFileSupCorpNo = "StudentFileSupCorpNo";
     public static final String EnableAutoMRP = "EnableAutoMRP";
-
     private static Map<String, String> items = new HashMap<>();
 
     static {
@@ -215,6 +211,8 @@ public class BookOptions {
         items.put(AllowMallShare, "是否开放在线商城（允许所有人查看本公司商品信息）");
         items.put(StudentFileSupCorpNo, "设置互联上游账套（助学计划）");
     }
+
+    private IHandle handle;
 
     public BookOptions(IHandle handle) {
         super();
@@ -366,26 +364,6 @@ public class BookOptions {
         return result;
     }
 
-    // 增加账套参数
-    public void appendToCorpOption(String corpNo, String paramKey, String def) {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-        SqlQuery cdsTmp = new SqlQuery(handle);
-        cdsTmp.add("select * from %s where CorpNo_=N'%s' and Code_='%s' ", systemTable.getBookOptions(), corpNo,
-                paramKey);
-        cdsTmp.open();
-        if (!cdsTmp.eof())
-            return;
-        String paramName = getParamName(paramKey);
-        cdsTmp.append();
-        cdsTmp.setField("CorpNo_", corpNo);
-        cdsTmp.setField("Code_", paramKey);
-        cdsTmp.setField("Name_", paramName);
-        cdsTmp.setField("Value_", def);
-        cdsTmp.setField("UpdateKey_", Utils.newGuid());
-        cdsTmp.post();
-
-    }
-
     public static boolean getEnabled(IHandle handle, String ACode) {
         String val = getOption(handle, ACode, "");
         return "on".equals(val);
@@ -466,5 +444,25 @@ public class BookOptions {
     // 是否开启网上订单菜单
     public static boolean isEnableOnlineToOfflineMenu(IHandle handle) {
         return getEnabled(handle, OnlineToOfflineMenu);
+    }
+
+    // 增加账套参数
+    public void appendToCorpOption(String corpNo, String paramKey, String def) {
+        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        SqlQuery cdsTmp = new SqlQuery(handle);
+        cdsTmp.add("select * from %s where CorpNo_=N'%s' and Code_='%s' ", systemTable.getBookOptions(), corpNo,
+                paramKey);
+        cdsTmp.open();
+        if (!cdsTmp.eof())
+            return;
+        String paramName = getParamName(paramKey);
+        cdsTmp.append();
+        cdsTmp.setField("CorpNo_", corpNo);
+        cdsTmp.setField("Code_", paramKey);
+        cdsTmp.setField("Name_", paramName);
+        cdsTmp.setField("Value_", def);
+        cdsTmp.setField("UpdateKey_", Utils.newGuid());
+        cdsTmp.post();
+
     }
 }

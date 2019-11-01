@@ -1,23 +1,20 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.core.SupportHandle;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.db.core.ServerConfig;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.core.SupportHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.db.core.ServerConfig;
-
+@Slf4j
 public class Application {
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
-    private static ApplicationContext context;
 
     // Tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
@@ -30,7 +27,6 @@ public class Application {
     public static final String roleCode = "RoleCode";
     public static final String bookNo = "BookNo";
     public static final String deviceLanguage = "language";
-
     // 签核代理用户列表，代理多个用户以半角逗号隔开
     public static final String ProxyUsers = "ProxyUsers";
     // 客户端代码
@@ -41,6 +37,11 @@ public class Application {
     public static final String webclient = "webclient";
     // 默认界面语言版本
     public static final String LangageDefault = "cn"; // 可选：cn/en
+    private static ApplicationContext context;
+
+    public static ApplicationContext getContext() {
+        return context;
+    }
 
     public static void setContext(ApplicationContext applicationContext) {
         if (context != applicationContext) {
@@ -48,10 +49,6 @@ public class Application {
                 log.warn("applicationContext overload!");
             context = applicationContext;
         }
-    }
-
-    public static ApplicationContext getContext() {
-        return context;
     }
 
     public static ApplicationContext get(ServletContext servletContext) {

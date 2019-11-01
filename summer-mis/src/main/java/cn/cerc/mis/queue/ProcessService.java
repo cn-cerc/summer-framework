@@ -1,8 +1,5 @@
 package cn.cerc.mis.queue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
@@ -11,15 +8,23 @@ import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.rds.StubHandle;
 import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 处理后台异步任务
- * 
- * @author ZhangGong
  *
+ * @author ZhangGong
  */
+@Slf4j
 public class ProcessService extends AbstractTask {
-    private static final Logger log = LoggerFactory.getLogger(ProcessService.class);
+
+    // 手动执行所有的预约服务
+    public static void main(String[] args) {
+        StubHandle handle = new StubHandle();
+        ProcessService ps = new ProcessService();
+        ps.setHandle(handle);
+        ps.run();
+    }
 
     @Override
     public void execute() {
@@ -80,13 +85,5 @@ public class ProcessService extends AbstractTask {
         if (!svr.exec("msgId", msgId, "content", task.toString(), "process", task.getProcess()))
             throw new RuntimeException("更新任务队列进度异常：" + svr.getMessage());
         log.debug(task.getService() + ":" + subject + ":" + AsyncService.getProcessTitle(task.getProcess()));
-    }
-
-    // 手动执行所有的预约服务
-    public static void main(String[] args) {
-        StubHandle handle = new StubHandle();
-        ProcessService ps = new ProcessService();
-        ps.setHandle(handle);
-        ps.run();
     }
 }

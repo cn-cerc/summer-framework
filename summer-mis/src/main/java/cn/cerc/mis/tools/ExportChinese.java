@@ -1,5 +1,15 @@
 package cn.cerc.mis.tools;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.ISystemTable;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,27 +19,39 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ISystemTable;
-
 /**
  * 扫描待翻译的中文
  */
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ExportChinese {
-    private static final Logger log = LoggerFactory.getLogger(ExportChinese.class);
     private Set<String> items = new TreeSet<>();
+
+    private static String getChinese(String temp) {
+        int index = temp.indexOf("R.asString");
+        if (index > -1) {
+            String s1 = temp.substring(index, temp.length());
+            if (s1.indexOf("\"") > -1) {
+                String s2 = s1.substring(s1.indexOf("\"") + 1, s1.length());
+                if (s2.indexOf("\")") > -1) {
+                    String s3 = s2.substring(0, s2.indexOf("\")"));
+                    if (s3.length() > 0)
+                        return s3;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        ExportChinese ec = new ExportChinese();
+        // 扫描指定目录下所有的java文件
+        ec.scanFile("C:\\Users\\l1091\\Documents\\i-work\\fc-project\\fc-app\\src\\main\\java");
+        // 将扫描的结果存入到数据库
+        // ec.writeDict(new AppHandle());
+        System.out.println(new Gson().toJson(ec.getItems()));
+    }
 
     /**
      * 扫描指定路径的java文件
@@ -106,31 +128,6 @@ public class ExportChinese {
             }
         }
         return lfile;
-    }
-
-    private static String getChinese(String temp) {
-        int index = temp.indexOf("R.asString");
-        if (index > -1) {
-            String s1 = temp.substring(index, temp.length());
-            if (s1.indexOf("\"") > -1) {
-                String s2 = s1.substring(s1.indexOf("\"") + 1, s1.length());
-                if (s2.indexOf("\")") > -1) {
-                    String s3 = s2.substring(0, s2.indexOf("\")"));
-                    if (s3.length() > 0)
-                        return s3;
-                }
-            }
-        }
-        return null;
-    }
-
-    public static void main(String[] args) {
-        ExportChinese ec = new ExportChinese();
-        // 扫描指定目录下所有的java文件
-        ec.scanFile("C:\\Users\\l1091\\Documents\\i-work\\fc-project\\fc-app\\src\\main\\java");
-        // 将扫描的结果存入到数据库
-        // ec.writeDict(new AppHandle());
-        System.out.println(new Gson().toJson(ec.getItems()));
     }
 
 }

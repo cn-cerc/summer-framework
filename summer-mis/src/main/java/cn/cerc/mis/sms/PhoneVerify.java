@@ -1,19 +1,17 @@
 package cn.cerc.mis.sms;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
+import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.language.R;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PhoneVerify {
-    private static final Logger log = LoggerFactory.getLogger(PhoneVerify.class);
 
     public static final String ERROR_1 = " 分钟内验证码有效，可继续使用，请勿頻繁发送";
     public static final String ERROR_2 = "没有发送验证码";
@@ -35,6 +33,15 @@ public class PhoneVerify {
     public PhoneVerify(IHandle handle, String mobile) {
         this.handle = handle;
         this.init(mobile);
+    }
+
+    public static String createRandomNum(int count) {
+        // 验证码
+        String vcode = "";
+        for (int i = 0; i < count; i++) {
+            vcode = vcode + (int) (Math.random() * 9);
+        }
+        return vcode;
     }
 
     public PhoneVerify init(String mobile) {
@@ -160,7 +167,7 @@ public class PhoneVerify {
 
     /**
      * 检测当前环境是否安全，若不安全则需要显示验证码输入框并进行检查，如果所绑定的帐号、设备码、IP均未发生变化，且时间在4小时内，则视为安全
-     * 
+     *
      * @return true: 安全（不需要进行手机验证）；false: 不安全
      */
     private boolean isSecurity() {
@@ -206,6 +213,10 @@ public class PhoneVerify {
         return mobile;
     }
 
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     public int getExpires() {
         return expires;
     }
@@ -218,12 +229,12 @@ public class PhoneVerify {
         return message;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
     public void setNationalCode(String nationalCode) {
         this.nationalCode = nationalCode;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public enum SendStatus {
@@ -232,18 +243,5 @@ public class PhoneVerify {
 
     public enum CheckStatus {
         PASS, DIFFERENCE, ERROR
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public static String createRandomNum(int count) {
-        // 验证码
-        String vcode = "";
-        for (int i = 0; i < count; i++) {
-            vcode = vcode + (int) (Math.random() * 9);
-        }
-        return vcode;
     }
 }

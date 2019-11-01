@@ -1,15 +1,13 @@
 package cn.cerc.db.nas;
 
+import cn.cerc.db.core.StubHandle;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import cn.cerc.db.core.StubHandle;
-
+@Slf4j
 public class NasQueryTest {
 
-    private static final Logger log = LoggerFactory.getLogger(NasQueryTest.class);
     private NasQuery ds;
     private StubHandle handle;
 
@@ -21,7 +19,7 @@ public class NasQueryTest {
 
     /**
      * 保存文件/覆盖文件
-     * 
+     *
      * @Description
      * @author rick_zhou
      */
@@ -45,7 +43,7 @@ public class NasQueryTest {
 
     /**
      * 获取文件内容
-     * 
+     *
      * @Description
      * @author rick_zhou
      */
@@ -63,7 +61,7 @@ public class NasQueryTest {
 
     /**
      * 删除文件
-     * 
+     *
      * @Description
      * @author rick_zhou
      */

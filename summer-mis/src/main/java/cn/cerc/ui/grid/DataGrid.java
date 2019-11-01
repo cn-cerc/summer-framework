@@ -11,10 +11,6 @@ import cn.cerc.ui.grid.lines.ExpenderGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DataGrid extends AbstractGrid {
-    public DataGrid(IForm form, UIComponent owner) {
-        super(form, owner);
-    }
-
     private final double MaxWidth = 600;
     // 当前样式选择
     private String CSSClass = "dbgrid";
@@ -23,6 +19,10 @@ public class DataGrid extends AbstractGrid {
     private AbstractGridLine expender;
     // 输出每列时的事件
     private OutputEvent beforeOutput;
+
+    public DataGrid(IForm form, UIComponent owner) {
+        super(form, owner);
+    }
 
     @Override
     public void output(HtmlWriter html) {

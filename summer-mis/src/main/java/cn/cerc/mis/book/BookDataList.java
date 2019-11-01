@@ -1,14 +1,13 @@
 package cn.cerc.mis.book;
 
+import cn.cerc.core.TDateTime;
+import cn.cerc.mis.tools.DurationSection;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
-import com.google.gson.Gson;
-
-import cn.cerc.mis.tools.DurationSection;
-import cn.cerc.core.TDateTime;
 
 public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
     private List<IBookData> items = new ArrayList<>();
@@ -17,6 +16,11 @@ public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
 
     public BookDataList(DurationSection section) {
         this.section = section;
+    }
+
+    public static void main(String[] args) {
+        TDateTime dateFrom = TDateTime.Now().incDay(1);
+        System.out.println(TDateTime.Now().compareDay(dateFrom));
     }
 
     public void add(IBookData data) {
@@ -48,11 +52,6 @@ public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
 
     public TDateTime getDateTo() {
         return section.getDateTo();
-    }
-
-    public static void main(String[] args) {
-        TDateTime dateFrom = TDateTime.Now().incDay(1);
-        System.out.println(TDateTime.Now().compareDay(dateFrom));
     }
 
     @Override

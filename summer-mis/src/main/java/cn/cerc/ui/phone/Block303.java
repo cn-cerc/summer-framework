@@ -1,20 +1,19 @@
 package cn.cerc.ui.phone;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * 可用菜单 图标 + 文字
  * <p>
  * 一行最多占显示4个菜单
- * 
- * @author HuangRongjun
  *
+ * @author HuangRongjun
  */
 public class Block303 extends UIComponent {
     private Map<UrlRecord, UIImage> items = new LinkedHashMap<>();

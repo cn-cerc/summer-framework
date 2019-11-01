@@ -1,15 +1,13 @@
 package cn.cerc.db.mongo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bson.Document;
-
+import cn.cerc.core.IHandle;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 
-import cn.cerc.core.IHandle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MongoUtils {
     private MongoConnection connection;
@@ -27,19 +25,19 @@ public class MongoUtils {
 
     // 查找一条记录
     public Document findOneDocument(MongoCollection<Document> coll, BasicDBObject projection,
-            BasicDBObject fileterBasiObject) {
+                                    BasicDBObject fileterBasiObject) {
         return findDocument(coll, projection, fileterBasiObject, null, null, null).get(0);
     }
 
     // 查询文档
     public List<Document> findDocument(MongoCollection<Document> coll, BasicDBObject projection,
-            BasicDBObject fileterBasiObject) {
+                                       BasicDBObject fileterBasiObject) {
         return findDocument(coll, projection, fileterBasiObject, null, null, null);
     }
 
     // 查询文档
     public List<Document> findDocument(MongoCollection<Document> coll, BasicDBObject projection,
-            BasicDBObject fileterBasiObject, BasicDBObject sort, Integer skip, Integer limit) {
+                                       BasicDBObject fileterBasiObject, BasicDBObject sort, Integer skip, Integer limit) {
         List<Document> list = null;
         if (skip != null)
             skip = skip <= 0 ? 0 : skip;

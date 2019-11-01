@@ -1,11 +1,7 @@
 package cn.cerc.mis.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import cn.cerc.core.IHandle;
+import cn.cerc.core.TDateTime;
 import cn.cerc.mis.book.BookDataList;
 import cn.cerc.mis.book.IBook;
 import cn.cerc.mis.book.IBookData;
@@ -13,11 +9,14 @@ import cn.cerc.mis.book.IBookManage;
 import cn.cerc.mis.book.UpdateBook;
 import cn.cerc.mis.book.VirtualData;
 import cn.cerc.mis.other.BookOptions;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.TDateTime;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public class UpdateManager implements IBookManage {
-    private static final Logger log = LoggerFactory.getLogger(UpdateManager.class);
+
     private IHandle handle;
     private String initMonth;
     private List<UpdateBook> books = new ArrayList<>();

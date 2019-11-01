@@ -1,13 +1,13 @@
 package cn.cerc.core;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+@Slf4j
 public class Lunar {
 
     final static String chineseNumber[] = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
@@ -24,7 +24,6 @@ public class Lunar {
             0x0a5b0, 0x15176, 0x052b0, 0x0a930, 0x07954, 0x06aa0, 0x0ad50, 0x05b52, 0x04b60, 0x0a6e6, 0x0a4e0, 0x0d260,
             0x0ea65, 0x0d530, 0x05aa0, 0x076a3, 0x096d0, 0x04bd7, 0x04ad0, 0x0a4d0, 0x1d0b6, 0x0d250, 0x0d520, 0x0dd45,
             0x0b5a0, 0x056d0, 0x055b2, 0x049b0, 0x0a577, 0x0a4b0, 0x0aa50, 0x1b255, 0x06d20, 0x0ada0};
-    private static final Logger log = LoggerFactory.getLogger(Lunar.class);
     static SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private int year;
     private int month;

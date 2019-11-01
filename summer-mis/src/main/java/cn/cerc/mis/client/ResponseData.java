@@ -1,12 +1,11 @@
 package cn.cerc.mis.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
+@Slf4j
 public class ResponseData {
-    private static final Logger log = LoggerFactory.getLogger(ResponseData.class);
+
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
 
     private boolean state;
@@ -21,12 +20,12 @@ public class ResponseData {
         this.state = result;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getData() {

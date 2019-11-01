@@ -1,20 +1,5 @@
 package cn.cerc.db.dao;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
@@ -27,9 +12,22 @@ import cn.cerc.db.mysql.BigdataException;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlOperator;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.sql.DataSource;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 public abstract class DaoQuery<T extends Serializable> extends DataQuery {
-    private static final Logger log = LoggerFactory.getLogger(DaoQuery.class);
+
     private static final long serialVersionUID = -7323397340337332570L;
     private MysqlConnection session;
     private SlaveMysqlConnection slaveSession;
@@ -215,6 +213,11 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
     }
 
     @Override
+    public boolean getActive() {
+        return active;
+    }
+
+    @Override
     public DaoQuery<T> setActive(boolean value) {
         if (value) {
             if (!this.active)
@@ -224,11 +227,6 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
             this.close();
         }
         return this;
-    }
-
-    @Override
-    public boolean getActive() {
-        return active;
     }
 
     @Override
@@ -341,13 +339,13 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
     }
 
     @Override
-    public void setSqlText(SqlText sqlText) {
-        super.setSqlText(sqlText);
+    public SqlText getSqlText() {
+        return super.getSqlText();
     }
 
     @Override
-    public SqlText getSqlText() {
-        return super.getSqlText();
+    public void setSqlText(SqlText sqlText) {
+        super.setSqlText(sqlText);
     }
 
     @Override

@@ -1,7 +1,15 @@
 package cn.cerc.mis.core;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.IAppStaticFile;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.page.JspPage;
+import cn.cerc.mis.page.RedirectPage;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,24 +19,32 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.config.IAppStaticFile;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.page.JspPage;
-import cn.cerc.mis.page.RedirectPage;
-
+@Slf4j
 @Deprecated // 请改使用 StartFormDefault
 public class StartForms implements Filter {
-    private static final Logger log = LoggerFactory.getLogger(StartForms.class);
+
+    private static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
+            throws ServletException, IOException {
+        Throwable err = e.getCause();
+        if (err == null) {
+            err = e;
+        }
+        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
+        if (errorPage != null) {
+            String result = errorPage.getErrorPage(request, response, err);
+            if (result != null) {
+                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
+                request.getServletContext().getRequestDispatcher(url).forward(request, response);
+            }
+        } else {
+            log.warn("not define bean: errorPage");
+            log.error(err.getMessage());
+            err.printStackTrace();
+        }
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -372,25 +388,5 @@ public class StartForms implements Filter {
     @Override
     public void destroy() {
 
-    }
-
-    private static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
-            throws ServletException, IOException {
-        Throwable err = e.getCause();
-        if (err == null) {
-            err = e;
-        }
-        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
-        if (errorPage != null) {
-            String result = errorPage.getErrorPage(request, response, err);
-            if (result != null) {
-                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
-                request.getServletContext().getRequestDispatcher(url).forward(request, response);
-            }
-        } else {
-            log.warn("not define bean: errorPage");
-            log.error(err.getMessage());
-            err.printStackTrace();
-        }
     }
 }

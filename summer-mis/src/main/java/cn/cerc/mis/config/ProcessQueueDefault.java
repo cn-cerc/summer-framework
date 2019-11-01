@@ -1,8 +1,5 @@
 package cn.cerc.mis.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.mysql.BatchScript;
 import cn.cerc.db.queue.AliyunQueueConnection;
@@ -12,10 +9,16 @@ import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.task.AbstractTask;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
+@Slf4j
 public class ProcessQueueDefault extends AbstractTask {
-    private static final Logger log = LoggerFactory.getLogger(ProcessQueueDefault.class);
+
+    public static void main(String[] args) {
+        ProcessQueueDefault obj = new ProcessQueueDefault();
+        obj.run();
+    }
 
     @Override
     public void execute() throws Exception {
@@ -76,10 +79,5 @@ public class ProcessQueueDefault extends AbstractTask {
         if (ServerConfig.enableTaskService()) {
             super.run();
         }
-    }
-
-    public static void main(String[] args) {
-        ProcessQueueDefault obj = new ProcessQueueDefault();
-        obj.run();
     }
 }

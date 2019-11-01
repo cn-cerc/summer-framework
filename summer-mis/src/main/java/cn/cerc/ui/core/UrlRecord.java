@@ -51,18 +51,17 @@ public class UrlRecord {
         return name;
     }
 
+    public UrlRecord setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     /**
-     * 
      * @return 请改为getName
      */
     @Deprecated
     public String getCaption() {
         return name;
-    }
-
-    public UrlRecord setName(String name) {
-        this.name = name;
-        return this;
     }
 
     public String getUrl() {

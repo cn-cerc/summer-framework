@@ -1,11 +1,10 @@
 package cn.cerc.mis.queue;
 
-import static org.junit.Assert.assertTrue;
-
+import cn.cerc.mis.rds.StubHandle;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cn.cerc.mis.rds.StubHandle;
+import static org.junit.Assert.assertTrue;
 
 public class AsyncServiceTest {
 

@@ -1,21 +1,19 @@
 package cn.cerc.mis.page;
 
+import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.IPage;
+import com.google.gson.Gson;
+
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
-import com.google.gson.Gson;
-
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IPage;
-
 public class JsonPage implements IPage {
+    protected IForm form;
     private Object data;
     private Map<String, Object> items = null;
-    protected IForm form;
 
     public JsonPage() {
         super();
@@ -34,13 +32,13 @@ public class JsonPage implements IPage {
     }
 
     @Override
-    public void setForm(IForm form) {
-        this.form = form;
+    public IForm getForm() {
+        return form;
     }
 
     @Override
-    public IForm getForm() {
-        return form;
+    public void setForm(IForm form) {
+        this.form = form;
     }
 
     @Override

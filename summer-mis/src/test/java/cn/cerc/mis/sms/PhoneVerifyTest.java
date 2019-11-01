@@ -1,17 +1,15 @@
 package cn.cerc.mis.sms;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.mis.rds.StubHandle;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import cn.cerc.mis.rds.StubHandle;
+import static org.junit.Assert.assertEquals;
 
+@Slf4j
 public class PhoneVerifyTest {
-    private static final Logger log = LoggerFactory.getLogger(PhoneVerifyTest.class);
 
     private StubHandle handle;
     private PhoneVerify obj;

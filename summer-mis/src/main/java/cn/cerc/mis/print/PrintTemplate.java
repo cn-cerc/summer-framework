@@ -1,8 +1,8 @@
 package cn.cerc.mis.print;
 
-import java.io.IOException;
-import java.util.List;
-
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import cn.cerc.mis.excel.output.Column;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -15,19 +15,18 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import cn.cerc.mis.excel.output.Column;
+import java.io.IOException;
+import java.util.List;
 
 public class PrintTemplate {
+    protected DataSet dataSet;
+    protected Document document;
     private String fileName;
     private String header;
     private ReportHeaderFooter headerFooter;
     private List<Column> columns;
     private int pageWidth = 210; // 默认为 A4 纸的宽度，单位为 mm
     private int pageHeight = 297; // 默认为 A4 纸的高度，单位为 mm
-    protected DataSet dataSet;
-    protected Document document;
     // 设置页边距
     private float marginLeft = 36;
     private float marginRight = 36;

@@ -1,9 +1,8 @@
 package cn.cerc.db.oss;
 
+import cn.cerc.db.core.StubHandle;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import cn.cerc.db.core.StubHandle;
 
 public class OssQuerySend {
     private static OssQuery ds;
@@ -17,7 +16,6 @@ public class OssQuerySend {
 
     /**
      * 保存文件/覆盖文件
-     * 
      */
     @Test
     public void saveFile() {

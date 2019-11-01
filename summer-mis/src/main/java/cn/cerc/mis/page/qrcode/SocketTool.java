@@ -1,19 +1,17 @@
 package cn.cerc.mis.page.qrcode;
 
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+@Slf4j
 public class SocketTool {
-
-    private static final Logger log = LoggerFactory.getLogger(SocketTool.class);
 
     // FIXME 改为参数传入
     private static List<String> items = new ArrayList<>();
+
     static {
         items.add("diteng");
         items.add("knowall");

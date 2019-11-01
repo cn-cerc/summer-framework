@@ -1,20 +1,15 @@
 package cn.cerc.mis.sms;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.IHandle;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 获取操作的ip
- * 
- * @author 欧阳军
- *
  */
+@Slf4j
 public class RemoteIP {
-    private static final Logger log = LoggerFactory.getLogger(RemoteIP.class);
 
     public static String get(IHandle handle) {
         HttpServletRequest request = (HttpServletRequest) handle.getProperty("request");

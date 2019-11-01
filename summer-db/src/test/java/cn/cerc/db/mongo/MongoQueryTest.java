@@ -1,11 +1,10 @@
 package cn.cerc.db.mongo;
 
+import cn.cerc.core.DataSet;
+import cn.cerc.db.core.StubHandle;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import cn.cerc.core.DataSet;
-import cn.cerc.db.core.StubHandle;
 
 public class MongoQueryTest {
     private StubHandle handle;

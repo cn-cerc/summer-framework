@@ -1,10 +1,9 @@
 package cn.cerc.mis.pay.wxpay;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TenpayUtil {
 
@@ -12,9 +11,8 @@ public class TenpayUtil {
 
     /**
      * 把对象转换为int数值.
-     * 
-     * @param obj
-     *            包含数字的对象.
+     *
+     * @param obj 包含数字的对象.
      * @return int 转换后的数值,对不能转换的对象返回0。
      */
     public static int toInt(Object obj) {
@@ -30,7 +28,7 @@ public class TenpayUtil {
 
     /**
      * 获取当前时间 yyyyMMddHHmmss
-     * 
+     *
      * @return String
      */
     public static String getCurrTime() {
@@ -42,11 +40,9 @@ public class TenpayUtil {
 
     /**
      * 获取编码字符集
-     * 
-     * @param request
-     *            请求
-     * @param response
-     *            返回
+     *
+     * @param request  请求
+     * @param response 返回
      * @return String 返回执行结果
      */
 

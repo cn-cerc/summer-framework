@@ -1,17 +1,15 @@
 package cn.cerc.db.queue;
 
-import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import cn.cerc.core.Utils;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
+import lombok.extern.slf4j.Slf4j;
 
-import cn.cerc.core.Utils;
+import java.io.IOException;
 
+@Slf4j
 public class Queue {
-    private static final Logger log = LoggerFactory.getLogger(Queue.class);
+
     private CloudQueue client;
     private String receiptHandle;
     private Message message;

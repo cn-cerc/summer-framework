@@ -1,7 +1,6 @@
 package cn.cerc.core;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -23,9 +22,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+@Slf4j
 public class Utils {
-
-    private static final Logger log = LoggerFactory.getLogger(Utils.class);
 
     public static final String vbCrLf = "\r\n";
 

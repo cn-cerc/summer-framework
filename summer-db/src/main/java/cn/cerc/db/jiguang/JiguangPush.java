@@ -1,11 +1,5 @@
 package cn.cerc.db.jiguang;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
@@ -17,9 +11,14 @@ import cn.jpush.api.push.model.PushPayload.Builder;
 import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+@Slf4j
 public class JiguangPush {
-    private static final Logger log = LoggerFactory.getLogger(JiguangPush.class);
+
     private JiguangConnection connection;
     // 消息id，回调时使用
     private String msgId;
@@ -53,7 +52,7 @@ public class JiguangPush {
 
     /**
      * 发送给指定设备
-     * 
+     *
      * @param clientType 设备类型
      * @param clientId   设备id
      * @param sound      声音类型
@@ -93,7 +92,7 @@ public class JiguangPush {
 
     /**
      * 发送一条讯息
-     * 
+     *
      * @param payload
      */
     private void sendMessage(PushPayload payload) {
@@ -113,7 +112,7 @@ public class JiguangPush {
 
     /**
      * /** 增加附加参数到 extras
-     * 
+     *
      * @param key   增加附加参数到 extras
      * @param value 无返回值
      */

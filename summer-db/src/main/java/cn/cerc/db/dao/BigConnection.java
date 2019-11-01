@@ -1,31 +1,28 @@
 package cn.cerc.db.dao;
 
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.db.mysql.MysqlConnection;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import lombok.extern.slf4j.Slf4j;
+
 import java.beans.PropertyVetoException;
 import java.io.Closeable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.db.mysql.MysqlConnection;
-
+@Slf4j
 public class BigConnection implements Closeable {
-    private static final Logger log = LoggerFactory.getLogger(BigConnection.class);
-    private Connection connection;
-    private boolean debugConnection = false;
+
     // 饿汉式
     private static ComboPooledDataSource dataSource;
-
     /**
      * 它为null表示没有事务 它不为null表示有事务 当开启事务时，需要给它赋值 当结束事务时，需要给它赋值为null
      * 并且在开启事务时，让dao的多个方法共享这个Connection
      */
     private static ThreadLocal<Connection> connections = new ThreadLocal<Connection>();
+    private Connection connection;
+    private boolean debugConnection = false;
 
     public BigConnection() {
         super();
@@ -72,30 +69,9 @@ public class BigConnection implements Closeable {
         return dataSource;
     }
 
-    public Connection get() {
-        if (debugConnection) {
-            try {
-                ServerConfig config = ServerConfig.getInstance();
-                String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
-                String db = config.getProperty(MysqlConnection.rds_database, "appdb");
-                String url = String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);
-                String user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
-                String pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
-                Class.forName("com.mysql.jdbc.Driver");
-                if (host == null || user == null || pwd == null || db == null)
-                    throw new RuntimeException("RDS配置为空，无法连接主机！");
-                log.debug("create connection for mysql: " + host);
-                return DriverManager.getConnection(url, user, pwd);
-            } catch (ClassNotFoundException | SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else
-            return this.connection;
-    }
-
     /**
      * dao使用本方法来获取连接
-     * 
+     *
      * @return 返回数据库连接
      */
     public static Connection popConnection() {
@@ -122,7 +98,7 @@ public class BigConnection implements Closeable {
 
     /**
      * 开启事务
-     * 
+     *
      * @throws SQLException SQL异常
      */
     public static void beginTransaction() throws SQLException {
@@ -136,7 +112,7 @@ public class BigConnection implements Closeable {
 
     /**
      * 提交事务
-     * 
+     *
      * @throws SQLException SQL异常
      */
     public static void commitTransaction() throws SQLException {
@@ -151,7 +127,7 @@ public class BigConnection implements Closeable {
 
     /**
      * 回滚事务
-     * 
+     *
      * @throws SQLException SQL异常
      */
     public static void rollbackTransaction() throws SQLException {
@@ -166,7 +142,7 @@ public class BigConnection implements Closeable {
 
     /**
      * 释放Connection
-     * 
+     *
      * @param connection 连接对象
      * @throws SQLException Sql异常
      */
@@ -177,6 +153,27 @@ public class BigConnection implements Closeable {
                 connection.close();
             }
         }
+    }
+
+    public Connection get() {
+        if (debugConnection) {
+            try {
+                ServerConfig config = ServerConfig.getInstance();
+                String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
+                String db = config.getProperty(MysqlConnection.rds_database, "appdb");
+                String url = String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);
+                String user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
+                String pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
+                Class.forName("com.mysql.jdbc.Driver");
+                if (host == null || user == null || pwd == null || db == null)
+                    throw new RuntimeException("RDS配置为空，无法连接主机！");
+                log.debug("create connection for mysql: " + host);
+                return DriverManager.getConnection(url, user, pwd);
+            } catch (ClassNotFoundException | SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else
+            return this.connection;
     }
 
     @Override

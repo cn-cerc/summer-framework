@@ -1,13 +1,13 @@
 package cn.cerc.ui.phone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.ext.UISpan;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Block401 extends UIComponent {
     private String title = "(title)";
@@ -21,9 +21,8 @@ public class Block401 extends UIComponent {
 
     /**
      * 显示商品摘要，方便加入购物车
-     * 
-     * @param owner
-     *            内容显示区
+     *
+     * @param owner 内容显示区
      */
     public Block401(UIComponent owner) {
         super(owner);

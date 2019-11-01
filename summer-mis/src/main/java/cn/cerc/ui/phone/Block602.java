@@ -1,25 +1,22 @@
 package cn.cerc.ui.phone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * 
  * @author 张弓
- *
  */
 public class Block602 extends UIComponent {
     private List<UIImage> items = new ArrayList<>();
 
     /**
      * 多图片显示，上下陈列
-     * 
-     * @param owner
-     *            内容显示区
+     *
+     * @param owner 内容显示区
      */
     public Block602(UIComponent owner) {
         super(owner);

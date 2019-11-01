@@ -1,13 +1,12 @@
 package cn.cerc.db.mysql;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BatchScript {
-    private static final Logger log = LoggerFactory.getLogger(BatchScript.class);
+
     private StringBuffer items = new StringBuffer();
     private IHandle handle;
     private MysqlConnection connection;

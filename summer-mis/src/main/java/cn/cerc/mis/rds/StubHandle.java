@@ -16,8 +16,8 @@ public class StubHandle implements IHandle, AutoCloseable {
     public static final String DefaultProduct = "999001000001";
     // 生产部
     public static final String DefaultDept = "10050001";
-    private IHandle handle;
     private static final String clientIP = "127.0.0.1";
+    private IHandle handle;
 
     public StubHandle() {
         handle = Application.getHandle();

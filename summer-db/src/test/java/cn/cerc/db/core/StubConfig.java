@@ -1,15 +1,14 @@
 package cn.cerc.db.core;
 
+import cn.cerc.core.IConfig;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import cn.cerc.core.IConfig;
 
 public class StubConfig implements IConfig {
     private static final Log log = LogFactory.getLog(StubConfig.class);
@@ -18,6 +17,7 @@ public class StubConfig implements IConfig {
             + System.getProperty("file.separator") + "summer-db.properties";
 
     private static Properties properties = new Properties();
+
     static {
         try {
             File file2 = new File(SETTINGS_FILE_NAME);

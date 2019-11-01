@@ -1,14 +1,14 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UIHeader extends UIComponent {
     private static final int MAX_MENUS = 4;

@@ -1,16 +1,15 @@
 package cn.cerc.db.mysql;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.db.core.StubHandle;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import cn.cerc.db.core.StubHandle;
+import static org.junit.Assert.assertEquals;
 
+@Slf4j
 public class SqlQueryTest {
-    private static final Logger log = LoggerFactory.getLogger(SqlQueryTest.class);
+
     private String userInfo;
     private SqlQuery ds;
     private StubHandle handle;

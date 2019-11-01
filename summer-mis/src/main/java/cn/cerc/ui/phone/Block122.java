@@ -1,18 +1,16 @@
 package cn.cerc.ui.phone;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.UITextBox;
 import cn.cerc.ui.vcl.ext.UISpan;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
- * 
  * @author 善贵
- *
  */
 public class Block122 extends UIComponent {
     private UITextBox input = new UITextBox();
@@ -23,15 +21,18 @@ public class Block122 extends UIComponent {
 
     /**
      * 用于select控件
-     * 
-     * @param owner
-     *            内容显示区
+     *
+     * @param owner 内容显示区
      */
     public Block122(UIComponent owner) {
         super(owner);
         input.setReadonly(true);
         input.setType("hidden");
         image.setSrc("jui/phone/block107-expand.png");
+    }
+
+    public static void outputChoiceItem(HtmlWriter html, String key, String value, String choiceId) {
+        html.print("<li onclick='javascript:selectItem(this, \"%s\", \"%s\")'>%s</li>", choiceId, key, value);
     }
 
     @Override
@@ -80,10 +81,6 @@ public class Block122 extends UIComponent {
 
     public Map<String, String> getItems() {
         return items;
-    }
-
-    public static void outputChoiceItem(HtmlWriter html, String key, String value, String choiceId) {
-        html.print("<li onclick='javascript:selectItem(this, \"%s\", \"%s\")'>%s</li>", choiceId, key, value);
     }
 
     public String getContent() {
