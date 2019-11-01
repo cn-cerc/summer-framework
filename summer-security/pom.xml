@@ -9,7 +9,7 @@
     <artifactId>summer-security</artifactId>
     <description>summer 安全服务sdk</description>
     <properties>
-        <org.springframework.version>4.3.17.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.18.RELEASE</org.springframework.version>
     </properties>
 
     <dependencies>
