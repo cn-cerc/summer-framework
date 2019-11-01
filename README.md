@@ -1,7 +1,5 @@
 # summer-framework
 
-## 框架简介
-
 summer开源框架包含summer-bean,summer-core,summer-db,summer-mis.使用业界成熟的MVC架构，以spring为基础，提供快速开发服务的基础框架服务。
 
 框架地址：https://github.com/cn-cerc 安全服务：[聚安](https://www.jayun.site)
