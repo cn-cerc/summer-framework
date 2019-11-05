@@ -12,7 +12,7 @@
 
     <properties>
         <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
-        <org.springframework.version>4.3.18.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.17.RELEASE</org.springframework.version>
         <org.slf4j.version>1.7.25</org.slf4j.version>
     </properties>
 
@@ -26,12 +26,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -158,19 +152,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.0.23</version>
-        </dependency>
-        <!-- slf4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>c3p0</groupId>

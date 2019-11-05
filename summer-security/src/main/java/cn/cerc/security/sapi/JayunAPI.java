@@ -2,18 +2,18 @@ package cn.cerc.security.sapi;
 
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.ServerConfig;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 public class JayunAPI {
 
     public static final String jayunHost = "https://www.jayun.site";
     public static final String JAYUN_APP_KEY = "jayun.appKey";
     public static final String JAYUN_APP_SECRET = "jayun.appSecret";
     public static final String JAYUN_STOP = "jayun.stop";
-    private static final Logger log = Logger.getLogger(JayunAPI.class);
     private static boolean isServerRegister = false;
 
     private Object data;
