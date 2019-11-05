@@ -12,7 +12,6 @@
     <url>https://github.com/cn-cerc/summer-mis</url>
 
     <properties>
-        <org.springframework.version>4.3.17.RELEASE</org.springframework.version>
         <quartz.version>2.2.1</quartz.version>
     </properties>
 

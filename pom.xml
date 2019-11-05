@@ -17,6 +17,11 @@
         <module>summer-mis</module>
     </modules>
 
+    <properties>
+        <org.springframework.version>4.3.18.RELEASE</org.springframework.version>
+        <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
