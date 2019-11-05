@@ -1,8 +1,7 @@
 package cn.cerc.db.core;
 
 import cn.cerc.core.IConfig;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,8 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+@Slf4j
 public class StubConfig implements IConfig {
-    private static final Log log = LogFactory.getLog(StubConfig.class);
 
     private static final String SETTINGS_FILE_NAME = System.getProperty("user.home")
             + System.getProperty("file.separator") + "summer-db.properties";
