@@ -13,7 +13,7 @@
 
     <properties>
         <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
-        <org.springframework.version>4.3.17.RELEASE</org.springframework.version>
+        <org.springframework.version>5.2.1.RELEASE</org.springframework.version>
     </properties>
 
     <dependencies>
