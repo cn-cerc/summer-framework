@@ -28,12 +28,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
             <artifactId>jxl</artifactId>
             <version>2.6.12</version>
@@ -109,11 +103,7 @@
             <artifactId>pull-parser</artifactId>
             <version>2.1.10</version>
         </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>3.3.0</version>
-        </dependency>
+
         <!-- spring 线程池 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -160,17 +150,6 @@
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>
             <version>2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.jpush.api</groupId>
-            <artifactId>jpush-client</artifactId>
-            <version>3.2.11</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!-- 支持docs,使用markdown技术 -->
         <dependency>
