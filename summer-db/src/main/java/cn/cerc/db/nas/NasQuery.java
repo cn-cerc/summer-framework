@@ -2,14 +2,15 @@ package cn.cerc.db.nas;
 
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.Utils;
 import cn.cerc.db.queue.QueueOperator;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.CharEncoding;
-import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class NasQuery extends DataQuery {
@@ -40,12 +41,12 @@ public class NasQuery extends DataQuery {
             throw new RuntimeException("语法为: select fileName from filePath");
         }
         // 校验数据
-        if (StringUtils.isEmpty(this.filePath))
+        if (Utils.isEmpty(this.filePath))
             throw new RuntimeException("请输入文件路径");
         if (nasMode == NasModel.readWrite) {
             File file = FileUtils.getFile(this.filePath, this.fileName);
             try {
-                this.setJSON(FileUtils.readFileToString(file, CharEncoding.UTF_8));
+                this.setJSON(FileUtils.readFileToString(file, StandardCharsets.UTF_8.name()));
                 this.setActive(true);
             } catch (IOException e) {
                 e.printStackTrace();
