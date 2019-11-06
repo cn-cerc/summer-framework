@@ -123,6 +123,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
      *
      * @param startTime 起始时间
      * @param endTime   截止时间
+     * @return 是否超时
      */
     public static boolean isTimeOut(TDateTime startTime, TDateTime endTime) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -203,7 +204,11 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     /**
      * 是否在指定时间范围内
-     **/
+     *
+     * @param start 起始时间段
+     * @param last  截止时间段
+     * @return 是否在指定时间范围内
+     */
     public static boolean isInterval(String start, String last) {
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");
         Date now = null;
@@ -267,14 +272,14 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     /**
-     * 获取Java时间戳，一共13位，毫秒级
+     * @return 获取Java时间戳，一共13位，毫秒级
      */
     public long getTimestamp() {
         return this.getData().getTime();
     }
 
     /**
-     * 获取Unix时间戳，一共10位，秒级
+     * @return 获取Unix时间戳，一共10位，秒级
      */
     public long getUnixTimestamp() {
         return this.getData().getTime() / 1000;

@@ -550,6 +550,7 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     /**
      * @param source      要复制的数据源
      * @param includeHead 是否连头部一起复制
+     * @return 返回复制结果集
      */
     public DataSet appendDataSet(DataSet source, boolean includeHead) {
         this.appendDataSet(source);

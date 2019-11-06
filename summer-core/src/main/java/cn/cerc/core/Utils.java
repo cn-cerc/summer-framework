@@ -180,16 +180,15 @@ public class Utils {
      * Utils.trim("abc")         = "abc"
      * Utils.trim("    abc    ") = "abc"
      * </pre>
-     * <p>
-     * 去除字符串前后的空格
+     *
+     * @param str 目标字符串
+     * @return 去除字符串前后的空格
      */
     public static String trim(String str) {
         return str == null ? null : str.trim();
     }
 
     /**
-     * 字符串为空(null)或者空串都转化为 null
-     *
      * <pre>
      * Utils.trimToNull(null)          = null
      * Utils.trimToNull("")            = null
@@ -197,6 +196,9 @@ public class Utils {
      * Utils.trimToNull("abc")         = "abc"
      * Utils.trimToNull("    abc    ") = "abc"
      * </pre>
+     *
+     * @param str 目标字符串
+     * @return 字符串为空(null)或者空串都转化为 null
      */
     public static String trimToNull(final String str) {
         final String ts = trim(str);
@@ -204,7 +206,6 @@ public class Utils {
     }
 
     /**
-     * 字符串为空(null)或者空串都转化为空串
      * <pre>
      * Utils.trimToEmpty(null)          = ""
      * Utils.trimToEmpty("")            = ""
@@ -212,6 +213,9 @@ public class Utils {
      * Utils.trimToEmpty("abc")         = "abc"
      * Utils.trimToEmpty("    abc    ") = "abc"
      * </pre>
+     *
+     * @param str 目标字符串
+     * @return 字符串为空(null)或者空串都转化为空串
      */
     public static String trimToEmpty(final String str) {
         return str == null ? EMPTY : str.trim();
@@ -233,7 +237,7 @@ public class Utils {
     // 兼容 delphi 代码
 
     /**
-     * @param text=要检测的文本
+     * @param text 要检测的文本
      * @return 判断字符串是否全部为数字
      */
     public static boolean isNumeric(String text) {
@@ -277,10 +281,9 @@ public class Utils {
     }
 
     /**
-     * 获取指定范围内的随机整数
-     *
      * @param min 最小值
      * @param max 最大值
+     * @return 获取指定范围内的随机整数
      */
     public static int random(int min, int max) {
         if (max < min) {
@@ -490,8 +493,6 @@ public class Utils {
     }
 
     /**
-     * 判断字符串是否为空
-     *
      * <pre>
      * Utils.isEmpty(null)      = true
      * Utils.isEmpty("")        = true
@@ -499,14 +500,15 @@ public class Utils {
      * Utils.isEmpty("bob")     = false
      * Utils.isEmpty("  bob  ") = false
      * </pre>
+     *
+     * @param str 目标字符串
+     * @return 判断字符串是否为空
      */
     public static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
     }
 
     /**
-     * 判断字符串不为空
-     *
      * <pre>
      * Utils.isNotEmpty(null)      = false
      * Utils.isNotEmpty("")        = false
@@ -514,6 +516,9 @@ public class Utils {
      * Utils.isNotEmpty("bob")     = true
      * Utils.isNotEmpty("  bob  ") = true
      * </pre>
+     *
+     * @param str 目标字符串
+     * @return 判断字符串不为空
      */
     public static boolean isNotEmpty(String str) {
         return !Utils.isEmpty(str);
@@ -527,8 +532,9 @@ public class Utils {
      * Utils.isBlank("bob")     = false
      * Utils.isBlank("  bob  ") = false
      * </pre>
-     * <p>
-     * 判断是否为纯空格
+     *
+     * @param str 目标字符串
+     * @return 判断是否为纯空格
      */
     public static boolean isBlank(String str) {
         int strLen;
@@ -544,8 +550,6 @@ public class Utils {
     }
 
     /**
-     * 判断是否不含纯空格
-     *
      * <pre>
      * StringUtils.isNotBlank(null)      = false
      * StringUtils.isNotBlank("")        = false
@@ -553,6 +557,9 @@ public class Utils {
      * StringUtils.isNotBlank("bob")     = true
      * StringUtils.isNotBlank("  bob  ") = true
      * </pre>
+     *
+     * @param str 目标字符串
+     * @return 判断是否不含纯空格
      */
     public static boolean isNotBlank(String str) {
         return !Utils.isBlank(str);
