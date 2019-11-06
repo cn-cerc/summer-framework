@@ -18,7 +18,7 @@
     </modules>
 
     <properties>
-        <org.springframework.version>4.3.18.RELEASE</org.springframework.version>
+        <org.springframework.version>5.2.1.RELEASE</org.springframework.version>
         <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
     </properties>
 
@@ -29,8 +29,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>11</source>
+                    <target>11</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
