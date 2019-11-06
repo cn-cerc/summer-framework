@@ -1,11 +1,11 @@
 package cn.cerc.ui.phone;
 
+import cn.cerc.core.Utils;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.ext.UISpan;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 两组左边图标右边文字
@@ -37,7 +37,7 @@ public class Block119 extends UIComponent {
         html.print("</a>");
         html.print("</div>");
         html.print("</li>");
-        if (!StringUtils.isBlank(this.rightImage.getSrc()) && !StringUtils.isBlank(this.rightTitle.getText())) {
+        if (!Utils.isBlank(this.rightImage.getSrc()) && !Utils.isBlank(this.rightTitle.getText())) {
             html.print("<li>");
             html.print("<div class='item'>");
             html.print("<a href='%s'>", this.rightUrl.getUrl());

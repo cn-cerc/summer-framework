@@ -58,8 +58,6 @@ public class MongoConnection implements IConnection, AutoCloseable {
                 // poolsize
                 sb.append("&").append("maxPoolSize=").append(config.getProperty(MongoConnection.mgdb_maxpoolsize));
                 log.info("连接到MongoDB分片集群:" + sb.toString());
-                // MongoClientURI connectionString = new MongoClientURI(
-                // "mongodb://ehealth:123456@115.28.67.211:3717,115.28.67.211:13717/ehealth?replicaSet=mgset-2004675");
             }
             MongoClientURI connectionString = new MongoClientURI(sb.toString());
             pool = new MongoClient(connectionString);
