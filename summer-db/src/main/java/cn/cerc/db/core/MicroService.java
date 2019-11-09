@@ -49,7 +49,7 @@ public class MicroService extends Curl {
     public boolean get(String serviceCode) {
         String url = getServiceUrl(serviceCode);
         String text = this.doGet(url);
-        this.response = new JsonParser().parse(text).getAsJsonObject();
+        this.response = JsonParser.parseString(text).getAsJsonObject();
         if (response.has("result"))
             this.result = response.get("result").getAsBoolean();
         if (response.has("message"))
@@ -66,7 +66,7 @@ public class MicroService extends Curl {
     public boolean post(String serviceCode) {
         String url = getServiceUrl(serviceCode);
         String text = this.doPost(url);
-        this.response = new JsonParser().parse(text).getAsJsonObject();
+        this.response = JsonParser.parseString(text).getAsJsonObject();
         if (response.has("result"))
             this.result = response.get("result").getAsBoolean();
         if (response.has("message"))
