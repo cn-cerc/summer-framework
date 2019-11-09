@@ -41,11 +41,9 @@ public class QueueConnection {
     }
 
     /**
-     * 发送消息
-     *
      * @param disname 消息队列id
      * @param data    要发送的数据
-     * @throws JMSException
+     * @return 发送消息
      */
     public void sendMessage(String disname, String data) throws JMSException {
         // 创建一个消息队列
@@ -62,11 +60,8 @@ public class QueueConnection {
     }
 
     /**
-     * 取得消息
-     *
      * @param disname 消息队列id
      * @return 返回取得的消息
-     * @throws JMSException
      */
     public Message receiveMessage(String disname) throws JMSException {
         Queue queue = session.createQueue(disname);
@@ -77,4 +72,5 @@ public class QueueConnection {
         consumer.close();
         return null;
     }
+
 }
