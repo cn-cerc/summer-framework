@@ -19,6 +19,7 @@
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>4.3.18.RELEASE</org.springframework.version>
         <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
         <quartz.version>2.2.1</quartz.version>
