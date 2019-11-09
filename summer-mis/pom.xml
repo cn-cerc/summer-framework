@@ -1,6 +1,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>cn.cerc</groupId>
         <artifactId>summer-framework</artifactId>
@@ -9,7 +10,6 @@
 
     <artifactId>summer-mis</artifactId>
     <description>用于快速开发资讯管理系统（MIS），如进销存系统、财务系统、人力资源系统等</description>
-    <url>https://github.com/cn-cerc/summer-mis</url>
 
     <dependencies>
         <dependency>
@@ -66,7 +66,6 @@
             <groupId>pull-parser</groupId>
             <artifactId>pull-parser</artifactId>
         </dependency>
-
         <!-- spring 线程池 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -92,12 +91,10 @@
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
             <artifactId>flexmark</artifactId>
         </dependency>
-
         <!-- 增加对多语言界面的支持 -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>

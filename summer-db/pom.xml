@@ -9,7 +9,6 @@
 
     <artifactId>summer-db</artifactId>
     <description>提供DataSet及派生类，满足内存表与实体表使用需要</description>
-    <url>https://github.com/cn-cerc/summer-db</url>
 
     <dependencies>
         <dependency>
@@ -101,21 +100,4 @@
             <artifactId>c3p0</artifactId>
         </dependency>
     </dependencies>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <formats>
-                        <format>html</format>
-                        <format>xml</format>
-                    </formats>
-                    <check/>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
 </project>
