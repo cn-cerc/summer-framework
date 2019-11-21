@@ -30,6 +30,8 @@ public class UIHeader extends UIComponent {
         super(owner);
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), "<img src=\"images/Home.png\"/>");
         leftMenus.add(homePage);
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), "开始");
+        leftMenus.add(homePage);
     }
 
     @Override

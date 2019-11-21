@@ -1,28 +1,25 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.UrlRecord;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UISheetUrl extends UISheet {
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UrlRecord;
+
+public class UISheetModule extends UISheet {
     private List<UrlRecord> urls = new ArrayList<>();
     // 使用于page-link.xml中
     private Map<String, String> items = new LinkedHashMap<>();
-    private boolean isCloseSheet;
 
     @Deprecated
-    public UISheetUrl() {
+    public UISheetModule() {
         super();
-        this.setCaption("相关操作");
     }
 
-    public UISheetUrl(UIToolBar owner) {
+    public UISheetModule(UIToolBar owner) {
         super(owner);
-        this.setCaption("相关操作");
     }
 
     @Override
@@ -30,16 +27,13 @@ public class UISheetUrl extends UISheet {
         if (urls.size() == 0 && items.size() == 0)
             return;
 
-        if (this.isCloseSheet)
-            html.println("<section style='display: none;'>");
-        else
-            html.println("<section>");
-
         html.println("<section>");
-        html.println("<div class=\"title\">%s</div>", this.getCaption());
-        html.println("<div class=\"contents\">");
+        html.println("<div class=\"menus_list\">");
+        html.println("<ul>");
         for (UrlRecord url : urls) {
-            html.print("<a href=\"%s\"", url.getUrl());
+            html.println("<li>");
+            html.print("<img src='%s'/>", url.getImgage());
+            html.print("<a href=\"%s\" onclick=\"updateUserHit('%s')\"", url.getUrl(), url.getUrl());
             if (url.getId() != null) {
                 html.print(" id=\"%s\"", url.getId());
             }
@@ -52,10 +46,14 @@ public class UISheetUrl extends UISheet {
             if (url.getTarget() != null) {
                 html.print(" target=\"%s\"", url.getTarget());
             }
-            html.println(">%s</a>", url.getName());
+            html.print(">%s</a>", url.getName());
+            if (url.getArrow() != null && !"".equals(url.getArrow()))
+                html.println("<img src='%s' />", url.getArrow());
+            html.println("</li>");
         }
         for (String key : items.keySet())
             html.println("<a href=\"%s\">%s</a>", key, items.get(key));
+        html.println("</ul>");
         html.println("</div>");
         html.println("</section>");
     }
@@ -77,13 +75,5 @@ public class UISheetUrl extends UISheet {
 
     public void setItems(Map<String, String> items) {
         this.items = items;
-    }
-
-    public boolean isCloseSheet() {
-        return isCloseSheet;
-    }
-
-    public void setCloseSheet(boolean isCloseSheet) {
-        this.isCloseSheet = isCloseSheet;
     }
 }
