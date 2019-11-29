@@ -74,30 +74,21 @@ public abstract class FileUploadBasePage extends AbstractForm {
 
     /**
      * 列表页
-     *
-     * @param params
-     * @return
      */
     public abstract IPage exec();
 
     /**
      * 文件上传
-     *
-     * @return
      */
     public abstract IPage upload();
 
     /**
      * 文件删除
-     *
-     * @return
      */
     public abstract IPage delete();
 
     /**
      * 文件下载
-     *
-     * @return
      */
     public abstract IPage download();
 
