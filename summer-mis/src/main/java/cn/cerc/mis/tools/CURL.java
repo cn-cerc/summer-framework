@@ -16,15 +16,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * <pre>
- * HTTP请求代理类
- * </pre>
- *
- * @author benl
- * @version 1.0, 2007-7-3
- */
-
-/**
  * 请改使用summer-db的Curl对象
  */
 @Slf4j
