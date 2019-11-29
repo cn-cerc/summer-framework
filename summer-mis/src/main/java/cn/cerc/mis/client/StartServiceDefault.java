@@ -29,11 +29,14 @@ import java.util.Map;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/services")
 public class StartServiceDefault {
+
     private static final String sessionId = "sessionId";
     private static Map<String, String> services;
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
+
     @Autowired
     private HttpServletRequest req;
+
     @Autowired
     private HttpServletResponse resp;
 

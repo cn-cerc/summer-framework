@@ -18,6 +18,7 @@ import java.util.TimerTask;
 @Slf4j
 @Deprecated // 请改使用 StartTaskDefault
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
+
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;

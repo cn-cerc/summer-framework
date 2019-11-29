@@ -143,5 +143,4 @@ public class UrlRecord {
         this.arrow = arrow;
         return this;
     }
-
 }

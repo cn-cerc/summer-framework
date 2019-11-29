@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/forms")
-@Slf4j
 public class StartFormDefault implements ApplicationContextAware {
 
     private ApplicationContext context;

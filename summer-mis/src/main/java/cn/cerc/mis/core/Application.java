@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 public class Application {
-
     // Tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
     // token id
@@ -37,6 +36,7 @@ public class Application {
     public static final String webclient = "webclient";
     // 默认界面语言版本
     public static final String LangageDefault = "cn"; // 可选：cn/en
+
     private static ApplicationContext context;
 
     public static ApplicationContext getContext() {

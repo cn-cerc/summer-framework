@@ -2,6 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -13,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @Deprecated // 请改使用 StartAppDefault
 public class StartApp implements Filter {
-    // private static final Logger log = Logger.getLogger(AppStart.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -61,6 +62,9 @@ public class StartApp implements Filter {
                 resp.getWriter().print(e.getMessage());
             }
             return;
+        } else {
+            StringBuffer url = req.getRequestURL();
+            log.info("{}", url.toString());
         }
 
         chain.doFilter(req, resp);

@@ -10,6 +10,8 @@ import org.apache.http.util.EntityUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ import java.util.Map;
 @Slf4j
 @SuppressWarnings("deprecation")
 public class GetWxOrderno {
+
     public static DefaultHttpClient httpclient;
 
     static {

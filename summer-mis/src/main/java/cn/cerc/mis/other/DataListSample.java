@@ -20,6 +20,7 @@ import java.util.Map;
  */
 @Slf4j
 public class DataListSample implements IDataList {
+
     private static final int Version = 4;
     private static final String ShowInUP = "ShowInUP";
     private static final String ShowOutUP = "ShowOutUP";

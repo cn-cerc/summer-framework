@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Slf4j
 public class ResourceJstl extends SimpleTagSupport {
+
     private static Map<String, ResourceBuffer> items = new HashMap<>();
     private String toId = null;
 

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 @Slf4j
-@Deprecated // 请改使用 StartFormDefault
 public class StartForms implements Filter {
 
     private static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
@@ -58,10 +57,30 @@ public class StartForms implements Filter {
         // 遇到静态文件直接输出
         IAppStaticFile staticFile = Application.getBean(IAppStaticFile.class, "appStaticFile", "appStaticFileDefault");
         if (staticFile.isStaticFile(uri)) {
+            // 默认没有重定向，直接读取资源文件的默认路径
+            // chain.doFilter(req, resp);
+
+            /*
+             * 1、 此处的 getPathForms 对应资源文件目录的forms，可自行定义成其他路径，注意配套更新 AppConfig
+             * 2、截取当前的资源路径，将资源文件重定向到容器中的项目路径 3、例如/ /131001/images/systeminstall-pc.png ->
+             * /forms/images/systeminstall-pc.png
+             */
+            log.info("before {}", uri);
+            IAppConfig conf = Application.getAppConfig();
+            String source = "/" + conf.getPathForms() + uri.substring(uri.indexOf("/", 2));
+            request.getServletContext().getRequestDispatcher(source).forward(request, response);
+            log.info("after  {}", source);
+            return;
+        }
+
+        if (uri.contains("service/")) {
             chain.doFilter(req, resp);
             return;
         }
-        log.info(uri);
+        if (uri.contains("task/")) {
+            chain.doFilter(req, resp);
+            return;
+        }
 
         String childCode = getRequestCode(req);
         if (childCode == null) {

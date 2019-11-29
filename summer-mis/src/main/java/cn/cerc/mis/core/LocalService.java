@@ -19,7 +19,6 @@ import java.util.Map;
 
 @Slf4j
 public class LocalService implements IServiceProxy {
-
     private String serviceCode;
 
     private String message;

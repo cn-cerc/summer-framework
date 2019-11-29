@@ -12,6 +12,7 @@ public class RequestData {
 
     public static final String appSession_Key = "sid";
     public static final String webclient = "webclient";
+
     private String sid;
     private String param;
     private String serviceCode;

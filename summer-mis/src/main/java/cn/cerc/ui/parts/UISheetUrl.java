@@ -34,8 +34,6 @@ public class UISheetUrl extends UISheet {
             html.println("<section style='display: none;'>");
         else
             html.println("<section>");
-
-        html.println("<section>");
         html.println("<div class=\"title\">%s</div>", this.getCaption());
         html.println("<div class=\"contents\">");
         for (UrlRecord url : urls) {

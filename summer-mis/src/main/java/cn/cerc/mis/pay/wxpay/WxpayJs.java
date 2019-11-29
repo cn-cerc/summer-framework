@@ -10,15 +10,17 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-//微信支付（网页JS版）
 @Slf4j
+// 微信支付（网页JS版）
 public class WxpayJs {
 
     // 连接配置参数
     public static final String config_appId = "wx.AppID";
     public static final String config_appSecret = "wx.AppSecret";
+
     // 商户代码
     public static final String config_appMachId = "wx.MchId";
+
     // 申请支付金额
     private String amount;
     // 申请支付订单号

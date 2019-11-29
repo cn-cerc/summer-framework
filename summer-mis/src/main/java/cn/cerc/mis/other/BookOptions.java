@@ -16,7 +16,6 @@ import java.util.Map;
 
 @Slf4j
 public class BookOptions {
-
     public static final String BookInfo_Set = "_BookInfoSet_";
     public static final String HideLoginInfo = "_HideLoginInfo_";
     public static final String AllowERPSynchro = "AllowERPSynchro";
@@ -106,6 +105,7 @@ public class BookOptions {
     public static final String EnableWorkPieceToOP = "EnableWorkPieceToOP";
     public static final String StudentFileSupCorpNo = "StudentFileSupCorpNo";
     public static final String EnableAutoMRP = "EnableAutoMRP";
+
     private static Map<String, String> items = new HashMap<>();
 
     static {

@@ -12,18 +12,18 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-/**
- * 微信App支付
- */
 @Slf4j
+//APP支付
 public class WxpayAPI {
 
     // 连接配置参数
     public static final String config_appId = "wx.Open_AppID";
     public static final String config_appSecret = "wx.Open_ApiKey";
+
     // 商户代码
     public static final String config_appMachId = "wx.Open_MchId";
     public static final String config_appRootSite = "app.rootSite";
+
     // 申请支付金额
     private String amount;
     // 申请支付订单号

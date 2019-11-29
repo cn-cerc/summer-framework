@@ -26,6 +26,7 @@ import java.util.TreeSet;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ExportChinese {
+
     private Set<String> items = new TreeSet<>();
 
     private static String getChinese(String temp) {
