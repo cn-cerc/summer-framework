@@ -65,6 +65,16 @@ public class BigConnection implements Closeable {
             dataSource.setMaxPoolSize(max_size);
             dataSource.setCheckoutTimeout(time_out);
             dataSource.setMaxStatements(max_statement);
+
+            // 防止断开连接，自动测试链接是否有效
+            boolean openAutoTestConn = Boolean.valueOf(config.getProperty("c3p0.open_auto_test_conn", "false"));
+            if (openAutoTestConn) {
+                // 每隔多少时间（时间请小于 数据库的 timeout）,测试一下链接，防止失效，会损失小部分性能
+                int test_conn_time = Integer.parseInt(config.getProperty("c3p0.idle_connection_test_period", "60"));
+                dataSource.setTestConnectionOnCheckin(true);
+                dataSource.setTestConnectionOnCheckout(false);
+                dataSource.setIdleConnectionTestPeriod(test_conn_time);
+            }
         }
         return dataSource;
     }
