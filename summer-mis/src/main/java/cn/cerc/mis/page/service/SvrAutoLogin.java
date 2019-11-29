@@ -14,13 +14,12 @@ import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 public class SvrAutoLogin {
-    private static final Logger log = LoggerFactory.getLogger(SvrAutoLogin.class);
 
     private IHandle handle;
     private String message;

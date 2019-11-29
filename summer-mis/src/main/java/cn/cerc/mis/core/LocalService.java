@@ -10,16 +10,15 @@ import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.Microservice;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class LocalService implements IServiceProxy {
-    private static final Logger log = LoggerFactory.getLogger(LocalService.class);
     private String serviceCode;
 
     private String message;

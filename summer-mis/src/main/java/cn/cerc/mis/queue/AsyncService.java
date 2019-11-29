@@ -10,15 +10,15 @@ import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.message.MessageLevel;
 import cn.cerc.mis.message.MessageRecord;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class AsyncService implements IServiceProxy {
-    private static final Logger log = LoggerFactory.getLogger(AsyncService.class);
+
     // 状态列表
     private static List<String> processTiles = new ArrayList<>();
 

@@ -4,8 +4,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -14,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 public class Application {
     // Tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
@@ -36,7 +36,7 @@ public class Application {
     public static final String webclient = "webclient";
     // 默认界面语言版本
     public static final String LangageDefault = "cn"; // 可选：cn/en
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
+
     private static ApplicationContext context;
 
     public static ApplicationContext getContext() {

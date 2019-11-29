@@ -3,8 +3,7 @@ package cn.cerc.mis.language;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -16,8 +15,9 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class ResourceJstl extends SimpleTagSupport {
-    private static final Logger log = LoggerFactory.getLogger(ResourceJstl.class);
+
     private static Map<String, ResourceBuffer> items = new HashMap<>();
     private String toId = null;
 

@@ -10,11 +10,10 @@ import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.language.R;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SecurityEnvironment {
-    private static final Logger log = LoggerFactory.getLogger(SecurityEnvironment.class);
 
     // 用于Form中，向UI(jsp)传递当前是否安全，若不安全则显示输入验证码画面
     public boolean check(AbstractJspPage jspPage) {

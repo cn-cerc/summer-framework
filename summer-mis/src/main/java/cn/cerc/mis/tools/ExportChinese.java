@@ -5,8 +5,7 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -23,10 +22,11 @@ import java.util.TreeSet;
 /**
  * 扫描待翻译的中文
  */
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ExportChinese {
-    private static final Logger log = LoggerFactory.getLogger(ExportChinese.class);
+
     private Set<String> items = new TreeSet<>();
 
     private static String getChinese(String temp) {

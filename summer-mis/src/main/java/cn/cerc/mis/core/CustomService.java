@@ -2,15 +2,15 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+@Slf4j
 public class CustomService extends AbstractHandle implements IService, IRestful {
-    private static final Logger log = LoggerFactory.getLogger(CustomService.class);
+
     @Autowired
     public ISystemTable systemTable;
     protected DataSet dataIn = null; // request

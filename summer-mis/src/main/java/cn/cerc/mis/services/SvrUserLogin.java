@@ -23,8 +23,7 @@ import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -32,10 +31,10 @@ import org.springframework.stereotype.Component;
 /**
  * 用于用户登录
  */
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrUserLogin extends CustomService {
-    private static final Logger log = LoggerFactory.getLogger(SvrUserLogin.class);
     public static int TimeOut = 5; // 效验代码超时时间（分钟）
     private static String GuidNull = "";
     private static int Max_Viability = 1;

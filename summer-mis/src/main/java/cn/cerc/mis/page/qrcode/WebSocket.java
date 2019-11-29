@@ -1,7 +1,6 @@
 package cn.cerc.mis.page.qrcode;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.EndpointConfig;
@@ -18,13 +17,10 @@ import java.util.Map;
 /**
  * 将目前的类定义成一个websocket服务器端,
  * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端
- *
- * @author root
  */
+@Slf4j
 @ServerEndpoint(value = "/websocket", configurator = GetHttpSessionConfigurator.class)
 public class WebSocket {
-
-    private static final Logger log = LoggerFactory.getLogger(WebSocket.class);
 
     // concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
     private static Map<String, WebSocket> items = new LinkedHashMap<>();

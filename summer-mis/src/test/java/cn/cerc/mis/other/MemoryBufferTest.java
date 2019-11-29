@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertEquals;
 
 public class MemoryBufferTest {
-    private static final Logger log = LoggerFactory.getLogger(MemoryBufferTest.class);
+    private static final Logger log = (MemoryBufferTest.class);
 
     @Test
     @Ignore

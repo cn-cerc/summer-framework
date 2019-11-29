@@ -7,8 +7,7 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -16,8 +15,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Calendar;
 
+@Slf4j
 public class StartTaskDefault implements Runnable, ApplicationContextAware {
-    private static final Logger log = LoggerFactory.getLogger(StartTaskDefault.class);
+
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;

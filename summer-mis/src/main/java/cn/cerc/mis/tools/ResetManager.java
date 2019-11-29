@@ -10,15 +10,15 @@ import cn.cerc.mis.book.IBookSource;
 import cn.cerc.mis.book.IResetBook;
 import cn.cerc.mis.book.VirtualData;
 import cn.cerc.mis.other.BookOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+@Slf4j
 public class ResetManager implements IBookManage {
-    private static final Logger log = LoggerFactory.getLogger(ResetManager.class);
+
     private IHandle handle;
     private String initMonth;
     private List<IBookSource> sources = new ArrayList<>();

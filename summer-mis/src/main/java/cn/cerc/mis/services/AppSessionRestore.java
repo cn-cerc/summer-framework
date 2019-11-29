@@ -9,11 +9,10 @@ import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.UserNotFindException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AppSessionRestore extends CustomService {
-    private static final Logger log = LoggerFactory.getLogger(AppSessionRestore.class);
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();

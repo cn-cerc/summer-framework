@@ -4,8 +4,7 @@ import cn.cerc.core.IConfig;
 import cn.cerc.core.IHandle;
 import cn.cerc.mis.core.Application;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -13,15 +12,18 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+@Slf4j
 //APP支付
 public class WxpayAPI {
+
     // 连接配置参数
     public static final String config_appId = "wx.Open_AppID";
     public static final String config_appSecret = "wx.Open_ApiKey";
+
     // 商户代码
     public static final String config_appMachId = "wx.Open_MchId";
     public static final String config_appRootSite = "app.rootSite";
-    private static Logger log = LoggerFactory.getLogger(WxpayAPI.class);
+
     // 申请支付金额
     private String amount;
     // 申请支付订单号

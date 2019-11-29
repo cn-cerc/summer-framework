@@ -1,15 +1,13 @@
 package cn.cerc.mis.page.qrcode;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class SocketTool {
-
-    private static final Logger log = LoggerFactory.getLogger(SocketTool.class);
 
     // FIXME 改为参数传入
     private static List<String> items = new ArrayList<>();

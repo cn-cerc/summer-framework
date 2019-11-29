@@ -2,8 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,10 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @Deprecated // 请改使用 StartAppDefault
 public class StartApp implements Filter {
-
-    private static final Logger log = LoggerFactory.getLogger(StartApp.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

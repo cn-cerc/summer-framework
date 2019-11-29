@@ -9,8 +9,7 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,16 +24,19 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/services")
 public class StartServiceDefault {
-    private static final Logger log = LoggerFactory.getLogger(StartServiceDefault.class);
+
     private static final String sessionId = "sessionId";
     private static Map<String, String> services;
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
+
     @Autowired
     private HttpServletRequest req;
+
     @Autowired
     private HttpServletResponse resp;
 

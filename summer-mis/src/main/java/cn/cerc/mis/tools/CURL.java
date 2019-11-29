@@ -1,7 +1,6 @@
 package cn.cerc.mis.tools;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +27,7 @@ import java.util.Map.Entry;
 /**
  * 请改使用summer-db的Curl对象
  */
+@Slf4j
 @Deprecated
 public class CURL {
 
@@ -45,8 +45,6 @@ public class CURL {
      * 请求编码
      */
     private static String requestEncoding = "UTF-8";
-
-    private static Logger log = LoggerFactory.getLogger(CURL.class);
 
     // 发送带参数的GET的HTTP请求, reqUrl HTTP请求URL param parameters 参数映射表 return
     // HTTP响应的字符串

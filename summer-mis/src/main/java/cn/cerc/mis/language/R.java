@@ -6,13 +6,12 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 public class R {
-    private static final Logger log = LoggerFactory.getLogger(R.class);
 
     public static String getLanguage(IHandle handle) {
         Object temp = handle.getProperty(Application.deviceLanguage);

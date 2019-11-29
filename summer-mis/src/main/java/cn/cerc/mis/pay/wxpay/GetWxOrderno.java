@@ -1,5 +1,6 @@
 package cn.cerc.mis.pay.wxpay;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.ClientPNames;
@@ -19,9 +20,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @SuppressWarnings("deprecation")
 public class GetWxOrderno {
-    private static final Logger log = LoggerFactory.getLogger(GetWxOrderno.class);
+
     public static DefaultHttpClient httpclient;
 
     static {

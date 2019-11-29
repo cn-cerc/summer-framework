@@ -9,12 +9,12 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class BookOptions {
     public static final String BookInfo_Set = "_BookInfoSet_";
     public static final String HideLoginInfo = "_HideLoginInfo_";
@@ -105,7 +105,7 @@ public class BookOptions {
     public static final String EnableWorkPieceToOP = "EnableWorkPieceToOP";
     public static final String StudentFileSupCorpNo = "StudentFileSupCorpNo";
     public static final String EnableAutoMRP = "EnableAutoMRP";
-    private static final Logger log = LoggerFactory.getLogger(BookOptions.class);
+
     private static Map<String, String> items = new HashMap<>();
 
     static {

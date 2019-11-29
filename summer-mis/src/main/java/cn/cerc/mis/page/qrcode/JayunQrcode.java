@@ -4,8 +4,7 @@ import cn.cerc.core.MD5;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.security.sapi.JayunAPI;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,9 +13,8 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Slf4j
 public class JayunQrcode {
-
-    private static final Logger log = LoggerFactory.getLogger(JayunQrcode.class);
 
     private static final String ACTION_LOGIN = "login";
     private static final String ACTION_BIND = "bind";

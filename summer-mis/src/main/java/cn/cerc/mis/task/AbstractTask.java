@@ -4,12 +4,12 @@ import cn.cerc.mis.core.AbstractHandle;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ISystemTable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Slf4j
 public abstract class AbstractTask extends AbstractHandle implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(AbstractTask.class);
+
     @Autowired
     public ISystemTable systemTable;
     private String describe;

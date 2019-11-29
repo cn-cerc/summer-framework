@@ -17,8 +17,7 @@ import cn.cerc.mis.page.qrcode.SocketTool;
 import cn.cerc.security.sapi.JayunAPI;
 import cn.cerc.security.sapi.JayunSecurity;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -29,13 +28,13 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
 
     // 配置在服务器的用户名下面 summer-application.properties
     public static final String Notify_Url = "app.notify_url";
-    private static final Logger log = LoggerFactory.getLogger(AppLoginDefault.class);
 
     public AppLoginDefault() {
         super();

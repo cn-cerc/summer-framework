@@ -8,14 +8,15 @@ import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PhoneVerify {
+
     public static final String ERROR_1 = " 分钟内验证码有效，可继续使用，请勿頻繁发送";
     public static final String ERROR_2 = "没有发送验证码";
     public static final String ERROR_3 = "验证码内容为空";
-    private static final Logger log = LoggerFactory.getLogger(PhoneVerify.class);
+
     private String nationalCode = "+86";
     private String mobile;
     private String phone; // 用户注册的手机号

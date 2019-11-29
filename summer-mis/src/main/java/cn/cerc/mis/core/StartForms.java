@@ -9,8 +9,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.page.JspPage;
 import cn.cerc.mis.page.RedirectPage;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -23,9 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+@Slf4j
 public class StartForms implements Filter {
-
-    private static final Logger log = LoggerFactory.getLogger(StartForms.class);
 
     private static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
             throws ServletException, IOException {
