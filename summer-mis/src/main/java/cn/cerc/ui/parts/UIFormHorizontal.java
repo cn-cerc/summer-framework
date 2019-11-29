@@ -1,7 +1,10 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.DataSource;
@@ -15,18 +18,16 @@ import cn.cerc.ui.grid.lines.ExpenderGridLine;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.vcl.UILabel;
 import cn.cerc.ui.vcl.ext.UISpan;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
 
 public class UIFormHorizontal extends UIComponent implements DataSource {
+    private DataSet dataSet;
     protected String cssClass = "search";
     protected String method = "post";
     protected HttpServletRequest request;
     protected List<AbstractField> fields = new ArrayList<>();
     protected String action;
-    private DataSet dataSet;
     private String enctype;
 
     private ButtonsFields buttons;
@@ -259,24 +260,6 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         return expender;
     }
 
-    @Override
-    public DataSet getDataSet() {
-        return dataSet;
-    }
-
-    @Override
-    public boolean isReadonly() {
-        return false;
-    }
-
-    public String getEnctype() {
-        return enctype;
-    }
-
-    public void setEnctype(String enctype) {
-        this.enctype = enctype;
-    }
-
     public class ButtonsFields extends UIComponent implements DataSource {
         private DataSource dataSource;
         private List<AbstractField> fields = new ArrayList<>();
@@ -315,5 +298,23 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         public void updateValue(String id, String code) {
             dataSource.updateValue(id, code);
         }
+    }
+
+    @Override
+    public DataSet getDataSet() {
+        return dataSet;
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return false;
+    }
+
+    public String getEnctype() {
+        return enctype;
+    }
+
+    public void setEnctype(String enctype) {
+        this.enctype = enctype;
     }
 }

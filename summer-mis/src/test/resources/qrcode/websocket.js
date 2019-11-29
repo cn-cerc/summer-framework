@@ -1,5 +1,5 @@
 var websocket = null;
-$(function () {
+$(function() {
     var socketUrl = $("#socketUrl").val();
 
     // 判断当前浏览器是否支持WebSocket
@@ -9,17 +9,17 @@ $(function () {
     }
 
     // 连接发生错误的回调方法
-    websocket.onerror = function () {
+    websocket.onerror = function() {
         setMessageInnerHTML("WebSocket连接发生错误");
     };
 
     // 接收到消息的回调方法
-    websocket.onmessage = function (event) {
+    websocket.onmessage = function(event) {
         setMessageInnerHTML(event.data);
     }
 
     // 监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-    window.onbeforeunload = function () {
+    window.onbeforeunload = function() {
         closeWebSocket();
     }
 

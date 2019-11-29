@@ -11,8 +11,9 @@ public class Block130 extends UIComponent {
 
     /**
      * 多选框 + 文本
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block130(UIComponent owner) {
         super(owner);

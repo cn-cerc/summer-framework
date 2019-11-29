@@ -1,5 +1,20 @@
 package cn.cerc.mis.page;
 
+import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
 import cn.cerc.core.Utils;
@@ -16,22 +31,12 @@ import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.page.qrcode.SocketTool;
 import cn.cerc.security.sapi.JayunAPI;
 import cn.cerc.security.sapi.JayunSecurity;
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
-
-@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
+
+    private static final Logger log = LoggerFactory.getLogger(AppLoginDefault.class);
 
     // 配置在服务器的用户名下面 summer-application.properties
     public static final String Notify_Url = "app.notify_url";
@@ -140,7 +145,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         req.setAttribute("needVerify", "false");
 
         IUserLoginCheck obj = Application.getBean("userLoginCheck", IUserLoginCheck.class);
-        if (obj != null) {
+        if (obj != null ) {
             if (obj instanceof SupportHandle) {
                 if (form instanceof AbstractForm)
                     ((SupportHandle) obj).init((AbstractForm) form);

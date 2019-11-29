@@ -1,12 +1,12 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.HtmlWriter;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.HtmlWriter;
 
 public class UIToolBar extends UIComponent {
     private List<UISheet> sheets = new ArrayList<>();
@@ -28,7 +28,7 @@ public class UIToolBar extends UIComponent {
         if (isEmpty()) {
             // html.print(" style='display:none'");
             // FIXME: 2019/6/16 此处需改进
-            this.cssStyle = "display:none";
+            this.cssStyle="display:none";
         }
         super.outputCss(html);
         html.println(">");

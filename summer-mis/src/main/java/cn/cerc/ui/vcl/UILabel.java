@@ -8,31 +8,20 @@ public class UILabel extends UIComponent {
     private String url;
     private String focusTarget;
 
-    public UILabel(UIComponent component) {
-        super(component);
-    }
-
-    public UILabel() {
-        super();
-    }
-
-    public UILabel(String caption, String url) {
-        super();
-        this.caption = caption;
-        this.url = url;
-    }
-
-    public UILabel(String caption) {
-        super();
-        this.caption = caption;
-    }
-
     public String getFocusTarget() {
         return focusTarget;
     }
 
     public void setFocusTarget(String focusTarget) {
         this.focusTarget = focusTarget;
+    }
+
+    public UILabel(UIComponent component) {
+        super(component);
+    }
+
+    public UILabel() {
+        super();
     }
 
     @Override
@@ -45,6 +34,17 @@ public class UILabel extends UIComponent {
             html.print(">%s</label>", this.caption);
         } else
             html.print("<a href='%s'>%s</a>", this.url, this.caption);
+    }
+
+    public UILabel(String caption, String url) {
+        super();
+        this.caption = caption;
+        this.url = url;
+    }
+
+    public UILabel(String caption) {
+        super();
+        this.caption = caption;
     }
 
     public String getCaption() {

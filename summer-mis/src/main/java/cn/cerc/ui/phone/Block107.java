@@ -1,16 +1,18 @@
 package cn.cerc.ui.phone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.UITextBox;
 import cn.cerc.ui.vcl.ext.UISpan;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
+ * 
  * @author 张弓
+ *
  */
 public class Block107 extends UIComponent {
     private UITextBox input = new UITextBox();
@@ -21,20 +23,15 @@ public class Block107 extends UIComponent {
 
     /**
      * 用于生成类别的开窗选择，如商品品牌、大中类、系列，地址等
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block107(UIComponent owner) {
         super(owner);
         input.setPlaceholder("当前条件：");
         input.setReadonly(true);
         image.setSrc("jui/phone/block107-expand.png");
-    }
-
-    public static void outputChoiceItem(HtmlWriter html, String value, String choiceId, String childPage,
-                                        String dataUrl) {
-        html.print("<li onclick='javascript:choiceItem(\"%s\", \"%s\", \"%s\", \"%s\")'>%s</li>", choiceId, value,
-                childPage, dataUrl, value);
     }
 
     @Override
@@ -88,6 +85,12 @@ public class Block107 extends UIComponent {
 
     public void setDataUrl(String dataUrl) {
         this.dataUrl = dataUrl;
+    }
+
+    public static void outputChoiceItem(HtmlWriter html, String value, String choiceId, String childPage,
+            String dataUrl) {
+        html.print("<li onclick='javascript:choiceItem(\"%s\", \"%s\", \"%s\", \"%s\")'>%s</li>", choiceId, value,
+                childPage, dataUrl, value);
     }
 }
 

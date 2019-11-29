@@ -1,17 +1,19 @@
 package cn.cerc.ui.docs;
 
-import cn.cerc.mis.core.IForm;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import javax.servlet.ServletContext;
+
 import com.vladsch.flexmark.ast.Node;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
-import javax.servlet.ServletContext;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import cn.cerc.mis.core.IForm;
 
 public class MarkdownDoc {
     private ServletContext servletContext;
@@ -32,8 +34,10 @@ public class MarkdownDoc {
     }
 
     /**
-     * @param fileName 带绝对路径的文件名
-     * @param def      默认文件路径
+     * @param fileName
+     *            带绝对路径的文件名
+     * @param def
+     *            默认文件路径
      * @return 返回文件内容，若文件不存在，则返回null
      */
     public String getContext(String fileName, String def) {
@@ -48,7 +52,8 @@ public class MarkdownDoc {
     }
 
     /**
-     * @param inputText 传入的md字符串
+     * @param inputText
+     *            传入的md字符串
      * @return 返回经转化后的html
      */
     public String mdToHtml(String inputText) {

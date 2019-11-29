@@ -1,11 +1,12 @@
 package cn.cerc.mis.sms;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class YunpianSMSTest {
+    private static final Logger log = LoggerFactory.getLogger(YunpianSMSTest.class);
 
     @Before
     public void setUp() throws Exception {

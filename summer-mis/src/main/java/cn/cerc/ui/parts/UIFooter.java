@@ -1,13 +1,14 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UIFooter extends UIComponent {
     private static final int MAX_MENUS = 6;

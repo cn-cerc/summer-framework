@@ -1,10 +1,7 @@
 package cn.cerc.mis.client;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import java.io.IOException;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -13,12 +10,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
-@Slf4j
 public class RemoteService implements IServiceProxy {
-
+    private static final Logger log = LoggerFactory.getLogger(RemoteService.class);
     private String host = "127.0.0.1";
     private String service;
     private DataSet dataIn;
@@ -128,16 +129,12 @@ public class RemoteService implements IServiceProxy {
         return dataOut;
     }
 
-    protected void setDataOut(DataSet dataOut) {
-        this.dataOut = dataOut;
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public String getHost() {
         return this.host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
     }
 
     @Override
@@ -157,5 +154,9 @@ public class RemoteService implements IServiceProxy {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    protected void setDataOut(DataSet dataOut) {
+        this.dataOut = dataOut;
     }
 }

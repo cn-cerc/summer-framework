@@ -10,8 +10,9 @@ import cn.cerc.ui.vcl.UIImage;
  * icon图标 + 标题
  * <p>
  * 描述信息
- *
+ * 
  * @author HuangRongjun
+ *
  */
 public class Block305 extends UIComponent {
     private String title = "(title)";

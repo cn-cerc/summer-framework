@@ -1,15 +1,7 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.config.IAppStaticFile;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.page.JspPage;
-import cn.cerc.mis.page.RedirectPage;
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -19,32 +11,24 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.lang.reflect.Method;
 
-@Slf4j
-@Deprecated // 请改使用 StartFormDefault
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.IAppStaticFile;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.page.JspPage;
+import cn.cerc.mis.page.RedirectPage;
+
 public class StartForms implements Filter {
 
-    private static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
-            throws ServletException, IOException {
-        Throwable err = e.getCause();
-        if (err == null) {
-            err = e;
-        }
-        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
-        if (errorPage != null) {
-            String result = errorPage.getErrorPage(request, response, err);
-            if (result != null) {
-                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
-                request.getServletContext().getRequestDispatcher(url).forward(request, response);
-            }
-        } else {
-            log.warn("not define bean: errorPage");
-            log.error(err.getMessage());
-            err.printStackTrace();
-        }
-    }
+    private static final Logger log = LoggerFactory.getLogger(StartForms.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -58,10 +42,30 @@ public class StartForms implements Filter {
         // 遇到静态文件直接输出
         IAppStaticFile staticFile = Application.getBean(IAppStaticFile.class, "appStaticFile", "appStaticFileDefault");
         if (staticFile.isStaticFile(uri)) {
+            // 默认没有重定向，直接读取资源文件的默认路径
+            // chain.doFilter(req, resp);
+
+            /*
+             * 1、 此处的 getPathForms 对应资源文件目录的forms，可自行定义成其他路径，注意配套更新 AppConfig
+             * 2、截取当前的资源路径，将资源文件重定向到容器中的项目路径 3、例如/ /131001/images/systeminstall-pc.png ->
+             * /forms/images/systeminstall-pc.png
+             */
+            log.info("before {}", uri);
+            IAppConfig conf = Application.getAppConfig();
+            String source = "/" + conf.getPathForms() + uri.substring(uri.indexOf("/", 2));
+            request.getServletContext().getRequestDispatcher(source).forward(request, response);
+            log.info("after  {}", source);
+            return;
+        }
+
+        if (uri.contains("service/")) {
             chain.doFilter(req, resp);
             return;
         }
-        log.info(uri);
+        if (uri.contains("task/")) {
+            chain.doFilter(req, resp);
+            return;
+        }
 
         String childCode = getRequestCode(req);
         if (childCode == null) {
@@ -388,5 +392,25 @@ public class StartForms implements Filter {
     @Override
     public void destroy() {
 
+    }
+
+    private static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
+            throws ServletException, IOException {
+        Throwable err = e.getCause();
+        if (err == null) {
+            err = e;
+        }
+        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
+        if (errorPage != null) {
+            String result = errorPage.getErrorPage(request, response, err);
+            if (result != null) {
+                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
+                request.getServletContext().getRequestDispatcher(url).forward(request, response);
+            }
+        } else {
+            log.warn("not define bean: errorPage");
+            log.error(err.getMessage());
+            err.printStackTrace();
+        }
     }
 }

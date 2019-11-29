@@ -7,7 +7,9 @@ import cn.cerc.ui.vcl.UITextBox;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
+ * 
  * @author 张弓
+ *
  */
 public class Block402 extends UIComponent {
     private String title = "(title)";
@@ -23,8 +25,9 @@ public class Block402 extends UIComponent {
 
     /**
      * 进出库单据明细之显示与数量修改
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block402(UIComponent owner) {
         super(owner);

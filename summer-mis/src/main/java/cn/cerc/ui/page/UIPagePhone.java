@@ -1,30 +1,31 @@
 package cn.cerc.ui.page;
 
+import static cn.cerc.mis.core.ClientDevice.device_ee;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.language.R;
 import cn.cerc.mis.page.ExportFile;
 import cn.cerc.mis.page.IMenuBar;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.RightMenus;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
-import static cn.cerc.mis.core.ClientDevice.device_ee;
-
 /**
  * 主体子页面(公用)
- *
+ * 
  * @author 张弓
+ *
  */
 public class UIPagePhone extends AbstractJspPage {
     private String searchWaitingId = "";
@@ -78,7 +79,7 @@ public class UIPagePhone extends AbstractJspPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getTitle()));
+        out.printf("<title>%s</title>\n", this.getForm().getTitle());
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");

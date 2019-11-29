@@ -12,6 +12,14 @@ import java.io.Serializable;
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class ClientDevice implements IClient, Serializable {
+    // private static final Logger log = Logger.LoggerFactory(DeviceInfo.class);
+    private static final long serialVersionUID = -3593077761901636920L;
+    private String sid; // application session id;
+    private String deviceId; // device id
+    private String deviceType; // phone/pad/ee/pc
+    private String languageId; // device language: cn/en
+    private HttpServletRequest request;
+
     public static final String deviceId_key = "CLIENTID";
     public static final String deviceType_key = "device";
     // 手机
@@ -25,13 +33,6 @@ public class ClientDevice implements IClient, Serializable {
     public static final String device_pc = "pc";
     // 电脑专用浏览器
     public static final String device_ee = "ee";
-    // private static final Logger log = Logger.LoggerFactory(DeviceInfo.class);
-    private static final long serialVersionUID = -3593077761901636920L;
-    private String sid; // application session id;
-    private String deviceId; // device id
-    private String deviceType; // phone/pad/ee/pc
-    private String languageId; // device language: cn/en
-    private HttpServletRequest request;
 
     public ClientDevice() {
         super();
@@ -58,22 +59,14 @@ public class ClientDevice implements IClient, Serializable {
         return deviceId == null ? RequestData.webclient : deviceId;
     }
 
-    public void setId(String value) {
-        this.deviceId = value;
-        request.setAttribute(deviceId_key, deviceId == null ? "" : deviceId);
-        request.getSession().setAttribute(deviceId_key, value);
-        if (value != null && value.length() == 28)
-            setDevice(device_phone);
-        if (sid != null && deviceId != null && !"".equals(deviceId)) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, sid)) {
-                getValue(buff, deviceId_key, deviceId);
-            }
-        }
-    }
-
     @Override
     public String getDevice() {
         return deviceType == null ? device_pc : deviceType;
+    }
+
+    @Override
+    public String getLanguage() {
+        return languageId == null ? "cn" : languageId;
     }
 
     @Override
@@ -90,15 +83,6 @@ public class ClientDevice implements IClient, Serializable {
             }
         }
         return;
-    }
-
-    @Override
-    public String getLanguage() {
-        return languageId == null ? "cn" : languageId;
-    }
-
-    public String getSid() {
-        return sid != null && "".equals(sid) ? null : sid;
     }
 
     public void setSid(String value) {
@@ -120,6 +104,23 @@ public class ClientDevice implements IClient, Serializable {
         this.sid = tmp;
         request.getSession().setAttribute(RequestData.appSession_Key, this.sid);
         request.setAttribute(RequestData.appSession_Key, this.sid == null ? "" : this.sid);
+    }
+
+    public void setId(String value) {
+        this.deviceId = value;
+        request.setAttribute(deviceId_key, deviceId == null ? "" : deviceId);
+        request.getSession().setAttribute(deviceId_key, value);
+        if (value != null && value.length() == 28)
+            setDevice(device_phone);
+        if (sid != null && deviceId != null && !"".equals(deviceId)) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, sid)) {
+                getValue(buff, deviceId_key, deviceId);
+            }
+        }
+    }
+
+    public String getSid() {
+        return sid != null && "".equals(sid) ? null : sid;
     }
 
     public void clear() {

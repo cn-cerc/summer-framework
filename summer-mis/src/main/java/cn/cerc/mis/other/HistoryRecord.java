@@ -22,10 +22,6 @@ public class HistoryRecord {
         return handle;
     }
 
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
-    }
-
     public HistoryLevel getLevel() {
         return level;
     }
@@ -33,6 +29,10 @@ public class HistoryRecord {
     public HistoryRecord setLevel(HistoryLevel level) {
         this.level = level;
         return this;
+    }
+
+    public void setHandle(IHandle handle) {
+        this.handle = handle;
     }
 
     public String getContent() {
@@ -55,20 +55,20 @@ public class HistoryRecord {
         int mth = 0;
 
         switch (this.level) {
-            case General:
-                mth = 1;
-                break;
-            case Month3:
-                mth = 3;
-                break;
-            case Year1:
-                mth = 12;
-                break;
-            case Year3:
-                mth = 36;
-                break;
-            default:
-                mth = 0;
+        case General:
+            mth = 1;
+            break;
+        case Month3:
+            mth = 3;
+            break;
+        case Year1:
+            mth = 12;
+            break;
+        case Year3:
+            mth = 36;
+            break;
+        default:
+            mth = 0;
         }
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         BatchScript bs = new BatchScript(handle);

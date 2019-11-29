@@ -1,12 +1,20 @@
 package cn.cerc.ui.page;
 
+import static cn.cerc.mis.core.ClientDevice.device_ee;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.page.ExportFile;
 import cn.cerc.mis.page.IMenuBar;
@@ -23,18 +31,11 @@ import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIFormVertical;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
-import static cn.cerc.mis.core.ClientDevice.device_ee;
-
 /**
  * 主体子页面
- *
+ * 
  * @author 张弓
+ *
  */
 public class UIPageSearch extends AbstractJspPage {
     private MutiPage pages;
@@ -95,7 +96,7 @@ public class UIPageSearch extends AbstractJspPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getTitle()));
+        out.printf("<title>%s</title>\n", this.getForm().getTitle());
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");

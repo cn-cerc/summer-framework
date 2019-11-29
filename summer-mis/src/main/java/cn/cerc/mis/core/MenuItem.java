@@ -5,6 +5,8 @@ import java.util.Map;
 
 // 此对象应该换为 MenuItem
 public class MenuItem {
+    // 菜单代码
+    private String id;
     // 菜单标题
     public static final String TITLE = "title";
     // 菜单编号，一般为数字
@@ -19,8 +21,6 @@ public class MenuItem {
     public static final String PARENT = "parentId";
     // 菜单图标，为URL值
     public static final String IMAGE = "image";
-    // 菜单代码
-    private String id;
     // 所有参数值
     private Map<String, String> params = new HashMap<>();
 

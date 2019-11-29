@@ -1,5 +1,8 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.UIConfig;
@@ -10,16 +13,13 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.vcl.UIText;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UIFormVertical extends UIComponent implements DataSource {
+    private UIContent content;
     protected String CSSClass = "info";
     protected String method = "post";
     protected DataSet dataSet;
     protected List<AbstractField> fields = new ArrayList<>();
     protected String action;
-    private UIContent content;
     private String enctype;
     private String submit;
     private boolean readAll;
@@ -155,6 +155,11 @@ public class UIFormVertical extends UIComponent implements DataSource {
         return null;
     }
 
+    public void setRecord(Record record) {
+        dataSet.getCurrent().copyValues(record, record.getFieldDefs());
+        dataSet.setRecNo(dataSet.size());
+    }
+
     @Override
     public DataSet getDataSet() {
         return dataSet;
@@ -162,11 +167,6 @@ public class UIFormVertical extends UIComponent implements DataSource {
 
     public Record getRecord() {
         return dataSet.getCurrent();
-    }
-
-    public void setRecord(Record record) {
-        dataSet.getCurrent().copyValues(record, record.getFieldDefs());
-        dataSet.setRecNo(dataSet.size());
     }
 
     @Override

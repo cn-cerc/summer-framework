@@ -1,22 +1,25 @@
 package cn.cerc.ui.phone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
+ * 
  * @author 张弓
+ *
  */
 public class Block992 extends UIComponent {
     private List<UIButton> items = new ArrayList<>();
 
     /**
      * 底部状态栏：1个功能按钮+提示文字
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block992(UIComponent owner) {
         super(owner);

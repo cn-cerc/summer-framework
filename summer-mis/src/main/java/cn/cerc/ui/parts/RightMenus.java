@@ -1,13 +1,14 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.mis.core.AbstractHandle;
-import cn.cerc.mis.page.IMenuBar;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import cn.cerc.mis.core.AbstractHandle;
+import cn.cerc.mis.page.IMenuBar;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

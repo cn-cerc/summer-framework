@@ -1,5 +1,19 @@
 package cn.cerc.mis.client;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -9,40 +23,14 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
-@Slf4j
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
-
+    private static final Logger log = LoggerFactory.getLogger(StartServices.class);
     private static final long serialVersionUID = 1L;
-    private static final String sessionId = "sessionId";
-    private static Map<String, String> services;
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
-
-    private static void loadServices(HttpServletRequest req) {
-        if (services != null)
-            return;
-        services = new HashMap<>();
-        for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
-            IRestful service = Application.getBean(serviceCode, IRestful.class);
-            String path = service.getRestPath();
-            if (null != path && !"".equals(path)) {
-                services.put(path, serviceCode);
-                log.info("restful service " + serviceCode + ": " + path);
-            }
-        }
-    }
+    private static Map<String, String> services;
+    private static final String sessionId = "sessionId";
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -194,6 +182,20 @@ public class StartServices extends HttpServlet {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             return null;
+        }
+    }
+
+    private static void loadServices(HttpServletRequest req) {
+        if (services != null)
+            return;
+        services = new HashMap<>();
+        for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
+            IRestful service = Application.getBean(serviceCode, IRestful.class);
+            String path = service.getRestPath();
+            if (null != path && !"".equals(path)) {
+                services.put(path, serviceCode);
+                log.info("restful service " + serviceCode + ": " + path);
+            }
         }
     }
 }

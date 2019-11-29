@@ -1,6 +1,12 @@
 package cn.cerc.mis.pay.wxpay;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.ClientPNames;
@@ -10,17 +16,12 @@ import org.apache.http.util.EntityUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-@Slf4j
 @SuppressWarnings("deprecation")
 public class GetWxOrderno {
+    private static final Logger log = LoggerFactory.getLogger(GetWxOrderno.class);
     public static DefaultHttpClient httpclient;
 
     static {
@@ -29,7 +30,7 @@ public class GetWxOrderno {
     }
 
     // 获取预支付id
-    @SuppressWarnings({"resource", "unchecked"})
+    @SuppressWarnings({ "resource", "unchecked" })
     public static Map<String, String> getPayNo(String url, String xmlParam) {
         DefaultHttpClient client = new DefaultHttpClient();
         client.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -49,7 +50,7 @@ public class GetWxOrderno {
         return map;
     }
 
-    @SuppressWarnings({"resource", "rawtypes"})
+    @SuppressWarnings({ "resource", "rawtypes" })
     public static Map getResultMap(String url, String xmlParam) {
         DefaultHttpClient client = new DefaultHttpClient();
         client.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -70,7 +71,7 @@ public class GetWxOrderno {
     }
 
     // 获取扫码支付连接
-    @SuppressWarnings({"resource", "rawtypes"})
+    @SuppressWarnings({ "resource", "rawtypes" })
     public static String getCodeUrl(String url, String xmlParam) {
         DefaultHttpClient client = new DefaultHttpClient();
         client.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
@@ -92,7 +93,7 @@ public class GetWxOrderno {
     }
 
     // 解析xml,返回第一级元素键值对。如果第一级元素有子节点，则此节点的值是子节点的xml数据。
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Map doXMLParse(String strxml) throws Exception {
         if (null == strxml || "".equals(strxml)) {
             return null;

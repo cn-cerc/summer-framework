@@ -9,8 +9,9 @@ import cn.cerc.ui.parts.UIComponent;
  * 标题
  * <p>
  * 描述信息
- *
+ * 
  * @author HuangRongjun
+ *
  */
 public class Block304 extends UIComponent {
     private String title = "(title)";

@@ -1,9 +1,9 @@
 package cn.cerc.ui.grid;
 
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.DataSet;
 import net.sf.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class MutiPage {
     // 数据源
@@ -53,16 +53,8 @@ public class MutiPage {
         return prior;
     }
 
-    public void setPrior(int prior) {
-        this.prior = prior;
-    }
-
     public int getNext() {
         return next;
-    }
-
-    public void setNext(int next) {
-        this.next = next;
     }
 
     public int getCount() {
@@ -72,24 +64,12 @@ public class MutiPage {
         return this.count;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public final int getBegin() {
         return begin;
     }
 
-    public void setBegin(int begin) {
-        this.begin = begin;
-    }
-
     public final int getEnd() {
         return end;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
     }
 
     private void reset() {
@@ -128,6 +108,26 @@ public class MutiPage {
 
     public boolean isRange(int value) {
         return (value >= this.getBegin()) && (value <= this.getEnd());
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setPrior(int prior) {
+        this.prior = prior;
+    }
+
+    public void setNext(int next) {
+        this.next = next;
+    }
+
+    public void setBegin(int begin) {
+        this.begin = begin;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
     }
 
     public DataSet getDataSet() {

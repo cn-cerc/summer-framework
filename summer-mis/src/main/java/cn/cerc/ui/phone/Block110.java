@@ -13,8 +13,9 @@ public class Block110 extends UIComponent {
 
     /**
      * 文本 + 输入框 + 查询按钮
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block110(UIComponent owner) {
         super(owner);

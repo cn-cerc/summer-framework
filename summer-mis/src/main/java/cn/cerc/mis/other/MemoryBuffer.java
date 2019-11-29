@@ -9,6 +9,11 @@ public class MemoryBuffer extends Buffer implements AutoCloseable {
         this.setKey(buildKey(bt, keys));
     }
 
+    @Override
+    public final void close() {
+        this.post();
+    }
+
     public static void delete(BufferType bt, String... keys) {
         Buffer buff = new Buffer(buildKey(bt, keys));
         buff.clear();
@@ -26,10 +31,5 @@ public class MemoryBuffer extends Buffer implements AutoCloseable {
         for (String key : keys)
             str.append(".").append(key);
         return str.toString();
-    }
-
-    @Override
-    public final void close() {
-        this.post();
     }
 }

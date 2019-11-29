@@ -1,13 +1,14 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import cn.cerc.mis.client.RemoteService;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import cn.cerc.mis.client.RemoteService;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
 
 public class RemoteServiceTest {
     // private static final Logger log =

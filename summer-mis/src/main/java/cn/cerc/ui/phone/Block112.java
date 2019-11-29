@@ -10,8 +10,9 @@ public class Block112 extends UIComponent {
 
     /**
      * 简单显示文字类信息，仅用于显示，不可修改
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block112(UIComponent owner) {
         super(owner);
