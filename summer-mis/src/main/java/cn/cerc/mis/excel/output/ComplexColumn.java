@@ -1,9 +1,9 @@
 package cn.cerc.mis.excel.output;
 
+import cn.cerc.core.Record;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.cerc.core.Record;
 
 public class ComplexColumn extends Column {
     private List<String> fields = new ArrayList<>();

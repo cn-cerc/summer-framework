@@ -51,6 +51,11 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     @Override
+    public final IForm getForm() {
+        return form;
+    }
+
+    @Override
     public final void setForm(IForm form) {
         this.form = form;
         if (form != null) {
@@ -60,11 +65,6 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
             this.add("summer_js", config.getProperty("summer.js", "js/summer.js"));
             this.add("myapp_js", config.getProperty("myapp.js", "js/myapp.js"));
         }
-    }
-
-    @Override
-    public final IForm getForm() {
-        return form;
     }
 
     @Override

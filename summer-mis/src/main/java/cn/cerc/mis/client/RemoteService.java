@@ -1,7 +1,9 @@
 package cn.cerc.mis.client;
 
-import java.io.IOException;
-
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -13,10 +15,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import java.io.IOException;
 
 public class RemoteService implements IServiceProxy {
     private static final Logger log = LoggerFactory.getLogger(RemoteService.class);
@@ -129,12 +128,16 @@ public class RemoteService implements IServiceProxy {
         return dataOut;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    protected void setDataOut(DataSet dataOut) {
+        this.dataOut = dataOut;
     }
 
     public String getHost() {
         return this.host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     @Override
@@ -154,9 +157,5 @@ public class RemoteService implements IServiceProxy {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    protected void setDataOut(DataSet dataOut) {
-        this.dataOut = dataOut;
     }
 }

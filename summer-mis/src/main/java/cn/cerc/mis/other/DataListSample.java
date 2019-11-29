@@ -22,14 +22,13 @@ import java.util.Map;
 public class DataListSample implements IDataList {
     private static final Logger log = LoggerFactory.getLogger(DataListSample.class);
     private static final int Version = 4;
-    private IHandle handle;
-    private Map<String, DataRecordSample> buff = new HashMap<>();
-    private String buffKey;
-
     private static final String ShowInUP = "ShowInUP";
     private static final String ShowOutUP = "ShowOutUP";
     private static final String ShowWholesaleUP = "ShowWholesaleUP";
     private static final String ShowBottomUP = "ShowBottomUP";
+    private IHandle handle;
+    private Map<String, DataRecordSample> buff = new HashMap<>();
+    private String buffKey;
 
     public DataListSample(IHandle handle) {
         super();

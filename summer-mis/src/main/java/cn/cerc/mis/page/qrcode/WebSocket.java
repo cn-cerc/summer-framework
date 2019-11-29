@@ -1,8 +1,7 @@
 package cn.cerc.mis.page.qrcode;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.EndpointConfig;
@@ -12,16 +11,15 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 将目前的类定义成一个websocket服务器端,
  * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端
- * 
- * @author root
  *
+ * @author root
  */
 @ServerEndpoint(value = "/websocket", configurator = GetHttpSessionConfigurator.class)
 public class WebSocket {
@@ -38,10 +36,13 @@ public class WebSocket {
 
     private HttpSession httpSession;
 
+    public static Map<String, WebSocket> getWebSocketSet() {
+        return items;
+    }
+
     /**
-     * 
      * 连接建立成功调用的方法
-     * 
+     *
      * @param session 可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
      * @param config  端点配置
      */
@@ -65,7 +66,7 @@ public class WebSocket {
 
     /**
      * 收到客户端消息后调用的方法
-     * 
+     *
      * @param message 客户端发送过来的消息
      * @param session 可选的参数
      */
@@ -83,7 +84,7 @@ public class WebSocket {
 
     /**
      * 发生错误时调用
-     * 
+     *
      * @param session 当前连接
      * @param error   错误
      */
@@ -103,10 +104,6 @@ public class WebSocket {
             result = false;
         }
         return result;
-    }
-
-    public static Map<String, WebSocket> getWebSocketSet() {
-        return items;
     }
 
     public String getMessage() {

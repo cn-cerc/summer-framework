@@ -7,9 +7,8 @@ import cn.cerc.ui.parts.UIComponent;
  * 用于消息明细显示
  * <p>
  * 标题 + 详细内容
- * 
- * @author HuangRongjun
  *
+ * @author HuangRongjun
  */
 public class Block902 extends UIComponent {
     private String title = "(title)";
@@ -34,12 +33,12 @@ public class Block902 extends UIComponent {
         return title;
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public void setContent(String content) {

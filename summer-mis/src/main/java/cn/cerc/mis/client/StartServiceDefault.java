@@ -1,22 +1,5 @@
 package cn.cerc.mis.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -26,20 +9,48 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/services")
 public class StartServiceDefault {
+    private static final Logger log = LoggerFactory.getLogger(StartServiceDefault.class);
+    private static final String sessionId = "sessionId";
+    private static Map<String, String> services;
+    public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
     @Autowired
     private HttpServletRequest req;
     @Autowired
     private HttpServletResponse resp;
 
-    private static final Logger log = LoggerFactory.getLogger(StartServiceDefault.class);
-    public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
-    private static Map<String, String> services;
-    private static final String sessionId = "sessionId";
+    private static void loadServices(HttpServletRequest req) {
+        if (services != null)
+            return;
+        services = new HashMap<>();
+        for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
+            IRestful service = Application.getBean(serviceCode, IRestful.class);
+            String path = service.getRestPath();
+            if (null != path && !"".equals(path)) {
+                services.put(path, serviceCode);
+                log.info("restful service " + serviceCode + ": " + path);
+            }
+        }
+    }
 
     @RequestMapping("/")
     @ResponseBody
@@ -211,20 +222,6 @@ public class StartServiceDefault {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             return null;
-        }
-    }
-
-    private static void loadServices(HttpServletRequest req) {
-        if (services != null)
-            return;
-        services = new HashMap<>();
-        for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
-            IRestful service = Application.getBean(serviceCode, IRestful.class);
-            String path = service.getRestPath();
-            if (null != path && !"".equals(path)) {
-                services.put(path, serviceCode);
-                log.info("restful service " + serviceCode + ": " + path);
-            }
         }
     }
 }

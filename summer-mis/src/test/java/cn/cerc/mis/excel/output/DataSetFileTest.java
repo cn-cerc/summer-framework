@@ -1,17 +1,15 @@
 package cn.cerc.mis.excel.output;
 
-import static org.junit.Assert.assertTrue;
+import cn.cerc.core.DataSet;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
-import cn.cerc.core.DataSet;
-import cn.cerc.mis.excel.output.DataSetFile;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
+import static org.junit.Assert.assertTrue;
 
 public class DataSetFileTest {
 

@@ -1,12 +1,11 @@
 package cn.cerc.mis.task;
 
-import java.util.Timer;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.core.Application;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.core.Application;
+import java.util.Timer;
 
 //使用内部驱动定时任务
 @Deprecated // 请改使用 StartTaskDefault

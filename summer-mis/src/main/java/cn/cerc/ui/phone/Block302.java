@@ -6,9 +6,7 @@ import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 
 /**
- * 
  * @author 张弓
- *
  */
 public class Block302 extends UIComponent {
     private String title = "(title)";
@@ -18,9 +16,8 @@ public class Block302 extends UIComponent {
 
     /**
      * 用于显示会员资料
-     * 
-     * @param owner
-     *            内容显示区
+     *
+     * @param owner 内容显示区
      */
     public Block302(UIComponent owner) {
         super(owner);

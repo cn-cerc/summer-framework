@@ -1,5 +1,8 @@
 package cn.cerc.mis.queue;
 
+import org.apache.activemq.ActiveMQConnection;
+import org.apache.activemq.ActiveMQConnectionFactory;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -9,9 +12,6 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-
-import org.apache.activemq.ActiveMQConnection;
-import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class QueueConnection {
     // ActiveMq 的默认用户名
@@ -42,11 +42,9 @@ public class QueueConnection {
 
     /**
      * 发送消息
-     * 
-     * @param disname
-     *            消息队列id
-     * @param data
-     *            要发送的数据
+     *
+     * @param disname 消息队列id
+     * @param data    要发送的数据
      * @throws JMSException
      */
     public void sendMessage(String disname, String data) throws JMSException {
@@ -65,9 +63,8 @@ public class QueueConnection {
 
     /**
      * 取得消息
-     * 
-     * @param disname
-     *            消息队列id
+     *
+     * @param disname 消息队列id
      * @return 返回取得的消息
      * @throws JMSException
      */

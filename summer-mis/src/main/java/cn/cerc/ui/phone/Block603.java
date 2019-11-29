@@ -5,18 +5,15 @@ import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 
 /**
- * 
  * @author 张弓
- *
  */
 public class Block603 extends UIComponent {
     private UIImage image = new UIImage();
 
     /**
      * 单图片显示
-     * 
-     * @param owner
-     *            内容显示区
+     *
+     * @param owner 内容显示区
      */
     public Block603(UIComponent owner) {
         super(owner);

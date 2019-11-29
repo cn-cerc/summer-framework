@@ -1,5 +1,8 @@
 package cn.cerc.mis.tools;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,9 +16,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * <pre>
  * HTTP请求代理类
@@ -24,7 +24,10 @@ import org.slf4j.LoggerFactory;
  * @author benl
  * @version 1.0, 2007-7-3
  */
-/** 请改使用summer-db的Curl对象 */
+
+/**
+ * 请改使用summer-db的Curl对象
+ */
 @Deprecated
 public class CURL {
 
@@ -57,7 +60,7 @@ public class CURL {
         String responseContent = null;
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 params.append(element.getKey().toString());
                 params.append("=");
@@ -178,7 +181,7 @@ public class CURL {
     public static String doPost(String reqUrl, Map<String, String> parameters, String recvEncoding) {
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 Object val = element.getValue();
                 if (val != null) {
@@ -251,24 +254,24 @@ public class CURL {
         return CURL.connectTimeOut;
     }
 
-    // 读取数据超时(毫秒)
-    public static int getReadTimeOut() {
-        return CURL.readTimeOut;
-    }
-
-    // 请求编码
-    public static String getRequestEncoding() {
-        return requestEncoding;
-    }
-
     // 连接超时(毫秒)
     public static void setConnectTimeOut(int connectTimeOut) {
         CURL.connectTimeOut = connectTimeOut;
     }
 
     // 读取数据超时(毫秒)
+    public static int getReadTimeOut() {
+        return CURL.readTimeOut;
+    }
+
+    // 读取数据超时(毫秒)
     public static void setReadTimeOut(int readTimeOut) {
         CURL.readTimeOut = readTimeOut;
+    }
+
+    // 请求编码
+    public static String getRequestEncoding() {
+        return requestEncoding;
     }
 
     // 请求编码

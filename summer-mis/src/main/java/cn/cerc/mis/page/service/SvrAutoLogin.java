@@ -1,10 +1,5 @@
 package cn.cerc.mis.page.service;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -19,6 +14,10 @@ import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class SvrAutoLogin {
     private static final Logger log = LoggerFactory.getLogger(SvrAutoLogin.class);

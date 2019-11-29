@@ -1,21 +1,25 @@
 package cn.cerc.mis.pay.wxpay;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-
-import org.apache.http.conn.ssl.SSLSocketFactory;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 @SuppressWarnings("deprecation")
 public class MySSLSocketFactory extends SSLSocketFactory {
+
+    private static MySSLSocketFactory mySSLSocketFactory = null;
 
     static {
         mySSLSocketFactory = new MySSLSocketFactory(createSContext());
     }
 
-    private static MySSLSocketFactory mySSLSocketFactory = null;
+    private MySSLSocketFactory(SSLContext sslContext) {
+        super(sslContext);
+        this.setHostnameVerifier(ALLOW_ALL_HOSTNAME_VERIFIER);
+    }
 
     private static SSLContext createSContext() {
         SSLContext sslcontext = null;
@@ -25,17 +29,12 @@ public class MySSLSocketFactory extends SSLSocketFactory {
             e.printStackTrace();
         }
         try {
-            sslcontext.init(null, new TrustManager[] { new TrustAnyTrustManager() }, null);
+            sslcontext.init(null, new TrustManager[]{new TrustAnyTrustManager()}, null);
         } catch (KeyManagementException e) {
             e.printStackTrace();
             return null;
         }
         return sslcontext;
-    }
-
-    private MySSLSocketFactory(SSLContext sslContext) {
-        super(sslContext);
-        this.setHostnameVerifier(ALLOW_ALL_HOSTNAME_VERIFIER);
     }
 
     public static MySSLSocketFactory getInstance() {

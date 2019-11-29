@@ -1,8 +1,5 @@
 package cn.cerc.mis.sms;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.AbstractForm;
@@ -13,6 +10,8 @@ import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.language.R;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SecurityEnvironment {
     private static final Logger log = LoggerFactory.getLogger(SecurityEnvironment.class);
@@ -115,20 +114,20 @@ public class SecurityEnvironment {
         mv.init();
         String mobile = mv.getMobile();
         switch (mv.checkVerify(securityCode)) {
-        case PASS:
-            if (!"".equals(mobile)) {
-                updateSecurityRecord(mobile, form, false);
-            }
-            break;
-        case DIFFERENCE:
-            if (!"".equals(mobile)) {
-                updateSecurityRecord(mobile, form, true);
-            }
-            DataValidateException.stopRun(R.asString(form, "验证码输入有误，请检查"), true);
-            break;
-        case ERROR:
-            DataValidateException.stopRun(mv.getMessage(), true);
-            break;
+            case PASS:
+                if (!"".equals(mobile)) {
+                    updateSecurityRecord(mobile, form, false);
+                }
+                break;
+            case DIFFERENCE:
+                if (!"".equals(mobile)) {
+                    updateSecurityRecord(mobile, form, true);
+                }
+                DataValidateException.stopRun(R.asString(form, "验证码输入有误，请检查"), true);
+                break;
+            case ERROR:
+                DataValidateException.stopRun(mv.getMessage(), true);
+                break;
         }
     }
 

@@ -1,16 +1,15 @@
 package cn.cerc.mis.language;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class R {
     private static final Logger log = LoggerFactory.getLogger(R.class);

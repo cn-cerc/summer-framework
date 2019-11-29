@@ -57,7 +57,7 @@ public class SvrCustomMenus extends CustomService {
         BuildQuery f = new BuildQuery(this);
         f.byField("s.Custom_", true);
         if (headIn.exists("SearchText_"))
-            f.byLink(new String[] { "s.Name_", "c.CorpNo_", "oi.ShortName_" }, headIn.getString("SearchText_"));
+            f.byLink(new String[]{"s.Name_", "c.CorpNo_", "oi.ShortName_"}, headIn.getString("SearchText_"));
         if (headIn.exists("MaxRecord_"))
             f.setMaximum(headIn.getInt("MaxRecord_"));
         if (headIn.exists("Custom"))

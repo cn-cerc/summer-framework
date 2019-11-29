@@ -1,12 +1,11 @@
 package cn.cerc.mis.page.qrcode;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SocketTool {
 
@@ -14,6 +13,7 @@ public class SocketTool {
 
     // FIXME 改为参数传入
     private static List<String> items = new ArrayList<>();
+
     static {
         items.add("diteng");
         items.add("knowall");

@@ -1,22 +1,26 @@
 package cn.cerc.mis.pay.wxpay;
 
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IHandle;
+import cn.cerc.mis.core.Application;
+import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IHandle;
-import cn.cerc.mis.core.Application;
-
 //APP支付
 public class WxpayAPI {
+    // 连接配置参数
+    public static final String config_appId = "wx.Open_AppID";
+    public static final String config_appSecret = "wx.Open_ApiKey";
+    // 商户代码
+    public static final String config_appMachId = "wx.Open_MchId";
+    public static final String config_appRootSite = "app.rootSite";
     private static Logger log = LoggerFactory.getLogger(WxpayAPI.class);
     // 申请支付金额
     private String amount;
@@ -28,13 +32,6 @@ public class WxpayAPI {
     private String corpNo = "000000";
     // 回调网址, 微信支付成功后通知地址 必须要求80端口并且地址不能带参数
     private String notifyUrl;
-    // 连接配置参数
-    public static final String config_appId = "wx.Open_AppID";
-    public static final String config_appSecret = "wx.Open_ApiKey";
-    // 商户代码
-    public static final String config_appMachId = "wx.Open_MchId";
-    public static final String config_appRootSite = "app.rootSite";
-
     private String appId;
     private String appSecret;
     private String appMachId;
@@ -52,14 +49,44 @@ public class WxpayAPI {
         }
     }
 
-    @SuppressWarnings({ "static-access", "unchecked" })
+    public static void main(String[] args) {
+        WxpayAPI pay = new WxpayAPI(null, new IConfig() {
+
+            @Override
+            public String getProperty(String key) {
+                return this.getProperty(key, null);
+            }
+
+            @Override
+            public String getProperty(String key, String def) {
+                if (config_appId.equals(key))
+                    return "wx8302b6636974854e";
+                else if (config_appSecret.equals(key))
+                    return "529da5a3e26339bbf960e91879dfad5c";
+                else if (config_appMachId.equals(key))
+                    return "1262880401";
+                else if (config_appRootSite.equals(key))
+                    return "m.diteng.site";
+                else
+                    return null;
+            }
+        });
+
+        pay.setAmount("0.01");
+        pay.setOrderNo("165491961984");
+        pay.setNotifyUrl("http://115.28.150.165/forms/FrmWxMessage");
+        Map<String, String> result = pay.requestPay("测试");
+        System.out.println(new Gson().toJson(result));
+    }
+
+    @SuppressWarnings({"static-access", "unchecked"})
     public Map<String, String> requestPay(String body) {
         String notify_url = String.format("%s/%s/%s", rootSite, Application.getAppConfig().getPathForms(),
                 this.notifyUrl);
         String trade_type = "APP";
         String nonce_str = Sha1Util.getNonceStr();
         String total_fee = String.valueOf(new BigDecimal(amount).multiply(new BigDecimal(100)).intValue());// 金额
-                                                                                                           // 微信是以分为单位的;
+        // 微信是以分为单位的;
         SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("appid", this.appId);
         // 商户号
@@ -139,35 +166,5 @@ public class WxpayAPI {
 
     public void setNotifyUrl(String notifyUrl) {
         this.notifyUrl = notifyUrl;
-    }
-
-    public static void main(String[] args) {
-        WxpayAPI pay = new WxpayAPI(null, new IConfig() {
-
-            @Override
-            public String getProperty(String key) {
-                return this.getProperty(key, null);
-            }
-
-            @Override
-            public String getProperty(String key, String def) {
-                if (config_appId.equals(key))
-                    return "wx8302b6636974854e";
-                else if (config_appSecret.equals(key))
-                    return "529da5a3e26339bbf960e91879dfad5c";
-                else if (config_appMachId.equals(key))
-                    return "1262880401";
-                else if (config_appRootSite.equals(key))
-                    return "m.diteng.site";
-                else
-                    return null;
-            }
-        });
-
-        pay.setAmount("0.01");
-        pay.setOrderNo("165491961984");
-        pay.setNotifyUrl("http://115.28.150.165/forms/FrmWxMessage");
-        Map<String, String> result = pay.requestPay("测试");
-        System.out.println(new Gson().toJson(result));
     }
 }

@@ -1,5 +1,8 @@
 package cn.cerc.mis.page.upload;
 
+import cn.cerc.mis.core.AbstractForm;
+import cn.cerc.mis.core.IPage;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -7,14 +10,15 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import cn.cerc.mis.core.AbstractForm;
-import cn.cerc.mis.core.IPage;
-
 /**
  * 文件上传基类
  */
 public abstract class FileUploadBasePage extends AbstractForm {
 
+    /**
+     * 导航栏
+     */
+    protected Map<String, String> menuPath = new LinkedHashMap<>();
     /**
      * 支持的类型
      */
@@ -35,35 +39,26 @@ public abstract class FileUploadBasePage extends AbstractForm {
      * 单号
      */
     private String tbNo;
-
     /**
      * 上传路径
      */
     private String uploadPath;
-
     /**
      * 文件名最大长度，默认20
      */
     private int maxNameLength = 20;
-
     /**
      * 列表地址
      */
     private String action;
-
     /**
      * 执行方法（默认列表页，1上传，2,删除，3下载）
      */
     private int doMethod;
-
     /**
      * 标题
      */
     private String pageTitle = "附件管理";
-    /**
-     * 导航栏
-     */
-    protected Map<String, String> menuPath = new LinkedHashMap<>();
 
     @Override
     public IPage execute() {
@@ -79,7 +74,7 @@ public abstract class FileUploadBasePage extends AbstractForm {
 
     /**
      * 列表页
-     * 
+     *
      * @param params
      * @return
      */
@@ -87,21 +82,21 @@ public abstract class FileUploadBasePage extends AbstractForm {
 
     /**
      * 文件上传
-     * 
+     *
      * @return
      */
     public abstract IPage upload();
 
     /**
      * 文件删除
-     * 
+     *
      * @return
      */
     public abstract IPage delete();
 
     /**
      * 文件下载
-     * 
+     *
      * @return
      */
     public abstract IPage download();
@@ -188,7 +183,7 @@ public abstract class FileUploadBasePage extends AbstractForm {
 
     /**
      * 请求文件
-     * 
+     *
      * @param link 文件链接
      * @return
      */
@@ -207,7 +202,7 @@ public abstract class FileUploadBasePage extends AbstractForm {
 
     /**
      * 判断是否支持该文件类型
-     * 
+     *
      * @param fileName 文件名
      * @return
      */

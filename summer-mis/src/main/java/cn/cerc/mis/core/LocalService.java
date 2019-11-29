@@ -1,14 +1,5 @@
 package cn.cerc.mis.core;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.MD5;
@@ -19,6 +10,13 @@ import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.Microservice;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LocalService implements IServiceProxy {
     private static final Logger log = LoggerFactory.getLogger(LocalService.class);
@@ -50,6 +48,26 @@ public class LocalService implements IServiceProxy {
     public LocalService(IHandle handle, String service) {
         this(handle);
         this.setService(service);
+    }
+
+    public static void listMethod(Class<?> clazz) {
+        Map<String, Class<?>> items = new HashMap<>();
+        String[] args = clazz.getName().split("\\.");
+        String classCode = args[args.length - 1];
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.getReturnType().getName().equals("boolean")) {
+                if (method.getParameters().length == 0) {
+                    String name = method.getName();
+                    if (method.getName().startsWith("_"))
+                        name = name.substring(1, name.length());
+                    items.put(classCode + "." + name, clazz);
+                }
+            }
+        }
+        for (String key : items.keySet()) {
+            log.info(key);
+        }
     }
 
     @Override
@@ -208,26 +226,6 @@ public class LocalService implements IServiceProxy {
     public LocalService setBufferWrite(boolean bufferWrite) {
         this.bufferWrite = bufferWrite;
         return this;
-    }
-
-    public static void listMethod(Class<?> clazz) {
-        Map<String, Class<?>> items = new HashMap<>();
-        String[] args = clazz.getName().split("\\.");
-        String classCode = args[args.length - 1];
-        Method[] methods = clazz.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.getReturnType().getName().equals("boolean")) {
-                if (method.getParameters().length == 0) {
-                    String name = method.getName();
-                    if (method.getName().startsWith("_"))
-                        name = name.substring(1, name.length());
-                    items.put(classCode + "." + name, clazz);
-                }
-            }
-        }
-        for (String key : items.keySet()) {
-            log.info(key);
-        }
     }
 
 }

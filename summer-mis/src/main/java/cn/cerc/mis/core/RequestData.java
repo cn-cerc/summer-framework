@@ -1,19 +1,17 @@
 package cn.cerc.mis.core;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class RequestData {
-    private static final Logger log = LoggerFactory.getLogger(RequestData.class);
     public static final String appSession_Key = "sid";
     public static final String webclient = "webclient";
+    private static final Logger log = LoggerFactory.getLogger(RequestData.class);
     private String sid;
     private String param;
     private String serviceCode;

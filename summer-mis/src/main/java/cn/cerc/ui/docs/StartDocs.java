@@ -1,16 +1,15 @@
 package cn.cerc.ui.docs;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import cn.cerc.db.core.ServerConfig;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import cn.cerc.db.core.ServerConfig;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 @Deprecated // 请改使用 StartDocDefault
 public class StartDocs extends HttpServlet {
@@ -18,6 +17,11 @@ public class StartDocs extends HttpServlet {
 
     public StartDocs() {
         super();
+    }
+
+    public static void main(String[] args) {
+        String path = StartDocs.class.getClass().getResource("/").getPath();
+        System.out.println(path);
     }
 
     @Override
@@ -110,10 +114,5 @@ public class StartDocs extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
-    }
-
-    public static void main(String[] args) {
-        String path = StartDocs.class.getClass().getResource("/").getPath();
-        System.out.println(path);
     }
 }

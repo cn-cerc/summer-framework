@@ -1,12 +1,11 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.ui.core.HtmlContent;
 import cn.cerc.ui.core.HtmlWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UIContent extends UIComponent {
     private List<HtmlContent> contents = new ArrayList<>();

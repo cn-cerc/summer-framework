@@ -1,7 +1,6 @@
 package cn.cerc.mis.print;
 
-import java.io.IOException;
-
+import cn.cerc.core.DataSet;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -12,7 +11,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import cn.cerc.core.DataSet;
+import java.io.IOException;
 
 public class Barcode128Template extends PrintTemplate {
     private float fontSize;

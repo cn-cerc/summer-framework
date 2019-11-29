@@ -1,11 +1,10 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.mis.rds.PassportRecord;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.mis.rds.PassportRecord;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -34,13 +33,13 @@ public class PassportDefault implements IPassport {
         return true;
     }
 
+    public IHandle getHandle() {
+        return handle;
+    }
+
     @Override
     public void setHandle(IHandle handle) {
         this.handle = handle;
-    }
-
-    public IHandle getHandle() {
-        return handle;
     }
 
 }

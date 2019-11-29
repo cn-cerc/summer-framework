@@ -118,13 +118,13 @@ public class MenuData {
         return pageNo;
     }
 
-    public String getPageNo() {
-        return pageNo;
-    }
-
     @Deprecated // 请改使用 setPageNo
     public void setFormNo(String pageNo) {
         this.pageNo = pageNo;
+    }
+
+    public String getPageNo() {
+        return pageNo;
     }
 
     public void setPageNo(String pageNo) {

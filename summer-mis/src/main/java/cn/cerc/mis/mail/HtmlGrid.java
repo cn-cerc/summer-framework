@@ -16,6 +16,50 @@ public class HtmlGrid extends HtmlControl {
         super(owner);
     }
 
+    public static void main(String[] args) {
+        StringBuffer html = new StringBuffer();
+        HtmlGrid grid = new HtmlGrid(null);
+        grid.addRow().addCol().setText("hello");
+        grid.getHtml(html);
+        // log.info(grid.toString());
+    }
+
+    public static String getDataSet(DataSet ds) {
+        HtmlRow row;
+        StringBuffer sb = new StringBuffer();
+
+        HtmlGrid head = new HtmlGrid(null);
+        // 加入单头
+        row = head.addRow();
+        for (String field : ds.getHead().getFieldDefs().getFields())
+            row.addCol(field);
+        row = head.addRow();
+        for (String field : ds.getHead().getFieldDefs().getFields())
+            row.addCol(ds.getHead().getField(field));
+
+        // 加入单身
+        HtmlGrid detail = new HtmlGrid(null);
+        ds.first();
+        row = detail.addRow();
+        for (String field : ds.getFieldDefs().getFields())
+            row.addCol(field);
+        while (ds.fetch()) {
+            row = detail.addRow();
+            for (String field : ds.getFieldDefs().getFields())
+                row.addCol(ds.getField(field));
+        }
+        sb.append("<!DOCTYPE html>");
+        sb.append("<head>");
+        sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+        sb.append("</head>");
+        sb.append("<body>");
+
+        head.getHtml(sb);
+        detail.getHtml(sb);
+        sb.append("</body></html>");
+        return sb.toString();
+    }
+
     public HtmlRow addRow() {
         return new HtmlRow(this);
     }
@@ -69,14 +113,6 @@ public class HtmlGrid extends HtmlControl {
         return HtmlString;
     }
 
-    public static void main(String[] args) {
-        StringBuffer html = new StringBuffer();
-        HtmlGrid grid = new HtmlGrid(null);
-        grid.addRow().addCol().setText("hello");
-        grid.getHtml(html);
-        // log.info(grid.toString());
-    }
-
     public int getCellspacing() {
         return cellspacing;
     }
@@ -102,41 +138,5 @@ public class HtmlGrid extends HtmlControl {
     public HtmlGrid setStyle(String style) {
         this.style = style;
         return this;
-    }
-
-    public static String getDataSet(DataSet ds) {
-        HtmlRow row;
-        StringBuffer sb = new StringBuffer();
-
-        HtmlGrid head = new HtmlGrid(null);
-        // 加入单头
-        row = head.addRow();
-        for (String field : ds.getHead().getFieldDefs().getFields())
-            row.addCol(field);
-        row = head.addRow();
-        for (String field : ds.getHead().getFieldDefs().getFields())
-            row.addCol(ds.getHead().getField(field));
-
-        // 加入单身
-        HtmlGrid detail = new HtmlGrid(null);
-        ds.first();
-        row = detail.addRow();
-        for (String field : ds.getFieldDefs().getFields())
-            row.addCol(field);
-        while (ds.fetch()) {
-            row = detail.addRow();
-            for (String field : ds.getFieldDefs().getFields())
-                row.addCol(ds.getField(field));
-        }
-        sb.append("<!DOCTYPE html>");
-        sb.append("<head>");
-        sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
-        sb.append("</head>");
-        sb.append("<body>");
-
-        head.getHtml(sb);
-        detail.getHtml(sb);
-        sb.append("</body></html>");
-        return sb.toString();
     }
 }

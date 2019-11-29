@@ -1,21 +1,5 @@
 package cn.cerc.mis.page.upload;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ServerConfig;
@@ -37,6 +21,20 @@ import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolBar;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 文件上传实现Form
@@ -109,7 +107,7 @@ public class FileUploadPage extends FileUploadBasePage {
                 }
             });
             new StringField(gird, R.asString(this, "文件大小"), "Size_", 2).createText((record, html) -> {
-                html.print(record.getString("Size_")+" B");
+                html.print(record.getString("Size_") + " B");
             });
             new DateTimeField(gird, R.asString(this, "上传时间"), "AppDate_", 4);
 
@@ -224,7 +222,7 @@ public class FileUploadPage extends FileUploadBasePage {
 
     /**
      * 下载文件
-     * 
+     *
      * @param fileName 文件名
      * @param fileLink 文件路径
      */
