@@ -73,22 +73,22 @@ public abstract class FileUploadBasePage extends AbstractForm {
     }
 
     /**
-     * 列表页
+     * @return 列表页
      */
     public abstract IPage exec();
 
     /**
-     * 文件上传
+     * @return 文件上传
      */
     public abstract IPage upload();
 
     /**
-     * 文件删除
+     * @return 文件删除
      */
     public abstract IPage delete();
 
     /**
-     * 文件下载
+     * @return 文件下载
      */
     public abstract IPage download();
 
@@ -173,10 +173,8 @@ public abstract class FileUploadBasePage extends AbstractForm {
     }
 
     /**
-     * 请求文件
-     *
      * @param link 文件链接
-     * @return
+     * @return 请求文件
      */
     protected InputStream doGetByStream(String link) {
         try {
@@ -192,10 +190,8 @@ public abstract class FileUploadBasePage extends AbstractForm {
     }
 
     /**
-     * 判断是否支持该文件类型
-     *
      * @param fileName 文件名
-     * @return
+     * @return 判断是否支持该文件类型
      */
     protected boolean isSurpots(String fileName) {
         String[] types = getSuportTypes().split("[,，]");

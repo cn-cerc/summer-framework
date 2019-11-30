@@ -221,10 +221,7 @@ public class FileUploadPage extends FileUploadBasePage {
     }
 
     /**
-     * 下载文件
-     *
-     * @param fileName 文件名
-     * @param fileLink 文件路径
+     * @return 下载文件
      */
     @Override
     public IPage download() {
