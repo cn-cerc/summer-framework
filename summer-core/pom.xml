@@ -9,6 +9,8 @@
     </parent>
 
     <artifactId>summer-core</artifactId>
+    <packaging>jar</packaging>
+
     <description>提供DataSet内存数据表，供前台、后台使用</description>
 
     <build>

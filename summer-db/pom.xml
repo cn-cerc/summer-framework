@@ -8,6 +8,8 @@
     </parent>
 
     <artifactId>summer-db</artifactId>
+    <packaging>jar</packaging>
+
     <description>提供DataSet及派生类，满足内存表与实体表使用需要</description>
 
     <build>
