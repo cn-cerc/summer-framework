@@ -9,6 +9,8 @@
     </parent>
 
     <artifactId>summer-mis</artifactId>
+    <packaging>jar</packaging>
+
     <description>用于快速开发资讯管理系统（MIS），如进销存系统、财务系统、人力资源系统等</description>
 
     <build>
