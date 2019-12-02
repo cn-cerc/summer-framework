@@ -1,5 +1,6 @@
 package cn.cerc.ui.vcl;
 
+import cn.cerc.core.Utils;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
@@ -25,6 +26,7 @@ public class UITextBox extends UIComponent {
     private boolean required;
     private String onclick;
     private String oninput;
+    private String accept;
 
     public UITextBox() {
         super();
@@ -62,6 +64,10 @@ public class UITextBox extends UIComponent {
             html.print(" autocomplete=\"on\"");
         } else {
             html.print(" autocomplete=\"off\"");
+        }
+
+        if (Utils.isNotEmpty(this.accept)) {
+            html.print(" accept='%s'", this.accept);
         }
 
         if (this.autofocus)
@@ -190,6 +196,15 @@ public class UITextBox extends UIComponent {
 
     public UITextBox setOninput(String oninput) {
         this.oninput = oninput;
+        return this;
+    }
+
+    public String getAccept() {
+        return accept;
+    }
+
+    public UITextBox setAccept(String accept) {
+        this.accept = accept;
         return this;
     }
 
