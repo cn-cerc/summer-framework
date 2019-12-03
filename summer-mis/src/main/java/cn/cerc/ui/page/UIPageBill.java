@@ -36,9 +36,6 @@ public class UIPageBill extends AbstractJspPage {
         setForm(form);
         initCssFile();
         initJsFile();
-        if (!this.getForm().getClient().isPhone()) {
-            this.getHeader().getAdvertisement();
-        }
     }
 
     public void addExportFile(String service, String key) {
