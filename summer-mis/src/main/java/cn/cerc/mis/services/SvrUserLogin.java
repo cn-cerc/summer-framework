@@ -1,5 +1,9 @@
 package cn.cerc.mis.services;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.MD5;
@@ -24,9 +28,6 @@ import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 /**
  * 用于用户登录
@@ -77,7 +78,7 @@ public class SvrUserLogin extends CustomService {
         }
 
         String corpNo = dsUser.getString("CorpNo_");
-        ServerConfig config = new ServerConfig();
+        ServerConfig config = ServerConfig.getInstance();
         String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
         // 判断该手机号绑定的账号，是否有supCorpNo的下游，专用App登录
         if (!"".equals(supCorpNo)) {

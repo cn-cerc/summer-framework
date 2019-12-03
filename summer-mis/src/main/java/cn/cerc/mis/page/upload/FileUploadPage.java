@@ -1,5 +1,21 @@
 package cn.cerc.mis.page.upload;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ServerConfig;
@@ -21,20 +37,6 @@ import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolBar;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 文件上传实现Form
@@ -162,7 +164,8 @@ public class FileUploadPage extends FileUploadBasePage {
 
             for (FileItem item : uploadFiles) {
                 if (item != null && !item.isFormField() && item.getSize() > 0 && isSurpots(item.getName())) {
-                    if (item.getSize() / 1000 > singleMaxSize) {
+                    // 以字节为单位
+                    if (item.getSize() > singleMaxSize) {
                         buff.setField("msg", String.format(R.asString(this, "文件过大！单个文件最大不能超过%s"), singleMaxSize));
                         return jspPage;
                     }
@@ -238,9 +241,8 @@ public class FileUploadPage extends FileUploadBasePage {
 
         try (ServletOutputStream out = response.getOutputStream(); InputStream inputStream = doGetByStream(fileLink)) {
             int b = 0;
-            byte[] buffer = new byte[512];
-            while (b != -1) {
-                b = inputStream.read(buffer);
+            byte[] buffer = new byte[1024];
+            while ((b = inputStream.read(buffer)) != -1) {
                 out.write(buffer, 0, b);
             }
             out.flush();
