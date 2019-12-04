@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/cn-cerc/summer-framework.svg)](https://travis-ci.org/cn-cerc/summer-framework)
 
+## 简介
+
 summer开源框架包含summer-bean,summer-core,summer-db,summer-mis.使用业界成熟的MVC架构，以spring为基础，提供快速开发服务的基础框架服务。
 
 框架地址：https://github.com/cn-cerc/summer-framework 安全服务：[聚安](https://www.jayun.site)
@@ -17,3 +19,15 @@ IForm有提供对getRequest().getSession()的访问，可使用HttpSession。
 IService有提供RESTful接口，可提供第三方访问。 实际使用时，IForm会调用IService，而IService既对内提供业务服务，也对外提供业务服务。更多的详细介绍，敬请期待...
 
 欢迎大家反馈更多的建议与意见，也欢迎其它业内人士，对此免费框架进行协同改进！
+
+# 模块
+
+[summer-core](/summer-core) 核心Record，DataSet服务
+
+[summer-db](/summer-db) 数据库操作服务
+
+[summer-mis](/summer-mis) 定位于页面组件，默认静态文件路径 forms
+
+[summer-security](/summer-secirity) 聚安云盾安全防护服务
+
+[summer-sms](/summer-sms) 短信集成服务，支持阿里云、聚合、云片等平台
