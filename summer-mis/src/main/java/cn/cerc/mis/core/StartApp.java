@@ -36,7 +36,7 @@ public class StartApp implements Filter {
                         req.getParameter(ClientDevice.deviceType_key));
 
             IAppConfig conf = Application.getAppConfig();
-            resp.sendRedirect(String.format("/%s/%s", conf.getPathForms(), conf.getFormWelcome()));
+            resp.sendRedirect(String.format("/public/%s", conf.getFormWelcome()));
             return;
         } else if (uri.equals("/MobileConfig") || uri.equals("/mobileConfig")) {
             if (req.getParameter(ClientDevice.deviceId_key) != null)
