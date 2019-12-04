@@ -54,15 +54,22 @@ public class StartForms implements Filter {
 
         String uri = req.getRequestURI();
 
+        int prefix = uri.indexOf("/", 2);
+        if (prefix < 0) {
+            IAppConfig conf = Application.getAppConfig();
+            resp.sendRedirect(String.format("/public/%s", conf.getFormWelcome()));
+            return;
+        }
+
         // 遇到静态文件直接输出
         IAppStaticFile staticFile = Application.getBean(IAppStaticFile.class, "appStaticFile", "appStaticFileDefault");
         if (staticFile.isStaticFile(uri)) {
             // 默认没有重定向，直接读取资源文件的默认路径
-             // TODO 暂时按该方法放行（jar包的资源文件）
-             if(uri.contains("imgZoom")) {
-                 chain.doFilter(req, resp);
-                 return;
-             }
+            // TODO 暂时按该方法放行（jar包的资源文件）
+            if (uri.contains("imgZoom")) {
+                chain.doFilter(req, resp);
+                return;
+            }
 
             /*
              * 1、 此处的 getPathForms 对应资源文件目录的forms，可自行定义成其他路径，注意配套更新 AppConfig
