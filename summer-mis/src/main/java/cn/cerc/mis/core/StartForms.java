@@ -85,6 +85,10 @@ public class StartForms implements Filter {
             chain.doFilter(req, resp);
             return;
         }
+        if (uri.contains("docs/")) {
+            chain.doFilter(req, resp);
+            return;
+        }
 
         String childCode = getRequestCode(req);
         if (childCode == null) {
