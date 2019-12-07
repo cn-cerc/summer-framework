@@ -99,7 +99,7 @@ public class StartForms implements Filter {
 
         String childCode = getRequestCode(req);
         if (childCode == null) {
-            outputErrorPage(req, resp, new RuntimeException("无效的请求：" + childCode));
+            outputErrorPage(req, resp, new RuntimeException("无效的请求：" + req.getServletPath()));
             return;
         }
 
