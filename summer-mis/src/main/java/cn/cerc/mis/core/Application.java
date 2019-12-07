@@ -35,8 +35,10 @@ public class Application {
     public static final String loginTime = "loginTime";
     // 浏览器通用客户设备Id
     public static final String webclient = "webclient";
+
     // 默认界面语言版本
-    public static final String LangageDefault = LanguageType.zh_CN; // 可选：cn/en
+    // FIXME: 2019/12/7 此处应改为从函数，并从配置文件中读取默认的语言类型
+    public static final String App_Language = LanguageType.zh_CN; // 可选：cn/en
 
     private static ApplicationContext context;
 
@@ -145,8 +147,8 @@ public class Application {
 
     public static String getLangage() {
         String lang = ServerConfig.getInstance().getProperty(deviceLanguage);
-        if (lang == null || "".equals(lang) || LangageDefault.equals(lang))
-            return LangageDefault;
+        if (lang == null || "".equals(lang) || App_Language.equals(lang))
+            return App_Language;
         else if ("en".equals(lang))
             return lang;
         else

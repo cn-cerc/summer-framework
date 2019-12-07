@@ -40,7 +40,7 @@ public class R {
 
     public static String asString(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if (Application.LangageDefault.equals(language))
+        if (Application.App_Language.equals(language))
             return text;
 
         if (text == null || "".equals(text.trim())) {
