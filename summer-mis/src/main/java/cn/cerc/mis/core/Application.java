@@ -149,7 +149,7 @@ public class Application {
         String lang = ServerConfig.getInstance().getProperty(deviceLanguage);
         if (lang == null || "".equals(lang) || App_Language.equals(lang))
             return App_Language;
-        else if ("en".equals(lang))
+        else if (LanguageType.en_US.equals(lang))
             return lang;
         else
             throw new RuntimeException("not support language: " + lang);
