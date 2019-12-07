@@ -1,15 +1,7 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.config.IAppStaticFile;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.page.JspPage;
-import cn.cerc.mis.page.RedirectPage;
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -19,8 +11,18 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.lang.reflect.Method;
+
+import com.google.gson.Gson;
+
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.IAppStaticFile;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.page.JspPage;
+import cn.cerc.mis.page.RedirectPage;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StartForms implements Filter {
@@ -61,7 +63,7 @@ public class StartForms implements Filter {
             return;
         }
 
-        // 遇到静态文件直接输出
+        // 1、静态文件直接输出
         IAppStaticFile staticFile = Application.getBean(IAppStaticFile.class, "appStaticFile", "appStaticFileDefault");
         if (staticFile.isStaticFile(uri)) {
             // 默认没有重定向，直接读取资源文件的默认路径
@@ -97,6 +99,7 @@ public class StartForms implements Filter {
             return;
         }
 
+        // 2、处理Url请求
         String childCode = getRequestCode(req);
         if (childCode == null) {
             outputErrorPage(req, resp, new RuntimeException("无效的请求：" + req.getServletPath()));
@@ -117,9 +120,8 @@ public class StartForms implements Filter {
             }
         }
 
-        IForm form = null;
         try {
-            form = Application.getForm(req, resp, formId);
+            IForm form = Application.getForm(req, resp, formId);
             if (form == null) {
                 outputErrorPage(req, resp, new RuntimeException("error servlet:" + req.getServletPath()));
                 return;
@@ -364,9 +366,10 @@ public class StartForms implements Filter {
 
     protected String getRequestCode(HttpServletRequest req) {
         String url = null;
+        log.info("servletPath {}", req.getServletPath());
         String args[] = req.getServletPath().split("/");
         if (args.length == 2 || args.length == 3) {
-            if (args[0].equals("") && !args[1].equals("")) {
+            if ("".equals(args[0]) && !"".equals(args[1])) {
                 if (args.length == 3)
                     url = args[2];
                 else {
