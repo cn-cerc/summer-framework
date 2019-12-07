@@ -70,7 +70,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
 
         // 判断当前客户端类型
         log.info("current client device type: {}", form.getClient().getDevice());
-        boolean isWeb = RequestData.webclient.equals(form.getClient().getId());
+        boolean isWeb = RequestData.WEBCLIENT.equals(form.getClient().getId());
         this.add("isWeb", isWeb);
         if (!isWeb) {
             return;

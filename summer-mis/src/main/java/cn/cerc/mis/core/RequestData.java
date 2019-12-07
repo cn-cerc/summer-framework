@@ -12,7 +12,7 @@ public class RequestData {
 
     // FIXME: 2019/12/7 sid 应该改为 token
     public static final String SID = "sid";
-    public static final String webclient = "webclient";
+    public static final String WEBCLIENT = "webclient";
 
     private String sid;
     private String param;

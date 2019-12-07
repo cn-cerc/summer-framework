@@ -66,7 +66,7 @@ public class ClientDevice implements IClient, Serializable {
 
     @Override
     public String getId() {
-        return deviceId == null ? RequestData.webclient : deviceId;
+        return deviceId == null ? RequestData.WEBCLIENT : deviceId;
     }
 
     public void setId(String value) {
