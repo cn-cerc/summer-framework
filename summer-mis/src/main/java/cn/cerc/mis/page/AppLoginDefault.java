@@ -163,7 +163,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
             String sid = obj.getSessionId();
             if (sid != null && !sid.equals("")) {
                 log.debug(String.format("认证成功，取得sid(%s)", sid));
-                ((ClientDevice) this.getForm().getClient()).setSid(sid);
+                ((ClientDevice) this.getForm().getClient()).setToken(sid);
             }
             // 登记聚安应用帐号
             String mobile = Utils.safeString(obj.getMobile());

@@ -32,7 +32,7 @@ public class ClientDevice implements IClient, Serializable {
     // private static final Logger log = Logger.LoggerFactory(DeviceInfo.class);
     private static final long serialVersionUID = -3593077761901636920L;
 
-    private String sid; // application session id;
+    private String token; // application session id;
     private String deviceId; // device id
     private String deviceType; // phone/pad/ee/pc
     private String languageId; // device language: cn/en
@@ -69,8 +69,8 @@ public class ClientDevice implements IClient, Serializable {
         request.getSession().setAttribute(client_id, value);
         if (value != null && value.length() == 28)
             setDevice(device_phone);
-        if (sid != null && deviceId != null && !"".equals(deviceId)) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, sid)) {
+        if (token != null && deviceId != null && !"".equals(deviceId)) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
                 getValue(buff, client_id, deviceId);
             }
         }
@@ -89,8 +89,8 @@ public class ClientDevice implements IClient, Serializable {
         this.deviceType = deviceType;
         request.setAttribute(device, deviceType == null ? "" : deviceType);
         request.getSession().setAttribute(device, deviceType);
-        if (sid != null && deviceType != null && !"".equals(deviceType)) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, sid)) {
+        if (token != null && deviceType != null && !"".equals(deviceType)) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
                 getValue(buff, device, deviceType);
             }
         }
@@ -102,11 +102,11 @@ public class ClientDevice implements IClient, Serializable {
         return languageId == null ? "cn" : languageId;
     }
 
-    public String getSid() {
-        return sid != null && "".equals(sid) ? null : sid;
+    public String getToken() {
+        return token != null && "".equals(token) ? null : token;
     }
 
-    public void setSid(String value) {
+    public void setToken(String value) {
         String tmp = (value == null || "".equals(value)) ? null : value;
         if (tmp != null) {
             // device_id = (String)
@@ -118,23 +118,23 @@ public class ClientDevice implements IClient, Serializable {
                 deviceType = getValue(buff, this.device, this.deviceType);
             }
         } else if (tmp == null) {
-            if (this.sid != null && !"".equals(this.sid)) {
-                MemoryBuffer.delete(BufferType.getDeviceInfo, this.sid);
+            if (this.token != null && !"".equals(this.token)) {
+                MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
             }
         }
-        this.sid = tmp;
-        request.getSession().setAttribute(RequestData.appSession_Key, this.sid);
-        request.setAttribute(RequestData.appSession_Key, this.sid == null ? "" : this.sid);
+        this.token = tmp;
+        request.getSession().setAttribute(RequestData.appSession_Key, this.token);
+        request.setAttribute(RequestData.appSession_Key, this.token == null ? "" : this.token);
     }
 
     public void clear() {
-        this.sid = null;
+        this.token = null;
     }
 
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("sid:").append(sid).append(", ");
+        sb.append("token:").append(token).append(", ");
         sb.append("deviceId:").append(deviceId).append(", ");
         sb.append("deviceType:").append(deviceType);
         return sb.toString();
@@ -181,6 +181,6 @@ public class ClientDevice implements IClient, Serializable {
         if (sid == null || "".equals(sid))
             sid = (String) request.getSession().getAttribute(RequestData.appSession_Key);
         // 设置sid
-        setSid(sid);
+        setToken(sid);
     }
 }

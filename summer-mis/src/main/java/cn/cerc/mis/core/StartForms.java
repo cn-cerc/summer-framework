@@ -108,16 +108,16 @@ public class StartForms implements Filter {
             }
 
             // 设备讯息
-            ClientDevice info = new ClientDevice();
-            info.setRequest(req);
-            req.setAttribute("_showMenu_", !ClientDevice.device_ee.equals(info.getDevice()));
-            form.setClient(info);
+            ClientDevice client = new ClientDevice();
+            client.setRequest(req);
+            req.setAttribute("_showMenu_", !ClientDevice.device_ee.equals(client.getDevice()));
+            form.setClient(client);
 
             // 建立数据库资源
             IHandle handle = Application.getHandle();
             try {
                 handle.setProperty(Application.sessionId, req.getSession().getId());
-                handle.setProperty(Application.deviceLanguage, info.getLanguage());
+                handle.setProperty(Application.deviceLanguage, client.getLanguage());
                 req.setAttribute("myappHandle", handle);
                 form.setHandle(handle);
 
@@ -127,7 +127,7 @@ public class StartForms implements Filter {
                     IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage",
                             "appLoginDefault");
                     page.init(form);
-                    String cmd = page.checkToken(info.getSid());
+                    String cmd = page.checkToken(client.getToken());
                     if (cmd != null) {
                         // 若需要登录，则跳转到登录页
                         if (cmd.startsWith("redirect:")) {
