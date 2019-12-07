@@ -209,13 +209,13 @@ public class ClientDevice implements IClient, Serializable {
         request.setAttribute(Application.deviceLanguage, languageId);
         request.getSession().setAttribute(Application.deviceLanguage, languageId);
 
-        // 取得并保存token(sid)
-        String sid = request.getParameter(RequestData.appSession_Key);
-        if (sid == null || "".equals(sid)) {
-            sid = (String) request.getSession().getAttribute(RequestData.appSession_Key);
+        // 取得并保存token
+        String token = request.getParameter(RequestData.appSession_Key);
+        if (token == null || "".equals(token)) {
+            token = (String) request.getSession().getAttribute(RequestData.appSession_Key);
         }
 
         // 设置sid
-        setToken(sid);
+        setToken(token);
     }
 }
