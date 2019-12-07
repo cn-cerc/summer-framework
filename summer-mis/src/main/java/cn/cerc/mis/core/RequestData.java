@@ -18,7 +18,6 @@ public class RequestData {
     private String serviceCode;
 
     public RequestData() {
-
     }
 
     public RequestData(HttpServletRequest request) {

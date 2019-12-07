@@ -47,15 +47,19 @@ public class ClientDevice implements IClient, Serializable {
     private String getValue(MemoryBuffer buff, String key, String def) {
         String result = def;
         String tmp = buff.getString(key);
+
         // 如果缓存有值，则从缓存中取值，且当def无值时，返回缓存值
         if (tmp != null && !"".equals(tmp)) {
-            if (def == null || "".equals(def))
+            if (def == null || "".equals(def)) {
                 result = tmp;
+            }
         }
+
         // 如果def有值，且与缓存不同时，更新缓存
         if (def != null && !"".equals(def)) {
-            if (tmp == null || !tmp.equals(def))
+            if (tmp == null || !tmp.equals(def)) {
                 buff.setField(key, def);
+            }
         }
         return result;
     }
@@ -72,6 +76,7 @@ public class ClientDevice implements IClient, Serializable {
         if (value != null && value.length() == 28) {
             setDevice(DEVICE_PHONE);
         }
+
         if (token != null && deviceId != null && !"".equals(deviceId)) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
                 getValue(buff, CLIENT_ID, deviceId);
@@ -79,6 +84,11 @@ public class ClientDevice implements IClient, Serializable {
         }
     }
 
+    /**
+     * 设备类型默认是 pc
+     *
+     * @return device
+     */
     @Override
     public String getDevice() {
         return device == null ? DEVICE_PC : device;
@@ -89,10 +99,16 @@ public class ClientDevice implements IClient, Serializable {
         if (device == null || "".equals(device)) {
             return;
         }
+
+        // 更新类属性
         this.device = device;
+
+        // 更新request属性
         request.setAttribute(DEVICE_TYPE, device == null ? "" : device);
         request.getSession().setAttribute(DEVICE_TYPE, device);
-        if (token != null && device != null && !"".equals(device)) {
+
+        // 更新设备缓存
+        if (token != null) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
                 getValue(buff, DEVICE_TYPE, device);
             }
@@ -112,8 +128,6 @@ public class ClientDevice implements IClient, Serializable {
     public void setToken(String value) {
         String tmp = (value == null || "".equals(value)) ? null : value;
         if (tmp != null) {
-            // device_id = (String)
-            // req.getSession().getAttribute(deviceId_key);
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, tmp)) {
                 // 设备ID
                 deviceId = getValue(buff, CLIENT_ID, this.deviceId);
