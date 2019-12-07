@@ -181,33 +181,40 @@ public class ClientDevice implements IClient, Serializable {
     @Override
     public void setRequest(HttpServletRequest request) {
         this.request = request;
+
         // 保存设备类型
         device = request.getParameter(DEVICE_TYPE);
-        if (device == null || "".equals(device))
+        if (device == null || "".equals(device)) {
             device = (String) request.getSession().getAttribute(DEVICE_TYPE);
-        if (device != null && !"".equals(device))
+        }
+        if (device != null && !"".equals(device)) {
             request.getSession().setAttribute(DEVICE_TYPE, device);
+        }
         request.setAttribute(DEVICE_TYPE, device == null ? "" : device);
 
         // 保存并取得device_id
         deviceId = request.getParameter(CLIENT_ID);
-        if (deviceId == null || "".equals(deviceId))
+        if (deviceId == null || "".equals(deviceId)) {
             deviceId = (String) request.getSession().getAttribute(CLIENT_ID);
+        }
 
         request.setAttribute(CLIENT_ID, deviceId);
         request.getSession().setAttribute(CLIENT_ID, deviceId);
 
         languageId = request.getParameter(Application.deviceLanguage);
-        if (languageId == null || "".equals(languageId))
+        if (languageId == null || "".equals(languageId)) {
             languageId = (String) request.getSession().getAttribute(Application.deviceLanguage);
+        }
 
         request.setAttribute(Application.deviceLanguage, languageId);
         request.getSession().setAttribute(Application.deviceLanguage, languageId);
 
         // 取得并保存token(sid)
         String sid = request.getParameter(RequestData.appSession_Key);
-        if (sid == null || "".equals(sid))
+        if (sid == null || "".equals(sid)) {
             sid = (String) request.getSession().getAttribute(RequestData.appSession_Key);
+        }
+
         // 设置sid
         setToken(sid);
     }
