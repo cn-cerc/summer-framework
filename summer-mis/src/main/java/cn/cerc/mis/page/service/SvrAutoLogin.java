@@ -91,7 +91,7 @@ public class SvrAutoLogin {
             client.setToken(token);
             sess.init(token);
 
-            form.getRequest().setAttribute(RequestData.appSession_Key, token);
+            form.getRequest().setAttribute(RequestData.SID, token);
             ((ClientDevice) form.getClient()).setToken(token);
             tx.commit();
         }

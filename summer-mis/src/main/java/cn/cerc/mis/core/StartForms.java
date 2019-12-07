@@ -248,7 +248,7 @@ public class StartForms implements Filter {
             response.setContentType("text/html;charset=UTF-8");
 
         Object pageOutput = "";
-        String sid = request.getParameter(RequestData.appSession_Key);
+        String sid = request.getParameter(RequestData.SID);
         if (sid == null || sid.equals(""))
             sid = request.getSession().getId();
 
@@ -373,7 +373,7 @@ public class StartForms implements Filter {
                 if (args.length == 3)
                     url = args[2];
                 else {
-                    String sid = (String) req.getAttribute(RequestData.appSession_Key);
+                    String sid = (String) req.getAttribute(RequestData.SID);
                     IAppConfig conf = Application.getAppConfig();
                     if (sid != null && !"".equals(sid))
                         url = conf.getFormDefault();

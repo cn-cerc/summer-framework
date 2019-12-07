@@ -10,7 +10,8 @@ import java.io.IOException;
 @Slf4j
 public class RequestData {
 
-    public static final String appSession_Key = "sid";
+    // FIXME: 2019/12/7 sid 应该改为 token
+    public static final String SID = "sid";
     public static final String webclient = "webclient";
 
     private String sid;
@@ -21,7 +22,7 @@ public class RequestData {
     }
 
     public RequestData(HttpServletRequest request) {
-        sid = request.getParameter(appSession_Key);
+        sid = request.getParameter(SID);
         serviceCode = request.getParameter("class");
         if (serviceCode == null) {
             try {
