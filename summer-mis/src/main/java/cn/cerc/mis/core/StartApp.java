@@ -31,9 +31,9 @@ public class StartApp implements Filter {
         if (uri.equals("/")) {
             if (req.getParameter(ClientDevice.deviceId_key) != null)
                 req.getSession().setAttribute(ClientDevice.deviceId_key, req.getParameter(ClientDevice.deviceId_key));
-            if (req.getParameter(ClientDevice.deviceType_key) != null)
-                req.getSession().setAttribute(ClientDevice.deviceType_key,
-                        req.getParameter(ClientDevice.deviceType_key));
+            if (req.getParameter(ClientDevice.Device) != null)
+                req.getSession().setAttribute(ClientDevice.Device,
+                        req.getParameter(ClientDevice.Device));
 
             IAppConfig conf = Application.getAppConfig();
             resp.sendRedirect(String.format("/public/%s", conf.getFormWelcome()));
@@ -41,9 +41,9 @@ public class StartApp implements Filter {
         } else if (uri.equals("/MobileConfig") || uri.equals("/mobileConfig")) {
             if (req.getParameter(ClientDevice.deviceId_key) != null)
                 req.getSession().setAttribute(ClientDevice.deviceId_key, req.getParameter(ClientDevice.deviceId_key));
-            if (req.getParameter(ClientDevice.deviceType_key) != null)
-                req.getSession().setAttribute(ClientDevice.deviceType_key,
-                        req.getParameter(ClientDevice.deviceType_key));
+            if (req.getParameter(ClientDevice.Device) != null)
+                req.getSession().setAttribute(ClientDevice.Device,
+                        req.getParameter(ClientDevice.Device));
             try {
                 IForm form;
                 if (Application.get(req).containsBean("mobileConfig"))
@@ -64,7 +64,7 @@ public class StartApp implements Filter {
             return;
         } else {
             StringBuffer url = req.getRequestURL();
-            log.debug("{}", url.toString());
+            log.info("{}", url.toString());
         }
 
         chain.doFilter(req, resp);

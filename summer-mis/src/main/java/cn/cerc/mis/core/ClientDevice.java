@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class ClientDevice implements IClient, Serializable {
     public static final String deviceId_key = "CLIENTID";
-    public static final String deviceType_key = "device";
+    public static final String Device = "device";
     // 手机
     public static final String device_phone = "phone";
     public static final String device_android = "android";
@@ -27,6 +27,7 @@ public class ClientDevice implements IClient, Serializable {
     public static final String device_ee = "ee";
     // private static final Logger log = Logger.LoggerFactory(DeviceInfo.class);
     private static final long serialVersionUID = -3593077761901636920L;
+
     private String sid; // application session id;
     private String deviceId; // device id
     private String deviceType; // phone/pad/ee/pc
@@ -82,11 +83,11 @@ public class ClientDevice implements IClient, Serializable {
             return;
 
         this.deviceType = deviceType;
-        request.setAttribute(deviceType_key, deviceType == null ? "" : deviceType);
-        request.getSession().setAttribute(deviceType_key, deviceType);
+        request.setAttribute(Device, deviceType == null ? "" : deviceType);
+        request.getSession().setAttribute(Device, deviceType);
         if (sid != null && deviceType != null && !"".equals(deviceType)) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, sid)) {
-                getValue(buff, deviceType_key, deviceType);
+                getValue(buff, Device, deviceType);
             }
         }
         return;
@@ -110,7 +111,7 @@ public class ClientDevice implements IClient, Serializable {
                 // 设备ID
                 deviceId = getValue(buff, this.deviceId_key, this.deviceId);
                 // 设备样式
-                deviceType = getValue(buff, this.deviceType_key, this.deviceType);
+                deviceType = getValue(buff, this.Device, this.deviceType);
             }
         } else if (tmp == null) {
             if (this.sid != null && !"".equals(this.sid)) {
@@ -149,12 +150,12 @@ public class ClientDevice implements IClient, Serializable {
     public void setRequest(HttpServletRequest request) {
         this.request = request;
         // 保存设备类型
-        deviceType = request.getParameter(deviceType_key);
+        deviceType = request.getParameter(Device);
         if (deviceType == null || "".equals(deviceType))
-            deviceType = (String) request.getSession().getAttribute(deviceType_key);
+            deviceType = (String) request.getSession().getAttribute(Device);
         if (deviceType != null && !"".equals(deviceType))
-            request.getSession().setAttribute(deviceType_key, deviceType);
-        request.setAttribute(deviceType_key, deviceType == null ? "" : deviceType);
+            request.getSession().setAttribute(Device, deviceType);
+        request.setAttribute(Device, deviceType == null ? "" : deviceType);
 
         // 保存并取得device_id
         deviceId = request.getParameter(deviceId_key);
