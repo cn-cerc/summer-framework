@@ -24,10 +24,10 @@ public class StartAppDefault {
 
     @RequestMapping("/")
     public String doGet() {
-        if (req.getParameter(ClientDevice.deviceId_key) != null)
-            req.getSession().setAttribute(ClientDevice.deviceId_key, req.getParameter(ClientDevice.deviceId_key));
-        if (req.getParameter(ClientDevice.Device) != null)
-            req.getSession().setAttribute(ClientDevice.Device, req.getParameter(ClientDevice.Device));
+        if (req.getParameter(ClientDevice.client_id) != null)
+            req.getSession().setAttribute(ClientDevice.client_id, req.getParameter(ClientDevice.client_id));
+        if (req.getParameter(ClientDevice.device) != null)
+            req.getSession().setAttribute(ClientDevice.device, req.getParameter(ClientDevice.device));
 
         String url = String.format("redirect:/%s/%s", appConfig.getPathForms(), appConfig.getFormWelcome());
         return url;
@@ -41,10 +41,10 @@ public class StartAppDefault {
 
     @RequestMapping("/mobileConfig")
     public String mobileConfig() {
-        if (req.getParameter(ClientDevice.deviceId_key) != null)
-            req.getSession().setAttribute(ClientDevice.deviceId_key, req.getParameter(ClientDevice.deviceId_key));
-        if (req.getParameter(ClientDevice.Device) != null)
-            req.getSession().setAttribute(ClientDevice.Device, req.getParameter(ClientDevice.Device));
+        if (req.getParameter(ClientDevice.client_id) != null)
+            req.getSession().setAttribute(ClientDevice.client_id, req.getParameter(ClientDevice.client_id));
+        if (req.getParameter(ClientDevice.device) != null)
+            req.getSession().setAttribute(ClientDevice.device, req.getParameter(ClientDevice.device));
         try {
             IForm form = Application.getBean(IForm.class, "MobileConfig", "mobileConfig");
             form.setRequest(req);

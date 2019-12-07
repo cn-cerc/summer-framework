@@ -29,21 +29,21 @@ public class StartApp implements Filter {
 
         // 处理默认首页问题
         if (uri.equals("/")) {
-            if (req.getParameter(ClientDevice.deviceId_key) != null)
-                req.getSession().setAttribute(ClientDevice.deviceId_key, req.getParameter(ClientDevice.deviceId_key));
-            if (req.getParameter(ClientDevice.Device) != null)
-                req.getSession().setAttribute(ClientDevice.Device,
-                        req.getParameter(ClientDevice.Device));
+            if (req.getParameter(ClientDevice.client_id) != null)
+                req.getSession().setAttribute(ClientDevice.client_id, req.getParameter(ClientDevice.client_id));
+            if (req.getParameter(ClientDevice.device) != null)
+                req.getSession().setAttribute(ClientDevice.device,
+                        req.getParameter(ClientDevice.device));
 
             IAppConfig conf = Application.getAppConfig();
             resp.sendRedirect(String.format("/public/%s", conf.getFormWelcome()));
             return;
         } else if (uri.equals("/MobileConfig") || uri.equals("/mobileConfig")) {
-            if (req.getParameter(ClientDevice.deviceId_key) != null)
-                req.getSession().setAttribute(ClientDevice.deviceId_key, req.getParameter(ClientDevice.deviceId_key));
-            if (req.getParameter(ClientDevice.Device) != null)
-                req.getSession().setAttribute(ClientDevice.Device,
-                        req.getParameter(ClientDevice.Device));
+            if (req.getParameter(ClientDevice.client_id) != null)
+                req.getSession().setAttribute(ClientDevice.client_id, req.getParameter(ClientDevice.client_id));
+            if (req.getParameter(ClientDevice.device) != null)
+                req.getSession().setAttribute(ClientDevice.device,
+                        req.getParameter(ClientDevice.device));
             try {
                 IForm form;
                 if (Application.get(req).containsBean("mobileConfig"))
