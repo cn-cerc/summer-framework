@@ -1,5 +1,6 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.Utils;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import org.springframework.context.annotation.Scope;
@@ -126,7 +127,7 @@ public class ClientDevice implements IClient, Serializable {
     }
 
     public void setToken(String value) {
-        String tmp = (value == null || "".equals(value)) ? null : value;
+        String tmp = Utils.isEmpty(value) ? null : value;
         if (tmp != null) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, tmp)) {
                 // 设备ID
@@ -139,6 +140,7 @@ public class ClientDevice implements IClient, Serializable {
                 MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
             }
         }
+
         this.token = tmp;
         request.getSession().setAttribute(RequestData.appSession_Key, this.token);
         request.setAttribute(RequestData.appSession_Key, this.token == null ? "" : this.token);
@@ -146,7 +148,8 @@ public class ClientDevice implements IClient, Serializable {
 
     /**
      * 清空token信息
-     * // TODO: 2019/12/7 考虑要不要加上缓存一起清空
+     * <p>
+     * TODO: 2019/12/7 考虑要不要加上缓存一起清空
      */
     public void clear() {
         this.token = null;
@@ -154,11 +157,11 @@ public class ClientDevice implements IClient, Serializable {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("token:").append(token).append(", ");
-        sb.append("deviceId:").append(deviceId).append(", ");
-        sb.append("deviceType:").append(device);
-        return sb.toString();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("token:").append(token).append(", ");
+        buffer.append("deviceId:").append(deviceId).append(", ");
+        buffer.append("deviceType:").append(device);
+        return buffer.toString();
     }
 
     @Override
