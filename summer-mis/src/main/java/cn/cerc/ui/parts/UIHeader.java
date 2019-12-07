@@ -3,6 +3,7 @@ package cn.cerc.ui.parts;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
@@ -30,7 +31,7 @@ public class UIHeader extends UIComponent {
         super(owner);
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), "<img src=\"images/Home.png\"/>");
         leftMenus.add(homePage);
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), "开始");
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), R.asString(owner.getForm().getHandle(), "开始"));
         leftMenus.add(homePage);
     }
 
@@ -43,7 +44,7 @@ public class UIHeader extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         if (this.leftBottom.size() > MAX_MENUS)
-            throw new RuntimeException(String.format("底部菜单区最多只支持 %d 个菜单项", MAX_MENUS));
+            throw new RuntimeException(String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
 
         html.print("<header role='header'");
         super.outputCss(html);
@@ -121,8 +122,8 @@ public class UIHeader extends UIComponent {
             }
         }
         if (leftMenus.size() == 0) {
-            leftMenus.add(new UrlRecord("/", "首页"));
-            leftMenus.add(new UrlRecord("javascript:history.go(-1);", "刷新"));
+            leftMenus.add(new UrlRecord("/", R.asString(this.getForm().getHandle(), "首页")));
+            leftMenus.add(new UrlRecord("javascript:history.go(-1);", R.asString(this.getForm().getHandle(), "刷新")));
         }
         // 兼容老的jsp文件使用
         form.getRequest().setAttribute("barMenus", leftMenus);
