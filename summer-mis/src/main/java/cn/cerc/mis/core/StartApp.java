@@ -29,21 +29,21 @@ public class StartApp implements Filter {
 
         // 处理默认首页问题
         if (uri.equals("/")) {
-            if (req.getParameter(ClientDevice.CLIENT_ID) != null)
-                req.getSession().setAttribute(ClientDevice.CLIENT_ID, req.getParameter(ClientDevice.CLIENT_ID));
-            if (req.getParameter(ClientDevice.DEVICE_TYPE) != null)
-                req.getSession().setAttribute(ClientDevice.DEVICE_TYPE,
-                        req.getParameter(ClientDevice.DEVICE_TYPE));
+            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null)
+                req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
+            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null)
+                req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE,
+                        req.getParameter(ClientDevice.APP_DEVICE_TYPE));
 
             IAppConfig conf = Application.getAppConfig();
             resp.sendRedirect(String.format("/public/%s", conf.getFormWelcome()));
             return;
         } else if (uri.equals("/MobileConfig") || uri.equals("/mobileConfig")) {
-            if (req.getParameter(ClientDevice.CLIENT_ID) != null)
-                req.getSession().setAttribute(ClientDevice.CLIENT_ID, req.getParameter(ClientDevice.CLIENT_ID));
-            if (req.getParameter(ClientDevice.DEVICE_TYPE) != null)
-                req.getSession().setAttribute(ClientDevice.DEVICE_TYPE,
-                        req.getParameter(ClientDevice.DEVICE_TYPE));
+            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null)
+                req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
+            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null)
+                req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE,
+                        req.getParameter(ClientDevice.APP_DEVICE_TYPE));
             try {
                 IForm form;
                 if (Application.get(req).containsBean("mobileConfig"))
