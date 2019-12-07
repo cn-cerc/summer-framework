@@ -63,7 +63,7 @@ public class ResourceJstl extends SimpleTagSupport {
         text = sw.toString();
         Object temp = handle.getProperty(Application.deviceLanguage);
         String lang = (temp == null || "".equals(temp)) ? Application.getLangage() : (String) temp;
-        if ("cn".equals(lang)) {
+        if (LanguageType.zh_CN.equals(lang)) {
             return text;
         }
 

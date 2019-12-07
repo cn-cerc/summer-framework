@@ -99,7 +99,7 @@ public class R {
 
     public static String get(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if ("cn".equals(language))
+        if (LanguageType.zh_CN.equals(language))
             return text;
 
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);

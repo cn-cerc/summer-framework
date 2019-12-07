@@ -1,6 +1,7 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.Utils;
+import cn.cerc.mis.language.LanguageType;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import org.springframework.context.annotation.Scope;
@@ -117,7 +118,7 @@ public class ClientDevice implements IClient, Serializable {
 
     @Override
     public String getLanguage() {
-        return languageId == null ? "cn" : languageId;
+        return languageId == null ? LanguageType.zh_CN : languageId;
     }
 
     public String getToken() {
