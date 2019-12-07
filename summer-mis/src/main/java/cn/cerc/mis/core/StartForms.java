@@ -27,26 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StartForms implements Filter {
 
-    private static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
-            throws ServletException, IOException {
-        Throwable err = e.getCause();
-        if (err == null) {
-            err = e;
-        }
-        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
-        if (errorPage != null) {
-            String result = errorPage.getErrorPage(request, response, err);
-            if (result != null) {
-                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
-                request.getServletContext().getRequestDispatcher(url).forward(request, response);
-            }
-        } else {
-            log.warn("not define bean: errorPage");
-            log.error(err.getMessage());
-            err.printStackTrace();
-        }
-    }
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -110,9 +90,11 @@ public class StartForms implements Filter {
         String formId = params[0];
         String funcCode = params.length == 1 ? "execute" : params[1];
 
+        // TODO ???
         req.setAttribute("logon", false);
 
         // 验证菜单是否启停
+        // TODO ???
         IFormFilter formFilter = Application.getBean(IFormFilter.class, "AppFormFilter");
         if (formFilter != null) {
             if (formFilter.doFilter(resp, formId, funcCode)) {
@@ -171,6 +153,26 @@ public class StartForms implements Filter {
             }
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
+        }
+    }
+
+    private void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
+            throws ServletException, IOException {
+        Throwable err = e.getCause();
+        if (err == null) {
+            err = e;
+        }
+        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
+        if (errorPage != null) {
+            String result = errorPage.getErrorPage(request, response, err);
+            if (result != null) {
+                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
+                request.getServletContext().getRequestDispatcher(url).forward(request, response);
+            }
+        } else {
+            log.warn("not define bean: errorPage");
+            log.error(err.getMessage());
+            err.printStackTrace();
         }
     }
 
