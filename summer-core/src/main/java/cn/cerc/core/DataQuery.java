@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public abstract class DataQuery extends DataSet {
     private static final long serialVersionUID = 7316772894058168187L;
-    protected boolean active = false;
-    protected IHandle handle;
     // 批次保存模式，默认为post与delete立即保存
     private boolean batchSave = false;
     private SqlText sqlText = new SqlText();
+    protected boolean active = false;
+    protected IHandle handle;
 
     public DataQuery(IHandle handle) {
         this.handle = handle;
@@ -34,8 +34,9 @@ public abstract class DataQuery extends DataSet {
 
     /**
      * 增加sql指令内容，调用此函数需要自行解决sql注入攻击！
-     *
-     * @param sql 要增加的sql指令内容
+     * 
+     * @param sql
+     *            要增加的sql指令内容
      * @return 返回对象本身
      */
     protected DataQuery add(String sql) {
@@ -60,12 +61,12 @@ public abstract class DataQuery extends DataSet {
         return this.sqlText.getText();
     }
 
-    protected SqlText getSqlText() {
-        return this.sqlText;
-    }
-
     protected void setSqlText(SqlText sqlText) {
         this.sqlText = sqlText;
+    }
+
+    protected SqlText getSqlText() {
+        return this.sqlText;
     }
 
     @Deprecated //请改使用 getSqlText().clear

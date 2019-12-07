@@ -1,16 +1,5 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.DataSetEvent;
-import cn.cerc.core.DataSetState;
-import cn.cerc.core.FieldDefs;
-import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.SqlText;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -19,8 +8,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.DataQuery;
+import cn.cerc.core.DataSetEvent;
+import cn.cerc.core.DataSetState;
+import cn.cerc.core.FieldDefs;
+import cn.cerc.core.IDataOperator;
+import cn.cerc.core.IHandle;
+import cn.cerc.core.Record;
+import cn.cerc.core.SqlText;
+
 public class SqlQuery extends DataQuery {
+    private static final Logger log = LoggerFactory.getLogger(SqlQuery.class);
 
     private static final long serialVersionUID = 7316772894058168187L;
     private SqlConnection session;
@@ -35,6 +38,13 @@ public class SqlQuery extends DataQuery {
     // 仅当batchSave为true时，delList才有记录存在
     private List<Record> delList = new ArrayList<>();
 
+    @Override
+    public void close() {
+        this.active = false;
+        this.operator = null;
+        super.close();
+    }
+
     public SqlQuery(IHandle handle) {
         super(handle);
         this.session = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
@@ -42,13 +52,6 @@ public class SqlQuery extends DataQuery {
 
         this.dataSource = (DataSource) handle.getProperty(MysqlConnection.dataSource);
         this.slaveDataSource = (DataSource) handle.getProperty(SlaveMysqlConnection.slaveDataSource);
-    }
-
-    @Override
-    public void close() {
-        this.active = false;
-        this.operator = null;
-        super.close();
     }
 
     private Statement getStatement(boolean isSlave) throws SQLException {
@@ -190,11 +193,6 @@ public class SqlQuery extends DataQuery {
     }
 
     @Override
-    public boolean getActive() {
-        return active;
-    }
-
-    @Override
     public SqlQuery setActive(boolean value) {
         if (value) {
             if (!this.active)
@@ -204,6 +202,11 @@ public class SqlQuery extends DataQuery {
             this.close();
         }
         return this;
+    }
+
+    @Override
+    public boolean getActive() {
+        return active;
     }
 
     @Override
@@ -332,13 +335,13 @@ public class SqlQuery extends DataQuery {
     }
 
     @Override
-    public SqlText getSqlText() {
-        return super.getSqlText();
+    public void setSqlText(SqlText sqlText) {
+        super.setSqlText(sqlText);
     }
 
     @Override
-    public void setSqlText(SqlText sqlText) {
-        super.setSqlText(sqlText);
+    public SqlText getSqlText() {
+        return super.getSqlText();
     }
 
     @Override

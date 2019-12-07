@@ -1,14 +1,14 @@
 package cn.cerc.db.oss;
 
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.ListObjectsRequest;
-import com.aliyun.oss.model.OSSObjectSummary;
-import com.aliyun.oss.model.ObjectListing;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.ListObjectsRequest;
+import com.aliyun.oss.model.OSSObjectSummary;
+import com.aliyun.oss.model.ObjectListing;
 
 public class OssFolder {
     // private static final Logger log = Logger.getLogger(WebFolder.class);

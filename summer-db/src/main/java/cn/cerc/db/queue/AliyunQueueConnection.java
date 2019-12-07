@@ -1,22 +1,25 @@
 package cn.cerc.db.queue;
 
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IConnection;
-import cn.cerc.db.core.ServerConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
 import com.aliyun.mns.model.Message;
 import com.aliyun.mns.model.QueueMeta;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-@Slf4j
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IConnection;
+import cn.cerc.db.core.ServerConfig;
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AliyunQueueConnection implements IConnection {
+    private static final Logger log = LoggerFactory.getLogger(AliyunQueueConnection.class);
 
     public static final String AccountEndpoint = "mns.accountendpoint";
     public static final String AccessKeyId = "mns.accesskeyid";
@@ -24,10 +27,11 @@ public class AliyunQueueConnection implements IConnection {
     public static final String SecurityToken = "mns.securitytoken";
     // IHandle中识别码
     public static final String sessionId = "aliyunQueueSession";
-    // 默认消息队列
-    public static final String defaultQueue = QueueDB.SUMMER;
     // 默认不可见时间
     private static int visibilityTimeout = 50;
+    // 默认消息队列
+    public static final String defaultQueue = QueueDB.SUMMER;
+
     private static MNSClient client;
     private static CloudAccount account;
     private IConfig config;
@@ -66,7 +70,7 @@ public class AliyunQueueConnection implements IConnection {
 
     /**
      * 根据队列的URL创建CloudQueue对象，后于后续对改对象的创建、查询等
-     *
+     * 
      * @param queueCode 队列代码
      * @return value 返回具体的消息队列
      */
@@ -76,7 +80,7 @@ public class AliyunQueueConnection implements IConnection {
 
     /**
      * 创建队列
-     *
+     * 
      * @param queueCode 队列代码
      * @return value 返回创建的队列
      */
@@ -97,7 +101,7 @@ public class AliyunQueueConnection implements IConnection {
 
     /**
      * 发送消息
-     *
+     * 
      * @param queue   消息队列
      * @param content 消息内容
      * @return value 返回值，当前均为true
@@ -111,7 +115,7 @@ public class AliyunQueueConnection implements IConnection {
 
     /**
      * 获取队列中的消息
-     *
+     * 
      * @param queue 消息队列
      * @return value 返回请求的删除，可为null
      */
@@ -129,7 +133,7 @@ public class AliyunQueueConnection implements IConnection {
 
     /**
      * 删除消息
-     *
+     * 
      * @param queue         队列
      * @param receiptHandle 消息句柄
      */
@@ -139,7 +143,7 @@ public class AliyunQueueConnection implements IConnection {
 
     /**
      * 查看队列消息
-     *
+     * 
      * @param queue 队列
      * @return value 返回取得的消息体
      */
@@ -149,7 +153,7 @@ public class AliyunQueueConnection implements IConnection {
 
     /**
      * 延长消息不可见时间
-     *
+     * 
      * @param queue         队列
      * @param receiptHandle 消息句柄
      */

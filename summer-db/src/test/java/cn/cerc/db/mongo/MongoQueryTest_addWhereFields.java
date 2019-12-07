@@ -1,10 +1,12 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.db.core.StubHandle;
-import com.mongodb.BasicDBObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.mongodb.BasicDBObject;
+
+import cn.cerc.db.core.StubHandle;
 
 public class MongoQueryTest_addWhereFields {
     private StubHandle handle;

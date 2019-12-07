@@ -1,11 +1,5 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,9 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
-public class SqlOperator implements IDataOperator {
+import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.IDataOperator;
+import cn.cerc.core.IHandle;
+import cn.cerc.core.Record;
+
+public class SqlOperator implements IDataOperator {
+    private static final Logger log = LoggerFactory.getLogger(SqlOperator.class);
     private String updateKey = "UID_";
     private String tableName;
     private String lastCommand;
@@ -45,28 +47,6 @@ public class SqlOperator implements IDataOperator {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    // 根据 sql 获取数据库表名
-    public static String findTableName(String sql) {
-        String result = null;
-        String[] items = sql.split("[ \r\n]");
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].toLowerCase().contains("from")) {
-                // 如果取到form后 下一个记录为数据库表名
-                while (items[i + 1] == null || "".equals(items[i + 1].trim())) {
-                    // 防止取到空值
-                    i++;
-                }
-                result = items[++i]; // 获取数据库表名
-                break;
-            }
-        }
-
-        if (result == null)
-            throw new RuntimeException("SQL语句异常");
-
-        return result;
     }
 
     private Connection getConnection() {
@@ -367,6 +347,28 @@ public class SqlOperator implements IDataOperator {
 
     public List<String> getSearchKeys() {
         return searchKeys;
+    }
+
+    // 根据 sql 获取数据库表名
+    public static String findTableName(String sql) {
+        String result = null;
+        String[] items = sql.split("[ \r\n]");
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].toLowerCase().contains("from")) {
+                // 如果取到form后 下一个记录为数据库表名
+                while (items[i + 1] == null || "".equals(items[i + 1].trim())) {
+                    // 防止取到空值
+                    i++;
+                }
+                result = items[++i]; // 获取数据库表名
+                break;
+            }
+        }
+
+        if (result == null)
+            throw new RuntimeException("SQL语句异常");
+
+        return result;
     }
 
     public UpdateMode getUpdateMode() {

@@ -1,17 +1,24 @@
 package cn.cerc.core;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Lunar {
 
-    final static String chineseNumber[] = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
-    final static long[] lunarInfo = new long[]{0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0,
+    private static final Logger log = LoggerFactory.getLogger(Lunar.class);
+
+    private int year;
+    private int month;
+    private int day;
+    private boolean leap;
+    final static String chineseNumber[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+    static SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    final static long[] lunarInfo = new long[] { 0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0,
             0x09ad0, 0x055d2, 0x04ae0, 0x0a5b6, 0x0a4d0, 0x0d250, 0x1d255, 0x0b540, 0x0d6a0, 0x0ada2, 0x095b0, 0x14977,
             0x04970, 0x0a4b0, 0x0b4b5, 0x06a50, 0x06d40, 0x1ab54, 0x02b60, 0x09570, 0x052f2, 0x04970, 0x06566, 0x0d4a0,
             0x0ea50, 0x06e95, 0x05ad0, 0x02b60, 0x186e3, 0x092e0, 0x1c8d7, 0x0c950, 0x0d4a0, 0x1d8a6, 0x0b550, 0x056a0,
@@ -23,17 +30,65 @@ public class Lunar {
             0x07552, 0x056a0, 0x0abb7, 0x025d0, 0x092d0, 0x0cab5, 0x0a950, 0x0b4a0, 0x0baa4, 0x0ad50, 0x055d9, 0x04ba0,
             0x0a5b0, 0x15176, 0x052b0, 0x0a930, 0x07954, 0x06aa0, 0x0ad50, 0x05b52, 0x04b60, 0x0a6e6, 0x0a4e0, 0x0d260,
             0x0ea65, 0x0d530, 0x05aa0, 0x076a3, 0x096d0, 0x04bd7, 0x04ad0, 0x0a4d0, 0x1d0b6, 0x0d250, 0x0d520, 0x0dd45,
-            0x0b5a0, 0x056d0, 0x055b2, 0x049b0, 0x0a577, 0x0a4b0, 0x0aa50, 0x1b255, 0x06d20, 0x0ada0};
-    static SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private int year;
-    private int month;
-    private int day;
-    private boolean leap;
+            0x0b5a0, 0x056d0, 0x055b2, 0x049b0, 0x0a577, 0x0a4b0, 0x0aa50, 0x1b255, 0x06d20, 0x0ada0 };
+
+    // ====== 传回农历 y年的总天数
+    final private static int yearDays(int y) {
+        int i, sum = 348;
+        for (i = 0x8000; i > 0x8; i >>= 1) {
+            if ((lunarInfo[y - 1900] & i) != 0)
+                sum += 1;
+        }
+        return (sum + leapDays(y));
+    }
+
+    // ====== 传回农历 y年闰月的天数
+    final private static int leapDays(int y) {
+        if (leapMonth(y) != 0) {
+            if ((lunarInfo[y - 1900] & 0x10000) != 0)
+                return 30;
+            else
+                return 29;
+        } else
+            return 0;
+    }
+
+    // ====== 传回农历 y年闰哪个月 1-12 , 没闰传回 0
+    final private static int leapMonth(int y) {
+        return (int) (lunarInfo[y - 1900] & 0xf);
+    }
+
+    // ====== 传回农历 y年m月的总天数
+    final private static int monthDays(int y, int m) {
+        if ((lunarInfo[y - 1900] & (0x10000 >> m)) == 0)
+            return 29;
+        else
+            return 30;
+    }
+
+    // ====== 传回农历 y年的生肖
+    final public String animalsYear() {
+        final String[] Animals = new String[] { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+        return Animals[(year - 4) % 12];
+    }
+
+    // ====== 传入 月日的offset 传回干支, 0=甲子
+    final private static String cyclicalm(int num) {
+        final String[] Gan = new String[] { "甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸" };
+        final String[] Zhi = new String[] { "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥" };
+        return (Gan[num % 10] + Zhi[num % 12]);
+    }
+
+    // ====== 传入 offset 传回干支, 0=甲子
+    final public String cyclical() {
+        int num = year - 1900 + 36;
+        return (cyclicalm(num));
+    }
 
     /**
      * 传出y年m月d日对应的农历. yearCyl3:农历年与1864的相差数 ? monCyl4:从1900年1月31日以来,闰月数
      * dayCyl5:与1900年1月31日相差的天数,再加40 ?
-     *
+     * 
      * @param cal:历法对象
      */
     public Lunar(Calendar cal) {
@@ -45,7 +100,7 @@ public class Lunar {
             baseDate = chineseDateFormat.parse("1900-01-31");
         } catch (ParseException e) {
             e.printStackTrace(); // To change body of catch statement use
-            // Options | File Templates.
+                                 // Options | File Templates.
         }
 
         // 求出和1900年1月31日相差的天数
@@ -113,49 +168,8 @@ public class Lunar {
         day = offset + 1;
     }
 
-    // ====== 传回农历 y年的总天数
-    final private static int yearDays(int y) {
-        int i, sum = 348;
-        for (i = 0x8000; i > 0x8; i >>= 1) {
-            if ((lunarInfo[y - 1900] & i) != 0)
-                sum += 1;
-        }
-        return (sum + leapDays(y));
-    }
-
-    // ====== 传回农历 y年闰月的天数
-    final private static int leapDays(int y) {
-        if (leapMonth(y) != 0) {
-            if ((lunarInfo[y - 1900] & 0x10000) != 0)
-                return 30;
-            else
-                return 29;
-        } else
-            return 0;
-    }
-
-    // ====== 传回农历 y年闰哪个月 1-12 , 没闰传回 0
-    final private static int leapMonth(int y) {
-        return (int) (lunarInfo[y - 1900] & 0xf);
-    }
-
-    // ====== 传回农历 y年m月的总天数
-    final private static int monthDays(int y, int m) {
-        if ((lunarInfo[y - 1900] & (0x10000 >> m)) == 0)
-            return 29;
-        else
-            return 30;
-    }
-
-    // ====== 传入 月日的offset 传回干支, 0=甲子
-    final private static String cyclicalm(int num) {
-        final String[] Gan = new String[]{"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"};
-        final String[] Zhi = new String[]{"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
-        return (Gan[num % 10] + Zhi[num % 12]);
-    }
-
     public static String getChinaDayString(int day) {
-        String chineseTen[] = {"0", "1", "2", "3"};
+        String chineseTen[] = { "0", "1", "2", "3" };
         int n = day % 10 == 0 ? 9 : day % 10 - 1;
         if (day > 30)
             return "";
@@ -165,30 +179,18 @@ public class Lunar {
             return chineseTen[day / 10] + chineseNumber[n];
     }
 
+    public String toString() {
+        // return year + "年" + (leap ? "闰" : "") + chineseNumber[month - 1] +
+        // "月" + getChinaDayString(day);
+        String days = "0" + day;
+        return year + "-" + chineseNumber[month - 1] + "-" + days.substring(days.length() - 2);
+    }
+
     public static void main(String[] args) throws ParseException {
         Calendar today = Calendar.getInstance();
         today.setTime(chineseDateFormat.parse("2015-03-30"));
         Lunar lunar = new Lunar(today);
 
         log.debug("北京时间：" + chineseDateFormat.format(today.getTime()) + "　农历" + lunar);
-    }
-
-    // ====== 传回农历 y年的生肖
-    final public String animalsYear() {
-        final String[] Animals = new String[]{"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
-        return Animals[(year - 4) % 12];
-    }
-
-    // ====== 传入 offset 传回干支, 0=甲子
-    final public String cyclical() {
-        int num = year - 1900 + 36;
-        return (cyclicalm(num));
-    }
-
-    public String toString() {
-        // return year + "年" + (leap ? "闰" : "") + chineseNumber[month - 1] +
-        // "月" + getChinaDayString(day);
-        String days = "0" + day;
-        return year + "-" + chineseNumber[month - 1] + "-" + days.substring(days.length() - 2);
     }
 }

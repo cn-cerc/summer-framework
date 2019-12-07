@@ -1,8 +1,6 @@
 package cn.cerc.db.core;
 
-/**
- * 专用于聚安云调用
- */
+/** 专用于聚安云调用 */
 public class JayunService extends MicroService {
     public JayunService() {
         super();

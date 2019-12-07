@@ -1,17 +1,18 @@
 package cn.cerc.db.core;
 
-import cn.cerc.core.IConfig;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-@Slf4j
-public class LocalConfig implements IConfig {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import cn.cerc.core.IConfig;
+
+public class LocalConfig implements IConfig {
+    private static final Logger log = LoggerFactory.getLogger(LocalConfig.class);
     private static Properties properties = new Properties();
     private static LocalConfig instance;
 
@@ -37,18 +38,6 @@ public class LocalConfig implements IConfig {
         }
     }
 
-    public synchronized static LocalConfig getInstance() {
-        if (instance == null) {
-            new LocalConfig();
-        }
-        return instance;
-    }
-
-    public static void main(String[] args) {
-        LocalConfig config = new LocalConfig();
-        System.out.println(config.getProperty("key"));
-    }
-
     @Override
     public String getProperty(String key, String def) {
         String result = null;
@@ -61,5 +50,17 @@ public class LocalConfig implements IConfig {
     @Override
     public String getProperty(String key) {
         return getProperty(key, null);
+    }
+
+    public synchronized static LocalConfig getInstance() {
+        if (instance == null) {
+            new LocalConfig();
+        }
+        return instance;
+    }
+
+    public static void main(String[] args) {
+        LocalConfig config = new LocalConfig();
+        System.out.println(config.getProperty("key"));
     }
 }

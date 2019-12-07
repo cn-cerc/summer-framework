@@ -15,8 +15,9 @@ public class Block114 extends UIComponent {
      * 文本 + 选择框 + 说明
      * <p>
      * 例如用于显示下游品牌授权
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block114(UIComponent owner) {
         super(owner);

@@ -7,7 +7,9 @@ import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
+ * 
  * @author 张弓
+ *
  */
 public class Block991 extends UIComponent {
     private UIImage image = new UIImage();
@@ -16,8 +18,9 @@ public class Block991 extends UIComponent {
 
     /**
      * 底部状态栏：1个功能按钮+提示文字
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block991(UIComponent owner) {
         super(owner);

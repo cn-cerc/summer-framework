@@ -1,19 +1,23 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.db.core.StubHandle;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import lombok.extern.slf4j.Slf4j;
-import org.bson.Document;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@Slf4j
+import org.bson.Document;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+
+import cn.cerc.db.core.StubHandle;
+
 public class MongoUtilsTest {
+
+    private static final Logger log = LoggerFactory.getLogger(MongoUtilsTest.class);
 
     private static MongoUtils utils;
 
@@ -25,7 +29,7 @@ public class MongoUtilsTest {
 
     /**
      * 单条添加
-     *
+     * 
      * @Description
      * @author rick_zhou
      */
@@ -56,7 +60,7 @@ public class MongoUtilsTest {
 
     /**
      * 批量添加数据
-     *
+     * 
      * @Description
      * @author rick_zhou
      */
@@ -73,7 +77,7 @@ public class MongoUtilsTest {
 
     /**
      * 修改数据
-     *
+     * 
      * @Description
      * @author rick_zhou
      */
@@ -117,7 +121,7 @@ public class MongoUtilsTest {
 
     /**
      * 列表查询
-     *
+     * 
      * @Description
      * @author rick_zhou
      */

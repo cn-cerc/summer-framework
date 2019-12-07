@@ -1,16 +1,18 @@
 package cn.cerc.db.cache;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.IRecord;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
-import lombok.extern.slf4j.Slf4j;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-@Slf4j
 public class CacheQuery implements IRecord {
+    private static final Logger log = LoggerFactory.getLogger(CacheQuery.class);
 
     private String key;
     private boolean existsData = false;
@@ -21,30 +23,6 @@ public class CacheQuery implements IRecord {
 
     // 缓存对象
     private boolean connected;
-
-    public final void post() {
-        if (this.modified) {
-            try {
-                Redis.set(key, record.toString(), this.expires);
-                log.debug("cache set:" + key.toString() + ":" + record.toString());
-                this.modified = false;
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
-        }
-    }
-
-    public boolean isNull() {
-        return !this.existsData;
-    }
-
-    public void setNull(String field) {
-        setField(field, null);
-    }
-
-    public String getKey() {
-        return key;
-    }
 
     public CacheQuery setKey(String key) {
         if (this.key != null)
@@ -67,6 +45,26 @@ public class CacheQuery implements IRecord {
             }
         }
         return this;
+    }
+
+    public final void post() {
+        if (this.modified) {
+            try {
+                Redis.set(key, record.toString(), this.expires);
+                log.debug("cache set:" + key.toString() + ":" + record.toString());
+                this.modified = false;
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        }
+    }
+
+    public boolean isNull() {
+        return !this.existsData;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public void clear() {
@@ -131,6 +129,10 @@ public class CacheQuery implements IRecord {
         this.modified = true;
         record.setField(field, value);
         return this;
+    }
+
+    public void setNull(String field) {
+        setField(field, null);
     }
 
     @Override

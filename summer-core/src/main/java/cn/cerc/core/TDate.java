@@ -6,8 +6,9 @@ import java.util.Date;
 
 /**
  * 日期对象
- *
+ * 
  * @author 张弓
+ *
  */
 public class TDate extends TDateTime {
     private static final long serialVersionUID = 1L;
@@ -37,14 +38,6 @@ public class TDate extends TDateTime {
         return new TDate(date);
     }
 
-    public static void main(String[] args) {
-        TDate val;
-        val = new TDate(TDateTime.Now().incMonth(-13).getData());
-        System.out.println(val.getShortValue());
-        val = TDate.Today();
-        System.out.println(val.getShortValue());
-    }
-
     @Override
     public String toString() {
         return this.getDate();
@@ -59,5 +52,13 @@ public class TDate extends TDateTime {
         } else {
             return String.format("%d月%d日", month, day);
         }
+    }
+
+    public static void main(String[] args) {
+        TDate val;
+        val = new TDate(TDateTime.Now().incMonth(-13).getData());
+        System.out.println(val.getShortValue());
+        val = TDate.Today();
+        System.out.println(val.getShortValue());
     }
 }

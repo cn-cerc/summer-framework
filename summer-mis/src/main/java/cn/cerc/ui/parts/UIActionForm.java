@@ -1,11 +1,11 @@
 package cn.cerc.ui.parts;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.vcl.UIGroupBox;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UIActionForm extends UIComponent {
     private String action;
@@ -62,7 +62,7 @@ public class UIActionForm extends UIComponent {
 
     /**
      * 输入头部
-     *
+     * 
      * @param html 输出器
      */
     public void outHead(HtmlWriter html) {
@@ -89,7 +89,7 @@ public class UIActionForm extends UIComponent {
 
     /**
      * 输出尾部
-     *
+     * 
      * @param html 输出器
      */
     public void outFoot(HtmlWriter html) {

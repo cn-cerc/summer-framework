@@ -32,7 +32,6 @@ public class UIImage extends UIComponent {
             html.print(" height='%s'", this.height);
         if (onclick != null)
             html.print(" onclick='%s'", this.onclick);
-        super.outputCss(html);
         html.println("/>");
     }
 

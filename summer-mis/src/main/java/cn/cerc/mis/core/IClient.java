@@ -12,11 +12,11 @@ public interface IClient {
     // 返回设备型号
     public String getDevice();
 
-    // 设置设备型号
-    public void setDevice(String device);
-
     // 返回设备语言
     public String getLanguage();
+
+    // 设置设备型号
+    public void setDevice(String device);
 
     void setRequest(HttpServletRequest request);
 }

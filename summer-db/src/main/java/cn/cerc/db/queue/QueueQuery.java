@@ -1,15 +1,17 @@
 package cn.cerc.db.queue;
 
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
 import com.google.gson.JsonSyntaxException;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+import cn.cerc.core.DataQuery;
+import cn.cerc.core.IHandle;
+
 public class QueueQuery extends DataQuery {
-
+    private static final Logger log = LoggerFactory.getLogger(QueueQuery.class);
     private static final long serialVersionUID = 7781788221337787366L;
     private QueueOperator operator;
     private String queueCode;
@@ -60,6 +62,7 @@ public class QueueQuery extends DataQuery {
     }
 
     /**
+     * 
      * @return 移除消息队列
      */
     public boolean remove() {
@@ -72,7 +75,7 @@ public class QueueQuery extends DataQuery {
 
     /**
      * 创建消息队列
-     *
+     * 
      * @param queueCode 队列代码
      * @return 返回创建的队列
      */

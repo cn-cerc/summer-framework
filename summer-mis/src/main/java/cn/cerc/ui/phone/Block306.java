@@ -1,18 +1,19 @@
 package cn.cerc.ui.phone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 三行文字列表显示
  * <p>
  * 标题 + 3行信息说明
- *
+ * 
  * @author HuangRongjun
+ *
  */
 public class Block306 extends UIComponent {
     private UISpan title;

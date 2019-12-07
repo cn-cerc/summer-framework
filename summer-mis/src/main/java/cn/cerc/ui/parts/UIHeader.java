@@ -1,14 +1,14 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UIHeader extends UIComponent {
     private static final int MAX_MENUS = 4;
@@ -43,9 +43,7 @@ public class UIHeader extends UIComponent {
         if (this.leftBottom.size() > MAX_MENUS)
             throw new RuntimeException(String.format("底部菜单区最多只支持 %d 个菜单项", MAX_MENUS));
 
-        html.print("<header role='header'");
-        super.outputCss(html);
-        html.println(">");
+        html.println("<header role='header'>");
         if (advertisement != null) {
             html.println("<section role='advertisement'>");
             html.println(advertisement.toString());
@@ -61,7 +59,7 @@ public class UIHeader extends UIComponent {
             for (UrlRecord menu : leftMenus) {
                 html.print("<li>");
                 if (i > 1)
-                    html.println("<span>-></span>");
+                    html.println("<span>→</span>");
                 html.print("<a href=\"%s\">%s</a>", menu.getUrl(), menu.getName());
                 i++;
                 html.print("</li>");

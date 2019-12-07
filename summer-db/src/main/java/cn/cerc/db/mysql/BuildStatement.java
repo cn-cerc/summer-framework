@@ -1,8 +1,5 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,10 +8,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
+
 /**
  * 生成原生sql操作对象
- *
+ * 
  * @author 张弓
+ *
  */
 public class BuildStatement implements AutoCloseable {
     private Connection conn;
@@ -40,7 +41,7 @@ public class BuildStatement implements AutoCloseable {
         if (data instanceof TDateTime) {
             result = data.toString();
         } else if (data instanceof Double) {
-            result = Utils.roundTo((Double) data, -8);
+            result = Utils.roundTo((Double) data, -6);
         } else {
             if (data instanceof Date) {
                 if (sdf == null)

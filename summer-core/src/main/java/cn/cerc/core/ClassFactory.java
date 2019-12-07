@@ -26,7 +26,7 @@ public class ClassFactory {
         System.out.println("select:" + data.getSelect());
         System.out.println();
         System.out.println("updateKey:" + data.getUpdateKey());
-        for (String key : data.getSearchKeys())
+        for(String key : data.getSearchKeys()) 
             System.out.println("serachKey:" + key);
         Field field = data.getGenerationIdentityField();
         if (field != null)

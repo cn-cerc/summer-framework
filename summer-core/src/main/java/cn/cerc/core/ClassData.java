@@ -1,16 +1,17 @@
 package cn.cerc.core;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 public class ClassData {
     public static final int PUBLIC = 1;
@@ -91,7 +92,7 @@ public class ClassData {
                     updateKey = key;
                 if (item instanceof SearchKey)
                     searchKeys.add(key);
-                if (item instanceof SpecialNum)
+                if(item instanceof SpecialNum) 
                     specialNumKeys.add(key);
             }
         }

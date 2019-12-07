@@ -1,7 +1,5 @@
 package cn.cerc.db.core;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +15,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * HTTP请求代理类
  *
@@ -24,32 +25,19 @@ import java.util.Map.Entry;
  * @version 1.0, 2018-1-1
  */
 //FIXME 需重构调用方式初始化直接创建url  new Curl(url);
-@Slf4j
 public class Curl {
-
-    /**
-     * 请求编码
-     */
+    private static final Logger log = LoggerFactory.getLogger(Curl.class);
+    /** 请求编码 */
     private String requestEncoding = "UTF-8";
-    /**
-     * 返回的内容编码
-     */
+    /** 返回的内容编码 */
     private String recvEncoding = "UTF-8";
-    /**
-     * 连接超时, 默认5秒
-     */
+    /** 连接超时, 默认5秒 */
     private int connectTimeOut = 5000;
-    /**
-     * 读取数据超时，默认10秒
-     */
+    /** 读取数据超时，默认10秒 */
     private int readTimeOut = 10000;
-    /**
-     * 调用参数
-     */
+    /** 调用参数 */
     private Map<String, Object> parameters = new HashMap<>();
-    /**
-     * 返回内容
-     */
+    /** 返回内容 */
     private String responseContent = null;
 
     public String sendGet(String reqUrl) {
@@ -114,11 +102,10 @@ public class Curl {
 
     // 发送带参数的GET的HTTP请求
     public String doGet(String reqUrl) {
-
         HttpURLConnection url_con = null;
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 params.append(element.getKey().toString());
                 params.append("=");
@@ -133,7 +120,11 @@ public class Curl {
             URL url = new URL(reqUrl);
             url_con = (HttpURLConnection) url.openConnection();
             url_con.setRequestMethod("GET");
-
+            System.setProperty("sun.net.client.defaultConnectTimeout", String.valueOf(this.connectTimeOut));// （单位：毫秒）jdk1.4换成这个,连接超时
+            System.setProperty("sun.net.client.defaultReadTimeout", String.valueOf(this.readTimeOut)); // （单位：毫秒）jdk1.4换成这个,读操作超时
+            // url_con.setConnectTimeout(5000);//（单位：毫秒）jdk
+            // 1.5换成这个,连接超时
+            // url_con.setReadTimeout(5000);//（单位：毫秒）jdk 1.5换成这个,读操作超时
             url_con.setDoOutput(true);
             byte[] b = params.toString().getBytes();
             url_con.getOutputStream().write(b, 0, b.length);
@@ -236,7 +227,7 @@ public class Curl {
     public String doPost(String reqUrl) {
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 Object val = element.getValue();
                 if (val != null) {
@@ -313,20 +304,20 @@ public class Curl {
         return this.connectTimeOut;
     }
 
-    public void setConnectTimeOut(int connectTimeOut) {
-        this.connectTimeOut = connectTimeOut;
-    }
-
     public int getReadTimeOut() {
         return this.readTimeOut;
     }
 
-    public void setReadTimeOut(int readTimeOut) {
-        this.readTimeOut = readTimeOut;
-    }
-
     public String getRequestEncoding() {
         return requestEncoding;
+    }
+
+    public void setConnectTimeOut(int connectTimeOut) {
+        this.connectTimeOut = connectTimeOut;
+    }
+
+    public void setReadTimeOut(int readTimeOut) {
+        this.readTimeOut = readTimeOut;
     }
 
     public void setRequestEncoding(String requestEncoding) {

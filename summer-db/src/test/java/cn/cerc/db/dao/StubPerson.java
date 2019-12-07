@@ -1,13 +1,13 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.SearchKey;
-import cn.cerc.core.SpecialNum;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import cn.cerc.core.SearchKey;
+import cn.cerc.core.SpecialNum;
 
 @Entity(name = "s_person")
 public class StubPerson implements BigRecord {

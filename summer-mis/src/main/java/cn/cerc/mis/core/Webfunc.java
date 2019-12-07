@@ -1,11 +1,11 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.mis.other.BookVersion;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import cn.cerc.mis.other.BookVersion;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

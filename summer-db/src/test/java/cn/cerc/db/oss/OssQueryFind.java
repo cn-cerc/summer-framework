@@ -1,8 +1,9 @@
 package cn.cerc.db.oss;
 
-import cn.cerc.db.core.StubHandle;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import cn.cerc.db.core.StubHandle;
 
 public class OssQueryFind {
     private static OssQuery ds;
@@ -16,7 +17,7 @@ public class OssQueryFind {
 
     /**
      * 查询文件
-     *
+     * 
      * @Description
      * @author rick_zhou
      */

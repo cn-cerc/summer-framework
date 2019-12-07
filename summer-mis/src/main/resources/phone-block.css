@@ -43,7 +43,7 @@
 }
 
 .block103 {
-
+    
 }
 
 .block104 {
@@ -173,7 +173,7 @@
 
 .block107 .choice3 {
     background-color: #000000;
-    filter: alpha(opacity=50);
+    filter: alpha(opacity = 50);
     -moz-opacity: 0.5;
     -khtml-opacity: 0.5;
     opacity: 0.5;
@@ -585,7 +585,7 @@
 
 .block122 .choice3 {
     background-color: #000000;
-    filter: alpha(opacity=50);
+    filter: alpha(opacity = 50);
     -moz-opacity: 0.5;
     -khtml-opacity: 0.5;
     opacity: 0.5;
@@ -705,7 +705,7 @@
 
 .block129 .choice3 {
     background-color: #000000;
-    filter: alpha(opacity=50);
+    filter: alpha(opacity = 50);
     -moz-opacity: 0.5;
     -khtml-opacity: 0.5;
     opacity: 0.5;
@@ -875,7 +875,7 @@
     text-align: center;
 }
 
-.block303 div[role='item'] {
+.block303  div[role='item'] {
     padding-top: 0.5em;
     width: 25%;
     float: left;
@@ -1305,7 +1305,6 @@ button[role='button_phone_search'] {
 .block902 div[role='content'] {
     font-size: 14px;
 }
-
 /*底部确认购买*/
 .block991 {
     position: fixed;

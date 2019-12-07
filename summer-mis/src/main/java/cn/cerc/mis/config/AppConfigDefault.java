@@ -1,12 +1,13 @@
 package cn.cerc.mis.config;
 
-import cn.cerc.db.core.IAppConfig;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+import cn.cerc.db.core.IAppConfig;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -32,6 +33,7 @@ public class AppConfigDefault implements IAppConfig {
     }
 
     /**
+     * 
      * @return 返回默认的欢迎页
      */
     @Override
@@ -40,6 +42,7 @@ public class AppConfigDefault implements IAppConfig {
     }
 
     /**
+     * 
      * @return 返回默认的主菜单
      */
     @Override
@@ -48,6 +51,7 @@ public class AppConfigDefault implements IAppConfig {
     }
 
     /**
+     *
      * @return 退出系统确认画面
      */
     @Override
@@ -56,6 +60,7 @@ public class AppConfigDefault implements IAppConfig {
     }
 
     /**
+     * 
      * @return 当前设备第一次登录时需要验证设备
      */
     @Override
@@ -64,6 +69,7 @@ public class AppConfigDefault implements IAppConfig {
     }
 
     /**
+     * 
      * @return 在需要用户输入帐号、密码进行登录时的显示
      */
     @Override

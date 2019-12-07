@@ -1,22 +1,22 @@
 package cn.cerc.ui.phone;
 
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.UrlRecord;
-import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.vcl.UIImage;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.vcl.UIImage;
+
 /**
  * 用于生成厂商、客户、帐套选择
  */
 public class Block301 extends UIComponent {
-    List<UIImage> list = new ArrayList<>();
     private UIImage leftIcon = new UIImage();
     private String title = "(title)";
+    List<UIImage> list = new ArrayList<>();
     private UIImage rightIcon = new UIImage();
     private UrlRecord operator;
     private Map<String, String> items = new LinkedHashMap<>();
@@ -34,9 +34,7 @@ public class Block301 extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         html.println("<!-- %s -->", this.getClass().getName());
-        html.print("<div class='block301'");
-        super.outputCss(html);
-        html.print(">");
+        html.print("<div class='block301'>");
         leftIcon.output(html);
         html.print("<a href='%s'>", operator.getUrl());
         html.print("<div>");

@@ -9,13 +9,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable {
-
     private static final long serialVersionUID = -7395748632907604015L;
+    private Date data;
+
+    // private static final String TIMEZONE_BEIJING = "Asia/beijing";
+
     private static Map<String, String> dateFormats = new HashMap<>();
     private static Map<String, String> map;
 
     static {
-        map = new HashMap<>();
+        map = new HashMap<String, String>();
         map.put("YYYYMMDD", "yyyyMMdd");
         map.put("YYMMDD", "yyMMdd");
         map.put("YYYMMDD_HH_MM_DD", "yyyyMMdd_HH_mm_dd");
@@ -38,8 +41,6 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         dateFormats.put("yyyy/MM/dd", "\\d{4}/\\d{2}/\\d{2}");
         dateFormats.put("yyyyMMdd", "\\d{8}");
     }
-
-    private Date data;
 
     public TDateTime() {
         this.data = new Date(0);
@@ -70,192 +71,6 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         data = value;
     }
 
-    // 当时，带时分秒
-    public static TDateTime Now() {
-        TDateTime result = new TDateTime();
-        result.setData(new Date());
-        return result;
-    }
-
-    public static TDateTime fromDate(String val) {
-        String fmt = getFormat(val);
-        if (fmt == null)
-            return null;
-        SimpleDateFormat sdf = new SimpleDateFormat(fmt);
-        TDateTime tdtTo = new TDateTime();
-        try {
-            tdtTo.setData(sdf.parse(val));
-            return tdtTo;
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
-    public static TDateTime fromYearMonth(String val) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-        TDateTime tdt = new TDateTime();
-        try {
-            tdt.setData(sdf.parse(val));
-            return tdt;
-        } catch (ParseException e) {
-            throw new RuntimeException(String.format("不是 %s 标准年月格式 ：yyyyMM", val));
-        }
-    }
-
-    public static String getFormat(String val) {
-        if (val == null)
-            return null;
-        if (val.equals(""))
-            return null;
-        String fmt = null;
-        java.util.Iterator<String> it = dateFormats.keySet().iterator();
-        while (it.hasNext() && fmt == null) {
-            String key = it.next();
-            String str = dateFormats.get(key);
-            if (val.matches(str))
-                fmt = key;
-        }
-        return fmt;
-    }
-
-    /**
-     * 计算时间是否到期(精确到秒)
-     *
-     * @param startTime 起始时间
-     * @param endTime   截止时间
-     * @return 是否超时
-     */
-    public static boolean isTimeOut(TDateTime startTime, TDateTime endTime) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        // 一天的毫秒数
-        long nd = 1000 * 24 * 60 * 60;
-
-        // 一小时的毫秒数
-        long nh = 1000 * 60 * 60;
-
-        // 一分钟的毫秒数
-        long nm = 1000 * 60;
-
-        // 一秒钟的毫秒数
-        long ns = 1000;
-
-        long diff;
-        long day = 0;
-        long hour = 0;
-        long min = 0;
-        long sec = 0;
-        try {
-            // 计算时间差
-            diff = dateFormat.parse(endTime.toString()).getTime() - dateFormat.parse(startTime.toString()).getTime();
-            day = diff / nd;// 计算差多少天
-            hour = diff % nd / nh + day * 24;// 计算差多少小时
-            min = diff % nd % nh / nm + day * 24 * 60;// 计算差多少分钟
-            sec = diff % nd % nh % nm / ns;// 计算差多少秒
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // 天数
-        if (day > 0) {
-            return true;
-        }
-
-        // 小时
-        if (hour - day * 24 > 0) {
-            return true;
-        }
-
-        // 分
-        if (min - day * 24 * 60 > 0) {
-            return true;
-        }
-
-        // 秒
-        return sec - day > 0;
-    }
-
-    public static String FormatDateTime(String fmt, TDateTime value) {
-        SimpleDateFormat sdf = null;
-        try {
-            sdf = new SimpleDateFormat(map.get(fmt));
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("日期格式不正确");
-        }
-        return sdf.format(value.getData());
-    }
-
-    public static TDateTime StrToDate(String val) {
-        String fmt = TDateTime.getFormat(val);
-        if (fmt == null)
-            throw new RuntimeException("时间格式不正确: value=" + val);
-        return new TDateTime(fmt, val);
-    }
-
-    public static String FormatDateTime(String fmt, Date value) {
-        SimpleDateFormat sdf = null;
-        try {
-            sdf = new SimpleDateFormat(fmt);
-        } catch (IllegalArgumentException e) {
-            sdf = new SimpleDateFormat(map.get(fmt));
-        }
-        return sdf.format(value);
-    }
-
-    /**
-     * 是否在指定时间范围内
-     *
-     * @param start 起始时间段
-     * @param last  截止时间段
-     * @return 是否在指定时间范围内
-     */
-    public static boolean isInterval(String start, String last) {
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-        Date now = null;
-        Date beginTime = null;
-        Date endTime = null;
-        try {
-            now = df.parse(df.format(new Date()));
-            beginTime = df.parse(start);
-            endTime = df.parse(last);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Calendar date = Calendar.getInstance();
-        date.setTime(now);
-
-        Calendar begin = Calendar.getInstance();
-        begin.setTime(beginTime);
-
-        Calendar end = Calendar.getInstance();
-        end.setTime(endTime);
-
-        return date.after(begin) && date.before(end);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis());
-        TDateTime date = TDateTime.fromDate("2016-02-28 08:00:01");
-        System.out.println(date.getTimestamp());
-        System.out.println(date.getUnixTimestamp());
-        System.out.println(date);
-        System.out.println(date.incMonth(1));
-        System.out.println(date.incMonth(2));
-        System.out.println(date.incMonth(3));
-        System.out.println(date.incMonth(4));
-        System.out.println(date.incMonth(12));
-        System.out.println(date.incMonth(13));
-        System.out.println(date);
-
-        TDateTime date2 = TDateTime.fromDate("2016-05-31 23:59:59");
-        System.out.println(date2);
-        System.out.println(date2.incMonth(1));
-        System.out.println(date2.incMonth(1).monthBof());
-
-        System.out.println(isInterval("05:30", "17:00"));
-    }
-
     @Override
     public String toString() {
         if (data == null)
@@ -269,20 +84,6 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public String getTime() {
         return format("HH:mm:ss");
-    }
-
-    /**
-     * @return 获取Java时间戳，一共13位，毫秒级
-     */
-    public long getTimestamp() {
-        return this.getData().getTime();
-    }
-
-    /**
-     * @return 获取Unix时间戳，一共10位，秒级
-     */
-    public long getUnixTimestamp() {
-        return this.getData().getTime() / 1000;
     }
 
     public String getYearMonth() {
@@ -409,6 +210,54 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         return year1 - year2;
     }
 
+    // 当时，带时分秒
+    public static TDateTime Now() {
+        TDateTime result = new TDateTime();
+        result.setData(new Date());
+        return result;
+    }
+
+    public static TDateTime fromDate(String val) {
+        String fmt = getFormat(val);
+        if (fmt == null)
+            return null;
+        SimpleDateFormat sdf = new SimpleDateFormat(fmt);
+        TDateTime tdtTo = new TDateTime();
+        try {
+            tdtTo.setData(sdf.parse(val));
+            return tdtTo;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    public static TDateTime fromYearMonth(String val) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+        TDateTime tdt = new TDateTime();
+        try {
+            tdt.setData(sdf.parse(val));
+            return tdt;
+        } catch (ParseException e) {
+            throw new RuntimeException(String.format("不是 %s 标准年月格式 ：yyyyMM", val));
+        }
+    }
+
+    public static String getFormat(String val) {
+        if (val == null)
+            return null;
+        if (val.equals(""))
+            return null;
+        String fmt = null;
+        java.util.Iterator<String> it = dateFormats.keySet().iterator();
+        while (it.hasNext() && fmt == null) {
+            String key = it.next();
+            String str = dateFormats.get(key);
+            if (val.matches(str))
+                fmt = key;
+        }
+        return fmt;
+    }
+
     public TDate asDate() {
         return new TDate(this.data);
     }
@@ -468,9 +317,75 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         return result;
     }
 
+    /**
+     * 计算时间是否到期(精确到秒)
+     * 
+     * @param startTime 起始时间
+     * @param endTime   截止时间
+     */
+    public static boolean isTimeOut(TDateTime startTime, TDateTime endTime) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        // 一天的毫秒数
+        long nd = 1000 * 24 * 60 * 60;
+
+        // 一小时的毫秒数
+        long nh = 1000 * 60 * 60;
+
+        // 一分钟的毫秒数
+        long nm = 1000 * 60;
+
+        // 一秒钟的毫秒数
+        long ns = 1000;
+
+        long diff;
+        long day = 0;
+        long hour = 0;
+        long min = 0;
+        long sec = 0;
+        try {
+            // 计算时间差
+            diff = dateFormat.parse(endTime.toString()).getTime() - dateFormat.parse(startTime.toString()).getTime();
+            day = diff / nd;// 计算差多少天
+            hour = diff % nd / nh + day * 24;// 计算差多少小时
+            min = diff % nd % nh / nm + day * 24 * 60;// 计算差多少分钟
+            sec = diff % nd % nh % nm / ns;// 计算差多少秒
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // 天数
+        if (day > 0) {
+            return true;
+        }
+
+        // 小时
+        if (hour - day * 24 > 0) {
+            return true;
+        }
+
+        // 分
+        if (min - day * 24 * 60 > 0) {
+            return true;
+        }
+
+        // 秒
+        return sec - day > 0;
+    }
+
     @Deprecated
     public TDateTime addDay(int value) {
         return this.incDay(value);
+    }
+
+    public static String FormatDateTime(String fmt, TDateTime value) {
+        SimpleDateFormat sdf = null;
+        try {
+            sdf = new SimpleDateFormat(map.get(fmt));
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("日期格式不正确");
+        }
+        return sdf.format(value.getData());
     }
 
     // 返回value的当月第1天
@@ -499,6 +414,13 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         TDateTime tdt = new TDateTime();
         tdt.setData(cal.getTime());
         return tdt;
+    }
+
+    public static TDateTime StrToDate(String val) {
+        String fmt = TDateTime.getFormat(val);
+        if (fmt == null)
+            throw new RuntimeException("时间格式不正确: value=" + val);
+        return new TDateTime(fmt, val);
     }
 
     public int getMonth() {
@@ -538,6 +460,16 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         return sdf.format(TDateTime.StrToDate(lunar.toString()).getData());
     }
 
+    public static String FormatDateTime(String fmt, Date value) {
+        SimpleDateFormat sdf = null;
+        try {
+            sdf = new SimpleDateFormat(fmt);
+        } catch (IllegalArgumentException e) {
+            sdf = new SimpleDateFormat(map.get(fmt));
+        }
+        return sdf.format(value);
+    }
+
     @Override
     public int compareTo(TDateTime tdt) {
         if (tdt == null)
@@ -548,6 +480,32 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
             return this.getData().getTime() > tdt.getData().getTime() ? 1 : -1;
     }
 
+    /** 是否在指定时间范围内 **/
+    public static boolean isInterval(String start, String last) {
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        Date now = null;
+        Date beginTime = null;
+        Date endTime = null;
+        try {
+            now = df.parse(df.format(new Date()));
+            beginTime = df.parse(start);
+            endTime = df.parse(last);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(now);
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(beginTime);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+
+        return date.after(begin) && date.before(end);
+    }
+
     @Override
     public TDateTime clone() {
         return new TDateTime(this.getData());
@@ -555,5 +513,24 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public boolean isNull() {
         return this.data == null;
+    }
+
+    public static void main(String[] args) {
+        TDateTime date = TDateTime.fromDate("2016-02-28 08:00:01");
+        System.out.println(date);
+        System.out.println(date.incMonth(1));
+        System.out.println(date.incMonth(2));
+        System.out.println(date.incMonth(3));
+        System.out.println(date.incMonth(4));
+        System.out.println(date.incMonth(12));
+        System.out.println(date.incMonth(13));
+        System.out.println(date);
+
+        TDateTime date2 = TDateTime.fromDate("2016-05-31 23:59:59");
+        System.out.println(date2);
+        System.out.println(date2.incMonth(1));
+        System.out.println(date2.incMonth(1).monthBof());
+
+        System.out.println(isInterval("05:30", "17:00"));
     }
 }

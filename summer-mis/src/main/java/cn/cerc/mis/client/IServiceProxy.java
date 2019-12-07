@@ -6,11 +6,11 @@ import cn.cerc.core.Record;
 public interface IServiceProxy {
     public static final String _message_ = "_message_";
 
-    // 返回服务代码
-    public String getService();
-
     // 设置服务代码
     public IServiceProxy setService(String service);
+
+    // 返回服务代码
+    public String getService();
 
     // 传入数据
     public DataSet getDataIn();

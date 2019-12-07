@@ -6,8 +6,9 @@ import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
  * 提示块
- *
+ * 
  * @author 郭向军
+ *
  */
 public class Block126 extends UIComponent {
     private UISpan title = new UISpan();

@@ -2,6 +2,18 @@ package cn.cerc.db.dao;
 
 public class PersonThead implements Runnable {
 
+    @Override
+    public void run() {
+        DaoPerson dao = DataCenter.getInstance().getPerson();
+        for (int i = 0; i < 100; i++) {
+            StubPerson person = dao.getClone("abc");
+            if (person == null)
+                dao.saveInsert(new StubPerson("abc"), true);
+            else
+                dao.saveUpdate(person, true);
+        }
+    }
+
     public static void main(String[] args) {
         DataCenter.getInstance().start();
 //        CustomControl control = new CustomControl(); // MainData
@@ -16,18 +28,6 @@ public class PersonThead implements Runnable {
             new Thread(new PersonThead(), "线程" + i).start();
         }
 
-    }
-
-    @Override
-    public void run() {
-        DaoPerson dao = DataCenter.getInstance().getPerson();
-        for (int i = 0; i < 100; i++) {
-            StubPerson person = dao.getClone("abc");
-            if (person == null)
-                dao.saveInsert(new StubPerson("abc"), true);
-            else
-                dao.saveUpdate(person, true);
-        }
     }
 
 }

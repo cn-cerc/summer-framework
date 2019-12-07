@@ -12,8 +12,9 @@ public class AlipayCore {
 
     /**
      * 除去数组中的空值和签名参数
-     *
-     * @param sArray 签名参数组
+     * 
+     * @param sArray
+     *            签名参数组
      * @return 去掉空值与签名参数后的新签名参数组
      */
     public static Map<String, String> paraFilter(Map<String, String> sArray) {
@@ -33,7 +34,10 @@ public class AlipayCore {
     }
 
     /**
-     * @param params 需要排序并参与字符拼接的参数组
+     * 
+     * 
+     * @param params
+     *            需要排序并参与字符拼接的参数组
      * @return String 拼接后字符串
      */
     // 把数组所有元素排序，并按照“参数=参数值”的模式用“&”字符拼接成字符串

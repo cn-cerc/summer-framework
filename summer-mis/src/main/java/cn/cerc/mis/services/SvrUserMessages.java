@@ -1,5 +1,7 @@
 package cn.cerc.mis.services;
 
+import java.math.BigInteger;
+
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -12,8 +14,6 @@ import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.queue.AsyncService;
-
-import java.math.BigInteger;
 
 //用户消息操作
 public class SvrUserMessages extends CustomService {

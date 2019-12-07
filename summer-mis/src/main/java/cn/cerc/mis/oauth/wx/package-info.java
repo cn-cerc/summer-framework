@@ -1,8 +1,5 @@
 /**
  * 微信认证登录
- *
- * @author root
- * @author root
  */
 /**
  * @author root

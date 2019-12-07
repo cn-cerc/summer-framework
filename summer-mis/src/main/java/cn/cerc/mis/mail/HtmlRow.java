@@ -8,14 +8,6 @@ public class HtmlRow extends HtmlControl {
         super(owner);
     }
 
-    public static void main(String[] args) {
-        StringBuffer html = new StringBuffer();
-        HtmlRow row = new HtmlRow(null);
-        row.addCol().setText("this is GridRow.");
-        row.getHtml(html);
-        // log.info(html.toString());
-    }
-
     public HtmlCol addCol() {
         return addCol(null);
     }
@@ -41,6 +33,14 @@ public class HtmlRow extends HtmlControl {
         html.append(">");
         super.getHtml(html);
         html.append("</tr>");
+    }
+
+    public static void main(String[] args) {
+        StringBuffer html = new StringBuffer();
+        HtmlRow row = new HtmlRow(null);
+        row.addCol().setText("this is GridRow.");
+        row.getHtml(html);
+        // log.info(html.toString());
     }
 
     public boolean isHeader() {

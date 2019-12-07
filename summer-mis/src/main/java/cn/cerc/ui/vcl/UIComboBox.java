@@ -1,10 +1,10 @@
 package cn.cerc.ui.vcl;
 
+import java.util.LinkedHashMap;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
-
-import java.util.LinkedHashMap;
 
 public class UIComboBox extends UIComponent {
     private LinkedHashMap<String, String> options = new LinkedHashMap<>(6);
@@ -12,15 +12,9 @@ public class UIComboBox extends UIComponent {
     private String name;
     private DataSet dataSet;
 
-    public UIComboBox(UIComponent owner) {
-        super(owner);
-    }
-
     @Override
     public void output(HtmlWriter html) {
-        html.println("<select id='%s' name='%s'", this.getId(), name);
-        super.outputCss(html);
-        html.println(">");
+        html.println("<select id='%s' name='%s'>", this.getId(), name);
         for (String key : options.keySet()) {
             if (key.equals(selectId)) {
                 html.println("<option value='%s' selected='selected' >%s</option>", key, options.get(key));
@@ -36,6 +30,10 @@ public class UIComboBox extends UIComponent {
         while (ds.fetch()) {
             this.options.put(ds.getString(keyField), ds.getString(valueField));
         }
+    }
+
+    public UIComboBox(UIComponent owner) {
+        super(owner);
     }
 
     public LinkedHashMap<String, String> getOptions() {

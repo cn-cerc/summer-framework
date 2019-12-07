@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SqlText {
-    // 从数据库每次加载的最大笔数
-    public static final int MAX_RECORDS = 50000;
     public static int PUBLIC = 1;
     public static int PRIVATE = 2;
     public static int PROTECTED = 4;
+    // 从数据库每次加载的最大笔数
+    public static final int MAX_RECORDS = 50000;
     private int maximum = MAX_RECORDS;
     private int offset = 0;
     // sql 指令

@@ -1,20 +1,23 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IConnection;
-import cn.cerc.db.core.ServerConfig;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoDatabase;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Slf4j
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
+
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IConnection;
+import cn.cerc.db.core.ServerConfig;
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class MongoConnection implements IConnection, AutoCloseable {
+    private static final Logger log = LoggerFactory.getLogger(MongoConnection.class);
 
     public static final String mgdb_dbname = "mgdb.dbname";
     public static final String mgdb_username = "mgdb.username";
@@ -58,6 +61,8 @@ public class MongoConnection implements IConnection, AutoCloseable {
                 // poolsize
                 sb.append("&").append("maxPoolSize=").append(config.getProperty(MongoConnection.mgdb_maxpoolsize));
                 log.info("连接到MongoDB分片集群:" + sb.toString());
+                // MongoClientURI connectionString = new MongoClientURI(
+                // "mongodb://ehealth:123456@115.28.67.211:3717,115.28.67.211:13717/ehealth?replicaSet=mgset-2004675");
             }
             MongoClientURI connectionString = new MongoClientURI(sb.toString());
             pool = new MongoClient(connectionString);

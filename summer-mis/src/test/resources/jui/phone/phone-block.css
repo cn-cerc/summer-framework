@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p,
-blockquote, th, td, header, hgroup, nav, section, article, aside, footer, figure, figcaption, menu, button {
+    blockquote, th, td, header, hgroup, nav, section, article, aside, footer, figure, figcaption, menu, button {
     margin: 0;
     padding: 0
 }
@@ -81,7 +81,6 @@ em, i {
     clear: both;
     visibility: hidden;
 }
-
 /* 以上为样式基础样式重置 */
 .main_con {
     margin-top: 2.75em;
@@ -130,7 +129,7 @@ em, i {
 }
 
 .block103 {
-
+    
 }
 
 .block104 {
@@ -260,7 +259,7 @@ em, i {
 
 .block107 .choice3 {
     background-color: #000000;
-    filter: alpha(opacity=50);
+    filter: alpha(opacity = 50);
     -moz-opacity: 0.5;
     -khtml-opacity: 0.5;
     opacity: 0.5;
@@ -524,14 +523,14 @@ em, i {
     background: #48b2bd;
 }
 
-.block121 .title {
+.block121  .title {
     height: 2.75em;
     line-height: 2.75em;
     color: #fff;
     text-align: center;
 }
 
-.block121 .arrow-left {
+.block121  .arrow-left {
     position: absolute;
     left: 0;
     top: 0;
@@ -540,11 +539,11 @@ em, i {
     height: 100%;
 }
 
-.block121 .arrow-left img {
+.block121  .arrow-left img {
     width: 2.75em;
 }
 
-.block121 .arrow-right {
+.block121  .arrow-right {
     position: absolute;
     right: 0;
     top: 0;

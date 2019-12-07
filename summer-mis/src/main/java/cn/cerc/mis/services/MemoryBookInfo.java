@@ -1,12 +1,13 @@
 package cn.cerc.mis.services;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.db.cache.Redis;
+import com.google.gson.Gson;
+
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
-import com.google.gson.Gson;
+import cn.cerc.db.cache.Redis;
+import cn.cerc.core.IHandle;
+import cn.cerc.core.Record;
 
 public class MemoryBookInfo {
     private static final String buffVersion = "4";
@@ -44,8 +45,11 @@ public class MemoryBookInfo {
     }
 
     /**
-     * @param handle 环境变量
-     * @param corpNo 帐套代码
+     * 
+     * @param handle
+     *            环境变量
+     * @param corpNo
+     *            帐套代码
      * @return 返回帐套状态
      */
     public static int getStatus(IHandle handle, String corpNo) {
@@ -56,7 +60,9 @@ public class MemoryBookInfo {
     }
 
     /**
-     * @param handle 环境变量
+     * 
+     * @param handle
+     *            环境变量
      * @return 返回当前帐套的版本类型
      */
     public static BookVersion getBookType(IHandle handle) {
@@ -65,8 +71,11 @@ public class MemoryBookInfo {
     }
 
     /**
-     * @param handle 环境变量
-     * @param corpNo 帐套代码
+     * 
+     * @param handle
+     *            环境变量
+     * @param corpNo
+     *            帐套代码
      * @return 返回指定帐套的版本类型
      */
     public static BookVersion getCorpType(IHandle handle, String corpNo) {
@@ -78,8 +87,11 @@ public class MemoryBookInfo {
     }
 
     /**
-     * @param handle 环境变量
-     * @param corpNo 帐套代码
+     * 
+     * @param handle
+     *            环境变量
+     * @param corpNo
+     *            帐套代码
      * @return 返回帐套简称
      */
     public static String getShortName(IHandle handle, String corpNo) {

@@ -1,12 +1,13 @@
 package cn.cerc.db.core;
 
-import cn.cerc.db.mysql.MysqlConnection;
-import cn.cerc.db.mysql.Transaction;
+import java.sql.SQLException;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.sql.SQLException;
+import cn.cerc.db.mysql.MysqlConnection;
+import cn.cerc.db.mysql.Transaction;
 
 public class TransactionTest {
     private StubHandle handle;

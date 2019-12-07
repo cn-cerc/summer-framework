@@ -4,9 +4,11 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 /**
+ * 
  * 单选框
- *
+ * 
  * @author 张弓
+ *
  */
 public class UICheckBox extends UIComponent {
     private String name;
@@ -42,7 +44,6 @@ public class UICheckBox extends UIComponent {
             html.print(" role='%s'", this.role);
         if (checked)
             html.print(" checked='checked'");
-        super.outputCss(html);
         html.println("/>");
     }
 

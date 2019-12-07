@@ -1,14 +1,15 @@
 package cn.cerc.core;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * 专用于测试Map支持
- *
+ * 
  * @author 张弓
+ *
  */
 public class RecordTest_Map {
     private Record rs;
@@ -25,7 +26,7 @@ public class RecordTest_Map {
     public void test() {
         int i = 0;
         for (@SuppressWarnings("unused")
-                String key : rs.getItems().keySet()) {
+        String key : rs.getItems().keySet()) {
             i++;
         }
         assertEquals(i, rs.size());

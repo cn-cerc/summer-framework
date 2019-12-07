@@ -13,8 +13,9 @@ public class Block113 extends UIComponent {
      * 文本 + 长文本消息
      * <p>
      * 显示长文本信息，例如收货地址
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block113(UIComponent owner) {
         super(owner);

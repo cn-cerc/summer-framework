@@ -1,9 +1,5 @@
 package cn.cerc.core;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,8 +17,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 public class DataSet implements IRecord, Serializable, Iterable<Record> {
-    // private static final Logger log = Logger.getLogger(DataSet.class);
+// private static final Logger log = Logger.getLogger(DataSet.class);
     private static final long serialVersionUID = 873159747066855363L;
     private int recNo = 0;
     private int fetchNo = -1;
@@ -160,15 +160,6 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
         return records;
     }
 
-    public Record getIndex(int index) {
-        this.setRecNo(index + 1);
-        return this.getCurrent();
-    }
-
-    public int getRecNo() {
-        return recNo;
-    }
-
     public void setRecNo(int recNo) {
         if (recNo > this.records.size()) {
             throw new RuntimeException(
@@ -176,6 +167,15 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
         } else {
             this.recNo = recNo;
         }
+    }
+
+    public Record getIndex(int index) {
+        this.setRecNo(index + 1);
+        return this.getCurrent();
+    }
+
+    public int getRecNo() {
+        return recNo;
     }
 
     public int size() {
@@ -548,9 +548,9 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     /**
+     * 
      * @param source      要复制的数据源
      * @param includeHead 是否连头部一起复制
-     * @return 返回复制结果集
      */
     public DataSet appendDataSet(DataSet source, boolean includeHead) {
         this.appendDataSet(source);

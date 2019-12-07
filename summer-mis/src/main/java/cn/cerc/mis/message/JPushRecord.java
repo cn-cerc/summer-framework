@@ -42,17 +42,17 @@ public class JPushRecord {
             String machineCode = dataOut.getString("MachineCode_");
             int machineType = dataOut.getInt("MachineType_");
             switch (machineType) {
-                case 6:
-                    push.send(ClientType.IOS, machineCode, this.sound);
-                    break;
-                case 7:
-                    // 过滤掉没有注册IMEI码的移动设备
-                    if (!"n_null".equals(machineCode) && !"n_000000000000000".equals(machineCode)) {
-                        push.send(ClientType.Android, machineCode, this.sound);
-                    }
-                    break;
-                default:
-                    break;
+            case 6:
+                push.send(ClientType.IOS, machineCode, this.sound);
+                break;
+            case 7:
+                // 过滤掉没有注册IMEI码的移动设备
+                if (!"n_null".equals(machineCode) && !"n_000000000000000".equals(machineCode)) {
+                    push.send(ClientType.Android, machineCode, this.sound);
+                }
+                break;
+            default:
+                break;
             }
         }
     }

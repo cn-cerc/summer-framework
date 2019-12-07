@@ -22,10 +22,6 @@ public class StubUser {
     @Column(name = "name_")
     private String name;
 
-    public static void main(String[] args) {
-        ClassFactory.printDebugInfo(StubUser.class);
-    }
-
     public int getId() {
         return id;
     }
@@ -40,5 +36,9 @@ public class StubUser {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static void main(String[] args) {
+        ClassFactory.printDebugInfo(StubUser.class);
     }
 }

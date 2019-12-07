@@ -1,21 +1,21 @@
 package cn.cerc.db.nas;
 
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Utils;
-import cn.cerc.db.queue.QueueOperator;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
-@Slf4j
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.CharEncoding;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.DataQuery;
+import cn.cerc.core.IHandle;
+import cn.cerc.db.queue.QueueOperator;
+
 public class NasQuery extends DataQuery {
-
     private static final long serialVersionUID = 1L;
+    private static final Logger log = LoggerFactory.getLogger(NasQuery.class);
 
     @SuppressWarnings("unused")
     private IHandle handle;
@@ -41,12 +41,12 @@ public class NasQuery extends DataQuery {
             throw new RuntimeException("语法为: select fileName from filePath");
         }
         // 校验数据
-        if (Utils.isEmpty(this.filePath))
+        if (StringUtils.isEmpty(this.filePath))
             throw new RuntimeException("请输入文件路径");
         if (nasMode == NasModel.readWrite) {
             File file = FileUtils.getFile(this.filePath, this.fileName);
             try {
-                this.setJSON(FileUtils.readFileToString(file, StandardCharsets.UTF_8.name()));
+                this.setJSON(FileUtils.readFileToString(file, CharEncoding.UTF_8));
                 this.setActive(true);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -95,7 +95,7 @@ public class NasQuery extends DataQuery {
         super.add(sql);
         return this;
     }
-
+    
     public NasQuery add(String format, Object... args) {
         super.add(format, args);
         return this;

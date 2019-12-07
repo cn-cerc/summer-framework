@@ -1,30 +1,27 @@
 package cn.cerc.mis.language;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.core.Application;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.core.Application;
+import cn.cerc.core.IHandle;
+
 public class ResourceJstl extends SimpleTagSupport {
-    private static Map<String, ResourceBuffer> items = new HashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(ResourceJstl.class);
     private String toId = null;
-
-    public static void clearBuffer() {
-        for (String lang : items.keySet()) {
-            items.get(lang).clear();
-        }
-    }
+    private static Map<String, ResourceBuffer> items = new HashMap<>();
 
     @Override
     public void doTag() throws JspException, IOException {
@@ -106,5 +103,11 @@ public class ResourceJstl extends SimpleTagSupport {
 
     public void setToId(String toId) {
         this.toId = toId;
+    }
+
+    public static void clearBuffer() {
+        for (String lang : items.keySet()) {
+            items.get(lang).clear();
+        }
     }
 }

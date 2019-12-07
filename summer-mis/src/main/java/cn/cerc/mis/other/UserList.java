@@ -1,35 +1,36 @@
 package cn.cerc.mis.other;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * 以用户表为原型，增加从缓存读取数据的模板
- */
-@Slf4j
-public class DataListSample implements IDataList {
+public class UserList implements IDataList {
+    private static final Logger log = LoggerFactory.getLogger(UserList.class);
     private static final int Version = 4;
+    private IHandle handle;
+    private Map<String, UserRecord> buff = new HashMap<>();
+    private String buffKey;
+
     private static final String ShowInUP = "ShowInUP";
     private static final String ShowOutUP = "ShowOutUP";
     private static final String ShowWholesaleUP = "ShowWholesaleUP";
     private static final String ShowBottomUP = "ShowBottomUP";
-    private IHandle handle;
-    private Map<String, DataRecordSample> buff = new HashMap<>();
-    private String buffKey;
 
-    public DataListSample(IHandle handle) {
+    public UserList(IHandle handle) {
         super();
         this.handle = handle;
         if (handle != null)
@@ -42,12 +43,15 @@ public class DataListSample implements IDataList {
         if (key == null || "".equals(key))
             return "";
 
+        // 初始化缓存
+        this.init();
+
         // 从缓存中取回值
-        DataRecordSample result = get(key);
+        UserRecord result = buff.get(key);
         return result == null ? key : result.getName();
     }
 
-    public DataRecordSample get(String userCode) {
+    public UserRecord get(String userCode) {
         if (userCode == null || "".equals(userCode))
             throw new RuntimeException("用户代码不允许为空！");
 
@@ -66,9 +70,9 @@ public class DataListSample implements IDataList {
         Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
         String data = Redis.get(buffKey);
         if (data != null && !"".equals(data)) {
-            Type type = new TypeToken<Map<String, DataRecordSample>>() {
+            Type type = new TypeToken<Map<String, UserRecord>>() {
             }.getType();
-            Map<String, DataRecordSample> items = gson.fromJson(data, type);
+            Map<String, UserRecord> items = gson.fromJson(data, type);
             for (String key : items.keySet()) {
                 buff.put(key, items.get(key));
             }
@@ -86,13 +90,12 @@ public class DataListSample implements IDataList {
         ds.open();
         while (ds.fetch()) {
             String key = ds.getString("Code_");
-            DataRecordSample value = new DataRecordSample();
+            UserRecord value = new UserRecord();
 
             value.setId(ds.getString("ID_"));
             value.setCorpNo(ds.getString("CorpNo_"));
             value.setCode(ds.getString("Code_"));
             value.setName(ds.getString("Name_"));
-            value.setHeadImgAdd(ds.getString("HeadimgAdd_"));
             Map<String, Integer> priceValue = getPriceValue(ds.getString("Code_"));
             value.setShowInUP(priceValue.get(ShowInUP));
             value.setShowOutUP(priceValue.get(ShowOutUP));

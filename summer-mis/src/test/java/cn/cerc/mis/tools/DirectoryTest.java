@@ -1,14 +1,15 @@
 package cn.cerc.mis.tools;
 
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class DirectoryTest {
     private IHandle handle;

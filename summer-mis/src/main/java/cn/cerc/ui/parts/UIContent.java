@@ -1,11 +1,12 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.ui.core.HtmlContent;
-import cn.cerc.ui.core.HtmlWriter;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import cn.cerc.ui.core.HtmlContent;
+import cn.cerc.ui.core.HtmlWriter;
 
 public class UIContent extends UIComponent {
     private List<HtmlContent> contents = new ArrayList<>();
@@ -21,10 +22,7 @@ public class UIContent extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.print("<section role='content'");
-        super.outputCss(html);
-        html.println(">");
-
+        html.println("<section role='content'>");
         super.output(html);
         // 输出追加过来的内容
         for (HtmlContent content : contents) {

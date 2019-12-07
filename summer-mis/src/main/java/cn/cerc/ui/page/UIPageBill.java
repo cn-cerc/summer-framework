@@ -1,5 +1,14 @@
 package cn.cerc.ui.page;
 
+import static cn.cerc.mis.core.ClientDevice.device_ee;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
@@ -14,18 +23,11 @@ import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIFormVertical;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
-import static cn.cerc.mis.core.ClientDevice.device_ee;
-
 /**
  * 主体子页面
- *
+ * 
  * @author 张弓
+ *
  */
 public class UIPageBill extends AbstractJspPage {
     private String searchWaitingId = "";
@@ -81,8 +83,7 @@ public class UIPageBill extends AbstractJspPage {
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");
-        out.println("<meta name=\"format-detection\" content=\"telephone=no\" />");
-        out.println("<meta name=\"format-detection\" content=\"email=no\" />");
+
         out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
         out.printf(

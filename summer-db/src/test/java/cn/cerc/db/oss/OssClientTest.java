@@ -1,16 +1,17 @@
 package cn.cerc.db.oss;
 
-import com.aliyun.oss.ClientConfiguration;
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.OSSObject;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.UUID;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import com.aliyun.oss.ClientConfiguration;
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.OSSObject;
 
 public class OssClientTest {
     // private static final Logger log = Logger.getLogger(OssClientTest.class);

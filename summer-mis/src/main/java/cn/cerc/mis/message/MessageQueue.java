@@ -9,7 +9,7 @@ import cn.cerc.db.queue.QueueQuery;
 
 /**
  * 消息发送队列
- * <p>
+ * 
  * 注意：公司别和用户代码必须配套
  */
 public class MessageQueue {
@@ -79,11 +79,6 @@ public class MessageQueue {
         return content.toString();
     }
 
-    public MessageQueue setContent(String content) {
-        this.content = new StringBuilder(content);
-        return this;
-    }
-
     public void append(Object obj) {
         content.append(obj);
     }
@@ -125,6 +120,11 @@ public class MessageQueue {
 
     public MessageQueue setSubject(String format, Object... args) {
         this.subject = String.format(format, args);
+        return this;
+    }
+
+    public MessageQueue setContent(String content) {
+        this.content = new StringBuilder(content);
         return this;
     }
 

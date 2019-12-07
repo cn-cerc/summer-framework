@@ -1,12 +1,13 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.Utils;
-import cn.cerc.db.core.StubHandle;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import cn.cerc.core.Utils;
+import cn.cerc.db.core.StubHandle;
 
 public class BatchScriptTest {
     private StubHandle handle;

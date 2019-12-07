@@ -1,6 +1,8 @@
 package cn.cerc.db.sms;
 
-import cn.cerc.core.IConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
@@ -10,16 +12,18 @@ import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+import cn.cerc.core.IConfig;
+
 public class Aliyundysms {
+    // 常量设置
+    private static final Logger log = LoggerFactory.getLogger(Aliyundysms.class);
+    private static final String product = "Dysmsapi";
+    private static final String domain = "dysmsapi.aliyuncs.com";
     public static final String SingName = "dayu.singName";
     public static final String aliyun_accessKeyId = "oss.accessKeyId";
     public static final String aliyun_accessSecret = "oss.accessKeySecret";
-    // 常量设置
-    private static final String product = "Dysmsapi";
-    private static final String domain = "dysmsapi.aliyuncs.com";
+
     // 环境配置
     private String accessKeyId;
     private String accessSecret;

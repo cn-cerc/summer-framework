@@ -1,22 +1,23 @@
 package cn.cerc.db.jiguang;
 
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IConnection;
-import cn.cerc.db.core.ServerConfig;
-import cn.jpush.api.JPushClient;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IConnection;
+import cn.cerc.db.core.ServerConfig;
+import cn.jpush.api.JPushClient;
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class JiguangConnection implements IConnection {
+    private static JPushClient client = null;
     // IHandle中识别码
     public static final String sessionId = "jiguangSession";
     // 配置文件
     public static final String masterSecret = "jiguang.masterSecret";
     public static final String appKey = "jiguang.appKey";
-    private static JPushClient client = null;
     private IConfig config;
 
     public JiguangConnection() {

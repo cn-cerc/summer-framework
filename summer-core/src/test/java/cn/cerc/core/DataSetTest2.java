@@ -1,25 +1,18 @@
 package cn.cerc.core;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class DataSetTest2 {
+    private DataSet ds = new DataSet();;
     private static final int MAX = 10000;
-    private DataSet ds = new DataSet();
-
-    public static void main(String[] args) {
-        Map<String, Object> values = new HashMap<>();
-        values.put("code", "1");
-        values.put("code", "2");
-        System.out.println(values.keySet().spliterator());
-    }
 
     @Test
     public void test_append() {
@@ -79,5 +72,12 @@ public class DataSetTest2 {
         assertEquals(record.getString("code"), "value2");
 
         assertTrue(ds.lookup("value", "xx") != null);
+    }
+
+    public static void main(String[] args) {
+        Map<String, Object> values = new HashMap<>();
+        values.put("code", "1");
+        values.put("code", "2");
+        System.out.println(values.keySet().spliterator());
     }
 }

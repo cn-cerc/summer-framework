@@ -1,11 +1,10 @@
 package cn.cerc.mis.sms;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.language.R;
-import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,15 +14,17 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.language.R;
+import net.sf.json.JSONObject;
 
-@Slf4j
 public class YunpianSMS {
-
+    private static final Logger log = LoggerFactory.getLogger(YunpianSMS.class);
     private String mobile;
     private String apiurl;
     private String apikey;
