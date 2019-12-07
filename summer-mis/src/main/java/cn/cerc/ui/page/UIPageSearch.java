@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import static cn.cerc.mis.core.ClientDevice.device_ee;
+import static cn.cerc.mis.core.ClientDevice.DEVICE_EE;
 
 /**
  * 主体子页面
@@ -51,7 +51,7 @@ public class UIPageSearch extends AbstractJspPage {
     }
 
     public void addExportFile(String service, String key) {
-        if (device_ee.equals(this.getForm().getClient().getDevice())) {
+        if (DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
             ExportFile item = new ExportFile(service, key);
             this.put("export", item);
         }

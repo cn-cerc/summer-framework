@@ -9,28 +9,30 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
+/**
+ * // TODO: 2019/12/7 建议更名为 AppClient
+ */
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class ClientDevice implements IClient, Serializable {
+
+    private static final long serialVersionUID = -3593077761901636920L;
 
     public static final String CLIENT_ID = "CLIENTID";
     public static final String DEVICE_TYPE = "device";
 
     // 手机
     public static final String DEVICE_PHONE = "phone";
-    public static final String device_android = "android";
-    public static final String device_iphone = "iphone";
-    public static final String device_weixin = "weixin";
+    public static final String DEVICE_ANDROID = "android";
+    public static final String DEVICE_IPHONE = "iphone";
+    public static final String DEVICE_WEIXIN = "weixin";
 
     // 平板
-    public static final String device_pad = "pad";
+    public static final String DEVICE_PAD = "pad";
     // 电脑
-    public static final String device_pc = "pc";
+    public static final String DEVICE_PC = "pc";
     // 客户端专用浏览器
-    public static final String device_ee = "ee";
-
-    // private static final Logger log = Logger.LoggerFactory(DeviceInfo.class);
-    private static final long serialVersionUID = -3593077761901636920L;
+    public static final String DEVICE_EE = "ee";
 
     private String token; // application session id;
     private String deviceId; // device id
@@ -78,7 +80,7 @@ public class ClientDevice implements IClient, Serializable {
 
     @Override
     public String getDevice() {
-        return deviceType == null ? device_pc : deviceType;
+        return deviceType == null ? DEVICE_PC : deviceType;
     }
 
     @Override
@@ -142,8 +144,8 @@ public class ClientDevice implements IClient, Serializable {
 
     @Override
     public boolean isPhone() {
-        return DEVICE_PHONE.equals(getDevice()) || device_android.equals(getDevice())
-                || device_iphone.equals(getDevice()) || device_weixin.equals(getDevice());
+        return DEVICE_PHONE.equals(getDevice()) || DEVICE_ANDROID.equals(getDevice())
+                || DEVICE_IPHONE.equals(getDevice()) || DEVICE_WEIXIN.equals(getDevice());
     }
 
     public HttpServletRequest getRequest() {

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
-import static cn.cerc.mis.core.ClientDevice.device_ee;
+import static cn.cerc.mis.core.ClientDevice.DEVICE_EE;
 
 public class UIPageDialog extends AbstractJspPage {
     private boolean showMenus = true; // 是否显示主菜单
@@ -32,7 +32,7 @@ public class UIPageDialog extends AbstractJspPage {
     }
 
     public void addExportFile(String service, String key) {
-        if (device_ee.equals(this.getForm().getClient().getDevice())) {
+        if (DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
             ExportFile item = new ExportFile(service, key);
             this.put("export", item);
         }
