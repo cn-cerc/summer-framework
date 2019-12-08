@@ -124,8 +124,7 @@ public class StartForms implements Filter {
                 log.debug("进行安全检查，若未登录则显示登录对话框");
 
                 if (!form.logon()) {
-                    IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage",
-                            "appLoginDefault");
+                    IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage", "appLoginDefault");
                     page.init(form);
                     String cmd = page.checkToken(client.getToken());
                     if (cmd != null) {
@@ -133,12 +132,13 @@ public class StartForms implements Filter {
                         if (cmd.startsWith("redirect:")) {
                             resp.sendRedirect(cmd.substring(9));
                         } else {
-                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
-                                    cmd);
+                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
-                    } else // 已授权通过
+                    } else {
+                        // 已授权通过
                         callForm(form, funcCode);
+                    }
                 } else {
                     callForm(form, funcCode);
                 }
@@ -244,20 +244,24 @@ public class StartForms implements Filter {
         if ("excel".equals(funcCode)) {
             response.setContentType("application/vnd.ms-excel; charset=UTF-8");
             response.addHeader("Content-Disposition", "attachment; filename=excel.csv");
-        } else
+        } else {
             response.setContentType("text/html;charset=UTF-8");
+        }
 
         Object pageOutput = "";
-        String sid = request.getParameter(RequestData.SID);
-        if (sid == null || sid.equals(""))
-            sid = request.getSession().getId();
+        String token = request.getParameter(RequestData.SID);
+        if (token == null || token.equals("")) {
+            token = request.getSession().getId();
+        }
 
         Method method = null;
         long startTime = System.currentTimeMillis();
         try {
+            // FIXME: 2019/12/8 ??? CLIENTVER
             String CLIENTVER = request.getParameter("CLIENTVER");
-            if (CLIENTVER != null)
+            if (CLIENTVER != null) {
                 request.getSession().setAttribute("CLIENTVER", CLIENTVER);
+            }
 
             // 是否拥有此菜单调用权限
             if (!Application.getPassport(form.getHandle()).passForm(form)) {
@@ -274,8 +278,9 @@ public class StartForms implements Filter {
                         } catch (NoSuchMethodException e) {
                             method = form.getClass().getMethod(funcCode);
                         }
-                    } else
+                    } else {
                         method = form.getClass().getMethod(funcCode);
+                    }
                     pageOutput = method.invoke(form);
                 } catch (PageException e) {
                     form.setParam("message", e.getMessage());
@@ -324,11 +329,10 @@ public class StartForms implements Filter {
                     IPage output = (IPage) pageOutput;
                     String cmd = output.execute();
                     if (cmd != null) {
-                        if (cmd.startsWith("redirect:"))
+                        if (cmd.startsWith("redirect:")) {
                             response.sendRedirect(cmd.substring(9));
-                        else {
-                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
-                                    cmd);
+                        } else {
+                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
                     }
@@ -345,8 +349,9 @@ public class StartForms implements Filter {
             if (method != null) {
                 long timeout = 1000;
                 Webpage webpage = method.getAnnotation(Webpage.class);
-                if (webpage != null)
+                if (webpage != null) {
                     timeout = webpage.timeout();
+                }
                 checkTimeout(form, funcCode, startTime, timeout);
             }
         }
@@ -358,8 +363,9 @@ public class StartForms implements Filter {
             String tmp[] = form.getClass().getName().split("\\.");
             String pageCode = tmp[tmp.length - 1] + "." + funcCode;
             String dataIn = new Gson().toJson(form.getRequest().getParameterMap());
-            if (dataIn.length() > 200)
+            if (dataIn.length() > 200) {
                 dataIn = dataIn.substring(0, 200);
+            }
             log.warn(String.format("pageCode:%s, tickCount:%s, dataIn: %s", pageCode, totalTime, dataIn));
         }
     }
@@ -370,15 +376,16 @@ public class StartForms implements Filter {
         String args[] = req.getServletPath().split("/");
         if (args.length == 2 || args.length == 3) {
             if ("".equals(args[0]) && !"".equals(args[1])) {
-                if (args.length == 3)
+                if (args.length == 3) {
                     url = args[2];
-                else {
+                } else {
                     String sid = (String) req.getAttribute(RequestData.SID);
                     IAppConfig conf = Application.getAppConfig();
-                    if (sid != null && !"".equals(sid))
+                    if (sid != null && !"".equals(sid)) {
                         url = conf.getFormDefault();
-                    else
+                    } else {
                         url = conf.getFormWelcome();
+                    }
                 }
             }
         }
@@ -426,4 +433,5 @@ public class StartForms implements Filter {
     public void destroy() {
 
     }
+
 }
