@@ -126,9 +126,9 @@ public class ClientDevice implements IClient, Serializable {
     }
 
     public void setToken(String value) {
-        String tmp = Utils.isEmpty(value) ? null : value;
-        if (tmp != null) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, tmp)) {
+        String token = Utils.isEmpty(value) ? null : value;
+        if (token != null) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
                 // 设备ID
                 this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
                 // 设备类型
@@ -140,7 +140,7 @@ public class ClientDevice implements IClient, Serializable {
             }
         }
 
-        this.token = tmp;
+        this.token = token;
         request.getSession().setAttribute(RequestData.TOKEN, this.token);
         request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
     }
@@ -209,9 +209,9 @@ public class ClientDevice implements IClient, Serializable {
         request.getSession().setAttribute(Application.deviceLanguage, this.languageId);
 
         // 取得并保存token
-        String token = request.getParameter(RequestData.TOKEN);
+        String token = request.getParameter(RequestData.TOKEN);// 获取客户端的 token
         if (token == null || "".equals(token)) {
-            token = (String) request.getSession().getAttribute(RequestData.TOKEN);
+            token = (String) request.getSession().getAttribute(RequestData.TOKEN); // 获取服务端的 token
         }
 
         // 设置token

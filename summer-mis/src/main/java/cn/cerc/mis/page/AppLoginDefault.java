@@ -5,6 +5,7 @@ import cn.cerc.core.SupportHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.AppProperty;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
@@ -106,6 +107,12 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         try {
             // TODO 需要统一 login_user login_pwd 与 userCode password 的名称
             if (form.getRequest().getParameter("login_usr") != null) {
+                // 检查服务器的角色状态
+                String appRole = ServerConfig.getInstance().getProperty(AppProperty.App_Role_Key, AppProperty.App_Role_Master);
+                if (AppProperty.App_Role_Replica.equals(appRole)) {
+                    throw new RuntimeException("当前服务不支持登录，请返回首页重新登录");
+                }
+
                 userCode = getRequest().getParameter("login_usr");
                 password = getRequest().getParameter("login_pwd");
                 return checkLogin(userCode, password);
@@ -160,10 +167,10 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         // 进行用户名、密码认证
         String IP = getIPAddress();
         if (obj.check(userCode, password, deviceId, IP, form.getClient().getLanguage())) {
-            String sid = obj.getSessionId();
-            if (sid != null && !sid.equals("")) {
-                log.debug(String.format("认证成功，取得sid(%s)", sid));
-                ((ClientDevice) this.getForm().getClient()).setToken(sid);
+            String token = obj.getSessionId();
+            if (token != null && !token.equals("")) {
+                log.debug(String.format("认证成功，取得sid(%s)", token));
+                ((ClientDevice) this.getForm().getClient()).setToken(token);
             }
             // 登记聚安应用帐号
             String mobile = Utils.safeString(obj.getMobile());
