@@ -1,15 +1,17 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.Utils;
-import cn.cerc.mis.language.LanguageType;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
+import java.io.Serializable;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
+import cn.cerc.core.Utils;
+import cn.cerc.mis.language.LanguageType;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
 
 /**
  * // TODO: 2019/12/7 建议更名为 AppClient
@@ -126,9 +128,9 @@ public class ClientDevice implements IClient, Serializable {
     }
 
     public void setToken(String value) {
-        String tmp = Utils.isEmpty(value) ? null : value;
-        if (tmp != null) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, tmp)) {
+        String token = Utils.isEmpty(value) ? null : value;
+        if (token != null) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
                 // 设备ID
                 this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
                 // 设备类型
@@ -140,7 +142,7 @@ public class ClientDevice implements IClient, Serializable {
             }
         }
 
-        this.token = tmp;
+        this.token = token;
         request.getSession().setAttribute(RequestData.TOKEN, this.token);
         request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
     }
