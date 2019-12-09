@@ -40,7 +40,7 @@ public class R {
 
     public static String asString(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if (Application.LangageDefault.equals(language))
+        if (Application.App_Language.equals(language))
             return text;
 
         if (text == null || "".equals(text.trim())) {
@@ -86,7 +86,8 @@ public class R {
         SqlQuery dsLang = new SqlQuery(handle);
         dsLang.add("select key_,max(value_) as value_ from %s", systemTable.getLanguage());
         dsLang.add("where key_='%s'", Utils.safeString(text));
-        if ("en".equals(language)) {
+        // FIXME: 2019/12/7 此处应该取反了，未来得及翻译的语言应该直接显示中文
+        if (LanguageType.en_US.equals(language)) {
             dsLang.add("and (lang_='%s')", language);
         } else {
             dsLang.add("and (lang_='%s' or lang_='en')", language);
@@ -99,7 +100,7 @@ public class R {
 
     public static String get(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if ("cn".equals(language))
+        if (LanguageType.zh_CN.equals(language))
             return text;
 
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
@@ -107,7 +108,7 @@ public class R {
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select value_ from %s", systemTable.getLanguage());
         ds.add("where key_='%s'", Utils.safeString(text));
-        if (!"en".equals(language)) {
+        if (!LanguageType.en_US.equals(language)) {
             ds.add("and (lang_='en' or lang_='%s')", language);
             ds.add("order by value_ desc");
         } else {
@@ -129,7 +130,7 @@ public class R {
         String result = "";
         String en_result = ""; // 默认英文
         while (ds.fetch()) {
-            if ("en".equals(ds.getString("lang_")))
+            if (LanguageType.en_US.equals(ds.getString("lang_")))
                 en_result = ds.getString("value_");
             else
                 result = ds.getString("value_");

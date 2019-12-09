@@ -4,19 +4,22 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface IClient {
 
-    public boolean isPhone();
+    // 判断是否为手机
+    boolean isPhone();
 
     // 返回设备Id
-    public String getId();
+    String getId();
 
     // 返回设备型号
-    public String getDevice();
+    String getDevice();
 
     // 设置设备型号
-    public void setDevice(String device);
+    void setDevice(String device);
 
     // 返回设备语言
-    public String getLanguage();
+    String getLanguage();
 
+    // 设置request的attribute信息
     void setRequest(HttpServletRequest request);
+
 }

@@ -86,13 +86,13 @@ public class SvrAutoLogin {
             svrLogin.enrollMachineInfo(dsUser.getString("CorpNo_"), userCode, deviceId, "浏览器");
 
             // 设置登录信息
-            ClientDevice info = new ClientDevice();
-            info.setRequest(request);
-            info.setSid(token);
+            ClientDevice client = new ClientDevice();
+            client.setRequest(request);
+            client.setToken(token);
             sess.init(token);
 
-            form.getRequest().setAttribute(RequestData.appSession_Key, token);
-            ((ClientDevice) form.getClient()).setSid(token);
+            form.getRequest().setAttribute(RequestData.TOKEN, token);
+            ((ClientDevice) form.getClient()).setToken(token);
             tx.commit();
         }
         return true;

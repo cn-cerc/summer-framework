@@ -29,21 +29,21 @@ public class StartApp implements Filter {
 
         // 处理默认首页问题
         if (uri.equals("/")) {
-            if (req.getParameter(ClientDevice.deviceId_key) != null)
-                req.getSession().setAttribute(ClientDevice.deviceId_key, req.getParameter(ClientDevice.deviceId_key));
-            if (req.getParameter(ClientDevice.deviceType_key) != null)
-                req.getSession().setAttribute(ClientDevice.deviceType_key,
-                        req.getParameter(ClientDevice.deviceType_key));
+            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null)
+                req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
+            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null)
+                req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE,
+                        req.getParameter(ClientDevice.APP_DEVICE_TYPE));
 
             IAppConfig conf = Application.getAppConfig();
             resp.sendRedirect(String.format("/public/%s", conf.getFormWelcome()));
             return;
         } else if (uri.equals("/MobileConfig") || uri.equals("/mobileConfig")) {
-            if (req.getParameter(ClientDevice.deviceId_key) != null)
-                req.getSession().setAttribute(ClientDevice.deviceId_key, req.getParameter(ClientDevice.deviceId_key));
-            if (req.getParameter(ClientDevice.deviceType_key) != null)
-                req.getSession().setAttribute(ClientDevice.deviceType_key,
-                        req.getParameter(ClientDevice.deviceType_key));
+            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null)
+                req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
+            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null)
+                req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE,
+                        req.getParameter(ClientDevice.APP_DEVICE_TYPE));
             try {
                 IForm form;
                 if (Application.get(req).containsBean("mobileConfig"))
@@ -64,7 +64,7 @@ public class StartApp implements Filter {
             return;
         } else {
             StringBuffer url = req.getRequestURL();
-            log.debug("{}", url.toString());
+            log.info("{}", url.toString());
         }
 
         chain.doFilter(req, resp);
