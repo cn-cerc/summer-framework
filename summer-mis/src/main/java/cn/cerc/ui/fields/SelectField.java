@@ -9,7 +9,7 @@ import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.parts.UIComponent;
 
 /**
- * 列表下拉框组件
+ * 列表下拉框组件（不适用搜索查询表单）
  */
 public class SelectField extends AbstractField implements IColumn {
     private String trueText = "是";
@@ -38,7 +38,7 @@ public class SelectField extends AbstractField implements IColumn {
             return html.toString();
         }
         String val = dataSet.getString(field);
-        if ("true".equals(val) || "false".equals(val)) {
+        if ("true".equalsIgnoreCase(val) || "false".equalsIgnoreCase(val)) {
             return Boolean.valueOf(val) ? trueText : falseText;
         }
         return val;
@@ -55,7 +55,7 @@ public class SelectField extends AbstractField implements IColumn {
     }
 
     private String writeInput(HtmlWriter html) {
-        html.print("<select name=\"%s\" role=\"%s\"", this.getId(), this.getField(), this.isReadonly());
+        html.print("<select name=\"%s\" role=\"%s\"", this.getId(), this.getField());
         if (!this.isReadonly() && getOnChange() != null) {
             html.print(" onChange=\"%s\"", getOnChange());
         }
@@ -101,8 +101,7 @@ public class SelectField extends AbstractField implements IColumn {
 
     @Override
     public String format(Object value) {
-        HtmlWriter html = new HtmlWriter();
-        return writeInput(html);
+        return writeInput(new HtmlWriter());
     }
 
     public String getOnChange() {
