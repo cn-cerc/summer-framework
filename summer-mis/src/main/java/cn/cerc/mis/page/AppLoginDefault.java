@@ -5,6 +5,7 @@ import cn.cerc.core.SupportHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.AppProperty;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
@@ -104,6 +105,12 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         String password = null;
         String userCode = null;
         try {
+            // 检查服务器的角色状态
+            String appRole = ServerConfig.getInstance().getProperty(AppProperty.App_Role_Key, AppProperty.App_Role_Master);
+            if (AppProperty.App_Role_Replica.equals(appRole)) {
+                throw new RuntimeException("当前服务不支持登录，请返回首页重新登录");
+            }
+
             // TODO 需要统一 login_user login_pwd 与 userCode password 的名称
             if (form.getRequest().getParameter("login_usr") != null) {
                 userCode = getRequest().getParameter("login_usr");
