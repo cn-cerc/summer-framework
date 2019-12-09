@@ -25,26 +25,6 @@ import java.lang.reflect.Method;
 @Slf4j
 public class StartForms implements Filter {
 
-    private static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
-            throws ServletException, IOException {
-        Throwable err = e.getCause();
-        if (err == null) {
-            err = e;
-        }
-        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
-        if (errorPage != null) {
-            String result = errorPage.getErrorPage(request, response, err);
-            if (result != null) {
-                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
-                request.getServletContext().getRequestDispatcher(url).forward(request, response);
-            }
-        } else {
-            log.warn("not define bean: errorPage");
-            log.error(err.getMessage());
-            err.printStackTrace();
-        }
-    }
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -54,11 +34,22 @@ public class StartForms implements Filter {
 
         String uri = req.getRequestURI();
 
-        // 遇到静态文件直接输出
+        int prefix = uri.indexOf("/", 2);
+        if (prefix < 0) {
+            IAppConfig conf = Application.getAppConfig();
+            resp.sendRedirect(String.format("/public/%s", conf.getFormWelcome()));
+            return;
+        }
+
+        // 1、静态文件直接输出
         IAppStaticFile staticFile = Application.getBean(IAppStaticFile.class, "appStaticFile", "appStaticFileDefault");
         if (staticFile.isStaticFile(uri)) {
             // 默认没有重定向，直接读取资源文件的默认路径
-            // chain.doFilter(req, resp);
+            // TODO 暂时按该方法放行（jar包的资源文件）
+            if (uri.contains("imgZoom")) {
+                chain.doFilter(req, resp);
+                return;
+            }
 
             /*
              * 1、 此处的 getPathForms 对应资源文件目录的forms，可自行定义成其他路径，注意配套更新 AppConfig
@@ -81,10 +72,15 @@ public class StartForms implements Filter {
             chain.doFilter(req, resp);
             return;
         }
+        if (uri.contains("docs/")) {
+            chain.doFilter(req, resp);
+            return;
+        }
 
+        // 2、处理Url请求
         String childCode = getRequestCode(req);
         if (childCode == null) {
-            outputErrorPage(req, resp, new RuntimeException("无效的请求：" + childCode));
+            outputErrorPage(req, resp, new RuntimeException("无效的请求：" + req.getServletPath()));
             return;
         }
 
@@ -92,9 +88,11 @@ public class StartForms implements Filter {
         String formId = params[0];
         String funcCode = params.length == 1 ? "execute" : params[1];
 
+        // TODO ???
         req.setAttribute("logon", false);
 
         // 验证菜单是否启停
+        // TODO ???
         IFormFilter formFilter = Application.getBean(IFormFilter.class, "AppFormFilter");
         if (formFilter != null) {
             if (formFilter.doFilter(resp, formId, funcCode)) {
@@ -102,46 +100,45 @@ public class StartForms implements Filter {
             }
         }
 
-        IForm form = null;
         try {
-            form = Application.getForm(req, resp, formId);
+            IForm form = Application.getForm(req, resp, formId);
             if (form == null) {
                 outputErrorPage(req, resp, new RuntimeException("error servlet:" + req.getServletPath()));
                 return;
             }
 
             // 设备讯息
-            ClientDevice info = new ClientDevice();
-            info.setRequest(req);
-            req.setAttribute("_showMenu_", !ClientDevice.device_ee.equals(info.getDevice()));
-            form.setClient(info);
+            ClientDevice client = new ClientDevice();
+            client.setRequest(req);
+            req.setAttribute("_showMenu_", !ClientDevice.APP_DEVICE_EE.equals(client.getDevice()));
+            form.setClient(client);
 
             // 建立数据库资源
             IHandle handle = Application.getHandle();
             try {
                 handle.setProperty(Application.sessionId, req.getSession().getId());
-                handle.setProperty(Application.deviceLanguage, info.getLanguage());
+                handle.setProperty(Application.deviceLanguage, client.getLanguage());
                 req.setAttribute("myappHandle", handle);
                 form.setHandle(handle);
 
                 log.debug("进行安全检查，若未登录则显示登录对话框");
 
                 if (!form.logon()) {
-                    IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage",
-                            "appLoginDefault");
+                    IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage", "appLoginDefault");
                     page.init(form);
-                    String cmd = page.checkToken(info.getSid());
+                    String cmd = page.checkToken(client.getToken());
                     if (cmd != null) {
                         // 若需要登录，则跳转到登录页
                         if (cmd.startsWith("redirect:")) {
                             resp.sendRedirect(cmd.substring(9));
                         } else {
-                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
-                                    cmd);
+                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
-                    } else // 已授权通过
+                    } else {
+                        // 已授权通过
                         callForm(form, funcCode);
+                    }
                 } else {
                     callForm(form, funcCode);
                 }
@@ -154,6 +151,26 @@ public class StartForms implements Filter {
             }
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
+        }
+    }
+
+    private void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
+            throws ServletException, IOException {
+        Throwable err = e.getCause();
+        if (err == null) {
+            err = e;
+        }
+        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
+        if (errorPage != null) {
+            String result = errorPage.getErrorPage(request, response, err);
+            if (result != null) {
+                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
+                request.getServletContext().getRequestDispatcher(url).forward(request, response);
+            }
+        } else {
+            log.warn("not define bean: errorPage");
+            log.error(err.getMessage());
+            err.printStackTrace();
         }
     }
 
@@ -205,17 +222,19 @@ public class StartForms implements Filter {
             if (verifyCode != null && !"".equals(verifyCode))
                 app.getDataIn().getHead().setField("verifyCode", verifyCode);
 
-            if (app.exec())
+            if (app.exec()) {
                 result = true;
-            else {
+            } else {
                 int used = app.getDataOut().getHead().getInt("Used_");
-                if (used == 1)
+                if (used == 1) {
                     result = true;
-                else
+                } else {
                     form.setParam("message", app.getMessage());
+                }
             }
-            if (result)
+            if (result) {
                 buff.setField("VerifyMachine", true);
+            }
             return result;
         }
     }
@@ -227,20 +246,24 @@ public class StartForms implements Filter {
         if ("excel".equals(funcCode)) {
             response.setContentType("application/vnd.ms-excel; charset=UTF-8");
             response.addHeader("Content-Disposition", "attachment; filename=excel.csv");
-        } else
+        } else {
             response.setContentType("text/html;charset=UTF-8");
+        }
 
         Object pageOutput = "";
-        String sid = request.getParameter(RequestData.appSession_Key);
-        if (sid == null || sid.equals(""))
-            sid = request.getSession().getId();
+        String token = request.getParameter(RequestData.TOKEN);
+        if (token == null || token.equals("")) {
+            token = request.getSession().getId();
+        }
 
         Method method = null;
         long startTime = System.currentTimeMillis();
         try {
+            // FIXME: 2019/12/8 ??? CLIENTVER
             String CLIENTVER = request.getParameter("CLIENTVER");
-            if (CLIENTVER != null)
+            if (CLIENTVER != null) {
                 request.getSession().setAttribute("CLIENTVER", CLIENTVER);
+            }
 
             // 是否拥有此菜单调用权限
             if (!Application.getPassport(form.getHandle()).passForm(form)) {
@@ -257,8 +280,9 @@ public class StartForms implements Filter {
                         } catch (NoSuchMethodException e) {
                             method = form.getClass().getMethod(funcCode);
                         }
-                    } else
+                    } else {
                         method = form.getClass().getMethod(funcCode);
+                    }
                     pageOutput = method.invoke(form);
                 } catch (PageException e) {
                     form.setParam("message", e.getMessage());
@@ -284,10 +308,10 @@ public class StartForms implements Filter {
                     }
                 } else {
                     log.debug("没有进行认证过，跳转到设备认证页面");
-                    ServerConfig config = new ServerConfig();
+                    ServerConfig config = ServerConfig.getInstance();
                     String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
                     // 若是专用APP登陆并且是iPhone，则不跳转设备登陆页，由iPhone原生客户端处理
-                    if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(ClientDevice.device_iphone)) {
+                    if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(ClientDevice.APP_DEVICE_IPHONE)) {
                         try {
                             method = form.getClass().getMethod(funcCode + "_phone");
                         } catch (NoSuchMethodException e) {
@@ -307,11 +331,10 @@ public class StartForms implements Filter {
                     IPage output = (IPage) pageOutput;
                     String cmd = output.execute();
                     if (cmd != null) {
-                        if (cmd.startsWith("redirect:"))
+                        if (cmd.startsWith("redirect:")) {
                             response.sendRedirect(cmd.substring(9));
-                        else {
-                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
-                                    cmd);
+                        } else {
+                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
                     }
@@ -328,8 +351,9 @@ public class StartForms implements Filter {
             if (method != null) {
                 long timeout = 1000;
                 Webpage webpage = method.getAnnotation(Webpage.class);
-                if (webpage != null)
+                if (webpage != null) {
                     timeout = webpage.timeout();
+                }
                 checkTimeout(form, funcCode, startTime, timeout);
             }
         }
@@ -341,26 +365,29 @@ public class StartForms implements Filter {
             String tmp[] = form.getClass().getName().split("\\.");
             String pageCode = tmp[tmp.length - 1] + "." + funcCode;
             String dataIn = new Gson().toJson(form.getRequest().getParameterMap());
-            if (dataIn.length() > 200)
+            if (dataIn.length() > 200) {
                 dataIn = dataIn.substring(0, 200);
+            }
             log.warn(String.format("pageCode:%s, tickCount:%s, dataIn: %s", pageCode, totalTime, dataIn));
         }
     }
 
     protected String getRequestCode(HttpServletRequest req) {
         String url = null;
+        log.info("servletPath {}", req.getServletPath());
         String args[] = req.getServletPath().split("/");
         if (args.length == 2 || args.length == 3) {
-            if (args[0].equals("") && !args[1].equals("")) {
-                if (args.length == 3)
+            if ("".equals(args[0]) && !"".equals(args[1])) {
+                if (args.length == 3) {
                     url = args[2];
-                else {
-                    String sid = (String) req.getAttribute(RequestData.appSession_Key);
+                } else {
+                    String token = (String) req.getAttribute(RequestData.TOKEN);
                     IAppConfig conf = Application.getAppConfig();
-                    if (sid != null && !"".equals(sid))
+                    if (token != null && !"".equals(token)) {
                         url = conf.getFormDefault();
-                    else
+                    } else {
                         url = conf.getFormWelcome();
+                    }
                 }
             }
         }
@@ -408,4 +435,5 @@ public class StartForms implements Filter {
     public void destroy() {
 
     }
+
 }

@@ -54,7 +54,7 @@ public class StartFormDefault implements ApplicationContextAware {
             handle.setProperty(Application.deviceLanguage, clientDevice.getLanguage());
 
             request.setAttribute("myappHandle", handle);
-            request.setAttribute("_showMenu_", !ClientDevice.device_ee.equals(clientDevice.getDevice()));
+            request.setAttribute("_showMenu_", !ClientDevice.APP_DEVICE_EE.equals(clientDevice.getDevice()));
 
             form.setClient(clientDevice);
 
@@ -66,7 +66,7 @@ public class StartFormDefault implements ApplicationContextAware {
 
             // 执行自动登录
             appLogin.init(form);
-            String jspFile = appLogin.checkToken(clientDevice.getSid());
+            String jspFile = appLogin.checkToken(clientDevice.getToken());
             if (jspFile != null) {
                 log.info("需要登录： {}", request.getRequestURL());
                 return jspFile;

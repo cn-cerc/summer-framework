@@ -70,7 +70,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
 
         // 判断当前客户端类型
         log.info("current client device type: {}", form.getClient().getDevice());
-        boolean isWeb = RequestData.webclient.equals(form.getClient().getId());
+        boolean isWeb = RequestData.WEBCLIENT.equals(form.getClient().getId());
         this.add("isWeb", isWeb);
         if (!isWeb) {
             return;
@@ -163,7 +163,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
             String sid = obj.getSessionId();
             if (sid != null && !sid.equals("")) {
                 log.debug(String.format("认证成功，取得sid(%s)", sid));
-                ((ClientDevice) this.getForm().getClient()).setSid(sid);
+                ((ClientDevice) this.getForm().getClient()).setToken(sid);
             }
             // 登记聚安应用帐号
             String mobile = Utils.safeString(obj.getMobile());

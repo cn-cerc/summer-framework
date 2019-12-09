@@ -1,5 +1,21 @@
 package cn.cerc.mis.page.upload;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ServerConfig;
@@ -16,25 +32,12 @@ import cn.cerc.ui.fields.ItField;
 import cn.cerc.ui.fields.StringField;
 import cn.cerc.ui.fields.UploadField;
 import cn.cerc.ui.grid.AbstractGrid;
+import cn.cerc.ui.grid.PhoneGrid;
 import cn.cerc.ui.page.UIPageSearch;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolBar;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 文件上传实现Form
@@ -95,23 +98,28 @@ public class FileUploadPage extends FileUploadBasePage {
             String ossSite = config.getProperty("oss.site") + "/";
 
             AbstractGrid gird = jspPage.createGrid(jspPage.getContent(), svr.getDataOut());
-            new ItField(gird).setWidth(1);
-            new StringField(gird, R.asString(this, "文件名"), "Name_", 3).createText((record, html) -> {
+            ItField it = new ItField(gird);
+            it.setWidth(1);
+            StringField fileFld = new StringField(gird, R.asString(this, "文件名"), "Name_", 3);
+            fileFld.createText((record, html) -> {
                 String name = record.getString("Name_");
-                if (name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".gif")
-                        || name.endsWith(".bmp")) {
+                // 手机端不预览图片
+                if (!getClient().isPhone() && (name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg")
+                        || name.endsWith(".gif") || name.endsWith(".bmp"))) {
                     html.print("<a href='javascript:showImages(\"%s\")'>%s</a>", ossSite + record.getString("Path_"),
                             R.asString(this, name));
                 } else {
                     html.print(name);
                 }
             });
-            new StringField(gird, R.asString(this, "文件大小"), "Size_", 2).createText((record, html) -> {
+            StringField sizeFld = new StringField(gird, R.asString(this, "文件大小"), "Size_", 2);
+            sizeFld.createText((record, html) -> {
                 html.print(record.getString("Size_") + " B");
             });
-            new DateTimeField(gird, R.asString(this, "上传时间"), "AppDate_", 4);
+            DateTimeField dateFld = new DateTimeField(gird, R.asString(this, "上传时间"), "AppDate_", 4);
 
-            new StringField(gird, R.asString(this, "操作"), "Path_", 4).createText((record, html) -> {
+            StringField opearFld = new StringField(gird, R.asString(this, "操作"), "Path_", 4);
+            opearFld.createText((record, html) -> {
                 html.print("<a href='%s?name=%s&link=%s&page=3'>%s</a>", getAction(), record.getString("Name_"),
                         ossSite + record.getString("Path_"), R.asString(this, "下载"));
                 html.print(" | ");
@@ -119,6 +127,13 @@ public class FileUploadPage extends FileUploadBasePage {
                         "<a href='%s?tbNo=%s&name=%s&page=2' onclick=\"if(confirm('%s？')==false)return false;\">%s</a>",
                         getAction(), tbNo, record.getString("Name_"), R.asString(this, "确认删除"), R.asString(this, "删除"));
             });
+
+            // 手机版
+            if (gird instanceof PhoneGrid) {
+                PhoneGrid phoneGrid = (PhoneGrid) gird;
+                phoneGrid.addLine().addItem(it, fileFld, sizeFld);
+                phoneGrid.addLine().addItem(dateFld, opearFld);
+            }
 
             String msg = buff.getString("msg");
             if (msg != null && !"".equals(msg)) {
@@ -162,7 +177,8 @@ public class FileUploadPage extends FileUploadBasePage {
 
             for (FileItem item : uploadFiles) {
                 if (item != null && !item.isFormField() && item.getSize() > 0 && isSurpots(item.getName())) {
-                    if (item.getSize() / 1000 > singleMaxSize) {
+                    // 以字节为单位
+                    if (item.getSize() > singleMaxSize) {
                         buff.setField("msg", String.format(R.asString(this, "文件过大！单个文件最大不能超过%s"), singleMaxSize));
                         return jspPage;
                     }
@@ -238,9 +254,8 @@ public class FileUploadPage extends FileUploadBasePage {
 
         try (ServletOutputStream out = response.getOutputStream(); InputStream inputStream = doGetByStream(fileLink)) {
             int b = 0;
-            byte[] buffer = new byte[512];
-            while (b != -1) {
-                b = inputStream.read(buffer);
+            byte[] buffer = new byte[1024];
+            while ((b = inputStream.read(buffer)) != -1) {
                 out.write(buffer, 0, b);
             }
             out.flush();
