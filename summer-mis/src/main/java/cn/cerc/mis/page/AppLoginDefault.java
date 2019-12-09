@@ -167,10 +167,10 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         // 进行用户名、密码认证
         String IP = getIPAddress();
         if (obj.check(userCode, password, deviceId, IP, form.getClient().getLanguage())) {
-            String sid = obj.getSessionId();
-            if (sid != null && !sid.equals("")) {
-                log.debug(String.format("认证成功，取得sid(%s)", sid));
-                ((ClientDevice) this.getForm().getClient()).setToken(sid);
+            String token = obj.getSessionId();
+            if (token != null && !token.equals("")) {
+                log.debug(String.format("认证成功，取得sid(%s)", token));
+                ((ClientDevice) this.getForm().getClient()).setToken(token);
             }
             // 登记聚安应用帐号
             String mobile = Utils.safeString(obj.getMobile());
