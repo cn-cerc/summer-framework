@@ -66,20 +66,20 @@ public class ClientDevice implements IClient, Serializable {
 
     @Override
     public String getId() {
-        return deviceId == null ? RequestData.WEBCLIENT : deviceId;
+        return this.deviceId == null ? RequestData.WEBCLIENT : this.deviceId;
     }
 
     public void setId(String value) {
         this.deviceId = value;
-        request.setAttribute(APP_CLIENT_ID, deviceId == null ? "" : deviceId);
+        request.setAttribute(APP_CLIENT_ID, this.deviceId == null ? "" : this.deviceId);
         request.getSession().setAttribute(APP_CLIENT_ID, value);
         if (value != null && value.length() == 28) {
             setDevice(APP_DEVICE_PHONE);
         }
 
-        if (token != null && deviceId != null && !"".equals(deviceId)) {
+        if (token != null && this.deviceId != null && !"".equals(this.deviceId)) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
-                getValue(buff, APP_CLIENT_ID, deviceId);
+                getValue(buff, APP_CLIENT_ID, this.deviceId);
             }
         }
     }
@@ -91,7 +91,7 @@ public class ClientDevice implements IClient, Serializable {
      */
     @Override
     public String getDevice() {
-        return device == null ? APP_DEVICE_PC : device;
+        return this.device == null ? APP_DEVICE_PC : device;
     }
 
     @Override
@@ -122,7 +122,7 @@ public class ClientDevice implements IClient, Serializable {
     }
 
     public String getToken() {
-        return token != null && "".equals(token) ? null : token;
+        return "".equals(token) ? null : token;
     }
 
     public void setToken(String value) {
@@ -130,11 +130,11 @@ public class ClientDevice implements IClient, Serializable {
         if (tmp != null) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, tmp)) {
                 // 设备ID
-                deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
-                // 设备样式
-                device = getValue(buff, APP_DEVICE_TYPE, this.device);
+                this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
+                // 设备类型
+                this.device = getValue(buff, APP_DEVICE_TYPE, this.device);
             }
-        } else if (tmp == null) {
+        } else {
             if (this.token != null && !"".equals(this.token)) {
                 MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
             }
@@ -157,9 +157,9 @@ public class ClientDevice implements IClient, Serializable {
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("token:").append(token).append(", ");
-        buffer.append("deviceId:").append(deviceId).append(", ");
-        buffer.append("deviceType:").append(device);
+        buffer.append("token:").append(this.token).append(", ");
+        buffer.append("deviceId:").append(this.deviceId).append(", ");
+        buffer.append("deviceType:").append(this.device);
         return buffer.toString();
     }
 
@@ -174,7 +174,7 @@ public class ClientDevice implements IClient, Serializable {
     }
 
     public HttpServletRequest getRequest() {
-        return request;
+        return this.request;
     }
 
     @Override
@@ -182,31 +182,31 @@ public class ClientDevice implements IClient, Serializable {
         this.request = request;
 
         // 保存设备类型
-        device = request.getParameter(APP_DEVICE_TYPE);
-        if (device == null || "".equals(device)) {
-            device = (String) request.getSession().getAttribute(APP_DEVICE_TYPE);
+        this.device = request.getParameter(APP_DEVICE_TYPE);
+        if (this.device == null || "".equals(this.device)) {
+            this.device = (String) request.getSession().getAttribute(APP_DEVICE_TYPE);
         }
-        if (device != null && !"".equals(device)) {
-            request.getSession().setAttribute(APP_DEVICE_TYPE, device);
+        if (this.device != null && !"".equals(this.device)) {
+            request.getSession().setAttribute(APP_DEVICE_TYPE, this.device);
         }
-        request.setAttribute(APP_DEVICE_TYPE, device == null ? "" : device);
+        request.setAttribute(APP_DEVICE_TYPE, this.device == null ? "" : this.device);
 
         // 保存并取得device_id
-        deviceId = request.getParameter(APP_CLIENT_ID);
-        if (deviceId == null || "".equals(deviceId)) {
-            deviceId = (String) request.getSession().getAttribute(APP_CLIENT_ID);
+        this.deviceId = request.getParameter(APP_CLIENT_ID);
+        if (this.deviceId == null || "".equals(this.deviceId)) {
+            this.deviceId = (String) request.getSession().getAttribute(APP_CLIENT_ID);
         }
 
-        request.setAttribute(APP_CLIENT_ID, deviceId);
-        request.getSession().setAttribute(APP_CLIENT_ID, deviceId);
+        request.setAttribute(APP_CLIENT_ID, this.deviceId);
+        request.getSession().setAttribute(APP_CLIENT_ID, this.deviceId);
 
-        languageId = request.getParameter(Application.deviceLanguage);
-        if (languageId == null || "".equals(languageId)) {
-            languageId = (String) request.getSession().getAttribute(Application.deviceLanguage);
+        this.languageId = request.getParameter(Application.deviceLanguage);
+        if (this.languageId == null || "".equals(this.languageId)) {
+            this.languageId = (String) request.getSession().getAttribute(Application.deviceLanguage);
         }
 
-        request.setAttribute(Application.deviceLanguage, languageId);
-        request.getSession().setAttribute(Application.deviceLanguage, languageId);
+        request.setAttribute(Application.deviceLanguage, this.languageId);
+        request.getSession().setAttribute(Application.deviceLanguage, this.languageId);
 
         // 取得并保存token
         String token = request.getParameter(RequestData.SID);
@@ -214,7 +214,7 @@ public class ClientDevice implements IClient, Serializable {
             token = (String) request.getSession().getAttribute(RequestData.SID);
         }
 
-        // 设置sid
+        // 设置token
         setToken(token);
     }
 }

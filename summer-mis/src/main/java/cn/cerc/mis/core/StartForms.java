@@ -222,17 +222,19 @@ public class StartForms implements Filter {
             if (verifyCode != null && !"".equals(verifyCode))
                 app.getDataIn().getHead().setField("verifyCode", verifyCode);
 
-            if (app.exec())
+            if (app.exec()) {
                 result = true;
-            else {
+            } else {
                 int used = app.getDataOut().getHead().getInt("Used_");
-                if (used == 1)
+                if (used == 1) {
                     result = true;
-                else
+                } else {
                     form.setParam("message", app.getMessage());
+                }
             }
-            if (result)
+            if (result) {
                 buff.setField("VerifyMachine", true);
+            }
             return result;
         }
     }
