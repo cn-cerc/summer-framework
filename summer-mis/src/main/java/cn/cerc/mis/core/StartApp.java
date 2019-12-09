@@ -65,7 +65,7 @@ public class StartApp implements Filter {
             return;
         } else {
             StringBuffer url = req.getRequestURL();
-            log.info("{}", url.toString());
+            log.debug("{}", url.toString());
         }
 
         chain.doFilter(req, resp);

@@ -4,6 +4,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.mis.language.LanguageType;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 /**
  * // TODO: 2019/12/7 建议更名为 AppClient
  */
+@Slf4j
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class ClientDevice implements IClient, Serializable {
@@ -201,6 +203,7 @@ public class ClientDevice implements IClient, Serializable {
         if (token == null || "".equals(token)) {
             token = (String) request.getSession().getAttribute(RequestData.TOKEN); // 获取服务端的 token
         }
+        log.info("sessionID 1: {}", request.getSession().getId());
 
         // 设置token
         setToken(token);
@@ -221,6 +224,7 @@ public class ClientDevice implements IClient, Serializable {
             }
         }
 
+        log.info("sessionID 2: {}", request.getSession().getId());
         this.token = token;
         request.getSession().setAttribute(RequestData.TOKEN, this.token);
         request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
