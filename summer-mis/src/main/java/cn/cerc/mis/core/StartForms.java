@@ -251,7 +251,7 @@ public class StartForms implements Filter {
         }
 
         Object pageOutput = "";
-        String token = request.getParameter(RequestData.SID);
+        String token = request.getParameter(RequestData.TOKEN);
         if (token == null || token.equals("")) {
             token = request.getSession().getId();
         }
@@ -381,9 +381,9 @@ public class StartForms implements Filter {
                 if (args.length == 3) {
                     url = args[2];
                 } else {
-                    String sid = (String) req.getAttribute(RequestData.SID);
+                    String token = (String) req.getAttribute(RequestData.TOKEN);
                     IAppConfig conf = Application.getAppConfig();
-                    if (sid != null && !"".equals(sid)) {
+                    if (token != null && !"".equals(token)) {
                         url = conf.getFormDefault();
                     } else {
                         url = conf.getFormWelcome();

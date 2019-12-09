@@ -141,8 +141,8 @@ public class ClientDevice implements IClient, Serializable {
         }
 
         this.token = tmp;
-        request.getSession().setAttribute(RequestData.SID, this.token);
-        request.setAttribute(RequestData.SID, this.token == null ? "" : this.token);
+        request.getSession().setAttribute(RequestData.TOKEN, this.token);
+        request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
     }
 
     /**
@@ -209,9 +209,9 @@ public class ClientDevice implements IClient, Serializable {
         request.getSession().setAttribute(Application.deviceLanguage, this.languageId);
 
         // 取得并保存token
-        String token = request.getParameter(RequestData.SID);
+        String token = request.getParameter(RequestData.TOKEN);
         if (token == null || "".equals(token)) {
-            token = (String) request.getSession().getAttribute(RequestData.SID);
+            token = (String) request.getSession().getAttribute(RequestData.TOKEN);
         }
 
         // 设置token

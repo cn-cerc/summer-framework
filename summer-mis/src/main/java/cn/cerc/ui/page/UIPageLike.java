@@ -52,7 +52,7 @@ public class UIPageLike extends UIPageDialog {
     }
 
     public void setSessionKey(Object value) {
-        super.put(RequestData.SID, value);
+        super.put(RequestData.TOKEN, value);
     }
 
     public void setOnlineUsers(int value) {

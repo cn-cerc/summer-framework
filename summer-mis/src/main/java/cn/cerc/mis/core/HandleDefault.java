@@ -41,6 +41,9 @@ public class HandleDefault implements IHandle {
         log.debug("new CustomHandle");
     }
 
+    /**
+     * 根据用户信息初始化token，并保存到缓存
+     */
     @Override
     public boolean init(String corpNo, String userCode, String clientIP) {
         String token = GuidFixStr(Utils.newGuid());
@@ -75,6 +78,9 @@ public class HandleDefault implements IHandle {
         return true;
     }
 
+    /**
+     * 根据token恢复从缓存恢复用户信息
+     */
     @Override
     public boolean init(String token) {
         this.setProperty(Application.token, token);
@@ -105,6 +111,7 @@ public class HandleDefault implements IHandle {
                 buff.setField("Language_", headOut.getString("Language_"));
                 buff.setField("exists", true);
             }
+
             if (buff.getBoolean("exists")) {
                 this.setProperty(Application.loginTime, buff.getDateTime("LoginTime_"));
                 this.setProperty(Application.bookNo, buff.getString("CorpNo_"));
