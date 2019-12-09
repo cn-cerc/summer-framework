@@ -105,14 +105,14 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         String password = null;
         String userCode = null;
         try {
-            // 检查服务器的角色状态
-            String appRole = ServerConfig.getInstance().getProperty(AppProperty.App_Role_Key, AppProperty.App_Role_Master);
-            if (AppProperty.App_Role_Replica.equals(appRole)) {
-                throw new RuntimeException("当前服务不支持登录，请返回首页重新登录");
-            }
-
             // TODO 需要统一 login_user login_pwd 与 userCode password 的名称
             if (form.getRequest().getParameter("login_usr") != null) {
+                // 检查服务器的角色状态
+                String appRole = ServerConfig.getInstance().getProperty(AppProperty.App_Role_Key, AppProperty.App_Role_Master);
+                if (AppProperty.App_Role_Replica.equals(appRole)) {
+                    throw new RuntimeException("当前服务不支持登录，请返回首页重新登录");
+                }
+
                 userCode = getRequest().getParameter("login_usr");
                 password = getRequest().getParameter("login_pwd");
                 return checkLogin(userCode, password);
