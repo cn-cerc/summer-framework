@@ -125,32 +125,20 @@ public class ClientDevice implements IClient, Serializable {
         return "".equals(token) ? null : token;
     }
 
-    public void setToken(String value) {
-        String token = Utils.isEmpty(value) ? null : value;
-        if (token != null) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
-                // 设备ID
-                this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
-                // 设备类型
-                this.device = getValue(buff, APP_DEVICE_TYPE, this.device);
-            }
-        } else {
-            if (this.token != null && !"".equals(this.token)) {
-                MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
-            }
-        }
-
-        this.token = token;
-        request.getSession().setAttribute(RequestData.TOKEN, this.token);
-        request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
-    }
-
     /**
      * 清空token信息
      * <p>
      * TODO: 2019/12/7 考虑要不要加上缓存一起清空
      */
     public void clear() {
+        if (Utils.isNotEmpty(token)) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
+                buff.clear();
+            }
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
+                buff.clear();
+            }
+        }
         this.token = null;
     }
 
@@ -216,5 +204,25 @@ public class ClientDevice implements IClient, Serializable {
 
         // 设置token
         setToken(token);
+    }
+
+    public void setToken(String value) {
+        String token = Utils.isEmpty(value) ? null : value;
+        if (token != null) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
+                // 设备ID
+                this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
+                // 设备类型
+                this.device = getValue(buff, APP_DEVICE_TYPE, this.device);
+            }
+        } else {
+            if (this.token != null && !"".equals(this.token)) {
+                MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
+            }
+        }
+
+        this.token = token;
+        request.getSession().setAttribute(RequestData.TOKEN, this.token);
+        request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
     }
 }

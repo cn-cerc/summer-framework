@@ -50,6 +50,13 @@ public class AppSessionRestore extends CustomService {
             sess.setProperty(Application.token, null);
             return false;
         }
+
+        if (cdsCurrent.getInt("Viability_") <= 0) {
+            log.warn("token {} 已失效，请重新登录", token);
+            HandleDefault sess = (HandleDefault) this.getProperty(null);
+            sess.setProperty(Application.token, null);
+            return false;
+        }
         String userId = cdsCurrent.getString("UserID_");
 
         SqlQuery cdsUser = new SqlQuery(this);
