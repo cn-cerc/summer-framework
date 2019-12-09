@@ -40,12 +40,12 @@ public class AppSessionRestore extends CustomService {
         String token = headIn.getString("token");
 
         SqlQuery cdsCurrent = new SqlQuery(this);
-        cdsCurrent.add("select CorpNo_,UserID_,LoginTime_,Account_ as UserCode_,Language_ ");
+        cdsCurrent.add("select CorpNo_,UserID_,Viability_,LoginTime_,Account_ as UserCode_,Language_ ");
         cdsCurrent.add("from %s", systemTable.getCurrentUser());
         cdsCurrent.add("where loginID_= '%s' ", token);
         cdsCurrent.open();
         if (cdsCurrent.eof()) {
-            log.warn(String.format("token %s 没有找到！", token));
+            log.warn("token {} 没有找到！", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
             return false;
