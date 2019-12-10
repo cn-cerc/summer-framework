@@ -3,7 +3,7 @@ package cn.cerc.mis.config;
 import cn.cerc.core.IHandle;
 import cn.cerc.mis.core.Application;
 
-public class AppProperty {
+public class ApplicationProperties {
 
     /**
      * 本地主机
@@ -13,7 +13,7 @@ public class AppProperty {
     public static final String App_Path = "/public/";
 
     public static String rewrite(String form) {
-        return AppProperty.App_Path + form;
+        return ApplicationProperties.App_Path + form;
     }
 
     /**

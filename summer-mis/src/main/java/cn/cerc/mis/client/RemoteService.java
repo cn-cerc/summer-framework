@@ -6,7 +6,7 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.LocalConfig;
-import cn.cerc.mis.config.AppProperty;
+import cn.cerc.mis.config.ApplicationProperties;
 import cn.cerc.mis.core.RequestData;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -25,17 +25,17 @@ public class RemoteService implements IServiceProxy {
 
     public RemoteService() {
         LocalConfig localConfig = LocalConfig.getInstance();
-        this.host = localConfig.getProperty("remote.host", AppProperty.Local_Host);
+        this.host = localConfig.getProperty("remote.host", ApplicationProperties.Local_Host);
     }
 
     public RemoteService(IHandle handle, String bookNo, String service) {
         this(bookNo, service);
-        this.token = AppProperty.getToken(handle);
+        this.token = ApplicationProperties.getToken(handle);
     }
 
     public RemoteService(String bookNo, String service) {
         LocalConfig localConfig = LocalConfig.getInstance();
-        this.host = localConfig.getProperty("remote.host", AppProperty.Local_Host);
+        this.host = localConfig.getProperty("remote.host", ApplicationProperties.Local_Host);
         this.path = bookNo;
         this.service = service;
     }

@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.config.AppProperty;
+import cn.cerc.mis.config.ApplicationProperties;
 import cn.cerc.mis.config.IAppStaticFile;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -40,7 +40,7 @@ public class StartForms implements Filter {
         int prefix = uri.indexOf("/", 2);
         if (prefix < 0) {
             IAppConfig conf = Application.getAppConfig();
-            resp.sendRedirect(String.format("%s", AppProperty.App_Path, conf.getFormWelcome()));
+            resp.sendRedirect(String.format("%s", ApplicationProperties.App_Path, conf.getFormWelcome()));
             return;
         }
 
