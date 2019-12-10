@@ -16,7 +16,6 @@ import cn.cerc.core.Record;
 import cn.cerc.db.core.LocalConfig;
 import cn.cerc.mis.core.RequestData;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Slf4j
@@ -68,34 +67,32 @@ public class RemoteService implements IServiceProxy {
         String url = this.getUrl();
         try {
             log.info("dataIn {}", postParam);
-            String rst = postData(url, postParam);
-            log.info("result data {}", rst);
-            if (rst == null)
-                return false;
+             String response = postData(url, postParam);
+            log.info("response {}", response);
 
-            JSONObject json = JSONObject.fromObject(rst);
+            if (response == null) {
+                return false;
+            }
+
+            JSONObject json = JSONObject.fromObject(response);
             if (json.get("message") != null) {
                 this.setMessage(json.getString("message"));
             }
 
             if (json.containsKey("dataOut")) {
-                JSONArray datas = json.getJSONArray("dataOut");
-                if (datas != null && datas.size() > 0) {
-                    if (dataOut == null)
-                        dataOut = new DataSet();
-                    else
-                        dataOut.close();
-                    dataOut.setJSON(datas.getString(0));
+                String dataJson = json.getString("dataOut");
+                if (dataJson != null) {
+                    this.getDataOut().setJSON(dataJson);
                 }
             }
             return json.getBoolean("result");
-
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            if (e.getCause() != null)
+            if (e.getCause() != null) {
                 setMessage(e.getCause().getMessage());
-            else
+            } else {
                 setMessage(e.getMessage());
+            }
             return false;
         }
     }
@@ -182,4 +179,5 @@ public class RemoteService implements IServiceProxy {
             return String.format("%s/%s/ProxyService?service=%s?%s=%s", this.host, this.path, this.service, RequestData.TOKEN, this.token);
         }
     }
+
 }

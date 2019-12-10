@@ -2,7 +2,6 @@ package cn.cerc.mis.client;
 
 import org.springframework.stereotype.Component;
 
-import cn.cerc.core.DataSet;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.BookHandle;
@@ -51,12 +50,6 @@ public class ProxyService extends AbstractForm {
             jsonPage.setResultMessage(false, e.getMessage());
         }
         return jsonPage;
-    }
-
-    public static void main(String[] args) {
-        DataSet dataIn = new DataSet();
-        dataIn.getHead().setField("CusCorpNo_", "911001");
-        System.out.println(dataIn.getJSON());
     }
 
 }
