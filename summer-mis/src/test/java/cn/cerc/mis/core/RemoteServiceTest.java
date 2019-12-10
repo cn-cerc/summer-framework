@@ -2,6 +2,8 @@ package cn.cerc.mis.core;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.mis.client.RemoteService;
@@ -11,12 +13,12 @@ import net.sf.json.JSONObject;
 @Slf4j
 public class RemoteServiceTest {
 
-//    @Test
+    @Test
     public void test() {
         // http://127.0.0.1/911001/proxyService?sid=f4761c4d332440f3859f8fb1bd19496a&service=TAppTranDE.search
 
         RemoteService svr = new RemoteService("911001", "TAppTranDE.search");
-        svr.setToken("f4761c4d332440f3859f8fb1bd19496a");
+        svr.setToken("320891e3cf40431fa2ca1ea1b2559cc8");
 
         DataSet dataIn = svr.getDataIn();
         Record headIn = dataIn.getHead();

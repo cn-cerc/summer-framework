@@ -1,19 +1,12 @@
 package cn.cerc.mis.client;
 
-import java.io.IOException;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-
 import cn.cerc.core.DataSet;
+import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
+import cn.cerc.core.Utils;
+import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.LocalConfig;
+import cn.cerc.mis.config.AppProperty;
 import cn.cerc.mis.core.RequestData;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -21,7 +14,7 @@ import net.sf.json.JSONObject;
 @Slf4j
 public class RemoteService implements IServiceProxy {
 
-    private String host = "127.0.0.1";
+    private String host;
     private String path;
     private String service;
     private String token;
@@ -35,22 +28,16 @@ public class RemoteService implements IServiceProxy {
         this.host = localConfig.getProperty("remote.host", "127.0.0.1");
     }
 
+    public RemoteService(IHandle handle, String bookNo, String service) {
+        this(bookNo, service);
+        this.token = AppProperty.getToken(handle);
+    }
+
     public RemoteService(String bookNo, String service) {
         LocalConfig localConfig = LocalConfig.getInstance();
         this.host = localConfig.getProperty("remote.host", "127.0.0.1");
         this.path = bookNo;
         this.service = service;
-    }
-
-    @Override
-    public String getService() {
-        return service;
-    }
-
-    @Override
-    public IServiceProxy setService(String service) {
-        this.service = service;
-        return this;
     }
 
     @Override
@@ -63,13 +50,17 @@ public class RemoteService implements IServiceProxy {
                 headIn.setField(args[i].toString(), args[i + 1]);
         }
 
-        String postParam = getDataIn().getJSON();
         String url = this.getUrl();
         try {
-            log.info("dataIn {}", postParam);
-             String response = postData(url, postParam);
-            log.info("response {}", response);
+            Curl curl = new Curl();
+            curl.putParameter("service", this.service);
+            curl.putParameter("dataIn", getDataIn().getJSON());
+            if (Utils.isNotEmpty(this.token)) {
+                curl.putParameter(RequestData.TOKEN, this.token);
+            }
 
+            String response = curl.doPost(url);
+            log.info("response {}", response);
             if (response == null) {
                 return false;
             }
@@ -97,25 +88,19 @@ public class RemoteService implements IServiceProxy {
         }
     }
 
-    private String postData(String url, String params) throws ClientProtocolException, IOException {
-        HttpPost httpPost = new HttpPost(url);
-        StringEntity entity = new StringEntity(params.toString(), "UTF-8");
-        entity.setContentType("application/json");
-        httpPost.setEntity(entity);
+    public String getUrl() {
+        return String.format("%s/%s/proxyService", this.host, this.path);
+    }
 
-        log.debug("post: " + url);
-        HttpClient client = HttpClientBuilder.create().build();
+    @Override
+    public String getService() {
+        return service;
+    }
 
-        HttpResponse response = client.execute(httpPost);
-        // 如果请求成功
-        if (response.getStatusLine().getStatusCode() != 200) {
-            this.setMessage("请求服务器失败，错误代码为：" + response.getStatusLine().getStatusCode());
-            return null;
-        }
-
-        // 获取响应实体
-        HttpEntity entity2 = response.getEntity();
-        return EntityUtils.toString(entity2, "UTF-8");
+    @Override
+    public IServiceProxy setService(String service) {
+        this.service = service;
+        return this;
     }
 
     public String getMessage() {
@@ -169,15 +154,6 @@ public class RemoteService implements IServiceProxy {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public String getUrl() {
-        // host + path + serviceName
-        if (this.token == null || "".equals(this.token)) {
-            return String.format("%s/%s/ProxyService?service=%s", this.host, this.path, this.service);
-        } else {
-            return String.format("%s/%s/ProxyService?service=%s?%s=%s", this.host, this.path, this.service, RequestData.TOKEN, this.token);
-        }
     }
 
 }
