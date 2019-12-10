@@ -25,7 +25,7 @@ public class RemoteService implements IServiceProxy {
 
     public RemoteService() {
         LocalConfig localConfig = LocalConfig.getInstance();
-        this.host = localConfig.getProperty("remote.host", "127.0.0.1");
+        this.host = localConfig.getProperty("remote.host", AppProperty.Local_Host);
     }
 
     public RemoteService(IHandle handle, String bookNo, String service) {
@@ -35,7 +35,7 @@ public class RemoteService implements IServiceProxy {
 
     public RemoteService(String bookNo, String service) {
         LocalConfig localConfig = LocalConfig.getInstance();
-        this.host = localConfig.getProperty("remote.host", "127.0.0.1");
+        this.host = localConfig.getProperty("remote.host", AppProperty.Local_Host);
         this.path = bookNo;
         this.service = service;
     }
@@ -50,7 +50,6 @@ public class RemoteService implements IServiceProxy {
                 headIn.setField(args[i].toString(), args[i + 1]);
         }
 
-        String url = this.getUrl();
         try {
             Curl curl = new Curl();
             curl.putParameter("service", this.service);
@@ -59,7 +58,7 @@ public class RemoteService implements IServiceProxy {
                 curl.putParameter(RequestData.TOKEN, this.token);
             }
 
-            String response = curl.doPost(url);
+            String response = curl.doPost(this.getUrl());
             log.info("response {}", response);
             if (response == null) {
                 return false;
