@@ -1,16 +1,7 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.config.AppProperty;
-import cn.cerc.mis.config.IAppStaticFile;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.page.JspPage;
-import cn.cerc.mis.page.RedirectPage;
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -20,8 +11,19 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.lang.reflect.Method;
+
+import com.google.gson.Gson;
+
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.ApplicationProperties;
+import cn.cerc.mis.config.IAppStaticFile;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.page.JspPage;
+import cn.cerc.mis.page.RedirectPage;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StartForms implements Filter {
@@ -38,7 +40,7 @@ public class StartForms implements Filter {
         int prefix = uri.indexOf("/", 2);
         if (prefix < 0) {
             IAppConfig conf = Application.getAppConfig();
-            resp.sendRedirect(String.format("%s", AppProperty.App_Path, conf.getFormWelcome()));
+            resp.sendRedirect(String.format("%s", ApplicationProperties.App_Path, conf.getFormWelcome()));
             return;
         }
 
@@ -57,11 +59,11 @@ public class StartForms implements Filter {
              * 2、截取当前的资源路径，将资源文件重定向到容器中的项目路径 3、例如/ /131001/images/systeminstall-pc.png ->
              * /forms/images/systeminstall-pc.png
              */
-            log.info("before {}", uri);
+            log.debug("before {}", uri);
             IAppConfig conf = Application.getAppConfig();
             String source = "/" + conf.getPathForms() + uri.substring(uri.indexOf("/", 2));
             request.getServletContext().getRequestDispatcher(source).forward(request, response);
-            log.info("after  {}", source);
+            log.debug("after  {}", source);
             return;
         }
 
