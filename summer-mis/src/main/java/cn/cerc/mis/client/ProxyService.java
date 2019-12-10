@@ -36,7 +36,9 @@ public class ProxyService extends AbstractForm {
             return jsonPage.setResultMessage(false, "目标帐套  不允许为空");
         }
 
-        // /911001/proxyService
+        if (curBookNo.equals(this.getCorpNo())) {
+            return jsonPage.setResultMessage(false, "服务调用错误");
+        }
 
         BookHandle bHandle = new BookHandle(this, curBookNo);
         try {
