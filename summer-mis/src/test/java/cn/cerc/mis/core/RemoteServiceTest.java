@@ -1,17 +1,18 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import cn.cerc.mis.client.RemoteService;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import cn.cerc.mis.client.RemoteService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RemoteServiceTest {
-    // private static final Logger log =
-    // Logger.getLogger(RemoteServiceTest.class);
 
     @Before
     public void setUp() throws Exception {
