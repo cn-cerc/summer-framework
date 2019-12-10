@@ -1,10 +1,7 @@
 package cn.cerc.mis.client;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import java.io.IOException;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -14,22 +11,36 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import cn.cerc.db.core.LocalConfig;
+import cn.cerc.mis.core.RequestData;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
 
     private String host = "127.0.0.1";
+    private String path = "";
     private String service;
+    private String token;
+    //
     private DataSet dataIn;
     private DataSet dataOut;
     private String message;
-    private String token;
 
+    // FIXME: 2019/12/10
     public RemoteService() {
+        LocalConfig localConfig = LocalConfig.getInstance();
+        this.host = localConfig.getProperty("remote.host", "127.0.0.1");
     }
 
-    public RemoteService(String service) {
+    public RemoteService(String bookNo, String service) {
+        LocalConfig localConfig = LocalConfig.getInstance();
+        this.host = localConfig.getProperty("remote.host", "127.0.0.1");
+        this.path = bookNo + "/";
         this.service = service;
     }
 
@@ -55,14 +66,12 @@ public class RemoteService implements IServiceProxy {
         }
 
         String postParam = getDataIn().getJSON();
-        String url = String.format("http://%s/services/%s", this.host, this.service);
-        if (token != null)
-            url = url + "?token=" + token;
+        String url = this.getUrl();
         try {
-            log.debug("datain: " + postParam);
+            log.info("dataIn: " + postParam);
             // String rst = CURL.doPost(url, params, "UTF-8");
             String rst = postData(url, postParam);
-            log.debug("datatout:" + rst);
+            log.info("result data:" + rst);
             if (rst == null)
                 return false;
 
@@ -71,8 +80,8 @@ public class RemoteService implements IServiceProxy {
                 this.setMessage(json.getString("message"));
             }
 
-            if (json.containsKey("data")) {
-                JSONArray datas = json.getJSONArray("data");
+            if (json.containsKey("dataOut")) {
+                JSONArray datas = json.getJSONArray("dataOut");
                 if (datas != null && datas.size() > 0) {
                     if (dataOut == null)
                         dataOut = new DataSet();
@@ -157,5 +166,22 @@ public class RemoteService implements IServiceProxy {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getUrl() {
+        // host + path + serviceName
+        if (this.token == null || "".equals(this.token)) {
+            return String.format("%s/%s/ProxyService?service=%s", this.host, this.path, this.service);
+        } else {
+            return String.format("%s/%s/ProxyService?service=%s?%s=%s", this.host, this.path, this.service, RequestData.TOKEN, this.token);
+        }
     }
 }
