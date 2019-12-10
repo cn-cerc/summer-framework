@@ -23,15 +23,14 @@ import net.sf.json.JSONObject;
 public class RemoteService implements IServiceProxy {
 
     private String host = "127.0.0.1";
-    private String path = "";
+    private String path;
     private String service;
     private String token;
-    //
+
     private DataSet dataIn;
     private DataSet dataOut;
     private String message;
 
-    // FIXME: 2019/12/10
     public RemoteService() {
         LocalConfig localConfig = LocalConfig.getInstance();
         this.host = localConfig.getProperty("remote.host", "127.0.0.1");
@@ -40,7 +39,7 @@ public class RemoteService implements IServiceProxy {
     public RemoteService(String bookNo, String service) {
         LocalConfig localConfig = LocalConfig.getInstance();
         this.host = localConfig.getProperty("remote.host", "127.0.0.1");
-        this.path = bookNo + "/";
+        this.path = bookNo;
         this.service = service;
     }
 
@@ -68,10 +67,9 @@ public class RemoteService implements IServiceProxy {
         String postParam = getDataIn().getJSON();
         String url = this.getUrl();
         try {
-            log.info("dataIn: " + postParam);
-            // String rst = CURL.doPost(url, params, "UTF-8");
+            log.info("dataIn {}", postParam);
             String rst = postData(url, postParam);
-            log.info("result data:" + rst);
+            log.info("result data {}", rst);
             if (rst == null)
                 return false;
 

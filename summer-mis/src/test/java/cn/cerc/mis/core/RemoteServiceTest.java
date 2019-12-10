@@ -2,8 +2,6 @@ package cn.cerc.mis.core;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import cn.cerc.core.DataSet;
@@ -14,22 +12,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RemoteServiceTest {
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
     @Test
-    @Ignore
     public void test() {
-        RemoteService app = new RemoteService();
-        // app.setHost("r1.diteng.site");
-        app.setService("SvrUserLogin.check");
-        DataSet datain = app.getDataIn();
-        Record head = datain.getHead();
-        head.setField("Account_", "admin");
-        head.setField("Password_", "123456");
-        head.setField("MachineID_", "webclient");
-        boolean result = app.exec();
-        assertTrue(app.getMessage(), result);
+        // http://127.0.0.1/911001/proxyService?sid=f4761c4d332440f3859f8fb1bd19496a&service=TAppTranDE.search
+
+        RemoteService svr = new RemoteService("911001", "TAppTranDE.search");
+        svr.setToken("f4761c4d332440f3859f8fb1bd19496a");
+
+        DataSet dataIn = svr.getDataIn();
+        Record headIn = dataIn.getHead();
+        headIn.setField("CusCorpNo_", "155174");
+        headIn.setField("MaxRecord_", "10");
+
+        log.info("{}", svr.getUrl());
+
+        boolean result = svr.exec();
+        assertTrue(svr.getMessage(), result);
     }
 }
