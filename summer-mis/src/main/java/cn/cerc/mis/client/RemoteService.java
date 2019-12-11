@@ -32,6 +32,11 @@ public class RemoteService implements IServiceProxy {
         this(bookNo, service);
         this.token = ApplicationProperties.getToken(handle);
     }
+    
+    public RemoteService(IHandle handle, String bookNo) {
+        this.token = ApplicationProperties.getToken(handle);
+        this.path = bookNo;
+    }
 
     public RemoteService(String bookNo, String service) {
         LocalConfig localConfig = LocalConfig.getInstance();
