@@ -32,8 +32,9 @@ public class RemoteService implements IServiceProxy {
         this(bookNo, service);
         this.token = ApplicationProperties.getToken(handle);
     }
-    
+
     public RemoteService(IHandle handle, String bookNo) {
+        this(bookNo, null);
         this.token = ApplicationProperties.getToken(handle);
         this.path = bookNo;
     }
@@ -49,23 +50,32 @@ public class RemoteService implements IServiceProxy {
     public boolean exec(Object... args) {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0)
+            if (args.length % 2 != 0) {
                 throw new RuntimeException("传入的参数数量必须为偶数！");
-            for (int i = 0; i < args.length; i = i + 2)
+            }
+            for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
+            }
+        }
+        log.info(this.service);
+        if (Utils.isEmpty(this.service)) {
+            this.setMessage("服务代码不允许为空");
+            return false;
+        }
+        if (Utils.isEmpty(this.token)) {
+            this.setMessage("token 不允许为空");
+            return false;
         }
 
         try {
             Curl curl = new Curl();
             curl.putParameter("service", this.service);
             curl.putParameter("dataIn", getDataIn().getJSON());
-            if (Utils.isNotEmpty(this.token)) {
-                curl.putParameter(RequestData.TOKEN, this.token);
-            }
-
+            curl.putParameter(RequestData.TOKEN, this.token);
             String response = curl.doPost(this.getUrl());
-            log.info("response {}", response);
+            log.debug("response {}", response);
             if (response == null) {
+                this.setMessage("远程服务异常");
                 return false;
             }
 

@@ -377,7 +377,7 @@ public class StartForms implements Filter {
 
     protected String getRequestCode(HttpServletRequest req) {
         String url = null;
-        log.info("servletPath {}", req.getServletPath());
+        log.debug("servletPath {}", req.getServletPath());
         String args[] = req.getServletPath().split("/");
         if (args.length == 2 || args.length == 3) {
             if ("".equals(args[0]) && !"".equals(args[1])) {
