@@ -2,7 +2,6 @@ package cn.cerc.mis.other;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.config.ApplicationProperties;
@@ -20,11 +19,8 @@ public class Memory_UserInfo {
             return buff;
         }
 
-        String appRole = ServerConfig.getInstance().getProperty(ApplicationProperties.App_Role_Key,
-                ApplicationProperties.App_Role_Master);
-
         Record record;
-        if (ApplicationProperties.App_Role_Master.equals(appRole)) {
+        if (ApplicationProperties.isMaster()) {
             // 主服务器
             ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
             SqlQuery ds = new SqlQuery(handle);

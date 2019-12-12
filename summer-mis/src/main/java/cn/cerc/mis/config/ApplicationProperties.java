@@ -1,6 +1,7 @@
 package cn.cerc.mis.config;
 
 import cn.cerc.core.IHandle;
+import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 
 public class ApplicationProperties {
@@ -30,6 +31,16 @@ public class ApplicationProperties {
 
     public static String getToken(IHandle handle) {
         return (String) handle.getProperty(Application.token);
+    }
+
+    public static boolean isMaster() {
+        String appRole = ServerConfig.getInstance().getProperty(ApplicationProperties.App_Role_Key,
+                ApplicationProperties.App_Role_Master);
+        return ApplicationProperties.App_Role_Master.equals(appRole);
+    }
+
+    public static boolean isReplica() {
+        return !ApplicationProperties.isMaster();
     }
 
 }
