@@ -13,21 +13,22 @@ public class Memory_UserInfo {
         MemoryBuffer buff = new MemoryBuffer(BufferType.getAccount, userCode);
         if (buff.isNull()) {
 //            ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-//            SqlQuery ds = new SqlQuery(sess);
+//            SqlQuery ds = new SqlQuery(handle);
 //            ds.add("select a.Code_,a.Enabled_,a.Name_,a.SuperUser_,a.DiyRole_,a.RoleCode_,oi.Type_,a.ImageUrl_ ");
 //            ds.add("from %s a ", systemTable.getUserInfo());
 //            ds.add("inner join %s oi on a.CorpNo_=oi.CorpNo_ ", systemTable.getBookInfo());
-//            ds.add("where a.Code_='%s'", usercode);
+//            ds.add("where a.Code_='%s'", userCode);
 //            ds.open();
 //            if (ds.eof())
-//                throw new RuntimeException(String.format("用户代码 %s 不存在!", usercode));
+//                throw new RuntimeException(String.format("用户代码 %s 不存在!", userCode));
 
             RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiUserInfo.getUserInfo");
             if (!svr.exec("UserCode_", userCode)) {
                 throw new RuntimeException(svr.getMessage());
             }
-
             Record record = svr.getDataOut().getCurrent();
+            
+//            Record record = ds.getCurrent();
             buff.setField("Name_", record.getString("Name_"));
             buff.setField("Enabled_", record.getInt("Enabled_"));
             buff.setField("SuperUser_", record.getBoolean("SuperUser_"));
