@@ -6,6 +6,9 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
+import cn.cerc.mis.client.RemoteService;
+import cn.cerc.mis.config.ApplicationProperties;
+import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
@@ -20,14 +23,22 @@ public class MemoryBookInfo {
             return gson.fromJson(tmp, BookInfoRecord.class);
         }
 
-        LocalService svr = new LocalService(handle, "SvrBookInfo.getRecord");
-        if (!svr.exec("corpNo", corpNo)) {
-            return null;
+        Record record;
+        if (ApplicationProperties.isMaster()) {
+            LocalService svr = new LocalService(handle, "SvrBookInfo.getRecord");
+            if (!svr.exec("corpNo", corpNo)) {
+                return null;
+            }
+            record = svr.getDataOut().getHead();
+        } else {
+            RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "SvrBookInfo.getRecord");
+            if (!svr.exec("corpNo", corpNo)) {
+                return null;
+            }
+            record = svr.getDataOut().getHead();
         }
 
         BookInfoRecord result = new BookInfoRecord();
-        Record record = svr.getDataOut().getHead();
-
         result.setCode(record.getString("CorpNo_"));
         result.setShortName(record.getString("ShortName_"));
         result.setName(record.getString("Name_"));
