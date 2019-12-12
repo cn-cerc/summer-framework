@@ -1,6 +1,9 @@
 package cn.cerc.mis.core;
 
 public interface ISystemTable {
+
+    public static final String Master_Book = "000000"; // 服务商专用
+
     // 帐套资料表
     public String getBookInfo(); // "OurInfo";
     // 帐套参数档
