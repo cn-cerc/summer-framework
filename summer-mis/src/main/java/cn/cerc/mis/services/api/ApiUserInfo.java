@@ -23,7 +23,7 @@ public class ApiUserInfo extends CustomService {
         cdsTmp.add("where a.Code_='%s'", userCode);
         cdsTmp.open();
         DataValidateException.stopRun(String.format("用户代码 %s 不存在!", userCode), cdsTmp.eof());
-
+        getDataOut().appendDataSet(cdsTmp);
         return true;
     }
 
