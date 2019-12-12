@@ -69,7 +69,6 @@ public class RemoteService implements IServiceProxy {
 
         try {
             Curl curl = new Curl();
-            curl.putParameter("service", this.service);
             curl.putParameter("dataIn", getDataIn().getJSON());
             curl.putParameter(RequestData.TOKEN, this.token);
             String response = curl.doPost(this.getUrl());
@@ -103,7 +102,7 @@ public class RemoteService implements IServiceProxy {
     }
 
     public String getUrl() {
-        return String.format("%s/%s/proxyService", this.host, this.path);
+        return String.format("%s/%s/proxyService?service=%s", this.host, this.path, this.service);
     }
 
     @Override
