@@ -45,7 +45,7 @@ public class ProxyService extends AbstractForm {
             svr.getDataIn().setJSON(dataIn);
             jsonPage.put("result", svr.exec());
             jsonPage.put("message", svr.getMessage());
-            jsonPage.put("dataOut", svr.getDataOut().toString());
+            jsonPage.put("data", svr.getDataOut().toString());
         } catch (Exception e) {
             jsonPage.setResultMessage(false, e.getMessage());
         }

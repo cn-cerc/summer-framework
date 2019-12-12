@@ -83,8 +83,8 @@ public class RemoteService implements IServiceProxy {
                 this.setMessage(json.getString("message"));
             }
 
-            if (json.containsKey("dataOut")) {
-                String dataJson = json.getString("dataOut");
+            if (json.containsKey("data")) {
+                String dataJson = json.getString("data");
                 if (dataJson != null) {
                     this.getDataOut().setJSON(dataJson);
                 }
