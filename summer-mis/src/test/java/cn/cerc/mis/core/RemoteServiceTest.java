@@ -17,17 +17,17 @@ public class RemoteServiceTest {
     public void test() {
         // http://127.0.0.1/911001/proxyService?sid=f4761c4d332440f3859f8fb1bd19496a&service=TAppTranDE.search
 
-        RemoteService svr = new RemoteService("911001", "TAppTranDE.search");
-        svr.setToken("320891e3cf40431fa2ca1ea1b2559cc8");
+        RemoteService svr = new RemoteService("000000", "ApiUserInfo.getUserInfo");
+        svr.setToken("79653e44446a4bb1a7a5d40017b7e999");
 
         DataSet dataIn = svr.getDataIn();
         Record headIn = dataIn.getHead();
-        headIn.setField("CusCorpNo_", "155174");
-        headIn.setField("MaxRecord_", "10");
+        headIn.setField("UserCode_", "91100124");
 
         log.info("{}", svr.getUrl());
-
         boolean result = svr.exec();
+
+        log.info("{}", svr.getDataOut().toString());
         assertTrue(svr.getMessage(), result);
     }
 
