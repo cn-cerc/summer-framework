@@ -19,19 +19,19 @@ public class MemoryBookInfo {
                 return null;
 
             BookInfoRecord result = new BookInfoRecord();
-            Record ds = svr.getDataOut().getHead();
-            result.setCode(ds.getString("CorpNo_"));
-            result.setShortName(ds.getString("ShortName_"));
-            result.setName(ds.getString("Name_"));
-            result.setAddress(ds.getString("Address_"));
-            result.setTel(ds.getString("Tel_"));
-            result.setManagerPhone(ds.getString("ManagerPhone_"));
-            result.setStartHost(ds.getString("StartHost_"));
-            result.setContact(ds.getString("Contact_"));
-            result.setAuthentication(ds.getBoolean("Authentication_"));
-            result.setStatus(ds.getInt("Status_"));
-            result.setCorpType(ds.getInt("Type_"));
-            result.setIndustry(ds.getString("Industry_"));
+            Record record = svr.getDataOut().getHead();
+            result.setCode(record.getString("CorpNo_"));
+            result.setShortName(record.getString("ShortName_"));
+            result.setName(record.getString("Name_"));
+            result.setAddress(record.getString("Address_"));
+            result.setTel(record.getString("Tel_"));
+            result.setManagerPhone(record.getString("ManagerPhone_"));
+            result.setStartHost(record.getString("StartHost_"));
+            result.setContact(record.getString("Contact_"));
+            result.setAuthentication(record.getBoolean("Authentication_"));
+            result.setStatus(record.getInt("Status_"));
+            result.setCorpType(record.getInt("Type_"));
+            result.setIndustry(record.getString("Industry_"));
 
             Gson gson = new Gson();
             Redis.set(getBuffKey(corpNo), gson.toJson(result));
