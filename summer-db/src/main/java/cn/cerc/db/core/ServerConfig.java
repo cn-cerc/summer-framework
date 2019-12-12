@@ -1,13 +1,14 @@
 package cn.cerc.db.core;
 
-import cn.cerc.core.IConfig;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.springframework.stereotype.Component;
+
+import cn.cerc.core.IConfig;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
