@@ -18,7 +18,7 @@ public class RemoteServiceTest {
         // http://127.0.0.1/911001/proxyService?sid=f4761c4d332440f3859f8fb1bd19496a&service=TAppTranDE.search
 
         RemoteService svr = new RemoteService("000000", "ApiUserInfo.getUserInfo");
-        svr.setToken("79653e44446a4bb1a7a5d40017b7e999");
+        svr.setToken("fe7795f9d65740f4b520c6e5cd842786");
 
         DataSet dataIn = svr.getDataIn();
         Record headIn = dataIn.getHead();
