@@ -1,19 +1,23 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.Utils;
-import cn.cerc.mis.language.LanguageType;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
+import java.io.Serializable;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
+import cn.cerc.core.Utils;
+import cn.cerc.mis.language.LanguageType;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * // TODO: 2019/12/7 建议更名为 AppClient
  */
+@Slf4j
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class ClientDevice implements IClient, Serializable {
@@ -125,32 +129,20 @@ public class ClientDevice implements IClient, Serializable {
         return "".equals(token) ? null : token;
     }
 
-    public void setToken(String value) {
-        String tmp = Utils.isEmpty(value) ? null : value;
-        if (tmp != null) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, tmp)) {
-                // 设备ID
-                this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
-                // 设备类型
-                this.device = getValue(buff, APP_DEVICE_TYPE, this.device);
-            }
-        } else {
-            if (this.token != null && !"".equals(this.token)) {
-                MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
-            }
-        }
-
-        this.token = tmp;
-        request.getSession().setAttribute(RequestData.TOKEN, this.token);
-        request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
-    }
-
     /**
      * 清空token信息
      * <p>
      * TODO: 2019/12/7 考虑要不要加上缓存一起清空
      */
     public void clear() {
+        if (Utils.isNotEmpty(token)) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
+                buff.clear();
+            }
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
+                buff.clear();
+            }
+        }
         this.token = null;
     }
 
@@ -209,12 +201,34 @@ public class ClientDevice implements IClient, Serializable {
         request.getSession().setAttribute(Application.deviceLanguage, this.languageId);
 
         // 取得并保存token
-        String token = request.getParameter(RequestData.TOKEN);
+        String token = request.getParameter(RequestData.TOKEN);// 获取客户端的 token
         if (token == null || "".equals(token)) {
-            token = (String) request.getSession().getAttribute(RequestData.TOKEN);
+            token = (String) request.getSession().getAttribute(RequestData.TOKEN); // 获取服务端的 token
         }
+        log.debug("sessionID 1: {}", request.getSession().getId());
 
         // 设置token
         setToken(token);
+    }
+
+    public void setToken(String value) {
+        String token = Utils.isEmpty(value) ? null : value;
+        if (token != null) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
+                // 设备ID
+                this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
+                // 设备类型
+                this.device = getValue(buff, APP_DEVICE_TYPE, this.device);
+            }
+        } else {
+            if (this.token != null && !"".equals(this.token)) {
+                MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
+            }
+        }
+
+        log.debug("sessionID 2: {}", request.getSession().getId());
+        this.token = token;
+        request.getSession().setAttribute(RequestData.TOKEN, this.token);
+        request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
     }
 }

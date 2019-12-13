@@ -7,7 +7,6 @@ import cn.cerc.core.Record;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.Microservice;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
@@ -113,8 +112,6 @@ public class LocalService implements IServiceProxy {
             this.message = String.format("bean %s not find", serviceCode);
             return false;
         }
-        if ((bean instanceof Microservice) && ((Microservice) bean).getService() == null)
-            ((Microservice) bean).setService(serviceCode);
 
         try {
             if (!"AppSessionRestore.byUserCode".equals(this.serviceCode)
@@ -181,8 +178,6 @@ public class LocalService implements IServiceProxy {
         IService bean = Application.getService(handle, serviceCode);
         if (bean == null)
             return new ServiceStatus(false, String.format("bean %s not find", serviceCode));
-        if ((bean instanceof Microservice) && ((Microservice) bean).getService() == null)
-            ((Microservice) bean).setService(serviceCode);
 
         try {
             log.info(this.serviceCode);

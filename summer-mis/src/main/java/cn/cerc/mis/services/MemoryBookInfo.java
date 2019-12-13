@@ -1,46 +1,60 @@
 package cn.cerc.mis.services;
 
+import com.google.gson.Gson;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
+import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
+import cn.cerc.mis.client.RemoteService;
+import cn.cerc.mis.config.ApplicationProperties;
+import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
-import com.google.gson.Gson;
 
 public class MemoryBookInfo {
     private static final String buffVersion = "4";
 
     public static BookInfoRecord get(IHandle handle, String corpNo) {
+        Gson gson = new Gson();
         String tmp = Redis.get(getBuffKey(corpNo));
-        if (tmp == null || "".equals(tmp)) {
-            LocalService svr = new LocalService(handle, "SvrBookInfo.getRecord");
-            if (!svr.exec("corpNo", corpNo))
-                return null;
-
-            BookInfoRecord result = new BookInfoRecord();
-            Record ds = svr.getDataOut().getHead();
-            result.setCode(ds.getString("CorpNo_"));
-            result.setShortName(ds.getString("ShortName_"));
-            result.setName(ds.getString("Name_"));
-            result.setAddress(ds.getString("Address_"));
-            result.setTel(ds.getString("Tel_"));
-            result.setManagerPhone(ds.getString("ManagerPhone_"));
-            result.setStartHost(ds.getString("StartHost_"));
-            result.setContact(ds.getString("Contact_"));
-            result.setAuthentication(ds.getBoolean("Authentication_"));
-            result.setStatus(ds.getInt("Status_"));
-            result.setCorpType(ds.getInt("Type_"));
-            result.setIndustry(ds.getString("Industry_"));
-
-            Gson gson = new Gson();
-            Redis.set(getBuffKey(corpNo), gson.toJson(result));
-
-            return result;
-        } else {
-            Gson gson = new Gson();
+        if (Utils.isNotEmpty(tmp)) {
             return gson.fromJson(tmp, BookInfoRecord.class);
         }
+
+        Record record;
+        if (ApplicationProperties.isMaster()) {
+            LocalService svr = new LocalService(handle, "SvrBookInfo.getRecord");
+            if (!svr.exec("corpNo", corpNo)) {
+                return null;
+            }
+            record = svr.getDataOut().getHead();
+        } else {
+            RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "SvrBookInfo.getRecord");
+            if (!svr.exec("corpNo", corpNo)) {
+                return null;
+            }
+            record = svr.getDataOut().getHead();
+        }
+
+        BookInfoRecord result = new BookInfoRecord();
+        result.setCode(record.getString("CorpNo_"));
+        result.setShortName(record.getString("ShortName_"));
+        result.setName(record.getString("Name_"));
+        result.setAddress(record.getString("Address_"));
+        result.setTel(record.getString("Tel_"));
+        result.setManagerPhone(record.getString("ManagerPhone_"));
+        result.setStartHost(record.getString("StartHost_"));
+        result.setContact(record.getString("Contact_"));
+        result.setAuthentication(record.getBoolean("Authentication_"));
+        result.setStatus(record.getInt("Status_"));
+        result.setCorpType(record.getInt("Type_"));
+        result.setIndustry(record.getString("Industry_"));
+
+        Redis.set(getBuffKey(corpNo), gson.toJson(result));
+
+        return result;
     }
 
     /**

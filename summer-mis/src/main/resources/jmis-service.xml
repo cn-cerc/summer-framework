@@ -3,6 +3,8 @@
     xmlns:aop="http://www.springframework.org/schema/aop"
     xsi:schemaLocation="http://www.springframework.org/schema/beans  
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+    <import resource="classpath:api-service.xml" />
+
     <!-- 增加客制化菜单 -->
     <bean id="SvrCustomMenus.append" class="cn.cerc.mis.services.SvrCustomMenus" scope="prototype">
         <property name="funcCode" value="append" />
@@ -65,7 +67,6 @@
     <bean id="SvrUserMessages.updateAsyncService" class="cn.cerc.mis.services.SvrUserMessages" scope="prototype">
         <property name="funcCode" value="updateAsyncService" />
     </bean>
-
 
     <!-- 取得指定的帐套讯息 -->
     <bean id="SvrBookInfo.getRecord" class="cn.cerc.mis.services.SvrBookInfo" scope="prototype">

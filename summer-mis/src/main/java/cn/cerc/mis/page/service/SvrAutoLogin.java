@@ -56,7 +56,7 @@ public class SvrAutoLogin {
             String token = Utils.guidFixStr();
             sess.setProperty(Application.token, token);
             sess.setProperty("deviceId", deviceId);
-            sess.setProperty("sid", token);
+            sess.setProperty(RequestData.TOKEN, token);
             log.info("扫码登录 sid {}", token);
 
             String userId = dsUser.getString("ID_");
