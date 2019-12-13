@@ -33,6 +33,8 @@ public class UIBottom extends UIComponent {
         html.print("<a href=\"%s\"", this.url);
         if (this.getId() != null)
             html.print(" id=\"%s\"", this.getId());
+        if (this.getCssClass() != null)
+            html.print(" class=\"%s\"", this.getCssClass());
         super.outputCss(html);
         html.println(">%s</a>", this.caption);
     }
