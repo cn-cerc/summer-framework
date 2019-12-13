@@ -21,6 +21,7 @@ public class ProxyService extends AbstractForm {
         if (Utils.isEmpty(service)) {
             return jsonPage.setResultMessage(false, "service 不允许为空");
         }
+        log.info("url {}", getRequest().getRequestURL());
 
         String dataIn = getRequest().getParameter("dataIn");
         if (Utils.isEmpty(dataIn)) {
