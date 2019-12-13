@@ -7,4 +7,7 @@
     <bean id="ApiUserInfo.getUserInfo" class="cn.cerc.mis.services.api.ApiUserInfo" scope="prototype">
         <property name="funcCode" value="getUserInfo" />
     </bean>
+    <bean id="ApiUserInfo.loadList" class="cn.cerc.mis.services.api.ApiUserInfo" scope="prototype">
+        <property name="funcCode" value="loadList" />
+    </bean>
 </beans>

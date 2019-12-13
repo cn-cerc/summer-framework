@@ -23,6 +23,29 @@ public class ApiUserInfo extends CustomService {
         cdsTmp.add("where a.Code_='%s'", userCode);
         cdsTmp.open();
         DataValidateException.stopRun(String.format("用户代码 %s 不存在!", userCode), cdsTmp.eof());
+
+        getDataOut().appendDataSet(cdsTmp);
+        return true;
+    }
+
+    /**
+     * 具体使用参考 UserList
+     * <p>
+     * 加载指定帐套的所有用户
+     */
+    public boolean loadList() throws DataValidateException {
+        Record headIn = getDataIn().getHead();
+        DataValidateException.stopRun("CorpNo_ 不允许为空", !headIn.hasValue("CorpNo_"));
+        String corpNo = Utils.safeString(headIn.getString("CorpNo_"));
+
+        SqlQuery cdsTmp = new SqlQuery(handle);
+        cdsTmp.add("select ID_,CorpNo_,Code_,Name_,QQ_,Mobile_,SuperUser_,");
+        cdsTmp.add("LastRemindDate_,EmailAddress_,RoleCode_,ProxyUsers_,Enabled_,DiyRole_");
+        cdsTmp.add("from %s ", systemTable.getUserInfo());
+        cdsTmp.add("where CorpNo_='%s'", corpNo);
+        cdsTmp.open();
+
+        DataValidateException.stopRun(String.format("帐套 %s 没有任何用户信息", corpNo), cdsTmp.eof());
         getDataOut().appendDataSet(cdsTmp);
         return true;
     }
