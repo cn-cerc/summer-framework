@@ -19,6 +19,7 @@ import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.config.ApplicationProperties;
 import cn.cerc.mis.config.IAppStaticFile;
+import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.page.JspPage;
@@ -271,7 +272,7 @@ public class StartForms implements Filter {
             // 是否拥有此菜单调用权限
             if (!Application.getPassport(form.getHandle()).passForm(form)) {
                 log.warn(String.format("无权限执行 %s", request.getRequestURL()));
-                throw new RuntimeException("对不起，您没有权限执行此功能！");
+                throw new RuntimeException(R.asString(form.getHandle(), "对不起，您没有权限执行此功能！"));
             }
 
             // 专用测试账号则跳过设备认证的判断

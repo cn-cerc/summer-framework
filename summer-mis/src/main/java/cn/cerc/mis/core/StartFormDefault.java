@@ -1,6 +1,7 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.IHandle;
+import cn.cerc.mis.language.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class StartFormDefault implements ApplicationContextAware {
             // 是否拥有此菜单调用权限
             if (!passport.passForm(form)) {
                 log.warn(String.format("无权限执行 %s", request.getRequestURL()));
-                throw new RuntimeException("对不起，您没有权限执行此功能！");
+                throw new RuntimeException(R.asString(form.getHandle(), "对不起，您没有权限执行此功能！"));
             }
 
             IPage page = form.execute();
