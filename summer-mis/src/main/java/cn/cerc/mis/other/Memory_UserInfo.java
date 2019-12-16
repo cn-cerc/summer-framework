@@ -8,6 +8,10 @@ import cn.cerc.mis.config.ApplicationProperties;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 
+/**
+ * 改为从项目本身创建
+ */
+@Deprecated
 public class Memory_UserInfo {
 
     public static int count = 0;
