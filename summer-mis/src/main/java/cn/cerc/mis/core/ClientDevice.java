@@ -26,6 +26,7 @@ public class ClientDevice implements IClient, Serializable {
 
     public static final String APP_CLIENT_ID = "CLIENTID";
     public static final String APP_DEVICE_TYPE = "device";
+    public static final String APP_CLIENTID_ID = "clientId";
     // 手机
     public static final String APP_DEVICE_PHONE = "phone";
     public static final String APP_DEVICE_ANDROID = "android";

@@ -1,5 +1,18 @@
 package cn.cerc.mis.page;
 
+import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
 import cn.cerc.core.Utils;
@@ -17,17 +30,7 @@ import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.page.qrcode.SocketTool;
 import cn.cerc.security.sapi.JayunAPI;
 import cn.cerc.security.sapi.JayunSecurity;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
 
 @Slf4j
 @Component
@@ -164,7 +167,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
 
         log.debug(String.format("进行用户帐号(%s)与密码认证", userCode));
         // 进行用户名、密码认证
-        String IP = getIPAddress();
+        String IP = getIPAddress(this.getRequest());
         if (obj.check(userCode, password, deviceId, IP, form.getClient().getLanguage())) {
             String token = obj.getSessionId();
             if (token != null && !token.equals("")) {
@@ -193,20 +196,21 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
     /**
      * @return 获取客户端IP地址
      */
-    public String getIPAddress() {
-        String ip = this.getRequest().getHeader("x-forwarded-for");
+    public static String getIPAddress(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = this.getRequest().getHeader("Proxy-Client-IP");
+            ip = request.getHeader("Proxy-Client-IP");
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = this.getRequest().getHeader("WL-Proxy-Client-IP");
+            ip = request.getHeader("WL-Proxy-Client-IP");
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = this.getRequest().getRemoteAddr();
+            ip = request.getRemoteAddr();
         }
         if (ip.equals("0:0:0:0:0:0:0:1")) {
             ip = "0.0.0.0";
         }
         return ip;
     }
+
 }
