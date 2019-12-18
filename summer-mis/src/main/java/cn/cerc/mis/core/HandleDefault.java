@@ -1,5 +1,12 @@
 package cn.cerc.mis.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import cn.cerc.core.IConnection;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -13,12 +20,6 @@ import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -160,31 +161,37 @@ public class HandleDefault implements IHandle {
         if (result == null && !params.containsKey(key)) {
             if (connections.containsKey(key))
                 return connections.get(key);
+
             if (MysqlConnection.sessionId.equals(key)) {
                 MysqlConnection obj = new MysqlConnection();
                 connections.put(MysqlConnection.sessionId, obj);
                 return connections.get(key);
             }
+
             if (SlaveMysqlConnection.sessionId.equals(key)) {
                 SlaveMysqlConnection obj = new SlaveMysqlConnection();
                 connections.put(SlaveMysqlConnection.sessionId, obj);
                 return connections.get(key);
             }
+
             if (OssConnection.sessionId.equals(key)) {
                 OssConnection obj = new OssConnection();
                 connections.put(OssConnection.sessionId, obj);
                 return connections.get(key);
             }
+
             if (AliyunQueueConnection.sessionId.equals(key)) {
                 AliyunQueueConnection obj = new AliyunQueueConnection();
                 connections.put(AliyunQueueConnection.sessionId, obj);
                 return connections.get(key);
             }
+
             if (MongoConnection.sessionId.equals(key)) {
                 MongoConnection obj = new MongoConnection();
                 connections.put(MongoConnection.sessionId, obj);
                 return connections.get(key);
             }
+
             if (JiguangConnection.sessionId.equals(key)) {
                 JiguangConnection obj = new JiguangConnection();
                 connections.put(JiguangConnection.sessionId, obj);

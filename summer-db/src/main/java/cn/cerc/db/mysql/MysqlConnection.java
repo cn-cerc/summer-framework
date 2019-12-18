@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class MysqlConnection extends SqlConnection {
     // IHandle中识别码
     public static final String sessionId = "sqlSession";
-    // Propertys中识别码
+    // Properties中识别码
     public static final String rds_site = "rds.site";
     public static final String rds_database = "rds.database";
     public static final String rds_username = "rds.username";
