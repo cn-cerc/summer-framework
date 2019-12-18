@@ -21,10 +21,10 @@ public class JdbcMsSql {
             connection = DriverManager.getConnection(JDBC_URL, user, password);
             if (connection != null) {
                 DatabaseMetaData meta = connection.getMetaData();
-                log.info("Driver Name {}", meta.getDriverName());
-                log.info("Driver Version {}", meta.getDriverVersion());
-                log.info("Product Name {}", meta.getDatabaseProductName());
-                log.info("Product Version {}", meta.getDatabaseProductVersion());
+                log.info("Driver Name: {}", meta.getDriverName());
+                log.info("Driver Version: {}", meta.getDriverVersion());
+                log.info("Product Name: {}", meta.getDatabaseProductName());
+                log.info("Product Version: {}", meta.getDatabaseProductVersion());
             }
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
