@@ -9,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JdbcMsSql {
 
-    public static final String JDBC_URL = "jdbc:sqlserver://112.124.37.146:1433;databaseName=MIMRC_Std;";
+    public static final String JDBC_URL = "jdbc:sqlserver://127.0.0.1:1433;databaseName=appdb;";
     private static final String user = "sa";
-    private static final String password = "Ping0909";
+    private static final String password = "sa";
 
     public static Connection connection;
 

@@ -10,7 +10,7 @@ public class MssqlConnTest {
     public static void main(String[] args) {
         String JDriver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 //SQL数据库引擎
-        String connectDB = "jdbc:sqlserver://112.124.37.146:1433;DatabaseName=MIMRC_Std";
+        String connectDB = "jdbc:sqlserver://127.0.0.1:1433;DatabaseName=appdb";
 //数据源  ！！！！注意若出现加载或者连接数据库失败一般是这里出现问题
         // 我将在下面详述
         // 加载数据库引擎，返回给定字符串名的类
@@ -26,7 +26,7 @@ public class MssqlConnTest {
         try {
             String user = "sa";
             // 这里只要注意用户名密码不要写错即可
-            String password = "Ping0909";
+            String password = "sa";
             Connection con = DriverManager.getConnection(connectDB, user, password);
 //连接数据库对象
             System.out.println("连接数据库成功");
