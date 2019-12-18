@@ -85,6 +85,7 @@ public class AppSessionRestore extends CustomService {
             DataValidateException.stopRun(svr.getMessage(), !svr.exec("UserId_", userId));
             dataSet2.appendDataSet(svr.getDataOut());
         }
+
         if (dataSet2.eof()) {
             log.warn(String.format("userId %s 没有找到！", userId));
             HandleDefault sess = (HandleDefault) this.getProperty(null);
