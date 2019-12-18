@@ -43,50 +43,50 @@ public class AppSessionRestore extends CustomService {
         DataValidateException.stopRun("token不允许为空", !headIn.hasValue("token"));
         String token = headIn.getString("token");
 
-        DataSet dataSet1 = new DataSet();
+        DataSet dataToken = new DataSet();
         if (ApplicationProperties.isMaster()) {
             SqlQuery cdsCurrent = new SqlQuery(this);
             cdsCurrent.add("select CorpNo_,UserID_,Viability_,LoginTime_,Account_ as UserCode_,Language_ ");
             cdsCurrent.add("from %s", systemTable.getCurrentUser());
             cdsCurrent.add("where loginID_= '%s' ", token);
             cdsCurrent.open();
-            dataSet1.appendDataSet(cdsCurrent);
+            dataToken.appendDataSet(cdsCurrent);
         } else {
-            RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiSession.restoreBYToken");
+            RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiSession.restoreByToken");
             DataValidateException.stopRun(svr.getMessage(), !svr.exec("Token_", token));
-            dataSet1.appendDataSet(svr.getDataOut());
+            dataToken.appendDataSet(svr.getDataOut());
         }
 
-        if (dataSet1.eof()) {
+        if (dataToken.eof()) {
             log.warn("token {} 没有找到！", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
             return false;
         }
 
-        if (dataSet1.getInt("Viability_") <= 0) {
+        if (dataToken.getInt("Viability_") <= 0) {
             log.warn("token {} 已失效，请重新登录", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
             return false;
         }
-        String userId = dataSet1.getString("UserID_");
+        String userId = dataToken.getString("UserID_");
 
-        DataSet dataSet2 = new DataSet();
+        DataSet dataUser = new DataSet();
         if (ApplicationProperties.isMaster()) {
             SqlQuery cdsUser = new SqlQuery(this);
             cdsUser.add("select ID_,Code_,DiyRole_,RoleCode_,CorpNo_, Name_ as UserName_,ProxyUsers_");
             cdsUser.add("from %s", systemTable.getUserInfo());
             cdsUser.add("where ID_='%s'", userId);
             cdsUser.open();
-            dataSet2.appendDataSet(cdsUser);
+            dataUser.appendDataSet(cdsUser);
         } else {
-            RemoteService svr = new RemoteService(this, ISystemTable.Master_Book, "ApiSession.restoreBYUserId");
+            RemoteService svr = new RemoteService(this, ISystemTable.Master_Book, "ApiSession.restoreByUserId");
             DataValidateException.stopRun(svr.getMessage(), !svr.exec("UserId_", userId));
-            dataSet2.appendDataSet(svr.getDataOut());
+            dataUser.appendDataSet(svr.getDataOut());
         }
 
-        if (dataSet2.eof()) {
+        if (dataUser.eof()) {
             log.warn(String.format("userId %s 没有找到！", userId));
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
@@ -94,9 +94,9 @@ public class AppSessionRestore extends CustomService {
         }
 
         Record headOut = getDataOut().getHead();
-        headOut.setField("LoginTime_", dataSet1.getDateTime("LoginTime_"));
-        headOut.setField("Language_", dataSet1.getString("Language_"));
-        copyData(dataSet2, headOut);
+        headOut.setField("LoginTime_", dataToken.getDateTime("LoginTime_"));
+        headOut.setField("Language_", dataToken.getString("Language_"));
+        copyData(dataUser, headOut);
         return true;
     }
 
