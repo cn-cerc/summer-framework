@@ -22,6 +22,7 @@
     <properties>
         <org.springframework.version>4.3.18.RELEASE</org.springframework.version>
         <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+        <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
         <quartz.version>2.2.1</quartz.version>
     </properties>
 
@@ -154,6 +155,11 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>mssql-jdbc</artifactId>
+                <version>${mssql-jdbc.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-configuration</groupId>
