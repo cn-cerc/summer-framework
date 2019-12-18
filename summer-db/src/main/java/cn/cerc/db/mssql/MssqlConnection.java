@@ -33,7 +33,7 @@ public class MssqlConnection implements IConnection, AutoCloseable {
 
     @Override
     public String getClientId() {
-        return MssqlConfig.Mssql_Client_Id;
+        return MssqlConfig.MSSQL_CLIENT_ID;
     }
 
     @Override
@@ -67,12 +67,12 @@ public class MssqlConnection implements IConnection, AutoCloseable {
     }
 
     public String getConnectUrl() {
-        String site = config.getProperty(MssqlConfig.Mssql_Site, "127.0.0.1");
-        String port = config.getProperty(MssqlConfig.Mssql_Port, "1433");
-        String database = config.getProperty(MssqlConfig.Mssql_Database, "appdb");
+        String site = config.getProperty(MssqlConfig.MSSQL_SITE, "127.0.0.1");
+        String port = config.getProperty(MssqlConfig.MSSQL_PORT, "1433");
+        String database = config.getProperty(MssqlConfig.MSSQL_DATABASE, "appdb");
 
-        user = config.getProperty(MssqlConfig.Mssql_Username, "appdb_user");
-        password = config.getProperty(MssqlConfig.Mssql_Password, "appdb_password");
+        user = config.getProperty(MssqlConfig.MSSQL_USERNAME, "appdb_user");
+        password = config.getProperty(MssqlConfig.MSSQL_PASSWORD, "appdb_password");
 
         if (site == null || database == null || user == null || password == null) {
             throw new RuntimeException("RDS配置为空，无法连接主机！");

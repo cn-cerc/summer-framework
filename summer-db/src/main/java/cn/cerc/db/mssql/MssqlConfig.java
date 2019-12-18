@@ -3,17 +3,17 @@ package cn.cerc.db.mssql;
 public class MssqlConfig {
 
     // IHandle中识别码
-    public static final String Mssql_Client_Id = "mssqlSession";
+    public static final String MSSQL_CLIENT_ID = "mssqlSession";
 
     // 数据库连接
-    public static final String Mssql_Site = "mssql.site";
+    public static final String MSSQL_SITE = "mssql.site";
     // 数据库端口
-    public static final String Mssql_Port = "mssql.port";
+    public static final String MSSQL_PORT = "mssql.port";
     // 数据库名称
-    public static final String Mssql_Database = "mssql.database";
+    public static final String MSSQL_DATABASE = "mssql.database";
     // 数据库用户
-    public static final String Mssql_Username = "mssql.username";
+    public static final String MSSQL_USERNAME = "mssql.username";
     // 数据库密码
-    public static final String Mssql_Password = "mssql.password";
+    public static final String MSSQL_PASSWORD = "mssql.password";
 
 }

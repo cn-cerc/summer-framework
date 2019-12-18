@@ -4,13 +4,13 @@ import cn.cerc.core.DataQuery;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.IHandle;
 
-public class MssQuery extends DataQuery {
+public class MssqlQuery extends DataQuery {
 
     private static final long serialVersionUID = 889285738942368226L;
 
     private MssqlConnection session;
     
-    public MssQuery(IHandle handle) {
+    public MssqlQuery(IHandle handle) {
         super(handle);
     }
 
