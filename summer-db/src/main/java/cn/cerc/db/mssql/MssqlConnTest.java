@@ -53,7 +53,7 @@ public class MssqlConnTest {
 
             // 读取数据
             System.out.println("开始读取数据");
-            ResultSet rs = stmt.executeQuery("SELECT * FROM account");// 返回SQL语句查询结果集(集合)
+            ResultSet rs = stmt.executeQuery("select * from account");// 返回SQL语句查询结果集(集合)
             // 循环输出每一条记录
             while (rs.next()) {
                 // 输出每个字段
