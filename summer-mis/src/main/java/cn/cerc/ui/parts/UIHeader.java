@@ -1,15 +1,17 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UIHeader extends UIComponent {
     private static final int MAX_MENUS = 4;
@@ -24,15 +26,43 @@ public class UIHeader extends UIComponent {
     private List<UIBottom> leftBottom = new ArrayList<>();
     // 右边菜单
     private List<UrlRecord> rightMenus = new ArrayList<>();
+    // 当前用户
+    private String userName;
+    // 欢迎语
+    private String welcome;
+    // logo图标src
+    private String logoSrc;
+    // 当前用户
+    private String currentUser;
     // 退出
     private UrlRecord exitPage = null;
+    // 退出系统
+    private UrlRecord exitSystem = null;
+
+    public void setHeadInfo(String logoSrc, String welcome) {
+        this.logoSrc = logoSrc;
+        this.welcome = welcome;
+    }
 
     public UIHeader(AbstractJspPage owner) {
         super(owner);
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), "<img src=\"images/Home.png\"/>");
         leftMenus.add(homePage);
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), R.asString(owner.getForm().getHandle(), "开始"));
-        leftMenus.add(homePage);
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
+                R.asString(owner.getForm().getHandle(), "开始"));
+        IClient client = owner.getForm().getClient();
+        if (!client.isPhone()) {
+            currentUser = R.asString(owner.getForm().getHandle(), "当前用户");
+            leftMenus.add(homePage);
+            this.userName = owner.getForm().getHandle().getUserCode();
+            ServerConfig config = ServerConfig.getInstance();
+            logoSrc = config.getProperty("app.logo.src", "images/logo_dt.png");
+            welcome = config.getProperty("app.welcome.language", "欢迎使用系统");
+            String exitName = config.getProperty("app.exit.name", "#");
+            String exitUrl = config.getProperty("app.exit.url");
+            exitSystem = new UrlRecord();
+            exitSystem.setName(exitName).setSite(exitUrl);
+        }
     }
 
     @Override
@@ -44,11 +74,22 @@ public class UIHeader extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         if (this.leftBottom.size() > MAX_MENUS)
-            throw new RuntimeException(String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
+            throw new RuntimeException(
+                    String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
 
         html.print("<header role='header'");
         super.outputCss(html);
         html.println(">");
+        if (userName != null) {
+            html.print("<div class='titel_top'>");
+            html.print("<img src='%s'/>", logoSrc);
+            html.print("<span>%s</span>", welcome);
+            html.print("<div class='user_right'>");
+            html.print("<span>%s:<i>%s</i></span>", currentUser, userName);
+            html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
+            html.print("</div>");
+            html.print("</div>");
+        }
         if (advertisement != null) {
             html.println("<section role='advertisement'>");
             html.println(advertisement.toString());
@@ -64,7 +105,7 @@ public class UIHeader extends UIComponent {
             for (UrlRecord menu : leftMenus) {
                 html.print("<li>");
                 if (i > 1)
-                    html.println("<span>-></span>");
+                    html.println("<span>></span>");
                 html.print("<a href=\"%s\">%s</a>", menu.getUrl(), menu.getName());
                 i++;
                 html.print("</li>");
@@ -211,7 +252,7 @@ public class UIHeader extends UIComponent {
             if (iconUrl == null || "".equals(iconUrl)) {
                 iconUrl = String.format("images/icon%s.png", count);
             }
-            item.setCaption(String.format("<img src='%s'/>%s", iconUrl, item.getName()));
+            item.setCaption(String.format("<img src='%s' />%s", iconUrl, item.getName()));
         }
     }
 

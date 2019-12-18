@@ -16,6 +16,7 @@ public class UISheetMenu extends UISheet {
 
     public UISheetMenu(UIToolBar owner) {
         super(owner);
+        this.setCssClass("menuList");
     }
 
     @Override
@@ -23,9 +24,9 @@ public class UISheetMenu extends UISheet {
         if (menus.size() == 0)
             return;
 
-        html.println("<section class='menuList'>");
+        html.println("<section class='%s'>", this.cssClass);
         if (welcome != null) {
-            html.println("<div>");
+            html.println("<div class='nowpage'>");
             logo.output(html);
             welcome.output(html);
             html.println("</div>");
@@ -50,7 +51,7 @@ public class UISheetMenu extends UISheet {
             }
             html.print(">%s</a>", url.getName());
             if (Utils.isNotEmpty(url.getArrow())) {
-                html.println("<img src='%s' role='arrow'/>", url.getArrow());
+                html.println("<img src='%s' role='arrow' />", url.getArrow());
             }
             html.println("</li>");
         }
