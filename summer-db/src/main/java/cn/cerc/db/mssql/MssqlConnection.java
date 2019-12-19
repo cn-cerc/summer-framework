@@ -5,18 +5,34 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import cn.cerc.core.IConfig;
 import cn.cerc.core.IConnection;
+import cn.cerc.db.core.ServerConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class MssqlConnection implements IConnection, AutoCloseable {
+
+    // IHandle中识别码
+    public static final String sessionId = "mssqlSession";
+    public static final String dataSource = "mssqlDataSource";
 
     private String url;
     private String user;
     private String password;
-    protected Connection connection;
-    protected IConfig config;
+    private Connection connection;
+
+    private IConfig config;
+
+    public MssqlConnection() {
+        config = ServerConfig.getInstance();
+    }
 
     @Override
     public void close() throws Exception {
@@ -33,7 +49,7 @@ public class MssqlConnection implements IConnection, AutoCloseable {
 
     @Override
     public String getClientId() {
-        return MssqlConfig.MSSQL_CLIENT_ID;
+        return MssqlConnection.sessionId;
     }
 
     @Override

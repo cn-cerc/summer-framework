@@ -13,6 +13,7 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
+import cn.cerc.db.mssql.MssqlConnection;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.oss.OssConnection;
@@ -171,6 +172,12 @@ public class HandleDefault implements IHandle {
             if (SlaveMysqlConnection.sessionId.equals(key)) {
                 SlaveMysqlConnection obj = new SlaveMysqlConnection();
                 connections.put(SlaveMysqlConnection.sessionId, obj);
+                return connections.get(key);
+            }
+
+            if (MssqlConnection.sessionId.equals(key)) {
+                MysqlConnection obj = new MysqlConnection();
+                connections.put(MysqlConnection.sessionId, obj);
                 return connections.get(key);
             }
 

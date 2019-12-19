@@ -2,9 +2,6 @@ package cn.cerc.db.mssql;
 
 public class MssqlConfig {
 
-    // IHandle中识别码
-    public static final String MSSQL_CLIENT_ID = "mssqlSession";
-
     // 数据库连接
     public static final String MSSQL_SITE = "mssql.site";
     // 数据库端口
