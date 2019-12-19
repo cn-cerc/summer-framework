@@ -55,7 +55,7 @@ public abstract class DataQuery extends DataSet {
         return this.add(String.format(format, items.toArray()));
     }
 
-    @Deprecated //请改使用 getSqlText().getText
+    @Deprecated // 请改使用 getSqlText().getText
     public String getCommandText() {
         return this.sqlText.getText();
     }
@@ -68,7 +68,7 @@ public abstract class DataQuery extends DataSet {
         this.sqlText = sqlText;
     }
 
-    @Deprecated //请改使用 getSqlText().clear
+    @Deprecated // 请改使用 getSqlText().clear
     public DataQuery emptyCommand() {
         this.sqlText.clear();
         return this;

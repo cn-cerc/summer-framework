@@ -43,6 +43,7 @@ public class MssqlQuery extends DataQuery {
         super(handle);
         this.session = (MssqlConnection) handle.getProperty(MssqlConnection.sessionId);
         this.dataSource = (DataSource) handle.getProperty(MssqlConnection.dataSource);
+        this.getSqlText().setSupportMssql(true);
     }
 
     @Override
@@ -64,8 +65,9 @@ public class MssqlQuery extends DataQuery {
             this.fetchFinish = true;
             st = this.getStatement();
             log.debug(sql.replaceAll("\r\n", " "));
-            st.execute(sql.replace("\\", "\\\\"));
-            try (ResultSet rs = st.getResultSet()) {
+            sql = sql.replace("\\", "\\\\");
+
+            try (ResultSet rs = st.executeQuery(sql)) {
                 // 取出所有数据
                 append(rs);
                 this.first();
@@ -87,6 +89,45 @@ public class MssqlQuery extends DataQuery {
         }
     }
 
+    private void append(ResultSet rs) throws SQLException {
+        DataSetEvent onAfterAppend = this.getOnAfterAppend();
+        try {
+            this.setOnAfterAppend(null);
+
+            // 取得字段清单
+            ResultSetMetaData meta = rs.getMetaData();
+            FieldDefs defs = this.getFieldDefs();
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                String field = meta.getColumnLabel(i);
+                if (!defs.exists(field))
+                    defs.add(field);
+            }
+
+            // 取得所有数据
+            int total = this.size();
+            while (rs.next()) {
+                total++;
+                if (getSqlText().getMaximum() > -1) {
+                    BigdataException.check(this, total - this.size());
+                }
+
+                if (this.getMaximum() > -1 && this.getMaximum() < total) {
+                    this.fetchFinish = false;
+                    break;
+                }
+                Record record = this.newRecord();
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    String fn = rs.getMetaData().getColumnLabel(i);
+                    record.setField(fn, rs.getObject(fn));
+                }
+                record.setState(DataSetState.dsNone);
+                this.append(record);
+            }
+        } finally {
+            this.setOnAfterAppend(onAfterAppend);
+        }
+    }
+
     private Statement getStatement() throws SQLException {
         try {
             if (this.dataSource == null) {
@@ -96,44 +137,6 @@ public class MssqlQuery extends DataQuery {
             }
         } catch (SQLException e) {
             throw e;
-        }
-    }
-
-    private void append(ResultSet rs) throws SQLException {
-        DataSetEvent onAfterAppend = this.getOnAfterAppend();
-        try {
-            this.setOnAfterAppend(null);
-            rs.last();
-            if (getSqlText().getMaximum() > -1)
-                BigdataException.check(this, this.size() + rs.getRow());
-            // 取得字段清单
-            ResultSetMetaData meta = rs.getMetaData();
-            FieldDefs defs = this.getFieldDefs();
-            for (int i = 1; i <= meta.getColumnCount(); i++) {
-                String field = meta.getColumnLabel(i);
-                if (!defs.exists(field))
-                    defs.add(field);
-            }
-            // 取得所有数据
-            if (rs.first()) {
-                int total = this.size();
-                do {
-                    total++;
-                    if (this.getMaximum() > -1 && this.getMaximum() < total) {
-                        this.fetchFinish = false;
-                        break;
-                    }
-                    Record record = this.newRecord();
-                    for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                        String fn = rs.getMetaData().getColumnLabel(i);
-                        record.setField(fn, rs.getObject(fn));
-                    }
-                    record.setState(DataSetState.dsNone);
-                    this.append(record);
-                } while (rs.next());
-            }
-        } finally {
-            this.setOnAfterAppend(onAfterAppend);
         }
     }
 

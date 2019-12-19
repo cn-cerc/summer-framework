@@ -3,6 +3,9 @@ package cn.cerc.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class SqlText {
     // 从数据库每次加载的最大笔数
     public static final int MAX_RECORDS = 50000;
@@ -14,6 +17,10 @@ public class SqlText {
     // sql 指令
     private String text;
     private ClassData classData;
+
+    @Setter
+    @Getter
+    private boolean supportMssql = false;
 
     public SqlText() {
         super();
@@ -96,17 +103,19 @@ public class SqlText {
         if (sql.indexOf("call ") > -1)
             return sql;
 
-        if (this.offset > 0) {
-            if (this.maximum < 0)
-                sql = sql + String.format(" limit %d,%d", this.offset, MAX_RECORDS + 1);
-            else
-                sql = sql + String.format(" limit %d,%d", this.offset, this.maximum + 1);
-        } else if (this.maximum == MAX_RECORDS) {
-            sql = sql + String.format(" limit %d", this.maximum + 2);
-        } else if (this.maximum > -1) {
-            sql = sql + String.format(" limit %d", this.maximum + 1);
-        } else if (this.maximum == 0) {
-            sql = sql + String.format(" limit %d", 0);
+        if (!this.supportMssql) {
+            if (this.offset > 0) {
+                if (this.maximum < 0)
+                    sql = sql + String.format(" limit %d,%d", this.offset, MAX_RECORDS + 1);
+                else
+                    sql = sql + String.format(" limit %d,%d", this.offset, this.maximum + 1);
+            } else if (this.maximum == MAX_RECORDS) {
+                sql = sql + String.format(" limit %d", this.maximum + 2);
+            } else if (this.maximum > -1) {
+                sql = sql + String.format(" limit %d", this.maximum + 1);
+            } else if (this.maximum == 0) {
+                sql = sql + String.format(" limit %d", 0);
+            }
         }
         return sql;
     }
