@@ -17,6 +17,7 @@ public class AppStaticFileDefault implements IAppStaticFile {
         suffix.add(".jsp");
         suffix.add(".htm");
         suffix.add(".html");
+        suffix.add(".map");
 
         // 图片文件
         suffix.add(".jpg");
