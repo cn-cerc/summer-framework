@@ -1,5 +1,15 @@
 package cn.cerc.db.mysql;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
@@ -9,15 +19,6 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class SqlQuery extends DataQuery {
@@ -208,8 +209,9 @@ public class SqlQuery extends DataQuery {
 
     @Override
     public void post() {
-        if (this.isBatchSave())
+        if (this.isBatchSave()) {
             return;
+        }
         Record record = this.getCurrent();
         if (record.getState() == DataSetState.dsInsert) {
             beforePost();
@@ -226,11 +228,12 @@ public class SqlQuery extends DataQuery {
     public void delete() {
         Record record = this.getCurrent();
         super.delete();
-        if (record.getState() == DataSetState.dsInsert)
+        if (record.getState() == DataSetState.dsInsert) {
             return;
-        if (this.isBatchSave())
+        }
+        if (this.isBatchSave()) {
             delList.add(record);
-        else {
+        } else {
             getDefaultOperator().delete(record);
         }
     }
@@ -263,16 +266,18 @@ public class SqlQuery extends DataQuery {
         if (operator == null) {
             SqlOperator def = new SqlOperator(this.handle);
             String sql = this.getSqlText().getText();
-            if (sql != null)
+            if (sql != null) {
                 def.setTableName(SqlOperator.findTableName(sql));
+            }
             operator = def;
         }
         if (operator instanceof SqlOperator) {
             SqlOperator opear = operator;
             if (opear.getTableName() == null) {
                 String sql = this.getSqlText().getText();
-                if (sql != null)
+                if (sql != null) {
                     opear.setTableName(SqlOperator.findTableName(sql));
+                }
             }
         }
         return operator;
@@ -352,4 +357,5 @@ public class SqlQuery extends DataQuery {
         super.add(format, args);
         return this;
     }
+
 }

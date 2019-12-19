@@ -2,7 +2,7 @@ package cn.cerc.db.dao;
 
 import java.io.Serializable;
 
-public abstract interface BigRecord extends Serializable {
+public interface BigRecord extends Serializable {
 
     /**
      * 将 record 与 base 的差值，合并到self

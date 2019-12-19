@@ -1,14 +1,14 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IConnection;
-import cn.cerc.db.core.ServerConfig;
-import lombok.extern.slf4j.Slf4j;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IConnection;
+import cn.cerc.db.core.ServerConfig;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class SqlConnection implements IConnection, AutoCloseable {
@@ -43,8 +43,9 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
             return connection;
 
         try {
-            if (url == null)
+            if (url == null) {
                 url = getConnectUrl();
+            }
             log.debug("create connection for mysql: " + url);
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, pwd);

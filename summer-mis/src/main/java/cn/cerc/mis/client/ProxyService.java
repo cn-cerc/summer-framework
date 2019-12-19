@@ -32,7 +32,7 @@ public class ProxyService extends AbstractForm {
         String[] uri = this.getRequest().getRequestURI().split("/");
         String curBookNo = uri[1];
         if (Utils.isEmpty(curBookNo)) {
-            return jsonPage.setResultMessage(false, "目标帐套  不允许为空");
+            return jsonPage.setResultMessage(false, "目标帐套 不允许为空");
         }
         log.info("响应者帐套 {}", curBookNo);
 
