@@ -9,7 +9,7 @@ import java.sql.Statement;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class JdbcMssql {
+public class JdbcMssqlExample {
 
     /**
      * 数据库引擎
