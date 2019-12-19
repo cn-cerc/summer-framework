@@ -2,7 +2,7 @@ package cn.cerc.mis.core;
 
 public interface ISystemTable {
 
-    public static final String Master_Book = "master"; // 数据库中心
+    public static final String Master_Book = "000000"; // 数据库中心
 
     // 帐套资料表
     public String getBookInfo(); // "OurInfo";
