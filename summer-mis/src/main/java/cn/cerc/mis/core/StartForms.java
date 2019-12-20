@@ -67,7 +67,7 @@ public class StartForms implements Filter {
             log.debug("after  {}", source);
             return;
         }
-
+        log.info(uri);
         if (uri.contains("service/")) {
             chain.doFilter(req, resp);
             return;
