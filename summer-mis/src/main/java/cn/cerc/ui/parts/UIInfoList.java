@@ -12,6 +12,7 @@ import cn.cerc.ui.vcl.ext.UISpan;
  */
 public class UIInfoList extends UIComponent {
     private List<Line> items = new ArrayList<>();
+    private String onClick;
 
     public UIInfoList(UIComponent owner) {
         super(owner);
@@ -49,6 +50,16 @@ public class UIInfoList extends UIComponent {
         return line;
     }
 
+    public UIInfoList setOnClick(String onClick) {
+        this.onClick = onClick;
+        return this;
+    }
+
+    public UIInfoList setClickUrl(String url) {
+        this.onClick = String.format("window.location.href=\"%s\";", url);
+        return this;
+    }
+
     @Override
     public void output(HtmlWriter html) {
         html.println("<!-- %s -->", this.getClass().getName());
@@ -56,7 +67,11 @@ public class UIInfoList extends UIComponent {
         if (this.cssClass != null) {
             html.print(" %s", this.cssClass);
         }
-        html.print("'>");
+        html.print("'");
+        if (this.onClick != null) {
+            html.print(" onclick='%s'", this.onClick);
+        }
+        html.print(">");
         html.println("<ul>");
         for (UIComponent item : items) {
             item.output(html);
