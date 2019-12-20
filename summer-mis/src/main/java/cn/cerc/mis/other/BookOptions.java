@@ -1,18 +1,19 @@
 package cn.cerc.mis.other;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDate;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 public class BookOptions {
@@ -345,15 +346,15 @@ public class BookOptions {
 
     // 从系统帐套中取开帐日期
     private static TDate getBookCreateDate(IHandle handle) {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-        BuildQuery f = new BuildQuery(handle);
-        String corpNo = handle.getCorpNo();
-        f.byField("CorpNo_", corpNo);
-        f.add("select AppDate_ from %s", systemTable.getBookInfo());
-        SqlQuery ds = f.open();
-        if (ds.size() == 0)
-            throw new RuntimeException(String.format("没有找到帐套：%s", corpNo));
-        return ds.getDate("AppDate_");
+        RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiOurInfo.getBookCreateDate");
+        if (!svr.exec("CorpNo_", handle.getCorpNo())) {
+            throw new RuntimeException(svr.getMessage());
+        }
+
+        DataSet cdsTmp = svr.getDataOut();
+        if (cdsTmp.size() == 0)
+            throw new RuntimeException(String.format("没有找到帐套：%s", handle.getCorpNo()));
+        return cdsTmp.getDate("AppDate_");
 
     }
 
