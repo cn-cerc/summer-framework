@@ -8,6 +8,8 @@ import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
+import cn.cerc.ui.parts.UIFormHorizontal.ButtonsFields;
+import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIText;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class UIFormVertical extends UIComponent implements DataSource {
     protected String method = "post";
     protected DataSet dataSet;
     protected List<AbstractField> fields = new ArrayList<>();
+    protected List<UIButton> buttons = new ArrayList<>();
     protected String action;
     private UIContent content;
     private String enctype;
@@ -86,6 +89,11 @@ public class UIFormVertical extends UIComponent implements DataSource {
             outputFields(html);
         }
 
+        if (buttons.size() > 0) {
+            for (UIButton button : buttons) {
+                button.output(html);
+            }
+        }
         html.println("</form>");
     }
 
@@ -180,5 +188,22 @@ public class UIFormVertical extends UIComponent implements DataSource {
 
     public void setEnctype(String enctype) {
         this.enctype = enctype;
+    }
+
+    public UIButton addButton(String text, String name, String value, String type) {
+        UIButton button = getButton(text, name);
+        button.setText(text);
+        button.setName(name);
+        button.setType(type);
+        button.setValue(value);
+        return button;
+    }
+    
+    public UIButton getButton(String text, String name) {
+        UIButton button = new UIButton(this);
+        button.setText(text);
+        button.setName(name);
+        buttons.add(button);
+        return button;
     }
 }
