@@ -13,7 +13,7 @@ import java.util.Properties;
 public class StubConfig implements IConfig {
 
     private static final String SETTINGS_FILE_NAME = System.getProperty("user.home")
-            + System.getProperty("file.separator") + "summer-db.properties";
+            + System.getProperty("file.separator") + "summer-application.properties";
 
     private static Properties properties = new Properties();
 

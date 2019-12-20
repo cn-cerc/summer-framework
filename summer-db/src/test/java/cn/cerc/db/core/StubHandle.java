@@ -4,12 +4,14 @@ import cn.cerc.core.IConfig;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
+import cn.cerc.db.mssql.MssqlConnection;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 
 public class StubHandle implements IHandle {
     private MysqlConnection mysqlSession;
+    private MssqlConnection mssqlConnection;
     private MongoConnection mgConn;
     private AliyunQueueConnection queConn;
     private OssConnection ossConn;
@@ -21,6 +23,9 @@ public class StubHandle implements IHandle {
 
         mysqlSession = new MysqlConnection();
         mysqlSession.setConfig(config);
+
+        mssqlConnection = new MssqlConnection();
+        mssqlConnection.setConfig(config);
 
         mgConn = new MongoConnection();
         mgConn.setConfig(config);
@@ -49,6 +54,9 @@ public class StubHandle implements IHandle {
     public Object getProperty(String key) {
         if (MysqlConnection.sessionId.equals(key))
             return mysqlSession;
+        if (MssqlConnection.sessionId.equals(key)) {
+            return mssqlConnection;
+        }
         if (MongoConnection.sessionId.equals(key))
             return mgConn;
         if (AliyunQueueConnection.sessionId.equals(key))

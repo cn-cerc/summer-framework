@@ -18,7 +18,6 @@ import cn.cerc.core.IDataOperator;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.mysql.BigdataException;
-import cn.cerc.db.mysql.SqlOperator;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,7 +33,7 @@ public class MssqlQuery extends DataQuery {
     private boolean fetchFinish;
 
     // 数据库保存操作执行对象
-    private SqlOperator operator;
+    private MssqlOperator operator;
 
     // 仅当batchSave为true时，delList才有记录存在
     private List<Record> delList = new ArrayList<>();
@@ -223,21 +222,22 @@ public class MssqlQuery extends DataQuery {
         }
     }
 
-    public SqlOperator getDefaultOperator() {
+    public MssqlOperator getDefaultOperator() {
         if (operator == null) {
-            SqlOperator def = new SqlOperator(this.handle);
+            MssqlOperator def = new MssqlOperator(this.handle);
             String sql = this.getSqlText().getText();
             if (sql != null) {
-                def.setTableName(SqlOperator.findTableName(sql));
+                def.setTableName(MssqlOperator.findTableName(sql));
+                def.setUpdateKey("UpdateKey_");
             }
             operator = def;
         }
-        if (operator instanceof SqlOperator) {
-            SqlOperator opear = operator;
+        if (operator instanceof MssqlOperator) {
+            MssqlOperator opear = operator;
             if (opear.getTableName() == null) {
                 String sql = this.getSqlText().getText();
                 if (sql != null) {
-                    opear.setTableName(SqlOperator.findTableName(sql));
+                    opear.setTableName(MssqlOperator.findTableName(sql));
                 }
             }
         }
@@ -282,7 +282,7 @@ public class MssqlQuery extends DataQuery {
         return operator;
     }
 
-    public void setOperator(SqlOperator operator) {
+    public void setOperator(MssqlOperator operator) {
         this.operator = operator;
     }
 
