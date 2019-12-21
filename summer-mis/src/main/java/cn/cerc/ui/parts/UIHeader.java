@@ -54,7 +54,7 @@ public class UIHeader extends UIComponent {
         if (!client.isPhone()) {
             currentUser = R.asString(owner.getForm().getHandle(), "当前用户");
             leftMenus.add(homePage);
-            this.userName = owner.getForm().getHandle().getUserCode();
+            this.userName = owner.getForm().getHandle().getUserName();
             ServerConfig config = ServerConfig.getInstance();
             logoSrc = config.getProperty("app.logo.src", "images/logo_dt.png");
             welcome = config.getProperty("app.welcome.language", "欢迎使用系统");
@@ -259,4 +259,25 @@ public class UIHeader extends UIComponent {
     public IForm getForm() {
         return ((AbstractJspPage) this.getOwner()).getForm();
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getWelcome() {
+        return welcome;
+    }
+
+    public String getLogoSrc() {
+        return logoSrc;
+    }
+
+    public UrlRecord getExitSystem() {
+        return exitSystem;
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
+    }
+    
 }

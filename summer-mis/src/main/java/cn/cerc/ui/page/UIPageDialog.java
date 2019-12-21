@@ -62,8 +62,14 @@ public class UIPageDialog extends AbstractJspPage {
             request.setAttribute("message", "");
 
         if (form instanceof AbstractForm) {
-            if (this.isShowMenus())
+            if (this.isShowMenus()) {
                 this.getHeader().initHeader();
+                this.getRequest().setAttribute("exitSystem", this.getHeader().getExitSystem());
+                this.getRequest().setAttribute("logoSrc", this.getHeader().getLogoSrc());
+                this.getRequest().setAttribute("userName", this.getHeader().getUserName());
+                this.getRequest().setAttribute("welcomeLanguage", this.getHeader().getWelcome());
+                this.getRequest().setAttribute("currentUser", this.getHeader().getCurrentUser());
+            }
         }
         String msg = form.getParam("message", "");
         request.setAttribute("msg", msg == null ? "" : msg.replaceAll("\r\n", "<br/>"));
