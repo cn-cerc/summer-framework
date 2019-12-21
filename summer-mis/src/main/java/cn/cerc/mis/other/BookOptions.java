@@ -5,10 +5,11 @@ import java.util.Map;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
-import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
@@ -345,15 +346,15 @@ public class BookOptions {
 
     // 从系统帐套中取开帐日期
     private static TDate getBookCreateDate(IHandle handle) {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-        BuildQuery f = new BuildQuery(handle);
-        String corpNo = handle.getCorpNo();
-        f.byField("CorpNo_", corpNo);
-        f.add("select AppDate_ from %s", systemTable.getBookInfo());
-        SqlQuery ds = f.open();
-        if (ds.size() == 0)
-            throw new RuntimeException(String.format("没有找到帐套：%s", corpNo));
-        return ds.getDate("AppDate_");
+        RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiOurInfo.getBookCreateDate");
+        if (!svr.exec("CorpNo_", handle.getCorpNo())) {
+            throw new RuntimeException(svr.getMessage());
+        }
+
+        DataSet cdsTmp = svr.getDataOut();
+        if (cdsTmp.size() == 0)
+            throw new RuntimeException(String.format("没有找到帐套：%s", handle.getCorpNo()));
+        return cdsTmp.getDate("AppDate_");
 
     }
 
@@ -448,21 +449,24 @@ public class BookOptions {
 
     // 增加账套参数
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-        SqlQuery cdsTmp = new SqlQuery(handle);
-        cdsTmp.add("select * from %s where CorpNo_=N'%s' and Code_='%s' ", systemTable.getBookOptions(), corpNo,
-                paramKey);
-        cdsTmp.open();
-        if (!cdsTmp.eof())
+        RemoteService svr1 = new RemoteService(handle, ISystemTable.Master_Book, "ApiOurInfo.getVineOptionsByCode");
+        if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {
+            throw new RuntimeException(svr1.getMessage());
+        }
+        DataSet dataSet = svr1.getDataOut();
+        if (!dataSet.eof())
             return;
         String paramName = getParamName(paramKey);
-        cdsTmp.append();
-        cdsTmp.setField("CorpNo_", corpNo);
-        cdsTmp.setField("Code_", paramKey);
-        cdsTmp.setField("Name_", paramName);
-        cdsTmp.setField("Value_", def);
-        cdsTmp.setField("UpdateKey_", Utils.newGuid());
-        cdsTmp.post();
+
+        RemoteService svr2 = new RemoteService(handle, ISystemTable.Master_Book, "ApiOurInfo.appendToCorpOption");
+        Record headIn = svr2.getDataIn().getHead();
+        headIn.setField("CorpNo_", corpNo);
+        headIn.setField("Code_", paramKey);
+        headIn.setField("Name_", paramName);
+        headIn.setField("Value_", def);
+        if (!svr2.exec()) {
+            throw new RuntimeException(svr2.getMessage());
+        }
 
     }
 }
