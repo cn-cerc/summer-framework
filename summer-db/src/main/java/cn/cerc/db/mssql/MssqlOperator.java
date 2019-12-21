@@ -117,11 +117,13 @@ public class MssqlOperator implements IDataOperator {
 
             PreparedStatement ps = bs.build();
             lastCommand = bs.getCommand();
+
             if (preview) {
                 log.info(lastCommand);
                 return false;
-            } else
+            } else {
                 log.debug(lastCommand);
+            }
 
             int result = ps.executeUpdate();
 
