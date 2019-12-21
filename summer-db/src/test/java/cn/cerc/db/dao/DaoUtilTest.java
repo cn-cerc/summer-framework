@@ -1,14 +1,16 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.Record;
-import cn.cerc.core.Utils;
-import cn.cerc.db.core.StubHandle;
-import com.google.gson.Gson;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import com.google.gson.Gson;
+
+import cn.cerc.core.Record;
+import cn.cerc.core.Utils;
+import cn.cerc.db.core.StubHandle;
 
 public class DaoUtilTest {
 

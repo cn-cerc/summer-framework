@@ -1,8 +1,9 @@
 package cn.cerc.db.jiguang;
 
-import cn.cerc.db.core.StubHandle;
 import org.junit.Before;
 import org.junit.Test;
+
+import cn.cerc.db.core.StubHandle;
 
 public class JiguangPushTest {
     private static final String sound = "trade_mall.wav";

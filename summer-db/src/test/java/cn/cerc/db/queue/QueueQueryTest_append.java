@@ -1,8 +1,9 @@
 package cn.cerc.db.queue;
 
-import cn.cerc.db.core.StubHandle;
 import org.junit.Before;
 import org.junit.Test;
+
+import cn.cerc.db.core.StubHandle;
 
 public class QueueQueryTest_append {
     private QueueQuery dataSet;

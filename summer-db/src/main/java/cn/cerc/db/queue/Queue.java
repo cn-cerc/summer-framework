@@ -1,11 +1,12 @@
 package cn.cerc.db.queue;
 
-import cn.cerc.core.Utils;
+import java.io.IOException;
+
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
-import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
+import cn.cerc.core.Utils;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Queue {

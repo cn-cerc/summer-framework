@@ -1,8 +1,8 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.DataQuery;
-
 import java.io.Serializable;
+
+import cn.cerc.core.DataQuery;
 
 /**
  * 单次数据请求，超过最大笔数限制

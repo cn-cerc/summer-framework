@@ -1,14 +1,5 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.core.SqlText;
-import cn.cerc.core.Utils;
-import cn.cerc.db.mysql.UpdateMode;
-import cn.cerc.db.redis.JedisFactory;
-import lombok.extern.slf4j.Slf4j;
-import redis.clients.jedis.Jedis;
-
 import java.io.IOException;
 import java.lang.Thread.State;
 import java.lang.reflect.Field;
@@ -21,6 +12,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.core.SqlText;
+import cn.cerc.core.Utils;
+import cn.cerc.db.mysql.UpdateMode;
+import cn.cerc.db.redis.JedisFactory;
+import lombok.extern.slf4j.Slf4j;
+import redis.clients.jedis.Jedis;
 
 @Slf4j
 public abstract class BigTable<T extends BigRecord> {

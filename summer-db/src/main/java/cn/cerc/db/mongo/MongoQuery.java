@@ -1,5 +1,18 @@
 package cn.cerc.db.mongo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import org.bson.Document;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetState;
@@ -8,17 +21,6 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlOperator;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public class MongoQuery extends DataQuery {
     private static final long serialVersionUID = -1262005194419604476L;

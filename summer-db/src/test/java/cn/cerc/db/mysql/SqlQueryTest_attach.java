@@ -1,9 +1,10 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.Record;
-import cn.cerc.db.core.StubHandle;
 import org.junit.Before;
 import org.junit.Test;
+
+import cn.cerc.core.Record;
+import cn.cerc.db.core.StubHandle;
 
 public class SqlQueryTest_attach {
     private SqlQuery ds;

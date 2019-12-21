@@ -1,11 +1,12 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.PostFieldException;
-import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.StubHandle;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import cn.cerc.core.PostFieldException;
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.StubHandle;
 
 public class SqlQueryTest_post1 {
     private SqlQuery ds;
