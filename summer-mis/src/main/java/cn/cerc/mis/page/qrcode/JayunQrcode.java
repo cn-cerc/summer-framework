@@ -1,17 +1,19 @@
 package cn.cerc.mis.page.qrcode;
 
-import cn.cerc.core.MD5;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.security.sapi.JayunAPI;
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+
+import cn.cerc.core.MD5;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.security.sapi.JayunAPI;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JayunQrcode {

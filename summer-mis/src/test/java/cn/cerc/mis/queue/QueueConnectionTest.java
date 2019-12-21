@@ -1,7 +1,5 @@
 package cn.cerc.mis.queue;
 
-import cn.cerc.core.TDateTime;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
@@ -9,6 +7,8 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+
+import cn.cerc.core.TDateTime;
 
 public class QueueConnectionTest {
 

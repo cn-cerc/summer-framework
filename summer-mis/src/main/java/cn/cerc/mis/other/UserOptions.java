@@ -1,12 +1,12 @@
 package cn.cerc.mis.other;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.LocalService;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserOptions {
     // 用户级参数

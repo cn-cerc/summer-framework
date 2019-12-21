@@ -1,12 +1,13 @@
 package cn.cerc.mis.sms;
 
-import cn.cerc.mis.rds.StubHandle;
-import lombok.extern.slf4j.Slf4j;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import cn.cerc.mis.rds.StubHandle;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PhoneVerifyTest {

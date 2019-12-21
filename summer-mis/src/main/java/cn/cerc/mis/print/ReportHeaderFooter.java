@@ -1,5 +1,7 @@
 package cn.cerc.mis.print;
 
+import java.io.IOException;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -13,8 +15,6 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
-
-import java.io.IOException;
 
 public class ReportHeaderFooter extends PdfPageEventHelper {
     /**

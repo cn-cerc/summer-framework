@@ -1,11 +1,12 @@
 package cn.cerc.mis.mail;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.queue.AliyunQueueConnection;
+import java.io.Serializable;
+
 import com.aliyun.mns.client.CloudQueue;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
+import cn.cerc.core.IHandle;
+import cn.cerc.db.queue.AliyunQueueConnection;
 
 public class MailRecord implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -1,9 +1,10 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.mis.rds.StubHandle;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import cn.cerc.mis.rds.StubHandle;
 
 public class LocalServiceTest {
     private StubHandle handle;

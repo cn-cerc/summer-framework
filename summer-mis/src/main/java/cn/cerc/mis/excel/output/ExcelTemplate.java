@@ -1,5 +1,8 @@
 package cn.cerc.mis.excel.output;
 
+import java.util.Date;
+import java.util.List;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.TDate;
 import jxl.write.DateFormat;
@@ -9,9 +12,6 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
-
-import java.util.Date;
-import java.util.List;
 
 public class ExcelTemplate {
     private String fileName;

@@ -1,5 +1,12 @@
 package cn.cerc.mis.task;
 
+import java.util.Calendar;
+import java.util.TimerTask;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
@@ -8,12 +15,6 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-import java.util.Calendar;
-import java.util.TimerTask;
 
 @Slf4j
 @Deprecated // 请改使用 StartTaskDefault

@@ -1,9 +1,10 @@
 package cn.cerc.mis.tools;
 
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.parts.UISheetHelp;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import cn.cerc.ui.core.Component;
+import cn.cerc.ui.parts.UISheetHelp;
 
 public class PageHelp {
     private static ApplicationContext app;

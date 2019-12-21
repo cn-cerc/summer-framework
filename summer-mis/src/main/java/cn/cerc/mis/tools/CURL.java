@@ -1,7 +1,5 @@
 package cn.cerc.mis.tools;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 请改使用summer-db的Curl对象
@@ -49,7 +49,7 @@ public class CURL {
         String responseContent = null;
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 params.append(element.getKey().toString());
                 params.append("=");
@@ -170,7 +170,7 @@ public class CURL {
     public static String doPost(String reqUrl, Map<String, String> parameters, String recvEncoding) {
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 Object val = element.getValue();
                 if (val != null) {

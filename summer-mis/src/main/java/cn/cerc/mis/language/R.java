@@ -1,5 +1,7 @@
 package cn.cerc.mis.language;
 
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -7,8 +9,6 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class R {
@@ -30,7 +30,8 @@ public class R {
         String language = temp == null ? Application.getLangage() : (String) temp;
         // FIXME: 2019/11/21 用户配置表需要改为动态获取
         SqlQuery ds = new SqlQuery(handle);
-        ds.add("select Value_ from %s where Code_='%s' and UserCode_='%s'", "UserOptions", "Lang_", handle.getUserCode());
+        ds.add("select Value_ from %s where Code_='%s' and UserCode_='%s'", "UserOptions", "Lang_",
+                handle.getUserCode());
         ds.open();
         if (!ds.eof()) {
             language = ds.getString("Value_");

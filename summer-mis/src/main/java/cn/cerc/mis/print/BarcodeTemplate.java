@@ -1,6 +1,7 @@
 package cn.cerc.mis.print;
 
-import cn.cerc.core.DataSet;
+import java.io.IOException;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -10,7 +11,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.IOException;
+import cn.cerc.core.DataSet;
 
 public class BarcodeTemplate extends PrintTemplate {
 

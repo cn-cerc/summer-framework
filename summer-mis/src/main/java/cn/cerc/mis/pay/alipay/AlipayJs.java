@@ -1,13 +1,5 @@
 package cn.cerc.mis.pay.alipay;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.ServerConfig;
-import lombok.extern.slf4j.Slf4j;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,6 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
+
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.ServerConfig;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AlipayJs {

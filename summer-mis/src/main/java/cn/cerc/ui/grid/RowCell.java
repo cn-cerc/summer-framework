@@ -1,10 +1,10 @@
 package cn.cerc.ui.grid;
 
-import cn.cerc.ui.core.IField;
-import cn.cerc.ui.parts.UIComponent;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.cerc.ui.core.IField;
+import cn.cerc.ui.parts.UIComponent;
 
 public class RowCell extends UIComponent {
     private List<IField> fields = new ArrayList<>();
