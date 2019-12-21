@@ -1,9 +1,9 @@
 package cn.cerc.security.sapi;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 public class JayunServerTest {
     private JayunServer api = new JayunServer(null);

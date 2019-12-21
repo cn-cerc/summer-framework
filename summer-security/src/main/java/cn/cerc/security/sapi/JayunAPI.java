@@ -1,11 +1,11 @@
 package cn.cerc.security.sapi;
 
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.ServerConfig;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class JayunAPI {
