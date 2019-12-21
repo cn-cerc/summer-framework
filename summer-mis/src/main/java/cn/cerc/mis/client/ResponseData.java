@@ -101,6 +101,15 @@ public class ResponseData {
         return null;
     }
 
+    public IPage setResultMessage(boolean result, String format, Object... args) {
+        this.result = result;
+        this.message = String.format(format, args);
+        if (this.response != null) {
+            out();
+        }
+        return null;
+    }
+
     public void out() {
         try {
             PrintWriter writer = getResponse().getWriter();
