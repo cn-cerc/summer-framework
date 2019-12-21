@@ -1,7 +1,8 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.cerc.core.IHandle;
 
 public abstract class AbstractService extends AbstractHandle implements IService, IRestful {
     @Autowired

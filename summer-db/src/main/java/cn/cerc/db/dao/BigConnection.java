@@ -1,15 +1,16 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.db.mysql.MysqlConnection;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-import lombok.extern.slf4j.Slf4j;
-
 import java.beans.PropertyVetoException;
 import java.io.Closeable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.db.mysql.MysqlConnection;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class BigConnection implements Closeable {

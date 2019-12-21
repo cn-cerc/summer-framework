@@ -1,9 +1,10 @@
 package cn.cerc.mis.sms;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JuheSMSTest {

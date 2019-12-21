@@ -1,7 +1,7 @@
 package cn.cerc.mis.print;
 
-import cn.cerc.core.Record;
-import cn.cerc.mis.excel.output.Column;
+import java.io.IOException;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -14,7 +14,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.IOException;
+import cn.cerc.core.Record;
+import cn.cerc.mis.excel.output.Column;
 
 public class InvoiceTemplate extends PrintTemplate {
     public InvoiceTemplate() {

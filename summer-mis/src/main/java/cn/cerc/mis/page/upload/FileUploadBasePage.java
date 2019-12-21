@@ -1,14 +1,14 @@
 package cn.cerc.mis.page.upload;
 
-import cn.cerc.mis.core.AbstractForm;
-import cn.cerc.mis.core.IPage;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import cn.cerc.mis.core.AbstractForm;
+import cn.cerc.mis.core.IPage;
 
 /**
  * 文件上传基类

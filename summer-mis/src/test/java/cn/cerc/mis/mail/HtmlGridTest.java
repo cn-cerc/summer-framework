@@ -1,9 +1,10 @@
 package cn.cerc.mis.mail;
 
-import cn.cerc.core.DataSet;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import cn.cerc.core.DataSet;
 
 public class HtmlGridTest {
     @Test

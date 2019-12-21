@@ -1,12 +1,10 @@
 package cn.cerc.db.mssql;
 
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
 import org.junit.Before;
+import org.junit.Test;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.StubHandle;
-import org.junit.Test;
 
 public class MssqlQueryTest {
 
@@ -22,7 +20,7 @@ public class MssqlQueryTest {
         MssqlQuery query = new MssqlQuery(handle);
         query.add("select * from Dept where Code_='%s'", "191220");
         query.open();
-        if(!query.eof()){
+        if (!query.eof()) {
             query.edit();
             query.setField("Name_", "rd-new");
             query.post();

@@ -1,10 +1,11 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.db.core.StubHandle;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import cn.cerc.db.core.StubHandle;
 
 public class BuildQueryTest {
 

@@ -1,11 +1,5 @@
 package cn.cerc.mis.pay.wxpay;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +9,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 /**
  * 微信支付服务器签名支付请求应答类 api说明： getKey()/setKey(),获取/设置密钥
@@ -75,7 +76,7 @@ public class ResponseHandler {
             if (!"".equals(sb.toString())) {
                 Document doc = DocumentHelper.parseText(sb.toString());
                 Element root = doc.getRootElement();
-                for (Iterator iterator = root.elementIterator(); iterator.hasNext(); ) {
+                for (Iterator iterator = root.elementIterator(); iterator.hasNext();) {
                     Element e = (Element) iterator.next();
                     smap.put(e.getName(), e.getText());
                 }

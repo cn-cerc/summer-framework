@@ -1,5 +1,7 @@
 package cn.cerc.ui.grid.lines;
 
+import java.util.List;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
@@ -8,8 +10,6 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.IColumnsManager;
 import cn.cerc.ui.grid.RowCell;
-
-import java.util.List;
 
 public class MasterGridLine extends AbstractGridLine {
     // private static final Logger log = Logger.getLogger(MasterGridLine.class);

@@ -1,10 +1,10 @@
 package cn.cerc.ui.vcl;
 
+import java.util.LinkedHashMap;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
-
-import java.util.LinkedHashMap;
 
 public class UIComboBox extends UIComponent {
     private LinkedHashMap<String, String> options = new LinkedHashMap<>(6);

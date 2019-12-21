@@ -1,11 +1,12 @@
 package cn.cerc.ui.page;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.ui.parts.UIMenuList;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
 
 /**
  * 系统登录页

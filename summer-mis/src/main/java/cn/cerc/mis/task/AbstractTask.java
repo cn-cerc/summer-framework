@@ -1,11 +1,12 @@
 package cn.cerc.mis.task;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.cerc.mis.core.AbstractHandle;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ISystemTable;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 public abstract class AbstractTask extends AbstractHandle implements Runnable {

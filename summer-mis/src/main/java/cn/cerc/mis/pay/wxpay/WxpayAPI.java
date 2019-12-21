@@ -1,16 +1,17 @@
 package cn.cerc.mis.pay.wxpay;
 
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IHandle;
-import cn.cerc.mis.core.Application;
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import com.google.gson.Gson;
+
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IHandle;
+import cn.cerc.mis.core.Application;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 //APP支付
@@ -81,7 +82,7 @@ public class WxpayAPI {
         System.out.println(new Gson().toJson(result));
     }
 
-    @SuppressWarnings({"static-access", "unchecked"})
+    @SuppressWarnings({ "static-access", "unchecked" })
     public Map<String, String> requestPay(String body) {
         String notify_url = String.format("%s/%s/%s", rootSite, Application.getAppConfig().getPathForms(),
                 this.notifyUrl);

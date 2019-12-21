@@ -1,8 +1,5 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
 
 /**
  * 生成原生sql操作对象

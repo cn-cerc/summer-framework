@@ -1,9 +1,10 @@
 package cn.cerc.db.queue;
 
-import cn.cerc.db.core.ServerConfig;
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
+
+import cn.cerc.db.core.ServerConfig;
 
 public class QueueFactory {
     private static MNSClient client;

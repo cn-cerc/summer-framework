@@ -1,9 +1,9 @@
 package cn.cerc.ui.other;
 
+import java.text.DecimalFormat;
+
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
-
-import java.text.DecimalFormat;
 
 public class StrongItem extends UIComponent {
     private String name;

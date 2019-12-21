@@ -1,14 +1,15 @@
 package cn.cerc.mis.page;
 
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IPage;
-
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.ServletException;
+
+import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.IPage;
 
 public class RedirectPage implements IPage {
     protected IForm form;

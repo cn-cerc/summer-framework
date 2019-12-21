@@ -1,15 +1,15 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.db.mysql.BuildStatement;
-import lombok.extern.slf4j.Slf4j;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.db.mysql.BuildStatement;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class BigDeleteSql {

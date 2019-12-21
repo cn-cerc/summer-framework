@@ -1,8 +1,8 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
-
 import java.util.List;
+
+import cn.cerc.core.IHandle;
 
 public interface IAppMenu {
 

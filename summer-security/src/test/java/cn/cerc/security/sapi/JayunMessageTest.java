@@ -1,11 +1,11 @@
 package cn.cerc.security.sapi;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class JayunMessageTest {
     private JayunMessage api = new JayunMessage(null);

@@ -1,16 +1,17 @@
 package cn.cerc.db.nas;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.codec.CharEncoding;
+import org.apache.commons.io.FileUtils;
+
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.queue.QueueOperator;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class NasQuery extends DataQuery {

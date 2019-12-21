@@ -1,10 +1,11 @@
 package cn.cerc.db.queue;
 
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
 import com.google.gson.JsonSyntaxException;
+
+import cn.cerc.core.DataQuery;
+import cn.cerc.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

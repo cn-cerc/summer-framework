@@ -1,13 +1,13 @@
 package cn.cerc.db.core;
 
-import cn.cerc.core.IConfig;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+
+import cn.cerc.core.IConfig;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class LocalConfig implements IConfig {

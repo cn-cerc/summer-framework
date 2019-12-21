@@ -1,15 +1,5 @@
 package cn.cerc.mis.tools;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ISystemTable;
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,6 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
+
+import cn.cerc.core.IHandle;
+import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.ISystemTable;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 扫描待翻译的中文

@@ -1,12 +1,14 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.cerc.core.IHandle;
 
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)

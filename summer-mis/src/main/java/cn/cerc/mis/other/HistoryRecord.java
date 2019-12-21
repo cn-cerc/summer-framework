@@ -55,20 +55,20 @@ public class HistoryRecord {
         int mth = 0;
 
         switch (this.level) {
-            case General:
-                mth = 1;
-                break;
-            case Month3:
-                mth = 3;
-                break;
-            case Year1:
-                mth = 12;
-                break;
-            case Year3:
-                mth = 36;
-                break;
-            default:
-                mth = 0;
+        case General:
+            mth = 1;
+            break;
+        case Month3:
+            mth = 3;
+            break;
+        case Year1:
+            mth = 12;
+            break;
+        case Year3:
+            mth = 36;
+            break;
+        default:
+            mth = 0;
         }
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         BatchScript bs = new BatchScript(handle);

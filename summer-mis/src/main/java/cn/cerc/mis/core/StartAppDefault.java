@@ -1,14 +1,16 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
 
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
