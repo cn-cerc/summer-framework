@@ -34,10 +34,10 @@ public class LocalConfig implements IConfig {
             log.error("LocalConfig instance is not null");
         }
         instance = this;
-        loadFile();
+        refresh();
     }
 
-    private void loadFile() {
+    private void refresh() {
         try {
             properties.clear();
             File file = new File(this.getConfFile());
@@ -91,7 +91,7 @@ public class LocalConfig implements IConfig {
             throw new RuntimeException("properties的文件路径不允许为空");
         }
         this.confFile = confFile;
-        loadFile();
+        refresh();
         return this;
     }
 
