@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>summer-security</artifactId>
+    <packaging>jar</packaging>
     <description>summer 安全服务sdk</description>
 
     <build>
