@@ -20,20 +20,16 @@ public class MenuItem {
     // 菜单图标，为URL值
     public static final String IMAGE = "image";
     // 菜单代码
-    private String id;
+    private String code;
     // 所有参数值
     private Map<String, String> params = new HashMap<>();
 
-    public MenuItem() {
-
+    public String getCode() {
+        return code;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTitle() {
@@ -90,7 +86,7 @@ public class MenuItem {
     }
 
     public int getHrip() {
-        return Integer.parseInt(getParam(this.getId()));
+        return Integer.parseInt(getParam(this.getCode()));
     }
 
 }

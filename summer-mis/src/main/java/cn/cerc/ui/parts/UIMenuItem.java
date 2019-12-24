@@ -60,14 +60,14 @@ public class UIMenuItem extends UIComponent {
 
     public UIMenuItem init(MenuItem item) {
         setHrip(item.getHrip());
-        setCode(item.getId());
+        setCode(item.getCode());
 
         String str = item.getTitle();
         str = str.substring(str.indexOf("]") + 1);
         str = str.substring(str.indexOf("\\") + 1);
 
         setName(str);
-        setImg("menu/" + item.getId() + ".png");
+        setImg("menu/" + item.getCode() + ".png");
         return this;
     }
 
