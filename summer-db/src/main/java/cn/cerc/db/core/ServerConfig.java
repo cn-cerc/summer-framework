@@ -59,18 +59,6 @@ public class ServerConfig implements IConfig {
         return instance;
     }
 
-    public static ServerVersion getVersion() {
-        String tmp = getInstance().getProperty(config_version, "develop");
-        if ("master".equals(tmp))
-            return ServerVersion.master;
-        else if ("beta".equals(tmp))
-            return ServerVersion.beta;
-        else if ("develop".equals(tmp))
-            return ServerVersion.develop;
-        else
-            return ServerVersion.test;
-    }
-
     public static boolean enableTaskService() {
         return "1".equals(getInstance().getProperty(TaskServiceEnabled, null));
     }
