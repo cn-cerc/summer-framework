@@ -15,6 +15,8 @@ public enum BookVersion {
     ctFree,
     // 高级版
     ctAdvanced,
+    // ERP
+    erp,
     // 所有版本, 仅权限判断专用，后须移除！
     ctAll;
 
@@ -42,10 +44,18 @@ public enum BookVersion {
         case ctUltimate:
             versions = "5,3,2,1,6,4,";
             break;
+        case erp:
+            versions = "7,";
+            break;
         default:
             versions = null;
             break;
         }
         return versions;
     }
+
+    public int getType(BookVersion version) {
+        return version.ordinal();
+    }
+
 }

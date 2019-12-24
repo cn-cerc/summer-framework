@@ -14,7 +14,8 @@ import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 
 public class MemoryBookInfo {
-    private static final String buffVersion = "4";
+
+    private static final String buffVersion = "5";
 
     public static BookInfoRecord get(IHandle handle, String corpNo) {
         Gson gson = new Gson();
