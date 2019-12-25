@@ -22,6 +22,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     private String caption;
     private String parent;
     private String permission;
+    private String module;
 
     public Map<String, String> getParams() {
         return params;
@@ -134,5 +135,13 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 }

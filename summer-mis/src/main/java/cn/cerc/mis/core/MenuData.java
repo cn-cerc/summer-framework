@@ -23,10 +23,18 @@ public class MenuData {
     private boolean win; // 是否支持Window调用
     private boolean phone; // 是否支持phone调用
     private boolean hide; // 是否隐藏菜单
-    private String process; // Web化进度
     private boolean folder; // 是否为目录结构
     private boolean custom; // 是否客制化菜单
     private String funcCode;
+    private String module;
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
 
     public String getId() {
         return id;
@@ -153,14 +161,6 @@ public class MenuData {
 
     public void setHide(boolean hide) {
         this.hide = hide;
-    }
-
-    public String getProcess() {
-        return process;
-    }
-
-    public void setProcess(String process) {
-        this.process = process;
     }
 
     public boolean getFolder() {
