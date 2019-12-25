@@ -3,6 +3,7 @@ package cn.cerc.mis.core;
 import java.util.HashMap;
 import java.util.Map;
 
+// FIXME 2019-12-25 此对象的静态变量应改为属性 
 // 此对象应该换为 MenuItem
 public class MenuItem {
     // 菜单标题
@@ -21,6 +22,9 @@ public class MenuItem {
     public static final String IMAGE = "image";
     // 菜单代码
     private String code;
+
+    private boolean window;
+
     // 所有参数值
     private Map<String, String> params = new HashMap<>();
 
@@ -87,6 +91,14 @@ public class MenuItem {
 
     public int getHrip() {
         return Integer.parseInt(getParam(this.getCode()));
+    }
+
+    public boolean isWindow() {
+        return window;
+    }
+
+    public void setWindow(boolean window) {
+        this.window = window;
     }
 
 }
