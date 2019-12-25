@@ -18,7 +18,7 @@ public class JdbcMssqlExample {
     /**
      * 注意若出现加载或者连接数据库失败一般是这里出现问题
      */
-    public static final String JDBC_URL = "jdbc:sqlserver://127.0.0.1:1433;databaseName=appdb;";
+    public static final String JDBC_URL = "jdbc:sqlserver://127.0.0.1:1433;databaseName=MIMRC_Std;";
     /**
      * 用户名称
      */
