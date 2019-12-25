@@ -2,6 +2,8 @@ package cn.cerc.mis.client;
 
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.BookHandle;
@@ -47,6 +49,7 @@ public class ProxyService extends AbstractForm {
             jsonPage.put("result", svr.exec());
             jsonPage.put("message", svr.getMessage());
             jsonPage.put("data", svr.getDataOut().toString());
+            log.debug("json:{}", new Gson().toJson(jsonPage.getItems()));
         } catch (Exception e) {
             jsonPage.setResultMessage(false, e.getMessage());
         }
