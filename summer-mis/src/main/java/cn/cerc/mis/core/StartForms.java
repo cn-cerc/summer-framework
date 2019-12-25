@@ -22,6 +22,7 @@ import cn.cerc.mis.config.IAppStaticFile;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.page.JsonPage;
 import cn.cerc.mis.page.JspPage;
 import cn.cerc.mis.page.RedirectPage;
 import lombok.extern.slf4j.Slf4j;
@@ -326,7 +327,12 @@ public class StartForms implements Filter {
                         form.getRequest().setAttribute("needVerify", "true");
                         pageOutput = method.invoke(form);
                     } else {
-                        pageOutput = new RedirectPage(form, Application.getAppConfig().getFormVerifyDevice());
+                        if (form instanceof IJSONForm) {
+                            JsonPage output = new JsonPage(form);
+                            output.setResultMessage(false, "您的设备没有经过安全校验，无法继续作业");
+                            pageOutput = output;
+                        } else
+                            pageOutput = new RedirectPage(form, Application.getAppConfig().getFormVerifyDevice());
                     }
                 }
             }
