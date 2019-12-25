@@ -128,7 +128,8 @@ public class StartForms implements Filter {
                 log.debug("进行安全检查，若未登录则显示登录对话框");
 
                 if (!form.logon()) {
-                    IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage", "appLoginDefault");
+                    IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage",
+                            "appLoginDefault");
                     page.init(form);
                     String cmd = page.checkToken(client.getToken());
                     if (cmd != null) {
@@ -136,7 +137,8 @@ public class StartForms implements Filter {
                         if (cmd.startsWith("redirect:")) {
                             resp.sendRedirect(cmd.substring(9));
                         } else {
-                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
+                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
+                                    cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
                     } else {
@@ -338,7 +340,8 @@ public class StartForms implements Filter {
                         if (cmd.startsWith("redirect:")) {
                             response.sendRedirect(cmd.substring(9));
                         } else {
-                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
+                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
+                                    cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
                     }
@@ -372,7 +375,7 @@ public class StartForms implements Filter {
             if (dataIn.length() > 200) {
                 dataIn = dataIn.substring(0, 200);
             }
-            log.warn(String.format("pageCode:%s, tickCount:%s, dataIn: %s", pageCode, totalTime, dataIn));
+            log.warn("pageCode: {}, tickCount: {}, dataIn: {}", pageCode, totalTime, dataIn);
         }
     }
 
