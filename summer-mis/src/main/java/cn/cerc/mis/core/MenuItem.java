@@ -22,7 +22,6 @@ public class MenuItem {
     public static final String IMAGE = "image";
     // 菜单代码
     private String code;
-
     private boolean window;
 
     // 所有参数值
@@ -64,6 +63,10 @@ public class MenuItem {
     public String getParentId() {
         String result = this.getParam(PARENT);
         return result != null ? result : "";
+    }
+
+    public void setImage(String image) {
+        this.setParam(IMAGE, image);
     }
 
     public String getImage() {
