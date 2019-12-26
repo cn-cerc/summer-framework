@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
@@ -64,11 +65,14 @@ public class UIPageDialog extends AbstractJspPage {
         if (form instanceof AbstractForm) {
             if (this.isShowMenus()) {
                 this.getHeader().initHeader();
-                this.getRequest().setAttribute("exitSystem", this.getHeader().getExitSystem());
+
                 this.getRequest().setAttribute("logoSrc", this.getHeader().getLogoSrc());
-                this.getRequest().setAttribute("userName", this.getHeader().getUserName());
                 this.getRequest().setAttribute("welcomeLanguage", this.getHeader().getWelcome());
-                this.getRequest().setAttribute("currentUser", this.getHeader().getCurrentUser());
+                if (Utils.isNotEmpty(this.getHeader().getUserName())) {
+                    this.getRequest().setAttribute("exitSystem", this.getHeader().getExitSystem());
+                    this.getRequest().setAttribute("userName", this.getHeader().getUserName());
+                    this.getRequest().setAttribute("currentUser", this.getHeader().getCurrentUser());
+                }
             }
         }
         String msg = form.getParam("message", "");
