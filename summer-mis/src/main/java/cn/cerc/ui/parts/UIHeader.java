@@ -38,6 +38,8 @@ public class UIHeader extends UIComponent {
     private UrlRecord exitPage = null;
     // 退出系统
     private UrlRecord exitSystem = null;
+    // 菜单模组
+    private String module = null;
 
     public void setHeadInfo(String logoSrc, String welcome) {
         this.logoSrc = logoSrc;
@@ -171,6 +173,14 @@ public class UIHeader extends UIComponent {
         form.getRequest().setAttribute("subMenus", rightMenus);
     }
 
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
     public String getPageTitle() {
         return pageTitle;
     }
@@ -180,6 +190,10 @@ public class UIHeader extends UIComponent {
     }
 
     public void addLeftMenu(UrlRecord urlRecord) {
+        if (this.module == null) {
+            this.module = urlRecord.getUrl();
+            urlRecord.setSite("TWebModule?module=" + urlRecord.getSite());
+        }
         leftMenus.add(urlRecord);
     }
 
@@ -279,5 +293,5 @@ public class UIHeader extends UIComponent {
     public String getCurrentUser() {
         return currentUser;
     }
-    
+
 }
