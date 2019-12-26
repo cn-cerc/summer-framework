@@ -58,7 +58,7 @@ public class UIPageView extends AbstractJspPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getTitle()));
+        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getTitle()));
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");

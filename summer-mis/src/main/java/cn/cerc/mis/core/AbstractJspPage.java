@@ -45,6 +45,20 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     // 状态栏：快捷操作+按钮组
     private UIFooter footer;
 
+    // 页面标题
+    private String title;
+
+    public String getTitle() {
+        if (this.title == null || "".equals(title)) {
+            this.title = this.form.getTitle();
+        }
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public AbstractJspPage() {
         super();
         ServerConfig config = ServerConfig.getInstance();
