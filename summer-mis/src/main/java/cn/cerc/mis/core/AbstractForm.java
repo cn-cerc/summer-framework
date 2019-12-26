@@ -19,7 +19,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     private HttpServletResponse response;
     private IClient client;
     private Map<String, String> params = new HashMap<>();
-    private String caption;
+    private String title;
     private String parent;
     private String permission;
     private String module;
@@ -79,9 +79,12 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     }
 
     @Override
-    @Deprecated
     public String getTitle() {
-        return getCaption();
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -112,12 +115,14 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
         }
     }
 
+    @Deprecated
     public String getCaption() {
-        return caption;
+        return this.getTitle();
     }
 
+    @Deprecated
     public void setCaption(String caption) {
-        this.caption = caption;
+        this.title = caption;
     }
 
     public String getParent() {
