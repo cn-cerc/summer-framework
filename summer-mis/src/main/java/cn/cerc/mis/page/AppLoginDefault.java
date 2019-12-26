@@ -132,6 +132,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         } catch (Exception e) {
             this.add("loginMsg", e.getMessage());
         }
+        // 返回指定的jsp页面
         return this.execute();
     }
 

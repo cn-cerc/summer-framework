@@ -70,8 +70,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     @Override
     public void addComponent(Component component) {
-        if (component.getId() != null)
+        if (component.getId() != null) {
             this.put(component.getId(), component);
+        }
         super.addComponent(component);
     }
 
@@ -102,10 +103,12 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     public final String getViewFile() {
         String jspFile = this.getJspFile();
-        if (getRequest() == null || jspFile == null)
+        if (getRequest() == null || jspFile == null) {
             return jspFile;
-        if (jspFile.indexOf(".jsp") == -1)
+        }
+        if (jspFile.indexOf(".jsp") == -1) {
             return jspFile;
+        }
 
         String rootPath = String.format("/WEB-INF/%s/", Application.getAppConfig().getPathForms());
         String fileName = jspFile.substring(0, jspFile.indexOf(".jsp"));
@@ -117,8 +120,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
             // 检查是否存在相对应的语言版本
             String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
             String langFile = String.format("%s-%s-%s.%s", fileName, "pc", langCode, extName);
-            if (fileExists(rootPath + langFile))
+            if (fileExists(rootPath + langFile)) {
                 return langFile;
+            }
             return newFile;
         }
 
@@ -138,8 +142,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     protected boolean fileExists(String fileName) {
         URL url = AbstractJspPage.class.getClassLoader().getResource("");
-        if (url == null)
+        if (url == null) {
             return false;
+        }
         String filepath = url.getPath();
         String appPath = filepath.substring(0, filepath.indexOf("/WEB-INF"));
         String file = appPath + fileName;
@@ -152,10 +157,11 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         String result = getRequest().getParameter(reqKey);
         if (result == null) {
             String val = buff.getString(reqKey).replace("{}", "");
-            if (Utils.isNumeric(val) && val.endsWith(".0"))
+            if (Utils.isNumeric(val) && val.endsWith(".0")) {
                 result = val.substring(0, val.length() - 2);
-            else
+            } else {
                 result = val;
+            }
         } else {
             result = result.trim();
             buff.setField(reqKey, result);
@@ -195,8 +201,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     // 返回所有的样式定义，供jsp中使用 ${jspPage.css}调用
     public final HtmlWriter getCssHtml() {
         HtmlWriter html = new HtmlWriter();
-        for (String file : cssFiles)
+        for (String file : cssFiles) {
             html.println("<link href=\"%s?v=%s\" rel=\"stylesheet\">", file, browserCacheVersion);
+        }
         return html;
     }
 
