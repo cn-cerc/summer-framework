@@ -92,10 +92,6 @@ public class MenuItem {
         this.params = params;
     }
 
-    public int getHrip() {
-        return Integer.parseInt(getParam(this.getCode()));
-    }
-
     public boolean isWindow() {
         return window;
     }
