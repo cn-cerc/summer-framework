@@ -37,7 +37,7 @@ public class Memory_UserInfo {
             record = ds.getCurrent();
         } else {
             // 从服务器
-            RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiUserInfo.getUserInfo");
+            RemoteService svr = new RemoteService(handle, ISystemTable.Public, "ApiUserInfo.getUserInfo");
             if (!svr.exec("UserCode_", userCode)) {
                 throw new RuntimeException(svr.getMessage());
             }

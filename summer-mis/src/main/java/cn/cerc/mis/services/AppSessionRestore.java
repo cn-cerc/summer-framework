@@ -52,7 +52,7 @@ public class AppSessionRestore extends CustomService {
             cdsCurrent.open();
             dataToken.appendDataSet(cdsCurrent);
         } else {
-            RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiTokenInfo.restoreByToken");
+            RemoteService svr = new RemoteService(handle, ISystemTable.Public, "ApiTokenInfo.restoreByToken");
             DataValidateException.stopRun(svr.getMessage(), !svr.exec("Token_", token));
             dataToken.appendDataSet(svr.getDataOut());
         }
@@ -81,7 +81,7 @@ public class AppSessionRestore extends CustomService {
             cdsUser.open();
             dataUser.appendDataSet(cdsUser);
         } else {
-            RemoteService svr = new RemoteService(this, ISystemTable.Master_Book, "ApiTokenInfo.restoreByUserId");
+            RemoteService svr = new RemoteService(this, ISystemTable.Public, "ApiTokenInfo.restoreByUserId");
             DataValidateException.stopRun(svr.getMessage(), !svr.exec("UserId_", userId));
             dataUser.appendDataSet(svr.getDataOut());
         }

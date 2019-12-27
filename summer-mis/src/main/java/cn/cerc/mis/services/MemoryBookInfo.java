@@ -32,7 +32,7 @@ public class MemoryBookInfo {
             }
             record = svr.getDataOut().getHead();
         } else {
-            RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "SvrBookInfo.getRecord");
+            RemoteService svr = new RemoteService(handle, ISystemTable.Public, "SvrBookInfo.getRecord");
             if (!svr.exec("corpNo", corpNo)) {
                 return null;
             }

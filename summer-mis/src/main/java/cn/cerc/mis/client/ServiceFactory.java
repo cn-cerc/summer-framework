@@ -19,7 +19,7 @@ public class ServiceFactory {
             Buffer buff = new Buffer(ServiceFactory.class.getName(), corpNo);
             String tarDB = buff.getString("database");
             if ("".equals(tarDB) || null == tarDB) {
-                RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiDB.getDatabase");
+                RemoteService svr = new RemoteService(handle, ISystemTable.Public, "ApiDB.getDatabase");
                 if (!svr.exec("bookNo", corpNo)) {
                     throw new RuntimeException(svr.getMessage());
                 }
