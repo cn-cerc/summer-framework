@@ -25,7 +25,7 @@ public class RemoteService implements IServiceProxy {
 
     public RemoteService() {
         LocalConfig localConfig = LocalConfig.getInstance();
-        this.host = localConfig.getProperty("remote.host", ApplicationProperties.Local_Host);
+        this.host = localConfig.getProperty("remote.host");
     }
 
     public RemoteService(IHandle handle, String bookNo, String service) {
@@ -64,6 +64,10 @@ public class RemoteService implements IServiceProxy {
         }
         if (Utils.isEmpty(this.token)) {
             this.setMessage("token 不允许为空");
+            return false;
+        }
+        if (Utils.isEmpty(this.host)) {
+            this.setMessage("host 不允许为空");
             return false;
         }
 
