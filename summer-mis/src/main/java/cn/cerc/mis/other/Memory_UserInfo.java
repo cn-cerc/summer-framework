@@ -2,10 +2,8 @@ package cn.cerc.mis.other;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
-import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.client.RemoteService;
-import cn.cerc.mis.config.ApplicationProperties;
-import cn.cerc.mis.core.Application;
+import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.ISystemTable;
 
 /**
@@ -22,27 +20,11 @@ public class Memory_UserInfo {
             return buff;
         }
 
-        Record record;
-        if (ApplicationProperties.isMaster()) {
-            // 主服务器
-            ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-            SqlQuery ds = new SqlQuery(handle);
-            ds.add("select a.Code_,a.Enabled_,a.Name_,a.SuperUser_,a.DiyRole_,a.RoleCode_,oi.Type_,a.ImageUrl_ ");
-            ds.add("from %s a ", systemTable.getUserInfo());
-            ds.add("inner join %s oi on a.CorpNo_=oi.CorpNo_ ", systemTable.getBookInfo());
-            ds.add("where a.Code_='%s'", userCode);
-            ds.open();
-            if (ds.eof())
-                throw new RuntimeException(String.format("用户代码 %s 不存在!", userCode));
-            record = ds.getCurrent();
-        } else {
-            // 从服务器
-            RemoteService svr = new RemoteService(handle, ISystemTable.Public, "ApiUserInfo.getUserInfo");
-            if (!svr.exec("UserCode_", userCode)) {
-                throw new RuntimeException(svr.getMessage());
-            }
-            record = svr.getDataOut().getCurrent();
+        IServiceProxy svr = ServiceFactory.get(handle, ISystemTable.Public, "ApiUserInfo.getUserInfo");
+        if (!svr.exec("UserCode_", userCode)) {
+            throw new RuntimeException(svr.getMessage());
         }
+        Record record = svr.getDataOut().getCurrent();
 
         buff.setField("Name_", record.getString("Name_"));
         buff.setField("Enabled_", record.getInt("Enabled_"));
