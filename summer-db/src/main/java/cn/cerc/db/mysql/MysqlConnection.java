@@ -16,6 +16,8 @@ public class MysqlConnection extends SqlConnection {
     public static final String rds_password = "rds.password";
 
     public static String dataSource = "dataSource";
+    
+    private String database;
 
     @Override
     public String getClientId() {
@@ -25,13 +27,16 @@ public class MysqlConnection extends SqlConnection {
     @Override
     protected String getConnectUrl() {
         String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
-        String db = config.getProperty(MysqlConnection.rds_database, "appdb");
+        database = config.getProperty(MysqlConnection.rds_database, "appdb");
         user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
         pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
-        if (host == null || user == null || pwd == null || db == null)
+        if (host == null || user == null || pwd == null || database == null)
             throw new RuntimeException("RDS配置为空，无法连接主机！");
 
-        return String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);
+        return String.format("jdbc:mysql://%s/%s?useSSL=false", host, database);
     }
 
+    public String getDatabase() {
+        return this.database;
+    }
 }
