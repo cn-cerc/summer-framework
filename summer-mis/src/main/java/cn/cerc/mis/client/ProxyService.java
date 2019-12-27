@@ -33,18 +33,22 @@ public class ProxyService extends AbstractForm {
 
         String[] uri = this.getRequest().getRequestURI().split("/");
         String curBookNo = uri[1];
-        if (Utils.isEmpty(curBookNo)) {
+        if (Utils.isEmpty(curBookNo)) { // 131001
             return jsonPage.setResultMessage(false, "目标帐套 不允许为空");
         }
         log.info("响应者帐套 {}", curBookNo);
 
-        if (curBookNo.equals(this.getCorpNo())) {
-            return jsonPage.setResultMessage(false, "服务调用错误");
-        }
-
-        BookHandle bHandle = new BookHandle(this, curBookNo);
         try {
-            LocalService svr = new LocalService(bHandle, service);
+            LocalService svr;
+            if ("public".equals(curBookNo)) {
+                svr = new LocalService(this, service);
+            } else {
+                if (curBookNo.equals(this.getCorpNo())) 
+                    return jsonPage.setResultMessage(false, "服务调用错误");
+                
+                BookHandle bHandle = new BookHandle(this, curBookNo);
+                svr = new LocalService(bHandle, service);
+            }
             svr.getDataIn().setJSON(dataIn);
             jsonPage.put("result", svr.exec());
             jsonPage.put("message", svr.getMessage());

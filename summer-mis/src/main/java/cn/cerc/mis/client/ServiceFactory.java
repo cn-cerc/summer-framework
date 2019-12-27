@@ -36,4 +36,10 @@ public class ServiceFactory {
         }
     }
 
+    public static IServiceProxy get(IHandle handle, String corpNo, String service) {
+        IServiceProxy svr = ServiceFactory.get(handle, corpNo);
+        svr.setService(service);
+        return svr;
+    }
+
 }
