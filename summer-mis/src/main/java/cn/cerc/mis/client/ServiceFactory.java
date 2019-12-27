@@ -10,6 +10,10 @@ import cn.cerc.mis.core.LocalService;
 public class ServiceFactory {
 
     public static IServiceProxy get(IHandle handle, String corpNo) {
+        if ("public".equals(corpNo)) {
+            return new LocalService(handle);
+        }
+
         if (corpNo.equals(handle.getCorpNo())) {
             return new LocalService(handle);
         } else {
