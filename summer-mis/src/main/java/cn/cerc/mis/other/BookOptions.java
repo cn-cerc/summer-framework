@@ -9,7 +9,8 @@ import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.client.RemoteService;
+import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
@@ -346,7 +347,7 @@ public class BookOptions {
 
     // 从系统帐套中取开帐日期
     private static TDate getBookCreateDate(IHandle handle) {
-        RemoteService svr = new RemoteService(handle, ISystemTable.Public, "ApiOurInfo.getBookCreateDate");
+        IServiceProxy svr = ServiceFactory.get(handle, ISystemTable.Public, "ApiOurInfo.getBookCreateDate");
         if (!svr.exec("CorpNo_", handle.getCorpNo())) {
             throw new RuntimeException(svr.getMessage());
         }
@@ -449,7 +450,7 @@ public class BookOptions {
 
     // 增加账套参数
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
-        RemoteService svr1 = new RemoteService(handle, ISystemTable.Public, "ApiOurInfo.getVineOptionsByCode");
+        IServiceProxy svr1 = ServiceFactory.get(handle, ISystemTable.Public, "ApiOurInfo.getVineOptionsByCode");
         if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {
             throw new RuntimeException(svr1.getMessage());
         }
@@ -458,7 +459,7 @@ public class BookOptions {
             return;
         String paramName = getParamName(paramKey);
 
-        RemoteService svr2 = new RemoteService(handle, ISystemTable.Public, "ApiOurInfo.appendToCorpOption");
+        IServiceProxy svr2 = ServiceFactory.get(handle, ISystemTable.Public, "ApiOurInfo.appendToCorpOption");
         Record headIn = svr2.getDataIn().getHead();
         headIn.setField("CorpNo_", corpNo);
         headIn.setField("Code_", paramKey);
