@@ -18,7 +18,7 @@ public class ServiceFactory {
 
             Buffer buff = new Buffer(ServiceFactory.class.getName(), corpNo);
             String tarDB = buff.getString("database");
-            if ("".equals(tarDB) || null == tarDB) {
+            if (tarDB == null || "".equals(tarDB)) {
                 RemoteService svr = new RemoteService(handle, ISystemTable.Public, "ApiDB.getDatabase");
                 if (!svr.exec("bookNo", corpNo)) {
                     throw new RuntimeException(svr.getMessage());
@@ -28,7 +28,7 @@ public class ServiceFactory {
                 buff.post();
             }
 
-            if (curDB.equals(tarDB)) {
+            if (tarDB.equals(curDB)) {
                 return new LocalService(new BookHandle(handle, corpNo));
             } else {
                 return new RemoteService(handle, corpNo);
