@@ -20,11 +20,12 @@ public class ServiceFactory {
             String tarDB = buff.getString("database");
             if ("".equals(tarDB) || null == tarDB) {
                 RemoteService svr = new RemoteService(handle, ISystemTable.Master_Book, "ApiDB.getDatabase");
-                if (!svr.exec("CorpNo_", corpNo)) {
+                if (!svr.exec("bookNo", corpNo)) {
                     throw new RuntimeException(svr.getMessage());
                 }
-                tarDB = svr.getDataOut().getString("database");
+                tarDB = svr.getDataOut().getHead().getString("database");
                 buff.setField("database", tarDB);
+                buff.post();
             }
 
             if (curDB.equals(tarDB)) {
