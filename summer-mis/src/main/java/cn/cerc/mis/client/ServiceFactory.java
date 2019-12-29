@@ -9,6 +9,8 @@ import cn.cerc.mis.core.LocalService;
 
 public class ServiceFactory {
 
+    public static final String Public = "public"; // 数据库中心
+
     public static IServiceProxy get(IHandle handle, String corpNo) {
         if ("public".equals(corpNo)) {
             return new LocalService(handle);
@@ -23,7 +25,7 @@ public class ServiceFactory {
             Buffer buff = new Buffer(ServiceFactory.class.getName(), corpNo);
             String tarDB = buff.getString("database");
             if (tarDB == null || "".equals(tarDB)) {
-                RemoteService svr = new RemoteService(handle, ISystemTable.Public, "ApiDB.getDatabase");
+                RemoteService svr = new RemoteService(handle, ServiceFactory.Public, "ApiDB.getDatabase");
                 if (!svr.exec("bookNo", corpNo)) {
                     throw new RuntimeException(svr.getMessage());
                 }

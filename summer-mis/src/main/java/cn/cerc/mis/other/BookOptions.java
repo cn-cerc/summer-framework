@@ -347,7 +347,7 @@ public class BookOptions {
 
     // 从系统帐套中取开帐日期
     private static TDate getBookCreateDate(IHandle handle) {
-        IServiceProxy svr = ServiceFactory.get(handle, ISystemTable.Public, "ApiOurInfo.getBookCreateDate");
+        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.getBookCreateDate");
         if (!svr.exec("CorpNo_", handle.getCorpNo())) {
             throw new RuntimeException(svr.getMessage());
         }
@@ -450,7 +450,7 @@ public class BookOptions {
 
     // 增加账套参数
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
-        IServiceProxy svr1 = ServiceFactory.get(handle, ISystemTable.Public, "ApiOurInfo.getVineOptionsByCode");
+        IServiceProxy svr1 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.getVineOptionsByCode");
         if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {
             throw new RuntimeException(svr1.getMessage());
         }
@@ -459,7 +459,7 @@ public class BookOptions {
             return;
         String paramName = getParamName(paramKey);
 
-        IServiceProxy svr2 = ServiceFactory.get(handle, ISystemTable.Public, "ApiOurInfo.appendToCorpOption");
+        IServiceProxy svr2 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.appendToCorpOption");
         Record headIn = svr2.getDataIn().getHead();
         headIn.setField("CorpNo_", corpNo);
         headIn.setField("Code_", paramKey);

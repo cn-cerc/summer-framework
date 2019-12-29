@@ -23,7 +23,7 @@ public class MemoryBookInfo {
             return gson.fromJson(tmp, BookInfoRecord.class);
         }
 
-        IServiceProxy svr = ServiceFactory.get(handle, ISystemTable.Public, "SvrBookInfo.getRecord");
+        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "SvrBookInfo.getRecord");
         if (!svr.exec("corpNo", corpNo)) {
             return null;
         }

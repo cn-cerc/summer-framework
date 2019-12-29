@@ -2,8 +2,6 @@ package cn.cerc.mis.core;
 
 public interface ISystemTable {
 
-    public static final String Public = "public"; // 数据库中心
-
     // 帐套资料表
     public String getBookInfo(); // "OurInfo";
 

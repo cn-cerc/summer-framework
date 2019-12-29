@@ -44,7 +44,7 @@ public class AppSessionRestore extends CustomService {
         String token = headIn.getString("token");
 
         DataSet dataToken = new DataSet();
-        IServiceProxy svrToken = ServiceFactory.get(this, ISystemTable.Public, "ApiTokenInfo.restoreByToken");
+        IServiceProxy svrToken = ServiceFactory.get(this, ServiceFactory.Public, "ApiTokenInfo.restoreByToken");
         DataValidateException.stopRun(svrToken.getMessage(), !svrToken.exec("Token_", token));
         dataToken.appendDataSet(svrToken.getDataOut());
 
@@ -64,7 +64,7 @@ public class AppSessionRestore extends CustomService {
         String userId = dataToken.getString("UserID_");
 
         DataSet dataUser = new DataSet();
-        IServiceProxy svrUser = ServiceFactory.get(this, ISystemTable.Public, "ApiTokenInfo.restoreByUserId");
+        IServiceProxy svrUser = ServiceFactory.get(this, ServiceFactory.Public, "ApiTokenInfo.restoreByUserId");
         DataValidateException.stopRun(svrUser.getMessage(), !svrUser.exec("UserId_", userId));
         dataUser.appendDataSet(svrUser.getDataOut());
 

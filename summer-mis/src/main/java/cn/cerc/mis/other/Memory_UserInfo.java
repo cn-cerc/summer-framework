@@ -20,7 +20,7 @@ public class Memory_UserInfo {
             return buff;
         }
 
-        IServiceProxy svr = ServiceFactory.get(handle, ISystemTable.Public, "ApiUserInfo.getUserInfo");
+        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "ApiUserInfo.getUserInfo");
         if (!svr.exec("UserCode_", userCode)) {
             throw new RuntimeException(svr.getMessage());
         }
