@@ -4,7 +4,6 @@ import cn.cerc.core.IHandle;
 import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.mis.core.BookHandle;
-import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
 
 public class ServiceFactory {

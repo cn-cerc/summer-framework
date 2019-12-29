@@ -61,8 +61,5 @@ public interface ISystemTable {
 
     // 多语言数据字典: 新版本
     public String getLanguage(); // "s_language";
-//
-//    public static String get(String tableCode) {
-//        return Application.getAppConfig().getParam(tableCode, tableCode);
-//    }
+
 }
