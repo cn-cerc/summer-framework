@@ -3,6 +3,7 @@ package cn.cerc.mis.client;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.mysql.MysqlConnection;
+import cn.cerc.mis.config.ApplicationProperties;
 import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.LocalService;
 
@@ -11,6 +12,14 @@ public class ServiceFactory {
     public static final String Public = "public"; // 数据库中心
 
     public static IServiceProxy get(IHandle handle, String corpNo) {
+        if ("public".equals(corpNo)) {
+            if (ApplicationProperties.isMaster()) {
+                return new LocalService(handle);
+            } else {
+                return new RemoteService(handle, corpNo);
+            }
+        }
+
         if (corpNo.equals(handle.getCorpNo())) {
             return new LocalService(handle);
         } else {
