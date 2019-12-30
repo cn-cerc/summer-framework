@@ -11,6 +11,12 @@ public class ServiceFactory {
 
     public static final String Public = "public"; // 数据库中心
 
+    public static IServiceProxy get(IHandle handle, String corpNo, String service) {
+        IServiceProxy svr = ServiceFactory.get(handle, corpNo);
+        svr.setService(service);
+        return svr;
+    }
+
     public static IServiceProxy get(IHandle handle, String corpNo) {
         if ("public".equals(corpNo)) {
             if (ApplicationProperties.isMaster()) {
@@ -44,12 +50,6 @@ public class ServiceFactory {
                 return new RemoteService(handle, corpNo);
             }
         }
-    }
-
-    public static IServiceProxy get(IHandle handle, String corpNo, String service) {
-        IServiceProxy svr = ServiceFactory.get(handle, corpNo);
-        svr.setService(service);
-        return svr;
     }
 
 }
