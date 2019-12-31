@@ -4,12 +4,11 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
-import cn.cerc.mis.core.ISystemTable;
 
 /**
  * FIXME 2019-12-17 改为从项目本身创建
  */
-public class Memory_UserInfo {
+public class MemoryUserInfo {
 
     public static int count = 0;
 
