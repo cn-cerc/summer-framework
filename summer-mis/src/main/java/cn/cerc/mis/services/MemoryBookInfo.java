@@ -8,7 +8,6 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
-import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 

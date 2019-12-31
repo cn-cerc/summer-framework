@@ -3,12 +3,16 @@ package cn.cerc.ui.parts;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
+import cn.cerc.mis.services.BookInfoRecord;
+import cn.cerc.mis.services.MemoryBookInfo;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
@@ -34,6 +38,10 @@ public class UIHeader extends UIComponent {
     private String logoSrc;
     // 当前用户
     private String currentUser;
+    // 当前账套
+    private String currentCorpNo;
+    // 当前账套名称
+    private String corpNoName;
     // 退出
     private UrlRecord exitPage = null;
     // 退出系统
@@ -48,16 +56,27 @@ public class UIHeader extends UIComponent {
 
     public UIHeader(AbstractJspPage owner) {
         super(owner);
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), "<img src=\"images/Home.png\"/>");
+        ServerConfig config = ServerConfig.getInstance();
+        String homeImg = "images/Home.png";
+        if (owner.getForm().getClient().isPhone()) {
+            homeImg = config.getProperty("app.phone.home.image", homeImg);
+        }
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
+                String.format("<img src=\"%s\"/>", homeImg));
         leftMenus.add(homePage);
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
                 R.asString(owner.getForm().getHandle(), "开始"));
         IClient client = owner.getForm().getClient();
         if (!client.isPhone()) {
+            IHandle handle = owner.getForm().getHandle();
             currentUser = R.asString(owner.getForm().getHandle(), "当前用户");
+            currentCorpNo = R.asString(owner.getForm().getHandle(), "当前账套");
             leftMenus.add(homePage);
-            this.userName = owner.getForm().getHandle().getUserName();
-            ServerConfig config = ServerConfig.getInstance();
+            this.userName = handle.getUserName();
+            if (Utils.isNotEmpty(handle.getCorpNo())) {
+                BookInfoRecord item = MemoryBookInfo.get(handle, handle.getCorpNo());
+                this.corpNoName = item.getShortName();
+            }
             logoSrc = config.getProperty("app.logo.src", "images/logo_dt.png");
             welcome = config.getProperty("app.welcome.language", "欢迎使用系统");
             String exitName = config.getProperty("app.exit.name", "#");
@@ -87,6 +106,7 @@ public class UIHeader extends UIComponent {
             html.print("<img src='%s'/>", logoSrc);
             html.print("<span>%s</span>", welcome);
             html.print("<div class='user_right'>");
+            html.print("<span>%s:<i>%s</i></span>", currentCorpNo, corpNoName);
             html.print("<span>%s:<i>%s</i></span>", currentUser, userName);
             html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
             html.print("</div>");

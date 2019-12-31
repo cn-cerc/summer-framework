@@ -1,8 +1,6 @@
 package cn.cerc.mis.page;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
@@ -26,9 +22,6 @@ import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
-import cn.cerc.mis.core.RequestData;
-import cn.cerc.mis.page.qrcode.SocketTool;
-import cn.cerc.security.sapi.JayunAPI;
 import cn.cerc.security.sapi.JayunSecurity;
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,46 +53,6 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         if (!"".equals(supCorpNo)) {
             this.add("supCorpNo", supCorpNo);
         }
-
-        if (form.getClient().isPhone()) {
-            return;
-        }
-
-        // 获取域名
-        SocketTool tool = new SocketTool();
-        String domain = tool.getDomain(getRequest());
-
-        String socket_url = tool.getSocketUrl(getRequest());
-        this.add("socketUrl", socket_url);
-
-        // 判断当前客户端类型
-        log.info("current client device type: {}", form.getClient().getDevice());
-        boolean isWeb = RequestData.WEBCLIENT.equals(form.getClient().getId());
-        this.add("isWeb", isWeb);
-        if (!isWeb) {
-            return;
-        }
-
-        String appKey = config.getProperty(JayunAPI.JAYUN_APP_KEY);
-        Map<String, Object> items = new TreeMap<>();
-        items.put("appKey", appKey);
-        items.put("action", "login");
-        items.put("sessionId", getRequest().getSession().getId());
-        items.put("domain", domain);
-
-        String notify_url = config.getProperty(Notify_Url);
-        if (notify_url != null && !"".equals(notify_url)) {
-            items.put("notify_url", notify_url);
-            log.warn("notify_url {}", notify_url);
-        }
-
-        JayunSecurity api = new JayunSecurity(form.getRequest());
-        boolean result = api.encodeQrcode(new Gson().toJson(items));
-        if (!result) {
-            log.error(api.getMessage());
-            this.add("msg", api.getMessage());
-        }
-        this.add("qrcode", (String) api.getData());
     }
 
     @Override
