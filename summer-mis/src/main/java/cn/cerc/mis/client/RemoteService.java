@@ -122,6 +122,7 @@ public class RemoteService implements IServiceProxy {
         return this;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
@@ -130,6 +131,7 @@ public class RemoteService implements IServiceProxy {
         this.message = message;
     }
 
+    @Override
     public DataSet getDataOut() {
         if (dataOut == null)
             dataOut = new DataSet();
