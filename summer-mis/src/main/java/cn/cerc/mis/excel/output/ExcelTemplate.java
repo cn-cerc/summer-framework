@@ -16,7 +16,7 @@ import jxl.write.biff.RowsExceededException;
 public class ExcelTemplate {
     private String fileName;
     private List<Column> columns;
-    private AccreditManager accreditManager;
+    private IAccreditManager accreditManager;
     private HistoryWriter historyWriter;
     private DataSet dataSet;
     private DateFormat df1 = new DateFormat("yyyy-MM-dd");
@@ -43,11 +43,11 @@ public class ExcelTemplate {
         columns.add(column);
     }
 
-    public AccreditManager getAccreditManager() {
+    public IAccreditManager getAccreditManager() {
         return accreditManager;
     }
 
-    public void setAccreditManager(AccreditManager accredit) {
+    public void setAccreditManager(IAccreditManager accredit) {
         this.accreditManager = accredit;
     }
 

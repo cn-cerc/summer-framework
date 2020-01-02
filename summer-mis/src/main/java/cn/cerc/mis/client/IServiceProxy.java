@@ -24,6 +24,11 @@ public interface IServiceProxy {
     // 执行
     public boolean exec(Object... args);
 
+    // 服务缓存
+    default public String getExportKey() {
+        return null;
+    }
+
     // select
     default public boolean get(Object... args) {
         Record headIn = this.getDataIn().getHead();
@@ -51,4 +56,5 @@ public interface IServiceProxy {
         headIn.setField("_method_", "delete");
         return exec(args);
     }
+
 }
