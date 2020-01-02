@@ -4,11 +4,11 @@ import cn.cerc.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
-import cn.cerc.mis.excel.output.AccreditManager;
+import cn.cerc.mis.excel.output.IAccreditManager;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 
-public class ExportAccreditManager implements AccreditManager {
+public class ExportAccreditManager implements IAccreditManager {
     private String securityCode;
     private String describe;
 
@@ -24,12 +24,12 @@ public class ExportAccreditManager implements AccreditManager {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), code)) {
             if (buff.isNull()) {
                 ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-                SqlQuery ds = new SqlQuery(handle);
-                ds.add("select Value_ from %s", systemTable.getUserOptions());
-                ds.add("where UserCode_='%s' and Code_='%s'", handle.getUserCode(), code);
-                ds.open();
-                if (!ds.eof())
-                    buff.setField("Value_", ds.getString("Value_"));
+                SqlQuery cdsTmp = new SqlQuery(handle);
+                cdsTmp.add("select Value_ from %s", systemTable.getUserOptions());
+                cdsTmp.add("where UserCode_='%s' and Code_='%s'", handle.getUserCode(), code);
+                cdsTmp.open();
+                if (!cdsTmp.eof())
+                    buff.setField("Value_", cdsTmp.getString("Value_"));
                 else
                     buff.setField("Value_", "");
             }

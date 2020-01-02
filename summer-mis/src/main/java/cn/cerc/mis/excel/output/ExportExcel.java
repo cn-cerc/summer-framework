@@ -33,7 +33,7 @@ public class ExportExcel {
 
         template = this.getTemplate();
 
-        AccreditManager manager = template.getAccreditManager();
+        IAccreditManager manager = template.getAccreditManager();
         if (manager != null) {
             if (!manager.isPass(this.handle))
                 throw new AccreditException(String.format("您没有导出[%s]的权限", manager.getDescribe()));
