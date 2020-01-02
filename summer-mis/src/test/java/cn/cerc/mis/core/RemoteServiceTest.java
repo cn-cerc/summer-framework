@@ -1,12 +1,8 @@
 package cn.cerc.mis.core;
 
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import cn.cerc.mis.client.RemoteService;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
@@ -17,18 +13,18 @@ public class RemoteServiceTest {
     public void test() {
         // http://127.0.0.1/911001/proxyService?sid=f4761c4d332440f3859f8fb1bd19496a&service=TAppTranDE.search
 
-        RemoteService svr = new RemoteService("000000", "ApiUserInfo.getUserInfo");
-        svr.setToken("fe7795f9d65740f4b520c6e5cd842786");
-
-        DataSet dataIn = svr.getDataIn();
-        Record headIn = dataIn.getHead();
-        headIn.setField("UserCode_", "91100124");
-
-        log.info("{}", svr.getUrl());
-        boolean result = svr.exec();
-
-        log.info("{}", svr.getDataOut().toString());
-        assertTrue(svr.getMessage(), result);
+//        RemoteService svr = new RemoteService("000000", "ApiUserInfo.getUserInfo");
+//        svr.setToken("fe7795f9d65740f4b520c6e5cd842786");
+//
+//        DataSet dataIn = svr.getDataIn();
+//        Record headIn = dataIn.getHead();
+//        headIn.setField("UserCode_", "91100124");
+//
+//        log.info("{}", svr.getUrl());
+//        boolean result = svr.exec();
+//
+//        log.info("{}", svr.getDataOut().toString());
+//        assertTrue(svr.getMessage(), result);
     }
 
 //    @Test
