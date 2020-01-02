@@ -1,9 +1,10 @@
 package cn.cerc.mis.tools;
 
+import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
-import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ISystemTable;
+import cn.cerc.core.Record;
+import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.excel.output.IAccreditManager;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -14,24 +15,26 @@ public class ExportAccreditManager implements IAccreditManager {
 
     @Override
     public boolean isPass(Object handle) {
-        if (securityCode == null)
+        if (securityCode == null) {
             throw new RuntimeException("securityCode is null");
+        }
         IHandle appHandle = (IHandle) handle;
         return UserOptionEnabled(appHandle, securityCode).equals("on");
     }
 
-    private String UserOptionEnabled(IHandle handle, String code) {
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), code)) {
+    private String UserOptionEnabled(IHandle handle, String optCode) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), optCode)) {
             if (buff.isNull()) {
-                ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-                SqlQuery cdsTmp = new SqlQuery(handle);
-                cdsTmp.add("select Value_ from %s", systemTable.getUserOptions());
-                cdsTmp.add("where UserCode_='%s' and Code_='%s'", handle.getUserCode(), code);
-                cdsTmp.open();
-                if (!cdsTmp.eof())
+                IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "ApiUserOption.getOptValue");
+                Record headIn = svr.getDataIn().getHead();
+                headIn.setField("UserCode_", handle.getUserCode());
+                headIn.setField("OptCode_", optCode);
+                DataSet cdsTmp = svr.getDataOut();
+                if (!cdsTmp.eof()) {
                     buff.setField("Value_", cdsTmp.getString("Value_"));
-                else
+                } else {
                     buff.setField("Value_", "");
+                }
             }
             return buff.getString("Value_");
         }
