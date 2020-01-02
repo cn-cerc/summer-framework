@@ -8,11 +8,14 @@ import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.LocalConfig;
 import cn.cerc.mis.config.ApplicationProperties;
 import cn.cerc.mis.core.RequestData;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
+    private IHandle handle;
 
     private String host;
     private String path;
@@ -23,27 +26,31 @@ public class RemoteService implements IServiceProxy {
     private DataSet dataOut;
     private String message;
 
-    public RemoteService() {
-        LocalConfig localConfig = LocalConfig.getInstance();
-        this.host = localConfig.getProperty("remote.host");
+    private String buffKey;
+
+    public RemoteService(IHandle handle) {
+        this.handle = handle;
+        this.token = ApplicationProperties.getToken(handle);
     }
 
     public RemoteService(IHandle handle, String bookNo, String service) {
-        this(bookNo, service);
+        this.handle = handle;
         this.token = ApplicationProperties.getToken(handle);
-    }
 
-    public RemoteService(IHandle handle, String bookNo) {
-        this(bookNo, null);
-        this.token = ApplicationProperties.getToken(handle);
-        this.path = bookNo;
-    }
-
-    public RemoteService(String bookNo, String service) {
         LocalConfig localConfig = LocalConfig.getInstance();
         this.host = localConfig.getProperty("remote.host", ApplicationProperties.Local_Host);
         this.path = bookNo;
+
         this.service = service;
+    }
+
+    public RemoteService(IHandle handle, String bookNo) {
+        this.handle = handle;
+        this.token = ApplicationProperties.getToken(handle);
+
+        LocalConfig localConfig = LocalConfig.getInstance();
+        this.host = localConfig.getProperty("remote.host", ApplicationProperties.Local_Host);
+        this.path = bookNo;
     }
 
     @Override
@@ -77,6 +84,7 @@ public class RemoteService implements IServiceProxy {
             curl.putParameter(RequestData.TOKEN, this.token);
             log.info("params {}", curl.getParameters());
             log.info("url {}", this.getUrl());
+
             String response = curl.doPost(this.getUrl());
             log.info("response {}", response);
             if (response == null) {
@@ -132,6 +140,15 @@ public class RemoteService implements IServiceProxy {
     }
 
     @Override
+    public String getExportKey() {
+        String tmp = "" + System.currentTimeMillis();
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getExportKey, handle.getUserCode(), tmp)) {
+            buff.setField("data", this.getDataIn().getJSON());
+        }
+        return tmp;
+    }
+
+    @Override
     public DataSet getDataOut() {
         if (dataOut == null)
             dataOut = new DataSet();
@@ -175,6 +192,14 @@ public class RemoteService implements IServiceProxy {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getBuffKey() {
+        return buffKey;
+    }
+
+    public void setBuffKey(String buffKey) {
+        this.buffKey = buffKey;
     }
 
 }
