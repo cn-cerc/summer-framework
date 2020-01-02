@@ -29,6 +29,9 @@ public class ExportAccreditManager implements IAccreditManager {
                 Record headIn = svr.getDataIn().getHead();
                 headIn.setField("UserCode_", handle.getUserCode());
                 headIn.setField("OptCode_", optCode);
+                if (!svr.exec()) {
+                    throw new RuntimeException(svr.getMessage());
+                }
                 DataSet cdsTmp = svr.getDataOut();
                 if (!cdsTmp.eof()) {
                     buff.setField("Value_", cdsTmp.getString("Value_"));
