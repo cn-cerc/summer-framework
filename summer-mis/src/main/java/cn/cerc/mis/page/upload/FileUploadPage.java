@@ -55,7 +55,7 @@ public class FileUploadPage extends FileUploadBasePage {
             }
         }
 
-        setCaption(R.asString(this, getPageTitle()));
+        setTitle(R.asString(this, getPageTitle()));
         top.setPageTitle(R.asString(this, getPageTitle()));
 
         jspPage.addScriptFile("../imgZoom/imgAlert.js");

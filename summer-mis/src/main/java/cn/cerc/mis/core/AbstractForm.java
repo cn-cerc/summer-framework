@@ -115,16 +115,6 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
         }
     }
 
-    @Deprecated
-    public String getCaption() {
-        return this.getTitle();
-    }
-
-    @Deprecated
-    public void setCaption(String caption) {
-        this.title = caption;
-    }
-
     public String getParent() {
         return parent;
     }

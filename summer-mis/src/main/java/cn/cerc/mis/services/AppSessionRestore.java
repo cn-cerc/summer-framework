@@ -10,7 +10,6 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.HandleDefault;
-import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.UserNotFindException;
 import lombok.extern.slf4j.Slf4j;
