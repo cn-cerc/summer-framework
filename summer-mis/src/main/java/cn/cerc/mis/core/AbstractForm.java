@@ -115,6 +115,19 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
         }
     }
 
+    /**
+     * 删除此项需要将xml的配套属性改为 title
+     */
+    @Deprecated
+    public String getCaption() {
+        return this.getTitle();
+    }
+
+    @Deprecated
+    public void setCaption(String caption) {
+        this.title = caption;
+    }
+
     public String getParent() {
         return parent;
     }
