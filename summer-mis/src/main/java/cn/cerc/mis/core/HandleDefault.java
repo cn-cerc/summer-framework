@@ -18,6 +18,8 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
+import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +56,7 @@ public class HandleDefault implements IHandle {
         this.setProperty(Application.userCode, userCode);
         this.setProperty(Application.clientIP, clientIP);
 
-        LocalService svr = new LocalService(this, "AppSessionRestore.byUserCode");
+        IServiceProxy svr = ServiceFactory.get(this, ServiceFactory.Public, "AppSessionRestore.byUserCode");
         if (!svr.exec("userCode", userCode)) {
             throw new RuntimeException(svr.getMessage());
         }
@@ -96,7 +98,7 @@ public class HandleDefault implements IHandle {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
             if (buff.isNull()) {
                 buff.setField("exists", false);
-                LocalService svr = new LocalService(this, "AppSessionRestore.byToken");
+                IServiceProxy svr = ServiceFactory.get(this, ServiceFactory.Public, "AppSessionRestore.byToken");
                 if (!svr.exec("token", token)) {
                     log.error("sid 恢复错误 ", svr.getMessage());
                     this.setProperty(Application.token, null);
