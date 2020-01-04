@@ -25,6 +25,7 @@ public class AppStaticFileDefault implements IAppStaticFile {
         suffix.add(".gif");
         suffix.add(".icon");
         suffix.add(".bmp");
+        suffix.add(".ico");
 
         // 音频文件
         suffix.add(".mp3");
