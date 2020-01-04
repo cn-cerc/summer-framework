@@ -82,12 +82,15 @@ public class RemoteService implements IServiceProxy {
             Curl curl = new Curl();
             curl.putParameter("dataIn", getDataIn().getJSON());
             curl.putParameter(RequestData.TOKEN, this.token);
-            log.info("params {}", curl.getParameters());
             log.info("url {}", this.getUrl());
+            log.info("params {}", curl.getParameters());
 
             String response = curl.doPost(this.getUrl());
             log.info("response {}", response);
+
             if (response == null) {
+                log.warn("url {}", this.getUrl());
+                log.warn("params {}", curl.getParameters());
                 this.setMessage("远程服务异常");
                 return false;
             }
