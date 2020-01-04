@@ -6,7 +6,9 @@ import java.util.Map;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.core.StubHandle;
 import cn.cerc.db.mysql.SqlQuery;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SplitMenus {
 
     public static void main(String[] args) {
@@ -37,14 +39,15 @@ public class SplitMenus {
         for (String ver : list) {
             int key = Integer.parseInt(ver);
             String verCode = items.get(key);
-//            if (!verMenu.locate("VerCode_", verCode)) {
-            verMenu.append();
-            verMenu.setField("VerCode_", verCode);
-            verMenu.setField("MenuCode_", menuCode);
-            verMenu.setField("AppUser_", "admin");
-            verMenu.setField("AppDate_", TDateTime.Now());
-            verMenu.post();
-//            }
+            if (!verMenu.locate("VerCode_", verCode)) {
+                log.info("版本 {}，菜单 {}", verCode, menuCode);
+                verMenu.append();
+                verMenu.setField("VerCode_", verCode);
+                verMenu.setField("MenuCode_", menuCode);
+                verMenu.setField("AppUser_", "admin");
+                verMenu.setField("AppDate_", TDateTime.Now());
+                verMenu.post();
+            }
         }
     }
 
