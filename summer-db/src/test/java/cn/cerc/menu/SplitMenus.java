@@ -11,6 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SplitMenus {
 
+    private static final String App_Menus = "s_menus";
+
+    private static final String Verlist_Menu = "s_verlist_menu";
+
     public static void main(String[] args) {
         StubHandle handle = new StubHandle();
 
@@ -23,7 +27,7 @@ public class SplitMenus {
         }
 
         SqlQuery menus = new SqlQuery(handle);
-        menus.add("select * from sysformdef");
+        menus.add("select * from %s", SplitMenus.App_Menus);
 //        menus.setMaximum(10);
         menus.open();
         while (menus.fetch()) {
@@ -33,7 +37,7 @@ public class SplitMenus {
 
     private static void splitMenu(StubHandle handle, Map<Integer, String> items, String verList, String menuCode) {
         SqlQuery verMenu = new SqlQuery(handle);
-        verMenu.add("select * from s_verlist_menu where MenuCode_='%s'", menuCode);
+        verMenu.add("select * from %s where MenuCode_='%s'", menuCode, SplitMenus.Verlist_Menu);
         verMenu.open();
         String[] list = verList.split(",");
         for (String ver : list) {
