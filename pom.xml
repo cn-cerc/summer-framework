@@ -12,7 +12,6 @@
     <name>summer-framework</name>
 
     <modules>
-        <module>summer-core</module>
         <module>summer-db</module>
         <module>summer-security</module>
         <module>summer-mis</module>
