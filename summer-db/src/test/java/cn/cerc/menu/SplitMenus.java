@@ -37,7 +37,7 @@ public class SplitMenus {
 
     private static void splitMenu(StubHandle handle, Map<Integer, String> items, String verList, String menuCode) {
         SqlQuery verMenu = new SqlQuery(handle);
-        verMenu.add("select * from %s where MenuCode_='%s'", menuCode, SplitMenus.Verlist_Menu);
+        verMenu.add("select * from %s where MenuCode_='%s'", SplitMenus.Verlist_Menu, menuCode);
         verMenu.open();
         String[] list = verList.split(",");
         for (String ver : list) {
