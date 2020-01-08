@@ -26,6 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Utils {
 
+    /**
+     * 不允许创建对象，只能作为工具类使用
+     */
+    private Utils() {
+    }
+
     public static final String vbCrLf = "\r\n";
 
     /**
