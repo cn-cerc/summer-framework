@@ -25,7 +25,12 @@ public class ServerConfig implements IConfig {
     public static final int AppLevelMaster = 3;
     private static final String confFile = "/application.properties";
     private static Properties properties = new Properties();
-    private static ServerConfig instance;
+
+    // Singleton witch static factory
+    private static final ServerConfig INSTANCE = new ServerConfig();
+
+    // 是否为debug状态
+    private int debug = -1;
 
     static {
         try {
@@ -43,20 +48,14 @@ public class ServerConfig implements IConfig {
         }
     }
 
-    // 是否为debug状态
-    private int debug = -1;
-
-    public ServerConfig() {
-        if (instance != null) {
+    private ServerConfig() {
+        if (INSTANCE != null) {
             log.error("ServerConfig instance is not null");
         }
     }
 
     public synchronized static ServerConfig getInstance() {
-        if (instance == null) {
-            instance = new ServerConfig();
-        }
-        return instance;
+        return INSTANCE;
     }
 
     public static boolean enableTaskService() {
