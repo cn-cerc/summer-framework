@@ -7,40 +7,22 @@ import java.io.IOException;
 import java.util.Properties;
 
 import cn.cerc.core.IConfig;
-import cn.cerc.core.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class LocalConfig implements IConfig {
 
-    private static final String SUMMER_APPLICATION = System.getProperty("user.home") + System.getProperty("file.separator") + "summer-application.properties";
-
-    private static final String SUMMER_REPLICA = System.getProperty("user.home") + System.getProperty("file.separator") + "summer-replcia.properties";
+    private static final String confFile = System.getProperty("user.home") + System.getProperty("file.separator")
+            + "summer-application.properties";
 
     private static Properties properties = new Properties();
-    private static LocalConfig instance;
 
-    private String confFile;
+    private static final LocalConfig INSTANCE = new LocalConfig();
 
-    public synchronized static LocalConfig getInstance() {
-        if (instance == null) {
-            new LocalConfig();
-        }
-        return instance;
-    }
-
-    private LocalConfig() {
-        if (instance != null) {
-            log.error("LocalConfig instance is not null");
-        }
-        instance = this;
-        refresh();
-    }
-
-    private void refresh() {
+    static {
         try {
             properties.clear();
-            File file = new File(this.getConfFile());
+            File file = new File(confFile);
             if (file.exists()) {
                 properties.load(new FileInputStream(confFile));
                 log.info("read properties from : {}", confFile);
@@ -50,19 +32,18 @@ public class LocalConfig implements IConfig {
         } catch (FileNotFoundException e) {
             log.error("The settings file does not exist: {}'", confFile);
         } catch (IOException e) {
-            log.error("Failed to load the settings from the file: {}", confFile);
+            log.error("Failed to load properties from the file: {}", confFile);
         }
     }
 
-    public static void main(String[] args) {
-        LocalConfig config1 = LocalConfig.getInstance();
-        System.out.println(config1.getProperty("mssql.site"));
+    public synchronized static LocalConfig getInstance() {
+        return INSTANCE;
+    }
 
-        config1.setConfFile(SUMMER_REPLICA);
-        System.out.println(config1.getProperty("mssql.site"));
-
-        LocalConfig config2 = LocalConfig.getInstance();
-        System.out.println("con2: " + config2.getProperty("mssql.site"));
+    private LocalConfig() {
+        if (INSTANCE != null) {
+            log.error("LocalConfig instance is not null");
+        }
     }
 
     @Override
@@ -79,20 +60,9 @@ public class LocalConfig implements IConfig {
         return getProperty(key, null);
     }
 
-    public String getConfFile() {
-        if (this.confFile == null) {
-            this.confFile = LocalConfig.SUMMER_APPLICATION;
-        }
-        return confFile;
-    }
-
-    public LocalConfig setConfFile(String confFile) {
-        if (Utils.isEmpty(confFile)) {
-            throw new RuntimeException("properties的文件路径不允许为空");
-        }
-        this.confFile = confFile;
-        refresh();
-        return this;
+    public static void main(String[] args) {
+        LocalConfig config1 = LocalConfig.getInstance();
+        System.out.println(config1.getProperty("rds.site"));
     }
 
 }
