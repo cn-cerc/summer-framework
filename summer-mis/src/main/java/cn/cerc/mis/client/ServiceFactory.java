@@ -21,7 +21,7 @@ public class ServiceFactory {
             if (ApplicationProperties.isMaster()) {
                 return new LocalService(handle);
             } else {
-                return new RemoteService(handle, corpNo);
+                return RemoteService.create(handle, corpNo);
             }
         }
 
@@ -34,7 +34,8 @@ public class ServiceFactory {
             Buffer buff = new Buffer(ServiceFactory.class.getName(), corpNo);
             String tarDB = buff.getString("database");
             if (tarDB == null || "".equals(tarDB)) {
-                RemoteService svr = new RemoteService(handle, ServiceFactory.Public, "ApiDB.getDatabase");
+                RemoteService svr = RemoteService.create(handle, ServiceFactory.Public);
+                svr.setService("ApiDB.getDatabase");
                 if (!svr.exec("bookNo", corpNo)) {
                     throw new RuntimeException(svr.getMessage());
                 }
@@ -46,7 +47,7 @@ public class ServiceFactory {
             if (tarDB.equals(curDB)) {
                 return new LocalService(new BookHandle(handle, corpNo));
             } else {
-                return new RemoteService(handle, corpNo);
+                return RemoteService.create(handle, corpNo);
             }
         }
     }

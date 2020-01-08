@@ -15,7 +15,6 @@ import net.sf.json.JSONObject;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
-
     private IHandle handle;
 
     private String host;
@@ -29,31 +28,20 @@ public class RemoteService implements IServiceProxy {
 
     private String buffKey;
 
-    public RemoteService(IHandle handle) {
-        this.handle = handle;
-        this.token = ApplicationProperties.getToken(handle);
+    public static RemoteService create(IHandle handle, String bookNo) {
+        return new RemoteService(handle, bookNo);
     }
 
-    public RemoteService(IHandle handle, String bookNo, String service) {
+    private RemoteService(IHandle handle, String bookNo) {
         this.handle = handle;
         this.token = ApplicationProperties.getToken(handle);
 
-        LocalConfig localConfig = LocalConfig.getInstance();
-        this.host = getApiHost(localConfig, bookNo);
-        this.path = bookNo;
-        this.service = service;
-    }
-
-    public RemoteService(IHandle handle, String bookNo) {
-        this.handle = handle;
-        this.token = ApplicationProperties.getToken(handle);
-
-        LocalConfig localConfig = LocalConfig.getInstance();
-        this.host = getApiHost(localConfig, bookNo);
+        this.host = getApiHost(bookNo);
         this.path = bookNo;
     }
 
-    private String getApiHost(LocalConfig localConfig, String bookNo) {
+    private String getApiHost(String bookNo) {
+        LocalConfig localConfig = LocalConfig.getInstance();
         String key = ApplicationProperties.Rempte_Host_Key + "." + bookNo;
         return localConfig.getProperty(key, ApplicationProperties.Local_Host);
     }
