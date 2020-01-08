@@ -69,6 +69,8 @@ public class UIHeader extends UIComponent {
         IClient client = owner.getForm().getClient();
         if (!client.isPhone()) {
             IHandle handle = owner.getForm().getHandle();
+            String token = (String) handle.getProperty(Application.token);
+            handle.init(token);
             currentUser = R.asString(owner.getForm().getHandle(), "当前用户");
             currentCorpNo = R.asString(owner.getForm().getHandle(), "当前账套");
             leftMenus.add(homePage);
