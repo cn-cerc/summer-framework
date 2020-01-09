@@ -166,9 +166,11 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
 
         html.println("</ul>");
         if (buttons != null) {
+            html.println("<div>");
             for (AbstractField field : buttons.fields) {
                 field.output(html);
             }
+            html.println("</div>");
         }
         html.println("<div></div>");
         html.println("</form>");

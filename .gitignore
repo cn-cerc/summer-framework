@@ -29,3 +29,9 @@ build/
 
 ### VS Code ###
 .vscode/
+summer-mis/src/main/resources/rebel.xml
+summer-mis/src/main/resources/rebel-remote.xml
+summer-db/src/main/resources/rebel.xml
+summer-db/src/main/resources/rebel-remote.xml
+summer-core/src/main/resources/rebel.xml
+summer-core/src/main/resources/rebel-remote.xml
