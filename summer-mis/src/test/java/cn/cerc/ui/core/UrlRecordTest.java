@@ -2,7 +2,7 @@ package cn.cerc.ui.core;
 
 import org.junit.Test;
 
-class UrlRecordTest {
+public class UrlRecordTest {
 
     @Test
     public void test() {
