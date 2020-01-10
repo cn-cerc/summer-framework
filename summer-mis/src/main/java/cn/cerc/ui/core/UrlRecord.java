@@ -88,7 +88,10 @@ public class UrlRecord {
         this.params = builder.params;
     }
 
-    private UrlRecord(String site, String name) {
+    public UrlRecord() {
+    }
+
+    public UrlRecord(String site, String name) {
         super();
         this.site = site;
         this.name = name;
