@@ -30,3 +30,6 @@ build/
 ### VS Code ###
 .vscode/
 *rebel.xml
+
+### macOS ###
+*.DS_Store
