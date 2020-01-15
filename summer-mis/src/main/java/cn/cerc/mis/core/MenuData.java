@@ -27,6 +27,7 @@ public class MenuData {
     private boolean custom; // 是否客制化菜单
     private String funcCode;
     private String module;
+    private String group;
 
     public String getModule() {
         return module;
@@ -193,6 +194,14 @@ public class MenuData {
 
     public void setPhone(boolean phone) {
         this.phone = phone;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
 }

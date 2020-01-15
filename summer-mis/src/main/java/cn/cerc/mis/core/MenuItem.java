@@ -20,6 +20,8 @@ public class MenuItem {
     public static final String PARENT = "parentId";
     // 菜单图标，为URL值
     public static final String IMAGE = "image";
+    // 菜单分组
+    public static final String GROUP = "group";
     // 菜单代码
     private String code;
     private boolean window;
@@ -98,6 +100,11 @@ public class MenuItem {
 
     public void setWindow(boolean window) {
         this.window = window;
+    }
+    
+    public String getGroup() {
+        String result = this.getParam(GROUP);
+        return result != null ? result : "";
     }
 
 }

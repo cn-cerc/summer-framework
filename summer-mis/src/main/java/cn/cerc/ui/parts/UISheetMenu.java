@@ -6,13 +6,15 @@ import java.util.List;
 import cn.cerc.core.Utils;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 public class UISheetMenu extends UISheet {
     private List<UrlRecord> menus = new ArrayList<>();
-    private UIImage logo; // 显示logo
-    private UISpan welcome; // 欢迎语
+    private UIImage icon; // 显示icon
+    private UISpan caption; // 标题
+    private UIButton opera; // 操作
 
     public UISheetMenu(UIToolBar owner) {
         super(owner);
@@ -25,10 +27,13 @@ public class UISheetMenu extends UISheet {
             return;
 
         html.println("<section class='%s'>", this.cssClass);
-        if (welcome != null) {
+        if (caption != null) {
             html.println("<div class='nowpage'>");
-            logo.output(html);
-            welcome.output(html);
+            icon.output(html);
+            caption.output(html);
+            if (opera != null) {
+                opera.output(html);
+            }
             html.println("</div>");
         }
         html.println("<div>");
@@ -71,10 +76,18 @@ public class UISheetMenu extends UISheet {
         return menu;
     }
 
-    public void setLogoAndWelcome(String logoUrl, String welcome) {
-        this.logo = new UIImage();
-        this.logo.setSrc(logoUrl);
-        this.welcome = new UISpan();
-        this.welcome.setText(welcome);
+    public void setIconAndCaption(String logoUrl, String caption) {
+        this.icon = new UIImage();
+        this.icon.setSrc(logoUrl);
+        this.caption = new UISpan();
+        this.caption.setText(caption);
+    }
+
+    public void setIconAndCaption(String logoUrl, String caption, UIButton opera) {
+        this.icon = new UIImage();
+        this.icon.setSrc(logoUrl);
+        this.caption = new UISpan();
+        this.caption.setText(caption);
+        this.opera = opera;
     }
 }
