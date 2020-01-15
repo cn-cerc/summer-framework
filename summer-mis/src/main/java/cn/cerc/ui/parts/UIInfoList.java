@@ -18,9 +18,24 @@ public class UIInfoList extends UIComponent {
         super(owner);
     }
 
+    public Line setTitle(String title) {
+        Line line = new Line();
+        line.setTitle(title);
+        items.add(line);
+        return line;
+    }
+
     public Line setTitle(String imgSrc, String title) {
         Line line = new Line();
         line.setTitle(imgSrc, title);
+        items.add(line);
+        return line;
+    }
+
+    public Line setTitle(String imgSrc, String title, String operaText, String href) {
+        Line line = new Line();
+        line.setTitle(imgSrc, title);
+        line.setRightOpera(operaText, href);
         items.add(line);
         return line;
     }
@@ -42,14 +57,6 @@ public class UIInfoList extends UIComponent {
         return line;
     }
 
-    public Line setTitle(String imgSrc, String title, String operaText, String href) {
-        Line line = new Line();
-        line.setTitle(imgSrc, title);
-        line.setRightOpera(operaText, href);
-        items.add(line);
-        return line;
-    }
-
     public UIInfoList setOnClick(String onClick) {
         this.onClick = onClick;
         return this;
@@ -57,6 +64,18 @@ public class UIInfoList extends UIComponent {
 
     public UIInfoList setClickUrl(String url) {
         this.onClick = String.format("window.location.href=\"%s\";", url);
+        return this;
+    }
+
+    // 在一行里设置多个组件
+    public UIInfoList addLineUIComponent(UIComponent... components) {
+        if (components == null || components.length == 0) {
+            throw new RuntimeException("components array null or length is 0");
+        }
+        Line line = this.getLine();
+        for (UIComponent component : components) {
+            line.getItems().add(component);
+        }
         return this;
     }
 
@@ -99,14 +118,19 @@ public class UIInfoList extends UIComponent {
             return uiText;
         }
 
-        public Line setTitle(String imgSrc, String title) {
-            UIImage img = new UIImage();
-            img.setSrc(imgSrc);
-            items.add(img);
+        public Line setTitle(String title) {
             UISpan uiTitle = new UISpan();
             uiTitle.setText(title);
             uiTitle.setRole("title");
             items.add(uiTitle);
+            return this;
+        }
+
+        public Line setTitle(String imgSrc, String title) {
+            UIImage img = new UIImage();
+            img.setSrc(imgSrc);
+            items.add(img);
+            setTitle(title);
             return this;
         }
 
