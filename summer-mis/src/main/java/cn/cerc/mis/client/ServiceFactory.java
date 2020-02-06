@@ -16,6 +16,12 @@ public class ServiceFactory {
         return svr;
     }
 
+    public static IServiceProxy get(IHandle handle, String corpNo, String service) {
+        IServiceProxy svr = ServiceFactory.get(handle, corpNo);
+        svr.setService(service);
+        return svr;
+    }
+
     public static IServiceProxy get(IHandle handle, String corpNo) {
         if ("public".equals(corpNo)) {
             if (ApplicationProperties.isMaster()) {
@@ -50,12 +56,6 @@ public class ServiceFactory {
                 return RemoteService.create(handle, corpNo);
             }
         }
-    }
-
-    public static IServiceProxy get(IHandle handle, String corpNo, String service) {
-        IServiceProxy svr = ServiceFactory.get(handle, corpNo);
-        svr.setService(service);
-        return svr;
     }
 
 }
