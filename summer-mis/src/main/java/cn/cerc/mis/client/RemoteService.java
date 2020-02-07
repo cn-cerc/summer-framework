@@ -21,7 +21,6 @@ public class RemoteService implements IServiceProxy {
     private String path;
     private String service;
     private String token;
-    private String userCode;
 
     private DataSet dataIn;
     private DataSet dataOut;
@@ -205,11 +204,4 @@ public class RemoteService implements IServiceProxy {
         this.buffKey = buffKey;
     }
 
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
 }
