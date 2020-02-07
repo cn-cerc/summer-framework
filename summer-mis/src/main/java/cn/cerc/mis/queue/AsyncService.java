@@ -105,7 +105,7 @@ public class AsyncService implements IServiceProxy {
             if (ServerConfig.isServerDevelop()) {
                 ds.add("select * from %s", QueueDB.TEST);
             } else {
-                ds.add("select * from %s", AliyunQueueConnection.defaultQueue);
+                ds.add("select * from %s", QueueDB.SUMMER);
             }
             ds.open();
             ds.appendDataSet(this.getDataIn(), true);

@@ -7,51 +7,51 @@ public interface IServiceProxy {
     public static final String _message_ = "_message_";
 
     // 返回服务代码
-    public String getService();
+    String getService();
 
     // 设置服务代码
-    public IServiceProxy setService(String service);
+    IServiceProxy setService(String service);
 
     // 传入数据
-    public DataSet getDataIn();
+    DataSet getDataIn();
 
     // 返回数据
-    public DataSet getDataOut();
+    DataSet getDataOut();
 
     // 提示讯息
-    public String getMessage();
+    String getMessage();
 
     // 执行
-    public boolean exec(Object... args);
+    boolean exec(Object... args);
 
     // 服务缓存
-    default public String getExportKey() {
+    default String getExportKey() {
         return null;
     }
 
     // select
-    default public boolean get(Object... args) {
+    default boolean get(Object... args) {
         Record headIn = this.getDataIn().getHead();
         headIn.setField("_method_", "get");
         return exec(args);
     }
 
     // append
-    default public boolean post(Object... args) {
+    default boolean post(Object... args) {
         Record headIn = this.getDataIn().getHead();
         headIn.setField("_method_", "post");
         return exec(args);
     }
 
     // update
-    default public boolean put(Object... args) {
+    default boolean put(Object... args) {
         Record headIn = this.getDataIn().getHead();
         headIn.setField("_method_", "put");
         return exec(args);
     }
 
     // delete
-    default public boolean delete(Object... args) {
+    default boolean delete(Object... args) {
         Record headIn = this.getDataIn().getHead();
         headIn.setField("_method_", "delete");
         return exec(args);

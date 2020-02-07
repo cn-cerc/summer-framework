@@ -43,9 +43,10 @@ public class ProxyService extends AbstractForm {
             if ("public".equals(curBookNo)) {
                 svr = new LocalService(this, service);
             } else {
-                if (curBookNo.equals(this.getCorpNo())) 
+                if (curBookNo.equals(this.getCorpNo())) {
                     return jsonPage.setResultMessage(false, "服务调用错误");
-                
+                }
+
                 BookHandle bHandle = new BookHandle(this, curBookNo);
                 svr = new LocalService(bHandle, service);
             }
