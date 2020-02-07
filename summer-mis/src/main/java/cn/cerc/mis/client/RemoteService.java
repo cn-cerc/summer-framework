@@ -21,6 +21,7 @@ public class RemoteService implements IServiceProxy {
     private String path;
     private String service;
     private String token;
+    private String userCode;
 
     private DataSet dataIn;
     private DataSet dataOut;
@@ -77,6 +78,9 @@ public class RemoteService implements IServiceProxy {
         try {
             Curl curl = new Curl();
             curl.putParameter("dataIn", getDataIn().getJSON());
+            if (Utils.isNotEmpty(this.userCode)) {
+                curl.putParameter("userCode", this.userCode);
+            }
             curl.putParameter(RequestData.TOKEN, this.token);
             log.info("url {}", this.getUrl());
             log.info("params {}", curl.getParameters());
@@ -201,4 +205,11 @@ public class RemoteService implements IServiceProxy {
         this.buffKey = buffKey;
     }
 
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
 }
