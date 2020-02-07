@@ -77,9 +77,6 @@ public class RemoteService implements IServiceProxy {
         try {
             Curl curl = new Curl();
             curl.putParameter("dataIn", getDataIn().getJSON());
-            if (Utils.isNotEmpty(this.userCode)) {
-                curl.putParameter("userCode", this.userCode);
-            }
             curl.putParameter(RequestData.TOKEN, this.token);
             log.info("url {}", this.getUrl());
             log.info("params {}", curl.getParameters());
