@@ -73,7 +73,7 @@ public class SvrUserMessages extends CustomService {
         cdsMsg.setField("Level_", level);
         cdsMsg.setField("Subject_", subject);
         if (content.length() > 0)
-            cdsMsg.setField("Content_", content.toString());
+            cdsMsg.setField("Content_", content);
         cdsMsg.setField("AppUser_", handle.getUserCode());
         cdsMsg.setField("AppDate_", TDateTime.Now());
         // 日志类消息默认为已读
