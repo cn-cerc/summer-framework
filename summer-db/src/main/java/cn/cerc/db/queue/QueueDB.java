@@ -1,5 +1,7 @@
 package cn.cerc.db.queue;
 
+import cn.cerc.db.core.ServerConfig;
+
 /**
  * 阿里云消息队列
  */
@@ -8,55 +10,63 @@ public class QueueDB {
     /**
      * 自动发送邮件
      **/
-    public static final String AUTOMAIL = "automail";
+    public static final String AUTOMAIL = getQueueDB("ququedb.automail");
 
     /**
      * 任务队列
      **/
-    public static final String JOBLIST = "joblist";
+    public static final String JOBLIST = getQueueDB("ququedb.joblist");
 
     /**
      * 系统消息
      **/
-    public static final String MESSAGE = "message";
+    public static final String MESSAGE = getQueueDB("ququedb.message") ;
 
     /**
      * 系统消息 测试队列
      **/
-    public static final String MESSAGE_TEST = "message-test";
+    public static final String MESSAGE_TEST = getQueueDB("ququedb.message-test");
 
     /**
      * 邮件发送
      **/
-    public static final String SENDMAIL = "sendmail";
+    public static final String SENDMAIL = getQueueDB("ququedb.sendmail");
 
     /**
      * 回算队列
      **/
-    public static final String SUMMER = "summer";
+    public static final String SUMMER = getQueueDB("ququedb.summer");
 
     /**
      * 资料同步
      **/
-    public static final String MATERIAL = "material";
+    public static final String MATERIAL = getQueueDB("ququedb.material");
 
     /**
      * 资料同步 测试队列
      **/
-    public static final String MATERIAL_TEST = "material-test";
+    public static final String MATERIAL_TEST = getQueueDB("ququedb.material-test");
 
     /**
      * 测试队列
      **/
-    public static final String TEST = "test";
+    public static final String TEST = getQueueDB("ququedb.test");
 
     /**
      * 全文检索
      */
-    public static final String ELASTICSEARCH = "elasticsearch";
+    public static final String ELASTICSEARCH = getQueueDB("ququedb.elasticsearch");
 
     /**
      * 全文检索 测试队列
      **/
-    public static final String ELASTICSEARCH_TEST = "elasticsearch-test";
+    public static final String ELASTICSEARCH_TEST = getQueueDB("ququedb.elasticsearch-test");
+
+    private static String getQueueDB(String queue) {
+        String queueDB = ServerConfig.getInstance().getProperty(queue);
+        if (queueDB == null) {
+            throw new RuntimeException(String.format("配置文件中未配置该key %s", queue));
+        }
+        return queueDB;
+    }
 }
