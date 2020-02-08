@@ -23,11 +23,6 @@ public class QueueDB {
     public static final String MESSAGE = getQueueDB("ququedb.message") ;
 
     /**
-     * 系统消息 测试队列
-     **/
-    public static final String MESSAGE_TEST = getQueueDB("ququedb.message-test");
-
-    /**
      * 邮件发送
      **/
     public static final String SENDMAIL = getQueueDB("ququedb.sendmail");
@@ -43,24 +38,14 @@ public class QueueDB {
     public static final String MATERIAL = getQueueDB("ququedb.material");
 
     /**
-     * 资料同步 测试队列
-     **/
-    public static final String MATERIAL_TEST = getQueueDB("ququedb.material-test");
-
-    /**
      * 测试队列
      **/
-    public static final String TEST = getQueueDB("ququedb.test");
+    public static final String TEST = "test";
 
     /**
      * 全文检索
      */
     public static final String ELASTICSEARCH = getQueueDB("ququedb.elasticsearch");
-
-    /**
-     * 全文检索 测试队列
-     **/
-    public static final String ELASTICSEARCH_TEST = getQueueDB("ququedb.elasticsearch-test");
 
     private static String getQueueDB(String queue) {
         String queueDB = ServerConfig.getInstance().getProperty(queue);
