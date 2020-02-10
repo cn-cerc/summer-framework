@@ -25,11 +25,6 @@ public class UrlRecord {
         this.name = name;
     }
 
-    @Deprecated // 请改为 putParam
-    public UrlRecord addParam(String key, String value) {
-        return putParam(key, value);
-    }
-
     public UrlRecord putParam(String key, String value) {
         params.put(key, value);
         return this;
