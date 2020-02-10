@@ -1,7 +1,5 @@
 package cn.cerc.ui.page;
 
-import static cn.cerc.mis.core.ClientDevice.APP_DEVICE_EE;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -12,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
@@ -39,7 +38,7 @@ public class UIPageModify extends AbstractJspPage {
     }
 
     public void addExportFile(String service, String key) {
-        if (APP_DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
+        if (ClientDevice.APP_DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
             ExportFile item = new ExportFile(service, key);
             this.put("export", item);
         }
