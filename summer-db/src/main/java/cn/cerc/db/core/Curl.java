@@ -259,7 +259,7 @@ public class Curl {
 
     }
 
-    protected String doPost(String reqUrl, StringBuffer params) {
+    public String doPost(String reqUrl, StringBuffer params) {
         HttpURLConnection url_con = null;
         try {
             reqUrl = new String(reqUrl.getBytes("utf-8"), "utf-8");
