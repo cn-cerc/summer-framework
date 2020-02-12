@@ -2,12 +2,9 @@ package cn.cerc.mis.config;
 
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.mysql.BatchScript;
-import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.db.queue.QueueDB;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
