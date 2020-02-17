@@ -30,7 +30,7 @@ public class BOMTemplate extends ExcelTemplate {
     }
 
     @Override
-    public void output(WritableSheet sheet) throws RowsExceededException, WriteException {
+    public void output(WritableSheet sheet) throws WriteException {
         // 输出列头
         Record head = this.getDataSet().getHead();
         if (heads != null) {

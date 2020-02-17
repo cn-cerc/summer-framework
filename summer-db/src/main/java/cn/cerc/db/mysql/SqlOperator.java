@@ -85,7 +85,7 @@ public class SqlOperator implements IDataOperator {
         if (record.getFieldDefs().size() == 0)
             throw new RuntimeException("字段为空");
         Connection conn = getConnection();
-        try (BuildStatement bs = new BuildStatement(conn);) {
+        try (BuildStatement bs = new BuildStatement(conn)) {
             if (searchKeys.size() == 0)
                 initPrimaryKeys(conn, record);
 
@@ -145,7 +145,7 @@ public class SqlOperator implements IDataOperator {
             return false;
 
         Connection conn = getConnection();
-        try (BuildStatement bs = new BuildStatement(conn);) {
+        try (BuildStatement bs = new BuildStatement(conn)) {
             if (this.searchKeys.size() == 0)
                 initPrimaryKeys(conn, record);
             if (searchKeys.size() == 0)
@@ -221,7 +221,7 @@ public class SqlOperator implements IDataOperator {
 
     @Override
     public boolean delete(Record record) {
-        try (BuildStatement bs = new BuildStatement(conntion);) {
+        try (BuildStatement bs = new BuildStatement(conntion)) {
             if (this.searchKeys.size() == 0)
                 initPrimaryKeys(conntion, record);
             if (searchKeys.size() == 0)
@@ -324,7 +324,7 @@ public class SqlOperator implements IDataOperator {
 
     private String getKeyByDB(Connection conn, String tableName) throws SQLException {
         StringBuffer result = new StringBuffer();
-        try (BuildStatement bs = new BuildStatement(conn);) {
+        try (BuildStatement bs = new BuildStatement(conn)) {
             bs.append("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS ");
             bs.append("where table_name= ? AND COLUMN_KEY= 'PRI' ", tableName);
             PreparedStatement ps = bs.build();

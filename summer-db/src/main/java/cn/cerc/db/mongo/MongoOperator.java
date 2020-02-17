@@ -66,7 +66,7 @@ public class MongoOperator implements IDataOperator {
                 continue;
             Object obj = record.getField(field);
             if (obj instanceof TDateTime)
-                doc.append(field, ((TDateTime) obj).toString());
+                doc.append(field, obj.toString());
             else if (obj instanceof Date)
                 doc.append(field, (new TDateTime((Date) obj)).toString());
             else

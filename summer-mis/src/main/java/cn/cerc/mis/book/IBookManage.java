@@ -14,7 +14,7 @@ public interface IBookManage {
     void setDateRange(TDateTime beginDate, TDateTime endDate, boolean forceExecute);
 
     // 取得回算年月
-    default public String getBookMonth() {
+    default String getBookMonth() {
         TDateTime dateFrom = getDateFrom();
         if (dateFrom == null)
             throw new RuntimeException("帐本年月不允许为空！");
@@ -29,10 +29,10 @@ public interface IBookManage {
     }
 
     // 是否预览变更而不保存
-    public boolean isPreviewUpdate();
+    boolean isPreviewUpdate();
 
     // 是否指定料号回算
-    public String getPartCode();
+    String getPartCode();
 
     // 取得开始日期
     TDateTime getDateFrom();
@@ -44,5 +44,5 @@ public interface IBookManage {
     String getInitMonth();
 
     // 返回数据容器
-    public BookDataList getDatas();
+    BookDataList getDatas();
 }

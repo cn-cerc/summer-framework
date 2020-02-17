@@ -59,7 +59,7 @@ public class ExcelTemplate {
         this.historyWriter = historyWriter;
     }
 
-    public void output(WritableSheet sheet) throws RowsExceededException, WriteException {
+    public void output(WritableSheet sheet) throws WriteException {
         // 输出列头
         for (int col = 0; col < columns.size(); col++) {
             Column column = columns.get(col);
@@ -82,7 +82,7 @@ public class ExcelTemplate {
     }
 
     protected void writeColumn(WritableSheet sheet, int col, int row, Column column)
-            throws WriteException, RowsExceededException {
+            throws WriteException {
         if (column instanceof NumberColumn) {
             jxl.write.Number item = new jxl.write.Number(col, row, (double) column.getValue());
             sheet.addCell(item);

@@ -5,7 +5,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
 
 public interface IService extends SupportHandle {
-    public IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException;
+    IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException;
 
     default ServiceStatus fail(String format, Object... args) {
         ServiceStatus status = new ServiceStatus(false);
@@ -16,11 +16,11 @@ public interface IService extends SupportHandle {
         return status;
     }
 
-    public default ServiceStatus success() {
+    default ServiceStatus success() {
         return new ServiceStatus(true);
     }
 
-    public default ServiceStatus success(String format, Object... args) {
+    default ServiceStatus success(String format, Object... args) {
         ServiceStatus status = new ServiceStatus(true);
         if (args.length > 0)
             status.setMessage(String.format(format, args));
@@ -29,13 +29,13 @@ public interface IService extends SupportHandle {
         return status;
     }
 
-    default public boolean checkSecurity(IHandle handle) {
+    default boolean checkSecurity(IHandle handle) {
         IHandle sess = (IHandle) handle.getProperty(null);
-        return sess != null ? sess.logon() : false;
+        return sess != null && sess.logon();
     }
 
     // 主要适用于Delphi Client调用
-    default public String getJSON(DataSet dataOut) {
+    default String getJSON(DataSet dataOut) {
         return String.format("[%s]", dataOut.getJSON());
     }
 }

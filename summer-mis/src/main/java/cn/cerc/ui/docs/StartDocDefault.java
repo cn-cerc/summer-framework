@@ -66,7 +66,7 @@ public class StartDocDefault {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" "), title.length()).trim();
+            title = title.substring(title.indexOf(" ")).trim();
         }
 
         outputHtml(title, context);
@@ -78,7 +78,7 @@ public class StartDocDefault {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" "), title.length()).trim();
+            title = title.substring(title.indexOf(" ")).trim();
         }
 
         outputMDFile(title, context);

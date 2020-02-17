@@ -5,26 +5,26 @@ import java.math.BigInteger;
 
 public interface IRecord {
 
-    public boolean exists(String field);
+    boolean exists(String field);
 
-    public boolean getBoolean(String field);
+    boolean getBoolean(String field);
 
-    public int getInt(String field);
+    int getInt(String field);
 
-    public BigInteger getBigInteger(String field);
+    BigInteger getBigInteger(String field);
 
-    public BigDecimal getBigDecimal(String field);
+    BigDecimal getBigDecimal(String field);
 
-    public double getDouble(String field);
+    double getDouble(String field);
 
-    public String getString(String field);
+    String getString(String field);
 
-    public TDate getDate(String field);
+    TDate getDate(String field);
 
-    public TDateTime getDateTime(String field);
+    TDateTime getDateTime(String field);
 
-    public IRecord setField(String field, Object value);
+    IRecord setField(String field, Object value);
 
-    public Object getField(String field);
+    Object getField(String field);
 
 }

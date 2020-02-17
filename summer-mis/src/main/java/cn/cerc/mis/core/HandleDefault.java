@@ -148,10 +148,7 @@ public class HandleDefault implements IHandle {
             return false;
         }
         String corpNo = this.getCorpNo();
-        if (corpNo == null || "".equals(corpNo)) {
-            return false;
-        }
-        return true;
+        return corpNo != null && !"".equals(corpNo);
     }
 
     @Override

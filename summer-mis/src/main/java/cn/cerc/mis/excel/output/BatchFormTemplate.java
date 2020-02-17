@@ -17,7 +17,7 @@ public class BatchFormTemplate extends FormTemplate {
     List<DataSet> items;
 
     @Override
-    public void output(WritableSheet sheet) throws RowsExceededException, WriteException {
+    public void output(WritableSheet sheet) throws WriteException {
         int newRow = 0;
         for (DataSet dataSet : items) {
             this.setDataSet(dataSet);

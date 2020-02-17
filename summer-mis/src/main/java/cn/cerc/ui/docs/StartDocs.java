@@ -56,7 +56,7 @@ public class StartDocs extends HttpServlet {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" "), title.length()).trim();
+            title = title.substring(title.indexOf(" ")).trim();
         }
 
         resp.setContentType("text/html;charset=UTF-8");
@@ -78,7 +78,7 @@ public class StartDocs extends HttpServlet {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" "), title.length()).trim();
+            title = title.substring(title.indexOf(" ")).trim();
         }
 
         resp.setContentType("text/html;charset=UTF-8");

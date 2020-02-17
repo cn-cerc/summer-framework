@@ -35,7 +35,7 @@ public class SqlQueryTest {
         String sql;
         sql = String.format("select Code_,Name_ from %s", userInfo);
         ds.add(sql);
-        assertEquals(String.format("%s limit %s", sql, String.valueOf(BigdataException.MAX_RECORDS + 2)),
+        assertEquals(String.format("%s limit %s", sql, (BigdataException.MAX_RECORDS + 2)),
                 ds.getSqlText().getCommand());
 
         ds.clear();
@@ -49,7 +49,7 @@ public class SqlQueryTest {
         sql = String.format("select Code_,Name_ from %s", userInfo);
         ds.add(sql);
 
-        assertEquals(String.format("%s limit %s", sql, String.valueOf(BigdataException.MAX_RECORDS + 2)),
+        assertEquals(String.format("%s limit %s", sql, (BigdataException.MAX_RECORDS + 2)),
                 ds.getSqlText().getCommand());
     }
 

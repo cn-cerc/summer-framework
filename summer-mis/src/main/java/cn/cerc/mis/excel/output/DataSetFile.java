@@ -21,11 +21,11 @@ public class DataSetFile {
         this.dataSet = dataSet;
     }
 
-    public void save() throws IOException, RowsExceededException, WriteException {
+    public void save() throws IOException, WriteException {
         save(this.fileName);
     }
 
-    public void save(String fileName) throws IOException, RowsExceededException, WriteException {
+    public void save(String fileName) throws IOException, WriteException {
         setFileName(fileName);
         OutputStream os = new FileOutputStream(fileName);
         ExcelTemplate template = this.getTemplate();

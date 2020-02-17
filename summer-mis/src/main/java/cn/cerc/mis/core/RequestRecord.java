@@ -20,9 +20,7 @@ public class RequestRecord implements IRecord {
         String val = req.getParameter(field);
         if (val == null)
             return false;
-        if ("".equals(val))
-            return false;
-        return true;
+        return !"".equals(val);
     }
 
     @Override
@@ -84,9 +82,7 @@ public class RequestRecord implements IRecord {
         String val = req.getParameter(field);
         if (val == null)
             return false;
-        if ("".equals(val))
-            return false;
-        return true;
+        return !"".equals(val);
     }
 
     @Override

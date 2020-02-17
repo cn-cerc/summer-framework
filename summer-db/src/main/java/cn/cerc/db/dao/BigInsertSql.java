@@ -27,7 +27,7 @@ public class BigInsertSql {
         String lastCommand = null;
         ClassData classData = ClassFactory.get(oldRecord.getClass());
         String updateKey = classData.getUpdateKey();
-        try (BuildStatement bs = new BuildStatement(conn);) {
+        try (BuildStatement bs = new BuildStatement(conn)) {
             Map<String, Object> items = new LinkedHashMap<>();
             BigOperator.copy(oldRecord, (key, value) -> {
                 items.put(key, value);

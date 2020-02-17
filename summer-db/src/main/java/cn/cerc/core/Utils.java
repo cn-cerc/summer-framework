@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class Utils {
     public static Object deserializeToObject(String str) throws IOException, ClassNotFoundException {
         if (str == null)
             return null;
-        ByteArrayInputStream byteIn = new ByteArrayInputStream(str.getBytes("ISO-8859-1"));
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(str.getBytes(StandardCharsets.ISO_8859_1));
         ObjectInputStream objIn = new ObjectInputStream(byteIn);
         return objIn.readObject();
     }
@@ -83,7 +84,7 @@ public class Utils {
         if (str == null)
             return null;
         try {
-            ByteArrayInputStream byteIn = new ByteArrayInputStream(str.getBytes("ISO-8859-1"));
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(str.getBytes(StandardCharsets.ISO_8859_1));
             ObjectInputStream objIn = new ObjectInputStream(byteIn);
             return objIn.readObject();
         } catch (ClassNotFoundException | IOException e) {
@@ -167,7 +168,7 @@ public class Utils {
             if (iStart - 1 < 0) {
                 return "";
             }
-            return text.substring(iStart - 1, text.length());
+            return text.substring(iStart - 1);
         } else if (text.equals("")) {
             return "";
         }

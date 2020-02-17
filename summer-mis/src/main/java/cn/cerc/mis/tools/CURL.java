@@ -110,14 +110,14 @@ public class CURL {
 
             if (paramIndex > 0) {
                 queryUrl = reqUrl.substring(0, paramIndex);
-                String parameters = reqUrl.substring(paramIndex + 1, reqUrl.length());
+                String parameters = reqUrl.substring(paramIndex + 1);
                 String[] paramArray = parameters.split("&");
                 for (int i = 0; i < paramArray.length; i++) {
                     String string = paramArray[i];
                     int index = string.indexOf("=");
                     if (index > 0) {
                         String parameter = string.substring(0, index);
-                        String value = string.substring(index + 1, string.length());
+                        String value = string.substring(index + 1);
                         params.append(parameter);
                         params.append("=");
                         params.append(URLEncoder.encode(value, CURL.requestEncoding));

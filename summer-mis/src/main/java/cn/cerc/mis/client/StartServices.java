@@ -2,11 +2,9 @@ package cn.cerc.mis.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,27 +44,26 @@ public class StartServices extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doProcess("get", req, resp); // select
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doProcess("post", req, resp); // insert
     }
 
     @Override
-    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doProcess("put", req, resp); // modify
     }
 
     @Override
-    public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doProcess("delete", req, resp);
     }
 
-    private void doProcess(String method, HttpServletRequest req, HttpServletResponse resp)
-            throws UnsupportedEncodingException, IOException {
+    private void doProcess(String method, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String uri = req.getRequestURI();
         IAppConfig conf = Application.getAppConfig();
         if (!uri.startsWith("/" + conf.getPathServices()))
@@ -186,7 +183,7 @@ public class StartServices extends HttpServlet {
         try {
             reader = req.getReader();
             StringBuffer params = new StringBuffer();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 params.append(line);
             }

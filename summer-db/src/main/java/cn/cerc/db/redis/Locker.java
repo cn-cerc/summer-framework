@@ -66,7 +66,7 @@ public class Locker implements Closeable {
             } else {
                 String currentValue = jedis.get(key);
                 if (currentValue != null && currentValue.split(",").length == 2) {
-                    String args[] = currentValue.split(",");
+                    String[] args = currentValue.split(",");
                     long lastTime = Long.parseLong(args[0]);
                     if (System.currentTimeMillis() > lastTime) {
                         String oldValue = jedis.getSet(key, curTime + "," + flag);

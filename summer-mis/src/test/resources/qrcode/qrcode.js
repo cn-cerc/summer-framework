@@ -47,7 +47,7 @@ function QRCode(typeNumber, errorCorrectLevel) {
 	this.modules = null;
 	this.moduleCount = 0;
 	this.dataCache = null;
-	this.dataList = new Array();
+	this.dataList = [];
 }
 
 QRCode.prototype = {
@@ -408,7 +408,7 @@ QRCode.createData = function(typeNumber, errorCorrectLevel, dataList) {
 	}
 
 	return QRCode.createBytes(buffer, rsBlocks);
-}
+};
 
 QRCode.createBytes = function(buffer, rsBlocks) {
 
@@ -473,7 +473,7 @@ QRCode.createBytes = function(buffer, rsBlocks) {
 
 	return data;
 
-}
+};
 
 //---------------------------------------------------------------------
 // QRMode
@@ -1163,7 +1163,7 @@ QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
 
 	var length = rsBlock.length / 3;
 	
-	var list = new Array();
+	var list = [];
 	
 	for (var i = 0; i < length; i++) {
 
@@ -1177,7 +1177,7 @@ QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
 	}
 	
 	return list;
-}
+};
 
 QRRSBlock.getRsBlockTable = function(typeNumber, errorCorrectLevel) {
 
@@ -1193,14 +1193,14 @@ QRRSBlock.getRsBlockTable = function(typeNumber, errorCorrectLevel) {
 	default :
 		return undefined;
 	}
-}
+};
 
 //---------------------------------------------------------------------
 // QRBitBuffer
 //---------------------------------------------------------------------
 
 function QRBitBuffer() {
-	this.buffer = new Array();
+	this.buffer = [];
 	this.length = 0;
 }
 

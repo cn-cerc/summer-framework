@@ -204,9 +204,9 @@ public class DaoUtil {
             } else {
                 sb.append(field.substring(0, 1).toLowerCase());
                 if (field.endsWith("_"))
-                    sb.append(field.substring(1, field.length() - 1));
+                    sb.append(field, 1, field.length() - 1);
                 else
-                    sb.append(field.substring(1, field.length()));
+                    sb.append(field.substring(1));
             }
             sb.append(";");
             if (remark != null)

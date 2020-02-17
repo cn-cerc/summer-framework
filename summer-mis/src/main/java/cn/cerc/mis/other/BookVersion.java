@@ -22,7 +22,7 @@ public enum BookVersion {
 
     private String code;
 
-    private BookVersion(String code) {
+    BookVersion(String code) {
         this.code = code;
     }
 

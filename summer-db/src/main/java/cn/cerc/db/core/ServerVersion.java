@@ -2,5 +2,5 @@ package cn.cerc.db.core;
 
 @Deprecated
 public enum ServerVersion {
-    develop, beta, master, test;
+    develop, beta, master, test
 }

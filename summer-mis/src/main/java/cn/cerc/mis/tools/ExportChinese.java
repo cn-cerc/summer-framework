@@ -34,9 +34,9 @@ public class ExportChinese {
     private static String getChinese(String temp) {
         int index = temp.indexOf("R.asString");
         if (index > -1) {
-            String s1 = temp.substring(index, temp.length());
+            String s1 = temp.substring(index);
             if (s1.indexOf("\"") > -1) {
-                String s2 = s1.substring(s1.indexOf("\"") + 1, s1.length());
+                String s2 = s1.substring(s1.indexOf("\"") + 1);
                 if (s2.indexOf("\")") > -1) {
                     String s3 = s2.substring(0, s2.indexOf("\")"));
                     if (s3.length() > 0)
@@ -123,7 +123,7 @@ public class ExportChinese {
         File[] fs = fileDir.listFiles();
         for (File f : fs) {
             if (f.isFile()) {
-                if (fileType.equals(f.getName().substring(f.getName().lastIndexOf(".") + 1, f.getName().length())))
+                if (fileType.equals(f.getName().substring(f.getName().lastIndexOf(".") + 1)))
                     lfile.add(f);
             } else {
                 List<File> ftemps = loadFiles(f, fileType);
