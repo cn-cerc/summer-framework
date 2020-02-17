@@ -3,15 +3,17 @@ package cn.cerc.mis.pay.wxpay;
 import java.security.MessageDigest;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.UUID;
+
+import cn.cerc.core.MD5;
 
 public class Sha1Util {
 
     public static String getNonceStr() {
-        Random random = new Random();
-        return MD5Util.MD5Encode(String.valueOf(random.nextInt(10000)), "UTF-8");
+        String uuid = UUID.randomUUID().toString();
+        return MD5.get(uuid).toUpperCase();
     }
 
     public static String getTimeStamp() {

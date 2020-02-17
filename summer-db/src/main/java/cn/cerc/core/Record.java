@@ -273,11 +273,7 @@ public class Record implements IRecord, Serializable {
             return (Boolean) obj;
         } else if (obj instanceof String) {
             String str = (String) obj;
-            if ("".equals(str) || "0".equals(str) || "false".equals(str)) {
-                return false;
-            } else {
-                return true;
-            }
+            return !"".equals(str) && !"0".equals(str) && !"false".equals(str);
         } else if (obj instanceof Integer) {
             int value = (Integer) obj;
             return value > 0;
