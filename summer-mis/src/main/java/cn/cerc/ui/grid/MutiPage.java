@@ -154,7 +154,7 @@ public class MutiPage {
         this.request = request;
         if (request != null) {
             String tmp = request.getParameter("pageno");
-            if (tmp != null && !tmp.equals("")) {
+            if (tmp != null && !"".equals(tmp)) {
                 int current = Integer.parseInt(tmp);
                 if (current > 0 && current != this.current) {
                     this.current = current;

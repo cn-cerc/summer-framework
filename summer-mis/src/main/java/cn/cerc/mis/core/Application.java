@@ -136,7 +136,7 @@ public class Application {
     }
 
     public static IForm getForm(HttpServletRequest req, HttpServletResponse resp, String formId) {
-        if (formId == null || formId.equals("") || formId.equals("service")) {
+        if (formId == null || "".equals(formId) || "service".equals(formId)) {
             return null;
         }
 

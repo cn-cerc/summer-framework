@@ -125,7 +125,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         String IP = getIPAddress(this.getRequest());
         if (obj.check(userCode, password, deviceId, IP, form.getClient().getLanguage())) {
             String token = obj.getSessionId();
-            if (token != null && !token.equals("")) {
+            if (token != null && !"".equals(token)) {
                 log.debug(String.format("认证成功，取得sid(%s)", token));
                 ((ClientDevice) this.getForm().getClient()).setToken(token);
             }
@@ -162,7 +162,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
-        if (ip.equals("0:0:0:0:0:0:0:1")) {
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
             ip = "0.0.0.0";
         }
         return ip;

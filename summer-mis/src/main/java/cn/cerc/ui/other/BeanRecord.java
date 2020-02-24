@@ -45,7 +45,7 @@ public class BeanRecord<T> implements AutoCloseable, BuildRecord {
             }
             for (Field f : fields) {
                 String field = f.getName();
-                if (Modifier.toString(f.getModifiers()).equals("private")) {
+                if ("private".equals(Modifier.toString(f.getModifiers()))) {
                     String func = "get" + field.substring(0, 1).toUpperCase() + field.substring(1);
                     Method item = items0.get(func);
                     if (item != null && item.getReturnType().equals(f.getType())) {
@@ -96,12 +96,12 @@ public class BeanRecord<T> implements AutoCloseable, BuildRecord {
                     Class<?> p1 = mt.getParameterTypes()[0];
                     if (p1.getName().equals(value.getClass().getName())) {
                         mt.invoke(owner, value);
-                    } else if (p1.getName().equals("java.lang.String")) {
+                    } else if ("java.lang.String".equals(p1.getName())) {
                         mt.invoke(owner, value.toString());
-                    } else if (p1.getName().equals("int") && value.getClass().getName().equals("java.lang.Integer")) {
+                    } else if ("int".equals(p1.getName()) && "java.lang.Integer".equals(value.getClass().getName())) {
                         int val = (Integer) value;
                         mt.invoke(owner, val);
-                    } else if (p1.getName().equals("double") && value.getClass().getName().equals("java.lang.Double")) {
+                    } else if ("double".equals(p1.getName()) && "java.lang.Double".equals(value.getClass().getName())) {
                         double val = (Double) value;
                         mt.invoke(owner, val);
                     } else {

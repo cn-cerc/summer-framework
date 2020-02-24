@@ -52,7 +52,7 @@ public class RequestData {
                 }
             }
 
-            if (this.param != null && this.param.equals("")) {
+            if (this.param != null && "".equals(this.param)) {
                 this.param = null;
             }
         } catch (IOException e) {

@@ -30,7 +30,7 @@ public class StartApp implements Filter {
         Application.get(req);
 
         // 处理默认首页问题
-        if (uri.equals("/")) {
+        if ("/".equals(uri)) {
             if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null) {
                 req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
             }
@@ -42,7 +42,7 @@ public class StartApp implements Filter {
             IAppConfig conf = Application.getAppConfig();
             resp.sendRedirect(String.format("%s%s", ApplicationProperties.App_Path, conf.getFormWelcome()));
             return;
-        } else if (uri.equals("/MobileConfig") || uri.equals("/mobileConfig")) {
+        } else if ("/MobileConfig".equals(uri) || "/mobileConfig".equals(uri)) {
             if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null) {
                 req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
             }

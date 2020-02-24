@@ -21,7 +21,7 @@ public class DataSetTest_delete {
         ds.first();
         while (!ds.eof()) {
             i++;
-            if (ds.getString("code").equals("a")) {
+            if ("a".equals(ds.getString("code"))) {
                 ds.delete();
             } else {
                 ds.next();
@@ -36,7 +36,7 @@ public class DataSetTest_delete {
         ds.first();
         while (!ds.eof()) {
             i++;
-            if (ds.getString("code").equals("b")) {
+            if ("b".equals(ds.getString("code"))) {
                 ds.delete();
             } else {
                 ds.next();
@@ -51,7 +51,7 @@ public class DataSetTest_delete {
         ds.first();
         while (!ds.eof()) {
             i++;
-            if (ds.getString("code").equals("c")) {
+            if ("c".equals(ds.getString("code"))) {
                 ds.delete();
             } else {
                 ds.next();

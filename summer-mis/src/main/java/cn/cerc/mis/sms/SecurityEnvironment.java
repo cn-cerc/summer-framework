@@ -110,20 +110,22 @@ public class SecurityEnvironment {
         mv.init();
         String mobile = mv.getMobile();
         switch (mv.checkVerify(securityCode)) {
-        case PASS:
-            if (!"".equals(mobile)) {
-                updateSecurityRecord(mobile, form, false);
-            }
-            break;
-        case DIFFERENCE:
-            if (!"".equals(mobile)) {
-                updateSecurityRecord(mobile, form, true);
-            }
-            DataValidateException.stopRun(R.asString(form, "验证码输入有误，请检查"), true);
-            break;
-        case ERROR:
-            DataValidateException.stopRun(mv.getMessage(), true);
-            break;
+            case PASS:
+                if (!"".equals(mobile)) {
+                    updateSecurityRecord(mobile, form, false);
+                }
+                break;
+            case DIFFERENCE:
+                if (!"".equals(mobile)) {
+                    updateSecurityRecord(mobile, form, true);
+                }
+                DataValidateException.stopRun(R.asString(form, "验证码输入有误，请检查"), true);
+                break;
+            case ERROR:
+                DataValidateException.stopRun(mv.getMessage(), true);
+                break;
+            default:
+                DataValidateException.stopRun(R.asString(form, "不支持的错误类型"), true);
         }
     }
 

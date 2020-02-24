@@ -81,7 +81,7 @@ public class HtmlGrid extends HtmlControl {
             html.append(String.format(" bordercolor='%s'", bordercolor));
             html.append(String.format(" bgcolor='%s'", bgcolor));
         }
-        if (this.width != null && !this.width.equals("")) {
+        if (this.width != null && !"".equals(this.width)) {
             html.append(String.format(" width='%s'", this.width));
         }
         html.append(">");

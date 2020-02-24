@@ -260,7 +260,7 @@ public class StartForms implements Filter {
 
         Object pageOutput = "";
         String token = request.getParameter(RequestData.TOKEN);
-        if (token == null || token.equals("")) {
+        if (token == null || "".equals(token)) {
             token = request.getSession().getId();
         }
 

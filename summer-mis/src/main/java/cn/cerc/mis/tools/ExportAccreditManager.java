@@ -19,7 +19,7 @@ public class ExportAccreditManager implements IAccreditManager {
             throw new RuntimeException("securityCode is null");
         }
         IHandle appHandle = (IHandle) handle;
-        return userOptionEnabled(appHandle, securityCode).equals("on");
+        return "on".equals(userOptionEnabled(appHandle, securityCode));
     }
 
     private String userOptionEnabled(IHandle handle, String optCode) {

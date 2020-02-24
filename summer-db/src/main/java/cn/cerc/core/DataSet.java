@@ -501,10 +501,10 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public boolean setJSON(String json) {
-        if (json == null || json.equals("")) {
+        if (json == null || "".equals(json)) {
             return false;
         }
-        if (json.equals("")) {
+        if ("".equals(json)) {
             this.close();
             return true;
         }

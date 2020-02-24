@@ -108,7 +108,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         if (val == null) {
             return null;
         }
-        if (val.equals("")) {
+        if ("".equals(val)) {
             return null;
         }
         String fmt = null;

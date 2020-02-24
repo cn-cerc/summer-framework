@@ -174,7 +174,7 @@ public class Utils {
                 return "";
             }
             return text.substring(iStart - 1);
-        } else if (text.equals("")) {
+        } else if ("".equals(text)) {
             return "";
         }
         return text.substring(iStart - 1, iStart - 1 + iLength);
@@ -275,7 +275,7 @@ public class Utils {
     // 兼容 delphi 代码
     public static String isNull(String text, String def) {
         // 判断是否为空如果为空就返回。
-        return text.equals("") ? def : text;
+        return "".equals(text) ? def : text;
     }
 
     // 兼容 delphi 代码

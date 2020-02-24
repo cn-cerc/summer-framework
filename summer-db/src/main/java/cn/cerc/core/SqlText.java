@@ -74,7 +74,7 @@ public class SqlText {
 
     public String getTextByLimit() {
         String sql = this.text;
-        if (sql == null || sql.equals("")) {
+        if (sql == null || "".equals(sql)) {
             throw new RuntimeException("SqlText.Text is null ！");
         }
 
@@ -101,7 +101,7 @@ public class SqlText {
 
     public String getCommand() {
         String sql = this.getText();
-        if (sql == null || sql.equals("")) {
+        if (sql == null || "".equals(sql)) {
             throw new RuntimeException("SqlText.text is null ！");
         }
 

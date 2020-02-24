@@ -50,7 +50,7 @@ public class BatchScript {
     public void print() {
         String[] tmp = items.toString().split(";");
         for (String item : tmp) {
-            if (!item.trim().equals("")) {
+            if (!"".equals(item.trim())) {
                 log.info(item.trim() + ";");
             }
         }
@@ -59,7 +59,7 @@ public class BatchScript {
     public BatchScript exec() {
         String[] tmp = items.toString().split(";");
         for (String item : tmp) {
-            if (!item.trim().equals("")) {
+            if (!"".equals(item.trim())) {
                 log.debug(item.trim() + ";");
                 connection.execute(item.trim());
             }
@@ -70,7 +70,7 @@ public class BatchScript {
     public boolean exists() {
         String[] tmp = items.toString().split(";");
         for (String item : tmp) {
-            if (!item.trim().equals("")) {
+            if (!"".equals(item.trim())) {
                 log.debug(item.trim() + ";");
                 SqlQuery ds = new SqlQuery(handle);
                 ds.add(item.trim());
@@ -95,7 +95,7 @@ public class BatchScript {
         String[] tmp = items.toString().split(";");
         int len = 0;
         for (String item : tmp) {
-            if (!item.trim().equals("")) {
+            if (!"".equals(item.trim())) {
                 len++;
             }
         }

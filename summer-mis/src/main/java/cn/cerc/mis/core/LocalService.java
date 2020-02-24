@@ -57,7 +57,7 @@ public class LocalService implements IServiceProxy {
         String classCode = args[args.length - 1];
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
-            if (method.getReturnType().getName().equals("boolean")) {
+            if ("boolean".equals(method.getReturnType().getName())) {
                 if (method.getParameters().length == 0) {
                     String name = method.getName();
                     if (method.getName().startsWith("_")) {

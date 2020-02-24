@@ -257,7 +257,7 @@ public class BookOptions {
 
     public static String getOption2(IHandle handle, String ACode, String def) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
-            if (buff.isNull() || buff.getString("Value_").equals("")) {
+            if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 log.info("reset buffer.");
                 LocalService ser = new LocalService(handle, "SvrBookOption");
                 if (ser.exec("Code_", ACode) && !ser.getDataOut().eof()) {
@@ -272,7 +272,7 @@ public class BookOptions {
     }
 
     public static boolean checkStockNum(IHandle handle, double AStock) {
-        if (getOption(handle, EnableStockLessControl, "off").equals("on")) {
+        if ("on".equals(getOption(handle, EnableStockLessControl, "off"))) {
             return AStock >= 0;
         } else {
             return true;
@@ -281,7 +281,7 @@ public class BookOptions {
 
     // 是否不允许库存为负数
     public static boolean isEnableStockLessControl(IHandle handle) {
-        return getOption(handle, EnableStockLessControl, "off").equals("on");
+        return "on".equals(getOption(handle, EnableStockLessControl, "off"));
     }
 
     // 是否启动与ERP同步
@@ -317,7 +317,7 @@ public class BookOptions {
         String paramKey = AccInitYearMonth;
         // String result = getOption(owner, paramKey, "201301";
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), paramKey)) {
-            if (buff.isNull() || buff.getString("Value_").equals("")) {
+            if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
                 BuildQuery f = new BuildQuery(handle);
                 String corpNo = handle.getCorpNo();

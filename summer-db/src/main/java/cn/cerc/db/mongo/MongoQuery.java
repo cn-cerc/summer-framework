@@ -172,9 +172,9 @@ public class MongoQuery extends DataQuery {
             String str = item.trim();
             if (str.split(" ").length == 2) {
                 String[] tmp = str.split(" ");
-                if (tmp[1].equals("ASC")) {
+                if ("ASC".equals(tmp[1])) {
                     sort.append(tmp[0], 1);
-                } else if (tmp[1].equals("DESC")) {
+                } else if ("DESC".equals(tmp[1])) {
                     sort.append(tmp[0], -1);
                 } else {
                     throw new RuntimeException("暂不支持的排序条件：" + str);

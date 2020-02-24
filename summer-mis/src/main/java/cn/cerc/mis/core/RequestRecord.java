@@ -34,7 +34,7 @@ public class RequestRecord implements IRecord {
         if (val == null) {
             return false;
         }
-        if (val.equals("")) {
+        if ("".equals(val)) {
             return false;
         }
         for (int i = 0; i < val.length(); i++) {
@@ -67,7 +67,7 @@ public class RequestRecord implements IRecord {
         if (val == null) {
             return false;
         }
-        if (val.equals("")) {
+        if ("".equals(val)) {
             return false;
         }
         for (int i = 0; i < val.length(); i++) {
@@ -95,7 +95,7 @@ public class RequestRecord implements IRecord {
 
     @Override
     public boolean getBoolean(String field) {
-        return req.getParameter(field).equals("true");
+        return "true".equals(req.getParameter(field));
     }
 
     public boolean hasDateTime(String field) {

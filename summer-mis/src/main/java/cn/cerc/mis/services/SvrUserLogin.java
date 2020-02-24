@@ -64,7 +64,7 @@ public class SvrUserLogin extends CustomService {
 
         // 开始进行用户验证
         String userCode = headIn.getString("Account_");
-        if (userCode.equals("")) {
+        if ("".equals(userCode)) {
             throw new SecurityCheckException("用户帐号不允许为空！");
         }
 
