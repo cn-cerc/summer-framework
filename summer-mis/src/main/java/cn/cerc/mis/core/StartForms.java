@@ -152,9 +152,9 @@ public class StartForms implements Filter {
             } catch (Exception e) {
                 outputErrorPage(req, resp, e);
             } finally {
-                if (handle != null) {
-                    handle.close();
-                }
+//                if (handle != null) {
+//                    handle.close();
+//                }
             }
         } catch (Exception e) {
             outputErrorPage(req, resp, e);

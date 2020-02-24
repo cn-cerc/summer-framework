@@ -213,10 +213,10 @@ public class UIHeader extends UIComponent {
     }
 
     public void addLeftMenu(UrlRecord urlRecord) {
-        if (this.moduleCode == null) {
-            this.moduleCode = urlRecord.getSite();
-            urlRecord.setSite("TWebModule?module=" + urlRecord.getSite());
-        }
+//        if (this.moduleCode == null) {
+//            this.moduleCode = urlRecord.getSite();
+//            urlRecord.setSite("TWebModule?module=" + urlRecord.getSite());
+//        }
         leftMenus.add(urlRecord);
     }
 
