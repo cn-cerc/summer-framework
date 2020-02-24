@@ -194,6 +194,7 @@ public class Lunar {
         return (cyclicalm(num));
     }
 
+    @Override
     public String toString() {
         // return year + "年" + (leap ? "闰" : "") + chineseNumber[month - 1] +
         // "月" + getChinaDayString(day);

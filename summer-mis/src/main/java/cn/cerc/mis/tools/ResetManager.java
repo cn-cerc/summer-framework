@@ -141,6 +141,7 @@ public class ResetManager implements IBookManage {
         }
     }
 
+    @Override
     public IHandle getHandle() {
         return handle;
     }
@@ -164,6 +165,7 @@ public class ResetManager implements IBookManage {
         return this;
     }
 
+    @Override
     public String getInitMonth() {
         return initMonth;
     }

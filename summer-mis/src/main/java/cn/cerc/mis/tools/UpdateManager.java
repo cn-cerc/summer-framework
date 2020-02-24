@@ -113,6 +113,7 @@ public class UpdateManager implements IBookManage {
         timer.get("process total").stop();
     }
 
+    @Override
     public IHandle getHandle() {
         return handle;
     }
@@ -142,6 +143,7 @@ public class UpdateManager implements IBookManage {
         }
     }
 
+    @Override
     public String getInitMonth() {
         return initMonth;
     }

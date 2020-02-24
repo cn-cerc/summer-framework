@@ -94,6 +94,7 @@ public class SearchManager implements IBookManage {
         log.info("完成");
     }
 
+    @Override
     public IHandle getHandle() {
         return handle;
     }
@@ -116,6 +117,7 @@ public class SearchManager implements IBookManage {
         return this;
     }
 
+    @Override
     public String getInitMonth() {
         return initMonth;
     }
@@ -125,6 +127,7 @@ public class SearchManager implements IBookManage {
         return sources.size() > 0;
     }
 
+    @Override
     public BookDataList getDatas() {
         return dataList;
     }

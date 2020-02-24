@@ -46,10 +46,12 @@ public class SumRecord extends Record {
         return this;
     }
 
+    @Override
     public DataSet getDataSet() {
         return dataSet;
     }
 
+    @Override
     public void setDataSet(DataSet dataSet) {
         this.dataSet = dataSet;
     }

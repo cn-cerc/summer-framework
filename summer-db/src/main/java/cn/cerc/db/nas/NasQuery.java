@@ -94,11 +94,13 @@ public class NasQuery extends DataQuery {
         this.nasMode = nasMode;
     }
 
+    @Override
     public NasQuery add(String sql) {
         super.add(sql);
         return this;
     }
 
+    @Override
     public NasQuery add(String format, Object... args) {
         super.add(format, args);
         return this;
