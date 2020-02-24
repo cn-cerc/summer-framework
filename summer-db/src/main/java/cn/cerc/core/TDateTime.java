@@ -47,8 +47,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public TDateTime(String value) {
         String fmt = getFormat(value);
-        if (fmt == null)
+        if (fmt == null) {
             fmt = "yyyy-MM-dd HH:mm:ss";
+        }
         SimpleDateFormat sdf = new SimpleDateFormat(fmt);
         try {
             data = sdf.parse(value);
@@ -79,8 +80,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public static TDateTime fromDate(String val) {
         String fmt = getFormat(val);
-        if (fmt == null)
+        if (fmt == null) {
             return null;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat(fmt);
         TDateTime tdtTo = new TDateTime();
         try {
@@ -103,17 +105,20 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     public static String getFormat(String val) {
-        if (val == null)
+        if (val == null) {
             return null;
-        if (val.equals(""))
+        }
+        if (val.equals("")) {
             return null;
+        }
         String fmt = null;
         java.util.Iterator<String> it = dateFormats.keySet().iterator();
         while (it.hasNext() && fmt == null) {
             String key = it.next();
             String str = dateFormats.get(key);
-            if (val.matches(str))
+            if (val.matches(str)) {
                 fmt = key;
+            }
         }
         return fmt;
     }
@@ -187,8 +192,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public static TDateTime StrToDate(String val) {
         String fmt = TDateTime.getFormat(val);
-        if (fmt == null)
+        if (fmt == null) {
             throw new RuntimeException("时间格式不正确: value=" + val);
+        }
         return new TDateTime(fmt, val);
     }
 
@@ -258,8 +264,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     @Override
     public String toString() {
-        if (data == null)
+        if (data == null) {
             return "";
+        }
         return format("yyyy-MM-dd HH:mm:ss");
     }
 
@@ -302,10 +309,12 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     public String format(String fmt) {
-        if (data == null)
+        if (data == null) {
             return null;
-        if (data.compareTo(new Date(0)) == 0)
+        }
+        if (data.compareTo(new Date(0)) == 0) {
             return "";
+        }
         SimpleDateFormat sdf = new SimpleDateFormat(fmt);
         return sdf.format(data);
     }
@@ -359,8 +368,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     // 若当前值大，则返回正数，否则返回负数
     public int compareDay(TDateTime dateFrom) {
-        if (dateFrom == null)
+        if (dateFrom == null) {
             return 0;
+        }
         // 返回this - to 的差异天数 ,返回相对值
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal1 = Calendar.getInstance();
@@ -372,8 +382,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
             cal1.setTime(sdf.parse(str2));
             cal2.setTime(sdf.parse(str1));
             int flag = 1;
-            if (cal1.after(cal2))
+            if (cal1.after(cal2)) {
                 flag = -1;
+            }
             while (cal1.compareTo(cal2) != 0) {
                 cal1.set(Calendar.DAY_OF_YEAR, cal1.get(Calendar.DAY_OF_YEAR) + flag);
                 count = count + flag;
@@ -451,8 +462,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public TDateTime incMonth(int offset) {
         TDateTime result = this.clone();
-        if (offset == 0)
+        if (offset == 0) {
             return result;
+        }
         Calendar cal = Calendar.getInstance();
         cal.setTime(result.getData());
         int day = cal.get(Calendar.DATE);
@@ -460,10 +472,11 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         boolean isMaxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH) == day;
         cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + offset);
         int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        if (isMaxDay || day > maxDay)
+        if (isMaxDay || day > maxDay) {
             cal.set(Calendar.DATE, maxDay);
-        else
+        } else {
             cal.set(Calendar.DATE, day);
+        }
         result.setData(cal.getTime());
         return result;
     }
@@ -540,12 +553,14 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     @Override
     public int compareTo(TDateTime tdt) {
-        if (tdt == null)
+        if (tdt == null) {
             return 1;
-        if (tdt.getData().getTime() == this.getData().getTime())
+        }
+        if (tdt.getData().getTime() == this.getData().getTime()) {
             return 0;
-        else
+        } else {
             return this.getData().getTime() > tdt.getData().getTime() ? 1 : -1;
+        }
     }
 
     @Override

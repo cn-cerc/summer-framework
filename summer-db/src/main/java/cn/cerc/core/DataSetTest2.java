@@ -48,8 +48,9 @@ public class DataSetTest2 {
             ds.setField("value", i);
             ds.post();
         }
-        for (int i = 100; i < MAX; i++)
+        for (int i = 100; i < MAX; i++) {
             assertTrue("查找错误", ds.locate("value", i));
+        }
     }
 
     @Test(timeout = 50000)

@@ -35,8 +35,9 @@ public class PostFieldException extends RuntimeException {
         StringBuffer buff = new StringBuffer();
         buff.append("not find field:");
         for (String field : query.getFieldDefs().getFields()) {
-            if (!fields.contains(field))
+            if (!fields.contains(field)) {
                 buff.append(" " + field);
+            }
         }
         return buff.toString();
     }
