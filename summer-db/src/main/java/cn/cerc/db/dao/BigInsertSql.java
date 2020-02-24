@@ -38,8 +38,10 @@ public class BigInsertSql {
             for (String field : items.keySet()) {
                 if (!updateKey.equals(field)) {
                     i++;
-                    if (i > 1)
+                    if (i <= 1) {
+                    } else {
                         bs.append(",");
+                    }
                     bs.append(field);
                 }
             }
@@ -65,8 +67,9 @@ public class BigInsertSql {
             int result = ps.executeUpdate();
 
             BigInteger uidvalue = findAutoUid(conn);
-            if (uidvalue == null)
+            if (uidvalue == null) {
                 throw new RuntimeException("未获取:" + updateKey);
+            }
 
             log.debug("自增列uid value：" + uidvalue);
             setAutoUid(oldRecord, uidvalue.longValue());
@@ -88,10 +91,11 @@ public class BigInsertSql {
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 Object obj = rs.getObject(1);
-                if (obj instanceof BigInteger)
+                if (obj instanceof BigInteger) {
                     result = (BigInteger) obj;
-                else
+                } else {
                     result = BigInteger.valueOf(rs.getInt(1));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,8 +133,9 @@ public class BigInsertSql {
             }
             for (Annotation item : field.getAnnotations()) {
                 if (item instanceof GeneratedValue) {
-                    if (((GeneratedValue) item).strategy() == GenerationType.IDENTITY)
+                    if (((GeneratedValue) item).strategy() == GenerationType.IDENTITY) {
                         isUid = true;
+                    }
                     break;
                 }
             }
