@@ -33,8 +33,9 @@ public class OssDisk {
         // 上传本地文件到服务器
         // 例：upload("D:\\oss\\temp.png", "131001/Default/131001/temp.png")
         File file = new File(localFile);
-        if (!file.exists())
+        if (!file.exists()) {
             throw new RuntimeException("文件不存在：" + localFile);
+        }
         try {
             ObjectMetadata summary = client.getObjectMetadata(connection.getBucket(), remoteFile);
             if (summary != null && summary.getContentLength() == file.length()) {
@@ -52,8 +53,9 @@ public class OssDisk {
 
     // 下载文件
     public boolean download(String fileName) {
-        if (localPath == null || "".equals(localPath))
+        if (localPath == null || "".equals(localPath)) {
             throw new RuntimeException("localPath 必须先进行设置！");
+        }
 
         // 创建本地目录
         String localFile = localPath + fileName.replace('/', '\\');
@@ -106,15 +108,17 @@ public class OssDisk {
         int fromIndex = 0;
         while (tmpPath.indexOf("\\", fromIndex) > -1) {
             int beginIndex = tmpPath.indexOf("\\", fromIndex);
-            if (fromIndex == -1)
+            if (fromIndex == -1) {
                 break;
+            }
             subPath = tmpPath.substring(0, beginIndex);
             fromIndex = subPath.length() + 1;
             if (subPath.length() > 2) {
                 File file = new File(subPath);
                 // 如果文件夹不存在则创建
-                if (!file.exists() && !file.isDirectory())
+                if (!file.exists() && !file.isDirectory()) {
                     file.mkdir();
+                }
             }
         }
     }

@@ -70,10 +70,12 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public Object getProperty(String key) {
-        if ("request".equals(key))
+        if ("request".equals(key)) {
             return this.getRequest();
-        if ("session".equals(key))
+        }
+        if ("session".equals(key)) {
             return this.getRequest().getSession();
+        }
 
         return handle.getProperty(key);
     }
@@ -108,9 +110,9 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public String getParam(String key, String def) {
-        if (params.containsKey(key))
+        if (params.containsKey(key)) {
             return params.get(key);
-        else {
+        } else {
             return def;
         }
     }

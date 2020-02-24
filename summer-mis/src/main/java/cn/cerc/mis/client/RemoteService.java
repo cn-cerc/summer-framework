@@ -149,8 +149,9 @@ public class RemoteService implements IServiceProxy {
 
     @Override
     public DataSet getDataOut() {
-        if (dataOut == null)
+        if (dataOut == null) {
             dataOut = new DataSet();
+        }
         return dataOut;
     }
 
@@ -168,8 +169,9 @@ public class RemoteService implements IServiceProxy {
 
     @Override
     public DataSet getDataIn() {
-        if (dataIn == null)
+        if (dataIn == null) {
             dataIn = new DataSet();
+        }
         return dataIn;
     }
 

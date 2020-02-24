@@ -226,8 +226,9 @@ public class StartForms implements Filter {
             LocalService app = new LocalService(form.getHandle());
             app.setService("SvrUserLogin.verifyMachine");
             app.getDataIn().getHead().setField("deviceId", deviceId);
-            if (verifyCode != null && !"".equals(verifyCode))
+            if (verifyCode != null && !"".equals(verifyCode)) {
                 app.getDataIn().getHead().setField("verifyCode", verifyCode);
+            }
 
             if (app.exec()) {
                 result = true;
@@ -331,8 +332,9 @@ public class StartForms implements Filter {
                             JsonPage output = new JsonPage(form);
                             output.setResultMessage(false, "您的设备没有经过安全校验，无法继续作业");
                             pageOutput = output;
-                        } else
+                        } else {
                             pageOutput = new RedirectPage(form, Application.getAppConfig().getFormVerifyDevice());
+                        }
                     }
                 }
             }

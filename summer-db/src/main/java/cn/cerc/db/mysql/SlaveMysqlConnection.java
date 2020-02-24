@@ -28,8 +28,9 @@ public class SlaveMysqlConnection extends SqlConnection {
         String db = config.getProperty(SlaveMysqlConnection.rds_slave_database, "appdb");
         user = config.getProperty(SlaveMysqlConnection.rds_slave_username, "appdb_user");
         pwd = config.getProperty(SlaveMysqlConnection.rds_slave_password, "appdb_password");
-        if (host == null || user == null || pwd == null || db == null)
+        if (host == null || user == null || pwd == null || db == null) {
             throw new RuntimeException("RDS配置为空，无法连接主机！");
+        }
 
         return String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);
     }

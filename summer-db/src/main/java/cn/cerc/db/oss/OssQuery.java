@@ -51,8 +51,9 @@ public class OssQuery extends DataQuery {
 
     @Override
     public OssOperator getOperator() {
-        if (operator == null)
+        if (operator == null) {
             operator = new OssOperator();
+        }
         return operator;
     }
 

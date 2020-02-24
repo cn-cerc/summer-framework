@@ -30,8 +30,9 @@ public class StartServices extends HttpServlet {
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
 
     private static void loadServices(HttpServletRequest req) {
-        if (services != null)
+        if (services != null) {
             return;
+        }
         services = new HashMap<>();
         for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
             IRestful service = Application.getBean(serviceCode, IRestful.class);
@@ -66,8 +67,9 @@ public class StartServices extends HttpServlet {
     private void doProcess(String method, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String uri = req.getRequestURI();
         IAppConfig conf = Application.getAppConfig();
-        if (!uri.startsWith("/" + conf.getPathServices()))
+        if (!uri.startsWith("/" + conf.getPathServices())) {
             return;
+        }
 
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=UTF-8");
@@ -76,8 +78,9 @@ public class StartServices extends HttpServlet {
         // 将restPath转成service代码
         DataSet dataIn = new DataSet();
         String str = getParams(req);
-        if (null != str && !"[{}]".equals(str))
+        if (null != str && !"[{}]".equals(str)) {
             dataIn.setJSON(str);
+        }
         String serviceCode = getServiceCode(req, method, req.getRequestURI().substring(1), dataIn.getHead());
         log.info(req.getRequestURI() + " => " + serviceCode);
         if (serviceCode == null) {
@@ -121,8 +124,9 @@ public class StartServices extends HttpServlet {
     public String getServiceCode(HttpServletRequest req, String method, String uri, Record headIn) {
         loadServices(req);
         String[] paths = uri.split("/");
-        if (paths.length < 2)
+        if (paths.length < 2) {
             return null;
+        }
 
         int offset = 0;
         String bookNo = null;
@@ -136,8 +140,9 @@ public class StartServices extends HttpServlet {
         }
 
         for (String key : services.keySet()) {
-            if (!key.startsWith(method + "://"))
+            if (!key.startsWith(method + "://")) {
                 continue;
+            }
             int beginIndex = method.length() + 3;
             int endIndex = key.indexOf("?");
             String[] keys;
@@ -151,8 +156,9 @@ public class StartServices extends HttpServlet {
             if (!"*".equals(keys[0]) && !bookNo.equals(keys[0])) {
                 continue;
             }
-            if ((keys.length + params.length) != (paths.length - offset))
+            if ((keys.length + params.length) != (paths.length - offset)) {
                 continue;
+            }
             boolean find = true;
             for (int i = 1; i < keys.length; i++) {
                 if (!paths[i + offset].equals(keys[i])) {
@@ -173,8 +179,9 @@ public class StartServices extends HttpServlet {
                 return serviceCode;
             }
         }
-        if (paths.length == 2)
+        if (paths.length == 2) {
             return paths[1];
+        }
         return null;
     }
 

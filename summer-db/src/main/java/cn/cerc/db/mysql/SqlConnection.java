@@ -39,8 +39,9 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
 
     @Override
     public Connection getClient() {
-        if (connection != null)
+        if (connection != null) {
             return connection;
+        }
 
         try {
             if (url == null) {
@@ -73,8 +74,9 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
 
     @Override
     public void setConfig(IConfig config) {
-        if (this.config != config)
+        if (this.config != config) {
             url = null;
+        }
         this.config = config;
     }
 

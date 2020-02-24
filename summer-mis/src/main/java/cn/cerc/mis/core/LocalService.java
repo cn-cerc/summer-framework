@@ -32,13 +32,15 @@ public class LocalService implements IServiceProxy {
 
     public LocalService(IHandle handle) {
         this.handle = handle;
-        if (handle == null)
+        if (handle == null) {
             throw new RuntimeException("handle is null.");
+        }
 
         String pageNo = null;
         HttpServletRequest req = (HttpServletRequest) handle.getProperty("request");
-        if (req != null)
+        if (req != null) {
             pageNo = req.getParameter("pageno");
+        }
 
         // 遇到分页符时，尝试读取缓存
         this.bufferRead = pageNo != null;
@@ -58,8 +60,9 @@ public class LocalService implements IServiceProxy {
             if (method.getReturnType().getName().equals("boolean")) {
                 if (method.getParameters().length == 0) {
                     String name = method.getName();
-                    if (method.getName().startsWith("_"))
+                    if (method.getName().startsWith("_")) {
                         name = name.substring(1);
+                    }
                     items.put(classCode + "." + name, clazz);
                 }
             }
@@ -98,15 +101,19 @@ public class LocalService implements IServiceProxy {
     public boolean exec(Object... args) {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0)
+            if (args.length % 2 != 0) {
                 throw new RuntimeException("传入的参数数量必须为偶数！");
-            for (int i = 0; i < args.length; i = i + 2)
+            }
+            for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
+            }
         }
-        if (handle == null)
+        if (handle == null) {
             throw new RuntimeException("handle is null.");
-        if (serviceCode == null)
+        }
+        if (serviceCode == null) {
             throw new RuntimeException("service is null.");
+        }
 
         IService bean = Application.getService(handle, serviceCode);
         if (bean == null) {
@@ -154,8 +161,9 @@ public class LocalService implements IServiceProxy {
             return result;
         } catch (Exception e) {
             Throwable err = e;
-            if (e.getCause() != null)
+            if (e.getCause() != null) {
                 err = e.getCause();
+            }
             log.error(err.getMessage(), err);
             message = err.getMessage();
             return false;
@@ -166,19 +174,24 @@ public class LocalService implements IServiceProxy {
     public IStatus execute(Object... args) {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0)
+            if (args.length % 2 != 0) {
                 return new ServiceStatus(false, "传入的参数数量必须为偶数！");
-            for (int i = 0; i < args.length; i = i + 2)
+            }
+            for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
+            }
         }
-        if (handle == null)
+        if (handle == null) {
             return new ServiceStatus(false, "handle is null.");
-        if (serviceCode == null)
+        }
+        if (serviceCode == null) {
             return new ServiceStatus(false, "service is null.");
+        }
 
         IService bean = Application.getService(handle, serviceCode);
-        if (bean == null)
+        if (bean == null) {
             return new ServiceStatus(false, String.format("bean %s not find", serviceCode));
+        }
 
         try {
             log.info(this.serviceCode);
@@ -187,8 +200,9 @@ public class LocalService implements IServiceProxy {
             return status;
         } catch (Exception e) {
             Throwable err = e;
-            if (e.getCause() != null)
+            if (e.getCause() != null) {
                 err = e.getCause();
+            }
             log.error(err.getMessage(), err);
             message = err.getMessage();
             return new ServiceStatus(false, message);

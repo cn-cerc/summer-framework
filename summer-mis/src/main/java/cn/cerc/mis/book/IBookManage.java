@@ -16,15 +16,17 @@ public interface IBookManage {
     // 取得回算年月
     default String getBookMonth() {
         TDateTime dateFrom = getDateFrom();
-        if (dateFrom == null)
+        if (dateFrom == null) {
             throw new RuntimeException("帐本年月不允许为空！");
+        }
         return dateFrom.getYearMonth();
     }
 
     default void setBookMonth(String beginYearMonth) {
         // 传入日期年月大于当前年月则默认为当前年月
-        if (beginYearMonth.compareTo(TDateTime.Now().getYearMonth()) > 0)
+        if (beginYearMonth.compareTo(TDateTime.Now().getYearMonth()) > 0) {
             beginYearMonth = TDateTime.Now().getYearMonth();
+        }
         setDateRange(TDateTime.fromYearMonth(beginYearMonth), TDateTime.Now(), false);
     }
 

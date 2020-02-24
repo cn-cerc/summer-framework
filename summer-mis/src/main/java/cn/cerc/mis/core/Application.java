@@ -49,8 +49,10 @@ public class Application {
 
     public static void setContext(ApplicationContext applicationContext) {
         if (context != applicationContext) {
-            if (context != null)
+            if (context == null) {
+            } else {
                 log.warn("applicationContext overload!");
+            }
             context = applicationContext;
         }
     }
@@ -71,8 +73,10 @@ public class Application {
 
     public static <T> T getBean(Class<T> requiredType, String... beanId) {
         for (String key : beanId) {
-            if (context.containsBean(key))
-                return context.getBean(key, requiredType);
+            if (!context.containsBean(key)) {
+                continue;
+            }
+            return context.getBean(key, requiredType);
         }
         return null;
     }
@@ -108,34 +112,39 @@ public class Application {
     public static <T> T getBean(IHandle handle, Class<T> requiredType) {
         T bean = getBean(requiredType);
         if (bean != null && handle != null) {
-            if (bean instanceof SupportHandle)
+            if (bean instanceof SupportHandle) {
                 ((SupportHandle) bean).init(handle);
+            }
         }
         return bean;
     }
 
     public static IService getService(IHandle handle, String serviceCode) {
         IService bean = context.getBean(serviceCode, IService.class);
-        if (bean != null && handle != null)
+        if (bean != null && handle != null) {
             bean.init(handle);
+        }
         return bean;
     }
 
     public static IPassport getPassport(IHandle handle) {
         IPassport bean = getBean(IPassport.class, "passport", "passportDefault");
-        if (bean != null && handle != null)
+        if (bean != null && handle != null) {
             bean.setHandle(handle);
+        }
         return bean;
     }
 
     public static IForm getForm(HttpServletRequest req, HttpServletResponse resp, String formId) {
-        if (formId == null || formId.equals("") || formId.equals("service"))
+        if (formId == null || formId.equals("") || formId.equals("service")) {
             return null;
+        }
 
         setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext()));
 
-        if (!context.containsBean(formId))
+        if (!context.containsBean(formId)) {
             throw new RuntimeException(String.format("form %s not find!", formId));
+        }
 
         IForm form = context.getBean(formId, IForm.class);
         if (form != null) {
@@ -148,12 +157,13 @@ public class Application {
 
     public static String getLangage() {
         String lang = ServerConfig.getInstance().getProperty(deviceLanguage);
-        if (lang == null || "".equals(lang) || App_Language.equals(lang))
+        if (lang == null || "".equals(lang) || App_Language.equals(lang)) {
             return App_Language;
-        else if (LanguageType.en_US.equals(lang))
+        } else if (LanguageType.en_US.equals(lang)) {
             return lang;
-        else
+        } else {
             throw new RuntimeException("not support language: " + lang);
+        }
     }
 
 }

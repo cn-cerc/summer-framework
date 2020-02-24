@@ -9,10 +9,11 @@ public interface IService extends SupportHandle {
 
     default ServiceStatus fail(String format, Object... args) {
         ServiceStatus status = new ServiceStatus(false);
-        if (args.length > 0)
+        if (args.length > 0) {
             status.setMessage(String.format(format, args));
-        else
+        } else {
             status.setMessage(format);
+        }
         return status;
     }
 
@@ -22,10 +23,11 @@ public interface IService extends SupportHandle {
 
     default ServiceStatus success(String format, Object... args) {
         ServiceStatus status = new ServiceStatus(true);
-        if (args.length > 0)
+        if (args.length > 0) {
             status.setMessage(String.format(format, args));
-        else
+        } else {
             status.setMessage(format);
+        }
         return status;
     }
 

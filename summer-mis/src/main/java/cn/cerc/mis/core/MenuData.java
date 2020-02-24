@@ -42,8 +42,9 @@ public class MenuData {
     }
 
     public void setId(String id) {
-        if (id.indexOf('.') > -1)
+        if (id.indexOf('.') > -1) {
             throw new RuntimeException("error id: " + id);
+        }
         this.id = id;
     }
 
@@ -55,8 +56,9 @@ public class MenuData {
         if (caption != null) {
             String[] captions = caption.split("\\\\");
             this.caption = captions[captions.length - 1];
-        } else
+        } else {
             this.caption = "";
+        }
     }
 
     public String getDescribe() {

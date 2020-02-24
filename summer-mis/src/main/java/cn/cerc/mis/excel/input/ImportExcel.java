@@ -104,10 +104,12 @@ public class ImportExcel extends ImportExcelFile {
 
     public ImportExcelTemplate getTemplate() {
         if (template == null) {
-            if (templateId == null)
+            if (templateId == null) {
                 throw new RuntimeException("templateId is null");
-            if (app == null)
+            }
+            if (app == null) {
                 app = new FileSystemXmlApplicationContext(xmlFile);
+            }
             template = app.getBean(templateId, ImportExcelTemplate.class);
         }
         return template;
@@ -135,9 +137,10 @@ public class ImportExcel extends ImportExcelFile {
         Sheet sheet = rwb.getSheet(0);
 
         ImportExcelTemplate template = this.getTemplate();
-        if (template.getColumns().size() != sheet.getColumns())
+        if (template.getColumns().size() != sheet.getColumns()) {
             throw new RuntimeException(String.format("导入的文件：<b>%s</b>, 其总列数为 %d，而模版总列数为  %d 二者不一致，无法导入！",
                     file.getName(), sheet.getColumns(), template.getColumns().size()));
+        }
 
         DataSet ds = new DataSet();
         for (int row = 0; row < sheet.getRows(); row++) {
@@ -146,10 +149,11 @@ public class ImportExcel extends ImportExcelFile {
                     Cell cell = sheet.getCell(col, row);
                     String value = cell.getContents();
                     String title = template.getColumns().get(col).getName();
-                    if (!title.equals(value))
+                    if (!title.equals(value)) {
                         throw new RuntimeException(
                                 String.format("导入的文件：<b>%s</b>，其标题第 %d 列为【 %s】, 模版中为【%s】，二者不一致，无法导入！", file.getName(),
                                         col + 1, value, title));
+                    }
                 }
             } else {
                 ds.append();
@@ -168,13 +172,15 @@ public class ImportExcel extends ImportExcelFile {
                         err.setValue(value);
                         err.setCol(col);
                         err.setRow(row);
-                        if (errorHandle == null || !errorHandle.process(err))
+                        if (errorHandle == null || !errorHandle.process(err)) {
                             throw err;
+                        }
                     }
                     ds.setField(column.getCode(), value);
                 }
-                if (readHandle != null && !readHandle.process(ds.getCurrent()))
+                if (readHandle != null && !readHandle.process(ds.getCurrent())) {
                     break;
+                }
             }
         }
         return ds;

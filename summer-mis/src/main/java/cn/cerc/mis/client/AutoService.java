@@ -49,13 +49,15 @@ public class AutoService implements IHandle {
     }
 
     public boolean exec() throws UserNotFindException, ServiceException {
-        if (service.getService() == null)
+        if (service.getService() == null) {
             throw new RuntimeException("没有指定 service");
+        }
 
         handle.init(service.getCorpNo(), service.getUserCode(), "127.0.0.1");
         IService bean = Application.getService(this, service.getService());
-        if (bean == null)
+        if (bean == null) {
             throw new RuntimeException("无法创建服务：" + service.getService());
+        }
 
         IStatus status = bean.execute(service.getDataIn(), dataOut);
 

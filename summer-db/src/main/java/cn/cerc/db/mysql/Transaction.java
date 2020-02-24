@@ -41,10 +41,12 @@ public class Transaction implements AutoCloseable {
     }
 
     public boolean commit() {
-        if (!active)
+        if (!active) {
             return false;
-        if (locked)
+        }
+        if (locked) {
             throw new RuntimeException("Transaction locked is true");
+        }
         try {
             conn.commit();
             locked = true;
@@ -57,8 +59,9 @@ public class Transaction implements AutoCloseable {
 
     @Override
     public void close() {
-        if (!active)
+        if (!active) {
             return;
+        }
         try {
             try {
                 conn.rollback();

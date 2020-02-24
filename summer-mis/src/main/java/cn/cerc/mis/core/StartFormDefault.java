@@ -39,8 +39,9 @@ public class StartFormDefault implements ApplicationContextAware {
     @RequestMapping("/{formId}.{funcId}")
     public String execute(@PathVariable String formId, @PathVariable String funcId) {
         log.debug(String.format("formId: %s, funcId: %s", formId, funcId));
-        if (!context.containsBean(formId))
+        if (!context.containsBean(formId)) {
             return String.format("formId: %s, funcId: %s", formId, funcId);
+        }
 
         Application.setContext(context);
         appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage", "appLoginManageDefault");
@@ -63,8 +64,9 @@ public class StartFormDefault implements ApplicationContextAware {
             if ("excel".equals(funcId)) {
                 response.setContentType("application/vnd.ms-excel; charset=UTF-8");
                 response.addHeader("Content-Disposition", "attachment; filename=excel.csv");
-            } else
+            } else {
                 response.setContentType("text/html;charset=UTF-8");
+            }
 
             // 执行自动登录
             appLogin.init(form);
@@ -83,12 +85,14 @@ public class StartFormDefault implements ApplicationContextAware {
             }
 
             IPage page = form.execute();
-            if (page == null)
+            if (page == null) {
                 return null;
+            }
 
             jspFile = page.execute();
-            if (log.isDebugEnabled())
+            if (log.isDebugEnabled()) {
                 log.debug(jspFile);
+            }
             return jspFile;
         } catch (Exception e) {
             e.printStackTrace();

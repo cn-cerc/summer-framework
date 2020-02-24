@@ -22,10 +22,11 @@ public interface IUserOption extends IOption {
                 }
 
                 DataSet ds = svr.getDataOut();
-                if (!ds.eof())
+                if (!ds.eof()) {
                     buff.setField("Value_", ds.getString("Value_"));
-                else
+                } else {
                     buff.setField("Value_", "");
+                }
             }
             return buff.getString("Value_");
         }
