@@ -24,15 +24,17 @@ public class SvrCustomMenus extends CustomService {
         SqlQuery ds2 = f2.open();
 
         while (!ds2.eof()) {
-            if (!dataIn.locate("id", ds2.getString("ID_")))
+            if (!dataIn.locate("id", ds2.getString("ID_"))) {
                 ds2.delete();
-            else
+            } else {
                 ds2.next();
+            }
         }
 
         while (dataIn.fetch()) {
-            if (!ds1.locate("ID_", dataIn.getString("id")))
+            if (!ds1.locate("ID_", dataIn.getString("id"))) {
                 throw new RuntimeException("菜单错误，请核查！");
+            }
             if (!ds2.locate("ID_", dataIn.getString("id"))) {
                 ds1.locate("ID_", dataIn.getString("id"));
 
@@ -50,18 +52,22 @@ public class SvrCustomMenus extends CustomService {
     }
 
     public boolean search() {
-        if (!systemTable.getManageBook().equals(handle.getCorpNo()))
+        if (!systemTable.getManageBook().equals(handle.getCorpNo())) {
             throw new RuntimeException("您不是运营商账号不允许操作！");
+        }
 
         Record headIn = getDataIn().getHead();
         BuildQuery f = new BuildQuery(this);
         f.byField("s.Custom_", true);
-        if (headIn.exists("SearchText_"))
+        if (headIn.exists("SearchText_")) {
             f.byLink(new String[] { "s.Name_", "c.CorpNo_", "oi.ShortName_" }, headIn.getString("SearchText_"));
-        if (headIn.exists("MaxRecord_"))
+        }
+        if (headIn.exists("MaxRecord_")) {
             f.setMaximum(headIn.getInt("MaxRecord_"));
-        if (headIn.exists("Custom"))
+        }
+        if (headIn.exists("Custom")) {
             f.byParam("c.CorpNo_ !='' and c.CorpNo_ is Not null");
+        }
         f.add("select s.Code_,s.Name_,c.Code_ as CostomCode_,oi.ShortName_,c.Remark_,c.CorpNo_,c.AppUser_,c.AppDate_ ");
         f.add("from %s s ", systemTable.getAppMenus());
         f.add("left join %s c on s.Code_ = c.Code_", systemTable.getCustomMenus());

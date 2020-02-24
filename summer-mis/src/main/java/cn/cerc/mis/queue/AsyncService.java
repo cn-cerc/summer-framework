@@ -70,16 +70,21 @@ public class AsyncService implements IServiceProxy {
     public AsyncService read(String jsonString) {
         JSONObject json = JSONObject.fromObject(jsonString);
         this.setService(json.getString("service"));
-        if (json.containsKey("dataOut"))
+        if (json.containsKey("dataOut")) {
             this.getDataOut().setJSON(json.getString("dataOut"));
-        if (json.containsKey("dataIn"))
+        }
+        if (json.containsKey("dataIn")) {
             this.getDataIn().setJSON(json.getString("dataIn"));
-        if (json.containsKey("process"))
+        }
+        if (json.containsKey("process")) {
             this.setProcess(json.getInt("process"));
-        if (json.containsKey("timer"))
+        }
+        if (json.containsKey("timer")) {
             this.setTimer(json.getString("timer"));
-        if (json.containsKey("processTime"))
+        }
+        if (json.containsKey("processTime")) {
             this.setProcessTime(json.getString("processTime"));
+        }
         return this;
     }
 
@@ -87,15 +92,18 @@ public class AsyncService implements IServiceProxy {
     public boolean exec(Object... args) {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0)
+            if (args.length % 2 != 0) {
                 throw new RuntimeException("传入的参数数量必须为偶数！");
-            for (int i = 0; i < args.length; i = i + 2)
+            }
+            for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
+            }
         }
 
         String subject = this.getSubject();
-        if ("".equals(subject))
+        if ("".equals(subject)) {
             throw new RuntimeException("后台任务标题不允许为空！");
+        }
         this.send(); // 发送到队列服务器
         getDataOut().getHead().setField("_msgId_", msgId);
         if (this.process == 2) {
@@ -119,11 +127,13 @@ public class AsyncService implements IServiceProxy {
     }
 
     private void send() {
-        if (handle == null)
+        if (handle == null) {
             throw new RuntimeException("handle is null");
+        }
         String subject = this.getSubject();
-        if (subject == null || "".equals(subject))
+        if (subject == null || "".equals(subject)) {
             throw new RuntimeException("subject is null");
+        }
         MessageRecord msg = new MessageRecord();
         msg.setCorpNo(this.getCorpNo());
         msg.setUserCode(this.getUserCode());
@@ -139,14 +149,17 @@ public class AsyncService implements IServiceProxy {
     public String toString() {
         JSONObject content = new JSONObject();
         content.element("service", this.service);
-        if (this.dataIn != null)
+        if (this.dataIn != null) {
             content.element("dataIn", dataIn.getJSON());
-        if (this.dataOut != null)
+        }
+        if (this.dataOut != null) {
             content.element("dataOut", dataOut.getJSON());
+        }
         content.element("timer", this.timer);
         content.element("process", this.process);
-        if (this.processTime != null)
+        if (this.processTime != null) {
             content.element("processTime", this.processTime);
+        }
         return content.toString();
     }
 
@@ -163,8 +176,9 @@ public class AsyncService implements IServiceProxy {
 
     @Override
     public DataSet getDataIn() {
-        if (dataIn == null)
+        if (dataIn == null) {
             dataIn = new DataSet();
+        }
         return dataIn;
     }
 
@@ -174,8 +188,9 @@ public class AsyncService implements IServiceProxy {
 
     @Override
     public DataSet getDataOut() {
-        if (dataOut == null)
+        if (dataOut == null) {
             dataOut = new DataSet();
+        }
         return dataOut;
     }
 
@@ -188,8 +203,9 @@ public class AsyncService implements IServiceProxy {
     }
 
     public void setProcess(int process) {
-        if (process < 0 || process > processTiles.size())
+        if (process < 0 || process > processTiles.size()) {
             throw new RuntimeException("非法的任务进度值：" + process);
+        }
         this.process = process;
     }
 
@@ -227,10 +243,12 @@ public class AsyncService implements IServiceProxy {
 
     @Override
     public String getMessage() {
-        if (dataOut == null)
+        if (dataOut == null) {
             return null;
-        if (!dataOut.getHead().exists(_message_))
+        }
+        if (!dataOut.getHead().exists(_message_)) {
             return null;
+        }
         return dataOut.getHead().getString(_message_);
     }
 

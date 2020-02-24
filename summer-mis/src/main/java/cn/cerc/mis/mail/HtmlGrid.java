@@ -31,22 +31,26 @@ public class HtmlGrid extends HtmlControl {
         HtmlGrid head = new HtmlGrid(null);
         // 加入单头
         row = head.addRow();
-        for (String field : ds.getHead().getFieldDefs().getFields())
+        for (String field : ds.getHead().getFieldDefs().getFields()) {
             row.addCol(field);
+        }
         row = head.addRow();
-        for (String field : ds.getHead().getFieldDefs().getFields())
+        for (String field : ds.getHead().getFieldDefs().getFields()) {
             row.addCol(ds.getHead().getField(field));
+        }
 
         // 加入单身
         HtmlGrid detail = new HtmlGrid(null);
         ds.first();
         row = detail.addRow();
-        for (String field : ds.getFieldDefs().getFields())
+        for (String field : ds.getFieldDefs().getFields()) {
             row.addCol(field);
+        }
         while (ds.fetch()) {
             row = detail.addRow();
-            for (String field : ds.getFieldDefs().getFields())
+            for (String field : ds.getFieldDefs().getFields()) {
                 row.addCol(ds.getField(field));
+            }
         }
         sb.append("<!DOCTYPE html>");
         sb.append("<head>");

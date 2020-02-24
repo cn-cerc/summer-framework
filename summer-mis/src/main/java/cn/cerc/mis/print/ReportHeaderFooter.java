@@ -61,12 +61,15 @@ public class ReportHeaderFooter extends PdfPageEventHelper {
 
         Font f8 = null;
         try {
-            if (bf == null)
+            if (bf == null) {
                 bf = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", false);
-            if (fontDetail == null)
+            }
+            if (fontDetail == null) {
                 fontDetail = new Font(bf, presentFontSize, Font.NORMAL);// 数据体字体
-            if (f8 == null)
+            }
+            if (f8 == null) {
                 f8 = new Font(bf, 8);
+            }
         } catch (DocumentException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -61,8 +61,9 @@ public abstract class AbstractGrid extends UIComponent implements DataSource {
     public List<AbstractField> getFields() {
         List<AbstractField> items = new ArrayList<>();
         for (IField obj : lines.get(0).getFields()) {
-            if (obj instanceof AbstractField)
+            if (obj instanceof AbstractField) {
                 items.add((AbstractField) obj);
+            }
         }
         return items;
     }
@@ -86,8 +87,9 @@ public abstract class AbstractGrid extends UIComponent implements DataSource {
     }
 
     public AbstractGridLine getLine(int index) {
-        if (index == lines.size())
+        if (index == lines.size()) {
             lines.add(new ChildGridLine(this));
+        }
         return lines.get(index);
     }
 

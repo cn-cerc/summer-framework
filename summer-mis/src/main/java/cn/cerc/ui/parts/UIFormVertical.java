@@ -50,10 +50,11 @@ public class UIFormVertical extends UIComponent implements DataSource {
 
     @Override
     public void addField(IField field) {
-        if (field instanceof AbstractField)
+        if (field instanceof AbstractField) {
             fields.add((AbstractField) field);
-        else
+        } else {
             throw new RuntimeException("不支持的数据类型：" + field.getClass().getName());
+        }
     }
 
     public String getAction() {
@@ -98,15 +99,17 @@ public class UIFormVertical extends UIComponent implements DataSource {
 
     private void outputFields(HtmlWriter html) {
         html.print("<ul");
-        if (this.CSSClass != null)
+        if (this.CSSClass != null) {
             html.print(" class=\"%s\"", this.CSSClass);
+        }
         html.println(">");
 
         for (AbstractField field : fields) {
             if (!field.isHidden()) {
                 html.print("<li");
-                if (field.getRole() != null)
+                if (field.getRole() != null) {
                     html.print(" role='%s'", field.getRole());
+                }
                 html.print(">");
                 field.output(html);
 
@@ -118,10 +121,12 @@ public class UIFormVertical extends UIComponent implements DataSource {
                     html.println("</li>");
                     html.println("<li role=\"%s\" style=\"display: none;\">", field.getId());
                     html.print("<mark>");
-                    if (mark.getContent() != null)
+                    if (mark.getContent() != null) {
                         html.println("%s", mark.getContent());
-                    for (String line : mark.getLines())
+                    }
+                    for (String line : mark.getLines()) {
                         html.println("<p>%s</p>", line);
+                    }
                     html.println("</mark>");
                     html.println("</li>");
                 } else {
@@ -133,8 +138,9 @@ public class UIFormVertical extends UIComponent implements DataSource {
     }
 
     public String readAll() {
-        if (readAll)
+        if (readAll) {
             return submit;
+        }
 
         submit = content.getRequest().getParameter("opera");
 
@@ -153,8 +159,9 @@ public class UIFormVertical extends UIComponent implements DataSource {
         if (submit != null) {
             dataSet.setField(code, val);
         } else {
-            if (val != null)
+            if (val != null) {
                 dataSet.setField(code, val);
+            }
         }
     }
 

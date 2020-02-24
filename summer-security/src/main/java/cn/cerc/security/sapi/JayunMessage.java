@@ -25,8 +25,9 @@ public class JayunMessage {
         api.put("ip", api.getRemoteIP());
         api.put("mobile", mobile == null ? "" : mobile);
         api.put("sendMode", sendMode.name().toLowerCase());
-        if (sendMode == SendMode.VOICE)
+        if (sendMode == SendMode.VOICE) {
             api.put("sendVoice", "true");
+        }
         api.post("message.requestRegister");
         this.setMessage(api.getMessage());
         return api.isResult();
@@ -41,8 +42,9 @@ public class JayunMessage {
      */
     @Deprecated
     public boolean requestRegister(String mobile, boolean sendVoice) {
-        if (sendVoice)
+        if (sendVoice) {
             this.sendMode = SendMode.VOICE;
+        }
         return requestRegister(mobile);
     }
 

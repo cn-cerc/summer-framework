@@ -29,8 +29,9 @@ public class ProcessService extends AbstractTask {
     @Override
     public void execute() {
         LocalService svr = new LocalService(this, "SvrUserMessages.getWaitList");
-        if (!svr.exec())
+        if (!svr.exec()) {
             throw new RuntimeException(svr.getMessage());
+        }
         DataSet ds = svr.getDataOut();
         while (ds.fetch()) {
             log.info("开始处理异步任务，UID=" + ds.getString("UID_"));
@@ -44,7 +45,9 @@ public class ProcessService extends AbstractTask {
     private void processService(String msgId) {
         LocalService svr1 = new LocalService(this, "SvrUserMessages.readAsyncService");
         if (!svr1.exec("msgId", msgId)) // 此任务可能被其它主机抢占
+        {
             return;
+        }
         Record ds = svr1.getDataOut().getHead();
         String corpNo = ds.getString("corpNo");
         String userCode = ds.getString("userCode");
@@ -82,8 +85,9 @@ public class ProcessService extends AbstractTask {
     private void updateMessage(AsyncService task, String msgId, String subject) {
         task.setProcessTime(TDateTime.Now().toString());
         LocalService svr = new LocalService(this, "SvrUserMessages.updateAsyncService");
-        if (!svr.exec("msgId", msgId, "content", task.toString(), "process", task.getProcess()))
+        if (!svr.exec("msgId", msgId, "content", task.toString(), "process", task.getProcess())) {
             throw new RuntimeException("更新任务队列进度异常：" + svr.getMessage());
+        }
         log.debug(task.getService() + ":" + subject + ":" + AsyncService.getProcessTitle(task.getProcess()));
     }
 }

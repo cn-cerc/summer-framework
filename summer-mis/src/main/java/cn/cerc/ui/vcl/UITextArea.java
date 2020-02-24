@@ -60,8 +60,9 @@ public class UITextArea extends UIComponent {
     }
 
     public UISpan getCaption() {
-        if (caption == null)
+        if (caption == null) {
             caption = new UISpan();
+        }
         return caption;
     }
 

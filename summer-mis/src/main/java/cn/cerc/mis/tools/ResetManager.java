@@ -38,32 +38,38 @@ public class ResetManager implements IBookManage {
 
     @Override
     public void setDateRange(TDateTime beginDate, TDateTime endDate, boolean forceExecute) {
-        if (initMonth.compareTo(beginDate.getYearMonth()) > 0)
+        if (initMonth.compareTo(beginDate.getYearMonth()) > 0) {
             beginDate = TDateTime.fromYearMonth(initMonth);
+        }
 
-        if (beginDate.compareTo(endDate) > 0)
+        if (beginDate.compareTo(endDate) > 0) {
             throw new RuntimeException(String.format("起始日期(%s)大于截止日期(%s)", beginDate, endDate));
+        }
 
         // 非强制执行时，增加对执行时间的判断
         if (!forceExecute) {
             Calendar cal = Calendar.getInstance();
             if (cal.get(Calendar.HOUR_OF_DAY) >= 8 && (cal.get(Calendar.HOUR_OF_DAY) < 18)) {
-                if (TDateTime.Now().compareMonth(beginDate) > 1)
+                if (TDateTime.Now().compareMonth(beginDate) > 1) {
                     throw new RuntimeException("在工作高峰期间(08:00-18:00)，为保障其它用户可用性，只允许处理最近2个月的数据！");
+                }
             }
         }
         duration = new DurationSplit(beginDate, endDate);
     }
 
     public void execute() throws Exception {
-        if (handle == null)
+        if (handle == null) {
             throw new RuntimeException("handle is null");
+        }
 
-        if (duration == null)
+        if (duration == null) {
             throw new RuntimeException("duration is null");
+        }
 
-        if (books.size() == 0)
+        if (books.size() == 0) {
             throw new RuntimeException("帐本对象不允许为空！");
+        }
 
         timer.get("process total").start();
 
@@ -108,10 +114,12 @@ public class ResetManager implements IBookManage {
                 for (IResetBook book : books) {
                     if (bookData instanceof VirtualData) {
                         VirtualData data = (VirtualData) bookData;
-                        if (data.getBook() == book)
+                        if (data.getBook() == book) {
                             book.enroll(data.getBookData(), true);
-                    } else
+                        }
+                    } else {
                         book.enroll(bookData, false);
+                    }
                 }
             }
             pt1.stop();
@@ -119,10 +127,12 @@ public class ResetManager implements IBookManage {
             log.info(String.format("保存帐本变动"));
             pt1 = timer.get("books save").start();
             log.info(String.format("更新帐本数据"));
-            for (IResetBook book : books)
+            for (IResetBook book : books) {
                 book.reset();
-            for (IBook book : books)
+            }
+            for (IBook book : books) {
                 book.save();
+            }
             pt1.stop();
             log.info("完成");
         } catch (DataUpdateException e) {

@@ -70,8 +70,9 @@ public class QueueConnection {
         Queue queue = session.createQueue(disname);
         MessageConsumer consumer = session.createConsumer(queue);
         Message msg = consumer.receive();
-        if (msg != null && msg instanceof TextMessage)
+        if (msg != null && msg instanceof TextMessage) {
             System.out.println(Thread.currentThread().getName() + " receive:" + ((TextMessage) msg).getText());
+        }
         consumer.close();
         return null;
     }

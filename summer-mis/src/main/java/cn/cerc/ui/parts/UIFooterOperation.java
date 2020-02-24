@@ -8,8 +8,9 @@ public class UIFooterOperation extends UIComponent {
     }
 
     public UICheckAll getCheckAll() {
-        if (checkAll == null)
+        if (checkAll == null) {
             checkAll = new UICheckAll(this);
+        }
         return checkAll;
     }
 }

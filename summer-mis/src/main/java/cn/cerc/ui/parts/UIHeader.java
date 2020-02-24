@@ -96,9 +96,10 @@ public class UIHeader extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (this.leftBottom.size() > MAX_MENUS)
+        if (this.leftBottom.size() > MAX_MENUS) {
             throw new RuntimeException(
                     String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
+        }
 
         html.print("<header role='header'");
         super.outputCss(html);
@@ -128,8 +129,9 @@ public class UIHeader extends UIComponent {
             int i = 0;
             for (UrlRecord menu : leftMenus) {
                 html.print("<li>");
-                if (i > 1)
+                if (i > 1) {
                     html.println("<span>></span>");
+                }
                 html.print("<a href=\"%s\">%s</a>", menu.getUrl(), menu.getName());
                 i++;
                 html.print("</li>");
@@ -166,8 +168,9 @@ public class UIHeader extends UIComponent {
     }
 
     public UIAdvertisement getAdvertisement() {
-        if (advertisement == null)
+        if (advertisement == null) {
             advertisement = new UIAdvertisement(this);
+        }
         return advertisement;
     }
 
@@ -245,8 +248,9 @@ public class UIHeader extends UIComponent {
     }
 
     public void setExitPage(String url) {
-        if (exitPage == null)
+        if (exitPage == null) {
             exitPage = new UrlRecord();
+        }
         exitPage.setName("<img src=\"images/return.png\"/>");
         exitPage.setSite(url);
     }

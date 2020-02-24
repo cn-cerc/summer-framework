@@ -82,8 +82,9 @@ public class JayunAPI {
     }
 
     private void init() {
-        if (isServerRegister)
+        if (isServerRegister) {
             return;
+        }
         try {
             ServerConfig config = ServerConfig.getInstance();
             String appKey = config.getProperty(JAYUN_APP_KEY);

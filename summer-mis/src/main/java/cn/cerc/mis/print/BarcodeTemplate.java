@@ -50,8 +50,9 @@ public class BarcodeTemplate extends PrintTemplate {
         dataSet.first();
         while (dataSet.fetch()) {
             // 商品名称
-            if (dataSet.getCurrent().hasValue("Name_"))
+            if (dataSet.getCurrent().hasValue("Name_")) {
                 document.add(new Paragraph(dataSet.getString("Name_"), f8));
+            }
             // 商品条码
             BarcodeEAN codeEAN = new BarcodeEAN();
             codeEAN.setBarHeight(barHeight);

@@ -39,10 +39,12 @@ public class ExportService extends ExportExcel {
 
     @Override
     public void export() throws WriteException, IOException, AccreditException {
-        if (service == null || "".equals(service))
+        if (service == null || "".equals(service)) {
             throw new RuntimeException("错误的调用：service is null");
-        if (exportKey == null || "".equals(exportKey))
+        }
+        if (exportKey == null || "".equals(exportKey)) {
             throw new RuntimeException("错误的调用：exportKey is null");
+        }
 
         IHandle handle = (IHandle) this.getHandle();
         if (Utils.isEmpty(this.corpNo)) {
@@ -63,8 +65,9 @@ public class ExportService extends ExportExcel {
         // 对分类进行处理
         dataOut.first();
         while (dataOut.fetch()) {
-            if (dataOut.getBoolean("IsType_"))
+            if (dataOut.getBoolean("IsType_")) {
                 dataOut.delete();
+            }
         }
         this.getTemplate().setDataSet(dataOut);
         super.export();

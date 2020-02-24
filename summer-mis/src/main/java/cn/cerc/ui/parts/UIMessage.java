@@ -14,10 +14,11 @@ public class UIMessage extends UIComponent {
         html.print("<section role='message'");
         super.outputCss(html);
         html.print(">");
-        if (!"".equals(text))
+        if (!"".equals(text)) {
             html.print(text);
-        else
+        } else {
             super.output(html);
+        }
         html.println("</section>");
     }
 

@@ -72,8 +72,9 @@ public class SvrUserMessages extends CustomService {
         cdsMsg.setField("UserCode_", userCode);
         cdsMsg.setField("Level_", level);
         cdsMsg.setField("Subject_", subject);
-        if (content.length() > 0)
+        if (content.length() > 0) {
             cdsMsg.setField("Content_", content);
+        }
         cdsMsg.setField("AppUser_", handle.getUserCode());
         cdsMsg.setField("AppDate_", TDateTime.Now());
         // 日志类消息默认为已读
@@ -105,7 +106,9 @@ public class SvrUserMessages extends CustomService {
         ds.add("and UID_='%s'", msgId);
         ds.open();
         if (ds.eof()) // 此任务可能被其它主机抢占
+        {
             return false;
+        }
 
         Record headOut = getDataOut().getHead();
         headOut.setField("corpNo", ds.getString("CorpNo_"));

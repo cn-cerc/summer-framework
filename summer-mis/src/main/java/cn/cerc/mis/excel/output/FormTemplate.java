@@ -42,8 +42,9 @@ public class FormTemplate extends ExcelTemplate {
         super.output(sheet);
 
         // 输出合计
-        if (footer != null)
+        if (footer != null) {
             footer.output(this, sheet);
+        }
     }
 
     public OutputExcel getFooter() {

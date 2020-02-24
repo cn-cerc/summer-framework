@@ -67,8 +67,9 @@ public class MutiPage {
 
     public int getCount() {
         this.count = recordCount / pageSize;
-        if ((recordCount % pageSize) > 0)
+        if ((recordCount % pageSize) > 0) {
             this.count = this.count + 1;
+        }
         return this.count;
     }
 
@@ -94,15 +95,17 @@ public class MutiPage {
 
     private void reset() {
         // set prior:
-        if (current > 1)
+        if (current > 1) {
             this.prior = current - 1;
-        else
+        } else {
             this.prior = 1;
+        }
         // set next:
-        if (current >= this.getCount())
+        if (current >= this.getCount()) {
             this.next = current;
-        else
+        } else {
             this.next = current + 1;
+        }
         // set begin:
         begin = (current - 1) * pageSize;
         if (begin < 0) {

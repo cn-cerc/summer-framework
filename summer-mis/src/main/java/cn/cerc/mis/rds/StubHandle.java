@@ -38,8 +38,9 @@ public class StubHandle implements IHandle, AutoCloseable {
         ds.add("select Code_ from " + systemTable.getUserInfo());
         ds.add("where CorpNo_='%s'", corpNo);
         ds.open();
-        if (ds.eof())
+        if (ds.eof()) {
             throw new RuntimeException("找不到默认帐号：CorpNo=" + corpNo);
+        }
         String userCode = ds.getString("Code_");
 
         handle.init(corpNo, userCode, clientIP);
@@ -66,8 +67,9 @@ public class StubHandle implements IHandle, AutoCloseable {
 
     @Override
     public Object getProperty(String key) {
-        if ("request".equals(key))
+        if ("request".equals(key)) {
             return null;
+        }
         Object obj = handle.getProperty(key);
         if (obj == null && MysqlConnection.sessionId.equals(key)) {
             MysqlConnection conn = new MysqlConnection();

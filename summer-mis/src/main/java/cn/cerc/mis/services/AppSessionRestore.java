@@ -86,10 +86,11 @@ public class AppSessionRestore extends CustomService {
         headOut.setField("UserCode_", ds.getString("Code_"));
         headOut.setField("UserName_", ds.getString("UserName_"));
         headOut.setField("CorpNo_", ds.getString("CorpNo_"));
-        if (ds.getBoolean("DiyRole_"))
+        if (ds.getBoolean("DiyRole_")) {
             headOut.setField("RoleCode_", ds.getString("Code_"));
-        else
+        } else {
             headOut.setField("RoleCode_", ds.getString("RoleCode_"));
+        }
         headOut.setField("ProxyUsers_", ds.getString("ProxyUsers_"));
     }
 

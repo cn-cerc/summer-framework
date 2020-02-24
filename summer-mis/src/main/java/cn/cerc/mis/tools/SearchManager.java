@@ -32,24 +32,29 @@ public class SearchManager implements IBookManage {
 
     @Override
     public void setDateRange(TDateTime beginDate, TDateTime endDate, boolean forceExecute) {
-        if (initMonth.compareTo(beginDate.getYearMonth()) > 0)
+        if (initMonth.compareTo(beginDate.getYearMonth()) > 0) {
             throw new RuntimeException(String.format("起始日期(%s)小于开账年月(%s)", beginDate.getYearMonth(), initMonth));
+        }
 
-        if (beginDate.compareTo(endDate) > 0)
+        if (beginDate.compareTo(endDate) > 0) {
             throw new RuntimeException(String.format("起始日期(%s)大于截止日期(%s)", beginDate, endDate));
+        }
 
         duration = new DurationSplit(beginDate, endDate);
     }
 
     public void execute() throws Exception {
-        if (handle == null)
+        if (handle == null) {
             throw new RuntimeException("handle is null");
+        }
 
-        if (duration == null)
+        if (duration == null) {
             throw new RuntimeException("duration is null");
+        }
 
-        if (books.size() == 0)
+        if (books.size() == 0) {
             throw new RuntimeException("帐本对象不允许为空！");
+        }
 
         timer.get("process total").start();
 

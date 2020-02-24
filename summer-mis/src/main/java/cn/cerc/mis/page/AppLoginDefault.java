@@ -105,10 +105,11 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         IUserLoginCheck obj = Application.getBean("userLoginCheck", IUserLoginCheck.class);
         if (obj != null) {
             if (obj instanceof SupportHandle) {
-                if (form instanceof AbstractForm)
+                if (form instanceof AbstractForm) {
                     ((SupportHandle) obj).init((AbstractForm) form);
-                else
+                } else {
                     ((SupportHandle) obj).init(form.getHandle());
+                }
             }
         }
 

@@ -16,21 +16,25 @@ public class RadioField extends AbstractField {
 
     @Override
     public String getText(Record dataSet) {
-        if (dataSet == null)
+        if (dataSet == null) {
             return null;
+        }
         int val = dataSet.getInt(field);
-        if (val < 0 || val > items.size() - 1)
+        if (val < 0 || val > items.size() - 1) {
             return "" + val;
+        }
         String result = items.get(val);
-        if (result == null)
+        if (result == null) {
             return "" + val;
-        else
+        } else {
             return result;
+        }
     }
 
     public RadioField add(String... items) {
-        for (String item : items)
+        for (String item : items) {
             this.items.add(item);
+        }
         return this;
     }
 }

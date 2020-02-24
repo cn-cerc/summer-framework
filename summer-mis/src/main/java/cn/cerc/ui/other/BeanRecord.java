@@ -94,11 +94,11 @@ public class BeanRecord<T> implements AutoCloseable, BuildRecord {
                     Object value = record.getField(field);
                     Method mt = sets.get(f);
                     Class<?> p1 = mt.getParameterTypes()[0];
-                    if (p1.getName().equals(value.getClass().getName()))
+                    if (p1.getName().equals(value.getClass().getName())) {
                         mt.invoke(owner, value);
-                    else if (p1.getName().equals("java.lang.String"))
+                    } else if (p1.getName().equals("java.lang.String")) {
                         mt.invoke(owner, value.toString());
-                    else if (p1.getName().equals("int") && value.getClass().getName().equals("java.lang.Integer")) {
+                    } else if (p1.getName().equals("int") && value.getClass().getName().equals("java.lang.Integer")) {
                         int val = (Integer) value;
                         mt.invoke(owner, val);
                     } else if (p1.getName().equals("double") && value.getClass().getName().equals("java.lang.Double")) {

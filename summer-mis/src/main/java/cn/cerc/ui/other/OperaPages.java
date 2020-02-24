@@ -21,8 +21,9 @@ public class OperaPages extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
-        if (pages.getCount() <= 1)
+        if (pages.getCount() <= 1) {
             return;
+        }
 
         HttpServletRequest request = form.getRequest();
         StringBuffer url = new StringBuffer();

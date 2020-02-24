@@ -17,8 +17,9 @@ public class FieldUseCheck extends AbstractHandle {
     public boolean exists(String fieldValue) {
         for (String key : items) {
             String[] args = key.split(":");
-            if (checkTable(args[0], args[1], fieldValue))
+            if (checkTable(args[0], args[1], fieldValue)) {
                 return true;
+            }
         }
         return false;
     }

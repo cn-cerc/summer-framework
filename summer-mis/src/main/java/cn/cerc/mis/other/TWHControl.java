@@ -17,9 +17,10 @@ public enum TWHControl {
      * 取得单身仓别
      */
     public String getBodyWH(DataSet body, String defaultWH) {
-        if (this == whcBody)
+        if (this == whcBody) {
             return body.getCurrent().getString("CWCode_");
-        else
+        } else {
             return defaultWH;
+        }
     }
 }

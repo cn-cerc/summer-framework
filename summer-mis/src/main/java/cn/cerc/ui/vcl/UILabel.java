@@ -39,12 +39,14 @@ public class UILabel extends UIComponent {
     public void output(HtmlWriter html) {
         if (url == null) {
             html.print("<label");
-            if (focusTarget != null)
+            if (focusTarget != null) {
                 html.print(" for='%s'", focusTarget);
+            }
             super.outputCss(html);
             html.print(">%s</label>", this.caption);
-        } else
+        } else {
             html.print("<a href='%s'>%s</a>", this.url, this.caption);
+        }
     }
 
     public String getCaption() {

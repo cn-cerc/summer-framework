@@ -89,8 +89,9 @@ public class JayunSecurity {
      */
     @Deprecated
     public boolean requestVerify(String user, boolean sendVoice) {
-        if (sendVoice)
+        if (sendVoice) {
             this.sendMode = SendMode.VOICE;
+        }
         return requestVerify(user);
     }
 
@@ -106,8 +107,9 @@ public class JayunSecurity {
         api.put("user", user);
         api.put("deviceId", getDeviceId());
         api.put("sendMode", sendMode.name().toLowerCase());
-        if (sendMode == SendMode.VOICE)
+        if (sendMode == SendMode.VOICE) {
             api.put("sendVoice", "true");
+        }
         api.post("security.requestVerify");
         this.setMessage(api.getMessage());
         return api.isResult();

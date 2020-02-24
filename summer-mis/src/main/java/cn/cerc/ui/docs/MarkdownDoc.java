@@ -70,8 +70,9 @@ public class MarkdownDoc {
             String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line + System.lineSeparator());
-                if (firstLine == null)
+                if (firstLine == null) {
                     firstLine = line;
+                }
             }
         }
         return builder.toString();

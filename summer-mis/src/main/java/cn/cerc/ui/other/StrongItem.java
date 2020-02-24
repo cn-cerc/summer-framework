@@ -36,8 +36,9 @@ public class StrongItem extends UIComponent {
         DecimalFormat df = new DecimalFormat("0.##");
         html.print("%s：", this.getName());
         html.print("<strong");
-        if (this.getId() != null)
+        if (this.getId() != null) {
             html.print(" id=\"%s\"", this.getId());
+        }
         html.print(">");
         html.print(df.format(this.value));
         html.print("</strong>");

@@ -26,8 +26,9 @@ public class Block602 extends UIComponent {
     public void output(HtmlWriter html) {
         html.println("<!-- %s -->", this.getClass().getName());
         html.println("<div class=\"block602\">");
-        for (UIImage button : items)
+        for (UIImage button : items) {
             button.output(html);
+        }
         html.println("</div>");
     }
 
