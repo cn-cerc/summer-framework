@@ -15,8 +15,8 @@ import cn.cerc.ui.vcl.ext.UISpan;
 public class Block129 extends UIComponent {
     private UITextBox input = new UITextBox();
     private UIImage image = new UIImage();
-    private String content = new String();
-    private String placeholder = new String();
+    private String content = "";
+    private String placeholder = "";
     private Map<String, String> items = new LinkedHashMap<String, String>();
     private String formId;
 

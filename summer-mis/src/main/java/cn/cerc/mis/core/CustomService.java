@@ -81,7 +81,7 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
                 long totalTime = System.currentTimeMillis() - startTime;
                 long timeout = webfunc != null ? webfunc.timeout() : 1000;
                 if (totalTime > timeout) {
-                    String tmp[] = this.getClass().getName().split("\\.");
+                    String[] tmp = this.getClass().getName().split("\\.");
                     String service = tmp[tmp.length - 1] + "." + this.funcCode;
                     log.warn(String.format("corpNo:%s, userCode:%s, service:%s, tickCount:%s", getCorpNo(),
                             getUserCode(), service, totalTime));
@@ -151,7 +151,7 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
     @Override
     public boolean checkSecurity(IHandle handle) {
         IHandle sess = (IHandle) handle.getProperty(null);
-        return sess != null ? sess.logon() : false;
+        return sess != null && sess.logon();
     }
 
     public String getFuncCode() {

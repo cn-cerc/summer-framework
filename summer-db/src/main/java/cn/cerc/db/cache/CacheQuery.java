@@ -26,7 +26,7 @@ public class CacheQuery implements IRecord {
         if (this.modified) {
             try {
                 Redis.set(key, record.toString(), this.expires);
-                log.debug("cache set:" + key.toString() + ":" + record.toString());
+                log.debug("cache set:" + key + ":" + record.toString());
                 this.modified = false;
             } catch (Exception e) {
                 log.error(e.getMessage());
@@ -56,7 +56,7 @@ public class CacheQuery implements IRecord {
         connected = true;
         existsData = false;
         String recordStr = Redis.get(key);
-        log.debug("cache get:" + key.toString() + ":" + recordStr);
+        log.debug("cache get:" + key + ":" + recordStr);
         if (recordStr != null && !"".equals(recordStr)) {
             try {
                 record.setJSON(recordStr);

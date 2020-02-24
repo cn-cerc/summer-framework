@@ -80,14 +80,11 @@ public class SecurityEnvironment {
         if (!clientId.equals(ds2.getString("clientId_"))) {
             return false;
         }
-        if (!remoteIP.equals(ds2.getString("remoteIP_"))) {
-            return false;
-        }
+        return remoteIP.equals(ds2.getString("remoteIP_"));
         // 临时关闭帐号不同需要校验的功能
         // if (!userId.equals(ds2.getString("updateUser_"))) {
         // return false;
         // }
-        return true;
     }
 
     // 用于Service中，检查若当前环境不安全时，需要检查 验证码是否正确

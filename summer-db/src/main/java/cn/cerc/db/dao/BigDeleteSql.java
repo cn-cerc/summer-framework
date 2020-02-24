@@ -18,7 +18,7 @@ public class BigDeleteSql {
         String lastCommand = null;
         ClassData classData = ClassFactory.get(curRecord.getClass());
         String updateKey = classData.getUpdateKey();
-        try (BuildStatement bs = new BuildStatement(conn);) {
+        try (BuildStatement bs = new BuildStatement(conn)) {
             bs.append("delete from ").append(classData.getTableId());
             Map<String, Object> items = new LinkedHashMap<>();
             BigOperator.copy(curRecord, (key, value) -> {

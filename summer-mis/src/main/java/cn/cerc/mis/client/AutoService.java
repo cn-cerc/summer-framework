@@ -48,7 +48,7 @@ public class AutoService implements IHandle {
         this.message = message;
     }
 
-    public boolean exec() throws ServiceException, UserNotFindException, ServiceException {
+    public boolean exec() throws UserNotFindException, ServiceException {
         if (service.getService() == null)
             throw new RuntimeException("没有指定 service");
 

@@ -4,7 +4,7 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 
 public interface IServiceProxy {
-    public static final String _message_ = "_message_";
+    String _message_ = "_message_";
 
     // 返回服务代码
     String getService();

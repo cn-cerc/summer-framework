@@ -7,43 +7,43 @@ import cn.cerc.core.IHandle;
 
 public interface IForm {
     // 页面标题
-    public String getTitle();
+    String getTitle();
 
-    public HttpServletRequest getRequest();
+    HttpServletRequest getRequest();
 
-    public void setRequest(HttpServletRequest request);
+    void setRequest(HttpServletRequest request);
 
-    public HttpServletResponse getResponse();
+    HttpServletResponse getResponse();
 
-    public void setResponse(HttpServletResponse response);
+    void setResponse(HttpServletResponse response);
 
-    public IHandle getHandle();
+    IHandle getHandle();
 
     // 数据库连接
-    public void setHandle(IHandle handle);
+    void setHandle(IHandle handle);
 
     // 是否有登录
-    public boolean logon();
+    boolean logon();
 
     // 取得访问设备讯息
-    public IClient getClient();
+    IClient getClient();
 
-    public void setClient(IClient client);
+    void setClient(IClient client);
 
     // 设置参数
-    public void setParam(String key, String value);
+    void setParam(String key, String value);
 
     // 取得参数
-    public String getParam(String key, String def);
+    String getParam(String key, String def);
 
     // 输出页面（支持jsp、reddirect、json等）
-    public IPage execute() throws Exception;
+    IPage execute() throws Exception;
 
     // 取得权限代码
-    public String getPermission();
+    String getPermission();
 
     // 设备安全检查通过否，为true时需要进行进一步授权
-    default public boolean passDevice() {
+    default boolean passDevice() {
         return false;
     }
 

@@ -7,18 +7,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface IPage {
-    public IForm getForm();
+    IForm getForm();
 
-    public void setForm(IForm form);
+    void setForm(IForm form);
 
-    public String execute() throws ServletException, IOException;
+    String execute() throws ServletException, IOException;
 
-    default public HttpServletRequest getRequest() {
+    default HttpServletRequest getRequest() {
         IForm form = getForm();
         return form != null ? form.getRequest() : null;
     }
 
-    default public HttpServletResponse getResponse() {
+    default HttpServletResponse getResponse() {
         IForm form = getForm();
         return form != null ? form.getResponse() : null;
     }

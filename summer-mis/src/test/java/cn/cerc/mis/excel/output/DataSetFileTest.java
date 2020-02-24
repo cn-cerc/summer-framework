@@ -10,13 +10,12 @@ import org.junit.Test;
 
 import cn.cerc.core.DataSet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 public class DataSetFileTest {
 
     @Test
     @Ignore(value = "测试文件建立，仅在本地执行")
-    public void testExecute() throws RowsExceededException, WriteException, IOException {
+    public void testExecute() throws WriteException, IOException {
         DataSet ds = new DataSet();
         ds.append();
         ds.setField("code", "code1");

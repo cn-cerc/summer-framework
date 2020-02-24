@@ -58,7 +58,7 @@ function addClick(){
 		n++;
 		$(this).prev().val(n).attr({"value":n});
 	}
-};
+}
 
 /*减号*/
 function diffClick(){

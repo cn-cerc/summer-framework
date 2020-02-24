@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -455,7 +455,7 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
                     else
                         tmp2.put(field, obj);
                 }
-                builder.append(",").append(gson.toJson(tmp2.values()).toString());
+                builder.append(",").append(gson.toJson(tmp2.values()));
             }
             builder.append("]");
         }
@@ -566,7 +566,7 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
         String json = this.getJSON();
         int strLen = json.length();
         out.writeInt(strLen);
-        out.write(json.getBytes(Charset.forName("UTF-8")));
+        out.write(json.getBytes(StandardCharsets.UTF_8));
     }
 
     // 支持对象序列化
@@ -574,7 +574,7 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
         int strLen = in.readInt();
         byte[] strBytes = new byte[strLen];
         in.readFully(strBytes);
-        String json = new String(strBytes, Charset.forName("UTF-8"));
+        String json = new String(strBytes, StandardCharsets.UTF_8);
         this.setJSON(json);
     }
 

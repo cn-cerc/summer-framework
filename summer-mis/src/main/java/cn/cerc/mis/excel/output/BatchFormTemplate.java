@@ -8,7 +8,6 @@ import cn.cerc.core.Utils;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 /**
  * 批次导出单据明细
@@ -17,7 +16,7 @@ public class BatchFormTemplate extends FormTemplate {
     List<DataSet> items;
 
     @Override
-    public void output(WritableSheet sheet) throws RowsExceededException, WriteException {
+    public void output(WritableSheet sheet) throws WriteException {
         int newRow = 0;
         for (DataSet dataSet : items) {
             this.setDataSet(dataSet);

@@ -59,7 +59,7 @@ public class LocalService implements IServiceProxy {
                 if (method.getParameters().length == 0) {
                     String name = method.getName();
                     if (method.getName().startsWith("_"))
-                        name = name.substring(1, name.length());
+                        name = name.substring(1);
                     items.put(classCode + "." + name, clazz);
                 }
             }

@@ -1,7 +1,7 @@
 package cn.cerc.mis.other;
 
 public interface IDataList {
-    public void clear();
+    void clear();
 
-    public boolean exists(String key);
+    boolean exists(String key);
 }

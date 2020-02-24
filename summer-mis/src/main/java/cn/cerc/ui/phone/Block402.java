@@ -17,9 +17,9 @@ public class Block402 extends UIComponent {
     private UISpan describe = new UISpan();
     private UISpan remark = new UISpan();
     private UITextBox input = new UITextBox();
-    private String role = new String();
-    private String dataName = new String();
-    private String dataJson = new String();
+    private String role = "";
+    private String dataName = "";
+    private String dataJson = "";
 
     /**
      * 进出库单据明细之显示与数量修改

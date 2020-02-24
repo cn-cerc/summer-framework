@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -179,14 +180,14 @@ public class Curl {
 
             if (paramIndex > 0) {
                 queryUrl = reqUrl.substring(0, paramIndex);
-                String parameters = reqUrl.substring(paramIndex + 1, reqUrl.length());
+                String parameters = reqUrl.substring(paramIndex + 1);
                 String[] paramArray = parameters.split("&");
                 for (int i = 0; i < paramArray.length; i++) {
                     String string = paramArray[i];
                     int index = string.indexOf("=");
                     if (index > 0) {
                         String parameter = string.substring(0, index);
-                        String value = string.substring(index + 1, string.length());
+                        String value = string.substring(index + 1);
                         params.append(parameter);
                         params.append("=");
                         params.append(URLEncoder.encode(value, this.requestEncoding));
@@ -262,7 +263,7 @@ public class Curl {
     public String doPost(String reqUrl, StringBuffer params) {
         HttpURLConnection url_con = null;
         try {
-            reqUrl = new String(reqUrl.getBytes("utf-8"), "utf-8");
+            reqUrl = new String(reqUrl.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
             URL url = new URL(reqUrl);
             url_con = (HttpURLConnection) url.openConnection();

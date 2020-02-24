@@ -26,7 +26,7 @@ public class Record implements IRecord, Serializable {
 
     private static final long serialVersionUID = 4454304132898734723L;
     private DataSetState state = DataSetState.dsNone;
-    private FieldDefs defs = null;
+    private FieldDefs defs;
     private Map<String, Object> items = new LinkedHashMap<String, Object>();
     private Map<String, Object> delta = new HashMap<String, Object>();
     private DataSet dataSet;
@@ -217,7 +217,7 @@ public class Record implements IRecord, Serializable {
             String field = defs.getFields().get(i);
             Object obj = this.getField(field);
             if (obj instanceof TDateTime) {
-                items.put(field, ((TDateTime) obj).toString());
+                items.put(field, obj.toString());
             } else if (obj instanceof Date) {
                 items.put(field, (new TDateTime((Date) obj)).toString());
             } else {
@@ -273,14 +273,10 @@ public class Record implements IRecord, Serializable {
             return (Boolean) obj;
         } else if (obj instanceof String) {
             String str = (String) obj;
-            if ("".equals(str) || "0".equals(str) || "false".equals(str)) {
-                return false;
-            } else {
-                return true;
-            }
+            return !"".equals(str) && !"0".equals(str) && !"false".equals(str);
         } else if (obj instanceof Integer) {
             int value = (Integer) obj;
-            return value > 0 ? true : false;
+            return value > 0;
         } else {
             return false;
         }
@@ -305,7 +301,7 @@ public class Record implements IRecord, Serializable {
             if ("".equals(str)) {
                 return 0;
             }
-            double val = Double.valueOf(str);
+            double val = Double.parseDouble(str);
             return (int) val;
         } else if (obj instanceof Long) {
             return ((Long) obj).intValue();

@@ -375,7 +375,7 @@ public class StartForms implements Filter {
     protected void checkTimeout(IForm form, String funcCode, long startTime, long timeout) {
         long totalTime = System.currentTimeMillis() - startTime;
         if (totalTime > timeout) {
-            String tmp[] = form.getClass().getName().split("\\.");
+            String[] tmp = form.getClass().getName().split("\\.");
             String pageCode = tmp[tmp.length - 1] + "." + funcCode;
             String dataIn = new Gson().toJson(form.getRequest().getParameterMap());
             if (dataIn.length() > 200) {
@@ -388,7 +388,7 @@ public class StartForms implements Filter {
     protected String getRequestCode(HttpServletRequest req) {
         String url = null;
         log.debug("servletPath {}", req.getServletPath());
-        String args[] = req.getServletPath().split("/");
+        String[] args = req.getServletPath().split("/");
         if (args.length == 2 || args.length == 3) {
             if ("".equals(args[0]) && !"".equals(args[1])) {
                 if (args.length == 3) {

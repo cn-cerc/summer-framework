@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Lunar {
 
-    final static String chineseNumber[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+    final static String[] chineseNumber = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
     final static long[] lunarInfo = new long[] { 0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0,
             0x09ad0, 0x055d2, 0x04ae0, 0x0a5b6, 0x0a4d0, 0x0d250, 0x1d255, 0x0b540, 0x0d6a0, 0x0ada2, 0x095b0, 0x14977,
             0x04970, 0x0a4b0, 0x0b4b5, 0x06a50, 0x06d40, 0x1ab54, 0x02b60, 0x09570, 0x052f2, 0x04970, 0x06566, 0x0d4a0,
@@ -155,7 +155,7 @@ public class Lunar {
     }
 
     public static String getChinaDayString(int day) {
-        String chineseTen[] = { "0", "1", "2", "3" };
+        String[] chineseTen = { "0", "1", "2", "3" };
         int n = day % 10 == 0 ? 9 : day % 10 - 1;
         if (day > 30)
             return "";

@@ -49,7 +49,7 @@ public class MenuItem {
 
     public boolean isSecurityEnabled() {
         String result = this.getParam(SECURITY);
-        return result != null ? "true".equals(result) : true;
+        return result == null || "true".equals(result);
     }
 
     public String getPermissionCode() {

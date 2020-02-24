@@ -231,7 +231,7 @@ public class SvrUserLogin extends CustomService {
      */
     @Webfunc
     public boolean ExitSystem() {
-        if ((String) getProperty(Application.userId) != null) {
+        if (getProperty(Application.userId) != null) {
             // TODO 此处的key有问题
             MemoryBuffer.delete(BufferType.getSessionInfo, (String) getProperty(Application.userId), "webclient");
         }
@@ -410,7 +410,7 @@ public class SvrUserLogin extends CustomService {
             LocalService svr = new LocalService(this, "SvrNotifyMachineVerify");
             if (svr.exec("verifyCode", verifyCode, "mobile", mobile)) {
                 record.setField("Msg_", String.format("系统已将认证码发送到您尾号为 %s 的手机上，并且该认证码 %d 分钟内有效，请注意查收！",
-                        mobile.substring(mobile.length() - 4, mobile.length()), TimeOut));
+                        mobile.substring(mobile.length() - 4), TimeOut));
                 buff.setExpires(TimeOut * 60);
                 buff.setField("VerifyCode", verifyCode);
             } else {
@@ -492,10 +492,7 @@ public class SvrUserLogin extends CustomService {
         ds.edit();
         ds.setField("LastTime_", TDateTime.Now());
         ds.post();
-        if (ds.getInt("Used_") == 2) {
-            return false;
-        }
-        return true;
+        return ds.getInt("Used_") != 2;
     }
 
     private String guidFixStr() {

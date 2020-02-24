@@ -46,7 +46,7 @@ public class BatchScript {
     }
 
     public void print() {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         for (String item : tmp) {
             if (!item.trim().equals("")) {
                 log.info(item.trim() + ";");
@@ -55,7 +55,7 @@ public class BatchScript {
     }
 
     public BatchScript exec() {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         for (String item : tmp) {
             if (!item.trim().equals("")) {
                 log.debug(item.trim() + ";");
@@ -66,7 +66,7 @@ public class BatchScript {
     }
 
     public boolean exists() {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         for (String item : tmp) {
             if (!item.trim().equals("")) {
                 log.debug(item.trim() + ";");
@@ -89,7 +89,7 @@ public class BatchScript {
     }
 
     public int size() {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         int len = 0;
         for (String item : tmp) {
             if (!item.trim().equals(""))
@@ -99,7 +99,7 @@ public class BatchScript {
     }
 
     public String getItem(int i) {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         if (i < 0 && i > (tmp.length - 1))
             throw new RuntimeException("命令索引超出范围！");
         return tmp[i].trim();

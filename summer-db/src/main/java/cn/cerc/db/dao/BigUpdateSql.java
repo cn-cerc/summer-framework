@@ -39,7 +39,7 @@ public class BigUpdateSql {
         if (delta.size() == 0)
             return false;
 
-        try (BuildStatement bs = new BuildStatement(conn);) {
+        try (BuildStatement bs = new BuildStatement(conn)) {
             bs.append("update ").append(classData.getTableId());
             // 加入set条件
             int i = 0;

@@ -50,7 +50,7 @@ function weixinRecharge(amount, cardNo,body,notifyUrl,payType,orderId, noticeurl
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			winBox("出现未知异常");
-			return;
+
 		}
 	});
 }
