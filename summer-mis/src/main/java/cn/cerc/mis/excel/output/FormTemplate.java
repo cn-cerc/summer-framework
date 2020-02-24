@@ -6,7 +6,6 @@ import cn.cerc.core.Record;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 public class FormTemplate extends ExcelTemplate {
     private List<Column> heads;

@@ -8,7 +8,6 @@ import cn.cerc.core.Utils;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 /**
  * 批次导出单据明细

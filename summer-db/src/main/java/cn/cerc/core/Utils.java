@@ -495,7 +495,6 @@ public class Utils {
     }
 
     // 兼容 delphi 代码
-    @Deprecated
     public static int round(double d) {
         return (int) Math.round(d);
     }

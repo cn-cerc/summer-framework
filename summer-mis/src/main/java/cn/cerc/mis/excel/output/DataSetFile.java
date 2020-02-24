@@ -10,7 +10,6 @@ import jxl.Workbook;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 public class DataSetFile {
     private ExcelTemplate template;

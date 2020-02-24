@@ -7,7 +7,6 @@ import cn.cerc.core.Record;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 /**
  * 定义BOM导出模版

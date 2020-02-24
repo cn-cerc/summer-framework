@@ -16,7 +16,7 @@ summer开源框架包含summer-bean,summer-core,summer-db,summer-mis.使用业�
 
 IForm有提供对getRequest().getSession()的访问，可使用HttpSession。
 
-IService有提供RESTful接口，可提供第三方访问。 实际使用时，IForm会调用IService，而IService既对内提供业务服务，也对外提供业务服务。更多的详细介绍，敬请期待...
+IService有提供 RESTful 接口，可提供第三方访问。 实际使用时，IForm会调用IService，而IService既对内提供业务服务，也对外提供业务服务。更多的详细介绍，敬请期待...
 
 欢迎大家反馈更多的建议与意见，也欢迎其它业内人士，对此免费框架进行协同改进！
 

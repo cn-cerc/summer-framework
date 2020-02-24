@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import cn.cerc.core.DataSet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 public class DataSetFileTest {
 

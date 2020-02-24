@@ -11,7 +11,6 @@ import jxl.write.Label;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 public class ExcelTemplate {
     private String fileName;
