@@ -13,7 +13,6 @@
 
     <modules>
         <module>summer-db</module>
-        <module>summer-security</module>
         <module>summer-mis</module>
         <module>summer-sms</module>
     </modules>
