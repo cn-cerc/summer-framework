@@ -50,16 +50,18 @@ public class UIPageDialog extends AbstractJspPage {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
             menus.setHandle(form.getHandle());
-            for (IMenuBar item : menus.getItems())
+            for (IMenuBar item : menus.getItems()) {
                 item.enrollMenu(form, rightMenus);
+            }
         } else {
             getHeader().getHomePage().setSite(Application.getAppConfig().getFormWelcome());
         }
         // 设置首页
         request.setAttribute("_showMenu_", "true".equals(form.getParam("showMenus", "true")));
         // 系统通知消息
-        if (request.getAttribute("message") == null)
+        if (request.getAttribute("message") == null) {
             request.setAttribute("message", "");
+        }
 
         if (form instanceof AbstractForm) {
             if (this.isShowMenus()) {

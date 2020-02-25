@@ -27,8 +27,9 @@ public class Block117 extends UIComponent {
             addBlock("(addBlock)");
             addBlock("(addBlock)");
         }
-        for (UISpan span : addBlock)
+        for (UISpan span : addBlock) {
             span.output(html);
+        }
         html.println("</div>");
     }
 

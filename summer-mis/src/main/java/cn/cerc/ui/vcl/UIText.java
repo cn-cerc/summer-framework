@@ -23,11 +23,13 @@ public class UIText extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (content != null)
+        if (content != null) {
             html.print(content);
+        }
         if (lines != null) {
-            for (String line : lines)
+            for (String line : lines) {
                 html.println("<p>%s</p>", line);
+            }
         }
     }
 
@@ -41,8 +43,9 @@ public class UIText extends UIComponent {
     }
 
     public List<String> getLines() {
-        if (lines == null)
+        if (lines == null) {
             lines = new ArrayList<>();
+        }
         return lines;
     }
 

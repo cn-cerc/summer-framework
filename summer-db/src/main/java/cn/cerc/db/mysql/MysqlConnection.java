@@ -30,8 +30,9 @@ public class MysqlConnection extends SqlConnection {
         database = config.getProperty(MysqlConnection.rds_database, "appdb");
         user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
         pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
-        if (host == null || user == null || pwd == null || database == null)
+        if (host == null || user == null || pwd == null || database == null) {
             throw new RuntimeException("RDS配置为空，无法连接主机！");
+        }
 
         return String.format("jdbc:mysql://%s/%s?useSSL=false", host, database);
     }

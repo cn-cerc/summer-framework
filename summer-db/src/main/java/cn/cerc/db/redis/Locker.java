@@ -20,8 +20,9 @@ public class Locker implements Closeable {
     public Locker(String group, Object first, Object... args) {
         this.group = group;
         items.put(group + "-" + first, false);
-        for (Object arg : args)
+        for (Object arg : args) {
             items.put(group + "-" + arg, false);
+        }
     }
 
     public void add(Object key) {
@@ -33,10 +34,12 @@ public class Locker implements Closeable {
     }
 
     public boolean lock(String flag, int time) {
-        if (time % 100 != 0)
+        if (time % 100 != 0) {
             throw new RuntimeException(String.format("%s %% 100 !=0", time));
-        if (items.size() == 0)
+        }
+        if (items.size() == 0) {
             items.put(group, false);
+        }
         try (Jedis jedis = JedisFactory.getJedis()) {
             for (String key : items.keySet()) {
                 // System.out.println("key: " + key);
@@ -98,8 +101,9 @@ public class Locker implements Closeable {
     public void close() {
         try (Jedis jedis = JedisFactory.getJedis()) {
             for (String key : items.keySet()) {
-                if (items.get(key))
+                if (items.get(key)) {
                     jedis.del(key);
+                }
             }
         }
     }

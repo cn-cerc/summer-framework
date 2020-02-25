@@ -37,10 +37,12 @@ public class ExportPdf {
 
     public PrintTemplate getTemplate() {
         if (template == null) {
-            if (templateId == null)
+            if (templateId == null) {
                 throw new RuntimeException("templateId is null");
-            if (app == null)
+            }
+            if (app == null) {
                 app = new FileSystemXmlApplicationContext(xmlFile);
+            }
             template = app.getBean(templateId, PrintTemplate.class);
         }
         return template;

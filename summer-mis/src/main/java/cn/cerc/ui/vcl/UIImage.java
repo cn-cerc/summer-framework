@@ -22,16 +22,21 @@ public class UIImage extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         html.print("<img src='%s'", this.src);
-        if (role != null)
+        if (role != null) {
             html.print(" role='%s'", this.role);
-        if (alt != null)
+        }
+        if (alt != null) {
             html.print(" alt='%s'", this.alt);
-        if (width != null)
+        }
+        if (width != null) {
             html.print(" width='%s'", this.width);
-        if (height != null)
+        }
+        if (height != null) {
             html.print(" height='%s'", this.height);
-        if (onclick != null)
+        }
+        if (onclick != null) {
             html.print(" onclick='%s'", this.onclick);
+        }
         super.outputCss(html);
         html.println("/>");
     }

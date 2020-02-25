@@ -211,12 +211,14 @@ public class PrintTemplate {
     }
 
     public void setOutputDevice(String outputDevice) {
-        if (null == outputDevice || "".equals(outputDevice))
+        if (null == outputDevice || "".equals(outputDevice)) {
             throw new RuntimeException("输出设备不允许为空！");
-        if ("screen".equals(outputDevice) || "printer".equals(outputDevice) || "file".equals(outputDevice))
+        }
+        if ("screen".equals(outputDevice) || "printer".equals(outputDevice) || "file".equals(outputDevice)) {
             this.outputDevice = outputDevice;
-        else
+        } else {
             throw new RuntimeException("输出设备只能为 screen(默认)、printer、file三者之一!");
+        }
     }
 
     public ReportHeaderFooter getHeaderFooter() {

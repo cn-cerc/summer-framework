@@ -103,8 +103,9 @@ public class Record implements IRecord, Serializable {
             if (compareValue(value, oldValue)) {
                 return this;
             } else {
-                if (!delta.containsKey(field))
+                if (!delta.containsKey(field)) {
                     setValue(delta, field, oldValue);
+                }
             }
         }
         setValue(items, field, value);
@@ -509,8 +510,9 @@ public class Record implements IRecord, Serializable {
         case dsInsert:
             return true;
         case dsEdit: {
-            if (delta.size() == 0)
+            if (delta.size() == 0) {
                 return false;
+            }
             List<String> delList = new ArrayList<>();
             for (String field : delta.keySet()) {
                 Object value = items.get(field);
@@ -545,7 +547,8 @@ public class Record implements IRecord, Serializable {
     public void delete(String field) {
         delta.remove(field);
         items.remove(field);
-        if (defs != null)
+        if (defs != null) {
             defs.delete(field);
+        }
     }
 }

@@ -50,10 +50,12 @@ public class MicroService extends Curl {
         String url = getServiceUrl(serviceCode);
         String text = this.doGet(url);
         this.response = JsonParser.parseString(text).getAsJsonObject();
-        if (response.has("result"))
+        if (response.has("result")) {
             this.result = response.get("result").getAsBoolean();
-        if (response.has("message"))
+        }
+        if (response.has("message")) {
             this.message = response.get("message").getAsString();
+        }
         return this.result;
     }
 
@@ -67,20 +69,24 @@ public class MicroService extends Curl {
         String url = getServiceUrl(serviceCode);
         String text = this.doPost(url);
         this.response = JsonParser.parseString(text).getAsJsonObject();
-        if (response.has("result"))
+        if (response.has("result")) {
             this.result = response.get("result").getAsBoolean();
-        if (response.has("message"))
+        }
+        if (response.has("message")) {
             this.message = response.get("message").getAsString();
+        }
         return this.result;
     }
 
     private String getServiceUrl(String serviceCode) {
         StringBuffer sb = new StringBuffer();
         sb.append(this.host);
-        if (port != 80)
+        if (port != 80) {
             sb.append(":" + this.port);
-        if (this.path != null)
+        }
+        if (this.path != null) {
             sb.append(this.path);
+        }
         sb.append("/" + serviceCode);
         return sb.toString();
     }

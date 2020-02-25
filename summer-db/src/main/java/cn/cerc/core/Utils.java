@@ -51,8 +51,9 @@ public class Utils {
     }
 
     public static String serializeToString(Object obj) throws IOException {
-        if (obj == null)
+        if (obj == null) {
             return null;
+        }
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
         objOut.writeObject(obj);
@@ -60,16 +61,18 @@ public class Utils {
     }
 
     public static Object deserializeToObject(String str) throws IOException, ClassNotFoundException {
-        if (str == null)
+        if (str == null) {
             return null;
+        }
         ByteArrayInputStream byteIn = new ByteArrayInputStream(str.getBytes(StandardCharsets.ISO_8859_1));
         ObjectInputStream objIn = new ObjectInputStream(byteIn);
         return objIn.readObject();
     }
 
     public static String encode(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return null;
+        }
         try {
             ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
             ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
@@ -81,8 +84,9 @@ public class Utils {
     }
 
     public static Object decode(String str) {
-        if (str == null)
+        if (str == null) {
             return null;
+        }
         try {
             ByteArrayInputStream byteIn = new ByteArrayInputStream(str.getBytes(StandardCharsets.ISO_8859_1));
             ObjectInputStream objIn = new ObjectInputStream(byteIn);
@@ -159,8 +163,9 @@ public class Utils {
 
     // 兼容 delphi 代码
     public static String copy(String text, int iStart, int iLength) {
-        if (text == null)
+        if (text == null) {
             return "";
+        }
         if (text != null && iLength >= text.length()) {
             if (iStart > text.length()) {
                 return "";
@@ -169,7 +174,7 @@ public class Utils {
                 return "";
             }
             return text.substring(iStart - 1);
-        } else if (text.equals("")) {
+        } else if ("".equals(text)) {
             return "";
         }
         return text.substring(iStart - 1, iStart - 1 + iLength);
@@ -249,10 +254,12 @@ public class Utils {
      * @return 判断字符串是否全部为数字
      */
     public static boolean isNumeric(String text) {
-        if (text == null)
+        if (text == null) {
             return false;
-        if (".".equals(text))
+        }
+        if (".".equals(text)) {
             return false;
+        }
         return text.matches("[0-9,.]*");
     }
 
@@ -268,7 +275,7 @@ public class Utils {
     // 兼容 delphi 代码
     public static String isNull(String text, String def) {
         // 判断是否为空如果为空就返回。
-        return text.equals("") ? def : text;
+        return "".equals(text) ? def : text;
     }
 
     // 兼容 delphi 代码
@@ -311,13 +318,15 @@ public class Utils {
             throw new RuntimeException(e.getMessage());
         }
         for (Field method : clazz.getDeclaredFields()) {
-            if (method.getAnnotation(Transient.class) != null)
+            if (method.getAnnotation(Transient.class) != null) {
                 continue;
+            }
             Column column = method.getAnnotation(Column.class);
             String dbField = method.getName();
             String field = method.getName().substring(0, 1).toUpperCase() + method.getName().substring(1);
-            if (column != null && !"".equals(column.name()))
+            if (column != null && !"".equals(column.name())) {
                 dbField = column.name();
+            }
             if (record.exists(dbField)) {
                 try {
                     if (method.getType().equals(Integer.class)) {
@@ -386,17 +395,20 @@ public class Utils {
     public static <T> void objectAsRecord(Record record, T object) {
         Class<?> clazz = object.getClass();
         for (Field method : clazz.getDeclaredFields()) {
-            if (method.getAnnotation(Transient.class) != null)
+            if (method.getAnnotation(Transient.class) != null) {
                 continue;
+            }
             GeneratedValue generatedValue = method.getAnnotation(GeneratedValue.class);
-            if (generatedValue != null && generatedValue.strategy().equals(GenerationType.IDENTITY))
+            if (generatedValue != null && generatedValue.strategy().equals(GenerationType.IDENTITY)) {
                 continue;
+            }
 
             String field = method.getName();
             Column column = method.getAnnotation(Column.class);
             String dbField = field;
-            if (column != null && !"".equals(column.name()))
+            if (column != null && !"".equals(column.name())) {
                 dbField = column.name();
+            }
 
             Method get;
             try {
@@ -417,10 +429,11 @@ public class Utils {
         for (Record rs : dataSet) {
             String key = "";
             for (String field : keys) {
-                if ("".equals(key))
+                if ("".equals(key)) {
                     key = rs.getString(field);
-                else
+                } else {
                     key += ";" + rs.getString(field);
+                }
             }
             items.put(key, recordAsObject(rs, clazz));
         }
@@ -430,8 +443,9 @@ public class Utils {
     // 将内容转成 List
     public static <T> List<T> dataSetAsList(DataSet dataSet, Class<T> clazz) {
         List<T> items = new ArrayList<T>();
-        for (Record rs : dataSet)
+        for (Record rs : dataSet) {
             items.add(recordAsObject(rs, clazz));
+        }
         return items;
     }
 

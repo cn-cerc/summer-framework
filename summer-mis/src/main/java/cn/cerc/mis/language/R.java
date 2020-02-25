@@ -41,8 +41,9 @@ public class R {
 
     public static String asString(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if (Application.App_Language.equals(language))
+        if (Application.App_Language.equals(language)) {
             return text;
+        }
 
         if (text == null || "".equals(text.trim())) {
             log.error("字符串为空");
@@ -101,8 +102,9 @@ public class R {
 
     public static String get(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if (LanguageType.zh_CN.equals(language))
+        if (LanguageType.zh_CN.equals(language)) {
             return text;
+        }
 
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         // 处理英文界面
@@ -131,10 +133,11 @@ public class R {
         String result = "";
         String en_result = ""; // 默认英文
         while (ds.fetch()) {
-            if (LanguageType.en_US.equals(ds.getString("lang_")))
+            if (LanguageType.en_US.equals(ds.getString("lang_"))) {
                 en_result = ds.getString("value_");
-            else
+            } else {
                 result = ds.getString("value_");
+            }
         }
         if (!"".equals(result)) {
             return result;

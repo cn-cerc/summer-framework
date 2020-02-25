@@ -47,10 +47,12 @@ public class CacheQuery implements IRecord {
     }
 
     public CacheQuery setKey(String key) {
-        if (this.key != null)
+        if (this.key != null) {
             throw new RuntimeException("[CacheQuery]错误的初始化参数！");
-        if (key == null)
+        }
+        if (key == null) {
             throw new RuntimeException("[CacheQuery]错误的初始化参数！");
+        }
         this.key = key;
 
         connected = true;
@@ -135,10 +137,11 @@ public class CacheQuery implements IRecord {
 
     @Override
     public String toString() {
-        if (record != null)
+        if (record != null) {
             return record.toString();
-        else
+        } else {
             return null;
+        }
     }
 
     public Record getRecord() {

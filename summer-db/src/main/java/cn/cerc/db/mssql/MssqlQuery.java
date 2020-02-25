@@ -98,8 +98,9 @@ public class MssqlQuery extends DataQuery {
             FieldDefs defs = this.getFieldDefs();
             for (int i = 1; i <= meta.getColumnCount(); i++) {
                 String field = meta.getColumnLabel(i);
-                if (!defs.exists(field))
+                if (!defs.exists(field)) {
                     defs.add(field);
+                }
             }
 
             // 取得所有数据
@@ -204,8 +205,9 @@ public class MssqlQuery extends DataQuery {
         }
         IDataOperator operator = getDefaultOperator();
         // 先执行删除
-        for (Record record : delList)
+        for (Record record : delList) {
             operator.delete(record);
+        }
         delList.clear();
         // 再执行增加、修改
         this.first();
@@ -252,11 +254,13 @@ public class MssqlQuery extends DataQuery {
             this.open();
             return this.size();
         }
-        if (session == null)
+        if (session == null) {
             throw new RuntimeException("SqlSession is null");
+        }
         Connection conn = session.getClient();
-        if (conn == null)
+        if (conn == null) {
             throw new RuntimeException("Connection is null");
+        }
         try {
             try (Statement st = conn.createStatement()) {
                 log.debug(sql.replaceAll("\r\n", " "));

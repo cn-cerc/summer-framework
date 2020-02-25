@@ -52,7 +52,7 @@ public class RequestData {
                 }
             }
 
-            if (this.param != null && this.param.equals("")) {
+            if (this.param != null && "".equals(this.param)) {
                 this.param = null;
             }
         } catch (IOException e) {
@@ -81,6 +81,7 @@ public class RequestData {
         this.serviceCode = service;
     }
 
+    @Override
     public String toString() {
         Gson gson = new Gson();
         return gson.toJson(this);

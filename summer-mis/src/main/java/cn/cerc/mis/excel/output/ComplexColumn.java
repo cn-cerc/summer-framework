@@ -38,8 +38,9 @@ public class ComplexColumn extends Column {
         StringBuffer buff = new StringBuffer();
         for (String field : fields) {
             if (record.hasValue(field)) {
-                if (buff.length() > 0)
+                if (buff.length() > 0) {
                     buff.append(",");
+                }
                 buff.append(record.getString(field));
             }
         }

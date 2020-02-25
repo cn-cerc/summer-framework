@@ -23,8 +23,9 @@ public class UISheetMenu extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
-        if (menus.size() == 0)
+        if (menus.size() == 0) {
             return;
+        }
 
         html.println("<section class='%s'>", this.cssClass);
         if (caption != null) {

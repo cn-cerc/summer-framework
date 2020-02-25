@@ -66,8 +66,9 @@ public class ResponseData {
         json.put("result", result);
         json.put("message", message);
 
-        if (data == null)
+        if (data == null) {
             return json.toString();
+        }
 
         StringBuffer tmp = new StringBuffer();
         tmp.append(json.toString());

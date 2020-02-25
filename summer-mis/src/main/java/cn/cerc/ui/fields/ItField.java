@@ -14,8 +14,9 @@ public class ItField extends AbstractField {
 
     @Override
     public String getText(Record dataSet) {
-        if (dataSet == null)
+        if (dataSet == null) {
             return null;
+        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
             buildText.outputText(dataSet, html);

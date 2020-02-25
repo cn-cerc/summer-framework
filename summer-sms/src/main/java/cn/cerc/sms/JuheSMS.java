@@ -112,12 +112,12 @@ public class JuheSMS {
         String rs = null;
         try {
             StringBuffer sb = new StringBuffer();
-            if (method == null || method.equals("GET")) {
+            if (method == null || "GET".equals(method)) {
                 strUrl = strUrl + "?" + urlEncode(params);
             }
             URL url = new URL(strUrl);
             conn = (HttpURLConnection) url.openConnection();
-            if (method == null || method.equals("GET")) {
+            if (method == null || "GET".equals(method)) {
                 conn.setRequestMethod("GET");
             } else {
                 conn.setRequestMethod("POST");
@@ -129,7 +129,7 @@ public class JuheSMS {
             conn.setReadTimeout(DEF_READ_TIMEOUT);
             conn.setInstanceFollowRedirects(false);
             conn.connect();
-            if (params != null && method.equals("POST")) {
+            if (params != null && "POST".equals(method)) {
                 try {
                     DataOutputStream out = new DataOutputStream(conn.getOutputStream());
                     out.writeBytes(urlEncode(params));

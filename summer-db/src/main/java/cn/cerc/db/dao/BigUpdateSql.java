@@ -36,8 +36,9 @@ public class BigUpdateSql {
                 delta.put(key, value);
             }
         });
-        if (delta.size() == 0)
+        if (delta.size() == 0) {
             return false;
+        }
 
         try (BuildStatement bs = new BuildStatement(conn)) {
             bs.append("update ").append(classData.getTableId());
@@ -52,9 +53,9 @@ public class BigUpdateSql {
                         Object oldValue = items.get(field);
                         Object newValue = delta.get(field);
                         Object value = null;
-                        if (newValue instanceof BigRecord && oldValue instanceof BigRecord)
+                        if (newValue instanceof BigRecord && oldValue instanceof BigRecord) {
                             value = ((BigRecord) newValue).getDiffValue(field, (BigRecord) oldValue);
-                        else {
+                        } else {
                             String typeName = classData.getFields().get(field).getType().getName();
                             value = getDiffValue(typeName, oldValue, newValue);
                         }
@@ -64,15 +65,17 @@ public class BigUpdateSql {
                     }
                 }
             }
-            if (i == 0)
+            if (i == 0) {
                 return false;
+            }
             // 加入where条件
             i = 0;
             i++;
             bs.append(i == 1 ? " where " : " and ").append(updateKey);
             Object value = delta.containsKey(updateKey) ? delta.get(updateKey) : items.get(updateKey);
-            if (value == null)
+            if (value == null) {
                 throw new RuntimeException("primaryKey not is null: " + updateKey);
+            }
             bs.append("=?", value);
 
             if (updateMode == UpdateMode.strict) {
@@ -82,8 +85,9 @@ public class BigUpdateSql {
                         Object obj = items.get(field);
                         if (obj != null) {
                             bs.append("=?", obj);
-                        } else
+                        } else {
                             bs.append(" is null ");
+                        }
                     }
                 }
             }
@@ -113,8 +117,9 @@ public class BigUpdateSql {
             throws IllegalAccessException {
         Object value = null;
         String[] items = fieldTypeName.split("\\.");
-        if (items.length == 0)
+        if (items.length == 0) {
             throw new RuntimeException("fieldTypeName error");
+        }
         String typeName = items[items.length - 1];
         if ("short,Short".indexOf(typeName) > -1) {
             short n1 = oldValue != null ? (Short) oldValue : 0;
@@ -144,8 +149,9 @@ public class BigUpdateSql {
             BigDecimal n1 = (BigDecimal) oldValue;
             BigDecimal n2 = (BigDecimal) newValue;
             value = n2.subtract(n1);
-        } else
+        } else {
             throw new RuntimeException("不支持的数据类型：" + typeName);
+        }
         return value;
     }
 }

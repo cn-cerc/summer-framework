@@ -10,10 +10,12 @@ public class FieldMark {
     private static String xmlFile = "classpath:field-mark.xml";
 
     public static UIText get(String beanId) {
-        if (app == null)
+        if (app == null) {
             app = new FileSystemXmlApplicationContext(xmlFile);
-        if (!app.containsBean(beanId))
+        }
+        if (!app.containsBean(beanId)) {
             return null;
+        }
         return app.getBean(beanId, UIText.class);
     }
 }

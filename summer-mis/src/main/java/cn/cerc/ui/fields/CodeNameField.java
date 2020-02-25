@@ -22,8 +22,9 @@ public class CodeNameField extends AbstractField {
 
     @Override
     public String getText(Record dataSet) {
-        if (dataSet == null)
+        if (dataSet == null) {
             return null;
+        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
             buildText.outputText(dataSet, html);
@@ -41,8 +42,9 @@ public class CodeNameField extends AbstractField {
             html.print(" name=\"%s\"", this.getId());
             html.print(" id=\"%s\"", this.getId());
             String value = this.getText(record);
-            if (value != null)
+            if (value != null) {
                 html.print(" value=\"%s\"", value);
+            }
             html.println("/>");
         } else {
             html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
@@ -52,8 +54,9 @@ public class CodeNameField extends AbstractField {
             html.print(" name=\"%s\"", this.getId());
             html.print(" id=\"%s\"", this.getId());
             String codeValue = this.getText(record);
-            if (codeValue != null)
+            if (codeValue != null) {
                 html.print(" value=\"%s\"", codeValue);
+            }
             html.println("/>");
 
             html.print("<input");
@@ -63,17 +66,22 @@ public class CodeNameField extends AbstractField {
             String nameValue = null;
             if (record != null) {
                 nameValue = record.getString(getNameField());
-                if (nameValue != null)
+                if (nameValue != null) {
                     html.print(" value=\"%s\"", nameValue);
+                }
             }
-            if (this.isReadonly())
+            if (this.isReadonly()) {
                 html.print(" readonly=\"readonly\"");
-            if (this.isAutofocus())
+            }
+            if (this.isAutofocus()) {
                 html.print(" autofocus");
-            if (this.isRequired())
+            }
+            if (this.isRequired()) {
                 html.print(" required");
-            if (this.getPlaceholder() != null)
+            }
+            if (this.getPlaceholder() != null) {
                 html.print(" placeholder=\"%s\"", this.getPlaceholder());
+            }
             html.println("/>");
 
             if (this.isShowStar()) {
@@ -126,8 +134,9 @@ public class CodeNameField extends AbstractField {
     }
 
     public String getNameField() {
-        if (nameField != null)
+        if (nameField != null) {
             return nameField;
+        }
         return this.getField() + "_name";
     }
 

@@ -47,8 +47,9 @@ public class JsonPage implements IPage {
     public String execute() throws ServletException, IOException {
         PrintWriter writer = getResponse().getWriter();
         if (this.data == null) {
-            if (items == null)
+            if (items == null) {
                 items = new HashMap<>();
+            }
             writer.print(new Gson().toJson(items));
         } else {
             writer.print(new Gson().toJson(this.data));
@@ -62,10 +63,12 @@ public class JsonPage implements IPage {
     }
 
     public JsonPage put(String key, Object value) {
-        if (this.data != null)
+        if (this.data != null) {
             throw new RuntimeException("data is not null");
-        if (items == null)
+        }
+        if (items == null) {
             items = new HashMap<>();
+        }
         items.put(key, value);
         return this;
     }
@@ -75,8 +78,9 @@ public class JsonPage implements IPage {
     }
 
     public JsonPage setData(Object data) {
-        if (this.items != null)
+        if (this.items != null) {
             throw new RuntimeException("items is not null");
+        }
         this.data = data;
         return this;
     }
@@ -88,8 +92,9 @@ public class JsonPage implements IPage {
     }
 
     public Map<String, Object> getItems() {
-        if (items == null)
+        if (items == null) {
             items = new HashMap<>();
+        }
         return items;
     }
 

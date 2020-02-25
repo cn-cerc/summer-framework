@@ -18,8 +18,9 @@ public class RequestRecord implements IRecord {
 
     public boolean hasString(String field) {
         String val = req.getParameter(field);
-        if (val == null)
+        if (val == null) {
             return false;
+        }
         return !"".equals(val);
     }
 
@@ -30,15 +31,18 @@ public class RequestRecord implements IRecord {
 
     public boolean hasInt(String field) {
         String val = req.getParameter(field);
-        if (val == null)
+        if (val == null) {
             return false;
-        if (val.equals(""))
+        }
+        if ("".equals(val)) {
             return false;
+        }
         for (int i = 0; i < val.length(); i++) {
             char ch = val.charAt(i);
             if (!(ch == '0' || ch == '1' || ch == '2' || ch == '3' || ch == '4' || ch == '5' || ch == '6' || ch == '7'
-                    || ch == '8' || ch == '9'))
+                    || ch == '8' || ch == '9')) {
                 return false;
+            }
         }
         return true;
     }
@@ -60,15 +64,18 @@ public class RequestRecord implements IRecord {
 
     public boolean hasDouble(String field) {
         String val = req.getParameter(field);
-        if (val == null)
+        if (val == null) {
             return false;
-        if (val.equals(""))
+        }
+        if ("".equals(val)) {
             return false;
+        }
         for (int i = 0; i < val.length(); i++) {
             char ch = val.charAt(i);
             if (!(ch == '0' || ch == '1' || ch == '2' || ch == '3' || ch == '4' || ch == '5' || ch == '6' || ch == '7'
-                    || ch == '8' || ch == '9' || ch == '.'))
+                    || ch == '8' || ch == '9' || ch == '.')) {
                 return false;
+            }
         }
         return true;
     }
@@ -80,41 +87,46 @@ public class RequestRecord implements IRecord {
 
     public boolean hasBoolean(String field) {
         String val = req.getParameter(field);
-        if (val == null)
+        if (val == null) {
             return false;
+        }
         return !"".equals(val);
     }
 
     @Override
     public boolean getBoolean(String field) {
-        return req.getParameter(field).equals("true");
+        return "true".equals(req.getParameter(field));
     }
 
     public boolean hasDateTime(String field) {
         String val = req.getParameter(field);
-        if (val == null)
+        if (val == null) {
             return false;
-        if ("".equals(val))
+        }
+        if ("".equals(val)) {
             return false;
+        }
         return TDateTime.getFormat(val) != null;
     }
 
     @Override
     public TDate getDate(String field) {
         TDateTime result = this.getDateTime(field);
-        if (result != null)
+        if (result != null) {
             return result.asDate();
-        else
+        } else {
             return null;
+        }
     }
 
     @Override
     public TDateTime getDateTime(String field) {
         String value = req.getParameter(field);
-        if (value != null)
+        if (value != null) {
             return new TDateTime(value);
-        else
+        } else {
             return null;
+        }
     }
 
     @Override

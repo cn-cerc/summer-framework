@@ -88,8 +88,9 @@ public abstract class BigTable<T extends BigRecord> {
             sqlText.setOffset(offset);
             int num = loadRecords(sqlText.getTextByLimit());
             total += num;
-            if (num < sqlText.getMaximum())
+            if (num < sqlText.getMaximum()) {
                 break;
+            }
             // 开始取下一个批次的数据
             offset += num;
         }
@@ -103,8 +104,9 @@ public abstract class BigTable<T extends BigRecord> {
      */
     public int open() {
         if (redisEnabled) {
-            if (this.getTableId() == null)
+            if (this.getTableId() == null) {
                 throw new RuntimeException("tableId is null.");
+            }
             try (Jedis jedis = JedisFactory.getJedis()) {
                 // long total = jedis.hlen(this.getName());
                 for (String key : jedis.hkeys(this.getTableId())) {
@@ -117,8 +119,9 @@ public abstract class BigTable<T extends BigRecord> {
                     }
                 }
             }
-            if (items.size() > 0)
+            if (items.size() > 0) {
                 return items.size();
+            }
             try (Jedis jedis = JedisFactory.getJedis()) {
                 jedis.del(getTableId());
             }
@@ -131,8 +134,9 @@ public abstract class BigTable<T extends BigRecord> {
             sql.setOffset(offset);
             int num = loadRecords(sql.getTextByLimit());
             total += num;
-            if (num < sql.getMaximum())
+            if (num < sql.getMaximum()) {
                 break;
+            }
             // 开始取下一个批次的数据
             offset += num;
         }
@@ -167,8 +171,9 @@ public abstract class BigTable<T extends BigRecord> {
                 // 取得字段清单
                 ResultSetMetaData meta = rs.getMetaData();
                 // 取得所有数据
-                if (!rs.first())
+                if (!rs.first()) {
                     return 0;
+                }
                 do {
                     total++;
                     Map<String, Object> items = new HashMap<>();
@@ -211,8 +216,9 @@ public abstract class BigTable<T extends BigRecord> {
             T srcRecord = updateOldList.get(key);
 
             T lastRecord = updateList.get(srcRecord); // n52
-            if (lastRecord != null)
+            if (lastRecord != null) {
                 newRecord.merge(srcRecord, lastRecord);
+            }
 
             updateList.put(srcRecord, newRecord); // n50, n56
         }
@@ -224,8 +230,9 @@ public abstract class BigTable<T extends BigRecord> {
         if (saveToDatabase) {
             deleteList.put(key, record);
         } else {
-            if (deleteList.containsKey(key))
+            if (deleteList.containsKey(key)) {
                 deleteList.remove(key);
+            }
         }
         del(record);
     }
@@ -262,12 +269,14 @@ public abstract class BigTable<T extends BigRecord> {
      */
     public synchronized void post(int maxSize) {
         int count = updateList.size() + deleteList.size();
-        if (count == 0)
+        if (count == 0) {
             return;
+        }
 
         String tableName = DaoUtil.getTableName(clazz);
-        if (tableName == null)
+        if (tableName == null) {
             throw new RuntimeException("tableName is null");
+        }
 
         try (BigConnection handle = new BigConnection(debugConnection)) {
             // opera.setPreview(true);
@@ -278,8 +287,9 @@ public abstract class BigTable<T extends BigRecord> {
                 BigUpdateSql.exec(handle.get(), srcRecord, newRecord, updateMode, false);
                 updateList.remove(srcRecord);
                 total++;
-                if (maxSize > 0 && total == maxSize)
+                if (maxSize > 0 && total == maxSize) {
                     return;
+                }
             }
             // delete
             for (String key : deleteList.keySet()) {
@@ -287,8 +297,9 @@ public abstract class BigTable<T extends BigRecord> {
                 BigDeleteSql.exec(handle.get(), record, false);
                 deleteList.remove(key);
                 total++;
-                if (maxSize > 0 && total == maxSize)
+                if (maxSize > 0 && total == maxSize) {
                     return;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -305,8 +316,9 @@ public abstract class BigTable<T extends BigRecord> {
     public T getClone(Object... keys) {
         String key = buildKey(keys);
         T record = items.get(key);
-        if (record == null)
+        if (record == null) {
             return null;
+        }
 
         T newRecord = (T) cloneObject(record);
         updateOldList.put(key, record);
@@ -317,13 +329,15 @@ public abstract class BigTable<T extends BigRecord> {
         StringBuffer sb = new StringBuffer();
         for (Object key : keys) {
             String str = null;
-            if (key == null)
+            if (key == null) {
                 throw new RuntimeException("key is null!");
+            }
 
-            if (key instanceof String)
+            if (key instanceof String) {
                 str = (String) key;
-            else
+            } else {
                 str = key.toString();
+            }
             sb.append(".").append(str);
         }
         return sb.substring(1);
@@ -334,13 +348,15 @@ public abstract class BigTable<T extends BigRecord> {
         this.redisEnabled = true;
 
         T record = items.get(key);
-        if (record != null)
+        if (record != null) {
             return (T) cloneObject(record);
+        }
         String result;
         try (Jedis jedis = JedisFactory.getJedis()) {
             result = jedis.hget(getTableId(), key);
-            if (result == null)
+            if (result == null) {
                 return null;
+            }
         }
 
         try {
@@ -386,8 +402,9 @@ public abstract class BigTable<T extends BigRecord> {
 
     public void setTableId(String tableId) {
         if (this.tableId != tableId) {
-            if (this.storageThread != null)
+            if (this.storageThread != null) {
                 this.storageThread.setName(tableId + ".storage");
+            }
             this.tableId = tableId;
         }
     }
@@ -438,14 +455,17 @@ public abstract class BigTable<T extends BigRecord> {
             for (String key : classData.getSearchKeys()) {
                 Field field = classData.getFields().get(key);
                 Object value = field.get(record);
-                if (value == null)
+                if (value == null) {
                     throw new RuntimeException(String.format("%s value is null", field.getName()));
-                if (sb.length() > 0)
+                }
+                if (sb.length() > 0) {
                     sb.append(".");
-                if (value instanceof String)
+                }
+                if (value instanceof String) {
                     sb.append((String) value);
-                else
+                } else {
                     sb.append(value.toString());
+                }
             }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -456,8 +476,9 @@ public abstract class BigTable<T extends BigRecord> {
     }
 
     public void printDebug() {
-        for (String key : keySet())
+        for (String key : keySet()) {
             System.out.println(this.getTableId() + ":" + key);
+        }
     }
 
     public BigStorage getStorage() {
@@ -469,13 +490,15 @@ public abstract class BigTable<T extends BigRecord> {
     }
 
     public void setControl(BigControl control) {
-        if (control == null)
+        if (control == null) {
             throw new RuntimeException("control is null.");
+        }
         control.registerTable(this);
         storage.setControl(control);
         this.control = control;
-        if (control.getActive().get())
+        if (control.getActive().get()) {
             this.startStorage();
+        }
     }
 
     public void startStorage() {
@@ -488,8 +511,9 @@ public abstract class BigTable<T extends BigRecord> {
     }
 
     public void stopStorage() {
-        if (storageThread == null)
+        if (storageThread == null) {
             return;
+        }
         log.debug("stopStorage");
         control.getActive().set(false);
         while (storageThread.getState() != State.TERMINATED) {

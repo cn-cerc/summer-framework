@@ -30,28 +30,33 @@ public class StartApp implements Filter {
         Application.get(req);
 
         // 处理默认首页问题
-        if (uri.equals("/")) {
-            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null)
+        if ("/".equals(uri)) {
+            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null) {
                 req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
-            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null)
+            }
+            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null) {
                 req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE,
                         req.getParameter(ClientDevice.APP_DEVICE_TYPE));
+            }
 
             IAppConfig conf = Application.getAppConfig();
             resp.sendRedirect(String.format("%s%s", ApplicationProperties.App_Path, conf.getFormWelcome()));
             return;
-        } else if (uri.equals("/MobileConfig") || uri.equals("/mobileConfig")) {
-            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null)
+        } else if ("/MobileConfig".equals(uri) || "/mobileConfig".equals(uri)) {
+            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null) {
                 req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
-            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null)
+            }
+            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null) {
                 req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE,
                         req.getParameter(ClientDevice.APP_DEVICE_TYPE));
+            }
             try {
                 IForm form;
-                if (Application.get(req).containsBean("mobileConfig"))
+                if (Application.get(req).containsBean("mobileConfig")) {
                     form = Application.getBean("mobileConfig", IForm.class);
-                else
+                } else {
                     form = Application.getBean("MobileConfig", IForm.class);
+                }
                 form.setRequest((HttpServletRequest) request);
                 form.setResponse((HttpServletResponse) response);
 

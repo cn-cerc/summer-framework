@@ -104,7 +104,7 @@ public class UserOptions {
     }
 
     public static boolean UserOptionEnabled(IHandle session, String ACode) {
-        return GetUserOption(session, ACode).equals("on");
+        return "on".equals(GetUserOption(session, ACode));
     }
 
     public static String GetUserOption(IHandle Session, String ACode) {
@@ -131,20 +131,22 @@ public class UserOptions {
     // 3.如没有开发或开放已过去就只能查看指定时间内的单 返回 true及日期 范围的数据
 
     public static boolean isHideHistoryData(IHandle session, Var_Integer FDay) {
-        if (!GetUserOption(session, "HideHistoryData").equals("on"))
+        if (!"on".equals(GetUserOption(session, "HideHistoryData"))) {
             return false;
+        }
 
         String HideHistoryDateTime = GetUserOption(session, "HideHistoryDateTime");
 
-        if (HideHistoryDateTime.equals("")) {
+        if ("".equals(HideHistoryDateTime)) {
             FDay.value = Utils.strToIntDef(GetUserOption(session, "HideHistoryDay"), 7);
             return true;
         }
 
-        if (TDateTime.Now().compareTo(TDateTime.fromDate(HideHistoryDateTime)) < 0)
+        if (TDateTime.Now().compareTo(TDateTime.fromDate(HideHistoryDateTime)) < 0) {
             FDay.value = Utils.strToIntDef(GetUserOption(session, "HideHistoryTmpDay"), 0);
-        else
+        } else {
             FDay.value = Utils.strToIntDef(GetUserOption(session, "HideHistoryDay"), 7);
+        }
         return true;
     }
 

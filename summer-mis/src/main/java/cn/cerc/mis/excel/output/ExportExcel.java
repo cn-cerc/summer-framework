@@ -1,19 +1,17 @@
 package cn.cerc.mis.excel.output;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-
 import cn.cerc.core.DataSet;
 import jxl.Workbook;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 
 public class ExportExcel {
     private static ApplicationContext app;
@@ -28,15 +26,17 @@ public class ExportExcel {
     }
 
     public void export() throws IOException, WriteException, AccreditException {
-        if (this.handle == null)
+        if (this.handle == null) {
             throw new RuntimeException("handle is null");
+        }
 
         template = this.getTemplate();
 
         IAccreditManager manager = template.getAccreditManager();
         if (manager != null) {
-            if (!manager.isPass(this.handle))
+            if (!manager.isPass(this.handle)) {
                 throw new AccreditException(String.format("您没有导出[%s]的权限", manager.getDescribe()));
+            }
         }
 
         HistoryWriter writer = template.getHistoryWriter();
@@ -93,22 +93,22 @@ public class ExportExcel {
 
     public ExcelTemplate getTemplate() {
         if (template == null) {
-            if (templateId == null)
+            if (templateId == null) {
                 throw new RuntimeException("templateId is null");
-            if (app == null)
+            }
+            if (app == null) {
                 app = new FileSystemXmlApplicationContext(xmlFile);
+            }
             template = app.getBean(templateId, ExcelTemplate.class);
         }
         return template;
     }
 
     public void setTemplate(ExcelTemplate template) {
-
         this.template = template;
     }
 
     public String getTemplateId() {
-
         return templateId;
     }
 

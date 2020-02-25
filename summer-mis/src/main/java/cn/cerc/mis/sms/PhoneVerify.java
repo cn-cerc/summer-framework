@@ -129,10 +129,10 @@ public class PhoneVerify {
             }
             // 组装发送内容
             String text, templateId, templateValues;
-            if (nationalCode.equals("+86")) {
+            if ("+86".equals(nationalCode)) {
                 text = "【MIUGROUP】由账号" + this.phone + "发送的验证码是" + verifyCode; // 发短信调用
                 templateId = "51591";
-            } else if (nationalCode.equals("+852")) {
+            } else if ("+852".equals(nationalCode)) {
                 text = "【MIUGROUP】由賬號" + this.phone + "發送的驗證碼是" + verifyCode; // 发短信调用
                 templateId = "51592";
             } else {
@@ -142,8 +142,9 @@ public class PhoneVerify {
             templateValues = "#account#=" + this.phone + "&#code#=" + verifyCode;
             // 开始发送讯息
             String no = this.mobile;
-            if (!no.startsWith("+"))
+            if (!no.startsWith("+")) {
                 no = nationalCode + no;
+            }
             YunpianSMS obj1 = new YunpianSMS(no);
             obj1.sendText(text);
             // if (!obj1.sendText(text)) {
@@ -192,12 +193,14 @@ public class PhoneVerify {
 
     public boolean sendMessage(String text) {
         String no = this.mobile;
-        if (!no.startsWith("+"))
+        if (!no.startsWith("+")) {
             no = nationalCode + no;
+        }
         YunpianSMS sms = new YunpianSMS(no);
         boolean result = sms.sendText(text);
-        if (!result)
+        if (!result) {
             this.message = sms.getMessage();
+        }
         return result;
     }
 

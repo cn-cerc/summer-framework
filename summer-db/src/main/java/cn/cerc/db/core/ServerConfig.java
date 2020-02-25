@@ -147,21 +147,25 @@ public class ServerConfig implements IConfig {
     @Deprecated // 请改使用 isServerMaster， isServerBeta，isServerDevelop
     public static int getAppLevel() {
         String tmp = getInstance().getProperty("version", "beta");
-        if ("test".equals(tmp))
+        if ("test".equals(tmp)) {
             return 1;
-        if ("beta".equals(tmp))
+        }
+        if ("beta".equals(tmp)) {
             return 2;
-        if ("release".equals(tmp))
+        }
+        if ("release".equals(tmp)) {
             return AppLevelMaster;
-        else
+        } else {
             return 0;
+        }
     }
 
     // 正式环境
     public static boolean isServerMaster() {
         String tmp = getInstance().getProperty("version", "beta");
-        if ("release".equals(tmp))
+        if ("release".equals(tmp)) {
             return true;
+        }
         return "master".equals(tmp);
     }
 
@@ -177,10 +181,12 @@ public class ServerConfig implements IConfig {
 
     // 开发环境
     public static boolean isServerDevelop() {
-        if (isServerMaster())
+        if (isServerMaster()) {
             return false;
-        if (isServerBeta())
+        }
+        if (isServerBeta()) {
             return false;
+        }
         return true;
     }
 
@@ -206,8 +212,9 @@ public class ServerConfig implements IConfig {
         LocalConfig config = LocalConfig.getInstance();
         result = config.getProperty(key, null);
         if (result == null) {
-            if (properties != null)
+            if (properties != null) {
                 result = properties.getProperty(key);
+            }
         }
         return result != null ? result : def;
     }

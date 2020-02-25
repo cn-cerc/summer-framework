@@ -52,8 +52,9 @@ public class OssConnection implements IConnection {
 
     @Override
     public OSSClient getClient() {
-        if (client != null)
+        if (client != null) {
             return client;
+        }
 
         // 如果连接被意外断开了,那么重新建立连接
         if (null == client) {
@@ -125,8 +126,9 @@ public class OssConnection implements IConnection {
             while (true) {
                 String line;
                 line = reader.readLine();
-                if (line == null)
+                if (line == null) {
                     break;
+                }
                 sb.append(line);
             }
             return sb.toString();
@@ -158,10 +160,11 @@ public class OssConnection implements IConnection {
      * @return 若存在则返回路径，否则返回默认值
      */
     public String getFileUrl(String fileName, String def) {
-        if (existsFile(fileName))
+        if (existsFile(fileName)) {
             return String.format("%s/%s", site, fileName);
-        else
+        } else {
             return def;
+        }
     }
 
     public String getSite() {

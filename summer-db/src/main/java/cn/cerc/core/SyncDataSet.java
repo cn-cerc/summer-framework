@@ -19,8 +19,9 @@ public class SyncDataSet {
             Record src = source.getCurrent();
             String[] fields = keyFields.split(";");
             Object[] values = new Object[fields.length];
-            for (int i = 0; i < fields.length; i++)
+            for (int i = 0; i < fields.length; i++) {
                 values[i] = src.getField(fields[i]);
+            }
             Record tar = target.locate(keyFields, values) ? target.getCurrent() : null;
             sync.process(src, tar);
         }
@@ -29,8 +30,9 @@ public class SyncDataSet {
             Record tar = target.getCurrent();
             String[] fields = keyFields.split(";");
             Object[] values = new Object[fields.length];
-            for (int i = 0; i < fields.length; i++)
+            for (int i = 0; i < fields.length; i++) {
                 values[i] = tar.getField(fields[i]);
+            }
             if (!source.locate(keyFields, values)) {
                 result++;
                 sync.process(null, tar);

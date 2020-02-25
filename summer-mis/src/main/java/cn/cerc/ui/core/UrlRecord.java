@@ -63,8 +63,9 @@ public class UrlRecord {
 
     public String getUrl() {
         StringBuilder sl = new StringBuilder();
-        if (site != null)
+        if (site != null) {
             sl.append(site);
+        }
 
         int i = 0;
         for (String key : params.keySet()) {
@@ -73,8 +74,9 @@ public class UrlRecord {
             sl.append(key);
             sl.append("=");
             String value = params.get(key);
-            if (value != null)
+            if (value != null) {
                 sl.append(encodeUTF8(value));
+            }
         }
         return sl.toString();
     }

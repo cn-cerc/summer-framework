@@ -19,11 +19,13 @@ public class UIRadioButton extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (label != null)
+        if (label != null) {
             label.output(html);
+        }
         html.print("<input type='radio'");
-        if (isSelected)
+        if (isSelected) {
             html.print(" checked=checked");
+        }
         html.print(" name='%s' value='%s'", name, value);
         super.outputCss(html);
         html.println("/>");
@@ -46,8 +48,9 @@ public class UIRadioButton extends UIComponent {
     }
 
     public UILabel getLabel() {
-        if (label == null)
+        if (label == null) {
             label = new UILabel();
+        }
         return label;
     }
 

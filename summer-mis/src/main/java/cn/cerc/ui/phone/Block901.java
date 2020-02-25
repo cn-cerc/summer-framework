@@ -23,8 +23,9 @@ public class Block901 extends UIComponent {
     public void output(HtmlWriter html) {
         html.println("<!-- %s -->", this.getClass().getName());
         html.println("<div class='block901'>");
-        for (UISpan item : items)
+        for (UISpan item : items) {
             item.output(html);
+        }
         html.println("</div>");
     }
 

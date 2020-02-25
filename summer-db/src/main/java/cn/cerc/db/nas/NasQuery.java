@@ -42,8 +42,9 @@ public class NasQuery extends DataQuery {
             throw new RuntimeException("语法为: select fileName from filePath");
         }
         // 校验数据
-        if (Utils.isEmpty(this.filePath))
+        if (Utils.isEmpty(this.filePath)) {
             throw new RuntimeException("请输入文件路径");
+        }
         if (nasMode == NasModel.readWrite) {
             File file = FileUtils.getFile(this.filePath, this.fileName);
             try {
@@ -79,8 +80,9 @@ public class NasQuery extends DataQuery {
 
     @Override
     public QueueOperator getOperator() {
-        if (operator == null)
+        if (operator == null) {
             operator = new QueueOperator();
+        }
         return operator;
     }
 
@@ -92,11 +94,13 @@ public class NasQuery extends DataQuery {
         this.nasMode = nasMode;
     }
 
+    @Override
     public NasQuery add(String sql) {
         super.add(sql);
         return this;
     }
 
+    @Override
     public NasQuery add(String format, Object... args) {
         super.add(format, args);
         return this;

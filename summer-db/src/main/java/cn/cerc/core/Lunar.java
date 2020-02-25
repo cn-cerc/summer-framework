@@ -83,15 +83,18 @@ public class Lunar {
                 --iMonth;
                 leap = true;
                 daysOfMonth = leapDays(year);
-            } else
+            } else {
                 daysOfMonth = monthDays(year, iMonth);
+            }
 
             offset -= daysOfMonth;
             // 解除闰月
-            if (leap && iMonth == (leapMonth + 1))
+            if (leap && iMonth == (leapMonth + 1)) {
                 leap = false;
-            if (!leap)
+            }
+            if (!leap) {
                 monCyl++;
+            }
         }
         // offset为0时，并且刚才计算的月份是闰月，要校正
         if (offset == 0 && leapMonth > 0 && iMonth == leapMonth + 1) {
@@ -117,8 +120,9 @@ public class Lunar {
     final private static int yearDays(int y) {
         int i, sum = 348;
         for (i = 0x8000; i > 0x8; i >>= 1) {
-            if ((lunarInfo[y - 1900] & i) != 0)
+            if ((lunarInfo[y - 1900] & i) != 0) {
                 sum += 1;
+            }
         }
         return (sum + leapDays(y));
     }
@@ -126,12 +130,14 @@ public class Lunar {
     // ====== 传回农历 y年闰月的天数
     final private static int leapDays(int y) {
         if (leapMonth(y) != 0) {
-            if ((lunarInfo[y - 1900] & 0x10000) != 0)
+            if ((lunarInfo[y - 1900] & 0x10000) != 0) {
                 return 30;
-            else
+            } else {
                 return 29;
-        } else
+            }
+        } else {
             return 0;
+        }
     }
 
     // ====== 传回农历 y年闰哪个月 1-12 , 没闰传回 0
@@ -141,10 +147,11 @@ public class Lunar {
 
     // ====== 传回农历 y年m月的总天数
     final private static int monthDays(int y, int m) {
-        if ((lunarInfo[y - 1900] & (0x10000 >> m)) == 0)
+        if ((lunarInfo[y - 1900] & (0x10000 >> m)) == 0) {
             return 29;
-        else
+        } else {
             return 30;
+        }
     }
 
     // ====== 传入 月日的offset 传回干支, 0=甲子
@@ -157,12 +164,14 @@ public class Lunar {
     public static String getChinaDayString(int day) {
         String[] chineseTen = { "0", "1", "2", "3" };
         int n = day % 10 == 0 ? 9 : day % 10 - 1;
-        if (day > 30)
+        if (day > 30) {
             return "";
-        if (day == 10)
+        }
+        if (day == 10) {
             return "10";
-        else
+        } else {
             return chineseTen[day / 10] + chineseNumber[n];
+        }
     }
 
     public static void main(String[] args) throws ParseException {
@@ -185,6 +194,7 @@ public class Lunar {
         return (cyclicalm(num));
     }
 
+    @Override
     public String toString() {
         // return year + "年" + (leap ? "闰" : "") + chineseNumber[month - 1] +
         // "月" + getChinaDayString(day);

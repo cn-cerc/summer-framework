@@ -89,10 +89,12 @@ public class HandleDefault implements IHandle {
     public boolean init(String token) {
         this.setProperty(Application.token, token);
         log.debug(String.format("根据 token=%s 初始化 Session", token));
-        if (token == null)
+        if (token == null) {
             return false;
-        if (token.length() < 10)
+        }
+        if (token.length() < 10) {
             throw new RuntimeException("token 值有错！");
+        }
 
         // 从数据表CurrentUser中，取出公司别CorpNo_与UserCode_，再依据UserCode_从Account取出RoleCode_
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
@@ -159,8 +161,9 @@ public class HandleDefault implements IHandle {
 
         Object result = params.get(key);
         if (result == null && !params.containsKey(key)) {
-            if (connections.containsKey(key))
+            if (connections.containsKey(key)) {
                 return connections.get(key);
+            }
 
             if (MysqlConnection.sessionId.equals(key)) {
                 MysqlConnection obj = new MysqlConnection();
@@ -210,10 +213,11 @@ public class HandleDefault implements IHandle {
     @Override
     public void setProperty(String key, Object value) {
         if (Application.token.equals(key)) {
-            if ("{}".equals(value) || "".equals(key))
+            if ("{}".equals(value) || "".equals(key)) {
                 params.put(key, null);
-            else
+            } else {
                 params.put(key, value);
+            }
             return;
         }
         params.put(key, value);
@@ -234,8 +238,9 @@ public class HandleDefault implements IHandle {
         for (String key : this.connections.keySet()) {
             Object sess = this.connections.get(key);
             try {
-                if (sess instanceof AutoCloseable)
+                if (sess instanceof AutoCloseable) {
                     ((AutoCloseable) sess).close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

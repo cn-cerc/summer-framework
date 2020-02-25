@@ -37,21 +37,25 @@ public class MutiGrid<T> {
     public int map(HttpServletRequest request, Class<T> clazz, BuildRecord make, boolean defProcess) {
         BeanRecord<T> defMake = null;
         try {
-            if (defProcess)
+            if (defProcess) {
                 defMake = new BeanRecord<T>();
+            }
             T item = null;
-            if (dataSet.size() == 0)
+            if (dataSet.size() == 0) {
                 return 0;
+            }
             pages.setRequest(request);
 
             int i = pages.getBegin();
             while (i <= pages.getEnd()) {
                 dataSet.setRecNo(i + 1);
                 item = clazz.getDeclaredConstructor().newInstance();
-                if (defProcess)
+                if (defProcess) {
                     defMake.build(item, dataSet.getCurrent());
-                if (make != null)
+                }
+                if (make != null) {
                     make.build(item, dataSet.getCurrent());
+                }
 
                 items.add(item);
                 i++;
@@ -61,8 +65,9 @@ public class MutiGrid<T> {
                 | NoSuchMethodException | SecurityException e) {
             throw new RuntimeException(e.getMessage());
         } finally {
-            if (defMake != null)
+            if (defMake != null) {
                 defMake.close();
+            }
         }
     }
 

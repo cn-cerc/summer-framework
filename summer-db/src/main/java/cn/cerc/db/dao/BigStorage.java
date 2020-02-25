@@ -16,8 +16,9 @@ public class BigStorage implements Runnable {
 
     @Override
     public void run() {
-        if (control == null)
+        if (control == null) {
             throw new RuntimeException("BigStorage.control is null!");
+        }
         try {
             while (control.getActive().get()) {
                 log.debug("check save");

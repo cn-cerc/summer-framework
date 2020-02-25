@@ -64,8 +64,9 @@ public class SqlOperator implements IDataOperator {
             }
         }
 
-        if (result == null)
+        if (result == null) {
             throw new RuntimeException("SQL语句异常");
+        }
 
         return result;
     }
@@ -82,20 +83,23 @@ public class SqlOperator implements IDataOperator {
 
     @Override
     public boolean insert(Record record) {
-        if (record.getFieldDefs().size() == 0)
+        if (record.getFieldDefs().size() == 0) {
             throw new RuntimeException("字段为空");
+        }
         Connection conn = getConnection();
         try (BuildStatement bs = new BuildStatement(conn)) {
-            if (searchKeys.size() == 0)
+            if (searchKeys.size() == 0) {
                 initPrimaryKeys(conn, record);
+            }
 
             bs.append("insert into ").append(tableName).append(" (");
             int i = 0;
             for (String field : record.getItems().keySet()) {
                 if (!updateKey.equals(field)) {
                     i++;
-                    if (i > 1)
+                    if (i > 1) {
                         bs.append(",");
+                    }
                     bs.append(field);
                 }
             }
@@ -104,10 +108,11 @@ public class SqlOperator implements IDataOperator {
             for (String field : record.getItems().keySet()) {
                 if (!updateKey.equals(field)) {
                     i++;
-                    if (i == 1)
+                    if (i == 1) {
                         bs.append("?", record.getField(field));
-                    else
+                    } else {
                         bs.append(",?", record.getField(field));
+                    }
                 }
             }
             bs.append(")");
@@ -117,8 +122,9 @@ public class SqlOperator implements IDataOperator {
             if (preview) {
                 log.info(lastCommand);
                 return false;
-            } else
+            } else {
                 log.debug(lastCommand);
+            }
 
             int result = ps.executeUpdate();
 
@@ -138,20 +144,25 @@ public class SqlOperator implements IDataOperator {
 
     @Override
     public boolean update(Record record) {
-        if (!record.isModify())
+        if (!record.isModify()) {
             return false;
+        }
         Map<String, Object> delta = record.getDelta();
-        if (delta.size() == 0)
+        if (delta.size() == 0) {
             return false;
+        }
 
         Connection conn = getConnection();
         try (BuildStatement bs = new BuildStatement(conn)) {
-            if (this.searchKeys.size() == 0)
+            if (this.searchKeys.size() == 0) {
                 initPrimaryKeys(conn, record);
-            if (searchKeys.size() == 0)
+            }
+            if (searchKeys.size() == 0) {
                 throw new RuntimeException("primary keys not exists");
-            if (!searchKeys.contains(updateKey))
+            }
+            if (!searchKeys.contains(updateKey)) {
                 log.warn(String.format("not find primary key %s in %s", updateKey, this.tableName));
+            }
             bs.append("update ").append(tableName);
             // 加入set条件
             int i = 0;
@@ -167,8 +178,9 @@ public class SqlOperator implements IDataOperator {
                     }
                 }
             }
-            if (i == 0)
+            if (i == 0) {
                 return false;
+            }
             // 加入where条件
             i = 0;
             int pkCount = 0;
@@ -179,11 +191,13 @@ public class SqlOperator implements IDataOperator {
                 if (value != null) {
                     bs.append("=?", value);
                     pkCount++;
-                } else
+                } else {
                     throw new RuntimeException("primaryKey not is null: " + field);
+                }
             }
-            if (pkCount == 0)
+            if (pkCount == 0) {
                 throw new RuntimeException("primary keys value not exists");
+            }
             if (updateMode == UpdateMode.strict) {
                 for (String field : delta.keySet()) {
                     if (!searchKeys.contains(field)) {
@@ -192,8 +206,9 @@ public class SqlOperator implements IDataOperator {
                         Object value = delta.get(field);
                         if (value != null) {
                             bs.append("=?", value);
-                        } else
+                        } else {
                             bs.append(" is null ");
+                        }
                     }
                 }
             }
@@ -222,20 +237,24 @@ public class SqlOperator implements IDataOperator {
     @Override
     public boolean delete(Record record) {
         try (BuildStatement bs = new BuildStatement(conntion)) {
-            if (this.searchKeys.size() == 0)
+            if (this.searchKeys.size() == 0) {
                 initPrimaryKeys(conntion, record);
-            if (searchKeys.size() == 0)
+            }
+            if (searchKeys.size() == 0) {
                 throw new RuntimeException("primary keys  not exists");
-            if (!searchKeys.contains(updateKey))
+            }
+            if (!searchKeys.contains(updateKey)) {
                 log.warn(String.format("not find primary key %s in %s", updateKey, this.tableName));
+            }
 
             bs.append("delete from ").append(tableName);
             int i = 0;
             Map<String, Object> delta = record.getDelta();
             for (String pk : searchKeys) {
                 Object value = delta.containsKey(pk) ? delta.get(pk) : record.getField(pk);
-                if (value == null)
+                if (value == null) {
                     throw new RuntimeException("主键值为空");
+                }
                 i++;
                 bs.append(i == 1 ? " where " : " and ");
                 bs.append(pk).append("=? ", value);
@@ -245,8 +264,9 @@ public class SqlOperator implements IDataOperator {
             if (preview) {
                 log.info(lastCommand);
                 return false;
-            } else
+            } else {
                 log.debug(lastCommand);
+            }
 
             return ps.execute();
         } catch (SQLException e) {
@@ -259,20 +279,23 @@ public class SqlOperator implements IDataOperator {
     private void initPrimaryKeys(Connection conn, Record record) throws SQLException {
         for (String key : record.getFieldDefs().getFields()) {
             if (updateKey.equalsIgnoreCase(key)) {
-                if (!updateKey.equals(key))
+                if (!updateKey.equals(key)) {
                     throw new RuntimeException(String.format("%s <> %s", updateKey, key));
+                }
                 searchKeys.add(updateKey);
                 break;
             }
         }
         if (searchKeys.size() == 0) {
             String[] pks = getKeyByDB(conn, tableName).split(";");
-            if (pks.length == 0)
+            if (pks.length == 0) {
                 throw new RuntimeException("获取不到主键PK");
+            }
             for (String pk : pks) {
                 if (updateKey.equalsIgnoreCase(pk)) {
-                    if (!updateKey.equals(pk))
+                    if (!updateKey.equals(pk)) {
                         throw new RuntimeException(String.format("%s <> %s", updateKey, pk));
+                    }
                     searchKeys.add(pk);
                     break;
                 }
@@ -290,10 +313,11 @@ public class SqlOperator implements IDataOperator {
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 Object obj = rs.getObject(1);
-                if (obj instanceof BigInteger)
+                if (obj instanceof BigInteger) {
                     result = (BigInteger) obj;
-                else
+                } else {
                     result = BigInteger.valueOf(rs.getInt(1));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -333,8 +357,9 @@ public class SqlOperator implements IDataOperator {
             int i = 0;
             while (rs.next()) {
                 i++;
-                if (i > 1)
+                if (i > 1) {
                     result.append(";");
+                }
                 result.append(rs.getString("COLUMN_NAME"));
             }
             return result.toString();

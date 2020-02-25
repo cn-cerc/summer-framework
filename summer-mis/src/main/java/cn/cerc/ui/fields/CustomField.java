@@ -13,8 +13,9 @@ public class CustomField extends AbstractField {
 
     @Override
     public String getText(Record ds) {
-        if (buildText == null)
+        if (buildText == null) {
             return "";
+        }
         HtmlWriter html = new HtmlWriter();
         buildText.outputText(ds, html);
         return html.toString();

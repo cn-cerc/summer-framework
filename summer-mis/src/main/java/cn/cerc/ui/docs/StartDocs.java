@@ -99,8 +99,9 @@ public class StartDocs extends HttpServlet {
     private void processImage(HttpServletRequest req, HttpServletResponse resp, String uri) throws IOException {
         resp.setHeader("Content-Type", "image/jped");// 设置响应的媒体类型，这样浏览器会识别出响应的是图片
         InputStream fos = req.getServletContext().getResourceAsStream("/WEB-INF/" + uri);
-        if (fos == null)
+        if (fos == null) {
             return;
+        }
         OutputStream os = resp.getOutputStream();// 获得servlet的servletoutputstream对象
         byte[] buffer = new byte[2048];
         int count;

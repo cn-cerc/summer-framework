@@ -38,8 +38,9 @@ public class MongoConnection implements IConnection, AutoCloseable {
 
     @Override
     public MongoDatabase getClient() {
-        if (database != null)
+        if (database != null) {
             return database;
+        }
 
         if (MongoConnection.pool == null) {
             dbname = config.getProperty(MongoConnection.mgdb_dbname);
@@ -72,8 +73,9 @@ public class MongoConnection implements IConnection, AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if (database != null)
+        if (database != null) {
             database = null;
+        }
     }
 
     @Override

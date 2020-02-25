@@ -26,8 +26,9 @@ public class BigDeleteSql {
             });
 
             Object value = items.get(updateKey);
-            if (value == null)
+            if (value == null) {
                 throw new RuntimeException("主键值为空");
+            }
 
             bs.append(" where ");
             bs.append(updateKey).append("=? ", value);
@@ -37,8 +38,9 @@ public class BigDeleteSql {
             if (preview) {
                 log.info(lastCommand);
                 return false;
-            } else
+            } else {
                 log.debug(lastCommand);
+            }
 
             return ps.execute();
         } catch (SQLException e) {
