@@ -1,17 +1,7 @@
 package cn.cerc.mis.page;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
-import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.config.ApplicationProperties;
@@ -22,8 +12,14 @@ import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
-import cn.cerc.security.sapi.JayunSecurity;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @Slf4j
 @Component
@@ -58,8 +54,8 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
     @Override
     public String checkToken(String token) throws IOException, ServletException {
         IForm form = this.getForm();
-        String password = null;
-        String userCode = null;
+        String password;
+        String userCode;
         try {
             // TODO 需要统一 login_user login_pwd 与 userCode password 的名称
             if (form.getRequest().getParameter("login_usr") != null) {
@@ -128,14 +124,6 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
             if (token != null && !"".equals(token)) {
                 log.debug(String.format("认证成功，取得sid(%s)", token));
                 ((ClientDevice) this.getForm().getClient()).setToken(token);
-            }
-            // 登记聚安应用帐号
-            String mobile = Utils.safeString(obj.getMobile());
-            if (mobile != null && !"".equals(mobile)) {
-                JayunSecurity api = new JayunSecurity(req);
-                if (!api.register(userCode, mobile)) {
-                    log.error(api.getMessage());
-                }
             }
             req.getSession().setAttribute("loginMsg", "");
             req.getSession().setAttribute("mobile", "");
