@@ -204,7 +204,7 @@ public class UIHeader extends UIComponent {
 
     public void setModule(String moduleCode, String moduleName) {
         this.moduleCode = moduleCode;
-        this.addLeftMenu("TWebModule?module=" + moduleCode, moduleName);
+        this.addLeftMenu("FrmModule?module=" + moduleCode, moduleName);
     }
 
     public String getPageTitle() {
@@ -218,7 +218,7 @@ public class UIHeader extends UIComponent {
     public void addLeftMenu(UrlRecord urlRecord) {
         if (this.moduleCode == null) {
             this.moduleCode = urlRecord.getSite();
-            urlRecord.setSite("TWebModule?module=" + urlRecord.getSite());
+            urlRecord.setSite("FrmModule?module=" + urlRecord.getSite());
         }
         leftMenus.add(urlRecord);
     }
