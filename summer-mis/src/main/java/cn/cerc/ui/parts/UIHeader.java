@@ -204,7 +204,9 @@ public class UIHeader extends UIComponent {
 
     public void setModule(String moduleCode, String moduleName) {
         this.moduleCode = moduleCode;
-        this.addLeftMenu("FrmModule?module=" + moduleCode, moduleName);
+        if (!"".equals(moduleCode)) {
+            this.addLeftMenu("FrmModule?module=" + moduleCode, moduleName);
+        }
     }
 
     public String getPageTitle() {
