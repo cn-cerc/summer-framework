@@ -66,8 +66,8 @@ public class UIHeader extends UIComponent {
         leftMenus.add(homePage);
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
                 R.asString(owner.getForm().getHandle(), "开始"));
-        IClient client = owner.getForm().getClient();
-        if (!client.isPhone()) {
+        boolean isShowBar = "true".equals(config.getProperty("app.ui.head.show", "true"));
+        if (!client.isPhone() && isShowBar) {
             IHandle handle = owner.getForm().getHandle();
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
