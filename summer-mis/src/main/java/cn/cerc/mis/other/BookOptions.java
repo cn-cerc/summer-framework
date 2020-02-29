@@ -394,21 +394,6 @@ public class BookOptions {
         return getEnabled(handle, EnableTranDetailCW);
     }
 
-    // 仓别控制权限
-    public static TWHControl getWHControl(IHandle handle) {
-        // 拆装单单头仓别管控
-        boolean enableWHManage = BookOptions.getEnableWHManage(handle);
-        // 拆装单单身仓别管控
-        boolean enableTranDetailCW = BookOptions.getEnableTranDetailCW(handle);
-        if (enableWHManage && enableTranDetailCW) {
-            return TWHControl.whcBody;
-        } else if (enableWHManage) {
-            return TWHControl.whcHead;
-        } else {
-            return TWHControl.whcNone;
-        }
-    }
-
     /*
      * 可用库存
      */
