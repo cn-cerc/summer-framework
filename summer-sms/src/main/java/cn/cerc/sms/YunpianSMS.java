@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -24,9 +25,8 @@ import net.sf.json.JSONObject;
 /**
  * https://www.yunpian.com
  */
+@Slf4j
 public class YunpianSMS {
-
-    private static final Logger log = LoggerFactory.getLogger(YunpianSMS.class);
 
     // 智能匹配模板发送接口
     private static final String URI_SEND_SMS = "https://sms.yunpian.com/v2/sms/single_send.json";
