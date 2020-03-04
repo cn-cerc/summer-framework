@@ -10,11 +10,83 @@ public class UrlRecord {
     private String name;
     private String title;
     private String target;
-    private Map<String, String> params = new HashMap<>();
     private String hintMsg;
     private String id;
     private String imgage;
     private String arrow;
+
+    private Map<String, String> params = new HashMap<>();
+
+    public static class Builder {
+        // Required parameters
+        private String site;
+
+        // Optional parameters - initialized to default values
+        private String name;
+        private String title;
+        private String target;
+        private String hintMsg;
+        private String id;
+        private String imgage;
+        private String arrow;
+        private Map<String, String> params = new HashMap<>();
+
+        public Builder(String site) {
+            this.site = site;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder target(String target) {
+            this.target = target;
+            return this;
+        }
+
+        public Builder hintMsg(String hintMsg) {
+            this.hintMsg = hintMsg;
+            return this;
+        }
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder imgage(String imgage) {
+            this.imgage = imgage;
+            return this;
+        }
+
+        public Builder put(String key, String value) {
+            this.params.put(key, value);
+            return this;
+        }
+
+        public UrlRecord build() {
+            return new UrlRecord(this);
+        }
+
+    }
+
+    private UrlRecord(Builder builder) {
+        this.site = builder.site;
+        this.name = builder.name;
+        this.title = builder.title;
+        this.target = builder.target;
+        this.hintMsg = builder.hintMsg;
+        this.id = builder.id;
+        this.imgage = builder.imgage;
+        this.arrow = builder.arrow;
+        this.params = builder.params;
+    }
 
     public UrlRecord() {
     }
@@ -140,4 +212,5 @@ public class UrlRecord {
         this.arrow = arrow;
         return this;
     }
+
 }
