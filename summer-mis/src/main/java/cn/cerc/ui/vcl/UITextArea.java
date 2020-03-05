@@ -14,8 +14,8 @@ public class UITextArea extends UIComponent {
     private String name;
     private String text;
     private String placeholder;
-    private int cols;
-    private int rows;
+    private int cols;// 列
+    private int rows;// 行
     private boolean readonly;
 
     public UITextArea() {
@@ -38,11 +38,11 @@ public class UITextArea extends UIComponent {
         if (name != null) {
             html.print("name='%s' ", name);
         }
-        if (cols != 0) {
-            html.print("rows='%s' ", cols);
-        }
         if (rows != 0) {
             html.print("rows='%s' ", rows);
+        }
+        if (cols != 0) {
+            html.print("cols='%s' ", cols);
         }
         if (placeholder != null) {
             html.print("placeholder=%s ", placeholder);
@@ -66,56 +66,63 @@ public class UITextArea extends UIComponent {
         return caption;
     }
 
-    public void setCaption(UISpan caption) {
+    public UITextArea setCaption(UISpan caption) {
         this.caption = caption;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public UITextArea setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public UITextArea setText(String text) {
         this.text = text;
+        return this;
     }
 
     public String getPlaceholder() {
         return placeholder;
     }
 
-    public void setPlaceholder(String placeholder) {
+    public UITextArea setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
+        return this;
     }
 
     public int getCols() {
         return cols;
     }
 
-    public void setCols(int cols) {
+    public UITextArea setCols(int cols) {
         this.cols = cols;
+        return this;
     }
 
     public int getRows() {
         return rows;
     }
 
-    public void setRows(int rows) {
+    public UITextArea setRows(int rows) {
         this.rows = rows;
+        return this;
     }
 
     public boolean isReadonly() {
         return readonly;
     }
 
-    public void setReadonly(boolean readonly) {
+    public UITextArea setReadonly(boolean readonly) {
         this.readonly = readonly;
+        return this;
     }
 
 }
