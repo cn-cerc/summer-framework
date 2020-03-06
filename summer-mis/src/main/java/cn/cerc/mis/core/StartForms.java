@@ -1,19 +1,5 @@
 package cn.cerc.mis.core;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
@@ -25,7 +11,20 @@ import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.page.JsonPage;
 import cn.cerc.mis.page.JspPage;
 import cn.cerc.mis.page.RedirectPage;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 @Slf4j
 public class StartForms implements Filter {
@@ -38,11 +37,20 @@ public class StartForms implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
 
         String uri = req.getRequestURI();
+        log.debug("uri {}", uri);
 
-        int prefix = uri.indexOf("/", 2);
-        if (prefix < 0) {
+        /**
+         * http://127.0.0.1:8103/
+         * http://127.0.0.1:8103
+         * http://127.0.0.1:8103/public
+         * http://127.0.0.1:8103/public/
+         * http://127.0.0.1:8103/favicon.ico
+         */
+        if (StringUtils.countMatches(uri, "/") < 2
+                && !uri.contains("favicon.ico")) {
             IAppConfig conf = Application.getAppConfig();
-            resp.sendRedirect(String.format("%s", ApplicationProperties.App_Path, conf.getFormWelcome()));
+            String redirect = String.format("%s%s", ApplicationProperties.App_Path, conf.getFormWelcome());
+            resp.sendRedirect(redirect);
             return;
         }
 
@@ -63,12 +71,17 @@ public class StartForms implements Filter {
              */
             log.debug("before {}", uri);
             IAppConfig conf = Application.getAppConfig();
-            String source = "/" + conf.getPathForms() + uri.substring(uri.indexOf("/", 2));
-            request.getServletContext().getRequestDispatcher(source).forward(request, response);
-            log.debug("after  {}", source);
+
+            int index = uri.indexOf("/", 2);
+            if (index < 0) {
+                request.getServletContext().getRequestDispatcher(uri).forward(request, response);
+            } else {
+                String source = "/" + conf.getPathForms() + uri.substring(index);
+                request.getServletContext().getRequestDispatcher(source).forward(request, response);
+                log.debug("after  {}", source);
+            }
             return;
         }
-        log.info(uri);
         if (uri.contains("service/")) {
             chain.doFilter(req, resp);
             return;
