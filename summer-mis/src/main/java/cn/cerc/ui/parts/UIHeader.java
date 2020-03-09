@@ -38,9 +38,9 @@ public class UIHeader extends UIComponent {
     private String logoSrc;
     // 当前用户
     private String currentUser;
-    // 当前账套
+    // 当前帐套
     private String currentCorpNo;
-    // 当前账套名称
+    // 当前帐套名称
     private String corpNoName;
     // 退出
     private UrlRecord exitPage = null;
@@ -73,7 +73,7 @@ public class UIHeader extends UIComponent {
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
             currentUser = R.asString(owner.getForm().getHandle(), "当前用户");
-            currentCorpNo = R.asString(owner.getForm().getHandle(), "当前账套");
+            currentCorpNo = R.asString(owner.getForm().getHandle(), "当前帐套");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {

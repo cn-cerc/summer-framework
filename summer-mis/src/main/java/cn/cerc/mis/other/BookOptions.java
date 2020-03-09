@@ -211,7 +211,7 @@ public class BookOptions {
         // 其它参数
         items.put(ZZTPY_VERSION, "启动【郑州太平洋】专用功能项");
         items.put(AllowMallShare, "是否开放在线商城（允许所有人查看本公司商品信息）");
-        items.put(StudentFileSupCorpNo, "设置互联上游账套（助学计划）");
+        items.put(StudentFileSupCorpNo, "设置互联上游帐套（助学计划）");
     }
 
     private IHandle handle;
@@ -422,7 +422,7 @@ public class BookOptions {
         return getEnabled(handle, UpdateCurrentMonthProfit);
     }
 
-    // 是否禁止所有用户在电脑上保存帐号，禁止后首页不显示账套信息
+    // 是否禁止所有用户在电脑上保存帐号，禁止后首页不显示帐套信息
     public static boolean isDissableAccountSave(IHandle handle) {
         return getEnabled(handle, DisableAccountSave);
     }
@@ -442,7 +442,7 @@ public class BookOptions {
         return getEnabled(handle, OnlineToOfflineMenu);
     }
 
-    // 增加账套参数
+    // 增加帐套参数
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
         IServiceProxy svr1 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.getVineOptionsByCode");
         if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {

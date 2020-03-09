@@ -113,7 +113,7 @@ public class SvrUserLogin extends CustomService {
 
         boolean YGLogin = buff.getCorpType() == BookVersion.ctFree.ordinal();
         if (buff.getStatus() == 3) {
-            throw new SecurityCheckException("对不起，您的账套处于暂停录入状态，禁止登录！若需启用，请您联系客服处理！");
+            throw new SecurityCheckException("对不起，您的帐套处于暂停录入状态，禁止登录！若需启用，请您联系客服处理！");
         }
         if (buff.getStatus() == 4) {
             throw new SecurityCheckException("对不起，您的帐套已过期，请联系客服续费！");
@@ -174,7 +174,7 @@ public class SvrUserLogin extends CustomService {
                     systemTable.getDeviceVerify(), userCode, deviceId);
             getConnection().execute(sql);
 
-            // 若该账套是待安装，则改为已启用
+            // 若该帐套是待安装，则改为已启用
             SqlQuery dsCorp = new SqlQuery(this);
             dsCorp.add("select * from %s ", systemTable.getBookInfo());
             dsCorp.add("where CorpNo_='%s' and Status_=1 ", corpNo);
