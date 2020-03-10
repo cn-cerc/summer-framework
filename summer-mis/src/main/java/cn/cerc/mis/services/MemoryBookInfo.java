@@ -28,23 +28,22 @@ public class MemoryBookInfo {
         }
         Record record = svr.getDataOut().getHead();
 
-        BookInfoRecord result = new BookInfoRecord();
-        result.setCode(record.getString("CorpNo_"));
-        result.setShortName(record.getString("ShortName_"));
-        result.setName(record.getString("Name_"));
-        result.setAddress(record.getString("Address_"));
-        result.setTel(record.getString("Tel_"));
-        result.setManagerPhone(record.getString("ManagerPhone_"));
-        result.setStartHost(record.getString("StartHost_"));
-        result.setContact(record.getString("Contact_"));
-        result.setAuthentication(record.getBoolean("Authentication_"));
-        result.setStatus(record.getInt("Status_"));
-        result.setCorpType(record.getInt("Type_"));
-        result.setIndustry(record.getString("Industry_"));
+        BookInfoRecord item = new BookInfoRecord();
+        item.setCode(record.getString("CorpNo_"));
+        item.setShortName(record.getString("ShortName_"));
+        item.setName(record.getString("Name_"));
+        item.setAddress(record.getString("Address_"));
+        item.setTel(record.getString("Tel_"));
+        item.setManagerPhone(record.getString("ManagerPhone_"));
+        item.setStartHost(record.getString("StartHost_"));
+        item.setContact(record.getString("Contact_"));
+        item.setAuthentication(record.getBoolean("Authentication_"));
+        item.setStatus(record.getInt("Status_"));
+        item.setCorpType(record.getInt("Type_"));
+        item.setIndustry(record.getString("Industry_"));
 
-        Redis.set(getBuffKey(corpNo), gson.toJson(result));
-
-        return result;
+        Redis.set(getBuffKey(corpNo), gson.toJson(item));
+        return item;
     }
 
     /**
@@ -66,15 +65,6 @@ public class MemoryBookInfo {
      */
     public static BookVersion getBookType(IHandle handle) {
         String corpNo = handle.getCorpNo();
-        return getCorpType(handle, corpNo);
-    }
-
-    /**
-     * @param handle 环境变量
-     * @param corpNo 帐套代码
-     * @return 返回指定帐套的版本类型
-     */
-    public static BookVersion getCorpType(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
             throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
