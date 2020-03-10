@@ -1,12 +1,5 @@
 package cn.cerc.mis.core;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import cn.cerc.core.IConnection;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -23,6 +16,12 @@ import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -56,7 +55,8 @@ public class HandleDefault implements IHandle {
         this.setProperty(Application.userCode, userCode);
         this.setProperty(Application.clientIP, clientIP);
 
-        IServiceProxy svr = ServiceFactory.get(this, ServiceFactory.Public, "AppSessionRestore.byUserCode");
+        IServiceProxy svr = ServiceFactory.get(this);
+        svr.setService("AppSessionRestore.byUserCode");
         if (!svr.exec("userCode", userCode)) {
             throw new RuntimeException(svr.getMessage());
         }
@@ -100,7 +100,8 @@ public class HandleDefault implements IHandle {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
             if (buff.isNull()) {
                 buff.setField("exists", false);
-                IServiceProxy svr = ServiceFactory.get(this, ServiceFactory.Public, "AppSessionRestore.byToken");
+                IServiceProxy svr = ServiceFactory.get(this);
+                svr.setService("AppSessionRestore.byToken");
                 if (!svr.exec("token", token)) {
                     log.error("sid 恢复错误 ", svr.getMessage());
                     this.setProperty(Application.token, null);

@@ -13,7 +13,8 @@ public interface IUserOption extends IOption {
     default String getOption(IHandle handle) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), getKey())) {
             if (buff.isNull()) {
-                IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "ApiUserInfo.getOptionValue");
+                IServiceProxy svr = ServiceFactory.get(handle);
+                svr.setService("ApiUserInfo.getOptionValue");
                 Record headIn = svr.getDataIn().getHead();
                 headIn.setField("UserCode_", handle.getUserCode());
                 headIn.setField("Code_", getKey());

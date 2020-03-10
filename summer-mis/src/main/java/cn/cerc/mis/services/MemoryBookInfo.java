@@ -1,7 +1,5 @@
 package cn.cerc.mis.services;
 
-import com.google.gson.Gson;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
@@ -10,6 +8,7 @@ import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
+import com.google.gson.Gson;
 
 public class MemoryBookInfo {
 
@@ -22,7 +21,8 @@ public class MemoryBookInfo {
             return gson.fromJson(tmp, BookInfoRecord.class);
         }
 
-        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "SvrBookInfo.getRecord");
+        IServiceProxy svr = ServiceFactory.get(handle);
+        svr.setService("SvrBookInfo.getRecord");
         if (!svr.exec("corpNo", corpNo)) {
             return null;
         }

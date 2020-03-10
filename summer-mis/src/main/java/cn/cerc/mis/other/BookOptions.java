@@ -1,8 +1,5 @@
 package cn.cerc.mis.other;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -15,6 +12,9 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class BookOptions {
@@ -352,7 +352,8 @@ public class BookOptions {
 
     // 从系统帐套中取开帐日期
     private static TDate getBookCreateDate(IHandle handle) {
-        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.getBookCreateDate");
+        IServiceProxy svr = ServiceFactory.get(handle);
+        svr.setService("ApiOurInfo.getBookCreateDate");
         if (!svr.exec("CorpNo_", handle.getCorpNo())) {
             throw new RuntimeException(svr.getMessage());
         }
@@ -444,7 +445,8 @@ public class BookOptions {
 
     // 增加帐套参数
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
-        IServiceProxy svr1 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.getVineOptionsByCode");
+        IServiceProxy svr1 = ServiceFactory.get(handle);
+        svr1.setService("ApiOurInfo.getVineOptionsByCode");
         if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {
             throw new RuntimeException(svr1.getMessage());
         }
@@ -454,7 +456,8 @@ public class BookOptions {
         }
         String paramName = getParamName(paramKey);
 
-        IServiceProxy svr2 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.appendToCorpOption");
+        IServiceProxy svr2 = ServiceFactory.get(handle);
+        svr2.setService("ApiOurInfo.appendToCorpOption");
         Record headIn = svr2.getDataIn().getHead();
         headIn.setField("CorpNo_", corpNo);
         headIn.setField("Code_", paramKey);
