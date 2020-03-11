@@ -103,7 +103,7 @@ public class HandleDefault implements IHandle {
                 IServiceProxy svr = ServiceFactory.get(this);
                 svr.setService("AppSessionRestore.byToken");
                 if (!svr.exec("token", token)) {
-                    log.error("sid 恢复错误 ", svr.getMessage());
+                    log.error("token 恢复错误 {}", svr.getMessage());
                     this.setProperty(Application.token, null);
                     return false;
                 }
@@ -214,7 +214,7 @@ public class HandleDefault implements IHandle {
     @Override
     public void setProperty(String key, Object value) {
         if (Application.token.equals(key)) {
-            if ("{}".equals(value) || "".equals(key)) {
+            if ("{}".equals(value)) {
                 params.put(key, null);
             } else {
                 params.put(key, value);
