@@ -1,7 +1,7 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.Utils;
-import cn.cerc.mis.language.LanguageType;
+import cn.cerc.mis.language.Language;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
@@ -120,7 +120,7 @@ public class ClientDevice implements IClient, Serializable {
 
     @Override
     public String getLanguage() {
-        return languageId == null ? LanguageType.zh_CN : languageId;
+        return languageId == null ? Language.zh_CN : languageId;
     }
 
     public String getToken() {

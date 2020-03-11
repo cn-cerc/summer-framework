@@ -1,6 +1,6 @@
 package cn.cerc.mis.language;
 
-public class LanguageType {
+public class Language {
 
     /**
      * 简体中文

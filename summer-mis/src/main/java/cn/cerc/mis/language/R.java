@@ -89,7 +89,7 @@ public class R {
         dsLang.add("select key_,max(value_) as value_ from %s", systemTable.getLanguage());
         dsLang.add("where key_='%s'", Utils.safeString(text));
         // FIXME: 2019/12/7 此处应该取反了，未来得及翻译的语言应该直接显示中文
-        if (LanguageType.en_US.equals(language)) {
+        if (Language.en_US.equals(language)) {
             dsLang.add("and (lang_='%s')", language);
         } else {
             dsLang.add("and (lang_='%s' or lang_='en')", language);
@@ -102,7 +102,7 @@ public class R {
 
     public static String get(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if (LanguageType.zh_CN.equals(language)) {
+        if (Language.zh_CN.equals(language)) {
             return text;
         }
 
@@ -111,7 +111,7 @@ public class R {
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select value_ from %s", systemTable.getLanguage());
         ds.add("where key_='%s'", Utils.safeString(text));
-        if (!LanguageType.en_US.equals(language)) {
+        if (!Language.en_US.equals(language)) {
             ds.add("and (lang_='en' or lang_='%s')", language);
             ds.add("order by value_ desc");
         } else {
@@ -133,7 +133,7 @@ public class R {
         String result = "";
         String en_result = ""; // 默认英文
         while (ds.fetch()) {
-            if (LanguageType.en_US.equals(ds.getString("lang_"))) {
+            if (Language.en_US.equals(ds.getString("lang_"))) {
                 en_result = ds.getString("value_");
             } else {
                 result = ds.getString("value_");
