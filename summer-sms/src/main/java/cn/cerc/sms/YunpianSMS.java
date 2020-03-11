@@ -1,11 +1,9 @@
 package cn.cerc.sms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.language.R;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,12 +13,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.language.R;
-import net.sf.json.JSONObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * https://www.yunpian.com
@@ -52,7 +49,7 @@ public class YunpianSMS {
 
     /**
      * 云片短信发送
-     * 
+     *
      * @param mobile 接收者手机号
      * @param text   文本内容
      */

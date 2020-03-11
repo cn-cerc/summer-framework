@@ -1,11 +1,10 @@
 package cn.cerc.mis.core;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.db.cache.Redis;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cn.cerc.db.cache.Redis;
+import static org.junit.Assert.assertEquals;
 
 public class MemcachedTest {
     // private static final Logger log = Logger.getLogger(MemcachedTest.class);

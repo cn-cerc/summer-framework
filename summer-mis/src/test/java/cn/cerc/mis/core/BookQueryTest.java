@@ -1,10 +1,9 @@
 package cn.cerc.mis.core;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.rds.StubHandle;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class BookQueryTest {
 

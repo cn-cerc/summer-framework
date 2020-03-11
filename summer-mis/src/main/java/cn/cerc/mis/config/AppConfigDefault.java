@@ -1,13 +1,12 @@
 package cn.cerc.mis.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import cn.cerc.db.core.IAppConfig;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import cn.cerc.db.core.IAppConfig;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

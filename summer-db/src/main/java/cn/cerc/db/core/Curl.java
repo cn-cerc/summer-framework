@@ -1,5 +1,7 @@
 package cn.cerc.db.core;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,8 +17,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * HTTP请求代理类
@@ -119,7 +119,7 @@ public class Curl {
         HttpURLConnection url_con = null;
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 params.append(element.getKey().toString());
                 params.append("=");
@@ -237,7 +237,7 @@ public class Curl {
     public String doPost(String reqUrl) {
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
+            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext(); ) {
                 Entry<?, ?> element = (Entry<?, ?>) iter.next();
                 Object val = element.getValue();
                 if (val != null) {

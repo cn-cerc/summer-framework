@@ -1,9 +1,9 @@
 package cn.cerc.mis.tools;
 
+import cn.cerc.core.TDateTime;
+
 import java.util.Calendar;
 import java.util.Iterator;
-
-import cn.cerc.core.TDateTime;
 
 public class DurationSplit implements Iterable<DurationSection>, Iterator<DurationSection> {
     private TDateTime beginDate;

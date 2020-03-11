@@ -1,15 +1,14 @@
 package cn.cerc.ui.core;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.other.BeanRecord;
 import cn.cerc.ui.other.BuildRecord;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MutiGrid<T> {
     private DataSet dataSet;

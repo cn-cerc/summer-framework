@@ -1,5 +1,11 @@
 package cn.cerc.core;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,13 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.internal.LinkedTreeMap;
-import com.google.gson.reflect.TypeToken;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Record implements IRecord, Serializable {
@@ -507,27 +506,27 @@ public class Record implements IRecord, Serializable {
 
     public boolean isModify() {
         switch (this.state) {
-        case dsInsert:
-            return true;
-        case dsEdit: {
-            if (delta.size() == 0) {
-                return false;
-            }
-            List<String> delList = new ArrayList<>();
-            for (String field : delta.keySet()) {
-                Object value = items.get(field);
-                Object oldValue = delta.get(field);
-                if (compareValue(value, oldValue)) {
-                    delList.add(field);
+            case dsInsert:
+                return true;
+            case dsEdit: {
+                if (delta.size() == 0) {
+                    return false;
                 }
+                List<String> delList = new ArrayList<>();
+                for (String field : delta.keySet()) {
+                    Object value = items.get(field);
+                    Object oldValue = delta.get(field);
+                    if (compareValue(value, oldValue)) {
+                        delList.add(field);
+                    }
+                }
+                for (String field : delList) {
+                    delta.remove(field);
+                }
+                return delta.size() > 0;
             }
-            for (String field : delList) {
-                delta.remove(field);
-            }
-            return delta.size() > 0;
-        }
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 

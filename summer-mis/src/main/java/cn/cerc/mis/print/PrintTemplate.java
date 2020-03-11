@@ -1,8 +1,8 @@
 package cn.cerc.mis.print;
 
-import java.io.IOException;
-import java.util.List;
-
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import cn.cerc.mis.excel.output.Column;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -15,9 +15,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import cn.cerc.mis.excel.output.Column;
+import java.io.IOException;
+import java.util.List;
 
 public class PrintTemplate {
     protected DataSet dataSet;

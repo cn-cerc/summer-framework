@@ -1,10 +1,10 @@
 package cn.cerc.ui.other;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OperaPanel extends UIComponent {
     // 操作提示

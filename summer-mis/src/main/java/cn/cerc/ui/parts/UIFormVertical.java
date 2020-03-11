@@ -1,8 +1,5 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.UIConfig;
@@ -13,6 +10,9 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UIFormVertical extends UIComponent implements DataSource {
     protected String CSSClass = "info";

@@ -1,8 +1,8 @@
 package cn.cerc.mis.excel.input;
 
-import java.text.DecimalFormat;
-
 import cn.cerc.core.Utils;
+
+import java.text.DecimalFormat;
 
 public class ImportNumberColumn extends ImportColumn {
     @Override

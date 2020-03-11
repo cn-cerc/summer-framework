@@ -1,15 +1,15 @@
 package cn.cerc.db.mysql;
 
-import static cn.cerc.core.Utils.safeString;
+import cn.cerc.core.IHandle;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
+import static cn.cerc.core.Utils.safeString;
 
 /**
  * 用于组合生成select指令，便于多条件查询编写

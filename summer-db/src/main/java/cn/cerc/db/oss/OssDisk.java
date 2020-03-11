@@ -1,15 +1,14 @@
 package cn.cerc.db.oss;
 
-import java.io.File;
-import java.io.InputStream;
-
+import cn.cerc.core.IHandle;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.CopyObjectResult;
 import com.aliyun.oss.model.ObjectMetadata;
-
-import cn.cerc.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.io.InputStream;
 
 @Slf4j
 public class OssDisk {

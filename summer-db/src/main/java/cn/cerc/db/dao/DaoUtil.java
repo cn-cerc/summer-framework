@@ -1,5 +1,13 @@
 package cn.cerc.db.dao;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.mysql.SqlQuery;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
@@ -7,15 +15,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDateTime;
-import cn.cerc.db.mysql.SqlQuery;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DaoUtil {

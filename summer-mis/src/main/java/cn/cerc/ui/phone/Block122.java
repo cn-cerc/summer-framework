@@ -1,13 +1,13 @@
 package cn.cerc.ui.phone;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.UITextBox;
 import cn.cerc.ui.vcl.ext.UISpan;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author 善贵

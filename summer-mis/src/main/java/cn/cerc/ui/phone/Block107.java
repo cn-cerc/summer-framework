@@ -1,13 +1,13 @@
 package cn.cerc.ui.phone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.UITextBox;
 import cn.cerc.ui.vcl.ext.UISpan;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 张弓
@@ -32,7 +32,7 @@ public class Block107 extends UIComponent {
     }
 
     public static void outputChoiceItem(HtmlWriter html, String value, String choiceId, String childPage,
-            String dataUrl) {
+                                        String dataUrl) {
         html.print("<li onclick='javascript:choiceItem(\"%s\", \"%s\", \"%s\", \"%s\")'>%s</li>", choiceId, value,
                 childPage, dataUrl, value);
     }

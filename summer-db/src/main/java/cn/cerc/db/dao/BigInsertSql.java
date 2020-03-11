@@ -1,5 +1,13 @@
 package cn.cerc.db.dao;
 
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.db.mysql.BuildStatement;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
@@ -10,15 +18,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.db.mysql.BuildStatement;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class BigInsertSql {

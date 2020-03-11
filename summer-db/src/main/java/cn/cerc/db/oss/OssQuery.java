@@ -1,10 +1,10 @@
 package cn.cerc.db.oss;
 
-import java.io.ByteArrayInputStream;
-
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.queue.OssOperator;
+
+import java.io.ByteArrayInputStream;
 
 public class OssQuery extends DataQuery {
     private static final long serialVersionUID = 1L;

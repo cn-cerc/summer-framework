@@ -1,12 +1,11 @@
 package cn.cerc.db.mysql;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.db.core.StubHandle;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 
-import cn.cerc.db.core.StubHandle;
-import lombok.extern.slf4j.Slf4j;
+import static org.junit.Assert.assertEquals;
 
 @Slf4j
 public class SqlQueryTest {

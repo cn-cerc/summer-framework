@@ -101,7 +101,7 @@ public class MenuItem {
     public void setWindow(boolean window) {
         this.window = window;
     }
-    
+
     public String getGroup() {
         String result = this.getParam(GROUP);
         return result != null ? result : "";

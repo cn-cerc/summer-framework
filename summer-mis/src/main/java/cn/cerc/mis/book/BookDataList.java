@@ -1,14 +1,13 @@
 package cn.cerc.mis.book;
 
+import cn.cerc.core.TDateTime;
+import cn.cerc.mis.tools.DurationSection;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
-import com.google.gson.Gson;
-
-import cn.cerc.core.TDateTime;
-import cn.cerc.mis.tools.DurationSection;
 
 public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
     private List<IBookData> items = new ArrayList<>();

@@ -1,16 +1,14 @@
 package cn.cerc.mis.page;
 
+import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.IPage;
+import com.google.gson.Gson;
+
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.ServletException;
-
-import com.google.gson.Gson;
-
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IPage;
 
 public class JsonPage implements IPage {
     protected IForm form;

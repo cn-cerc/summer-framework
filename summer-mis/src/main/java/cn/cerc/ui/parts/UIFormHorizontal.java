@@ -1,10 +1,5 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -20,6 +15,10 @@ import cn.cerc.ui.grid.lines.ExpenderGridLine;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.vcl.UILabel;
 import cn.cerc.ui.vcl.ext.UISpan;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UIFormHorizontal extends UIComponent implements DataSource {
     protected String cssClass = "search";

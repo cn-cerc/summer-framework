@@ -1,11 +1,11 @@
 package cn.cerc.mis.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.mis.core.AbstractHandle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FieldUseCheck extends AbstractHandle {
     private List<String> items = new ArrayList<>();

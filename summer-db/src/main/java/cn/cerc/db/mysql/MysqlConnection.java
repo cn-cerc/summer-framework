@@ -16,7 +16,7 @@ public class MysqlConnection extends SqlConnection {
     public static final String rds_password = "rds.password";
 
     public static String dataSource = "dataSource";
-    
+
     private String database;
 
     @Override

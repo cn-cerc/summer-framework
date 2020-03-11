@@ -1,8 +1,5 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
@@ -16,6 +13,9 @@ import cn.cerc.mis.services.MemoryBookInfo;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UIHeader extends UIComponent {
     private static final int MAX_MENUS = 4;

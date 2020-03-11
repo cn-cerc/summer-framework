@@ -1,14 +1,13 @@
 package cn.cerc.db.other;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Map;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestJSON {
 

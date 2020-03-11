@@ -1,9 +1,9 @@
 package cn.cerc.core;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * 专用于测试toList支持
@@ -31,7 +31,7 @@ public class DataSetTest_List {
     public void test() {
         int i = 0;
         for (@SuppressWarnings("unused")
-        Record record : ds) {
+                Record record : ds) {
             i++;
         }
         assertEquals(i, ds.size());

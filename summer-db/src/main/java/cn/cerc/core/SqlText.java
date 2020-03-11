@@ -1,10 +1,10 @@
 package cn.cerc.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SqlText {
     // 从数据库每次加载的最大笔数

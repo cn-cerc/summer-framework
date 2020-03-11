@@ -1,10 +1,9 @@
 package cn.cerc.db.mssql;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.StubHandle;
+import org.junit.Before;
+import org.junit.Test;
 
 public class MssqlQueryTest {
 

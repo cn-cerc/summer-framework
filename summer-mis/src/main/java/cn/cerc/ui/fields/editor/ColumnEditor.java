@@ -1,9 +1,5 @@
 package cn.cerc.ui.fields.editor;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
@@ -13,6 +9,10 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.MasterGridLine;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ColumnEditor {
     private AbstractField owner;

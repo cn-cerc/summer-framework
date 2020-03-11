@@ -1,5 +1,8 @@
 package cn.cerc.db.other;
 
+import cn.cerc.core.Utils;
+import org.junit.Test;
+
 import static cn.cerc.core.Utils.assigned;
 import static cn.cerc.core.Utils.ceil;
 import static cn.cerc.core.Utils.copy;
@@ -12,10 +15,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
-import cn.cerc.core.Utils;
 
 public class utilsTest {
     @Test

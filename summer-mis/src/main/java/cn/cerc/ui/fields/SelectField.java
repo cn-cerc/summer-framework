@@ -1,12 +1,12 @@
 package cn.cerc.ui.fields;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 列表下拉框组件（不适用搜索查询表单）

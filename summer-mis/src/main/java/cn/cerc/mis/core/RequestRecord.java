@@ -1,13 +1,12 @@
 package cn.cerc.mis.core;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.core.IRecord;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class RequestRecord implements IRecord {
     private HttpServletRequest req = null;

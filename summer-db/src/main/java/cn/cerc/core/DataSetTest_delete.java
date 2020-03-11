@@ -1,9 +1,9 @@
 package cn.cerc.core;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class DataSetTest_delete {
     private DataSet ds = new DataSet();

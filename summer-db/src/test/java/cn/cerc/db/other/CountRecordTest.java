@@ -1,11 +1,10 @@
 package cn.cerc.db.other;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.core.DataSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import cn.cerc.core.DataSet;
+import static org.junit.Assert.assertEquals;
 
 public class CountRecordTest {
     private DataSet ds;

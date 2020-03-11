@@ -1,14 +1,13 @@
 package cn.cerc.mis.client;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletResponse;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.mis.core.IPage;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @Slf4j
 public class ResponseData {

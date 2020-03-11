@@ -101,12 +101,16 @@ public class RS {
     public static final String 您的账户存在异常 = "您的账户存在异常！";
     public static final String 记录不唯一 = "记录不唯一";
 
-    /** ipv4 相关错误说明 **/
+    /**
+     * ipv4 相关错误说明
+     **/
     public static final String IP地址不符合IPv4标准 = "IP(%s)地址不符合IPv4标准";
     public static final String 境外IP不允许直接访问 = "境外IP %s(%s) 不允许直接访问";
     public static final String 请将localhost改为127_0_0_1地址 = "请将localhost改为127.0.0.1访问";
 
-    /** 登录注册错误说明 **/
+    /**
+     * 登录注册错误说明
+     **/
     public static final String 帐号已被禁用 = "帐号已被禁用";
     public static final String 密码不允许为空 = "密码不允许为空";
     public static final String 手机号码没有绑定帐套 = "手机号码没有绑定帐套";
@@ -119,14 +123,18 @@ public class RS {
     public static final String 当前国家已在白名单内 = "当前国家已在白名单内！";
     public static final String 当前国家不存在 = "当前国家不存在！";
 
-    /** 找回密码 **/
+    /**
+     * 找回密码
+     **/
     public static final String 手机号码已注册 = "手机号码已注册";
     public static final String 手机号码未注册 = "手机号码未注册";
     public static final String 验证码错误 = "验证码错误";
     public static final String 不允许和当前密码相同 = "不允许和当前密码相同";
     public static final String 不允许和历史密码相同 = "不允许和历史密码相同";
 
-    /** 应用相关 **/
+    /**
+     * 应用相关
+     **/
     public static final String 应用accessSerect重置成功 = "应用accessSerect重置成功";
 
     public static final String UID不允许为空 = "UID不允许为空";
@@ -136,13 +144,17 @@ public class RS {
     public static final String 起始日期 = "起始日期";
     public static final String 截止日期 = "截止日期";
 
-    /** 操作选项 **/
+    /**
+     * 操作选项
+     **/
     public static final String 删除 = "删除";
     public static final String 修改 = "修改";
     public static final String 内容 = "内容";
     public static final String 修改成功 = "修改成功";
 
-    /** 工具校验 **/
+    /**
+     * 工具校验
+     **/
     public static final String 身份证与姓名效验一致性通过 = "身份证与姓名效验一致性通过";
     public static final String 身份证与姓名不匹配 = "身份证与姓名不匹配，检验失败!";
 
@@ -171,7 +183,9 @@ public class RS {
     public static final String 未绑定聚安帐号 = "未绑定聚安帐号";
     public static final String 聚安帐号解绑成功 = "聚安帐号解绑成功";
 
-    /** 安全认证 **/
+    /**
+     * 安全认证
+     **/
     public static final String 邮箱认证成功 = "邮箱认证成功";
     public static final String 邮箱格式错误 = "邮箱格式错误";
     public static final String 指纹认证成功 = "指纹认证成功";
@@ -181,7 +195,9 @@ public class RS {
     public static final String 获取认证信息成功 = "获取认证信息成功";
     public static final String 手机号尚未绑定应用帐号 = "手机号 %s 尚未绑定任何应用帐号";
 
-    /** 回调地址 **/
+    /**
+     * 回调地址
+     **/
     public static final String 请设置扫码回调地址 = "请设置扫码回调地址";
     public static final String 请设置登录回调地址 = "请设置登录回调地址";
     public static final String 应用网址不存在 = "应用网址不存在，或服务暂停使用中";

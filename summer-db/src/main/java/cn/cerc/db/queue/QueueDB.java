@@ -20,7 +20,7 @@ public class QueueDB {
     /**
      * 系统消息
      **/
-    public static final String MESSAGE = getQueueDB("ququedb.message") ;
+    public static final String MESSAGE = getQueueDB("ququedb.message");
 
     /**
      * 邮件发送

@@ -1,7 +1,5 @@
 package cn.cerc.ui.fields;
 
-import java.text.DecimalFormat;
-
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
@@ -9,6 +7,8 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.text.DecimalFormat;
 
 public class DoubleField extends AbstractField implements IColumn {
     private ColumnEditor editor;

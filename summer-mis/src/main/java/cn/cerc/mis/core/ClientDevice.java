@@ -1,18 +1,16 @@
 package cn.cerc.mis.core;
 
-import java.io.Serializable;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
-
 import cn.cerc.core.Utils;
 import cn.cerc.mis.language.LanguageType;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 /**
  * // TODO: 2019/12/7 建议更名为 AppClient

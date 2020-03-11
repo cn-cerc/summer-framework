@@ -1,7 +1,5 @@
 package cn.cerc.mis.page.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -17,6 +15,8 @@ import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class SvrAutoLogin {
