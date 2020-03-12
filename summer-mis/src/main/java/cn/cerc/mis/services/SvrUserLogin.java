@@ -375,7 +375,7 @@ public class SvrUserLogin extends CustomService {
     public boolean sendVerifyCode() throws DataValidateException {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
             if (!buff.isNull()) {
-                log.info(String.format("verifyCode %s", buff.getString("VerifyCode_")));
+                log.info("verifyCode {}", buff.getString("verifyCode"));
                 throw new RuntimeException(String.format("请勿在 %d 分钟内重复点击获取认证码！", TimeOut));
             }
 
@@ -391,8 +391,10 @@ public class SvrUserLogin extends CustomService {
             cdsUser.add("select Mobile_ from %s ", systemTable.getUserInfo());
             cdsUser.add("where Code_='%s' ", getUserCode());
             cdsUser.open();
-            DataValidateException.stopRun("系统检测到该帐号还未登记过手机号，无法发送认证码到该手机上，请您联系管理员，让其开一个认证码给您登录系统！", cdsUser.eof());
+            DataValidateException.stopRun(String.format(R.asString(this, "没有找到用户帐号 %s"), getUserCode()), cdsUser.eof());
+
             String mobile = cdsUser.getString("Mobile_");
+            DataValidateException.stopRun("系统检测到该帐号还未登记过手机号，无法发送认证码到该手机上，请您联系管理员，让其开一个认证码给您登录系统！", Utils.isEmpty(mobile));
 
             SqlQuery cdsVer = new SqlQuery(this);
             cdsVer.add("select * from %s", systemTable.getDeviceVerify());
@@ -415,7 +417,7 @@ public class SvrUserLogin extends CustomService {
                 record.setField("Msg_", String.format("系统已将认证码发送到您尾号为 %s 的手机上，并且该认证码 %d 分钟内有效，请注意查收！",
                         mobile.substring(mobile.length() - 4), TimeOut));
                 buff.setExpires(TimeOut * 60);
-                buff.setField("VerifyCode", verifyCode);
+                buff.setField("verifyCode", verifyCode);
             } else {
                 record.setField("Msg_", String.format("验证码发送失败，失败原因：%s", svr.getMessage()));
             }
