@@ -363,13 +363,17 @@ public class SvrUserLogin extends CustomService {
         cdsUser.edit();
         cdsUser.setField("VerifyTimes_", 0);
         cdsUser.post();
+
+        // 校验成功清理验证码缓存
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
+            buff.clear();
+        }
         return true;
     }
 
     @Webfunc
     public boolean sendVerifyCode() throws DataValidateException {
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(),
-                "sendVerifyCode")) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
             if (!buff.isNull()) {
                 log.info(String.format("verifyCode %s", buff.getString("VerifyCode_")));
                 throw new RuntimeException(String.format("请勿在 %d 分钟内重复点击获取认证码！", TimeOut));

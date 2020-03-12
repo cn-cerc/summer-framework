@@ -448,7 +448,13 @@ public class Utils {
         return items;
     }
 
-    // 混淆字符串指定位置
+    /**
+     * 混淆字符串指定位置
+     *
+     * @param mobile     手机号码
+     * @param fromLength 起始显示位数
+     * @param endLength  倒数显示位数
+     */
     public static String confused(String mobile, int fromLength, int endLength) {
         int length = mobile.length();
         if (length < (fromLength + endLength)) {
