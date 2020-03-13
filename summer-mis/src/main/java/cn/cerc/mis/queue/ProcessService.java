@@ -43,39 +43,39 @@ public class ProcessService extends AbstractTask {
      * 处理一个服务
      */
     private void processService(String msgId) {
-        LocalService svr1 = new LocalService(this, "SvrUserMessages.readAsyncService");
-        if (!svr1.exec("msgId", msgId)) // 此任务可能被其它主机抢占
+        LocalService svrMsg = new LocalService(this, "SvrUserMessages.readAsyncService");
+        if (!svrMsg.exec("msgId", msgId)) // 此任务可能被其它主机抢占
         {
             return;
         }
-        Record ds = svr1.getDataOut().getHead();
+        Record ds = svrMsg.getDataOut().getHead();
         String corpNo = ds.getString("corpNo");
         String userCode = ds.getString("userCode");
         String content = ds.getString("content");
         String subject = ds.getString("subject");
 
         // 读取并标识为工作中，以防被其它用户抢占
-        AsyncService svr2 = new AsyncService(null);
-        svr2.read(content);
-        svr2.setProcess(MessageProcess.working.ordinal());
-        updateMessage(svr2, msgId, subject);
+        AsyncService svrSync = new AsyncService(null);
+        svrSync.read(content);
+        svrSync.setProcess(MessageProcess.working.ordinal());
+        updateMessage(svrSync, msgId, subject);
         try {
-            AutoService svr3 = new AutoService(corpNo, userCode, svr2.getService());
-            svr3.getDataIn().appendDataSet(svr2.getDataIn(), true);
-            if (svr3.exec()) {
-                svr2.getDataOut().appendDataSet(svr3.getDataOut(), true);
-                svr2.setProcess(MessageProcess.ok.ordinal());
+            AutoService svrAuto = new AutoService(corpNo, userCode, svrSync.getService());
+            svrAuto.getDataIn().appendDataSet(svrSync.getDataIn(), true);
+            if (svrAuto.exec()) {
+                svrSync.getDataOut().appendDataSet(svrAuto.getDataOut(), true);
+                svrSync.setProcess(MessageProcess.ok.ordinal());
             } else {
-                svr2.getDataOut().appendDataSet(svr3.getDataOut(), true);
-                svr2.setProcess(MessageProcess.error.ordinal());
+                svrSync.getDataOut().appendDataSet(svrAuto.getDataOut(), true);
+                svrSync.setProcess(MessageProcess.error.ordinal());
             }
-            svr2.getDataOut().getHead().setField("_message_", svr3.getMessage());
-            updateMessage(svr2, msgId, subject);
+            svrSync.getDataOut().getHead().setField("_message_", svrAuto.getMessage());
+            updateMessage(svrSync, msgId, subject);
         } catch (Throwable e) {
             e.printStackTrace();
-            svr2.setProcess(MessageProcess.error.ordinal());
-            svr2.getDataOut().getHead().setField("_message_", e.getMessage());
-            updateMessage(svr2, msgId, subject);
+            svrSync.setProcess(MessageProcess.error.ordinal());
+            svrSync.getDataOut().getHead().setField("_message_", e.getMessage());
+            updateMessage(svrSync, msgId, subject);
         }
     }
 
