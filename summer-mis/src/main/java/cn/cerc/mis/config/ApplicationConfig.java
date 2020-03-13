@@ -4,7 +4,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 
-public class ApplicationProperties {
+public class ApplicationConfig {
 
     /**
      * 本地主机
@@ -14,7 +14,7 @@ public class ApplicationProperties {
     public static final String App_Path = "/public/";
 
     public static String rewrite(String form) {
-        return ApplicationProperties.App_Path + form;
+        return ApplicationConfig.App_Path + form;
     }
 
     /**
@@ -34,13 +34,13 @@ public class ApplicationProperties {
     }
 
     public static boolean isMaster() {
-        String appRole = ServerConfig.getInstance().getProperty(ApplicationProperties.App_Role_Key,
-                ApplicationProperties.App_Role_Master);
-        return ApplicationProperties.App_Role_Master.equals(appRole);
+        String appRole = ServerConfig.getInstance().getProperty(ApplicationConfig.App_Role_Key,
+                ApplicationConfig.App_Role_Master);
+        return ApplicationConfig.App_Role_Master.equals(appRole);
     }
 
     public static boolean isReplica() {
-        return !ApplicationProperties.isMaster();
+        return !ApplicationConfig.isMaster();
     }
 
 }
