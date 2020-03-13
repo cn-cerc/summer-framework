@@ -78,7 +78,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 }
 
                 int timeOut = task.getInterval();
-                String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(), task.getClass().getName());
+                String buffKey = String.format("%d.%s.%s.%s", BufferType.getObject.ordinal(), ServerConfig.getAppName(), this.getClass().getName(), task.getClass().getName());
                 if (Redis.get(buffKey) != null) {
                     continue;
                 }
