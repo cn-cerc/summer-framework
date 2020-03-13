@@ -113,9 +113,9 @@ public class HandleDefault implements IHandle {
         log.info("根据用户 {}，创建新的token {}", userCode, token);
 
         // 回算用户注册 token
-//        if (StubHandle.DefaultUser.equals(userCode)) {
+        if (StubHandle.DefaultUser.equals(userCode)) {
             registerToken(userCode, token);
-//        }
+        }
 
         this.setProperty(Application.token, token);
         this.setProperty(Application.bookNo, corpNo);
