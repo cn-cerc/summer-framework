@@ -6,7 +6,6 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 import cn.cerc.mis.core.ServiceException;
-import cn.cerc.mis.other.UserNotFindException;
 
 public class AutoService implements IHandle {
     // private static final Logger log = Logger.getLogger(AutoService.class);
@@ -48,7 +47,7 @@ public class AutoService implements IHandle {
         this.message = message;
     }
 
-    public boolean exec() throws UserNotFindException, ServiceException {
+    public boolean exec() throws ServiceException {
         if (service.getService() == null) {
             throw new RuntimeException("没有指定 service");
         }

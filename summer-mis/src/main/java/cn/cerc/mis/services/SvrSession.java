@@ -62,8 +62,8 @@ public class SvrSession extends CustomService {
             sess.setProperty(Application.token, null);
             return false;
         }
-        String userId = cdsToken.getString("UserID_");
 
+        String userId = cdsToken.getString("UserID_");
         SqlQuery cdsUser = new SqlQuery(this);
         cdsUser.add("select ID_,Code_,DiyRole_,RoleCode_,CorpNo_, Name_ as UserName_,ProxyUsers_");
         cdsUser.add("from %s", systemTable.getUserInfo());
