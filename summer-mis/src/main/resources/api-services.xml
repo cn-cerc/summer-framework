@@ -4,7 +4,7 @@
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
     <!-- 用户信息缓存 -->
-    <bean id="ApiBookOption.getValue" class="cn.cerc.mis.api.ApiBookOption" scope="prototype">
+    <bean id="ApiBookOption.getValue" class="cn.cerc.mis.api.services.ApiBookOption" scope="prototype">
         <property name="funcCode" value="getValue"/>
     </bean>
 
