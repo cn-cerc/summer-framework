@@ -2,7 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
-import cn.cerc.mis.config.ApplicationProperties;
+import cn.cerc.mis.config.ApplicationConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.Filter;
@@ -39,7 +39,7 @@ public class StartApp implements Filter {
             }
 
             IAppConfig conf = Application.getAppConfig();
-            resp.sendRedirect(String.format("%s%s", ApplicationProperties.App_Path, conf.getFormWelcome()));
+            resp.sendRedirect(String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome()));
             return;
         } else if ("/MobileConfig".equals(uri) || "/mobileConfig".equals(uri)) {
             if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null) {

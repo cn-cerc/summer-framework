@@ -6,7 +6,7 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.LocalConfig;
-import cn.cerc.mis.config.ApplicationProperties;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -34,7 +34,7 @@ public class RemoteService implements IServiceProxy {
 
     private RemoteService(IHandle handle, String bookNo) {
         this.handle = handle;
-        this.token = ApplicationProperties.getToken(handle);
+        this.token = ApplicationConfig.getToken(handle);
 
         this.host = getApiHost(bookNo);
         this.path = bookNo;
@@ -42,9 +42,9 @@ public class RemoteService implements IServiceProxy {
 
     private String getApiHost(String bookNo) {
         LocalConfig localConfig = LocalConfig.getInstance();
-        String key = ApplicationProperties.Rempte_Host_Key + "." + bookNo;
+        String key = ApplicationConfig.Rempte_Host_Key + "." + bookNo;
         if (localConfig.getProperty(key) == null) {
-            key = ApplicationProperties.Rempte_Host_Key + "." + ServiceFactory.Public;
+            key = ApplicationConfig.Rempte_Host_Key + "." + ServiceFactory.Public;
         }
         return localConfig.getProperty(key);
     }

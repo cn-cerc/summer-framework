@@ -468,12 +468,6 @@ public class Utils {
         return mobile.substring(0, fromLength) + star + mobile.substring(mobile.length() - endLength);
     }
 
-    public static String guidFixStr() {
-        String guid = newGuid();
-        String str = guid.substring(1, guid.length() - 1);
-        return str.replaceAll("-", "");
-    }
-
     // 获取数字和字母的混合字符串
     public static String getStrRandom(int length) {
         String result = "";

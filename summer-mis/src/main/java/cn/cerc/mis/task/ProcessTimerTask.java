@@ -23,24 +23,18 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;
     private static String lock;
+
     // 运行环境
     private ApplicationContext context;
 
-    public static AbstractTask getTask(IHandle handle, String beanId) {
-        AbstractTask task = Application.getBean(beanId, AbstractTask.class);
-        if (task != null) {
-            task.setHandle(handle);
-        }
-        return task;
-    }
-
     // 循环反复执行
+
     @Override
     public void run() {
-        Calendar c = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         if (!isRunning) {
             isRunning = true;
-            if (C_SCHEDULE_HOUR == c.get(Calendar.HOUR_OF_DAY)) {
+            if (C_SCHEDULE_HOUR == calendar.get(Calendar.HOUR_OF_DAY)) {
                 try {
                     report();
                 } catch (Exception e) {
@@ -48,6 +42,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 }
             } else if (ServerConfig.enableTaskService()) {
                 try {
+                    // 初始化特殊用户的handle
                     StubHandle handle = new StubHandle();
                     runTask(handle);
                 } catch (Exception e) {
@@ -58,11 +53,6 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
         } else {
             log.info("上一次任务执行还未结束");
         }
-    }
-
-    // 每天凌晨开始执行报表或回算任务
-    private void report() {
-        return;
     }
 
     private void runTask(IHandle handle) {
@@ -79,14 +69,13 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 continue;
             }
             try {
-                String curTime = TDateTime.Now().getTime().substring(0, 5);
-                if (!"".equals(task.getTime()) && !task.getTime().equals(curTime)) {
+                String timeNow = TDateTime.Now().getTime().substring(0, 5);
+                if (!"".equals(task.getTime()) && !task.getTime().equals(timeNow)) {
                     continue;
                 }
 
                 int timeOut = task.getInterval();
-                String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(),
-                        task.getClass().getName());
+                String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(), task.getClass().getName());
                 if (Redis.get(buffKey) != null) {
                     continue;
                 }
@@ -95,7 +84,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 Redis.set(buffKey, "ok", timeOut);
 
                 if (task.getInterval() > 1) {
-                    log.info("execute " + task.getClass().getName());
+                    log.info("执行任务 {}", task.getClass().getName());
                 }
 
                 task.execute();
@@ -104,6 +93,19 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 log.error(e.getMessage());
             }
         }
+    }
+
+    public static AbstractTask getTask(IHandle handle, String beanId) {
+        AbstractTask task = Application.getBean(beanId, AbstractTask.class);
+        if (task != null) {
+            task.setHandle(handle);
+        }
+        return task;
+    }
+
+    // 每天凌晨开始执行报表或回算任务
+    private void report() {
+        return;
     }
 
     @Override
