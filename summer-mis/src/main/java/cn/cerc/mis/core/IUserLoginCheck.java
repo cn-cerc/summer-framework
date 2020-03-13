@@ -3,7 +3,7 @@ package cn.cerc.mis.core;
 public interface IUserLoginCheck {
 
     // 登录验证
-    boolean check(String userCode, String password, String deviceId, String clientIP, String languageId);
+    boolean check(String userCode, String password, String machineCode, String clientIP, String language);
 
     // 返回 token
     String getToken();
