@@ -58,7 +58,6 @@ public class HandleDefault implements IHandle {
             throw new RuntimeException("token 值有错！");
         }
 
-        // 从数据表CurrentUser中，取出公司别CorpNo_与UserCode_，再依据UserCode_从Account取出RoleCode_
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
             if (buff.isNull()) {
                 buff.setField("exists", false);
@@ -70,15 +69,15 @@ public class HandleDefault implements IHandle {
                     return false;
                 }
 
-                Record headOut = svr.getDataOut().getHead();
-                buff.setField("LoginTime_", headOut.getDateTime("LoginTime_"));
-                buff.setField("UserID_", headOut.getString("UserID_"));
-                buff.setField("UserCode_", headOut.getString("UserCode_"));
-                buff.setField("CorpNo_", headOut.getString("CorpNo_"));
-                buff.setField("UserName_", headOut.getString("UserName_"));
-                buff.setField("RoleCode_", headOut.getString("RoleCode_"));
-                buff.setField("ProxyUsers_", headOut.getString("ProxyUsers_"));
-                buff.setField("Language_", headOut.getString("Language_"));
+                Record record = svr.getDataOut().getHead();
+                buff.setField("LoginTime_", record.getDateTime("LoginTime_"));
+                buff.setField("UserID_", record.getString("UserID_"));
+                buff.setField("UserCode_", record.getString("UserCode_"));
+                buff.setField("CorpNo_", record.getString("CorpNo_"));
+                buff.setField("UserName_", record.getString("UserName_"));
+                buff.setField("RoleCode_", record.getString("RoleCode_"));
+                buff.setField("ProxyUsers_", record.getString("ProxyUsers_"));
+                buff.setField("Language_", record.getString("Language_"));
                 buff.setField("exists", true);
             }
 
@@ -112,30 +111,30 @@ public class HandleDefault implements IHandle {
         this.setProperty(Application.userCode, userCode);
         this.setProperty(Application.clientIP, clientIP);
 
+        // 将用户信息赋值到句柄
         IServiceProxy svr = ServiceFactory.get(this);
         svr.setService("SvrSession.byUserCode");
         if (!svr.exec("userCode", userCode)) {
             throw new RuntimeException(svr.getMessage());
         }
+        Record record = svr.getDataOut().getHead();
+        this.setProperty(Application.userId, record.getString("UserID_"));
+        this.setProperty(Application.loginTime, record.getDateTime("LoginTime_"));
+        this.setProperty(Application.roleCode, record.getString("RoleCode_"));
+        this.setProperty(Application.ProxyUsers, record.getString("ProxyUsers_"));
+        this.setProperty(Application.userName, record.getString("UserName_"));
+        this.setProperty(Application.deviceLanguage, record.getString("Language_"));
 
-        // 将用户信息赋值到句柄
-        Record headOut = svr.getDataOut().getHead();
-        this.setProperty(Application.userId, headOut.getString("UserID_"));
-        this.setProperty(Application.loginTime, headOut.getDateTime("LoginTime_"));
-        this.setProperty(Application.roleCode, headOut.getString("RoleCode_"));
-        this.setProperty(Application.ProxyUsers, headOut.getString("ProxyUsers_"));
-        this.setProperty(Application.userName, headOut.getString("UserName_"));
-        this.setProperty(Application.deviceLanguage, headOut.getString("Language_"));
-
+        // 将用户信息赋值到缓存
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
-            buff.setField("LoginTime_", headOut.getDateTime("LoginTime_"));
-            buff.setField("UserID_", headOut.getString("UserID_"));
+            buff.setField("LoginTime_", record.getDateTime("LoginTime_"));
+            buff.setField("UserID_", record.getString("UserID_"));
             buff.setField("UserCode_", userCode);
             buff.setField("CorpNo_", corpNo);
-            buff.setField("UserName_", headOut.getString("UserName_"));
-            buff.setField("RoleCode_", headOut.getString("RoleCode_"));
-            buff.setField("ProxyUsers_", headOut.getString("ProxyUsers_"));
-            buff.setField("Language_", headOut.getString("Language_"));
+            buff.setField("UserName_", record.getString("UserName_"));
+            buff.setField("RoleCode_", record.getString("RoleCode_"));
+            buff.setField("ProxyUsers_", record.getString("ProxyUsers_"));
+            buff.setField("Language_", record.getString("Language_"));
             buff.setField("exists", true);
         }
         return true;

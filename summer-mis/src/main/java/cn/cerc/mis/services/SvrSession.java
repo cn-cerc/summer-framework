@@ -35,6 +35,10 @@ public class SvrSession extends CustomService {
         return true;
     }
 
+    /**
+     * 1、从 CurrentUser 表中，取出公司别 CorpNo_ 与 UserCode_
+     * 2、再依据 UserCode_ 从Account表取出 RoleCode_
+     */
     public boolean byToken() throws ServiceException {
         Record headIn = getDataIn().getHead();
         DataValidateException.stopRun("token不允许为空", !headIn.hasValue("token"));
