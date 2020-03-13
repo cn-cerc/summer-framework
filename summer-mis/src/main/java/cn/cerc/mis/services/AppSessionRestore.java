@@ -3,10 +3,7 @@ package cn.cerc.mis.services;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
@@ -42,7 +39,6 @@ public class AppSessionRestore extends CustomService {
         Record headIn = getDataIn().getHead();
         DataValidateException.stopRun("token不允许为空", !headIn.hasValue("token"));
         String token = headIn.getString("token");
-
 
         SqlQuery cdsToken = new SqlQuery(this);
         cdsToken.add("select CorpNo_,UserID_,Viability_,LoginTime_,Account_ as UserCode_,Language_ ");
