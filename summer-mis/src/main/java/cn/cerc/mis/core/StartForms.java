@@ -11,6 +11,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.page.JsonPage;
 import cn.cerc.mis.page.JspPage;
 import cn.cerc.mis.page.RedirectPage;
+import cn.cerc.mis.rds.StubHandle;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class StartForms implements Filter {
@@ -423,39 +426,31 @@ public class StartForms implements Filter {
     }
 
     protected boolean isExperienceAccount(IForm form) {
-        return getIphoneAppstoreAccount().equals(form.getHandle().getUserCode())
-                || getBaseVerAccount().equals(form.getHandle().getUserCode())
-                || getLineWinderAccount().equals(form.getHandle().getUserCode())
-                || getTaiWanAccount().equals(form.getHandle().getUserCode());
+        String userCode = form.getHandle().getUserCode();
+        return experience.contains(userCode);
     }
 
-    // iPhone 上架时专用测试帐号以及专业版体验账号
-    protected String getIphoneAppstoreAccount() {
-        return "15202406";
-    }
+    private static List<String> experience = new ArrayList<>();
 
-    // 基础版体验账号
-    protected String getBaseVerAccount() {
-        return "16307405";
-    }
+    {
+        // iPhone 上架时专用测试帐号以及专业版体验账号
+        experience.add("15202406");
 
-    // 喜曼多专用APP测试账号与iPhone上架测试账号
-    protected String getSimagoAccount() {
-        return "47583201";
-    }
+        // 基础版体验账号
+        experience.add("16307405");
 
-    // 狼王专用APP测试账号与iPhone上架测试账号
-    protected String getLineWinderAccount() {
-        return "15531101";
-    }
+        // 喜曼多专用APP测试账号与iPhone上架测试账号
+        experience.add("47583201");
 
-    // 台湾地区地藤普及版测试账号
-    protected String getTaiWanAccount() {
-        return "47598601";
+        // 狼王专用APP测试账号与iPhone上架测试账号
+        experience.add("15531101");
+
+        // 队列专用用户代码
+        experience.add(StubHandle.DefaultUser);
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
