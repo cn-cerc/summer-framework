@@ -23,6 +23,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;
     private static String lock;
+    private IHandle handle;
 
     // 运行环境
     private ApplicationContext context;
@@ -43,7 +44,9 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             } else if (ServerConfig.enableTaskService()) {
                 try {
                     // 初始化特殊用户的handle
-                    StubHandle handle = new StubHandle();
+                    if (handle == null) {
+                        handle = new StubHandle();
+                    }
                     runTask(handle);
                 } catch (Exception e) {
                     e.printStackTrace();

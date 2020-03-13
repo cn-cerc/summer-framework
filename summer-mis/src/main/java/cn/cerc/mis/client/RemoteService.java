@@ -40,7 +40,7 @@ public class RemoteService implements IServiceProxy {
         this.path = bookNo;
     }
 
-    private String getApiHost(String bookNo) {
+    public static final String getApiHost(String bookNo) {
         LocalConfig localConfig = LocalConfig.getInstance();
         String key = ApplicationConfig.Rempte_Host_Key + "." + bookNo;
         if (localConfig.getProperty(key) == null) {

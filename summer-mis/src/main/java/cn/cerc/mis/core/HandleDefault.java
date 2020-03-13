@@ -3,6 +3,8 @@ package cn.cerc.mis.core;
 import cn.cerc.core.IConnection;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
+import cn.cerc.db.core.Curl;
+import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -11,10 +13,12 @@ import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -100,11 +104,18 @@ public class HandleDefault implements IHandle {
 
     /**
      * 根据用户信息初始化token，并保存到缓存
+     * <p>
+     * 主要为 task 任务使用
      */
     @Override
     public boolean init(String corpNo, String userCode, String clientIP) {
         String token = ApplicationConfig.generateToken();
-        log.info("根据用户 {}，创建新的token={}", userCode, token);
+        log.info("根据用户 {}，创建新的token {}", userCode, token);
+
+        // 回算用户注册 token
+        if (StubHandle.DefaultUser.equals(userCode)) {
+            registerToken(userCode, token);
+        }
 
         this.setProperty(Application.token, token);
         this.setProperty(Application.bookNo, corpNo);
@@ -114,7 +125,7 @@ public class HandleDefault implements IHandle {
         // 将用户信息赋值到句柄
         IServiceProxy svr = ServiceFactory.get(this);
         svr.setService("SvrSession.byUserCode");
-        if (!svr.exec("userCode", userCode)) {
+        if (!svr.exec("userCode", userCode, "token", token)) {
             throw new RuntimeException(svr.getMessage());
         }
         Record record = svr.getDataOut().getHead();
@@ -138,6 +149,19 @@ public class HandleDefault implements IHandle {
             buff.setField("exists", true);
         }
         return true;
+    }
+
+    /**
+     * 注册token信息到中央数据库
+     */
+    private void registerToken(String userCode, String token) {
+        Curl curl = new Curl();
+        curl.put("userCode", userCode).put("token", token).put("machine", ServerConfig.getAppName());
+
+        String host = RemoteService.getApiHost(ServiceFactory.Public);
+        String site = host + ApplicationConfig.App_Path + "ApiTaskToken.register";
+        String response = curl.doPost(site);
+        log.warn("token {} 注册结果 {}", token, response);
     }
 
     @Override
