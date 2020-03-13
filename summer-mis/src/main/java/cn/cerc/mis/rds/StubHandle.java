@@ -6,10 +6,8 @@ import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlConnection;
-import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ISystemTable;
 
 public class StubHandle implements IHandle, AutoCloseable {
     public static final String DefaultBook = "999001";
@@ -27,23 +25,6 @@ public class StubHandle implements IHandle, AutoCloseable {
 
     public StubHandle(String corpNo, String userCode) {
         handle = Application.getHandle();
-        handle.init(corpNo, userCode, clientIP);
-    }
-
-    @Deprecated
-    public StubHandle(String corpNo) {
-        handle = Application.getHandle();
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-        SqlQuery ds = new SqlQuery(this);
-        ds.setMaximum(1);
-        ds.add("select Code_ from " + systemTable.getUserInfo());
-        ds.add("where CorpNo_='%s'", corpNo);
-        ds.open();
-        if (ds.eof()) {
-            throw new RuntimeException("找不到默认帐号：CorpNo=" + corpNo);
-        }
-        String userCode = ds.getString("Code_");
-
         handle.init(corpNo, userCode, clientIP);
     }
 
