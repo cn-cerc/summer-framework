@@ -2,6 +2,7 @@ package cn.cerc.mis.task;
 
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -9,6 +10,7 @@ import java.util.Timer;
 
 //使用内部驱动定时任务
 @Deprecated // 请改使用 StartTaskDefault
+@Slf4j
 public class StartTasksInternal implements ServletContextListener {
 
     private static final long period = 500;
@@ -19,7 +21,7 @@ public class StartTasksInternal implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         if (ServerConfig.enableTaskService()) {
             timer = new Timer(true);
-            event.getServletContext().log("定时器已启动");
+            log.info("定时器已启动");
 
             Application.get(event.getServletContext());
             ProcessTimerTask task = new ProcessTimerTask();
@@ -31,7 +33,7 @@ public class StartTasksInternal implements ServletContextListener {
              */
             timer.schedule(task, delay, period);
 
-            event.getServletContext().log("已经添加任务");
+            log.info("已经添加任务");
         }
     }
 
