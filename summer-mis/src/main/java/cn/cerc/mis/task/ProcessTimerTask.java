@@ -69,14 +69,13 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 continue;
             }
             try {
-                String curTime = TDateTime.Now().getTime().substring(0, 5);
-                if (!"".equals(task.getTime()) && !task.getTime().equals(curTime)) {
+                String timeNow = TDateTime.Now().getTime().substring(0, 5);
+                if (!"".equals(task.getTime()) && !task.getTime().equals(timeNow)) {
                     continue;
                 }
 
                 int timeOut = task.getInterval();
-                String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(),
-                        task.getClass().getName());
+                String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(), task.getClass().getName());
                 if (Redis.get(buffKey) != null) {
                     continue;
                 }
@@ -85,7 +84,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 Redis.set(buffKey, "ok", timeOut);
 
                 if (task.getInterval() > 1) {
-                    log.info("execute " + task.getClass().getName());
+                    log.info("执行任务 {}", task.getClass().getName());
                 }
 
                 task.execute();
