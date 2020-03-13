@@ -9,9 +9,7 @@ import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ServiceException;
-import cn.cerc.mis.language.Language;
 import cn.cerc.mis.other.UserNotFindException;
-import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,9 +20,6 @@ public class SvrSession extends CustomService {
         DataValidateException.stopRun("userCode 不允许为空", !headIn.hasValue("userCode"));
         String userCode = headIn.getString("userCode");
 
-        DataValidateException.stopRun("token 不允许为空", !headIn.hasValue("token"));
-        String token = headIn.getString("token");
-
         SqlQuery cdsUser = new SqlQuery(this);
         cdsUser.add("select ID_,Code_,RoleCode_,DiyRole_,CorpNo_, Name_ as UserName_,ProxyUsers_");
         cdsUser.add("from %s ", systemTable.getUserInfo());
@@ -32,29 +27,6 @@ public class SvrSession extends CustomService {
         cdsUser.open();
         if (cdsUser.eof()) {
             throw new UserNotFindException(userCode);
-        }
-
-        SqlQuery cdsToken = new SqlQuery(this);
-        cdsToken.add("select * from %s", systemTable.getCurrentUser());
-        cdsToken.add("where loginID_='%s'", token);
-        cdsToken.open();
-        if (cdsToken.eof() && StubHandle.DefaultUser.equals(userCode)) {
-            log.warn("userCode {} token {} 没有注册，后台重新注入到mysql", userCode, token);
-            cdsToken.append();
-            cdsToken.setField("UserID_", cdsUser.getString("ID_"));
-            cdsToken.setField("CorpNo_", StubHandle.DefaultBook);
-            cdsToken.setField("Account_", StubHandle.DefaultUser);
-            cdsToken.setField("LoginID_", token);
-            cdsToken.setField("Computer_", "task-服务器");
-            cdsToken.setField("clientIP_", StubHandle.clientIP);
-            cdsToken.setField("LoginTime_", TDateTime.Now());
-            cdsToken.setField("ParamValue_", StubHandle.DefaultBook);
-            cdsToken.setField("KeyCardID_", "");
-            cdsToken.setField("Viability_", 1);
-            cdsToken.setField("LoginServer_", StubHandle.Server);
-            cdsToken.setField("Screen_", "");
-            cdsToken.setField("Language_", Language.zh_CN);
-            cdsToken.post();
         }
 
         Record headOut = getDataOut().getHead();

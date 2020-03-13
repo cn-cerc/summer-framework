@@ -356,9 +356,15 @@ public class Curl {
         return this;
     }
 
-    public Curl putParameter(String key, Object value) {
+    public Curl put(String key, Object value) {
         this.parameters.put(key, value);
         return this;
+    }
+
+    // 改使用 put 方法
+    @Deprecated
+    public Curl putParameter(String key, Object value) {
+        return this.put(key, value);
     }
 
 }

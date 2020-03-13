@@ -87,7 +87,7 @@ public class ApiTaskToken extends AbstractForm {
     }
 
     @Override
-    public boolean passDevice() {
+    public boolean logon() {
         return true;
     }
 
