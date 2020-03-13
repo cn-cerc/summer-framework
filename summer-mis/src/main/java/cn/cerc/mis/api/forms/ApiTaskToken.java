@@ -33,9 +33,9 @@ public class ApiTaskToken extends AbstractForm {
         if (Utils.isEmpty(userCode)) {
             return jsonPage.setResultMessage(false, "userCode 不允许为空");
         }
-        if (!StubHandle.DefaultUser.equals(userCode)) {
-            return jsonPage.setResultMessage(false, "userCode 不是系统专用帐号");
-        }
+//        if (!StubHandle.DefaultUser.equals(userCode)) {
+//            return jsonPage.setResultMessage(false, "userCode 不是系统专用帐号");
+//        }
 
         // 令牌代码
         String token = getRequest().getParameter("token");
