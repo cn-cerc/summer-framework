@@ -3,6 +3,7 @@ package cn.cerc.mis.services;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
@@ -42,34 +43,33 @@ public class AppSessionRestore extends CustomService {
         DataValidateException.stopRun("token不允许为空", !headIn.hasValue("token"));
         String token = headIn.getString("token");
 
-        DataSet dataToken = new DataSet();
-        IServiceProxy svrToken = ServiceFactory.get(this);
-        svrToken.setService("ApiTokenInfo.restoreByToken");
-        DataValidateException.stopRun(svrToken.getMessage(), !svrToken.exec("Token_", token));
-        dataToken.appendDataSet(svrToken.getDataOut());
 
-        if (dataToken.eof()) {
+        SqlQuery cdsToken = new SqlQuery(this);
+        cdsToken.add("select CorpNo_,UserID_,Viability_,LoginTime_,Account_ as UserCode_,Language_ ");
+        cdsToken.add("from %s", systemTable.getCurrentUser());
+        cdsToken.add("where loginID_= '%s' ", token);
+        cdsToken.open();
+        if (cdsToken.eof()) {
             log.warn("token {} 没有找到！", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
             return false;
         }
 
-        if (dataToken.getInt("Viability_") <= 0) {
+        if (cdsToken.getInt("Viability_") <= 0) {
             log.warn("token {} 已失效，请重新登录", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
             return false;
         }
-        String userId = dataToken.getString("UserID_");
+        String userId = cdsToken.getString("UserID_");
 
-        DataSet dataUser = new DataSet();
-        IServiceProxy svrUser = ServiceFactory.get(this);
-        svrUser.setService("ApiTokenInfo.restoreByUserId");
-        DataValidateException.stopRun(svrUser.getMessage(), !svrUser.exec("UserId_", userId));
-        dataUser.appendDataSet(svrUser.getDataOut());
-
-        if (dataUser.eof()) {
+        SqlQuery cdsUser = new SqlQuery(this);
+        cdsUser.add("select ID_,Code_,DiyRole_,RoleCode_,CorpNo_, Name_ as UserName_,ProxyUsers_");
+        cdsUser.add("from %s", systemTable.getUserInfo());
+        cdsUser.add("where ID_='%s'", userId);
+        cdsUser.open();
+        if (cdsUser.eof()) {
             log.warn(String.format("userId %s 没有找到！", userId));
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
@@ -77,9 +77,9 @@ public class AppSessionRestore extends CustomService {
         }
 
         Record headOut = getDataOut().getHead();
-        headOut.setField("LoginTime_", dataToken.getDateTime("LoginTime_"));
-        headOut.setField("Language_", dataToken.getString("Language_"));
-        copyData(dataUser, headOut);
+        headOut.setField("LoginTime_", cdsToken.getDateTime("LoginTime_"));
+        headOut.setField("Language_", cdsToken.getString("Language_"));
+        copyData(cdsUser, headOut);
         return true;
     }
 

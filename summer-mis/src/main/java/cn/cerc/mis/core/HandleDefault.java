@@ -50,6 +50,8 @@ public class HandleDefault implements IHandle {
     @Override
     public boolean init(String corpNo, String userCode, String clientIP) {
         String token = GuidFixStr(Utils.newGuid());
+        log.info("根据用户 {}，创建新的token={}", userCode, token);
+
         this.setProperty(Application.token, token);
         this.setProperty(Application.bookNo, corpNo);
         this.setProperty(Application.userCode, userCode);
@@ -88,7 +90,7 @@ public class HandleDefault implements IHandle {
     @Override
     public boolean init(String token) {
         this.setProperty(Application.token, token);
-        log.debug(String.format("根据 token=%s 初始化 Session", token));
+        log.info("根据 token={} 初始化 session", token);
         if (token == null) {
             return false;
         }
@@ -103,7 +105,7 @@ public class HandleDefault implements IHandle {
                 IServiceProxy svr = ServiceFactory.get(this);
                 svr.setService("AppSessionRestore.byToken");
                 if (!svr.exec("token", token)) {
-                    log.error("token 恢复错误 {}", svr.getMessage());
+                    log.error("token 恢复错误，原因 {}", svr.getMessage());
                     this.setProperty(Application.token, null);
                     return false;
                 }
