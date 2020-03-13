@@ -587,7 +587,7 @@ public class Utils {
     }
 
     /**
-     * 获取客户端请求来源的IP地址
+     * 获取客户端的访问地址
      */
     public static String getIP(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
