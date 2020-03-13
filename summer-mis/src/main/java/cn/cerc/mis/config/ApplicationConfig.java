@@ -1,6 +1,7 @@
 package cn.cerc.mis.config;
 
 import cn.cerc.core.IHandle;
+import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 
@@ -41,6 +42,15 @@ public class ApplicationConfig {
 
     public static boolean isReplica() {
         return !ApplicationConfig.isMaster();
+    }
+
+    /**
+     * 生成token字符串
+     */
+    public static final String generateToken() {
+        String guid = Utils.newGuid();
+        String str = guid.substring(1, guid.length() - 1);
+        return str.replaceAll("-", "");
     }
 
 }

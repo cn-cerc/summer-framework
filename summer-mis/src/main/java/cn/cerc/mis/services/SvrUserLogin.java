@@ -13,6 +13,7 @@ import cn.cerc.db.mysql.SqlOperator;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.db.oss.OssConnection;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
@@ -185,7 +186,7 @@ public class SvrUserLogin extends CustomService {
                 MemoryBookInfo.clear(corpNo);
             }
 
-            sess.setProperty(Application.token, guidFixStr());
+            sess.setProperty(Application.token, ApplicationConfig.generateToken());
             sess.setProperty(Application.userId, dsUser.getString("ID_"));
             sess.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
             sess.setProperty(Application.userCode, dsUser.getString("Code_"));
@@ -498,12 +499,6 @@ public class SvrUserLogin extends CustomService {
         ds.setField("LastTime_", TDateTime.Now());
         ds.post();
         return ds.getInt("Used_") != 2;
-    }
-
-    private String guidFixStr() {
-        String guid = Utils.newGuid();
-        String str = guid.substring(1, guid.length() - 1);
-        return str.replaceAll("-", "");
     }
 
     private boolean isAutoLogin(String userCode, String deviceId) {

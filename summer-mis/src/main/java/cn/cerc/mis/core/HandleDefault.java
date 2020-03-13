@@ -13,6 +13,7 @@ import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,7 @@ public class HandleDefault implements IHandle {
      */
     @Override
     public boolean init(String corpNo, String userCode, String clientIP) {
-        String token = GuidFixStr(Utils.newGuid());
+        String token = ApplicationConfig.generateToken();
         log.info("根据用户 {}，创建新的token={}", userCode, token);
 
         this.setProperty(Application.token, token);
@@ -139,11 +140,6 @@ public class HandleDefault implements IHandle {
                 return false;
             }
         }
-    }
-
-    private String GuidFixStr(String guid) {
-        String str = guid.substring(1, guid.length() - 1);
-        return str.replaceAll("-", "");
     }
 
     @Override

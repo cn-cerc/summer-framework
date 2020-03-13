@@ -5,6 +5,7 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.HandleDefault;
@@ -53,7 +54,7 @@ public class SvrAutoLogin {
                     systemTable.getDeviceVerify(), userCode, deviceId);
             sess.getConnection().execute(sql);
 
-            String token = Utils.guidFixStr();
+            String token = ApplicationConfig.generateToken();
             sess.setProperty(Application.token, token);
             sess.setProperty("deviceId", deviceId);
             sess.setProperty(RequestData.TOKEN, token);
