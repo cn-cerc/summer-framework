@@ -5,8 +5,8 @@ public interface IUserLoginCheck {
     // 登录验证
     boolean check(String userCode, String password, String deviceId, String clientIP, String languageId);
 
-    // 返回SessionId
-    String getSessionId();
+    // 返回 token
+    String getToken();
 
     // 返回手机号
     String getMobile();

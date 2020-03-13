@@ -120,7 +120,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         // 进行用户名、密码认证
         String IP = getIPAddress(this.getRequest());
         if (obj.check(userCode, password, deviceId, IP, form.getClient().getLanguage())) {
-            String token = obj.getSessionId();
+            String token = obj.getToken();
             if (token != null && !"".equals(token)) {
                 log.debug(String.format("认证成功，取得sid(%s)", token));
                 ((ClientDevice) this.getForm().getClient()).setToken(token);

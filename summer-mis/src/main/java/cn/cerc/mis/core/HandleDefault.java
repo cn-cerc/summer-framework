@@ -62,6 +62,8 @@ public class HandleDefault implements IHandle {
         if (!svr.exec("userCode", userCode)) {
             throw new RuntimeException(svr.getMessage());
         }
+
+        // 将用户信息赋值到句柄
         Record headOut = svr.getDataOut().getHead();
         this.setProperty(Application.userId, headOut.getString("UserID_"));
         this.setProperty(Application.loginTime, headOut.getDateTime("LoginTime_"));
@@ -109,6 +111,7 @@ public class HandleDefault implements IHandle {
                     this.setProperty(Application.token, null);
                     return false;
                 }
+
                 Record headOut = svr.getDataOut().getHead();
                 buff.setField("LoginTime_", headOut.getDateTime("LoginTime_"));
                 buff.setField("UserID_", headOut.getString("UserID_"));
@@ -122,6 +125,7 @@ public class HandleDefault implements IHandle {
             }
 
             if (buff.getBoolean("exists")) {
+                // 将用户信息赋值到句柄
                 this.setProperty(Application.loginTime, buff.getDateTime("LoginTime_"));
                 this.setProperty(Application.bookNo, buff.getString("CorpNo_"));
                 this.setProperty(Application.userId, buff.getString("UserID_"));

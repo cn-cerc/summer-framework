@@ -17,13 +17,13 @@ public class SvrSession extends CustomService {
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();
-        DataValidateException.stopRun("用户id不允许为空", !headIn.hasValue("userCode"));
+        DataValidateException.stopRun("userCode 不允许为空", !headIn.hasValue("userCode"));
         String userCode = headIn.getString("userCode");
 
         SqlQuery cdsUser = new SqlQuery(this);
         cdsUser.add("select ID_,Code_,RoleCode_,DiyRole_,CorpNo_, Name_ as UserName_,ProxyUsers_");
         cdsUser.add("from %s ", systemTable.getUserInfo());
-        cdsUser.add("where Code_= '%s' ", userCode);
+        cdsUser.add("where Code_='%s'", userCode);
         cdsUser.open();
         if (cdsUser.eof()) {
             throw new UserNotFindException(userCode);
@@ -43,7 +43,7 @@ public class SvrSession extends CustomService {
         SqlQuery cdsToken = new SqlQuery(this);
         cdsToken.add("select CorpNo_,UserID_,Viability_,LoginTime_,Account_ as UserCode_,Language_ ");
         cdsToken.add("from %s", systemTable.getCurrentUser());
-        cdsToken.add("where loginID_= '%s' ", token);
+        cdsToken.add("where loginID_='%s'", token);
         cdsToken.open();
         if (cdsToken.eof()) {
             log.warn("token {} 没有找到！", token);
