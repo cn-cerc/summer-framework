@@ -13,7 +13,7 @@ import cn.cerc.mis.other.UserNotFindException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AppSessionRestore extends CustomService {
+public class SvrSession extends CustomService {
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();

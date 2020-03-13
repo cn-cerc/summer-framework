@@ -58,7 +58,7 @@ public class HandleDefault implements IHandle {
         this.setProperty(Application.clientIP, clientIP);
 
         IServiceProxy svr = ServiceFactory.get(this);
-        svr.setService("AppSessionRestore.byUserCode");
+        svr.setService("SvrSession.byUserCode");
         if (!svr.exec("userCode", userCode)) {
             throw new RuntimeException(svr.getMessage());
         }
@@ -103,7 +103,7 @@ public class HandleDefault implements IHandle {
             if (buff.isNull()) {
                 buff.setField("exists", false);
                 IServiceProxy svr = ServiceFactory.get(this);
-                svr.setService("AppSessionRestore.byToken");
+                svr.setService("SvrSession.byToken");
                 if (!svr.exec("token", token)) {
                     log.error("token 恢复错误，原因 {}", svr.getMessage());
                     this.setProperty(Application.token, null);
