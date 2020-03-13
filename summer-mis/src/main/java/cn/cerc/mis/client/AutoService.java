@@ -7,8 +7,7 @@ import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 import cn.cerc.mis.core.ServiceException;
 
-public class AutoService implements IHandle {
-    // private static final Logger log = Logger.getLogger(AutoService.class);
+public class AutoService {
     private DataSet dataOut = new DataSet();
     private String message;
     private IHandle handle;
@@ -52,8 +51,13 @@ public class AutoService implements IHandle {
             throw new RuntimeException("没有指定 service");
         }
 
-        handle.init(service.getCorpNo(), service.getUserCode(), "127.0.0.1");
-        IService bean = Application.getService(this, service.getService());
+        // handle.init(service.getCorpNo(), service.getUserCode(), "127.0.0.1");
+
+        // 直接设置用户信息到 handle 中
+        handle.setProperty(Application.bookNo, service.getCorpNo());
+        handle.setProperty(Application.userCode, service.getUserCode());
+        handle.setProperty(Application.clientIP, "127.0.0.1");
+        IService bean = Application.getService(handle, service.getService());
         if (bean == null) {
             throw new RuntimeException("无法创建服务：" + service.getService());
         }
@@ -67,51 +71,6 @@ public class AutoService implements IHandle {
 
     public ServiceRecord getService() {
         return this.service;
-    }
-
-    @Override
-    public String getCorpNo() {
-        return handle.getCorpNo();
-    }
-
-    @Override
-    public String getUserCode() {
-        return handle.getUserCode();
-    }
-
-    @Override
-    public String getUserName() {
-        return handle.getUserName();
-    }
-
-    @Override
-    public Object getProperty(String key) {
-        return handle.getProperty(key);
-    }
-
-    @Override
-    public void setProperty(String key, Object value) {
-        throw new RuntimeException("调用了未被实现的接口");
-    }
-
-    @Override
-    public boolean init(String bookNo, String userCode, String clientCode) {
-        throw new RuntimeException("调用了未被实现的接口");
-    }
-
-    @Override
-    public boolean init(String token) {
-        throw new RuntimeException("调用了未被实现的接口");
-    }
-
-    @Override
-    public boolean logon() {
-        return false;
-    }
-
-    @Override
-    public void close() {
-        handle.close();
     }
 
 }
