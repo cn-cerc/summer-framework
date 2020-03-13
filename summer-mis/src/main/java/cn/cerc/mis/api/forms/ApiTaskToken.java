@@ -13,7 +13,7 @@ import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class FrmTaskToken extends AbstractForm {
+public class ApiTaskToken extends AbstractForm {
 
     @Override
     public IPage execute() {
