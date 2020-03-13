@@ -4,6 +4,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mysql.MysqlConnection;
+import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlConnection;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.queue.AliyunQueueConnection;
@@ -76,6 +77,12 @@ public class StubHandle implements IHandle, AutoCloseable {
             conn.setConfig(ServerConfig.getInstance());
             handle.setProperty(key, conn);
         }
+        if (obj == null && SlaveMysqlConnection.sessionId.equals(key)) {
+            SlaveMysqlConnection conn = new SlaveMysqlConnection();
+            conn.setConfig(ServerConfig.getInstance());
+            handle.setProperty(key, conn);
+        }
+
         if (obj == null && AliyunQueueConnection.sessionId.equals(key)) {
             AliyunQueueConnection conn = new AliyunQueueConnection();
             conn.setConfig(ServerConfig.getInstance());
