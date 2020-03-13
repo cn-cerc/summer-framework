@@ -13,9 +13,12 @@ public class StubHandle implements IHandle, AutoCloseable {
     public static final String DefaultBook = "999001";
     public static final String DefaultUser = DefaultBook + "01";
     public static final String DefaultProduct = "999001000001";
+
+    public static final String Server = "task-server";
+
     // 生产部
     public static final String DefaultDept = "10050001";
-    private static final String clientIP = "127.0.0.1";
+    public static final String clientIP = "127.0.0.1";
     private IHandle handle;
 
     public StubHandle() {

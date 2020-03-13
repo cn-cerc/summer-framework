@@ -114,7 +114,7 @@ public class HandleDefault implements IHandle {
         // 将用户信息赋值到句柄
         IServiceProxy svr = ServiceFactory.get(this);
         svr.setService("SvrSession.byUserCode");
-        if (!svr.exec("userCode", userCode)) {
+        if (!svr.exec("userCode", userCode, "token", token)) {
             throw new RuntimeException(svr.getMessage());
         }
         Record record = svr.getDataOut().getHead();
