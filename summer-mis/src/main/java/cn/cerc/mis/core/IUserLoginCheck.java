@@ -12,7 +12,7 @@ public interface IUserLoginCheck {
     String getMobile();
 
     // 通过手机号获取帐号
-    String getTelToUserCode(String mobile);
+    String getUserCode(String mobile);
 
     // 错误消息
     String getMessage();

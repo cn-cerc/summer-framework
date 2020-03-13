@@ -112,7 +112,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         // 如长度大于10表示用手机号码登入
         if (userCode.length() > 10) {
             String oldCode = userCode;
-            userCode = obj.getTelToUserCode(oldCode);
+            userCode = obj.getUserCode(oldCode);
             log.debug(String.format("将手机号 %s 转化成帐号 %s", oldCode, userCode));
         }
 
