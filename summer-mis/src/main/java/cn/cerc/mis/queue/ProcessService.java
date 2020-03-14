@@ -43,9 +43,9 @@ public class ProcessService extends AbstractTask {
      * 处理一个服务
      */
     private void processService(String msgId) {
+        // 此任务可能被其它主机抢占
         LocalService svrMsg = new LocalService(this, "SvrUserMessages.readAsyncService");
-        if (!svrMsg.exec("msgId", msgId)) // 此任务可能被其它主机抢占
-        {
+        if (!svrMsg.exec("msgId", msgId)) {
             return;
         }
         Record ds = svrMsg.getDataOut().getHead();
