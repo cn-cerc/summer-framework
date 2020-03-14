@@ -3,8 +3,6 @@ package cn.cerc.mis.core;
 import cn.cerc.core.IConnection;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
-import cn.cerc.db.core.Curl;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -13,7 +11,6 @@ import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.other.BufferType;
@@ -114,7 +111,7 @@ public class HandleDefault implements IHandle {
 
         // 回算用户注册 token
         if (StubHandle.DefaultUser.equals(userCode)) {
-            registerToken(userCode, token);
+            ApplicationConfig.registerToken(userCode, token);
         }
 
         this.setProperty(Application.token, token);
@@ -149,19 +146,6 @@ public class HandleDefault implements IHandle {
             buff.setField("exists", true);
         }
         return true;
-    }
-
-    /**
-     * 注册token信息到中央数据库
-     */
-    private void registerToken(String userCode, String token) {
-        Curl curl = new Curl();
-        curl.put("userCode", userCode).put("token", token).put("machine", ServerConfig.getAppName());
-
-        String host = RemoteService.getApiHost(ServiceFactory.Public);
-        String site = host + ApplicationConfig.App_Path + "ApiTaskToken.register";
-        String response = curl.doPost(site);
-        log.warn("token {} 注册结果 {}", token, response);
     }
 
     @Override
