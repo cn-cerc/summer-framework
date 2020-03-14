@@ -1,10 +1,25 @@
 package cn.cerc.mis.config;
 
+import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.client.RemoteService;
+import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.ClientDevice;
+import cn.cerc.mis.language.Language;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 
+@Slf4j
 public class ApplicationConfig {
 
     /**
@@ -50,6 +65,75 @@ public class ApplicationConfig {
         String guid = Utils.newGuid();
         String str = guid.substring(1, guid.length() - 1);
         return str.replaceAll("-", "");
+    }
+
+    /**
+     * 注册token信息到中央数据库
+     */
+    public static void registerToken(String userCode, String token) {
+        Curl curl = new Curl();
+        curl.put("userCode", userCode).put("token", token).put("machine", ServerConfig.getAppName());
+
+        String host = RemoteService.getApiHost(ServiceFactory.Public);
+        String site = host + ApplicationConfig.App_Path + "ApiTaskToken.register";
+        String response = curl.doPost(site);
+        log.warn("token {} 注册结果 {}", token, response);
+    }
+
+    /**
+     * 获取用户授权令牌
+     *
+     * @param userCode    用户帐号
+     * @param password    用户密码
+     * @param machineCode 设备码
+     */
+    public static String getAuthToken(String userCode, String password, String machineCode) {
+        // 构建public地址
+        String host = RemoteService.getApiHost(ServiceFactory.Public);
+        String url = host + ApplicationConfig.App_Path + "Login.getToken";
+
+        // 构建登录请求参数
+        DataSet dataIn = new DataSet();
+        dataIn.getHead().setField("userCode", userCode);
+        dataIn.getHead().setField("password", password);
+        dataIn.getHead().setField("clientId", machineCode);
+        dataIn.getHead().setField("device", ClientDevice.APP_DEVICE_PC);
+        dataIn.getHead().setField("languageId", Language.zh_CN);
+        String json = dataIn.getJSON();
+
+        String token = null;
+        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+            HttpPost post = new HttpPost(url);
+            StringEntity postingString = new StringEntity(json);
+            post.setEntity(postingString);
+            post.addHeader("Content-Type", "application/json;charset=utf-8");
+
+            // 发起post请求
+            HttpResponse response = client.execute(post);
+            String content = EntityUtils.toString(response.getEntity(), "utf-8");
+            log.info("返回数据 {}", content);
+
+            // 解析post结果
+            JSONObject object = JSONObject.fromObject(content);
+            boolean result = object.getBoolean("result");
+            String message = object.getString("message");
+            if (!result) {
+                log.error("用户 {} 初始化token失败", userCode);
+                throw new RuntimeException(message);
+            }
+
+            // 取消外围 []，还原标准的dataSet格式
+            String data = object.getString("data");
+            data = data.substring(1, data.length() - 1);
+
+            DataSet dataSet = new DataSet();
+            dataSet.setJSON(data);
+
+            token = dataSet.getHead().getString("token");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return token;
     }
 
 }
