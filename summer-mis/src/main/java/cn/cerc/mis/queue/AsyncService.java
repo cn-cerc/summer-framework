@@ -7,6 +7,7 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.queue.QueueDB;
 import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.message.MessageLevel;
 import cn.cerc.mis.message.MessageRecord;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,10 @@ public class AsyncService implements IServiceProxy {
     private MessageLevel messageLevel = MessageLevel.Service;
     //
     private String msgId;
+
+    public AsyncService() {
+
+    }
 
     public AsyncService(IHandle handle) {
         this.handle = handle;
@@ -98,6 +103,7 @@ public class AsyncService implements IServiceProxy {
             for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
             }
+            headIn.setField("token", ApplicationConfig.getToken(handle));
         }
 
         String subject = this.getSubject();

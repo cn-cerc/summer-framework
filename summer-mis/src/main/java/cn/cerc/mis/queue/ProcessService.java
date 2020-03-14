@@ -55,7 +55,7 @@ public class ProcessService extends AbstractTask {
         String subject = ds.getString("subject");
 
         // 读取并标识为工作中，以防被其它用户抢占
-        AsyncService svrSync = new AsyncService(null);
+        AsyncService svrSync = new AsyncService();
         svrSync.read(content);
         svrSync.setProcess(MessageProcess.working.ordinal());
         updateMessage(svrSync, msgId, subject);
