@@ -95,16 +95,16 @@ public class AsyncService implements IServiceProxy {
 
     @Override
     public boolean exec(Object... args) {
+        Record headIn = getDataIn().getHead();
         if (args.length > 0) {
-            Record headIn = getDataIn().getHead();
             if (args.length % 2 != 0) {
                 throw new RuntimeException("传入的参数数量必须为偶数！");
             }
             for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
             }
-            headIn.setField("token", ApplicationConfig.getToken(handle));
         }
+        headIn.setField("token", ApplicationConfig.getToken(handle));
 
         String subject = this.getSubject();
         if ("".equals(subject)) {
