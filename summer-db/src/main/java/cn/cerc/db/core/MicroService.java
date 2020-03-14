@@ -31,7 +31,7 @@ public class MicroService extends Curl {
 
     public static void main(String[] args) {
         MicroService service = new MicroService();
-        service.putParameter("appKey", "asdfsdf");
+        service.put("appKey", "asdfsdf");
 
         System.out.println(service.post("server.getIP"));
         System.out.println(service.isResult());
