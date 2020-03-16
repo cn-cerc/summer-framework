@@ -87,7 +87,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 Redis.set(buffKey, "ok", timeOut);
 
                 if (task.getInterval() > 1) {
-                    log.info("执行任务 {}", task.getClass().getName());
+                    log.debug("执行任务 {}", task.getClass().getName());
                 }
 
                 task.execute();
