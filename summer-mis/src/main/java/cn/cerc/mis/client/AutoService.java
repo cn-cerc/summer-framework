@@ -7,9 +7,7 @@ import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 import cn.cerc.mis.core.ServiceException;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class AutoService {
     private DataSet dataOut = new DataSet();
     private String message;

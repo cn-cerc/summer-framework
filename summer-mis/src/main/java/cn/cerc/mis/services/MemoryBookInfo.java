@@ -34,6 +34,7 @@ public class MemoryBookInfo {
         item.setName(record.getString("Name_"));
         item.setAddress(record.getString("Address_"));
         item.setTel(record.getString("Tel_"));
+        item.setFastTel(record.getString("FastTel_"));
         item.setManagerPhone(record.getString("ManagerPhone_"));
         item.setStartHost(record.getString("StartHost_"));
         item.setContact(record.getString("Contact_"));
@@ -41,6 +42,9 @@ public class MemoryBookInfo {
         item.setStatus(record.getInt("Status_"));
         item.setCorpType(record.getInt("Type_"));
         item.setIndustry(record.getString("Industry_"));
+        item.setCurrency(record.getString("Currency_"));
+        item.setEmail(record.getString("Email_"));
+        item.setFax(record.getString("Fax_"));
 
         Redis.set(getBuffKey(corpNo), gson.toJson(item));
         return item;
@@ -65,6 +69,15 @@ public class MemoryBookInfo {
      */
     public static BookVersion getBookType(IHandle handle) {
         String corpNo = handle.getCorpNo();
+        return getBookType(handle, corpNo);
+    }
+
+    /** 
+     * @param handle 环境变量   
+     * @param corpNo 帐套代码   
+     * @return 返回指定帐套的版本类型  
+     */ 
+    public static BookVersion getBookType(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
             throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
@@ -84,6 +97,19 @@ public class MemoryBookInfo {
             throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
         }
         return item.getShortName();
+    }
+
+    /**
+     * @param handle 环境变量
+     * @param corpNo 帐套代码
+     * @return 返回帐套全称
+     */
+    public static String getName(IHandle handle, String corpNo) {
+        BookInfoRecord item = get(handle, corpNo);
+        if (item == null) {
+            throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+        }
+        return item.getName();
     }
 
     public static String getIndustry(IHandle handle, String corpNo) {
