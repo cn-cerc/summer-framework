@@ -456,8 +456,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getData());
         Lunar lunar = new Lunar(cal);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
-        return sdf.format(TDateTime.StrToDate(lunar.toString()).getData());
+        return lunar.toString().substring(5, lunar.toString().length()).replaceAll("-", "/");
     }
 
     public static String FormatDateTime(String fmt, Date value) {
