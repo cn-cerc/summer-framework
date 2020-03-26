@@ -13,7 +13,6 @@ import cn.cerc.db.mysql.SqlOperator;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.db.oss.OssConnection;
-import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;

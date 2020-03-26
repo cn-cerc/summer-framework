@@ -2,7 +2,6 @@ package cn.cerc.mis.config;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
-import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.RemoteService;

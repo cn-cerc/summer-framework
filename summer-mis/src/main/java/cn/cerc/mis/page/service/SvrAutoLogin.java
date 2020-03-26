@@ -5,7 +5,6 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
-import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.HandleDefault;
