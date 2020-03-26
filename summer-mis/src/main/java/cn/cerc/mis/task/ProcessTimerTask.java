@@ -44,7 +44,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             } else if (ServerConfig.enableTaskService()) {
                 try {
                     // 初始化特殊用户的handle
-                    if (handle == null || C_SCHEDULE_HOUR == calendar.get(Calendar.HOUR_OF_DAY)) {
+                    if (handle == null) {
                         handle = new StubHandle();
                     }
                     runTask(handle);
