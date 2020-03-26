@@ -161,6 +161,15 @@ public class Utils {
         return '{' + uuid.toString() + '}';
     }
 
+    /**
+     * 生成token字符串
+     */
+    public static final String generateToken() {
+        String guid = Utils.newGuid();
+        String str = guid.substring(1, guid.length() - 1);
+        return str.replaceAll("-", "");
+    }
+
     // 兼容 delphi 代码
     public static String copy(String text, int iStart, int iLength) {
         if (text == null) {

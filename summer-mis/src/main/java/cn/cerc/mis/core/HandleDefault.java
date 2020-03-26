@@ -3,6 +3,7 @@ package cn.cerc.mis.core;
 import cn.cerc.core.IConnection;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
+import cn.cerc.core.Utils;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -106,7 +107,7 @@ public class HandleDefault implements IHandle {
      */
     @Override
     public boolean init(String corpNo, String userCode, String clientIP) {
-        String token = ApplicationConfig.generateToken();
+        String token = Utils.generateToken();
         log.info("根据用户 {}，创建新的token {}", userCode, token);
 
         // 回算用户注册 token

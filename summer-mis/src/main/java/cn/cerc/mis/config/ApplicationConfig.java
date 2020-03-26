@@ -59,15 +59,6 @@ public class ApplicationConfig {
     }
 
     /**
-     * 生成token字符串
-     */
-    public static final String generateToken() {
-        String guid = Utils.newGuid();
-        String str = guid.substring(1, guid.length() - 1);
-        return str.replaceAll("-", "");
-    }
-
-    /**
      * 注册token信息到中央数据库
      */
     public static void registerToken(String userCode, String token) {

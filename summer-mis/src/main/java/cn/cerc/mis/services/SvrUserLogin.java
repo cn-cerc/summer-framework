@@ -186,7 +186,7 @@ public class SvrUserLogin extends CustomService {
                 MemoryBookInfo.clear(corpNo);
             }
 
-            sess.setProperty(Application.token, ApplicationConfig.generateToken());
+            sess.setProperty(Application.token, Utils.generateToken());
             sess.setProperty(Application.userId, dsUser.getString("ID_"));
             sess.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
             sess.setProperty(Application.userCode, dsUser.getString("Code_"));
