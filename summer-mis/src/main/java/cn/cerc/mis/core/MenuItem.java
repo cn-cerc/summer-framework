@@ -107,4 +107,7 @@ public class MenuItem {
         return result != null ? result : "";
     }
 
+    public int getHrip() {
+        return Integer.parseInt(getParam(this.getCode()));
+    }
 }
