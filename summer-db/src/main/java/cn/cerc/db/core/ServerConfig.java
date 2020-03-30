@@ -100,27 +100,6 @@ public class ServerConfig implements IConfig {
         return getInstance().getProperty("dayu.appSecret", null);
     }
 
-    // 日志服务
-    @Deprecated
-    public static String ots_endPoint() {
-        return getInstance().getProperty("ots.endPoint", null);
-    }
-
-    @Deprecated
-    public static String ots_accessId() {
-        return getInstance().getProperty("ots.accessId", null);
-    }
-
-    @Deprecated
-    public static String ots_accessKey() {
-        return getInstance().getProperty("ots.accessKey", null);
-    }
-
-    @Deprecated
-    public static String ots_instanceName() {
-        return getInstance().getProperty("ots.instanceName", null);
-    }
-
     // 简讯服务(旧版本)
     @Deprecated
     public static String sms_host() {
