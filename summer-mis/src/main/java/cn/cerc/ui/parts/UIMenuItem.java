@@ -9,7 +9,6 @@ public class UIMenuItem extends UIComponent {
     private String code;
     private boolean window;
     private boolean menuLock;
-    private int hrip;
 
     private String target = "_blank";
 
@@ -36,7 +35,7 @@ public class UIMenuItem extends UIComponent {
 
         // 输出菜单名称
         html.println("<div role='menuName'>");
-        if (getHrip() == 2 && isWindow()) {
+        if (isWindow()) {
             html.println("<a href=\"hrip:%s\" onclick=\"updateUserHit('%s')\">", getCode(), getCode());
             // 闪电 ⚡ 标记
             html.println("<img src=\"%s\"/>", "images/lightning.png");
@@ -59,7 +58,6 @@ public class UIMenuItem extends UIComponent {
     }
 
     public UIMenuItem init(MenuItem item) {
-        setHrip(item.getHrip());
         setCode(item.getCode());
 
         String str = item.getTitle();
@@ -69,14 +67,6 @@ public class UIMenuItem extends UIComponent {
         setName(str);
         setImg("menu/" + item.getCode() + ".png");
         return this;
-    }
-
-    public int getHrip() {
-        return hrip;
-    }
-
-    public void setHrip(int hrip) {
-        this.hrip = hrip;
     }
 
     public String getImg() {

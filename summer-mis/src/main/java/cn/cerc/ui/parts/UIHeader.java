@@ -38,8 +38,6 @@ public class UIHeader extends UIComponent {
     private String logoSrc;
     // 当前用户
     private String currentUser;
-    // 当前帐套
-    private String currentCorpNo;
     // 当前帐套名称
     private String corpNoName;
     // 退出
@@ -72,8 +70,7 @@ public class UIHeader extends UIComponent {
             IHandle handle = owner.getForm().getHandle();
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
-            currentUser = R.asString(owner.getForm().getHandle(), "当前用户");
-            currentCorpNo = R.asString(owner.getForm().getHandle(), "当前帐套");
+            currentUser = R.asString(owner.getForm().getHandle(), "用户");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {
@@ -110,8 +107,9 @@ public class UIHeader extends UIComponent {
             html.print("<img src='%s'/>", logoSrc);
             html.print("<span>%s</span>", welcome);
             html.print("<div class='user_right'>");
-            html.print("<span>%s:<i>%s</i></span>", currentCorpNo, corpNoName);
-            html.print("<span>%s:<i>%s</i></span>", currentUser, userName);
+            html.print(
+                    "<span>%s：<i><a href='TFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>",
+                    currentUser, corpNoName, userName);
             html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
             html.print("</div>");
             html.print("</div>");
