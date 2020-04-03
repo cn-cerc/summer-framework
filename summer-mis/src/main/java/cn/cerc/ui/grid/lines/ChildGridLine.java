@@ -46,15 +46,15 @@ public class ChildGridLine extends AbstractGridLine {
             for (IField obj : item.getFields()) {
                 if (obj instanceof AbstractField) {
                     AbstractField field = (AbstractField) obj;
+                    if (field.getTitle() != null && !"".equals(field.getTitle())) {
+                        html.print("<span>%s：</span> ", field.getTitle());
+                    }
                     if (field instanceof IColumn) {
                         html.print(((IColumn) field).format(dataSource.getDataSet().getCurrent()));
                     } else if (field instanceof AbstractField) {
                         outputField(html, field);
                     } else {
                         throw new RuntimeException("暂不支持的数据类型：" + field.getClass().getName());
-                    }
-                    if (field.getTitle() != null && !"".equals(field.getTitle())) {
-                        html.print("<span style='float: left;'>%s：</span> ", field.getTitle());
                     }
                 }
             }
