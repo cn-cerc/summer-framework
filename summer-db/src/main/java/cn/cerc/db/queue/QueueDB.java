@@ -8,24 +8,9 @@ import cn.cerc.db.core.ServerConfig;
 public class QueueDB {
 
     /**
-     * 自动发送邮件
-     **/
-    public static final String AUTOMAIL = getQueueDB("ququedb.automail");
-
-    /**
-     * 任务队列
-     **/
-    public static final String JOBLIST = getQueueDB("ququedb.joblist");
-
-    /**
      * 系统消息
      **/
     public static final String MESSAGE = getQueueDB("ququedb.message");
-
-    /**
-     * 邮件发送
-     **/
-    public static final String SENDMAIL = getQueueDB("ququedb.sendmail");
 
     /**
      * 回算队列
