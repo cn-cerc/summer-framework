@@ -10,7 +10,7 @@ public class QueueDB {
     /**
      * 系统消息
      **/
-    public static final String MESSAGE = getQueueDB("ququedb.message");
+    public static final String MESSAGE = "message";
 
     /**
      * 回算队列
