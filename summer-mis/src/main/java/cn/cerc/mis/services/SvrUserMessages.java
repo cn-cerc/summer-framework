@@ -100,15 +100,14 @@ public class SvrUserMessages extends CustomService {
      */
     public boolean readAsyncService() {
         String msgId = getDataIn().getHead().getString("msgId");
-
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", systemTable.getUserMessages());
         ds.add("where Level_=%s", MessageLevel.Service.ordinal());
         ds.add("and Process_=%s", MessageProcess.wait.ordinal());
         ds.add("and UID_='%s'", msgId);
         ds.open();
-        if (ds.eof()) // 此任务可能被其它主机抢占
-        {
+        // 此任务可能被其它主机抢占
+        if (ds.eof()) {
             return false;
         }
 

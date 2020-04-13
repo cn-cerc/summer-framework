@@ -42,10 +42,10 @@ public class ProcessService extends AbstractTask {
     /**
      * 处理一个服务
      */
-    private void processService(String msgId) {
+    private void processService(String taskId) {
         // 此任务可能被其它主机抢占
         LocalService svrMsg = new LocalService(this, "SvrUserMessages.readAsyncService");
-        if (!svrMsg.exec("msgId", msgId)) {
+        if (!svrMsg.exec("msgId", taskId)) {
             return;
         }
         Record ds = svrMsg.getDataOut().getHead();
@@ -58,34 +58,35 @@ public class ProcessService extends AbstractTask {
         AsyncService async = new AsyncService();
         async.read(content);
         async.setProcess(MessageProcess.working.ordinal());
-        updateMessage(async, msgId, subject);
+        updateTaskprocess(async, taskId, subject);
         try {
-            AutoService svrAuto = new AutoService(corpNo, userCode, async.getService());
-            svrAuto.getDataIn().appendDataSet(async.getDataIn(), true);
-            if (svrAuto.exec()) {
-                async.getDataOut().appendDataSet(svrAuto.getDataOut(), true);
+            // 执行指定的数据服务
+            AutoService auto = new AutoService(corpNo, userCode, async.getService());
+            auto.getDataIn().appendDataSet(async.getDataIn(), true);
+            if (auto.exec()) {
+                async.getDataOut().appendDataSet(auto.getDataOut(), true);
                 async.setProcess(MessageProcess.ok.ordinal());
             } else {
-                async.getDataOut().appendDataSet(svrAuto.getDataOut(), true);
+                async.getDataOut().appendDataSet(auto.getDataOut(), true);
                 async.setProcess(MessageProcess.error.ordinal());
             }
-            async.getDataOut().getHead().setField("_message_", svrAuto.getMessage());
-            updateMessage(async, msgId, subject);
+            async.getDataOut().getHead().setField("_message_", auto.getMessage());
+            updateTaskprocess(async, taskId, subject);
         } catch (Throwable e) {
             e.printStackTrace();
             async.setProcess(MessageProcess.error.ordinal());
             async.getDataOut().getHead().setField("_message_", e.getMessage());
-            updateMessage(async, msgId, subject);
+            updateTaskprocess(async, taskId, subject);
         }
     }
 
     /**
-     * 保存到数据库
+     * 更新队列的消息状态
      */
-    private void updateMessage(AsyncService async, String msgId, String subject) {
+    private void updateTaskprocess(AsyncService async, String taskId, String subject) {
         async.setProcessTime(TDateTime.Now().toString());
         LocalService svr = new LocalService(this, "SvrUserMessages.updateAsyncService");
-        if (!svr.exec("msgId", msgId, "content", async.toString(), "process", async.getProcess())) {
+        if (!svr.exec("msgId", taskId, "content", async.toString(), "process", async.getProcess())) {
             throw new RuntimeException("更新任务队列进度异常：" + svr.getMessage());
         }
         log.debug(async.getService() + ":" + subject + ":" + AsyncService.getProcessTitle(async.getProcess()));
