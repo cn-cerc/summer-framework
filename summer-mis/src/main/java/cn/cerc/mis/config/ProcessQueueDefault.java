@@ -22,6 +22,7 @@ public class ProcessQueueDefault extends AbstractTask {
 
     @Override
     public void execute() throws Exception {
+        log.warn("ProcessQueueDefault 开始运行");
         QueueQuery query = new QueueQuery(this);
         query.setQueueMode(QueueMode.recevie);
         query.add("select * from %s ", QueueDB.SUMMER);
@@ -29,6 +30,7 @@ public class ProcessQueueDefault extends AbstractTask {
         if (!query.getActive()) {
             return;
         }
+        log.warn("ProcessQueueDefault {}", query.getJSON());
 
         // 建立服务执行环境
         String corpNo = query.getHead().getString("_corpNo_");

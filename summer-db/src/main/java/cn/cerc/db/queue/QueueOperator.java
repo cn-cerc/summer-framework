@@ -4,6 +4,7 @@ import cn.cerc.core.IDataOperator;
 import cn.cerc.core.Record;
 
 public class QueueOperator implements IDataOperator {
+
     // 根据 sql 获取数据库表名
     public String findTableName(String sql) {
         String result = null;
