@@ -15,11 +15,13 @@ import cn.cerc.mis.queue.AsyncService;
 
 import java.math.BigInteger;
 
-//用户消息操作
+/**
+ * 异步消息操作
+ */
 public class SvrUserMessages extends CustomService {
 
     /**
-     * @return 取出所有的等待处理的消息列表
+     * 取出所有的等待处理的消息列表
      */
     public boolean getWaitList() {
         SqlQuery ds = new SqlQuery(this);
@@ -33,7 +35,7 @@ public class SvrUserMessages extends CustomService {
     }
 
     /**
-     * @return 增加一条新的消息记录
+     * 增加一条新的消息记录
      */
     public boolean appendRecord() {
         Record headIn = getDataIn().getHead();
@@ -94,7 +96,7 @@ public class SvrUserMessages extends CustomService {
     }
 
     /**
-     * @return 读取指定的消息记录
+     * 读取指定的消息记录
      */
     public boolean readAsyncService() {
         String msgId = getDataIn().getHead().getString("msgId");
@@ -119,7 +121,7 @@ public class SvrUserMessages extends CustomService {
     }
 
     /**
-     * @return 更新异步服务进度
+     * 更新异步服务进度
      */
     public boolean updateAsyncService() {
         String msgId = getDataIn().getHead().getString("msgId");
