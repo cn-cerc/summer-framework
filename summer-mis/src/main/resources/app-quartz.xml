@@ -35,7 +35,7 @@
         <property name="cronExpression" value="* * * * * ?"/>
     </bean>
 
-    <!-- 调度触发器，启动时延期3秒开始所有的任务 -->
+    <!-- 调度触发器，启动时延期15秒开始所有的任务 -->
     <bean id="startQuertz" lazy-init="false" autowire="no"
           class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
