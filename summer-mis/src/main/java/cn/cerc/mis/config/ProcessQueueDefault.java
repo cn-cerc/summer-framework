@@ -22,7 +22,6 @@ public class ProcessQueueDefault extends AbstractTask {
 
     @Override
     public void execute() throws Exception {
-        log.warn("ProcessQueueDefault 开始运行");
         QueueQuery query = new QueueQuery(this);
         query.setQueueMode(QueueMode.recevie);
         query.add("select * from %s ", QueueDB.SUMMER);
