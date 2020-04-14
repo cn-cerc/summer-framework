@@ -55,39 +55,39 @@ public class ProcessService extends AbstractTask {
         String subject = ds.getString("subject");
 
         // 读取并标识为工作中，以防被其它用户抢占
-        AsyncService svrSync = new AsyncService();
-        svrSync.read(content);
-        svrSync.setProcess(MessageProcess.working.ordinal());
-        updateMessage(svrSync, msgId, subject);
+        AsyncService async = new AsyncService();
+        async.read(content);
+        async.setProcess(MessageProcess.working.ordinal());
+        updateMessage(async, msgId, subject);
         try {
-            AutoService svrAuto = new AutoService(corpNo, userCode, svrSync.getService());
-            svrAuto.getDataIn().appendDataSet(svrSync.getDataIn(), true);
+            AutoService svrAuto = new AutoService(corpNo, userCode, async.getService());
+            svrAuto.getDataIn().appendDataSet(async.getDataIn(), true);
             if (svrAuto.exec()) {
-                svrSync.getDataOut().appendDataSet(svrAuto.getDataOut(), true);
-                svrSync.setProcess(MessageProcess.ok.ordinal());
+                async.getDataOut().appendDataSet(svrAuto.getDataOut(), true);
+                async.setProcess(MessageProcess.ok.ordinal());
             } else {
-                svrSync.getDataOut().appendDataSet(svrAuto.getDataOut(), true);
-                svrSync.setProcess(MessageProcess.error.ordinal());
+                async.getDataOut().appendDataSet(svrAuto.getDataOut(), true);
+                async.setProcess(MessageProcess.error.ordinal());
             }
-            svrSync.getDataOut().getHead().setField("_message_", svrAuto.getMessage());
-            updateMessage(svrSync, msgId, subject);
+            async.getDataOut().getHead().setField("_message_", svrAuto.getMessage());
+            updateMessage(async, msgId, subject);
         } catch (Throwable e) {
             e.printStackTrace();
-            svrSync.setProcess(MessageProcess.error.ordinal());
-            svrSync.getDataOut().getHead().setField("_message_", e.getMessage());
-            updateMessage(svrSync, msgId, subject);
+            async.setProcess(MessageProcess.error.ordinal());
+            async.getDataOut().getHead().setField("_message_", e.getMessage());
+            updateMessage(async, msgId, subject);
         }
     }
 
     /**
      * 保存到数据库
      */
-    private void updateMessage(AsyncService task, String msgId, String subject) {
-        task.setProcessTime(TDateTime.Now().toString());
+    private void updateMessage(AsyncService async, String msgId, String subject) {
+        async.setProcessTime(TDateTime.Now().toString());
         LocalService svr = new LocalService(this, "SvrUserMessages.updateAsyncService");
-        if (!svr.exec("msgId", msgId, "content", task.toString(), "process", task.getProcess())) {
+        if (!svr.exec("msgId", msgId, "content", async.toString(), "process", async.getProcess())) {
             throw new RuntimeException("更新任务队列进度异常：" + svr.getMessage());
         }
-        log.debug(task.getService() + ":" + subject + ":" + AsyncService.getProcessTitle(task.getProcess()));
+        log.debug(async.getService() + ":" + subject + ":" + AsyncService.getProcessTitle(async.getProcess()));
     }
 }
