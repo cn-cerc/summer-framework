@@ -92,7 +92,7 @@ public class ApplicationConfig {
         // 构建public地址
         String host = RemoteService.getApiHost(ServiceFactory.Public);
         String url = host + ApplicationConfig.App_Path + "Login.getToken";
-
+        // TODO: 2020/4/14 增加类型进行区分获取的是登录token还是队列token
         // 构建登录请求参数
         DataSet dataIn = new DataSet();
         dataIn.getHead().setField("userCode", userCode);
