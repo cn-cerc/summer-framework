@@ -9,6 +9,7 @@ import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.message.MessageLevel;
+import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -111,8 +112,9 @@ public class AsyncService implements IServiceProxy {
             throw new RuntimeException("后台任务标题不允许为空！");
         }
         this.send(); // 发送到队列服务器
+
         getDataOut().getHead().setField("_msgId_", msgId);
-        if (this.process == 2) {
+        if (this.process == MessageProcess.working.ordinal()) {
             // 返回消息的编号插入到阿里云消息队列
             QueueQuery ds = new QueueQuery(handle);
             if (ServerConfig.isServerDevelop()) {
