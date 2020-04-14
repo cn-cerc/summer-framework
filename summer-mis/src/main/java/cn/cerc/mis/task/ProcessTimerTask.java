@@ -23,7 +23,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;
-    private static final String One_O_Clock = "01:00:00";
+    private static final String One_O_Clock = "16:00:00";
 
     private static String lock;
     private IHandle handle;
