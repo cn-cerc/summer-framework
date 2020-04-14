@@ -2,6 +2,7 @@ package cn.cerc.mis.config;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.RemoteService;
@@ -71,13 +72,23 @@ public class ApplicationConfig {
     }
 
     /**
-     * 获取用户授权令牌
-     *
-     * @param userCode    用户帐号
-     * @param password    用户密码
-     * @param machineCode 设备码
+     * 向总部服务器获取授权令牌 token
      */
-    public static String getAuthToken(String userCode, String password, String machineCode) {
+    public static String getAuthToken() {
+        ServerConfig config = ServerConfig.getInstance();
+        String userCode = config.getProperty("task.user.code");
+        if (Utils.isEmpty(userCode)) {
+            throw new RuntimeException("task的用户代码不允许为空");
+        }
+        String password = config.getProperty("task.user.password");
+        if (Utils.isEmpty(password)) {
+            throw new RuntimeException("task用户密码不允许为空");
+        }
+        String machineCode = config.getProperty("task.user.machine");
+        if (Utils.isEmpty(machineCode)) {
+            throw new RuntimeException("task用户硬件码不允许为空");
+        }
+
         // 构建public地址
         String host = RemoteService.getApiHost(ServiceFactory.Public);
         String url = host + ApplicationConfig.App_Path + "Login.getToken";
@@ -120,6 +131,10 @@ public class ApplicationConfig {
             dataSet.setJSON(data);
 
             token = dataSet.getHead().getString("token");
+            log.info("用户 {} 取到token {}", userCode, token);
+            if (Utils.isEmpty(token)) {
+                throw new RuntimeException("token 获取失败");
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
         }

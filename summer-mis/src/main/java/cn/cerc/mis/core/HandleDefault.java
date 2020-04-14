@@ -4,6 +4,7 @@ import cn.cerc.core.IConnection;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -16,7 +17,6 @@ import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -107,14 +107,7 @@ public class HandleDefault implements IHandle {
      */
     @Override
     public boolean init(String corpNo, String userCode, String clientIP) {
-        String token = Utils.generateToken();
-        log.info("根据用户 {}，创建新的token {}", userCode, token);
-
-        // 回算用户注册 token
-        if (StubHandle.DefaultUser.equals(userCode)) {
-            ApplicationConfig.registerToken(userCode, token);
-        }
-
+        String token = ApplicationConfig.getAuthToken();
         this.setProperty(Application.token, token);
         this.setProperty(Application.bookNo, corpNo);
         this.setProperty(Application.userCode, userCode);
