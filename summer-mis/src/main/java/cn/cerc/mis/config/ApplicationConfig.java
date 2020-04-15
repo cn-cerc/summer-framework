@@ -100,6 +100,7 @@ public class ApplicationConfig {
         dataIn.getHead().setField("clientId", machineCode);
         dataIn.getHead().setField("device", ClientDevice.APP_DEVICE_PC);
         dataIn.getHead().setField("languageId", Language.zh_CN);
+        dataIn.getHead().setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
         String json = dataIn.getJSON();
 
         String token = null;
