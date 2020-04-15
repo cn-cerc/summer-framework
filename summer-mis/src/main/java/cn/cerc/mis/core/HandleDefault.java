@@ -108,6 +108,9 @@ public class HandleDefault implements IHandle {
     @Override
     public boolean init(String corpNo, String userCode, String clientIP) {
         String token = ApplicationConfig.getAuthToken();
+        if (Utils.isEmpty(token)) {
+            return false;
+        }
         this.setProperty(Application.token, token);
         this.setProperty(Application.bookNo, corpNo);
         this.setProperty(Application.userCode, userCode);

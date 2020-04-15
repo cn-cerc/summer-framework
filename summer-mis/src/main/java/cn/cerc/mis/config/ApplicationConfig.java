@@ -19,6 +19,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+
 @Slf4j
 public class ApplicationConfig {
 
@@ -103,7 +105,7 @@ public class ApplicationConfig {
         dataIn.getHead().setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
         String json = dataIn.getJSON();
 
-        String token = null;
+        String token;
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpPost post = new HttpPost(url);
             StringEntity postingString = new StringEntity(json);
@@ -136,8 +138,9 @@ public class ApplicationConfig {
             if (Utils.isEmpty(token)) {
                 throw new RuntimeException("token 获取失败");
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             log.error(e.getMessage());
+            return null;
         }
         return token;
     }
