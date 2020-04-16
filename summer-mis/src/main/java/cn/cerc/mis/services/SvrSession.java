@@ -17,13 +17,16 @@ public class SvrSession extends CustomService {
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();
-        DataValidateException.stopRun("userCode 不允许为空", !headIn.hasValue("userCode"));
-        String userCode = headIn.getString("userCode");
+        DataValidateException.stopRun("CorpNo_ 不允许为空", !headIn.hasValue("CorpNo_"));
+        String corpNo = headIn.getString("CorpNo_");
+
+        DataValidateException.stopRun("UserCode_ 不允许为空", !headIn.hasValue("UserCode_"));
+        String userCode = headIn.getString("UserCode_");
 
         SqlQuery cdsUser = new SqlQuery(this);
         cdsUser.add("select ID_,Code_,RoleCode_,DiyRole_,CorpNo_, Name_ as UserName_,ProxyUsers_");
         cdsUser.add("from %s ", systemTable.getUserInfo());
-        cdsUser.add("where Code_='%s'", userCode);
+        cdsUser.add("where CorpNo_='%s' and Code_='%s'", corpNo, userCode);
         cdsUser.open();
         if (cdsUser.eof()) {
             throw new UserNotFindException(userCode);

@@ -4,7 +4,6 @@ import cn.cerc.core.IConnection;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -106,7 +105,7 @@ public class HandleDefault implements IHandle {
      * 主要为 task 任务使用
      */
     @Override
-    public boolean init(String corpNo, String userCode, String clientIP) {
+    public boolean init(String corpNo, String userCode, String password, String clientIP) {
         String token = ApplicationConfig.getAuthToken();
         if (Utils.isEmpty(token)) {
             return false;
@@ -119,7 +118,7 @@ public class HandleDefault implements IHandle {
         // 将用户信息赋值到句柄
         IServiceProxy svr = ServiceFactory.get(this);
         svr.setService("SvrSession.byUserCode");
-        if (!svr.exec("userCode", userCode, "token", token)) {
+        if (!svr.exec("CorpNo_", corpNo, "UserCode_", userCode)) {
             throw new RuntimeException(svr.getMessage());
         }
         Record record = svr.getDataOut().getHead();

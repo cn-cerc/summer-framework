@@ -13,6 +13,7 @@ public class StubHandle implements IHandle, AutoCloseable {
     public static final String DefaultBook = "999001";
     public static final String DefaultUser = DefaultBook + "01";
     public static final String DefaultProduct = "999001000001";
+    public static final String password = "123456";
 
     // 生产部
     public static final String DefaultDept = "10050001";
@@ -21,12 +22,12 @@ public class StubHandle implements IHandle, AutoCloseable {
 
     public StubHandle() {
         handle = Application.getHandle();
-        handle.init(DefaultBook, DefaultUser, clientIP);
+        handle.init(DefaultBook, DefaultUser, password, clientIP);
     }
 
     public StubHandle(String corpNo, String userCode) {
         handle = Application.getHandle();
-        handle.init(corpNo, userCode, clientIP);
+        handle.init(corpNo, userCode, password, clientIP);
     }
 
     public SqlConnection getConnection() {
@@ -84,7 +85,7 @@ public class StubHandle implements IHandle, AutoCloseable {
     }
 
     @Override
-    public boolean init(String bookNo, String userCode, String clientCode) {
+    public boolean init(String bookNo, String userCode, String password, String clientCode) {
         throw new RuntimeException("调用了未被实现的接口");
     }
 

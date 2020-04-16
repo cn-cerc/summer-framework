@@ -82,7 +82,7 @@ public class StubHandle implements IHandle {
 
     // 直接设置成登录成功状态，用于定时服务时初始化等，会生成内存临时的token
     @Override
-    public boolean init(String bookNo, String userCode, String clientCode) {
+    public boolean init(String bookNo, String userCode, String password, String clientCode) {
         throw new RuntimeException("调用了未被实现的接口");
     }
 

@@ -76,8 +76,8 @@ public class ApplicationConfig {
     /**
      * 向总部服务器获取授权令牌 token
      */
-    public static String getAuthToken() {
-        ServerConfig config = ServerConfig.getInstance();
+    public static String getAuthToken( ) {
+        ServerConfig config = ServerConfig.INSTANCE;
         String userCode = config.getProperty("task.user.code");
         if (Utils.isEmpty(userCode)) {
             throw new RuntimeException("task的用户代码不允许为空");
