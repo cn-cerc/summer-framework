@@ -16,7 +16,6 @@ import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -106,24 +105,20 @@ public class HandleDefault implements IHandle {
      * 主要为 task 任务使用
      */
     @Override
-    public boolean init(String corpNo, String userCode, String clientIP) {
-        String token = Utils.generateToken();
-        log.info("根据用户 {}，创建新的token {}", userCode, token);
-
-        // 回算用户注册 token
-        if (StubHandle.DefaultUser.equals(userCode)) {
-            ApplicationConfig.registerToken(userCode, token);
+    public boolean init(String corpNo, String userCode, String password, String machineCode) {
+        String token = ApplicationConfig.getAuthToken(userCode, password, machineCode);
+        if (Utils.isEmpty(token)) {
+            return false;
         }
-
         this.setProperty(Application.token, token);
         this.setProperty(Application.bookNo, corpNo);
         this.setProperty(Application.userCode, userCode);
-        this.setProperty(Application.clientIP, clientIP);
+        this.setProperty(Application.clientIP, "0.0.0.0");
 
         // 将用户信息赋值到句柄
         IServiceProxy svr = ServiceFactory.get(this);
         svr.setService("SvrSession.byUserCode");
-        if (!svr.exec("userCode", userCode, "token", token)) {
+        if (!svr.exec("CorpNo_", corpNo, "UserCode_", userCode)) {
             throw new RuntimeException(svr.getMessage());
         }
         Record record = svr.getDataOut().getHead();

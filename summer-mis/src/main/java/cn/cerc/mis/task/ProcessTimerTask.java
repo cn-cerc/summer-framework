@@ -11,19 +11,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 import java.util.Calendar;
-import java.util.TimerTask;
 
+@Component
 @Slf4j
 @Deprecated // 请改使用 StartTaskDefault
-public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
+public class ProcessTimerTask implements ApplicationContextAware {
 
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;
-    private static final String One_O_Clock = "16:00:00";
+    private static final String One_O_Clock = "01:00:00";
 
     private static String lock;
     private IHandle handle;
@@ -32,8 +34,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
     private ApplicationContext context;
 
     // 循环反复执行
-
-    @Override
+    @Scheduled(fixedDelay = 3 * 1000)
     public void run() {
         Calendar calendar = Calendar.getInstance();
         if (!isRunning) {

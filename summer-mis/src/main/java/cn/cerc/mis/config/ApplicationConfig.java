@@ -2,6 +2,7 @@ package cn.cerc.mis.config;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.RemoteService;
@@ -17,6 +18,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 @Slf4j
 public class ApplicationConfig {
@@ -71,17 +74,23 @@ public class ApplicationConfig {
     }
 
     /**
-     * 获取用户授权令牌
-     *
-     * @param userCode    用户帐号
-     * @param password    用户密码
-     * @param machineCode 设备码
+     * 向总部服务器获取授权令牌 token
      */
     public static String getAuthToken(String userCode, String password, String machineCode) {
+        if (Utils.isEmpty(userCode)) {
+            throw new RuntimeException("userCode 不允许为空");
+        }
+        if (Utils.isEmpty(password)) {
+            throw new RuntimeException("password 不允许为空");
+        }
+        if (Utils.isEmpty(machineCode)) {
+            throw new RuntimeException("machineCode 不允许为空");
+        }
+
         // 构建public地址
         String host = RemoteService.getApiHost(ServiceFactory.Public);
         String url = host + ApplicationConfig.App_Path + "Login.getToken";
-
+        // TODO: 2020/4/14 增加类型进行区分获取的是登录token还是队列token
         // 构建登录请求参数
         DataSet dataIn = new DataSet();
         dataIn.getHead().setField("userCode", userCode);
@@ -89,9 +98,10 @@ public class ApplicationConfig {
         dataIn.getHead().setField("clientId", machineCode);
         dataIn.getHead().setField("device", ClientDevice.APP_DEVICE_PC);
         dataIn.getHead().setField("languageId", Language.zh_CN);
+        dataIn.getHead().setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
         String json = dataIn.getJSON();
 
-        String token = null;
+        String token;
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpPost post = new HttpPost(url);
             StringEntity postingString = new StringEntity(json);
@@ -120,8 +130,13 @@ public class ApplicationConfig {
             dataSet.setJSON(data);
 
             token = dataSet.getHead().getString("token");
-        } catch (Exception e) {
+            log.info("用户 {} 取到token {}", userCode, token);
+            if (Utils.isEmpty(token)) {
+                throw new RuntimeException("token 获取失败");
+            }
+        } catch (IOException e) {
             log.error(e.getMessage());
+            return null;
         }
         return token;
     }
