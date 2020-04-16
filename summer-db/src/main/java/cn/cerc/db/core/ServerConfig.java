@@ -2,7 +2,6 @@ package cn.cerc.db.core;
 
 import cn.cerc.core.IConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 @Slf4j
-@Component
 public enum ServerConfig implements IConfig {
 
     INSTANCE;
@@ -47,6 +45,7 @@ public enum ServerConfig implements IConfig {
         }
     }
 
+    @Deprecated
     public static ServerConfig getInstance() {
         return INSTANCE;
     }

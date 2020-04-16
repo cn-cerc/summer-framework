@@ -36,8 +36,6 @@ public class ProcessTimerTask implements ApplicationContextAware {
     // 循环反复执行
     @Scheduled(fixedDelay = 3 * 1000)
     public void run() {
-        log.info("{}", TDateTime.Now());
-
         Calendar calendar = Calendar.getInstance();
         if (!isRunning) {
             isRunning = true;
