@@ -18,6 +18,7 @@ public class StubHandle implements IHandle, AutoCloseable {
 
     // 生产部
     public static final String DefaultDept = "10050001";
+
     private IHandle handle;
 
     public StubHandle() {
