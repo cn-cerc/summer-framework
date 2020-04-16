@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Slf4j
-public class LocalConfig implements IConfig {
+public enum LocalConfig implements IConfig {
+
+    INSTANCE;
 
     private static final String confFile = System.getProperty("user.home") + System.getProperty("file.separator")
             + "summer-application.properties";
 
     private static Properties properties = new Properties();
-
-    private static final LocalConfig INSTANCE = new LocalConfig();
 
     static {
         try {
@@ -36,14 +36,8 @@ public class LocalConfig implements IConfig {
         }
     }
 
-    public synchronized static LocalConfig getInstance() {
+    public static LocalConfig getInstance() {
         return INSTANCE;
-    }
-
-    private LocalConfig() {
-        if (INSTANCE != null) {
-            log.error("LocalConfig instance is not null");
-        }
     }
 
     @Override

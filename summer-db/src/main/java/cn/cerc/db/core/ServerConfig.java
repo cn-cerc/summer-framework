@@ -11,11 +11,14 @@ import java.util.Properties;
 
 @Slf4j
 @Component
-public class ServerConfig implements IConfig {
+public enum ServerConfig implements IConfig {
+
+    INSTANCE;
 
     public static final String TaskServiceToken = "task.token";
     public static final String AdminMobile = "admin.mobile";
     public static final String AdminEmail = "admin.email";
+
     // 是否为任务主机
     public static final String TaskServiceEnabled = "task.service";
     public static final String config_version = "version";
@@ -24,9 +27,6 @@ public class ServerConfig implements IConfig {
     public static final int AppLevelMaster = 3;
     private static final String confFile = "/application.properties";
     private static Properties properties = new Properties();
-
-    // Singleton witch static factory
-    private static final ServerConfig INSTANCE = new ServerConfig();
 
     // 是否为debug状态
     private int debug = -1;
@@ -47,13 +47,7 @@ public class ServerConfig implements IConfig {
         }
     }
 
-    private ServerConfig() {
-        if (INSTANCE != null) {
-            log.error("ServerConfig instance is not null");
-        }
-    }
-
-    public synchronized static ServerConfig getInstance() {
+    public static ServerConfig getInstance() {
         return INSTANCE;
     }
 
