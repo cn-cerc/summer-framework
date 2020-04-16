@@ -30,7 +30,7 @@ public class MssqlConnection implements IConnection, AutoCloseable {
     private IConfig config;
 
     public MssqlConnection() {
-        config = ServerConfig.getInstance();
+        config = ServerConfig.INSTANCE;
     }
 
     @Override

@@ -31,7 +31,7 @@ public class MongoConnection implements IConnection, AutoCloseable {
     private IConfig config;
 
     public MongoConnection() {
-        config = ServerConfig.getInstance();
+        config = ServerConfig.INSTANCE;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class OssConnection implements IConnection {
     private IConfig config;
 
     public OssConnection() {
-        config = ServerConfig.getInstance();
+        config = ServerConfig.INSTANCE;
     }
 
     @Override

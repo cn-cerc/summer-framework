@@ -46,7 +46,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     public AbstractJspPage() {
         super();
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         this.browserCacheVersion = config.getProperty("browser.cache.version", "1.0.0.0");
     }
 
@@ -61,7 +61,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         if (form != null) {
             this.put("jspPage", this);
             // 为兼容而设计
-            ServerConfig config = ServerConfig.getInstance();
+            ServerConfig config = ServerConfig.INSTANCE;
             this.add("summer_js", config.getProperty("summer.js", "js/summer.js"));
             this.add("myapp_js", config.getProperty("myapp.js", "js/myapp.js"));
         }
@@ -342,7 +342,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     protected void initCssFile() {
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         this.addCssFile(config.getProperty("summer.css", "css/summer.css"));
         if (!getForm().getClient().isPhone()) {
             this.addCssFile(config.getProperty("summer-pc.css", "css/summer-pc.css"));
@@ -350,7 +350,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     protected void initJsFile() {
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js"));
         this.addScriptFile(config.getProperty("summer.js", "js/summer.js"));
         this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js"));

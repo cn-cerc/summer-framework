@@ -77,7 +77,7 @@ public class SvrUserLogin extends CustomService {
         }
 
         String corpNo = dsUser.getString("CorpNo_");
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
         // 判断该手机号绑定的账号，是否有supCorpNo的下游，专用App登录
         if (!"".equals(supCorpNo)) {
@@ -261,7 +261,7 @@ public class SvrUserLogin extends CustomService {
 
         String token1 = headIn.getString("token");
         // 加入ABCD是为了仅允许内部调用
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         String token2 = config.getProperty(OssConnection.oss_accessKeySecret, "") + "ABCD";
         // 如果不是内部调用，则返回false
         if (!token2.equals(token1)) {

@@ -41,7 +41,7 @@ public class RemoteService implements IServiceProxy {
     }
 
     public static final String getApiHost(String bookNo) {
-        LocalConfig localConfig = LocalConfig.getInstance();
+        LocalConfig localConfig = LocalConfig.INSTANCE;
         String key = ApplicationConfig.Rempte_Host_Key + "." + bookNo;
         if (localConfig.getProperty(key) == null) {
             key = ApplicationConfig.Rempte_Host_Key + "." + ServiceFactory.Public;

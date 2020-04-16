@@ -36,10 +36,6 @@ public enum LocalConfig implements IConfig {
         }
     }
 
-    public static LocalConfig getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public String getProperty(String key, String def) {
         String result = null;
@@ -55,7 +51,7 @@ public enum LocalConfig implements IConfig {
     }
 
     public static void main(String[] args) {
-        LocalConfig config1 = LocalConfig.getInstance();
+        LocalConfig config1 = LocalConfig.INSTANCE;
         System.out.println(config1.getProperty("rds.site"));
     }
 

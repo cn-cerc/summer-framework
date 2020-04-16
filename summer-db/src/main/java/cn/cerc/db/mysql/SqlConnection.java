@@ -21,7 +21,7 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
     private int tag;
 
     public SqlConnection() {
-        config = ServerConfig.getInstance();
+        config = ServerConfig.INSTANCE;
     }
 
     @Override

@@ -332,7 +332,7 @@ public class StartForms implements Filter {
                     }
                 } else {
                     log.debug("没有进行认证过，跳转到设备认证页面");
-                    ServerConfig config = ServerConfig.getInstance();
+                    ServerConfig config = ServerConfig.INSTANCE;
                     String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
                     // 若是专用APP登录并且是iPhone，则不跳转设备登录页，由iPhone原生客户端处理
                     if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(ClientDevice.APP_DEVICE_IPHONE)) {

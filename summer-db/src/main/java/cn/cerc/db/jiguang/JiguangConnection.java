@@ -20,7 +20,7 @@ public class JiguangConnection implements IConnection {
     private IConfig config;
 
     public JiguangConnection() {
-        config = ServerConfig.getInstance();
+        config = ServerConfig.INSTANCE;
     }
 
     @Override
