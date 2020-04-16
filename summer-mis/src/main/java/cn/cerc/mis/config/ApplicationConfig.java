@@ -76,19 +76,15 @@ public class ApplicationConfig {
     /**
      * 向总部服务器获取授权令牌 token
      */
-    public static String getAuthToken( ) {
-        ServerConfig config = ServerConfig.INSTANCE;
-        String userCode = config.getProperty("task.user.code");
+    public static String getAuthToken(String userCode, String password, String machineCode) {
         if (Utils.isEmpty(userCode)) {
-            throw new RuntimeException("task的用户代码不允许为空");
+            throw new RuntimeException("userCode 不允许为空");
         }
-        String password = config.getProperty("task.user.password");
         if (Utils.isEmpty(password)) {
-            throw new RuntimeException("task用户密码不允许为空");
+            throw new RuntimeException("password 不允许为空");
         }
-        String machineCode = config.getProperty("task.user.machine");
         if (Utils.isEmpty(machineCode)) {
-            throw new RuntimeException("task用户硬件码不允许为空");
+            throw new RuntimeException("machineCode 不允许为空");
         }
 
         // 构建public地址

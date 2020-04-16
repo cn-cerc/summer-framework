@@ -14,20 +14,20 @@ public class StubHandle implements IHandle, AutoCloseable {
     public static final String DefaultUser = DefaultBook + "01";
     public static final String DefaultProduct = "999001000001";
     public static final String password = "123456";
+    public static final String machineCode = "T800";
 
     // 生产部
     public static final String DefaultDept = "10050001";
-    public static final String clientIP = "127.0.0.1";
     private IHandle handle;
 
     public StubHandle() {
         handle = Application.getHandle();
-        handle.init(DefaultBook, DefaultUser, password, clientIP);
+        handle.init(DefaultBook, DefaultUser, password, machineCode);
     }
 
     public StubHandle(String corpNo, String userCode) {
         handle = Application.getHandle();
-        handle.init(corpNo, userCode, password, clientIP);
+        handle.init(corpNo, userCode, password, machineCode);
     }
 
     public SqlConnection getConnection() {

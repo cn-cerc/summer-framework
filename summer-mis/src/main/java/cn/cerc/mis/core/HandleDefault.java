@@ -105,15 +105,15 @@ public class HandleDefault implements IHandle {
      * 主要为 task 任务使用
      */
     @Override
-    public boolean init(String corpNo, String userCode, String password, String clientIP) {
-        String token = ApplicationConfig.getAuthToken();
+    public boolean init(String corpNo, String userCode, String password, String machineCode) {
+        String token = ApplicationConfig.getAuthToken(userCode, password, machineCode);
         if (Utils.isEmpty(token)) {
             return false;
         }
         this.setProperty(Application.token, token);
         this.setProperty(Application.bookNo, corpNo);
         this.setProperty(Application.userCode, userCode);
-        this.setProperty(Application.clientIP, clientIP);
+        this.setProperty(Application.clientIP, "0.0.0.0");
 
         // 将用户信息赋值到句柄
         IServiceProxy svr = ServiceFactory.get(this);
