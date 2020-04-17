@@ -161,7 +161,7 @@ public class Utils {
     }
 
     /**
-     * 生成token字符串
+     * @return 生成token字符串
      */
     public static String generateToken() {
         String guid = Utils.newGuid();
@@ -458,11 +458,12 @@ public class Utils {
     }
 
     /**
-     * 混淆字符串指定位置
+     * Utils.confused("13927470636", 2, 4)      = 13*****0636
      *
      * @param mobile     手机号码
      * @param fromLength 起始显示位数
      * @param endLength  倒数显示位数
+     * @return 混淆字符串指定位置
      */
     public static String confused(String mobile, int fromLength, int endLength) {
         int length = mobile.length();
@@ -594,7 +595,8 @@ public class Utils {
     }
 
     /**
-     * 获取客户端的访问地址
+     * @param request HttpServletRequest
+     * @return 获取客户端的访问地址
      */
     public static String getIP(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
