@@ -106,10 +106,9 @@ public class Utils {
             String str = val + "";
             int pointPosition = str.indexOf(".");
             String tempStr = str.substring(0, pointPosition - scale + 1);
-            Double tempD = Double.parseDouble(tempStr) / 10;
-            int tempInt = Math.round(tempD.floatValue());
-            double ret = tempInt * Math.pow(10, scale);
-            return ret;
+            double tempD = Double.parseDouble(tempStr) / 10;
+            int tempInt = Math.round((float) tempD);
+            return tempInt * Math.pow(10, scale);
         }
     }
 
@@ -164,7 +163,7 @@ public class Utils {
     /**
      * 生成token字符串
      */
-    public static final String generateToken() {
+    public static String generateToken() {
         String guid = Utils.newGuid();
         String str = guid.substring(1, guid.length() - 1);
         return str.replaceAll("-", "");
@@ -175,7 +174,7 @@ public class Utils {
         if (text == null) {
             return "";
         }
-        if (text != null && iLength >= text.length()) {
+        if (iLength >= text.length()) {
             if (iStart > text.length()) {
                 return "";
             }
@@ -434,7 +433,7 @@ public class Utils {
 
     // 将内容转成 Map
     public static <T> Map<String, T> dataSetAsMap(DataSet dataSet, Class<T> clazz, String... keys) {
-        Map<String, T> items = new HashMap<String, T>();
+        Map<String, T> items = new HashMap<>();
         for (Record rs : dataSet) {
             String key = "";
             for (String field : keys) {
@@ -451,7 +450,7 @@ public class Utils {
 
     // 将内容转成 List
     public static <T> List<T> dataSetAsList(DataSet dataSet, Class<T> clazz) {
-        List<T> items = new ArrayList<T>();
+        List<T> items = new ArrayList<>();
         for (Record rs : dataSet) {
             items.add(recordAsObject(rs, clazz));
         }
@@ -480,21 +479,20 @@ public class Utils {
 
     // 获取数字和字母的混合字符串
     public static String getStrRandom(int length) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         Random random = new Random();
-
         for (int i = 0; i < length; i++) {
             String symbol = random.nextInt(2) % 2 == 0 ? "char" : "num";
 
             if ("char".equalsIgnoreCase(symbol)) {
                 // 随机获取大小写字母
                 int letterIndex = random.nextInt(2) % 2 == 0 ? 65 : 97;
-                result += (char) (random.nextInt(26) + letterIndex);
-            } else if ("num".equalsIgnoreCase(symbol)) {
-                result += String.valueOf(random.nextInt(10));
+                result.append((char) (random.nextInt(26) + letterIndex));
+            } else {
+                result.append(random.nextInt(10));
             }
         }
-        return result;
+        return result.toString();
     }
 
     // 兼容 delphi 代码
@@ -572,7 +570,7 @@ public class Utils {
             return true;
         }
         for (int i = 0; i < strLen; i++) {
-            if ((Character.isWhitespace(str.charAt(i)) == false)) {
+            if ((!Character.isWhitespace(str.charAt(i)))) {
                 return false;
             }
         }
