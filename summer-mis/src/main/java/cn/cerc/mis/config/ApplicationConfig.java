@@ -61,7 +61,12 @@ public class ApplicationConfig {
     }
 
     /**
-     * 向总部服务器获取授权令牌 token
+     * 向public服务器获取授权令牌
+     *
+     * @param userCode    用户代码
+     * @param password    用户密码
+     * @param machineCode 设备代码
+     * @return 用户授权令牌 token
      */
     public static String getAuthToken(String userCode, String password, String machineCode) {
         if (Utils.isEmpty(userCode)) {

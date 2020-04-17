@@ -9,7 +9,8 @@ import cn.cerc.mis.core.DataValidateException;
 public class ApiBookOption extends CustomService {
 
     /**
-     * 根据帐套代码、参数代码获取参数值
+     * @return 根据帐套代码、参数代码获取参数值
+     * @throws DataValidateException 数据校验异常
      */
     public boolean getValue() throws DataValidateException {
         Record headIn = getDataIn().getHead();

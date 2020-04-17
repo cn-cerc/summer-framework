@@ -62,11 +62,10 @@ public class JuheSMS {
     }
 
     /**
-     * 聚合短信接口
-     *
      * @param mobile     接收者手机号
      * @param templateId 短信模板编号
-     * @param text       内容格式化(#code#=1234&#company#=聚合数据)
+     * @param text       内容格式化
+     * @return 发送结果
      */
     public boolean send(String mobile, String templateId, String text) {
         try {

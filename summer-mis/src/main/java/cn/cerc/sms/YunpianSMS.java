@@ -52,6 +52,7 @@ public class YunpianSMS {
      *
      * @param mobile 接收者手机号
      * @param text   文本内容
+     * @return 短信发送结果
      */
     public boolean send(String mobile, String text) {
         // 生成调用参数

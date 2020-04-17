@@ -115,7 +115,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
         }
     }
 
-    /**
+    /*
      * 删除此项需要将xml的配套属性改为 title
      */
     @Deprecated

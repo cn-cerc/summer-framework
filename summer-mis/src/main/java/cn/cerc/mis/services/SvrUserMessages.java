@@ -20,7 +20,7 @@ import java.math.BigInteger;
  */
 public class SvrUserMessages extends CustomService {
 
-    /**
+    /*
      * 取出所有的等待处理的消息列表
      */
     public boolean getWaitList() {
@@ -34,7 +34,7 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /**
+    /*
      * 增加一条新的消息记录
      */
     public boolean appendRecord() {
@@ -95,7 +95,7 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /**
+    /*
      * 读取指定的消息记录
      */
     public boolean readAsyncService() {
@@ -119,7 +119,7 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /**
+    /*
      * 更新异步服务进度
      */
     public boolean updateAsyncService() {

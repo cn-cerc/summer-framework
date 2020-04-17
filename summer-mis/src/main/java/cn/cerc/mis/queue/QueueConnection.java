@@ -42,7 +42,7 @@ public class QueueConnection {
 
     /**
      * @param disname 消息队列id
-     * @param data
+     * @param data    队列内容
      * @throws JMSException JMS异常
      */
     public void sendMessage(String disname, String data) throws JMSException {
