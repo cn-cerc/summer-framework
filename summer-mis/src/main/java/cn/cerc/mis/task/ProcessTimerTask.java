@@ -36,6 +36,10 @@ public class ProcessTimerTask implements ApplicationContextAware {
     // 循环反复执行
     @Scheduled(fixedDelay = 3 * 1000)
     public void run() {
+        if (!ServerConfig.enableTaskService()) {
+            return;
+        }
+
         Calendar calendar = Calendar.getInstance();
         if (!isRunning) {
             isRunning = true;
