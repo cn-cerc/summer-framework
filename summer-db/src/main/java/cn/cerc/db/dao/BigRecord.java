@@ -9,7 +9,6 @@ public interface BigRecord extends Serializable {
      *
      * @param base   基础数据
      * @param record 新的数据
-     * @return 合并信息
      */
     void merge(BigRecord base, BigRecord record);
 
