@@ -90,7 +90,7 @@ public class ApplicationConfig {
         // 构建public地址
         String host = RemoteService.getApiHost(ServiceFactory.Public);
         String url = host + ApplicationConfig.App_Path + "Login.getToken";
-        // TODO: 2020/4/14 增加类型进行区分获取的是登录token还是队列token
+        log.info("请求地址 {}", url);
         // 构建登录请求参数
         DataSet dataIn = new DataSet();
         dataIn.getHead().setField("userCode", userCode);
@@ -100,6 +100,7 @@ public class ApplicationConfig {
         dataIn.getHead().setField("languageId", Language.zh_CN);
         dataIn.getHead().setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
         String json = dataIn.getJSON();
+        log.info("请求参数 {}", json);
 
         String token;
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
