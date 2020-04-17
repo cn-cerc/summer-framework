@@ -61,19 +61,6 @@ public class ApplicationConfig {
     }
 
     /**
-     * 注册token信息到中央数据库
-     */
-    public static void registerToken(String userCode, String token) {
-        Curl curl = new Curl();
-        curl.put("userCode", userCode).put("token", token).put("machine", ServerConfig.getAppName());
-
-        String host = RemoteService.getApiHost(ServiceFactory.Public);
-        String site = host + ApplicationConfig.App_Path + "ApiTaskToken.register";
-        String response = curl.doPost(site);
-        log.warn("token {} 注册结果 {}", token, response);
-    }
-
-    /**
      * 向总部服务器获取授权令牌 token
      */
     public static String getAuthToken(String userCode, String password, String machineCode) {

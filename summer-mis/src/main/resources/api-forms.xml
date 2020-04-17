@@ -2,16 +2,5 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
-    <bean id="ApiTaskToken" class="cn.cerc.mis.api.forms.ApiTaskToken" scope="prototype">
-        <property name="caption" value="系统令牌"/>
-        <property name="parent" value="Hide"/>
-        <property name="permission" value="base.default"/>
-        <property name="params">
-            <map>
-                <entry key="security" value="false"/>
-                <entry key="hide" value="true"/>
-                <entry key="verlist" value="7,4,1,2,3,5,0,"/>
-            </map>
-        </property>
-    </bean>
+
 </beans>
