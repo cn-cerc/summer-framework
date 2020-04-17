@@ -8,7 +8,9 @@ import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.core.Application;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class StubHandle implements IHandle, AutoCloseable {
     public static final String DefaultBook = "999001";
     public static final String DefaultUser = DefaultBook + "01";
@@ -23,11 +25,13 @@ public class StubHandle implements IHandle, AutoCloseable {
 
     public StubHandle() {
         handle = Application.getHandle();
+        log.info("StubHandle {}", handle.getClass());
         handle.init(DefaultBook, DefaultUser, password, machineCode);
     }
 
     public StubHandle(String corpNo, String userCode) {
         handle = Application.getHandle();
+        log.info("StubHandle {}", handle.getClass());
         handle.init(corpNo, userCode, password, machineCode);
     }
 
