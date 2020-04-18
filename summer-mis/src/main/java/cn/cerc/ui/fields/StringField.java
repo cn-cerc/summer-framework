@@ -9,7 +9,6 @@ import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class StringField extends AbstractField implements IColumn {
-    // private static final Logger log = Logger.getLogger(Field.class);
     private ColumnEditor editor;
 
     public StringField(UIComponent owner, String name, String field) {

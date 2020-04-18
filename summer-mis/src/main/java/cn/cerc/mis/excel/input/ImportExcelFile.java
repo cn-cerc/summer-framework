@@ -12,18 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-// 接收上传的文件，调用范例：
-// ImportFile imp = new ImportFile();
-// if (imp.setRequest(getRequest()).read() > 0) {
-// DataSet ds = imp.getDataSet();
-// log.info(ds.getHead());
-// while (ds.fetch()) {
-// log.info(imp.getFile(ds.getCurrent()).getName());
-// }
-// }
-
 public class ImportExcelFile {
-    // private static final Logger log = Logger.getLogger(ImportExcel.class);
     private HttpServletRequest request;
     private List<FileItem> uploadFiles;
     private DataSet dataSet;

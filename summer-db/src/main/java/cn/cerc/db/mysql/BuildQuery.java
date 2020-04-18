@@ -18,7 +18,6 @@ import static cn.cerc.core.Utils.safeString;
  */
 public class BuildQuery {
     public static final String vbCrLf = "\r\n";
-    // private static final Logger log = Logger.getLogger(BuildSQL.class);
     private SqlQuery dataSet;
     private List<String> sqlWhere = new ArrayList<>();
     private List<String> sqlText = new ArrayList<>();

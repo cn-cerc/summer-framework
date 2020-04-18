@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public class OssFolder {
-    // private static final Logger log = Logger.getLogger(WebFolder.class);
     private OssDisk disk;
     private String name;
     private List<String> subItems = new ArrayList<>();

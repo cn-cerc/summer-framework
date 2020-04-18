@@ -19,7 +19,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class SvrUserLoginTest {
-    // private static final Logger log = Logger.getLogger(TAppLoginTest.class);
 
     // 测试帐号找不到时的提示
     @Test(expected = ServiceException.class)

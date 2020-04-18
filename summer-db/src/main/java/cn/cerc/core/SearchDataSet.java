@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchDataSet {
-    // private static final Logger log = Logger.getLogger(SearchDataSet.class);
     private DataSet dataSet;
     private Map<String, Record> items;
     private List<String> fields = new ArrayList<>();

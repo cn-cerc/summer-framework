@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class DataSet implements IRecord, Serializable, Iterable<Record> {
-    // private static final Logger log = Logger.getLogger(DataSet.class);
     private static final long serialVersionUID = 873159747066855363L;
     private int recNo = 0;
     private int fetchNo = -1;

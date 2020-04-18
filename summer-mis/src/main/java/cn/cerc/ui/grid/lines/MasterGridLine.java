@@ -12,7 +12,6 @@ import cn.cerc.ui.grid.RowCell;
 import java.util.List;
 
 public class MasterGridLine extends AbstractGridLine {
-    // private static final Logger log = Logger.getLogger(MasterGridLine.class);
     private String primaryKey;
     // 列管理器，用于支持自定义栏位
     private IColumnsManager manager;
