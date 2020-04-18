@@ -43,7 +43,7 @@ public class OperaPages extends UISheet {
             html.println("<section>");
             html.println("<div class=\"title\">%s</div>", R.asString(form.getHandle(), "数据分页"));
             html.println("<div class=\"contents\">");
-            html.println("%s：%d, %s：%d/%d 页<br/>",
+            html.println("%s：%d，%s：%d/%d 页<br/>",
                     R.asString(form.getHandle(), "总记录数"), pages.getRecordCount(),
                     R.asString(form.getHandle(), "当前页"), pages.getCurrent(), pages.getCount());
             html.println("<div align=\"center\">");
