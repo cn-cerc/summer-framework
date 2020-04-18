@@ -1,6 +1,6 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class MongoUtilsTest {
 
     @BeforeClass
     public static void init() {
-        StubHandle handle = new StubHandle();
+        StubHandleText handle = new StubHandleText();
         utils = new MongoUtils(handle);
     }
 

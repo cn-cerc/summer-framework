@@ -119,9 +119,9 @@
 
     <!-- jsp 语言 -->
     <bean id="SvrLanguage.downloadAll" class="cn.cerc.mis.services.SvrLanguage">
-        <property name="funcCode" value="downloadAll"></property>
+        <property name="funcCode" value="downloadAll"/>
     </bean>
     <bean id="SvrLanguage.download" class="cn.cerc.mis.services.SvrLanguage">
-        <property name="funcCode" value="download"></property>
+        <property name="funcCode" value="download"/>
     </bean>
 </beans>

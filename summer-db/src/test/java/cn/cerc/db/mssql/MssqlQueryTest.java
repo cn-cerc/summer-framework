@@ -1,7 +1,7 @@
 package cn.cerc.db.mssql;
 
 import cn.cerc.core.IHandle;
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ public class MssqlQueryTest {
 
     @Before
     public void setUP() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
     }
 
     @Test

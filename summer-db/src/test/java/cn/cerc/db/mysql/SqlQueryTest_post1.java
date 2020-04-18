@@ -2,18 +2,18 @@ package cn.cerc.db.mysql;
 
 import cn.cerc.core.PostFieldException;
 import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class SqlQueryTest_post1 {
     private SqlQuery ds;
-    private StubHandle conn;
+    private StubHandleText conn;
 
     @Before
     public void setUp() {
-        conn = new StubHandle();
+        conn = new StubHandleText();
         ds = new SqlQuery(conn);
     }
 

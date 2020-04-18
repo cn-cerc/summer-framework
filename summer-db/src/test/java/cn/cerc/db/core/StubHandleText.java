@@ -9,7 +9,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 
-public class StubHandle implements IHandle {
+public class StubHandleText implements IHandle {
     private MysqlConnection mysqlSession;
     private MssqlConnection mssqlConnection;
     private MongoConnection mgConn;
@@ -17,9 +17,9 @@ public class StubHandle implements IHandle {
     private OssConnection ossConn;
     private JiguangConnection pushConn;
 
-    public StubHandle() {
+    public StubHandleText() {
         super();
-        IConfig config = new StubConfig();
+        IConfig config = new StubConfigTest();
 
         mysqlSession = new MysqlConnection();
         mysqlSession.setConfig(config);

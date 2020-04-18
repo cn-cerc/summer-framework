@@ -1,7 +1,7 @@
 package cn.cerc.db.mysql;
 
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,12 +9,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class BatchScriptTest {
-    private StubHandle handle;
+    private StubHandleText handle;
     private BatchScript bs;
 
     @Before
     public void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
     }
 
     @Test

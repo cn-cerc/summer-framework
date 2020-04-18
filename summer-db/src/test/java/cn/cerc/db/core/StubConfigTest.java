@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Slf4j
-public class StubConfig implements IConfig {
+public class StubConfigTest implements IConfig {
 
     private static final String SETTINGS_FILE_NAME = System.getProperty("user.home")
             + System.getProperty("file.separator") + "summer-application.properties";

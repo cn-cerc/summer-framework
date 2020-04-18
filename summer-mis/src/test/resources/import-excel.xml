@@ -32,7 +32,7 @@
             <list>
                 <bean class="cn.cerc.mis.excel.input.ImportStringColumn">
                     <property name="code" value="PartCode_"/>
-                    <property name="name" value="商品料号"></property>
+                    <property name="name" value="商品料号"/>
                 </bean>
                 <bean class="cn.cerc.mis.excel.input.ImportStringColumn">
                     <property name="code" value="Desc_"/>
@@ -44,7 +44,7 @@
                 </bean>
                 <bean class="cn.cerc.mis.excel.input.ImportStringColumn">
                     <property name="code" value="Unit_"/>
-                    <property name="name" value="单位"></property>
+                    <property name="name" value="单位"/>
                 </bean>
                 <bean class="cn.cerc.mis.excel.input.ImportNumberColumn">
                     <property name="code" value="OriUP_"/>
@@ -52,7 +52,7 @@
                 </bean>
                 <bean class="cn.cerc.mis.excel.input.ImportStringColumn">
                     <property name="code" value="Remark_"/>
-                    <property name="name" value="备注"></property>
+                    <property name="name" value="备注"/>
                 </bean>
             </list>
         </property>

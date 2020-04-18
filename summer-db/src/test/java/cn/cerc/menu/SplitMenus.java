@@ -1,7 +1,7 @@
 package cn.cerc.menu;
 
 import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import cn.cerc.db.mysql.SqlQuery;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +16,7 @@ public class SplitMenus {
     private static final String Verlist_Menu = "s_verlist_menu";
 
     public static void main(String[] args) {
-        StubHandle handle = new StubHandle();
+        StubHandleText handle = new StubHandleText();
 
         SqlQuery verlist = new SqlQuery(handle);
         verlist.add("select * from s_verlist");
@@ -35,7 +35,7 @@ public class SplitMenus {
         }
     }
 
-    private static void splitMenu(StubHandle handle, Map<Integer, String> items, String verList, String menuCode) {
+    private static void splitMenu(StubHandleText handle, Map<Integer, String> items, String verList, String menuCode) {
         SqlQuery verMenu = new SqlQuery(handle);
         verMenu.add("select * from %s where MenuCode_='%s'", SplitMenus.Verlist_Menu, menuCode);
         verMenu.open();

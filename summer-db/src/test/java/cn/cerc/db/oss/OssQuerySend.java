@@ -1,16 +1,16 @@
 package cn.cerc.db.oss;
 
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class OssQuerySend {
     private static OssQuery ds;
-    private static StubHandle handle;
+    private static StubHandleText handle;
 
     @BeforeClass
     public static void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         ds = new OssQuery(handle);
     }
 

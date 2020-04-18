@@ -2,7 +2,7 @@ package cn.cerc.db.dao;
 
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import com.google.gson.Gson;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class DaoUtilTest {
 
     @Test
     public void testBuildEntity() {
-        StubHandle handle = new StubHandle();
+        StubHandleText handle = new StubHandleText();
         String text = DaoUtil.buildEntity(handle, "t_profitday", "ProfitDay");
         System.out.println(text);
     }
