@@ -334,7 +334,7 @@
     <!-- 私服配置 -->
     <repositories>
         <repository>
-            <id>vine</id>
+            <id>diteng</id>
             <url>https://nexus.diteng.site/nexus/content/groups/public</url>
         </repository>
     </repositories>
