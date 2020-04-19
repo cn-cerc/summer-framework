@@ -344,7 +344,7 @@
     <repositories>
         <repository>
             <id>vine</id>
-            <url>https://nexus.jayun.site/nexus/content/groups/public</url>
+            <url>https://nexus.diteng.site/nexus/content/groups/public</url>
         </repository>
     </repositories>
     <distributionManagement>
