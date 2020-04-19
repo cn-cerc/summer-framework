@@ -19,6 +19,7 @@ public class DataGrid extends AbstractGrid {
     private AbstractGridLine expender;
     // 输出每列时的事件
     private OutputEvent beforeOutput;
+
     public DataGrid(IForm form, UIComponent owner) {
         super(form, owner);
     }
@@ -42,26 +43,30 @@ public class DataGrid extends AbstractGrid {
         MutiPage pages = this.getPages();
 
         double sumFieldWidth = 0;
-        for (RowCell cell : this.getMasterLine().getOutputCells())
+        for (RowCell cell : this.getMasterLine().getOutputCells()) {
             sumFieldWidth += cell.getFields().get(0).getWidth();
+        }
 
-        if (sumFieldWidth < 0)
+        if (sumFieldWidth < 0) {
             throw new RuntimeException("总列宽不允许小于1");
-        if (sumFieldWidth > MaxWidth)
+        }
+        if (sumFieldWidth > MaxWidth) {
             throw new RuntimeException("总列宽不允许大于600");
+        }
 
         html.print("<table class=\"%s\"", this.getCSSClass());
-        if (this.getCSSStyle() != null)
+        if (this.getCSSStyle() != null) {
             html.print(" style=\"%s\"", this.getCSSStyle());
+        }
         html.println(">");
 
         html.println("<tr>");
         for (RowCell cell : this.getMasterLine().getOutputCells()) {
             IField field = cell.getFields().get(0);
             html.print("<th");
-            if (field.getWidth() == 0)
+            if (field.getWidth() == 0) {
                 html.print(" style=\"display:none\"");
-            else {
+            } else {
                 double val = Utils.roundTo(field.getWidth() / sumFieldWidth * 100, -2);
                 html.print(" width=\"%f%%\"", val);
             }
@@ -78,10 +83,12 @@ public class DataGrid extends AbstractGrid {
                 dataSet.setRecNo(i + 1);
                 for (int lineNo = 0; lineNo < this.getLines().size(); lineNo++) {
                     AbstractGridLine line = this.getLine(lineNo);
-                    if (line instanceof ExpenderGridLine)
+                    if (line instanceof ExpenderGridLine) {
                         line.getCell(0).setColSpan(this.getMasterLine().getFields().size());
-                    if (line instanceof ChildGridLine && this.beforeOutput != null)
+                    }
+                    if (line instanceof ChildGridLine && this.beforeOutput != null) {
                         beforeOutput.process(line);
+                    }
                     line.output(html, lineNo);
                 }
                 // 下一行
@@ -89,7 +96,6 @@ public class DataGrid extends AbstractGrid {
             }
         }
         html.println("</table>");
-        return;
     }
 
     @Override

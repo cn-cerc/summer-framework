@@ -17,6 +17,7 @@ public class AppStaticFileDefault implements IAppStaticFile {
         suffix.add(".jsp");
         suffix.add(".htm");
         suffix.add(".html");
+        suffix.add(".map");
 
         // 图片文件
         suffix.add(".jpg");
@@ -24,6 +25,7 @@ public class AppStaticFileDefault implements IAppStaticFile {
         suffix.add(".gif");
         suffix.add(".icon");
         suffix.add(".bmp");
+        suffix.add(".ico");
 
         // 音频文件
         suffix.add(".mp3");

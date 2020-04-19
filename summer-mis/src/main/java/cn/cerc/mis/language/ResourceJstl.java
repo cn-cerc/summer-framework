@@ -63,7 +63,7 @@ public class ResourceJstl extends SimpleTagSupport {
         text = sw.toString();
         Object temp = handle.getProperty(Application.deviceLanguage);
         String lang = (temp == null || "".equals(temp)) ? Application.getLangage() : (String) temp;
-        if ("cn".equals(lang)) {
+        if (Language.zh_CN.equals(lang)) {
             return text;
         }
 
@@ -83,8 +83,8 @@ public class ResourceJstl extends SimpleTagSupport {
         }
 
         // 取不到值，但当前是英文时，则原样返回
-        if ("en".equals(lang)) {
-            if (ServerConfig.getInstance().isDebug()) {
+        if (Language.en_US.equals(lang)) {
+            if (ServerConfig.INSTANCE.isDebug()) {
                 return lang + ":" + text;
             } else {
                 return text;
@@ -92,13 +92,13 @@ public class ResourceJstl extends SimpleTagSupport {
         }
 
         // 如果是其它语言，则取英文的默认值
-        ResourceBuffer en = items.get("en");
+        ResourceBuffer en = items.get(Language.en_US);
         result = en.get(handle, text);
         if (result != null && !"".equals(result)) {
             return result;
         }
 
-        if (ServerConfig.getInstance().isDebug()) {
+        if (ServerConfig.INSTANCE.isDebug()) {
             return lang + ":" + text;
         } else {
             return text;

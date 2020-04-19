@@ -34,11 +34,13 @@ public class UIFooter extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (this.getComponents().size() > MAX_MENUS)
+        if (this.getComponents().size() > MAX_MENUS) {
             throw new RuntimeException(String.format("底部菜单区最多只支持 %d 个菜单项", MAX_MENUS));
+        }
 
-        if (this.buttons.size() > MAX_MENUS)
+        if (this.buttons.size() > MAX_MENUS) {
             throw new RuntimeException(String.format("底部菜单区最多只支持 %d 个菜单项", MAX_MENUS));
+        }
 
         html.print("<footer role='footer'");
         if (isEmpty()) {
@@ -54,8 +56,9 @@ public class UIFooter extends UIComponent {
             html.println("<section role='footerButtons'>");
         }
         for (Component component : this.getComponents()) {
-            if (component != this.operation && component instanceof UIComponent)
+            if (component != this.operation && component instanceof UIComponent) {
                 ((UIComponent) component).output(html);
+            }
         }
         html.println("</section>");
         HttpServletRequest request = getForm().getRequest();
@@ -64,8 +67,9 @@ public class UIFooter extends UIComponent {
                 html.print("<div class=\"bottom-message\"");
                 html.print(" id=\"msg\">");
                 String msg = request.getParameter("msg");
-                if (msg != null)
+                if (msg != null) {
                     html.print(msg.replaceAll("\r\n", "<br/>"));
+                }
                 html.println("</div>");
             }
         }
@@ -117,8 +121,9 @@ public class UIFooter extends UIComponent {
     }
 
     public UIFooterOperation getOperation() {
-        if (operation == null)
+        if (operation == null) {
             operation = new UIFooterOperation(this);
+        }
         return operation;
     }
 

@@ -28,8 +28,9 @@ public class DoubleField extends AbstractField implements IColumn {
 
     @Override
     public String getText(Record dataSet) {
-        if (dataSet == null)
+        if (dataSet == null) {
             return null;
+        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
             buildText.outputText(dataSet, html);
@@ -53,8 +54,9 @@ public class DoubleField extends AbstractField implements IColumn {
 
     @Override
     public String format(Object value) {
-        if (!(value instanceof Record))
+        if (!(value instanceof Record)) {
             return value.toString();
+        }
 
         Record ds = (Record) value;
         if (this.isReadonly()) {
@@ -71,21 +73,25 @@ public class DoubleField extends AbstractField implements IColumn {
                         html.print(" target=\"%s\"", url.getTarget());
                     }
                     html.println(">%s</a>", getText(ds));
-                } else
+                } else {
                     html.println(getText(ds));
+                }
                 return html.toString();
-            } else
+            } else {
                 return getText(ds);
+            }
         }
-        if (!(this.getOwner() instanceof AbstractGridLine))
+        if (!(this.getOwner() instanceof AbstractGridLine)) {
             return getText(ds);
+        }
 
         return getEditor().format(ds);
     }
 
     public ColumnEditor getEditor() {
-        if (editor == null)
+        if (editor == null) {
             editor = new ColumnEditor(this);
+        }
         return editor;
     }
 

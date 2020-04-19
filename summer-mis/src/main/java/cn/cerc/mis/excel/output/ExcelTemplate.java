@@ -8,7 +8,6 @@ import jxl.write.Label;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 public class ExcelTemplate {
     private String fileName;
     private List<Column> columns;
-    private AccreditManager accreditManager;
+    private IAccreditManager accreditManager;
     private HistoryWriter historyWriter;
     private DataSet dataSet;
     private DateFormat df1 = new DateFormat("yyyy-MM-dd");
@@ -43,11 +42,11 @@ public class ExcelTemplate {
         columns.add(column);
     }
 
-    public AccreditManager getAccreditManager() {
+    public IAccreditManager getAccreditManager() {
         return accreditManager;
     }
 
-    public void setAccreditManager(AccreditManager accredit) {
+    public void setAccreditManager(IAccreditManager accredit) {
         this.accreditManager = accredit;
     }
 
@@ -59,7 +58,7 @@ public class ExcelTemplate {
         this.historyWriter = historyWriter;
     }
 
-    public void output(WritableSheet sheet) throws RowsExceededException, WriteException {
+    public void output(WritableSheet sheet) throws WriteException {
         // 输出列头
         for (int col = 0; col < columns.size(); col++) {
             Column column = columns.get(col);
@@ -82,7 +81,7 @@ public class ExcelTemplate {
     }
 
     protected void writeColumn(WritableSheet sheet, int col, int row, Column column)
-            throws WriteException, RowsExceededException {
+            throws WriteException {
         if (column instanceof NumberColumn) {
             jxl.write.Number item = new jxl.write.Number(col, row, (double) column.getValue());
             sheet.addCell(item);

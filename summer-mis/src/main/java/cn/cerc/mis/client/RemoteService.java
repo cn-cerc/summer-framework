@@ -1,36 +1,121 @@
 package cn.cerc.mis.client;
 
 import cn.cerc.core.DataSet;
+import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
+import cn.cerc.core.Utils;
+import cn.cerc.db.core.Curl;
+import cn.cerc.db.core.LocalConfig;
+import cn.cerc.mis.config.ApplicationConfig;
+import cn.cerc.mis.core.RequestData;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-
-import java.io.IOException;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
+    private IHandle handle;
 
-    private String host = "127.0.0.1";
+    private String host;
+    private String path;
     private String service;
+    private String token;
+
     private DataSet dataIn;
     private DataSet dataOut;
     private String message;
-    private String token;
 
-    public RemoteService() {
+    private String buffKey;
+
+    public static RemoteService create(IHandle handle, String bookNo) {
+        return new RemoteService(handle, bookNo);
     }
 
-    public RemoteService(String service) {
-        this.service = service;
+    private RemoteService(IHandle handle, String bookNo) {
+        this.handle = handle;
+        this.token = ApplicationConfig.getToken(handle);
+
+        this.host = getApiHost(bookNo);
+        this.path = bookNo;
+    }
+
+    public static final String getApiHost(String bookNo) {
+        LocalConfig localConfig = LocalConfig.INSTANCE;
+        String key = ApplicationConfig.Rempte_Host_Key + "." + bookNo;
+        if (localConfig.getProperty(key) == null) {
+            key = ApplicationConfig.Rempte_Host_Key + "." + ServiceFactory.Public;
+        }
+        return localConfig.getProperty(key);
+    }
+
+    @Override
+    public boolean exec(Object... args) {
+        if (args.length > 0) {
+            Record headIn = getDataIn().getHead();
+            if (args.length % 2 != 0) {
+                throw new RuntimeException("传入的参数数量必须为偶数！");
+            }
+            for (int i = 0; i < args.length; i = i + 2) {
+                headIn.setField(args[i].toString(), args[i + 1]);
+            }
+        }
+        log.info(this.service);
+        if (Utils.isEmpty(this.service)) {
+            this.setMessage("服务代码不允许为空");
+            return false;
+        }
+        if (Utils.isEmpty(this.token)) {
+            this.setMessage("token 不允许为空");
+            return false;
+        }
+        if (Utils.isEmpty(this.host)) {
+            this.setMessage("host 不允许为空");
+            return false;
+        }
+
+        try {
+            Curl curl = new Curl();
+            curl.put("dataIn", getDataIn().getJSON());
+            curl.put(RequestData.TOKEN, this.token);
+            log.info("url {}", this.getUrl());
+            log.info("params {}", curl.getParameters());
+
+            String response = curl.doPost(this.getUrl());
+            log.info("response {}", response);
+
+            if (response == null) {
+                log.warn("url {}", this.getUrl());
+                log.warn("params {}", curl.getParameters());
+                this.setMessage("远程服务异常");
+                return false;
+            }
+
+            JSONObject json = JSONObject.fromObject(response);
+            if (json.get("message") != null) {
+                this.setMessage(json.getString("message"));
+            }
+
+            if (json.containsKey("data")) {
+                String dataJson = json.getString("data");
+                if (dataJson != null) {
+                    this.getDataOut().setJSON(dataJson);
+                }
+            }
+            return json.getBoolean("result");
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            if (e.getCause() != null) {
+                setMessage(e.getCause().getMessage());
+            } else {
+                setMessage(e.getMessage());
+            }
+            return false;
+        }
+    }
+
+    public String getUrl() {
+        return String.format("%s/%s/proxyService?service=%s", this.host, this.path, this.service);
     }
 
     @Override
@@ -45,75 +130,6 @@ public class RemoteService implements IServiceProxy {
     }
 
     @Override
-    public boolean exec(Object... args) {
-        if (args.length > 0) {
-            Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0)
-                throw new RuntimeException("传入的参数数量必须为偶数！");
-            for (int i = 0; i < args.length; i = i + 2)
-                headIn.setField(args[i].toString(), args[i + 1]);
-        }
-
-        String postParam = getDataIn().getJSON();
-        String url = String.format("http://%s/services/%s", this.host, this.service);
-        if (token != null)
-            url = url + "?token=" + token;
-        try {
-            log.debug("datain: " + postParam);
-            // String rst = CURL.doPost(url, params, "UTF-8");
-            String rst = postData(url, postParam);
-            log.debug("datatout:" + rst);
-            if (rst == null)
-                return false;
-
-            JSONObject json = JSONObject.fromObject(rst);
-            if (json.get("message") != null) {
-                this.setMessage(json.getString("message"));
-            }
-
-            if (json.containsKey("data")) {
-                JSONArray datas = json.getJSONArray("data");
-                if (datas != null && datas.size() > 0) {
-                    if (dataOut == null)
-                        dataOut = new DataSet();
-                    else
-                        dataOut.close();
-                    dataOut.setJSON(datas.getString(0));
-                }
-            }
-            return json.getBoolean("result");
-
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            if (e.getCause() != null)
-                setMessage(e.getCause().getMessage());
-            else
-                setMessage(e.getMessage());
-            return false;
-        }
-    }
-
-    private String postData(String url, String params) throws ClientProtocolException, IOException {
-        HttpPost httpPost = new HttpPost(url);
-        StringEntity entity = new StringEntity(params.toString(), "UTF-8");
-        entity.setContentType("application/json");
-        httpPost.setEntity(entity);
-
-        log.debug("post: " + url);
-        HttpClient client = HttpClientBuilder.create().build();
-
-        HttpResponse response = client.execute(httpPost);
-        // 如果请求成功
-        if (response.getStatusLine().getStatusCode() != 200) {
-            this.setMessage("请求服务器失败，错误代码为：" + response.getStatusLine().getStatusCode());
-            return null;
-        }
-
-        // 获取响应实体
-        HttpEntity entity2 = response.getEntity();
-        return EntityUtils.toString(entity2, "UTF-8");
-    }
-
     public String getMessage() {
         return message;
     }
@@ -122,9 +138,20 @@ public class RemoteService implements IServiceProxy {
         this.message = message;
     }
 
+    @Override
+    public String getExportKey() {
+        String tmp = "" + System.currentTimeMillis();
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getExportKey, handle.getUserCode(), tmp)) {
+            buff.setField("data", this.getDataIn().getJSON());
+        }
+        return tmp;
+    }
+
+    @Override
     public DataSet getDataOut() {
-        if (dataOut == null)
+        if (dataOut == null) {
             dataOut = new DataSet();
+        }
         return dataOut;
     }
 
@@ -142,8 +169,9 @@ public class RemoteService implements IServiceProxy {
 
     @Override
     public DataSet getDataIn() {
-        if (dataIn == null)
+        if (dataIn == null) {
             dataIn = new DataSet();
+        }
         return dataIn;
     }
 
@@ -158,4 +186,21 @@ public class RemoteService implements IServiceProxy {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getBuffKey() {
+        return buffKey;
+    }
+
+    public void setBuffKey(String buffKey) {
+        this.buffKey = buffKey;
+    }
+
 }

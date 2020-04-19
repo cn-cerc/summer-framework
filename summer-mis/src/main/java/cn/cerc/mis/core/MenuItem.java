@@ -3,6 +3,7 @@ package cn.cerc.mis.core;
 import java.util.HashMap;
 import java.util.Map;
 
+// FIXME 2019-12-25 此对象的静态变量应改为属性 
 // 此对象应该换为 MenuItem
 public class MenuItem {
     // 菜单标题
@@ -19,21 +20,21 @@ public class MenuItem {
     public static final String PARENT = "parentId";
     // 菜单图标，为URL值
     public static final String IMAGE = "image";
+    // 菜单分组
+    public static final String GROUP = "group";
     // 菜单代码
-    private String id;
+    private String code;
+    private boolean window;
+
     // 所有参数值
     private Map<String, String> params = new HashMap<>();
 
-    public MenuItem() {
-
+    public String getCode() {
+        return code;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTitle() {
@@ -48,7 +49,7 @@ public class MenuItem {
 
     public boolean isSecurityEnabled() {
         String result = this.getParam(SECURITY);
-        return result != null ? "true".equals(result) : true;
+        return result == null || "true".equals(result);
     }
 
     public String getPermissionCode() {
@@ -64,6 +65,10 @@ public class MenuItem {
     public String getParentId() {
         String result = this.getParam(PARENT);
         return result != null ? result : "";
+    }
+
+    public void setImage(String image) {
+        this.setParam(IMAGE, image);
     }
 
     public String getImage() {
@@ -89,8 +94,17 @@ public class MenuItem {
         this.params = params;
     }
 
-    public int getHrip() {
-        return Integer.parseInt(getParam(this.getId()));
+    public boolean isWindow() {
+        return window;
+    }
+
+    public void setWindow(boolean window) {
+        this.window = window;
+    }
+
+    public String getGroup() {
+        String result = this.getParam(GROUP);
+        return result != null ? result : "";
     }
 
 }

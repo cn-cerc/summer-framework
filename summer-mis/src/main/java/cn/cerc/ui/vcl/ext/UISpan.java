@@ -20,13 +20,16 @@ public class UISpan extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         html.print("<span");
-        if (getId() != null)
+        if (getId() != null) {
             html.print(" id='%s'", this.getId());
+        }
         super.outputCss(html);
-        if (role != null)
+        if (role != null) {
             html.print(" role='%s'", this.role);
-        if (onclick != null)
+        }
+        if (onclick != null) {
             html.print(" onclick='%s'", this.onclick);
+        }
         html.print(">");
 
         if (this.url != null) {

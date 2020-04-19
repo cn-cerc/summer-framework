@@ -53,8 +53,9 @@ public class Block107 extends UIComponent {
         html.println("</div>");
         html.print("<div id='%slist' class='choice4'>", this.getId());
         html.print("<ul class=''>");
-        for (String item : items)
+        for (String item : items) {
             outputChoiceItem(html, item, this.getId(), this.childPage, this.dataUrl);
+        }
         html.println("</ul>");
         html.println("</div>");
         html.println("</div>");

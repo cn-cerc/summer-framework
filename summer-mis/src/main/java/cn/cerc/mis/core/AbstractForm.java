@@ -17,9 +17,10 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     private HttpServletResponse response;
     private IClient client;
     private Map<String, String> params = new HashMap<>();
-    private String caption;
+    private String title;
     private String parent;
     private String permission;
+    private String module;
 
     public Map<String, String> getParams() {
         return params;
@@ -67,18 +68,23 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public Object getProperty(String key) {
-        if ("request".equals(key))
+        if ("request".equals(key)) {
             return this.getRequest();
-        if ("session".equals(key))
+        }
+        if ("session".equals(key)) {
             return this.getRequest().getSession();
+        }
 
         return handle.getProperty(key);
     }
 
     @Override
-    @Deprecated
     public String getTitle() {
-        return getCaption();
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -102,19 +108,24 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public String getParam(String key, String def) {
-        if (params.containsKey(key))
+        if (params.containsKey(key)) {
             return params.get(key);
-        else {
+        } else {
             return def;
         }
     }
 
+    /*
+     * 删除此项需要将xml的配套属性改为 title
+     */
+    @Deprecated
     public String getCaption() {
-        return caption;
+        return this.getTitle();
     }
 
+    @Deprecated
     public void setCaption(String caption) {
-        this.caption = caption;
+        this.title = caption;
     }
 
     public String getParent() {
@@ -132,5 +143,13 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 }

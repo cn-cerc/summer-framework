@@ -71,12 +71,14 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
 
     @Override
     public void addField(IField field) {
-        if (field instanceof SearchItem)
+        if (field instanceof SearchItem) {
             ((SearchItem) field).setSearch(true);
-        if (field instanceof AbstractField)
+        }
+        if (field instanceof AbstractField) {
             fields.add((AbstractField) field);
-        else
+        } else {
             throw new RuntimeException("不支持的数据类型：" + field.getClass().getName());
+        }
     }
 
     public String getAction() {
@@ -101,12 +103,15 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
 
         title.output(html);
         html.print("<form method=\"%s\" id=\"%s\"", this.method, this.getId());
-        if (this.action != null)
+        if (this.action != null) {
             html.print(" action=\"%s\"", this.action);
-        if (this.cssClass != null)
+        }
+        if (this.cssClass != null) {
             html.print(" class=\"%s\"", this.cssClass);
-        if (this.enctype != null)
+        }
+        if (this.enctype != null) {
             html.print(" enctype=\"%s\"", this.enctype);
+        }
         html.println(">");
 
         // 输出隐藏字段
@@ -121,10 +126,12 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         for (AbstractField field : fields) {
             if (!field.isHidden()) {
                 html.print("<li");
-                if (field.getRole() != null)
+                if (field.getRole() != null) {
                     html.print(" role='%s'", field.getRole());
-                if (field instanceof ExpendField)
+                }
+                if (field instanceof ExpendField) {
                     html.print(" class=\"select\"");
+                }
                 html.println(">");
                 try {
                     field.output(html);
@@ -165,15 +172,18 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
 
         html.println("</ul>");
         if (buttons != null) {
+            html.println("<div>");
             for (AbstractField field : buttons.fields) {
                 field.output(html);
             }
+            html.println("</div>");
         }
         html.println("<div></div>");
         html.println("</form>");
 
-        if (levelSide != null)
+        if (levelSide != null) {
             levelSide.output(html);
+        }
     }
 
     public MemoryBuffer getBuffer() {
@@ -185,8 +195,9 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
     }
 
     public ButtonsFields getButtons() {
-        if (buttons == null)
+        if (buttons == null) {
             buttons = new ButtonsFields(this);
+        }
         return buttons;
     }
 
@@ -218,12 +229,14 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         }
 
         // 将用户值或缓存值存入到dataSet中
-        for (AbstractField field : this.fields)
+        for (AbstractField field : this.fields) {
             field.updateField();
+        }
 
         // 将可折叠字段的值存入到dataSet中
-        for (IField field : this.getExpender().getFields())
+        for (IField field : this.getExpender().getFields()) {
             ((AbstractField) field).updateField();
+        }
 
         readAll = true;
         return submit;
@@ -234,13 +247,15 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         String val = request.getParameter(id);
         if (submit != null) {
             dataSet.setField(code, val == null ? "" : val);
-            if (buff != null)
+            if (buff != null) {
                 buff.setField(code, val);
+            }
         } else {
-            if (val != null)
+            if (val != null) {
                 dataSet.setField(code, val);
-            else if (buff != null && !buff.isNull() && buff.getRecord().exists(code))
+            } else if (buff != null && !buff.isNull() && buff.getRecord().exists(code)) {
                 dataSet.setField(code, buff.getString(code));
+            }
         }
     }
 
@@ -253,8 +268,9 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
     }
 
     public AbstractGridLine getExpender() {
-        if (expender == null)
+        if (expender == null) {
             expender = new ExpenderGridLine(this);
+        }
 
         return expender;
     }
@@ -287,10 +303,11 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
 
         @Override
         public void addField(IField field) {
-            if (field instanceof AbstractField)
+            if (field instanceof AbstractField) {
                 fields.add((AbstractField) field);
-            else
+            } else {
                 throw new RuntimeException("不支持的数据类型：" + field.getClass().getName());
+            }
         }
 
         public List<AbstractField> getFields() {

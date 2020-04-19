@@ -3,6 +3,7 @@ package cn.cerc.ui.page;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
@@ -19,8 +20,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import static cn.cerc.mis.core.ClientDevice.device_ee;
-
 /**
  * 主体子页面(公用)
  *
@@ -35,13 +34,10 @@ public class UIPageModify extends AbstractJspPage {
         setForm(form);
         initCssFile();
         initJsFile();
-        if (!this.getForm().getClient().isPhone()) {
-            this.getHeader().getAdvertisement();
-        }
     }
 
     public void addExportFile(String service, String key) {
-        if (device_ee.equals(this.getForm().getClient().getDevice())) {
+        if (ClientDevice.APP_DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
             ExportFile item = new ExportFile(service, key);
             this.put("export", item);
         }
@@ -57,8 +53,9 @@ public class UIPageModify extends AbstractJspPage {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
             menus.setHandle(form.getHandle());
-            for (IMenuBar item : menus.getItems())
+            for (IMenuBar item : menus.getItems()) {
                 item.enrollMenu(form, rightMenus);
+            }
         } else {
             getHeader().getHomePage().setSite(Application.getAppConfig().getFormWelcome());
         }

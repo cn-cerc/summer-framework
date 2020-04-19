@@ -18,8 +18,9 @@ public class BigdataException extends RuntimeException implements Serializable {
     }
 
     public static void check(DataQuery dataset, int rows) {
-        if (rows > (MAX_RECORDS + 1))
+        if (rows > (MAX_RECORDS + 1)) {
             throw new BigdataException(dataset, rows);
+        }
     }
 
 }

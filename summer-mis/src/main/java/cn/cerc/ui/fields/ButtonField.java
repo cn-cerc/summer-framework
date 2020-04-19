@@ -30,8 +30,9 @@ public class ButtonField extends AbstractField {
 
     @Override
     public String getText(Record dataSet) {
-        if (dataSet == null)
+        if (dataSet == null) {
             return null;
+        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
             buildText.outputText(dataSet, html);
@@ -43,14 +44,18 @@ public class ButtonField extends AbstractField {
     @Override
     public void output(HtmlWriter html) {
         html.print("<button name=\"%s\"", this.getId());
-        if (this.data != null)
+        if (this.data != null) {
             html.print(" value=\"%s\"", this.data);
-        if (getCSSClass_phone() != null)
+        }
+        if (getCSSClass_phone() != null) {
             html.print(" class=\"%s\"", getCSSClass_phone());
-        if (this.getOnclick() != null)
+        }
+        if (this.getOnclick() != null) {
             html.print(" onclick=\"%s\"", this.getOnclick());
-        if (this.type != null)
+        }
+        if (this.type != null) {
             html.print(" type=\"%s\"", this.type);
+        }
         html.print(">");
         html.print("%s</button>", this.getName());
     }

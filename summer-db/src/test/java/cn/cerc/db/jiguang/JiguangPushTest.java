@@ -1,16 +1,16 @@
 package cn.cerc.db.jiguang;
 
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
 public class JiguangPushTest {
     private static final String sound = "trade_mall.wav";
-    private StubHandle handle;
+    private StubHandleText handle;
 
     @Before
     public void setUp() throws Exception {
-        handle = new StubHandle();
+        handle = new StubHandleText();
     }
 
     @Test

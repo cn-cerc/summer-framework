@@ -67,8 +67,9 @@ public class MutiPage {
 
     public int getCount() {
         this.count = recordCount / pageSize;
-        if ((recordCount % pageSize) > 0)
+        if ((recordCount % pageSize) > 0) {
             this.count = this.count + 1;
+        }
         return this.count;
     }
 
@@ -94,15 +95,17 @@ public class MutiPage {
 
     private void reset() {
         // set prior:
-        if (current > 1)
+        if (current > 1) {
             this.prior = current - 1;
-        else
+        } else {
             this.prior = 1;
+        }
         // set next:
-        if (current >= this.getCount())
+        if (current >= this.getCount()) {
             this.next = current;
-        else
+        } else {
             this.next = current + 1;
+        }
         // set begin:
         begin = (current - 1) * pageSize;
         if (begin < 0) {
@@ -121,6 +124,7 @@ public class MutiPage {
         }
     }
 
+    @Override
     public String toString() {
         JSONObject json = JSONObject.fromObject(this);
         return json.toString();
@@ -150,7 +154,7 @@ public class MutiPage {
         this.request = request;
         if (request != null) {
             String tmp = request.getParameter("pageno");
-            if (tmp != null && !tmp.equals("")) {
+            if (tmp != null && !"".equals(tmp)) {
                 int current = Integer.parseInt(tmp);
                 if (current > 0 && current != this.current) {
                     this.current = current;

@@ -23,18 +23,28 @@ public class MenuData {
     private boolean win; // 是否支持Window调用
     private boolean phone; // 是否支持phone调用
     private boolean hide; // 是否隐藏菜单
-    private String process; // Web化进度
     private boolean folder; // 是否为目录结构
     private boolean custom; // 是否客制化菜单
     private String funcCode;
+    private String module;
+    private String group;
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
 
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        if (id.indexOf('.') > -1)
+        if (id.indexOf('.') > -1) {
             throw new RuntimeException("error id: " + id);
+        }
         this.id = id;
     }
 
@@ -46,8 +56,9 @@ public class MenuData {
         if (caption != null) {
             String[] captions = caption.split("\\\\");
             this.caption = captions[captions.length - 1];
-        } else
+        } else {
             this.caption = "";
+        }
     }
 
     public String getDescribe() {
@@ -155,14 +166,6 @@ public class MenuData {
         this.hide = hide;
     }
 
-    public String getProcess() {
-        return process;
-    }
-
-    public void setProcess(String process) {
-        this.process = process;
-    }
-
     public boolean getFolder() {
         return folder;
     }
@@ -193,6 +196,14 @@ public class MenuData {
 
     public void setPhone(boolean phone) {
         this.phone = phone;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
 }

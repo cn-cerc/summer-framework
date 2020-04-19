@@ -2,10 +2,12 @@ package cn.cerc.mis.other;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
-import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
@@ -209,7 +211,7 @@ public class BookOptions {
         // 其它参数
         items.put(ZZTPY_VERSION, "启动【郑州太平洋】专用功能项");
         items.put(AllowMallShare, "是否开放在线商城（允许所有人查看本公司商品信息）");
-        items.put(StudentFileSupCorpNo, "设置互联上游账套（助学计划）");
+        items.put(StudentFileSupCorpNo, "设置互联上游帐套（助学计划）");
     }
 
     private IHandle handle;
@@ -242,10 +244,11 @@ public class BookOptions {
                 f.byField("CorpNo_", handle.getCorpNo());
                 f.byField("Code_", ACode);
                 f.open();
-                if (!f.getDataSet().eof())
+                if (!f.getDataSet().eof()) {
                     buff.setField("Value_", f.getDataSet().getString("Value_"));
-                else
+                } else {
                     buff.setField("Value_", ADefault);
+                }
 
             }
             return buff.getString("Value_");
@@ -254,13 +257,14 @@ public class BookOptions {
 
     public static String getOption2(IHandle handle, String ACode, String def) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
-            if (buff.isNull() || buff.getString("Value_").equals("")) {
+            if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 log.info("reset buffer.");
                 LocalService ser = new LocalService(handle, "SvrBookOption");
-                if (ser.exec("Code_", ACode) && !ser.getDataOut().eof())
+                if (ser.exec("Code_", ACode) && !ser.getDataOut().eof()) {
                     buff.setField("Value_", ser.getDataOut().getString("Value_"));
-                else
+                } else {
                     buff.setField("Value_", def);
+                }
 
             }
             return buff.getString("Value_");
@@ -268,21 +272,23 @@ public class BookOptions {
     }
 
     public static boolean checkStockNum(IHandle handle, double AStock) {
-        if (getOption(handle, EnableStockLessControl, "off").equals("on"))
+        if ("on".equals(getOption(handle, EnableStockLessControl, "off"))) {
             return AStock >= 0;
-        else
+        } else {
             return true;
+        }
     }
 
     // 是否不允许库存为负数
     public static boolean isEnableStockLessControl(IHandle handle) {
-        return getOption(handle, EnableStockLessControl, "off").equals("on");
+        return "on".equals(getOption(handle, EnableStockLessControl, "off"));
     }
 
     // 是否启动与ERP同步
     public static boolean isEnableSyncERP(IHandle handle, DataSet dataIn) {
-        if (dataIn.getHead().exists("SyncERPToVine"))
+        if (dataIn.getHead().exists("SyncERPToVine")) {
             return false;
+        }
         return getEnabled(handle, EnableSyncERP);
     }
 
@@ -311,7 +317,7 @@ public class BookOptions {
         String paramKey = AccInitYearMonth;
         // String result = getOption(owner, paramKey, "201301";
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), paramKey)) {
-            if (buff.isNull() || buff.getString("Value_").equals("")) {
+            if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
                 BuildQuery f = new BuildQuery(handle);
                 String corpNo = handle.getCorpNo();
@@ -338,29 +344,33 @@ public class BookOptions {
             result = buff.getString("Value_");
         }
         // 做返回值复查
-        if (result == null || "".equals(result))
+        if (result == null || "".equals(result)) {
             throw new RuntimeException("期初年月未设置，请先到系统参数中设置好后再进行此作业!");
+        }
         return result;
     }
 
     // 从系统帐套中取开帐日期
     private static TDate getBookCreateDate(IHandle handle) {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-        BuildQuery f = new BuildQuery(handle);
-        String corpNo = handle.getCorpNo();
-        f.byField("CorpNo_", corpNo);
-        f.add("select AppDate_ from %s", systemTable.getBookInfo());
-        SqlQuery ds = f.open();
-        if (ds.size() == 0)
-            throw new RuntimeException(String.format("没有找到帐套：%s", corpNo));
-        return ds.getDate("AppDate_");
+        IServiceProxy svr = ServiceFactory.get(handle);
+        svr.setService("ApiOurInfo.getBookCreateDate");
+        if (!svr.exec("CorpNo_", handle.getCorpNo())) {
+            throw new RuntimeException(svr.getMessage());
+        }
+
+        DataSet cdsTmp = svr.getDataOut();
+        if (cdsTmp.size() == 0) {
+            throw new RuntimeException(String.format("没有找到帐套：%s", handle.getCorpNo()));
+        }
+        return cdsTmp.getDate("AppDate_");
 
     }
 
     public static String getParamName(String paramCode) {
         String result = items.get(paramCode);
-        if (result == null || "".equals(result))
+        if (result == null || "".equals(result)) {
             throw new RuntimeException("没有注册的帐套参数: " + paramCode);
+        }
         return result;
     }
 
@@ -371,8 +381,9 @@ public class BookOptions {
 
     public static String getDefaultCWCode(IHandle handle) {
         String result = getOption(handle, DefaultCWCode).trim();
-        if (result == null || "".equals(result))
+        if (result == null || "".equals(result)) {
             result = "仓库";
+        }
         return result;
     }
 
@@ -382,20 +393,6 @@ public class BookOptions {
 
     public static boolean getEnableTranDetailCW(IHandle handle) {
         return getEnabled(handle, EnableTranDetailCW);
-    }
-
-    // 仓别控制权限
-    public static TWHControl getWHControl(IHandle handle) {
-        // 拆装单单头仓别管控
-        boolean enableWHManage = BookOptions.getEnableWHManage(handle);
-        // 拆装单单身仓别管控
-        boolean enableTranDetailCW = BookOptions.getEnableTranDetailCW(handle);
-        if (enableWHManage && enableTranDetailCW)
-            return TWHControl.whcBody;
-        else if (enableWHManage)
-            return TWHControl.whcHead;
-        else
-            return TWHControl.whcNone;
     }
 
     /*
@@ -426,7 +423,7 @@ public class BookOptions {
         return getEnabled(handle, UpdateCurrentMonthProfit);
     }
 
-    // 是否禁止所有用户在电脑上保存帐号，禁止后首页不显示账套信息
+    // 是否禁止所有用户在电脑上保存帐号，禁止后首页不显示帐套信息
     public static boolean isDissableAccountSave(IHandle handle) {
         return getEnabled(handle, DisableAccountSave);
     }
@@ -446,23 +443,29 @@ public class BookOptions {
         return getEnabled(handle, OnlineToOfflineMenu);
     }
 
-    // 增加账套参数
+    // 增加帐套参数
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-        SqlQuery cdsTmp = new SqlQuery(handle);
-        cdsTmp.add("select * from %s where CorpNo_=N'%s' and Code_='%s' ", systemTable.getBookOptions(), corpNo,
-                paramKey);
-        cdsTmp.open();
-        if (!cdsTmp.eof())
+        IServiceProxy svr1 = ServiceFactory.get(handle);
+        svr1.setService("ApiOurInfo.getVineOptionsByCode");
+        if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {
+            throw new RuntimeException(svr1.getMessage());
+        }
+        DataSet dataSet = svr1.getDataOut();
+        if (!dataSet.eof()) {
             return;
+        }
         String paramName = getParamName(paramKey);
-        cdsTmp.append();
-        cdsTmp.setField("CorpNo_", corpNo);
-        cdsTmp.setField("Code_", paramKey);
-        cdsTmp.setField("Name_", paramName);
-        cdsTmp.setField("Value_", def);
-        cdsTmp.setField("UpdateKey_", Utils.newGuid());
-        cdsTmp.post();
+
+        IServiceProxy svr2 = ServiceFactory.get(handle);
+        svr2.setService("ApiOurInfo.appendToCorpOption");
+        Record headIn = svr2.getDataIn().getHead();
+        headIn.setField("CorpNo_", corpNo);
+        headIn.setField("Code_", paramKey);
+        headIn.setField("Name_", paramName);
+        headIn.setField("Value_", def);
+        if (!svr2.exec()) {
+            throw new RuntimeException(svr2.getMessage());
+        }
 
     }
 }

@@ -32,7 +32,7 @@ public class UIToolBar extends UIComponent {
         }
         super.outputCss(html);
         html.println(">");
-        html.println("<div style='overflow-y: auto; height: 100%;'>");
+        html.println("<div style='overflow-y: auto; height: 100%; position: relative;'>");
 
         if (sheets.size() > 0) {
             // 分组归类

@@ -1,7 +1,20 @@
 package cn.cerc.mis.core;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.ApplicationConfig;
+import cn.cerc.mis.config.IAppStaticFile;
+import cn.cerc.mis.language.R;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mis.page.JsonPage;
+import cn.cerc.mis.page.JspPage;
+import cn.cerc.mis.page.RedirectPage;
+import cn.cerc.mis.rds.StubHandle;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,18 +24,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.config.IAppStaticFile;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.page.JspPage;
-import cn.cerc.mis.page.RedirectPage;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class StartForms implements Filter {
@@ -35,11 +40,19 @@ public class StartForms implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
 
         String uri = req.getRequestURI();
+        log.debug("uri {}", uri);
 
-        int prefix = uri.indexOf("/", 2);
-        if (prefix < 0) {
+        /**
+         * http://127.0.0.1:8103/
+         * http://127.0.0.1:8103
+         * http://127.0.0.1:8103/public
+         * http://127.0.0.1:8103/public/
+         * http://127.0.0.1:8103/favicon.ico
+         */
+        if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
             IAppConfig conf = Application.getAppConfig();
-            resp.sendRedirect(String.format("/public/%s", conf.getFormWelcome()));
+            String redirect = String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome());
+            resp.sendRedirect(redirect);
             return;
         }
 
@@ -58,14 +71,19 @@ public class StartForms implements Filter {
              * 2、截取当前的资源路径，将资源文件重定向到容器中的项目路径 3、例如/ /131001/images/systeminstall-pc.png ->
              * /forms/images/systeminstall-pc.png
              */
-            log.info("before {}", uri);
+            log.debug("before {}", uri);
             IAppConfig conf = Application.getAppConfig();
-            String source = "/" + conf.getPathForms() + uri.substring(uri.indexOf("/", 2));
-            request.getServletContext().getRequestDispatcher(source).forward(request, response);
-            log.info("after  {}", source);
+
+            int index = uri.indexOf("/", 2);
+            if (index < 0) {
+                request.getServletContext().getRequestDispatcher(uri).forward(request, response);
+            } else {
+                String source = "/" + conf.getPathForms() + uri.substring(index);
+                request.getServletContext().getRequestDispatcher(source).forward(request, response);
+                log.debug("after  {}", source);
+            }
             return;
         }
-
         if (uri.contains("service/")) {
             chain.doFilter(req, resp);
             return;
@@ -110,16 +128,16 @@ public class StartForms implements Filter {
             }
 
             // 设备讯息
-            ClientDevice info = new ClientDevice();
-            info.setRequest(req);
-            req.setAttribute("_showMenu_", !ClientDevice.device_ee.equals(info.getDevice()));
-            form.setClient(info);
+            ClientDevice client = new ClientDevice();
+            client.setRequest(req);
+            req.setAttribute("_showMenu_", !ClientDevice.APP_DEVICE_EE.equals(client.getDevice()));
+            form.setClient(client);
 
             // 建立数据库资源
             IHandle handle = Application.getHandle();
             try {
                 handle.setProperty(Application.sessionId, req.getSession().getId());
-                handle.setProperty(Application.deviceLanguage, info.getLanguage());
+                handle.setProperty(Application.deviceLanguage, client.getLanguage());
                 req.setAttribute("myappHandle", handle);
                 form.setHandle(handle);
 
@@ -129,7 +147,7 @@ public class StartForms implements Filter {
                     IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage",
                             "appLoginDefault");
                     page.init(form);
-                    String cmd = page.checkToken(info.getSid());
+                    String cmd = page.checkToken(client.getToken());
                     if (cmd != null) {
                         // 若需要登录，则跳转到登录页
                         if (cmd.startsWith("redirect:")) {
@@ -139,8 +157,10 @@ public class StartForms implements Filter {
                                     cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
-                    } else // 已授权通过
+                    } else {
+                        // 已授权通过
                         callForm(form, funcCode);
+                    }
                 } else {
                     callForm(form, funcCode);
                 }
@@ -221,20 +241,23 @@ public class StartForms implements Filter {
             LocalService app = new LocalService(form.getHandle());
             app.setService("SvrUserLogin.verifyMachine");
             app.getDataIn().getHead().setField("deviceId", deviceId);
-            if (verifyCode != null && !"".equals(verifyCode))
+            if (verifyCode != null && !"".equals(verifyCode)) {
                 app.getDataIn().getHead().setField("verifyCode", verifyCode);
-
-            if (app.exec())
-                result = true;
-            else {
-                int used = app.getDataOut().getHead().getInt("Used_");
-                if (used == 1)
-                    result = true;
-                else
-                    form.setParam("message", app.getMessage());
             }
-            if (result)
+
+            if (app.exec()) {
+                result = true;
+            } else {
+                int used = app.getDataOut().getHead().getInt("Used_");
+                if (used == 1) {
+                    result = true;
+                } else {
+                    form.setParam("message", app.getMessage());
+                }
+            }
+            if (result) {
                 buff.setField("VerifyMachine", true);
+            }
             return result;
         }
     }
@@ -246,25 +269,29 @@ public class StartForms implements Filter {
         if ("excel".equals(funcCode)) {
             response.setContentType("application/vnd.ms-excel; charset=UTF-8");
             response.addHeader("Content-Disposition", "attachment; filename=excel.csv");
-        } else
+        } else {
             response.setContentType("text/html;charset=UTF-8");
+        }
 
         Object pageOutput = "";
-        String sid = request.getParameter(RequestData.appSession_Key);
-        if (sid == null || sid.equals(""))
-            sid = request.getSession().getId();
+        String token = request.getParameter(RequestData.TOKEN);
+        if (token == null || "".equals(token)) {
+            token = request.getSession().getId();
+        }
 
         Method method = null;
         long startTime = System.currentTimeMillis();
         try {
+            // FIXME: 2019/12/8 ??? CLIENTVER
             String CLIENTVER = request.getParameter("CLIENTVER");
-            if (CLIENTVER != null)
+            if (CLIENTVER != null) {
                 request.getSession().setAttribute("CLIENTVER", CLIENTVER);
+            }
 
             // 是否拥有此菜单调用权限
             if (!Application.getPassport(form.getHandle()).passForm(form)) {
                 log.warn(String.format("无权限执行 %s", request.getRequestURL()));
-                throw new RuntimeException("对不起，您没有权限执行此功能！");
+                throw new RuntimeException(R.asString(form.getHandle(), "对不起，您没有权限执行此功能！"));
             }
 
             // 专用测试账号则跳过设备认证的判断
@@ -276,8 +303,9 @@ public class StartForms implements Filter {
                         } catch (NoSuchMethodException e) {
                             method = form.getClass().getMethod(funcCode);
                         }
-                    } else
+                    } else {
                         method = form.getClass().getMethod(funcCode);
+                    }
                     pageOutput = method.invoke(form);
                 } catch (PageException e) {
                     form.setParam("message", e.getMessage());
@@ -303,10 +331,10 @@ public class StartForms implements Filter {
                     }
                 } else {
                     log.debug("没有进行认证过，跳转到设备认证页面");
-                    ServerConfig config = ServerConfig.getInstance();
+                    ServerConfig config = ServerConfig.INSTANCE;
                     String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
-                    // 若是专用APP登陆并且是iPhone，则不跳转设备登陆页，由iPhone原生客户端处理
-                    if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(ClientDevice.device_iphone)) {
+                    // 若是专用APP登录并且是iPhone，则不跳转设备登录页，由iPhone原生客户端处理
+                    if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(ClientDevice.APP_DEVICE_IPHONE)) {
                         try {
                             method = form.getClass().getMethod(funcCode + "_phone");
                         } catch (NoSuchMethodException e) {
@@ -315,7 +343,13 @@ public class StartForms implements Filter {
                         form.getRequest().setAttribute("needVerify", "true");
                         pageOutput = method.invoke(form);
                     } else {
-                        pageOutput = new RedirectPage(form, Application.getAppConfig().getFormVerifyDevice());
+                        if (form instanceof IJSONForm) {
+                            JsonPage output = new JsonPage(form);
+                            output.setResultMessage(false, "您的设备没有经过安全校验，无法继续作业");
+                            pageOutput = output;
+                        } else {
+                            pageOutput = new RedirectPage(form, Application.getAppConfig().getFormVerifyDevice());
+                        }
                     }
                 }
             }
@@ -326,9 +360,9 @@ public class StartForms implements Filter {
                     IPage output = (IPage) pageOutput;
                     String cmd = output.execute();
                     if (cmd != null) {
-                        if (cmd.startsWith("redirect:"))
+                        if (cmd.startsWith("redirect:")) {
                             response.sendRedirect(cmd.substring(9));
-                        else {
+                        } else {
                             String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
                                     cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
@@ -347,8 +381,9 @@ public class StartForms implements Filter {
             if (method != null) {
                 long timeout = 1000;
                 Webpage webpage = method.getAnnotation(Webpage.class);
-                if (webpage != null)
+                if (webpage != null) {
                     timeout = webpage.timeout();
+                }
                 checkTimeout(form, funcCode, startTime, timeout);
             }
         }
@@ -357,30 +392,32 @@ public class StartForms implements Filter {
     protected void checkTimeout(IForm form, String funcCode, long startTime, long timeout) {
         long totalTime = System.currentTimeMillis() - startTime;
         if (totalTime > timeout) {
-            String tmp[] = form.getClass().getName().split("\\.");
+            String[] tmp = form.getClass().getName().split("\\.");
             String pageCode = tmp[tmp.length - 1] + "." + funcCode;
             String dataIn = new Gson().toJson(form.getRequest().getParameterMap());
-            if (dataIn.length() > 200)
+            if (dataIn.length() > 200) {
                 dataIn = dataIn.substring(0, 200);
-            log.warn(String.format("pageCode:%s, tickCount:%s, dataIn: %s", pageCode, totalTime, dataIn));
+            }
+            log.warn("pageCode: {}, tickCount: {}, dataIn: {}", pageCode, totalTime, dataIn);
         }
     }
 
     protected String getRequestCode(HttpServletRequest req) {
         String url = null;
-        log.info("servletPath {}", req.getServletPath());
-        String args[] = req.getServletPath().split("/");
+        log.debug("servletPath {}", req.getServletPath());
+        String[] args = req.getServletPath().split("/");
         if (args.length == 2 || args.length == 3) {
             if ("".equals(args[0]) && !"".equals(args[1])) {
-                if (args.length == 3)
+                if (args.length == 3) {
                     url = args[2];
-                else {
-                    String sid = (String) req.getAttribute(RequestData.appSession_Key);
+                } else {
+                    String token = (String) req.getAttribute(RequestData.TOKEN);
                     IAppConfig conf = Application.getAppConfig();
-                    if (sid != null && !"".equals(sid))
+                    if (token != null && !"".equals(token)) {
                         url = conf.getFormDefault();
-                    else
+                    } else {
                         url = conf.getFormWelcome();
+                    }
                 }
             }
         }
@@ -388,39 +425,31 @@ public class StartForms implements Filter {
     }
 
     protected boolean isExperienceAccount(IForm form) {
-        return getIphoneAppstoreAccount().equals(form.getHandle().getUserCode())
-                || getBaseVerAccount().equals(form.getHandle().getUserCode())
-                || getLineWinderAccount().equals(form.getHandle().getUserCode())
-                || getTaiWanAccount().equals(form.getHandle().getUserCode());
+        String userCode = form.getHandle().getUserCode();
+        return experience.contains(userCode);
     }
 
-    // iPhone 上架时专用测试帐号以及专业版体验账号
-    protected String getIphoneAppstoreAccount() {
-        return "15202406";
-    }
+    private static List<String> experience = new ArrayList<>();
 
-    // 基础版体验账号
-    protected String getBaseVerAccount() {
-        return "16307405";
-    }
+    {
+        // iPhone 上架时专用测试帐号以及专业版体验账号
+        experience.add("15202406");
 
-    // 喜曼多专用APP测试账号与iPhone上架测试账号
-    protected String getSimagoAccount() {
-        return "47583201";
-    }
+        // 基础版体验账号
+        experience.add("16307405");
 
-    // 狼王专用APP测试账号与iPhone上架测试账号
-    protected String getLineWinderAccount() {
-        return "15531101";
-    }
+        // 喜曼多专用APP测试账号与iPhone上架测试账号
+        experience.add("47583201");
 
-    // 台湾地区地藤普及版测试账号
-    protected String getTaiWanAccount() {
-        return "47598601";
+        // 狼王专用APP测试账号与iPhone上架测试账号
+        experience.add("15531101");
+
+        // 队列专用用户代码
+        experience.add(StubHandle.DefaultUser);
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -428,4 +457,5 @@ public class StartForms implements Filter {
     public void destroy() {
 
     }
+
 }

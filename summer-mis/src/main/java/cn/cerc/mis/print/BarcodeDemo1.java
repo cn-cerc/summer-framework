@@ -56,7 +56,7 @@ public class BarcodeDemo1 {
         BarcodePDF417 pdf = new BarcodePDF417();
         pdf.setText(codeString);
         Image pdfImg = pdf.createAwtImage(Color.black, Color.white);
-        BufferedImage img = new BufferedImage((int) pdfImg.getWidth(null), (int) pdfImg.getHeight(null),
+        BufferedImage img = new BufferedImage(pdfImg.getWidth(null), pdfImg.getHeight(null),
                 BufferedImage.TYPE_INT_RGB);
         Graphics g = img.getGraphics();
         g.drawImage(pdfImg, 0, 0, Color.white, null);

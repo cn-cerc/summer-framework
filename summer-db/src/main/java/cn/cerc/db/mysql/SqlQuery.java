@@ -81,8 +81,9 @@ public class SqlQuery extends DataQuery {
 
     @Override
     public DataQuery open() {
-        if (session == null)
+        if (session == null) {
             throw new RuntimeException("SqlConnection is null");
+        }
         return this._open(false);
     }
 
@@ -131,11 +132,13 @@ public class SqlQuery extends DataQuery {
             this.open();
             return this.size();
         }
-        if (session == null)
+        if (session == null) {
             throw new RuntimeException("SqlSession is null");
+        }
         Connection conn = session.getClient();
-        if (conn == null)
+        if (conn == null) {
             throw new RuntimeException("Connection is null");
+        }
         try {
             try (Statement st = conn.createStatement()) {
                 log.debug(sql.replaceAll("\r\n", " "));
@@ -156,15 +159,17 @@ public class SqlQuery extends DataQuery {
         try {
             this.setOnAfterAppend(null);
             rs.last();
-            if (getSqlText().getMaximum() > -1)
+            if (getSqlText().getMaximum() > -1) {
                 BigdataException.check(this, this.size() + rs.getRow());
+            }
             // 取得字段清单
             ResultSetMetaData meta = rs.getMetaData();
             FieldDefs defs = this.getFieldDefs();
             for (int i = 1; i <= meta.getColumnCount(); i++) {
                 String field = meta.getColumnLabel(i);
-                if (!defs.exists(field))
+                if (!defs.exists(field)) {
                     defs.add(field);
+                }
             }
             // 取得所有数据
             if (rs.first()) {
@@ -197,8 +202,9 @@ public class SqlQuery extends DataQuery {
     @Override
     public SqlQuery setActive(boolean value) {
         if (value) {
-            if (!this.active)
+            if (!this.active) {
                 this.open();
+            }
             this.active = true;
         } else {
             this.close();
@@ -208,8 +214,9 @@ public class SqlQuery extends DataQuery {
 
     @Override
     public void post() {
-        if (this.isBatchSave())
+        if (this.isBatchSave()) {
             return;
+        }
         Record record = this.getCurrent();
         if (record.getState() == DataSetState.dsInsert) {
             beforePost();
@@ -226,23 +233,26 @@ public class SqlQuery extends DataQuery {
     public void delete() {
         Record record = this.getCurrent();
         super.delete();
-        if (record.getState() == DataSetState.dsInsert)
+        if (record.getState() == DataSetState.dsInsert) {
             return;
-        if (this.isBatchSave())
+        }
+        if (this.isBatchSave()) {
             delList.add(record);
-        else {
+        } else {
             getDefaultOperator().delete(record);
         }
     }
 
     @Override
     public void save() {
-        if (!this.isBatchSave())
+        if (!this.isBatchSave()) {
             throw new RuntimeException("batchSave is false");
+        }
         IDataOperator operator = getDefaultOperator();
         // 先执行删除
-        for (Record record : delList)
+        for (Record record : delList) {
             operator.delete(record);
+        }
         delList.clear();
         // 再执行增加、修改
         this.first();
@@ -263,16 +273,18 @@ public class SqlQuery extends DataQuery {
         if (operator == null) {
             SqlOperator def = new SqlOperator(this.handle);
             String sql = this.getSqlText().getText();
-            if (sql != null)
+            if (sql != null) {
                 def.setTableName(SqlOperator.findTableName(sql));
+            }
             operator = def;
         }
         if (operator instanceof SqlOperator) {
             SqlOperator opear = operator;
             if (opear.getTableName() == null) {
                 String sql = this.getSqlText().getText();
-                if (sql != null)
+                if (sql != null) {
                     opear.setTableName(SqlOperator.findTableName(sql));
+                }
             }
         }
         return operator;
@@ -352,4 +364,5 @@ public class SqlQuery extends DataQuery {
         super.add(format, args);
         return this;
     }
+
 }

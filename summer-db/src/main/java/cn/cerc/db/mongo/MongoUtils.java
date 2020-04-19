@@ -39,12 +39,15 @@ public class MongoUtils {
     public List<Document> findDocument(MongoCollection<Document> coll, BasicDBObject projection,
                                        BasicDBObject fileterBasiObject, BasicDBObject sort, Integer skip, Integer limit) {
         List<Document> list = null;
-        if (skip != null)
+        if (skip != null) {
             skip = skip <= 0 ? 0 : skip;
-        if (limit != null)
+        }
+        if (limit != null) {
             limit = limit >= 5000 ? 5000 : limit;
-        if (projection == null)
+        }
+        if (projection == null) {
             projection = new BasicDBObject();
+        }
         sort = sort == null ? new BasicDBObject("_id", 1) : sort;
         try {
             if (skip != null && limit != null) {

@@ -10,11 +10,83 @@ public class UrlRecord {
     private String name;
     private String title;
     private String target;
-    private Map<String, String> params = new HashMap<>();
     private String hintMsg;
     private String id;
     private String imgage;
     private String arrow;
+
+    private Map<String, String> params = new HashMap<>();
+
+    public static class Builder {
+        // Required parameters
+        private String site;
+
+        // Optional parameters - initialized to default values
+        private String name;
+        private String title;
+        private String target;
+        private String hintMsg;
+        private String id;
+        private String imgage;
+        private String arrow;
+        private Map<String, String> params = new HashMap<>();
+
+        public Builder(String site) {
+            this.site = site;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder target(String target) {
+            this.target = target;
+            return this;
+        }
+
+        public Builder hintMsg(String hintMsg) {
+            this.hintMsg = hintMsg;
+            return this;
+        }
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder imgage(String imgage) {
+            this.imgage = imgage;
+            return this;
+        }
+
+        public Builder put(String key, String value) {
+            this.params.put(key, value);
+            return this;
+        }
+
+        public UrlRecord build() {
+            return new UrlRecord(this);
+        }
+
+    }
+
+    private UrlRecord(Builder builder) {
+        this.site = builder.site;
+        this.name = builder.name;
+        this.title = builder.title;
+        this.target = builder.target;
+        this.hintMsg = builder.hintMsg;
+        this.id = builder.id;
+        this.imgage = builder.imgage;
+        this.arrow = builder.arrow;
+        this.params = builder.params;
+    }
 
     public UrlRecord() {
     }
@@ -23,11 +95,6 @@ public class UrlRecord {
         super();
         this.site = site;
         this.name = name;
-    }
-
-    @Deprecated // 请改为 putParam
-    public UrlRecord addParam(String key, String value) {
-        return putParam(key, value);
     }
 
     public UrlRecord putParam(String key, String value) {
@@ -68,8 +135,9 @@ public class UrlRecord {
 
     public String getUrl() {
         StringBuilder sl = new StringBuilder();
-        if (site != null)
+        if (site != null) {
             sl.append(site);
+        }
 
         int i = 0;
         for (String key : params.keySet()) {
@@ -78,8 +146,9 @@ public class UrlRecord {
             sl.append(key);
             sl.append("=");
             String value = params.get(key);
-            if (value != null)
+            if (value != null) {
                 sl.append(encodeUTF8(value));
+            }
         }
         return sl.toString();
     }
@@ -143,4 +212,5 @@ public class UrlRecord {
         this.arrow = arrow;
         return this;
     }
+
 }

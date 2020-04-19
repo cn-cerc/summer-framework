@@ -28,8 +28,9 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn {
 
     @Override
     public String getText(Record dataSet) {
-        if (dataSet == null)
+        if (dataSet == null) {
             return null;
+        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
             buildText.outputText(dataSet, html);
@@ -49,8 +50,9 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn {
         if (!this.search) {
             html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "："));
             writeInput(html);
-            if (this.title != null)
+            if (this.title != null) {
                 html.print("<label for=\"%s\">%s</label>", this.getId(), this.title);
+            }
         } else {
             writeInput(html);
             html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName()));
@@ -62,14 +64,18 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn {
                 this.getId()));
         boolean val = false;
         DataSet dataSet = dataSource != null ? dataSource.getDataSet() : null;
-        if (dataSet != null)
+        if (dataSet != null) {
             val = dataSet.getBoolean(field);
-        if (val)
+        }
+        if (val) {
             html.print(" checked");
-        if (this.isReadonly())
+        }
+        if (this.isReadonly()) {
             html.print(" disabled");
-        if (this.onclick != null)
+        }
+        if (this.onclick != null) {
             html.print(" onclick=\"%s\"", this.onclick);
+        }
         html.print(">");
     }
 
@@ -94,22 +100,26 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn {
 
     @Override
     public String format(Object value) {
-        if (!(value instanceof Record))
+        if (!(value instanceof Record)) {
             return value.toString();
+        }
 
         Record ds = (Record) value;
-        if (this.isReadonly())
+        if (this.isReadonly()) {
             return getText(ds);
+        }
 
-        if (!(this.getOwner() instanceof AbstractGridLine))
+        if (!(this.getOwner() instanceof AbstractGridLine)) {
             return getText(ds);
+        }
 
         return getEditor().format(ds);
     }
 
     public CheckEditor getEditor() {
-        if (editor == null)
+        if (editor == null) {
             editor = new CheckEditor(this);
+        }
         return editor;
     }
 

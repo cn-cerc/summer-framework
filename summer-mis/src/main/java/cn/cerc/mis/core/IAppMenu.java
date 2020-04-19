@@ -7,8 +7,11 @@ import java.util.List;
 public interface IAppMenu {
 
     // 返回系统菜单定义
-    public MenuItem getItem(String menuId);
+    MenuItem getItem(String menuId);
+
+    // 返回系统所有的Module
+    List<MenuItem> getModule(IHandle handle);
 
     // 返回指定父菜单下的所有子菜单
-    public List<MenuItem> getList(IHandle handle, String parentId, boolean security);
+    List<MenuItem> getList(IHandle handle, String parentId, boolean security);
 }

@@ -30,7 +30,7 @@ public class WeixinSignUtil {
         }
 
         // 将sha1加密后的字符串可与signature对比，标识该请求来源于微信
-        return tmpStr != null ? tmpStr.equals(signature.toUpperCase()) : false;
+        return tmpStr != null && tmpStr.equals(signature.toUpperCase());
     }
 
     // 将字节数组转换为十六进制字符串

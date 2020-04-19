@@ -10,10 +10,12 @@ public class PageHelp {
     private static String xmlFile = "classpath:page-help.xml";
 
     public static UISheetHelp get(Component owner, String beanId) {
-        if (app == null)
+        if (app == null) {
             app = new FileSystemXmlApplicationContext(xmlFile);
-        if (!app.containsBean(beanId))
+        }
+        if (!app.containsBean(beanId)) {
             return null;
+        }
         UISheetHelp side = app.getBean(beanId, UISheetHelp.class);
         side.setOwner(owner);
         return side;

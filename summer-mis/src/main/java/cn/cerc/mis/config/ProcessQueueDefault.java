@@ -2,7 +2,7 @@ package cn.cerc.mis.config;
 
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.mysql.BatchScript;
-import cn.cerc.db.queue.AliyunQueueConnection;
+import cn.cerc.db.queue.QueueDB;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.core.BookHandle;
@@ -24,11 +24,12 @@ public class ProcessQueueDefault extends AbstractTask {
     public void execute() throws Exception {
         QueueQuery query = new QueueQuery(this);
         query.setQueueMode(QueueMode.recevie);
-        query.add("select * from %s ", AliyunQueueConnection.defaultQueue);
+        query.add("select * from %s ", QueueDB.SUMMER);
         query.open();
         if (!query.getActive()) {
             return;
         }
+        log.warn("ProcessQueueDefault {}", query.getJSON());
 
         // 建立服务执行环境
         String corpNo = query.getHead().getString("_corpNo_");
@@ -52,6 +53,7 @@ public class ProcessQueueDefault extends AbstractTask {
         // 调用队列内容中指定的服务
         BookHandle bh = new BookHandle(this, corpNo);
         bh.setUserCode(userCode);
+
         LocalService svr = new LocalService(bh);
         svr.setService(service);
         svr.getDataIn().appendDataSet(query, true);

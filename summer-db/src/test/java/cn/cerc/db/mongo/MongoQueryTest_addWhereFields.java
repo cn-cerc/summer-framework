@@ -1,18 +1,18 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import com.mongodb.BasicDBObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class MongoQueryTest_addWhereFields {
-    private StubHandle handle;
+    private StubHandleText handle;
     private MongoQuery ds;
 
     @Before
     public void setUp() throws Exception {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         ds = new MongoQuery(handle);
     }
 

@@ -32,13 +32,14 @@ public class BigConnection implements Closeable {
     public BigConnection(boolean debugConnection) {
         super();
         this.debugConnection = debugConnection;
-        if (!debugConnection)
+        if (!debugConnection) {
             connection = BigConnection.popConnection();
+        }
     }
 
     public synchronized static ComboPooledDataSource getDataSource() {
         if (dataSource == null) {
-            ServerConfig config = ServerConfig.getInstance();
+            ServerConfig config = ServerConfig.INSTANCE;
 
             String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
             String db = config.getProperty(MysqlConnection.rds_database, "appdb");
@@ -96,8 +97,9 @@ public class BigConnection implements Closeable {
         // e1.printStackTrace();
         // }
         Connection conn = connections.get();// 获取当前线程的事务连接
-        if (conn != null)
+        if (conn != null) {
             return conn;
+        }
         try {
             return getDataSource().getConnection();
         } catch (SQLException e) {
@@ -113,8 +115,9 @@ public class BigConnection implements Closeable {
      */
     public static void beginTransaction() throws SQLException {
         Connection con = connections.get();// 获取当前线程的事务连接
-        if (con != null)
+        if (con != null) {
             throw new SQLException("已经开启了事务，不能重复开启！");
+        }
         con = getDataSource().getConnection();// 给con赋值，表示开启了事务
         con.setAutoCommit(false);// 设置为手动提交
         connections.set(con);// 把当前事务连接放到tl中
@@ -127,8 +130,9 @@ public class BigConnection implements Closeable {
      */
     public static void commitTransaction() throws SQLException {
         Connection con = connections.get();// 获取当前线程的事务连接
-        if (con == null)
+        if (con == null) {
             throw new SQLException("没有事务不能提交！");
+        }
         con.commit();// 提交事务
         con.close();// 关闭连接
         con = null;// 表示事务结束！
@@ -142,8 +146,9 @@ public class BigConnection implements Closeable {
      */
     public static void rollbackTransaction() throws SQLException {
         Connection con = connections.get();// 获取当前线程的事务连接
-        if (con == null)
+        if (con == null) {
             throw new SQLException("没有事务不能回滚！");
+        }
         con.rollback();
         con.close();
         con = null;
@@ -168,22 +173,24 @@ public class BigConnection implements Closeable {
     public Connection get() {
         if (debugConnection) {
             try {
-                ServerConfig config = ServerConfig.getInstance();
+                ServerConfig config = ServerConfig.INSTANCE;
                 String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
                 String db = config.getProperty(MysqlConnection.rds_database, "appdb");
                 String url = String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);
                 String user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
                 String pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
                 Class.forName("com.mysql.jdbc.Driver");
-                if (host == null || user == null || pwd == null || db == null)
+                if (host == null || user == null || pwd == null || db == null) {
                     throw new RuntimeException("RDS配置为空，无法连接主机！");
+                }
                 log.debug("create connection for mysql: " + host);
                 return DriverManager.getConnection(url, user, pwd);
             } catch (ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);
             }
-        } else
+        } else {
             return this.connection;
+        }
     }
 
     @Override

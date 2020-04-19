@@ -9,19 +9,15 @@
     <version>2.1.1</version>
     <packaging>pom</packaging>
 
-    <name>summer-framework</name>
-
     <modules>
-        <module>summer-core</module>
         <module>summer-db</module>
-        <module>summer-security</module>
         <module>summer-mis</module>
-        <module>summer-sms</module>
     </modules>
 
     <properties>
-        <org.springframework.version>4.3.18.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.25.RELEASE</org.springframework.version>
         <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+        <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
         <quartz.version>2.2.1</quartz.version>
     </properties>
 
@@ -156,6 +152,11 @@
                 <version>${mysql-connector-java.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>mssql-jdbc</artifactId>
+                <version>${mssql-jdbc.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>1.10</version>
@@ -207,16 +208,6 @@
                 <groupId>c3p0</groupId>
                 <artifactId>c3p0</artifactId>
                 <version>0.9.1.2</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>summer-db</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>summer-security</artifactId>
-                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.jexcelapi</groupId>
@@ -351,12 +342,12 @@
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Release Repository</name>
-            <url>https://nexus.jayun.site/nexus/content/repositories/releases/</url>
+            <url>https://nexus.diteng.site/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>https://nexus.jayun.site/nexus/content/repositories/snapshots/</url>
+            <url>https://nexus.diteng.site/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

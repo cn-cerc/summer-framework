@@ -10,23 +10,23 @@ import java.io.IOException;
 @Slf4j
 public class RequestData {
 
-    public static final String appSession_Key = "sid";
-    public static final String webclient = "webclient";
+    // FIXME: 2019/12/7 sid 应该改为 token
+    public static final String TOKEN = "sid";
+    public static final String WEBCLIENT = "webclient";
 
-    private String sid;
+    private String token;
     private String param;
     private String serviceCode;
 
     public RequestData() {
-
     }
 
     public RequestData(HttpServletRequest request) {
-        sid = request.getParameter(appSession_Key);
-        serviceCode = request.getParameter("class");
-        if (serviceCode == null) {
+        this.token = request.getParameter(RequestData.TOKEN);
+        this.serviceCode = request.getParameter("class");
+        if (this.serviceCode == null) {
             try {
-                serviceCode = request.getPathInfo().substring(1);
+                this.serviceCode = request.getPathInfo().substring(1);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 throw new RuntimeException("服务名不能为空！");
@@ -41,26 +41,26 @@ public class RequestData {
                 params.append(line);
             }
 
-            param = params.toString();
-            if (param != null && param.length() > 1 && param.startsWith("[")) {
-                if (param.endsWith("]\r\n")) {
-                    param = param.substring(1, param.length() - 3);
-                } else if (param.endsWith("]")) {
-                    param = param.substring(1, param.length() - 1);
+            this.param = params.toString();
+            if (this.param != null && this.param.length() > 1 && this.param.startsWith("[")) {
+                if (this.param.endsWith("]\r\n")) {
+                    this.param = this.param.substring(1, this.param.length() - 3);
+                } else if (this.param.endsWith("]")) {
+                    this.param = this.param.substring(1, this.param.length() - 1);
                 }
             }
 
-            if (param != null && param.equals("")) {
-                param = null;
+            if (this.param != null && "".equals(this.param)) {
+                this.param = null;
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            param = null;
+            this.param = null;
         }
     }
 
-    public String getSid() {
-        return sid;
+    public String getToken() {
+        return token;
     }
 
     public String getParam() {
@@ -79,6 +79,7 @@ public class RequestData {
         this.serviceCode = service;
     }
 
+    @Override
     public String toString() {
         Gson gson = new Gson();
         return gson.toJson(this);

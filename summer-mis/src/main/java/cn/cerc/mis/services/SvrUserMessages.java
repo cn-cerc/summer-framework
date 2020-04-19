@@ -15,11 +15,13 @@ import cn.cerc.mis.queue.AsyncService;
 
 import java.math.BigInteger;
 
-//用户消息操作
+/**
+ * 异步消息操作
+ */
 public class SvrUserMessages extends CustomService {
 
-    /**
-     * @return 取出所有的等待处理的消息列表
+    /*
+     * 取出所有的等待处理的消息列表
      */
     public boolean getWaitList() {
         SqlQuery ds = new SqlQuery(this);
@@ -32,8 +34,8 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /**
-     * @return 增加一条新的消息记录
+    /*
+     * 增加一条新的消息记录
      */
     public boolean appendRecord() {
         Record headIn = getDataIn().getHead();
@@ -72,8 +74,9 @@ public class SvrUserMessages extends CustomService {
         cdsMsg.setField("UserCode_", userCode);
         cdsMsg.setField("Level_", level);
         cdsMsg.setField("Subject_", subject);
-        if (content.length() > 0)
-            cdsMsg.setField("Content_", content.toString());
+        if (content.length() > 0) {
+            cdsMsg.setField("Content_", content);
+        }
         cdsMsg.setField("AppUser_", handle.getUserCode());
         cdsMsg.setField("AppDate_", TDateTime.Now());
         // 日志类消息默认为已读
@@ -92,20 +95,21 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /**
-     * @return 读取指定的消息记录
+    /*
+     * 读取指定的消息记录
      */
     public boolean readAsyncService() {
         String msgId = getDataIn().getHead().getString("msgId");
-
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", systemTable.getUserMessages());
         ds.add("where Level_=%s", MessageLevel.Service.ordinal());
         ds.add("and Process_=%s", MessageProcess.wait.ordinal());
         ds.add("and UID_='%s'", msgId);
         ds.open();
-        if (ds.eof()) // 此任务可能被其它主机抢占
+        // 此任务可能被其它主机抢占
+        if (ds.eof()) {
             return false;
+        }
 
         Record headOut = getDataOut().getHead();
         headOut.setField("corpNo", ds.getString("CorpNo_"));
@@ -115,8 +119,8 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /**
-     * @return 更新异步服务进度
+    /*
+     * 更新异步服务进度
      */
     public boolean updateAsyncService() {
         String msgId = getDataIn().getHead().getString("msgId");

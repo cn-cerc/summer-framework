@@ -15,8 +15,9 @@ public class CustomControl implements BigControl {
 
     @Override
     public void registerTable(BigTable<?> table) {
-        if (!tables.contains(table))
+        if (!tables.contains(table)) {
             tables.add(table);
+        }
     }
 
     public List<BigTable<?>> getTables() {
@@ -25,13 +26,15 @@ public class CustomControl implements BigControl {
 
     public void start() {
         active.set(true);
-        for (BigTable<?> table : tables)
+        for (BigTable<?> table : tables) {
             table.startStorage();
+        }
     }
 
     public void stop() {
         active.set(false);
-        for (BigTable<?> table : tables)
+        for (BigTable<?> table : tables) {
             table.stopStorage();
+        }
     }
 }

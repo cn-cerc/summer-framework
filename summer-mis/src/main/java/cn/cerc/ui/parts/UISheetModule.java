@@ -24,8 +24,9 @@ public class UISheetModule extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
-        if (urls.size() == 0 && items.size() == 0)
+        if (urls.size() == 0 && items.size() == 0) {
             return;
+        }
 
         html.println("<section>");
         html.println("<div class=\"menus_list\">");
@@ -47,12 +48,14 @@ public class UISheetModule extends UISheet {
                 html.print(" target=\"%s\"", url.getTarget());
             }
             html.print(">%s</a>", url.getName());
-            if (url.getArrow() != null && !"".equals(url.getArrow()))
+            if (url.getArrow() != null && !"".equals(url.getArrow())) {
                 html.println("<img src='%s' />", url.getArrow());
+            }
             html.println("</li>");
         }
-        for (String key : items.keySet())
+        for (String key : items.keySet()) {
             html.println("<a href=\"%s\">%s</a>", key, items.get(key));
+        }
         html.println("</ul>");
         html.println("</div>");
         html.println("</section>");

@@ -14,7 +14,17 @@ public class UISheetLine extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
-        html.println("<section>");
+        html.println("<section");
+        if (this.cssStyle != null) {
+            html.print(" style=\"%s\"", this.cssStyle);
+        }
+        if (this.cssClass != null) {
+            html.print(" class=\"%s\"", this.cssClass);
+        }
+        if (this.getId() != null) {
+            html.print(" id=\"%s\"", this.getId());
+        }
+        html.println(">");
         html.print("<div class=\"title\">");
         html.print(this.getCaption());
         if (operaUrl != null) {

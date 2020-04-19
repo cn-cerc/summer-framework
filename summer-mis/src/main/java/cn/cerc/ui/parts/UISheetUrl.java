@@ -27,13 +27,15 @@ public class UISheetUrl extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
-        if (urls.size() == 0 && items.size() == 0)
+        if (urls.size() == 0 && items.size() == 0) {
             return;
+        }
 
-        if (this.isCloseSheet)
+        if (this.isCloseSheet) {
             html.println("<section style='display: none;'>");
-        else
+        } else {
             html.println("<section>");
+        }
         html.println("<div class=\"title\">%s</div>", this.getCaption());
         html.println("<div class=\"contents\">");
         for (UrlRecord url : urls) {
@@ -52,8 +54,9 @@ public class UISheetUrl extends UISheet {
             }
             html.println(">%s</a>", url.getName());
         }
-        for (String key : items.keySet())
+        for (String key : items.keySet()) {
             html.println("<a href=\"%s\">%s</a>", key, items.get(key));
+        }
         html.println("</div>");
         html.println("</section>");
     }

@@ -1,8 +1,16 @@
 package cn.cerc.ui.parts;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.core.Utils;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.language.R;
+import cn.cerc.mis.services.BookInfoRecord;
+import cn.cerc.mis.services.MemoryBookInfo;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
@@ -23,15 +31,60 @@ public class UIHeader extends UIComponent {
     private List<UIBottom> leftBottom = new ArrayList<>();
     // 右边菜单
     private List<UrlRecord> rightMenus = new ArrayList<>();
+    // 当前用户
+    private String userName;
+    // 欢迎语
+    private String welcome;
+    // logo图标src
+    private String logoSrc;
+    // 当前用户
+    private String currentUser;
+    // 当前帐套名称
+    private String corpNoName;
     // 退出
     private UrlRecord exitPage = null;
+    // 退出系统
+    private UrlRecord exitSystem = null;
+    // 菜单模组
+    private String moduleCode = null;
+
+    public void setHeadInfo(String logoSrc, String welcome) {
+        this.logoSrc = logoSrc;
+        this.welcome = welcome;
+    }
 
     public UIHeader(AbstractJspPage owner) {
         super(owner);
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), "<img src=\"images/Home.png\"/>");
+        ServerConfig config = ServerConfig.INSTANCE;
+        String homeImg = "images/Home.png";
+        if (owner.getForm().getClient().isPhone()) {
+            homeImg = config.getProperty("app.phone.home.image", homeImg);
+        }
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
+                String.format("<img src=\"%s\"/>", homeImg));
         leftMenus.add(homePage);
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), "开始");
-        leftMenus.add(homePage);
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
+                R.asString(owner.getForm().getHandle(), "开始"));
+        IClient client = owner.getForm().getClient();
+        boolean isShowBar = "true".equals(config.getProperty("app.ui.head.show", "true"));
+        if (!client.isPhone() && isShowBar) {
+            IHandle handle = owner.getForm().getHandle();
+            String token = (String) handle.getProperty(Application.token);
+            handle.init(token);
+            currentUser = R.asString(owner.getForm().getHandle(), "用户");
+            leftMenus.add(homePage);
+            this.userName = handle.getUserName();
+            if (Utils.isNotEmpty(handle.getCorpNo())) {
+                BookInfoRecord item = MemoryBookInfo.get(handle, handle.getCorpNo());
+                this.corpNoName = item.getShortName();
+            }
+            logoSrc = config.getProperty("app.logo.src", "images/logo_dt.png");
+            welcome = config.getProperty("app.welcome.language", "欢迎使用系统");
+            String exitName = config.getProperty("app.exit.name", "#");
+            String exitUrl = config.getProperty("app.exit.url");
+            exitSystem = new UrlRecord();
+            exitSystem.setName(exitName).setSite(exitUrl);
+        }
     }
 
     @Override
@@ -42,12 +95,26 @@ public class UIHeader extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (this.leftBottom.size() > MAX_MENUS)
-            throw new RuntimeException(String.format("底部菜单区最多只支持 %d 个菜单项", MAX_MENUS));
+        if (this.leftBottom.size() > MAX_MENUS) {
+            throw new RuntimeException(
+                    String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
+        }
 
         html.print("<header role='header'");
         super.outputCss(html);
         html.println(">");
+        if (userName != null) {
+            html.print("<div class='titel_top'>");
+            html.print("<img src='%s'/>", logoSrc);
+            html.print("<span>%s</span>", welcome);
+            html.print("<div class='user_right'>");
+            html.print(
+                    "<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>",
+                    currentUser, ApplicationConfig.App_Path, corpNoName, userName);
+            html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
+            html.print("</div>");
+            html.print("</div>");
+        }
         if (advertisement != null) {
             html.println("<section role='advertisement'>");
             html.println(advertisement.toString());
@@ -62,8 +129,9 @@ public class UIHeader extends UIComponent {
             int i = 0;
             for (UrlRecord menu : leftMenus) {
                 html.print("<li>");
-                if (i > 1)
-                    html.println("<span>-></span>");
+                if (i > 1) {
+                    html.println("<span>></span>");
+                }
                 html.print("<a href=\"%s\">%s</a>", menu.getUrl(), menu.getName());
                 i++;
                 html.print("</li>");
@@ -100,8 +168,9 @@ public class UIHeader extends UIComponent {
     }
 
     public UIAdvertisement getAdvertisement() {
-        if (advertisement == null)
+        if (advertisement == null) {
             advertisement = new UIAdvertisement(this);
+        }
         return advertisement;
     }
 
@@ -121,12 +190,23 @@ public class UIHeader extends UIComponent {
             }
         }
         if (leftMenus.size() == 0) {
-            leftMenus.add(new UrlRecord("/", "首页"));
-            leftMenus.add(new UrlRecord("javascript:history.go(-1);", "刷新"));
+            leftMenus.add(new UrlRecord("/", R.asString(this.getForm().getHandle(), "首页")));
+            leftMenus.add(new UrlRecord("javascript:history.go(-1);", R.asString(this.getForm().getHandle(), "刷新")));
         }
         // 兼容老的jsp文件使用
         form.getRequest().setAttribute("barMenus", leftMenus);
         form.getRequest().setAttribute("subMenus", rightMenus);
+    }
+
+    public String getModuleCode() {
+        return moduleCode;
+    }
+
+    public void setModule(String moduleCode, String moduleName) {
+        this.moduleCode = moduleCode;
+        if (!"".equals(moduleCode)) {
+            this.addLeftMenu("FrmModule?module=" + moduleCode, moduleName);
+        }
     }
 
     public String getPageTitle() {
@@ -138,6 +218,10 @@ public class UIHeader extends UIComponent {
     }
 
     public void addLeftMenu(UrlRecord urlRecord) {
+        if (this.moduleCode == null) {
+            this.moduleCode = urlRecord.getSite();
+            urlRecord.setSite("FrmModule?module=" + urlRecord.getSite());
+        }
         leftMenus.add(urlRecord);
     }
 
@@ -166,8 +250,9 @@ public class UIHeader extends UIComponent {
     }
 
     public void setExitPage(String url) {
-        if (exitPage == null)
+        if (exitPage == null) {
             exitPage = new UrlRecord();
+        }
         exitPage.setName("<img src=\"images/return.png\"/>");
         exitPage.setSite(url);
     }
@@ -210,11 +295,32 @@ public class UIHeader extends UIComponent {
             if (iconUrl == null || "".equals(iconUrl)) {
                 iconUrl = String.format("images/icon%s.png", count);
             }
-            item.setCaption(String.format("<img src='%s'/>%s", iconUrl, item.getName()));
+            item.setCaption(String.format("<img src='%s' />%s", iconUrl, item.getName()));
         }
     }
 
     public IForm getForm() {
         return ((AbstractJspPage) this.getOwner()).getForm();
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getWelcome() {
+        return welcome;
+    }
+
+    public String getLogoSrc() {
+        return logoSrc;
+    }
+
+    public UrlRecord getExitSystem() {
+        return exitSystem;
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
 }

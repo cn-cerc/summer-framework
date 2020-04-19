@@ -35,7 +35,7 @@ public class StartDocDefault {
     }
 
     private String execute(String uri) {
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         if (!"1".equals(config.getProperty("docs.service", "0"))) {
             outputHtml("sorry", "该功能暂不开放");
             return null;
@@ -64,7 +64,7 @@ public class StartDocDefault {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" "), title.length()).trim();
+            title = title.substring(title.indexOf(" ")).trim();
         }
 
         outputHtml(title, context);
@@ -76,7 +76,7 @@ public class StartDocDefault {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" "), title.length()).trim();
+            title = title.substring(title.indexOf(" ")).trim();
         }
 
         outputMDFile(title, context);
@@ -85,8 +85,9 @@ public class StartDocDefault {
     private void processImage(String uri) {
         resp.setHeader("Content-Type", "image/jped");// 设置响应的媒体类型，这样浏览器会识别出响应的是图片
         InputStream fos = req.getServletContext().getResourceAsStream("/WEB-INF/" + uri);
-        if (fos == null)
+        if (fos == null) {
             return;
+        }
         try {
             OutputStream os = resp.getOutputStream();// 获得servlet的servletoutputstream对象
             byte[] buffer = new byte[2048];

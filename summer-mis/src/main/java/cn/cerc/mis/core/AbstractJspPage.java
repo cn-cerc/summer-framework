@@ -46,7 +46,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     public AbstractJspPage() {
         super();
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         this.browserCacheVersion = config.getProperty("browser.cache.version", "1.0.0.0");
     }
 
@@ -61,7 +61,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         if (form != null) {
             this.put("jspPage", this);
             // 为兼容而设计
-            ServerConfig config = ServerConfig.getInstance();
+            ServerConfig config = ServerConfig.INSTANCE;
             this.add("summer_js", config.getProperty("summer.js", "js/summer.js"));
             this.add("myapp_js", config.getProperty("myapp.js", "js/myapp.js"));
         }
@@ -69,8 +69,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     @Override
     public void addComponent(Component component) {
-        if (component.getId() != null)
+        if (component.getId() != null) {
             this.put(component.getId(), component);
+        }
         super.addComponent(component);
     }
 
@@ -101,10 +102,12 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     public final String getViewFile() {
         String jspFile = this.getJspFile();
-        if (getRequest() == null || jspFile == null)
+        if (getRequest() == null || jspFile == null) {
             return jspFile;
-        if (jspFile.indexOf(".jsp") == -1)
+        }
+        if (jspFile.indexOf(".jsp") == -1) {
             return jspFile;
+        }
 
         String rootPath = String.format("/WEB-INF/%s/", Application.getAppConfig().getPathForms());
         String fileName = jspFile.substring(0, jspFile.indexOf(".jsp"));
@@ -114,15 +117,16 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         String newFile = String.format("%s-%s.%s", fileName, "pc", extName);
         if (!this.getForm().getClient().isPhone() && fileExists(rootPath + newFile)) {
             // 检查是否存在相对应的语言版本
-            String langCode = form == null ? Application.LangageDefault : R.getLanguage(form.getHandle());
+            String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
             String langFile = String.format("%s-%s-%s.%s", fileName, "pc", langCode, extName);
-            if (fileExists(rootPath + langFile))
+            if (fileExists(rootPath + langFile)) {
                 return langFile;
+            }
             return newFile;
         }
 
         // 检查是否存在相对应的语言版本
-        String langCode = form == null ? Application.LangageDefault : R.getLanguage(form.getHandle());
+        String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
         String langFile = String.format("%s-%s.%s", fileName, langCode, extName);
         if (fileExists(rootPath + langFile)) {
             return langFile;
@@ -137,8 +141,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     protected boolean fileExists(String fileName) {
         URL url = AbstractJspPage.class.getClassLoader().getResource("");
-        if (url == null)
+        if (url == null) {
             return false;
+        }
         String filepath = url.getPath();
         String appPath = filepath.substring(0, filepath.indexOf("/WEB-INF"));
         String file = appPath + fileName;
@@ -151,10 +156,11 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         String result = getRequest().getParameter(reqKey);
         if (result == null) {
             String val = buff.getString(reqKey).replace("{}", "");
-            if (Utils.isNumeric(val) && val.endsWith(".0"))
+            if (Utils.isNumeric(val) && val.endsWith(".0")) {
                 result = val.substring(0, val.length() - 2);
-            else
+            } else {
                 result = val;
+            }
         } else {
             result = result.trim();
             buff.setField(reqKey, result);
@@ -194,8 +200,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     // 返回所有的样式定义，供jsp中使用 ${jspPage.css}调用
     public final HtmlWriter getCssHtml() {
         HtmlWriter html = new HtmlWriter();
-        for (String file : cssFiles)
+        for (String file : cssFiles) {
             html.println("<link href=\"%s?v=%s\" rel=\"stylesheet\">", file, browserCacheVersion);
+        }
         return html;
     }
 
@@ -335,7 +342,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     protected void initCssFile() {
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         this.addCssFile(config.getProperty("summer.css", "css/summer.css"));
         if (!getForm().getClient().isPhone()) {
             this.addCssFile(config.getProperty("summer-pc.css", "css/summer-pc.css"));
@@ -343,7 +350,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     protected void initJsFile() {
-        ServerConfig config = ServerConfig.getInstance();
+        ServerConfig config = ServerConfig.INSTANCE;
         this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js"));
         this.addScriptFile(config.getProperty("summer.js", "js/summer.js"));
         this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js"));
