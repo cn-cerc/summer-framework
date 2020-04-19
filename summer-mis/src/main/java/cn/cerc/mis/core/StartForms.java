@@ -49,8 +49,7 @@ public class StartForms implements Filter {
          * http://127.0.0.1:8103/public/
          * http://127.0.0.1:8103/favicon.ico
          */
-        if (StringUtils.countMatches(uri, "/") < 2
-                && !uri.contains("favicon.ico")) {
+        if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
             IAppConfig conf = Application.getAppConfig();
             String redirect = String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome());
             resp.sendRedirect(redirect);
