@@ -61,7 +61,7 @@ public class ProcessService extends AbstractTask {
         updateTaskprocess(async, taskId, subject);
         try {
             // 执行指定的数据服务
-            AutoService auto = new AutoService(corpNo, userCode, async.getService());
+            AutoService auto = new AutoService(this.handle, corpNo, userCode, async.getService());
             auto.getDataIn().appendDataSet(async.getDataIn(), true);
             if (auto.exec()) {
                 async.getDataOut().appendDataSet(auto.getDataOut(), true);

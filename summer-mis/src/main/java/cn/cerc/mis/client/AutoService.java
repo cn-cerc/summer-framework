@@ -1,9 +1,9 @@
 package cn.cerc.mis.client;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
+import cn.cerc.core.IHandle;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 import cn.cerc.mis.core.ServiceException;
@@ -11,9 +11,11 @@ import cn.cerc.mis.core.ServiceException;
 public class AutoService {
     private DataSet dataOut = new DataSet();
     private String message;
+    private IHandle handle;
     private ServiceRecord service;
 
-    public AutoService(String corpNo, String userCode, String service) {
+    public AutoService(IHandle handle, String corpNo, String userCode, String service) {
+        this.handle = handle;
         this.service = new ServiceRecord();
         this.service.setCorpNo(corpNo);
         this.service.setUserCode(userCode);
@@ -43,14 +45,10 @@ public class AutoService {
 
         // handle.init(service.getCorpNo(), service.getUserCode(), "127.0.0.1");
 
-        Record record = service.getDataIn().getHead();
-        String token = record.getString("token");
-        HandleDefault handle = new HandleDefault();
-        handle.init(token);
+        BookHandle handle = new BookHandle(this.handle, service.getCorpNo());
+        handle.setUserCode(service.getUserCode());
 
-        // 直接设置用户信息到 handle 中
-        handle.setProperty(Application.bookNo, service.getCorpNo());
-        handle.setProperty(Application.userCode, service.getUserCode());
+        // 根据xml进行反射初始化服务信息
         IService bean = Application.getService(handle, service.getService());
         if (bean == null) {
             throw new RuntimeException("无法创建服务：" + service.getService());
