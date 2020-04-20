@@ -48,7 +48,7 @@ public class UISheetLine extends UISheet {
     public UrlMenu getOperaUrl() {
         if (operaUrl == null) {
             operaUrl = new UrlMenu(null);
-            operaUrl.setCssStyle("float:right;line-height:1.25em;margin-bottom:0.25em");
+            operaUrl.setCssStyle("float:right;margin-bottom:0.25em");
         }
         return operaUrl;
     }
