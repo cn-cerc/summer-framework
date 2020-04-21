@@ -431,7 +431,7 @@ public class StartForms implements Filter {
 
     private static List<String> experience = new ArrayList<>();
 
-    {
+    static {
         // iPhone 上架时专用测试帐号以及专业版体验账号
         experience.add("15202406");
 
