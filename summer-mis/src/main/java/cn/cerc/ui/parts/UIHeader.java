@@ -105,7 +105,9 @@ public class UIHeader extends UIComponent {
         html.println(">");
         if (userName != null) {
             html.print("<div class='titel_top'>");
+            html.print("<div class='logo_box'>");
             html.print("<img src='%s'/>", logoSrc);
+            html.print("</div>");
             html.print("<span>%s</span>", welcome);
             html.print("<div class='user_right'>");
             html.print(
