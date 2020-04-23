@@ -23,22 +23,8 @@ public class MenuItem {
     @Getter
     private String pageNo;
 
-    // 软件类别，如 1,2,，其中1及2各代表一种软件
-    @Setter
-    @Getter
-    private String versions;
 
-    // 菜单授权码
-    @Setter
-    @Getter
-    private String proccode;
-
-    // true: 需要登录方可使用
-    @Setter
-    @Getter
-    private String security;
-
-    // 上级菜单，若无，则为""
+    // 上级菜单，若无，则为
     @Setter
     @Getter
     private String parent;
@@ -46,12 +32,11 @@ public class MenuItem {
     /**
      * 菜单图标，为URL值
      * <p>
-     * 菜单图标不需要从此项进行设置，而是外部根据菜单代码直接读取
+     * 菜单图标不需要从此项进行设置，而是根据菜单代码从静态资源文件或者oss直接读取
      */
     @Setter
     @Getter
-    @Deprecated
-    private String imageSrc;
+    private String icon;
 
     // 菜单分组
     @Setter
