@@ -3,13 +3,15 @@ package cn.cerc.mis.core;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 用于构建右边菜单的显示
  */
 public class MenuItem {
+
+    // 菜单代码
+    @Setter
+    @Getter
+    private String code;
 
     // 菜单标题
     @Setter
@@ -56,45 +58,9 @@ public class MenuItem {
     @Getter
     private String group;
 
-    // 菜单代码
-    private String code;
+    // 是否为原生窗口
+    @Setter
+    @Getter
     private boolean window;
-
-    // 所有参数值
-    private Map<String, String> params = new HashMap<>();
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public void setParam(String key, String value) {
-        params.put(key, value);
-    }
-
-    private String getParam(String key) {
-        return params.get(key);
-    }
-
-    @Deprecated
-    public Map<String, String> getParams() {
-        return params;
-    }
-
-    @Deprecated
-    public void setParams(Map<String, String> params) {
-        this.params = params;
-    }
-
-    public boolean isWindow() {
-        return window;
-    }
-
-    public void setWindow(boolean window) {
-        this.window = window;
-    }
 
 }
