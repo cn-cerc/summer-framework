@@ -1,6 +1,6 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.mis.core.MenuItem;
+import cn.cerc.mis.core.MenuDisplay;
 import cn.cerc.ui.core.HtmlWriter;
 
 public class UIMenuItem extends UIComponent {
@@ -57,7 +57,7 @@ public class UIMenuItem extends UIComponent {
         return this;
     }
 
-    public UIMenuItem init(MenuItem item) {
+    public UIMenuItem init(MenuDisplay item) {
         this.setCode(item.getCode());
 
         String str = item.getTitle();
