@@ -37,11 +37,20 @@ public class MenuItem {
     private String security;
 
     // 上级菜单，若无，则为""
-    public static final String PARENT = "parentId";
+    @Setter
+    @Getter
+    private String parent;
+
     // 菜单图标，为URL值
-    public static final String IMAGE = "image";
+    @Setter
+    @Getter
+    private String imageUrl;
+
     // 菜单分组
-    public static final String GROUP = "group";
+    @Setter
+    @Getter
+    private String group;
+
     // 菜单代码
     private String code;
     private boolean window;
@@ -55,21 +64,6 @@ public class MenuItem {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-
-    public String getParentId() {
-        String result = this.getParam(PARENT);
-        return result != null ? result : "";
-    }
-
-    public void setImage(String image) {
-        this.setParam(IMAGE, image);
-    }
-
-    public String getImage() {
-        String result = this.getParam(IMAGE);
-        return result != null ? result : "";
     }
 
     public void setParam(String key, String value) {
@@ -96,11 +90,6 @@ public class MenuItem {
 
     public void setWindow(boolean window) {
         this.window = window;
-    }
-
-    public String getGroup() {
-        String result = this.getParam(GROUP);
-        return result != null ? result : "";
     }
 
 }
