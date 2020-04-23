@@ -17,5 +17,10 @@ public interface IAppMenu {
     List<MenuItem> getModules(IHandle handle);
 
     // 返回指定父菜单下的所有子菜单
+    @Deprecated
+    /**
+     * 此项在最新版的地藤版本中不再使用
+     */
     List<MenuItem> getList(IHandle handle, String parentId, boolean security);
+
 }
