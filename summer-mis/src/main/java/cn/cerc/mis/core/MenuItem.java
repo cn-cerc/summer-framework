@@ -6,8 +6,9 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
-// FIXME 2019-12-25 此对象的静态变量应改为属性 
-// 此对象应该换为 MenuItem
+/**
+ * 用于构建右边菜单的显示
+ */
 public class MenuItem {
 
     // 菜单标题
@@ -15,17 +16,26 @@ public class MenuItem {
     @Getter
     private String title;
 
+    // 菜单编号，一般为数字
     @Setter
     @Getter
     private String pageNo;
 
-
     // 软件类别，如 1,2,，其中1及2各代表一种软件
-    public static final String SOFTWARE = "versions";
+    @Setter
+    @Getter
+    private String versions;
+
     // 菜单授权码
-    public static final String PERMISSION = "permission";
+    @Setter
+    @Getter
+    private String proccode;
+
     // true: 需要登录方可使用
-    public static final String SECURITY = "security";
+    @Setter
+    @Getter
+    private String security;
+
     // 上级菜单，若无，则为""
     public static final String PARENT = "parentId";
     // 菜单图标，为URL值
@@ -47,22 +57,6 @@ public class MenuItem {
         this.code = code;
     }
 
-
-
-    public boolean isSecurityEnabled() {
-        String result = this.getParam(SECURITY);
-        return result == null || "true".equals(result);
-    }
-
-    public String getPermissionCode() {
-        String result = this.getParam(PERMISSION);
-        return result != null ? result : "";
-    }
-
-    public String getSoftwareList() {
-        String result = this.getParam(SOFTWARE);
-        return result != null ? result : "";
-    }
 
     public String getParentId() {
         String result = this.getParam(PARENT);
