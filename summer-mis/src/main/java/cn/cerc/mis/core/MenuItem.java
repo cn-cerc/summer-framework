@@ -11,12 +11,15 @@ import java.util.Map;
 public class MenuItem {
 
     // 菜单标题
-    @Getter
     @Setter
+    @Getter
     private String title;
 
-    // 菜单编号，一般为数字
-    public static final String PAGENO = "formNo";
+    @Setter
+    @Getter
+    private String pageNo;
+
+
     // 软件类别，如 1,2,，其中1及2各代表一种软件
     public static final String SOFTWARE = "versions";
     // 菜单授权码
@@ -44,10 +47,7 @@ public class MenuItem {
         this.code = code;
     }
 
-    public String getPageNo() {
-        String result = this.getParam(PAGENO);
-        return result != null ? result : "";
-    }
+
 
     public boolean isSecurityEnabled() {
         String result = this.getParam(SECURITY);
