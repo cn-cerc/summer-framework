@@ -1,13 +1,20 @@
 package cn.cerc.mis.core;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashMap;
 import java.util.Map;
 
 // FIXME 2019-12-25 此对象的静态变量应改为属性 
 // 此对象应该换为 MenuItem
 public class MenuItem {
+
     // 菜单标题
-    public static final String TITLE = "title";
+    @Getter
+    @Setter
+    private String title;
+
     // 菜单编号，一般为数字
     public static final String PAGENO = "formNo";
     // 软件类别，如 1,2,，其中1及2各代表一种软件
@@ -35,11 +42,6 @@ public class MenuItem {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getTitle() {
-        String result = this.getParam(TITLE);
-        return result != null ? result : "";
     }
 
     public String getPageNo() {
