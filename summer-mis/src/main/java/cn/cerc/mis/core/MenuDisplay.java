@@ -6,7 +6,7 @@ import lombok.Setter;
 /**
  * 用于构建右边菜单的显示
  */
-public class MenuItem {
+public class MenuDisplay {
 
     // 菜单代码
     @Setter

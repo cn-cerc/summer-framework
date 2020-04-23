@@ -4,7 +4,10 @@ import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 
-public class MenuData {
+/**
+ * 菜单元数据
+ */
+public class MenuMetadata {
     // 页面类名代码，用于css定位
     private String id = "";
     // 页面标题
