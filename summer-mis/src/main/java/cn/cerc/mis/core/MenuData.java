@@ -1,11 +1,14 @@
 package cn.cerc.mis.core;
 
 import com.google.gson.Gson;
+import lombok.Getter;
+import lombok.Setter;
 
 public class MenuData {
     // 页面类名代码，用于css定位
     private String id = "";
     // 页面标题
+    // TODO: 2020/4/23 改为title
     private String caption;
     // 页面描述
     private String describe;
@@ -28,6 +31,10 @@ public class MenuData {
     private String funcCode;
     private String module;
     private String group;
+
+    @Setter
+    @Getter
+    private int child;// 子项数量
 
     public String getModule() {
         return module;
