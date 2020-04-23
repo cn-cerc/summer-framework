@@ -41,10 +41,15 @@ public class MenuItem {
     @Getter
     private String parent;
 
-    // 菜单图标，为URL值
+    /**
+     * 菜单图标，为URL值
+     * <p>
+     * 菜单图标不需要从此项进行设置，而是外部根据菜单代码直接读取
+     */
     @Setter
     @Getter
-    private String imageUrl;
+    @Deprecated
+    private String imageSrc;
 
     // 菜单分组
     @Setter
