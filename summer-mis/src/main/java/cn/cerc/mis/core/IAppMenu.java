@@ -13,9 +13,6 @@ public interface IAppMenu {
      */
     MenuItem getItem(String menuId);
 
-    // 返回系统所有的Module
-    List<MenuItem> getModules(IHandle handle);
-
     // 返回指定父菜单下的所有子菜单
     @Deprecated
     /**
