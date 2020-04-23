@@ -58,7 +58,7 @@ public class UIMenuItem extends UIComponent {
     }
 
     public UIMenuItem init(MenuItem item) {
-        setCode(item.getCode());
+        this.setCode(item.getCode());
 
         String str = item.getTitle();
         str = str.substring(str.indexOf("]") + 1);
