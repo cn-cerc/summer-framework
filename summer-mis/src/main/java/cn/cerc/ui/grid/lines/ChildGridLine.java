@@ -45,17 +45,19 @@ public class ChildGridLine extends AbstractGridLine {
             html.print(">");
             for (IField obj : item.getFields()) {
                 if (obj instanceof AbstractField) {
+                    String resultHtml ="";
                     AbstractField field = (AbstractField) obj;
+                    if (field instanceof IColumn) {
+                        resultHtml = ((IColumn) field).format(dataSource.getDataSet().getCurrent());
+                    } else {
+                        HtmlWriter tempHtml = new HtmlWriter();
+                        outputField(tempHtml, field);
+                        resultHtml = tempHtml.toString();
+                    }
                     if (field.getTitle() != null && !"".equals(field.getTitle())) {
                         html.print("<span>%s：</span> ", field.getTitle());
                     }
-                    if (field instanceof IColumn) {
-                        html.print(((IColumn) field).format(dataSource.getDataSet().getCurrent()));
-                    } else if (field instanceof AbstractField) {
-                        outputField(html, field);
-                    } else {
-                        throw new RuntimeException("暂不支持的数据类型：" + field.getClass().getName());
-                    }
+                    html.print(resultHtml);
                 }
             }
             html.println("</td>");
