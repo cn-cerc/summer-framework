@@ -23,8 +23,8 @@ public class StringField extends AbstractField implements IColumn {
     }
 
     @Override
-    public String getText(Record rs) {
-        return getDefaultText(rs);
+    public String getText(Record record) {
+        return getDefaultText(record);
     }
 
     @Override

@@ -165,7 +165,7 @@ public abstract class AbstractField extends UIComponent implements IField {
         }
     }
 
-    public abstract String getText(Record ds);
+    public abstract String getText(Record record);
 
     /**
      * @param rs 当前记录集

@@ -20,10 +20,10 @@ public class OperaField extends AbstractField {
     }
 
     @Override
-    public String getText(Record dataSet) {
+    public String getText(Record record) {
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(dataSet, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
         return this.value;

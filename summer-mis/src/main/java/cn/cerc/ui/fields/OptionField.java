@@ -38,16 +38,16 @@ public class OptionField extends AbstractField {
     }
 
     @Override
-    public String getText(Record dataSet) {
-        if (dataSet == null) {
+    public String getText(Record record) {
+        if (record == null) {
             return null;
         }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(dataSet, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
-        return dataSet.getString(getField());
+        return record.getString(getField());
     }
 
     @Override

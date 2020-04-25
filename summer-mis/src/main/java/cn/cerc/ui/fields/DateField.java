@@ -22,17 +22,17 @@ public class DateField extends AbstractField {
     }
 
     @Override
-    public String getText(Record dataSet) {
-        if (dataSet == null) {
+    public String getText(Record record) {
+        if (record == null) {
             return null;
         }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(dataSet, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
-        if (dataSet.hasValue(getField())) {
-            return dataSet.getDate(getField()).getDate();
+        if (record.hasValue(getField())) {
+            return record.getDate(getField()).getDate();
         } else {
             return "";
         }

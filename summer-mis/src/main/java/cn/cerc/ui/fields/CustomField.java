@@ -12,12 +12,12 @@ public class CustomField extends AbstractField {
     }
 
     @Override
-    public String getText(Record ds) {
+    public String getText(Record record) {
         if (buildText == null) {
             return "";
         }
         HtmlWriter html = new HtmlWriter();
-        buildText.outputText(ds, html);
+        buildText.outputText(record, html);
         return html.toString();
     }
 

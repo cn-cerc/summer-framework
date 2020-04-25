@@ -29,16 +29,16 @@ public class SelectField extends AbstractField implements IColumn {
     }
 
     @Override
-    public String getText(Record dataSet) {
-        if (dataSet == null) {
+    public String getText(Record record) {
+        if (record == null) {
             return null;
         }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(dataSet, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
-        String val = dataSet.getString(field);
+        String val = record.getString(field);
         if ("true".equalsIgnoreCase(val) || "false".equalsIgnoreCase(val)) {
             return Boolean.valueOf(val) ? trueText : falseText;
         }
