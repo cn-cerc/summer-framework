@@ -32,6 +32,14 @@ public class UIInfoList extends UIComponent {
         return line;
     }
 
+    public Line setTitle(String title, String operaText, String href) {
+        Line line = new Line();
+        line.setTitle(title);
+        line.setRightOpera(operaText, href);
+        items.add(line);
+        return line;
+    }
+
     public Line setTitle(String imgSrc, String title, String operaText, String href) {
         Line line = new Line();
         line.setTitle(imgSrc, title);
