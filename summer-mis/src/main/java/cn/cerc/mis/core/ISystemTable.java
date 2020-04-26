@@ -9,7 +9,7 @@ public interface ISystemTable {
     String getBookOptions(); // "VineOptions";
 
     // 应用菜单表
-    String getAppMenus(); // "SysFormDef";
+    String getAppMenus(); // "s_menus";
 
     // 客户客制化菜单
     String getCustomMenus(); // "cusmenu";
