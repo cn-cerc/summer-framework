@@ -8,15 +8,6 @@ public interface ISystemTable {
     // 帐套参数档
     String getBookOptions(); // "VineOptions";
 
-    // 应用菜单表
-    String getAppMenus(); // "s_menus";
-
-    // 客户客制化菜单
-    String getCustomMenus(); // "cusmenu";
-
-    // 用户自定义菜单
-    String getUserMenus(); // "UserMenu";
-
     // 用户资料表
     String getUserInfo(); // "Account";
 
