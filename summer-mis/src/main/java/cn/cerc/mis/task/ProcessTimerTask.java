@@ -25,7 +25,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;
-    private static final String One_O_Clock = "01:00:00";
+    private static final String One_O_Clock = "01:00";
 
     private static String lock;
     private IHandle handle;
@@ -106,17 +106,23 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
     private void init() {
         if (handle == null) {
             handle = new StubHandle();
+            return;
         }
 
         // 凌晨1点整重新初始化token
-        LocalTime now = LocalTime.now().withNano(0);
+        LocalTime now = LocalTime.of(1, 0);
         if (One_O_Clock.equals(now.toString())) {
+            if (Redis.get(now.toString()) != null) {
+                return;
+            }
             if (handle != null) {
                 handle.close();
                 handle = null;
             }
             log.warn("{} 队列重新初始化句柄", TDateTime.Now());
             handle = new StubHandle();
+            // 60s内不重复初始化Handle
+            Redis.set(now.toString(), "true", 60);
         }
     }
 
