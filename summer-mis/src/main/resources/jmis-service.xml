@@ -3,18 +3,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
-    <!-- 增加客制化菜单 -->
-    <bean id="SvrCustomMenus.append" class="cn.cerc.mis.services.SvrCustomMenus" scope="prototype">
-        <property name="funcCode" value="append"/>
-    </bean>
-    <!-- 获取客制化菜单 -->
-    <bean id="SvrCustomMenus.list" class="cn.cerc.mis.services.SvrCustomMenus" scope="prototype">
-        <property name="funcCode" value="list"/>
-    </bean>
-    <!-- 搜索客制化菜单 -->
-    <bean id="SvrCustomMenus.search" class="cn.cerc.mis.services.SvrCustomMenus" scope="prototype">
-        <property name="funcCode" value="search"/>
-    </bean>
+
 
     <!-- 登入系统 -->
     <bean id="SvrUserLogin.check" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
@@ -72,18 +61,6 @@
     </bean>
 
     <!-- 以下为旧的应用使用，新的框架不再需要 -->
-    <!-- 增加客制化菜单 -->
-    <bean id="TAppCustom.appendMemu" class="cn.cerc.mis.services.SvrCustomMenus" scope="prototype">
-        <property name="funcCode" value="append"/>
-    </bean>
-    <!-- 获取客制化菜单 -->
-    <bean id="TAppCustom.getCustomMemu" class="cn.cerc.mis.services.SvrCustomMenus" scope="prototype">
-        <property name="funcCode" value="list"/>
-    </bean>
-    <!-- 搜索客制化菜单 -->
-    <bean id="TAppCustom.search" class="cn.cerc.mis.services.SvrCustomMenus" scope="prototype">
-        <property name="funcCode" value="search"/>
-    </bean>
     <!-- 登入系统 -->
     <bean id="TAppLogin.Check" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
         <property name="funcCode" value="Check"/>
