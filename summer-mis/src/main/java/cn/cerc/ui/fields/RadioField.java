@@ -4,10 +4,12 @@ import cn.cerc.core.Record;
 import cn.cerc.ui.parts.UIComponent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RadioField extends AbstractField {
-    private List<String> items = new ArrayList<>();
+
+    private final List<String> items = new ArrayList<>();
 
     public RadioField(UIComponent owner, String name, String field, int width) {
         super(owner, name, width);
@@ -32,9 +34,8 @@ public class RadioField extends AbstractField {
     }
 
     public RadioField add(String... items) {
-        for (String item : items) {
-            this.items.add(item);
-        }
+        this.items.addAll(Arrays.asList(items));
         return this;
     }
+
 }
