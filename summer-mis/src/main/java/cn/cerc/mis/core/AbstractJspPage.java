@@ -1,22 +1,17 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.DataSet;
+import cn.cerc.core.*;
 import cn.cerc.core.Record;
-import cn.cerc.core.TDate;
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlContent;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.parts.UIContent;
-import cn.cerc.ui.parts.UIDocument;
-import cn.cerc.ui.parts.UIFooter;
-import cn.cerc.ui.parts.UIHeader;
-import cn.cerc.ui.parts.UIToolBar;
+import cn.cerc.ui.menu.MenuList;
+import cn.cerc.ui.menu.MenuModel;
+import cn.cerc.ui.parts.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import java.io.File;
@@ -27,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public abstract class AbstractJspPage extends UIComponent implements IPage {
     private String jspFile;
     private IForm form;
@@ -305,6 +301,30 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     public UIToolBar getToolBar() {
         if (toolBar == null) {
             toolBar = new UIToolBar(this);
+        }
+        return toolBar;
+    }
+
+    public UIToolBar getToolBar(AbstractForm handle) {
+        if (toolBar == null) {
+            toolBar = new UIToolBar(this);
+        }
+        String menuCode = StartForms.getRequestCode(handle.getRequest());
+        String[] params = menuCode.split("\\.");
+        String formId = params[0];
+        if (!menuCode.equals(formId)) {
+            return toolBar;
+        }
+        log.info("menuCode {}", menuCode);
+        log.info("formId {}", formId);
+        UISheetHelp section1 = new UISheetHelp(toolBar);
+        section1.setCaption("菜单描述");
+        MenuModel item = MenuList.create(handle).get(formId);
+        if (Utils.isNotEmpty(item.getRemark())) {
+            section1.addLine("%s", item.getRemark());
+        }
+        if (Utils.isNotEmpty(item.getDeadline())) {
+            section1.addLine("<font color='red'>停用时间：%s</font>", item.getDeadline());
         }
         return toolBar;
     }

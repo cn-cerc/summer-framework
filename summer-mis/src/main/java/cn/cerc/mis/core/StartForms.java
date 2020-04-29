@@ -144,8 +144,7 @@ public class StartForms implements Filter {
                 log.debug("进行安全检查，若未登录则显示登录对话框");
 
                 if (!form.logon()) {
-                    IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage",
-                            "appLoginDefault");
+                    IAppLogin page = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage", "appLoginDefault");
                     page.init(form);
                     String cmd = page.checkToken(client.getToken());
                     if (cmd != null) {
@@ -402,7 +401,7 @@ public class StartForms implements Filter {
         }
     }
 
-    protected String getRequestCode(HttpServletRequest req) {
+    public static String getRequestCode(HttpServletRequest req) {
         String url = null;
         log.debug("servletPath {}", req.getServletPath());
         String[] args = req.getServletPath().split("/");
