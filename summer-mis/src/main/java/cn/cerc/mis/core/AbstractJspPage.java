@@ -1,7 +1,10 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.*;
+import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
+import cn.cerc.core.TDate;
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.language.R;
@@ -10,7 +13,13 @@ import cn.cerc.ui.core.HtmlContent;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.menu.MenuModel;
-import cn.cerc.ui.parts.*;
+import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UIContent;
+import cn.cerc.ui.parts.UIDocument;
+import cn.cerc.ui.parts.UIFooter;
+import cn.cerc.ui.parts.UIHeader;
+import cn.cerc.ui.parts.UISheetHelp;
+import cn.cerc.ui.parts.UIToolBar;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -315,16 +324,18 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         if (!menuCode.equals(formId)) {
             return toolBar;
         }
-        log.info("menuCode {}", menuCode);
-        log.info("formId {}", formId);
-        UISheetHelp section1 = new UISheetHelp(toolBar);
-        section1.setCaption("菜单描述");
+
+        // 输出菜单信息
         MenuModel item = MenuList.create(handle).get(formId);
         if (Utils.isNotEmpty(item.getRemark())) {
-            section1.addLine("%s", item.getRemark());
+            UISheetHelp section = new UISheetHelp(toolBar);
+            section.setCaption("菜单描述");
+            section.addLine("%s", item.getRemark());
         }
         if (Utils.isNotEmpty(item.getDeadline())) {
-            section1.addLine("<font color='red'>停用时间：%s</font>", item.getDeadline());
+            UISheetHelp section = new UISheetHelp(toolBar);
+            section.setCaption("停用时间");
+            section.addLine("<font color='red'>%s</font>", item.getDeadline());
         }
         return toolBar;
     }
