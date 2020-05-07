@@ -146,24 +146,24 @@
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-core</artifactId>
-                <version>3.5.0</version>
+                <version>4.5.1</version>
             </dependency>
             <!-- 阿里云短信服务 -->
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-                <version>1.0.0</version>
+                <version>2.1.0</version>
             </dependency>
             <!-- 阿里云队列 -->
             <dependency>
                 <groupId>com.aliyun.mns</groupId>
                 <artifactId>aliyun-sdk-mns</artifactId>
-                <version>1.1.8</version>
+                <version>1.1.8.8</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
-                <version>2.6.0</version>
+                <version>3.9.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.jpush.api</groupId>
@@ -282,11 +282,6 @@
                 <artifactId>quartz</artifactId>
                 <version>${quartz.version}</version>
             </dependency>
-            <dependency>
-                <groupId>net.sf.json-lib</groupId>
-                <artifactId>json-lib</artifactId>
-                <version>2.4</version>
-            </dependency>
             <!-- 支持docs,使用markdown技术 -->
             <dependency>
                 <groupId>com.vladsch.flexmark</groupId>
@@ -303,6 +298,27 @@
                 <groupId>org.apache.activemq</groupId>
                 <artifactId>activemq-core</artifactId>
                 <version>5.7.0</version>
+            </dependency>
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.10.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.10.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.10.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>2.10.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
