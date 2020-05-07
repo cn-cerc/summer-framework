@@ -10,8 +10,9 @@ import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
@@ -91,18 +92,19 @@ public class RemoteService implements IServiceProxy {
                 return false;
             }
 
-            JSONObject json = JSONObject.fromObject(response);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode json = mapper.readTree(response);
             if (json.get("message") != null) {
-                this.setMessage(json.getString("message"));
+                this.setMessage(json.get("message").asText());
             }
 
-            if (json.containsKey("data")) {
-                String dataJson = json.getString("data");
+            if (json.has("data")) {
+                String dataJson = json.get("data").asText();
                 if (dataJson != null) {
                     this.getDataOut().setJSON(dataJson);
                 }
             }
-            return json.getBoolean("result");
+            return json.get("result").asBoolean();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             if (e.getCause() != null) {

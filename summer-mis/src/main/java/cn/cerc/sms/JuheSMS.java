@@ -1,7 +1,8 @@
 package cn.cerc.sms;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -82,16 +83,19 @@ public class JuheSMS {
             params.put("dtype", "");
 
             String response = post(Juhe_Url, params, "GET");
-            JSONObject json = JSONObject.fromObject(response);
-            if (json.getInt("error_code") == 0) {
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode json = mapper.readTree(response);
+
+            if (json.get("error_code").asInt() == 0) {
                 String tailNumber = mobile.substring(mobile.length() - 4);
                 this.setMessage(String.format(RS.验证码发送成功, tailNumber));
 
-                String result = json.getString("result");
+                String result = json.get("result").asText();
                 log.info("send: {}, templateId: {}, result: {}", mobile, templateId, result);
                 return true;
             } else {
-                String error_code = json.getString("error_code");
+                String error_code = json.get("error_code").asText();
                 this.setMessage("%s: %s", error_code, items.get(error_code));
                 log.error("send: {}, templateId: {}, result: {}", mobile, templateId, getMessage());
                 return false;

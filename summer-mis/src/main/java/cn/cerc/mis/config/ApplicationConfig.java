@@ -3,15 +3,15 @@ package cn.cerc.mis.config;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.language.Language;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -107,16 +107,17 @@ public class ApplicationConfig {
             log.info("返回数据 {}", content);
 
             // 解析post结果
-            JSONObject object = JSONObject.fromObject(content);
-            boolean result = object.getBoolean("result");
-            String message = object.getString("message");
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode object = mapper.readTree(content);
+            boolean result = object.get("result").asBoolean();
+            String message = object.get("message").asText();
             if (!result) {
                 log.error("用户 {} 初始化token失败", userCode);
                 throw new RuntimeException(message);
             }
 
             // 取消外围 []，还原标准的dataSet格式
-            String data = object.getString("data");
+            String data = object.get("data").asText();
             data = data.substring(1, data.length() - 1);
 
             DataSet dataSet = new DataSet();

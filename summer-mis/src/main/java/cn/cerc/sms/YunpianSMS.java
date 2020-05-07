@@ -2,6 +2,7 @@ package cn.cerc.sms;
 
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.language.R;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
@@ -83,18 +84,18 @@ public class YunpianSMS {
                 log.debug("msg: {}", responseText);
 
                 ObjectMapper mapper = new ObjectMapper();
-                ObjectNode json = mapper.createObjectNode();
-                int code = json.get("code").asInt();
-                if (json.has("code") && json.get("code").asInt() == 0) {
-                    String msg = json.get("msg").asText();
+                JsonNode node = mapper.readTree(responseText);
+                int code = node.get("code").asInt();
+                if (node.has("code") && code == 0) {
+                    String msg = node.get("msg").asText();
                     log.info("sendSMS: {}, {}, {}", msg, mobile, text);
                     this.setMessage(msg);
                     return true;
-                } else if (json.has("count") && json.get("count").asInt() > 0) { // 语言信息
+                } else if (node.has("count") && node.get("count").asInt() > 0) { // 语言信息
                     log.info("sendSMS: {}, {}", mobile, text);
                     return true;
                 } else {
-                    this.setMessage(json.get("msg").asText());
+                    this.setMessage(node.get("msg").asText());
                     return false;
                 }
             } else {
