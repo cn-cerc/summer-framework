@@ -14,8 +14,8 @@ import cn.cerc.mis.message.MessageRecord;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,18 +159,20 @@ public class AsyncService implements IServiceProxy {
 
     @Override
     public String toString() {
-        JSONObject content = new JSONObject();
-        content.element("service", this.service);
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode content = mapper.createObjectNode();
+
+        content.put("service", this.service);
         if (this.dataIn != null) {
-            content.element("dataIn", dataIn.getJSON());
+            content.put("dataIn", dataIn.getJSON());
         }
         if (this.dataOut != null) {
-            content.element("dataOut", dataOut.getJSON());
+            content.put("dataOut", dataOut.getJSON());
         }
-        content.element("timer", this.timer);
-        content.element("process", this.process);
+        content.put("timer", this.timer);
+        content.put("process", this.process);
         if (this.processTime != null) {
-            content.element("processTime", this.processTime);
+            content.put("processTime", this.processTime);
         }
         return content.toString();
     }

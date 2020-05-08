@@ -8,6 +8,7 @@ import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.rds.StubHandle;
 import cn.cerc.mis.task.AbstractTask;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -27,7 +28,7 @@ public class ProcessService extends AbstractTask {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws JsonProcessingException {
         LocalService svr = new LocalService(this, "SvrUserMessages.getWaitList");
         if (!svr.exec()) {
             throw new RuntimeException(svr.getMessage());
@@ -42,7 +43,7 @@ public class ProcessService extends AbstractTask {
     /**
      * 处理一个服务
      */
-    private void processService(String taskId) {
+    private void processService(String taskId) throws JsonProcessingException {
         // 此任务可能被其它主机抢占
         LocalService svrMsg = new LocalService(this, "SvrUserMessages.readAsyncService");
         if (!svrMsg.exec("msgId", taskId)) {
