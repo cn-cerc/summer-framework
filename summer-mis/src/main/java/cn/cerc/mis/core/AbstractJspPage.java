@@ -314,6 +314,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         return toolBar;
     }
 
+    /**
+     * 获取指定菜单的描述和停用时间
+     */
     public UIToolBar getToolBar(AbstractForm handle) {
         if (toolBar == null) {
             toolBar = new UIToolBar(this);
@@ -327,6 +330,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
         // 输出菜单信息
         MenuModel item = MenuList.create(handle).get(formId);
+        if (item == null) {
+            return toolBar;
+        }
         if (Utils.isNotEmpty(item.getRemark())) {
             UISheetHelp section = new UISheetHelp(toolBar);
             section.setCaption("菜单描述");
