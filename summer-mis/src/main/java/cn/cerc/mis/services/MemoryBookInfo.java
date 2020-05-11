@@ -9,7 +9,9 @@ import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MemoryBookInfo {
 
     private static final String buffVersion = "5";
@@ -21,14 +23,16 @@ public class MemoryBookInfo {
             return gson.fromJson(tmp, BookInfoRecord.class);
         }
 
+        BookInfoRecord item = new BookInfoRecord();
         IServiceProxy svr = ServiceFactory.get(handle);
         svr.setService("SvrBookInfo.getRecord");
         if (!svr.exec("corpNo", corpNo)) {
-            return null;
+            log.error(svr.getMessage());
+            item.setCode(corpNo);
+            return item;
         }
         Record record = svr.getDataOut().getHead();
 
-        BookInfoRecord item = new BookInfoRecord();
         item.setCode(record.getString("CorpNo_"));
         item.setShortName(record.getString("ShortName_"));
         item.setName(record.getString("Name_"));
