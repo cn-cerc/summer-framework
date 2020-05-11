@@ -41,7 +41,13 @@ public class UISheetMenu extends UISheet {
         html.println("<ul>");
         for (UrlRecord url : menus) {
             html.println("<li>");
-            html.print("<img src='%s' role='icon'/>", url.getImgage());
+            if (url.isWindow()) {
+                String href = "hrip:" + url.getUrl();
+                html.print("<img src='%s' role='icon' onclick='window.open(\"%s\")'/>", url.getImgage(), href);
+            } else {
+                html.print("<img src='%s' role='icon'/>", url.getImgage());
+            }
+
             html.print("<a href='%s' onclick=\"updateUserHit('%s')\"", url.getUrl(), url.getUrl());
             if (url.getId() != null) {
                 html.print(" id='%s'", url.getId());

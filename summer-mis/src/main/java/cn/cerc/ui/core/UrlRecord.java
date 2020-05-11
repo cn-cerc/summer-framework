@@ -15,6 +15,8 @@ public class UrlRecord {
     private String imgage;
     private String arrow;
 
+    private boolean isWindow;
+
     private Map<String, String> params = new HashMap<>();
 
     public static class Builder {
@@ -213,4 +215,11 @@ public class UrlRecord {
         return this;
     }
 
+    public boolean isWindow() {
+        return isWindow;
+    }
+
+    public void setWindow(boolean window) {
+        isWindow = window;
+    }
 }
