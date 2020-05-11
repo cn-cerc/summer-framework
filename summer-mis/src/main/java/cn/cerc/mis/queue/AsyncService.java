@@ -11,8 +11,11 @@ import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.message.MessageLevel;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,23 +76,24 @@ public class AsyncService implements IServiceProxy {
         return processTiles.get(process);
     }
 
-    public AsyncService read(String jsonString) {
-        JSONObject json = JSONObject.fromObject(jsonString);
-        this.setService(json.getString("service"));
-        if (json.containsKey("dataOut")) {
-            this.getDataOut().setJSON(json.getString("dataOut"));
+    public AsyncService read(String jsonString) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json = mapper.readTree(jsonString);
+        this.setService(json.get("service").asText());
+        if (json.has("dataOut")) {
+            this.getDataOut().setJSON(json.get("dataOut").asText());
         }
-        if (json.containsKey("dataIn")) {
-            this.getDataIn().setJSON(json.getString("dataIn"));
+        if (json.has("dataIn")) {
+            this.getDataIn().setJSON(json.get("dataIn").asText());
         }
-        if (json.containsKey("process")) {
-            this.setProcess(json.getInt("process"));
+        if (json.has("process")) {
+            this.setProcess(json.get("process").asInt());
         }
-        if (json.containsKey("timer")) {
-            this.setTimer(json.getString("timer"));
+        if (json.has("timer")) {
+            this.setTimer(json.get("timer").asText());
         }
-        if (json.containsKey("processTime")) {
-            this.setProcessTime(json.getString("processTime"));
+        if (json.has("processTime")) {
+            this.setProcessTime(json.get("processTime").asText());
         }
         return this;
     }
@@ -155,18 +159,20 @@ public class AsyncService implements IServiceProxy {
 
     @Override
     public String toString() {
-        JSONObject content = new JSONObject();
-        content.element("service", this.service);
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode content = mapper.createObjectNode();
+
+        content.put("service", this.service);
         if (this.dataIn != null) {
-            content.element("dataIn", dataIn.getJSON());
+            content.put("dataIn", dataIn.getJSON());
         }
         if (this.dataOut != null) {
-            content.element("dataOut", dataOut.getJSON());
+            content.put("dataOut", dataOut.getJSON());
         }
-        content.element("timer", this.timer);
-        content.element("process", this.process);
+        content.put("timer", this.timer);
+        content.put("process", this.process);
         if (this.processTime != null) {
-            content.element("processTime", this.processTime);
+            content.put("processTime", this.processTime);
         }
         return content.toString();
     }

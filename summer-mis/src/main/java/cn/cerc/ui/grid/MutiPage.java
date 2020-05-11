@@ -1,10 +1,13 @@
 package cn.cerc.ui.grid;
 
 import cn.cerc.core.DataSet;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 public class MutiPage {
     // 数据源
     private DataSet dataSet;
@@ -126,8 +129,13 @@ public class MutiPage {
 
     @Override
     public String toString() {
-        JSONObject json = JSONObject.fromObject(this);
-        return json.toString();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
+            return null;
+        }
     }
 
     public boolean isRange(int value) {

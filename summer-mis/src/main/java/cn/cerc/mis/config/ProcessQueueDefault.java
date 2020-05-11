@@ -9,8 +9,9 @@ import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.task.AbstractTask;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 
 @Slf4j
 public class ProcessQueueDefault extends AbstractTask {
@@ -59,7 +60,9 @@ public class ProcessQueueDefault extends AbstractTask {
         svr.getDataIn().appendDataSet(query, true);
 
         String msgId = query.getHead().getString("_queueId_");
-        JSONObject content = JSONObject.fromObject(query.getHead().getString("_content_"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode content = mapper.readTree(query.getHead().getString("_content_"));
 
         // 更新消息状态
         BatchScript bs = new BatchScript(this);

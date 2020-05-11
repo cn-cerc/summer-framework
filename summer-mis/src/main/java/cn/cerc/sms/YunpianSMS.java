@@ -2,8 +2,9 @@ package cn.cerc.sms;
 
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.language.R;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -79,18 +80,22 @@ public class YunpianSMS {
 
             if (entity != null) {
                 String responseText = EntityUtils.toString(entity, ENCODING);
-                log.debug("msg: {}", responseText);
+                log.info("response: {}", responseText);
 
-                JSONObject json = JSONObject.fromObject(responseText);
-                if (json.has("code") && json.getInt("code") == 0) {
-                    log.info("sendSMS: {}, {}, {}", json.getString("msg"), mobile, text);
-                    this.setMessage(json.getString("msg"));
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode node = mapper.readTree(responseText);
+                int code = node.get("code").asInt();
+                String msg = node.get("msg").asText();
+                if (node.has("code") && code == 0) {
+                    log.info("sendSMS: {}, {}, {}", msg, mobile, text);
+                    this.setMessage(msg);
                     return true;
-                } else if (json.has("count") && json.getInt("count") > 0) { // 语言信息
+                } else if (node.has("count") && node.get("count").asInt() > 0) { // 语言信息
                     log.info("sendSMS: {}, {}", mobile, text);
                     return true;
                 } else {
-                    this.setMessage(json.getString("msg"));
+                    this.setMessage(msg);
+                    log.error("发送失败：{}", msg);
                     return false;
                 }
             } else {

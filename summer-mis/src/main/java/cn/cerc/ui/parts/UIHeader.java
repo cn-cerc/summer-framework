@@ -180,7 +180,7 @@ public class UIHeader extends UIComponent {
         IForm form = ((AbstractJspPage) this.getOwner()).getForm();
         // 刷新
         if (this.pageTitle != null) {
-            leftMenus.add(new UrlRecord("javascript:location.href=location.href", this.pageTitle));
+            leftMenus.add(new UrlRecord("javascript:location.reload()", this.pageTitle));
         }
         if (leftMenus.size() > 2) {
             if (form.getClient().isPhone()) {

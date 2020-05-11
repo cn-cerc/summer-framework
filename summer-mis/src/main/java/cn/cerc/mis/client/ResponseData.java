@@ -2,8 +2,10 @@ package cn.cerc.mis.client;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.mis.core.IPage;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -45,7 +47,8 @@ public class ResponseData {
     }
 
     private String getError(String message) {
-        JSONObject json = new JSONObject();
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode json = mapper.createObjectNode();
         json.put("result", false);
         json.put("message", message);
         return json.toString();
@@ -61,22 +64,21 @@ public class ResponseData {
 
     @Override
     public String toString() {
-        JSONObject json = new JSONObject();
-        json.put("result", result);
-        json.put("message", message);
-
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode root = mapper.createObjectNode();
+        root.put("result", result);
+        root.put("message", message);
         if (data == null) {
-            return json.toString();
+            return root.toString();
         }
-
-        StringBuffer tmp = new StringBuffer();
-        tmp.append(json.toString());
-        String str = tmp.substring(0, tmp.length() - 1) + ",\"data\":" + this.data + "}";
+        StringBuilder builder = new StringBuilder();
+        builder.append(root.toString());
+        String str = builder.substring(0, builder.length() - 1) + ",\"data\":" + this.data + "}";
 
         try {
             // 效验返回格式是否为JSON格式
-            json = JSONObject.fromObject(str);
-            if (json.getBoolean("result") == this.result) {
+            JsonNode json = mapper.readTree(str);
+            if (json.get("result").asBoolean() == this.result) {
                 return str;
             } else {
                 return getError("result json-data format error");

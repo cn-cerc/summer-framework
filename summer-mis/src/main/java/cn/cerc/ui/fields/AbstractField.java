@@ -10,8 +10,12 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIText;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class AbstractField extends UIComponent implements IField {
     // 数据库相关
     protected String field;
@@ -696,7 +700,8 @@ public abstract class AbstractField extends UIComponent implements IField {
 
         @Override
         public String toString() {
-            JSONObject json = new JSONObject();
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode json = mapper.createObjectNode();
             json.put("name", this.name);
             if (this.type != null) {
                 json.put("type", this.type);
