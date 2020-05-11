@@ -24,6 +24,7 @@ public class MenuModel {
     private boolean web;
     private boolean phone;
     private boolean order;// 需要购买
+    private int orderType;// 订购类型
 
     private String remark;
     private int menuIconType;// 图标类型
