@@ -3,28 +3,56 @@ package cn.cerc.mis.other;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * 帐套版本
+ */
 public enum BookVersion {
-    // 服务商
+    /**
+     * 服务商
+     */
     ctService("admin"),
-    // 专业版
+
+    /**
+     * 专业版
+     */
     ctProfession("professional"),
-    // 标准版
+
+    /**
+     * 标准版
+     */
     ctStandard("standard"),
-    // 基础版
+
+    /**
+     * 基础版
+     */
     ctBasic("base"),
-    // 旗舰版
+
+    /**
+     * 旗舰版
+     */
     ctUltimate("ultimate"),
-    // 普及版
+
+    /**
+     * 普及版
+     */
     ctFree("free"),
-    // 高级版
+
+    /**
+     * 高级版
+     */
     ctAdvanced("advanced"),
-    // ERP
+
+    /**
+     * ERP
+     */
     erp("erp"),
-    // 所有版本, 仅权限判断专用，后须移除！
+
+    /**
+     * 所有版本, 仅权限判断专用，后须移除！
+     */
     ctAll("ctAll");
 
     private String code;
