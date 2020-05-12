@@ -7,6 +7,7 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.StartForms;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.page.ExportFile;
@@ -18,6 +19,7 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.grid.AbstractGrid;
 import cn.cerc.ui.grid.GridFactory;
 import cn.cerc.ui.grid.MutiPage;
+import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIComponent;
@@ -92,7 +94,11 @@ public class UIPageSearch extends AbstractJspPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getTitle()));
+
+        String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
+        String[] params = menuCode.split("\\.");
+        String formId = params[0];
+        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");

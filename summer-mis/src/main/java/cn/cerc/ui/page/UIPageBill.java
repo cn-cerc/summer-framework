@@ -6,12 +6,14 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.StartForms;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.page.ExportFile;
 import cn.cerc.mis.page.IMenuBar;
 import cn.cerc.mis.rds.PassportRecord;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIFormVertical;
@@ -75,7 +77,11 @@ public class UIPageBill extends AbstractJspPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getTitle()));
+
+        String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
+        String[] params = menuCode.split("\\.");
+        String formId = params[0];
+        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");
@@ -83,8 +89,7 @@ public class UIPageBill extends AbstractJspPage {
         out.println("<meta name=\"format-detection\" content=\"email=no\" />");
         out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
-        out.printf(
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
+        out.printf("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
         out.print(this.getCssHtml());
         out.print(getScriptHtml());
         out.println("<script>");
