@@ -42,7 +42,7 @@ public class StartForms implements Filter {
         String uri = req.getRequestURI();
         log.debug("uri {}", uri);
 
-        /**
+        /*
          * http://127.0.0.1:8103/
          * http://127.0.0.1:8103
          * http://127.0.0.1:8103/public
@@ -273,11 +273,6 @@ public class StartForms implements Filter {
         }
 
         Object pageOutput = "";
-        String token = request.getParameter(RequestData.TOKEN);
-        if (token == null || "".equals(token)) {
-            token = request.getSession().getId();
-        }
-
         Method method = null;
         long startTime = System.currentTimeMillis();
         try {

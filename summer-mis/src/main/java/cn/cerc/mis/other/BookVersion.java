@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public enum BookVersion {
@@ -78,7 +79,7 @@ public enum BookVersion {
      * 根据角标获取版本号
      */
     public static Map<Integer, String> getIndex() {
-        Map<Integer, String> items = new HashMap<>();
+        Map<Integer, String> items = new LinkedHashMap<>();
         for (BookVersion k : BookVersion.values()) {
             if (k == ctAll) {
                 continue;
