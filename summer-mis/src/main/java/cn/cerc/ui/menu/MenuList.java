@@ -97,7 +97,7 @@ public class MenuList implements IDataCache {
             item.setWeb(cdsMenu.getBoolean("Web_"));
             item.setPhone(cdsMenu.getBoolean("Phone_"));
             item.setPrice(cdsMenu.getDouble("Price_"));
-            item.setOrder(cdsMenu.getBoolean("Custom_"));
+            item.setCustom(cdsMenu.getBoolean("Custom_"));
             item.setOrderType(cdsMenu.getInt("OrderType_"));
             item.setRemark(cdsMenu.getString("Remark_"));
             item.setMenuIconType(cdsMenu.getInt("MenuIconType_"));

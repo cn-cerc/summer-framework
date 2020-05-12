@@ -1,5 +1,11 @@
 package cn.cerc.mis.other;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public enum BookVersion {
     // 服务商
     ctService("admin"),
@@ -66,6 +72,25 @@ public enum BookVersion {
 
     public String getCode() {
         return this.code;
+    }
+
+    /**
+     * 根据角标获取版本号
+     */
+    public static Map<Integer, String> getIndex() {
+        Map<Integer, String> items = new HashMap<>();
+        for (BookVersion k : BookVersion.values()) {
+            if (k == ctAll) {
+                continue;
+            }
+            items.put(k.ordinal(), k.getCode());
+        }
+        return items;
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        Map<Integer, String> items = BookVersion.getIndex();
+        System.out.println(new ObjectMapper().writeValueAsString(items));
     }
 
 }
