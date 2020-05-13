@@ -64,8 +64,8 @@ public class UIPageView extends AbstractJspPage {
         String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
         String[] params = menuCode.split("\\.");
         String formId = params[0];
-        if (Utils.isNotEmpty(this.getForm().getTitle())) {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getTitle()));
+        if (Utils.isNotEmpty(this.getForm().getName())) {
+            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
         } else {
             out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
         }

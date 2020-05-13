@@ -11,7 +11,7 @@ public class MenuMetadata {
     // 页面类名代码，用于css定位
     private String id = "";
     // 页面标题
-    private String title;
+    private String name;
     // 页面描述
     private String describe;
     private boolean security;
@@ -57,16 +57,16 @@ public class MenuMetadata {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        if (title != null) {
-            String[] titles = title.split("\\\\");
-            this.title = titles[titles.length - 1];
+    public void setName(String name) {
+        if (name != null) {
+            String[] titles = name.split("\\\\");
+            this.name = titles[titles.length - 1];
         } else {
-            this.title = "";
+            this.name = "";
         }
     }
 

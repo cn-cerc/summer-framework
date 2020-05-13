@@ -6,8 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface IForm {
-    // 页面标题
-    String getTitle();
+
+    // 页面名称
+    String getName();
 
     HttpServletRequest getRequest();
 
