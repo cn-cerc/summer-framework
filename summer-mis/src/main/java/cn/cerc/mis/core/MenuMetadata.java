@@ -11,8 +11,7 @@ public class MenuMetadata {
     // 页面类名代码，用于css定位
     private String id = "";
     // 页面标题
-    // TODO: 2020/4/23 改为title
-    private String caption;
+    private String title;
     // 页面描述
     private String describe;
     private boolean security;
@@ -58,16 +57,16 @@ public class MenuMetadata {
         this.id = id;
     }
 
-    public String getCaption() {
-        return caption;
+    public String getTitle() {
+        return title;
     }
 
-    public void setCaption(String caption) {
-        if (caption != null) {
-            String[] captions = caption.split("\\\\");
-            this.caption = captions[captions.length - 1];
+    public void setTitle(String title) {
+        if (title != null) {
+            String[] titles = title.split("\\\\");
+            this.title = titles[titles.length - 1];
         } else {
-            this.caption = "";
+            this.title = "";
         }
     }
 
