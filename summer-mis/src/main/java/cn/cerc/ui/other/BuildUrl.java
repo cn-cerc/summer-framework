@@ -4,5 +4,5 @@ import cn.cerc.core.Record;
 import cn.cerc.ui.core.UrlRecord;
 
 public interface BuildUrl {
-    void buildUrl(Record ds, UrlRecord url);
+    void buildUrl(Record record, UrlRecord url);
 }
