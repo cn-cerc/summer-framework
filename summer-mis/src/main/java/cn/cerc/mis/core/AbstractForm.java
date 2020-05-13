@@ -108,24 +108,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public String getParam(String key, String def) {
-        if (params.containsKey(key)) {
-            return params.get(key);
-        } else {
-            return def;
-        }
-    }
-
-    /*
-     * 删除此项需要将xml的配套属性改为 title
-     */
-    @Deprecated
-    public String getCaption() {
-        return this.getTitle();
-    }
-
-    @Deprecated
-    public void setCaption(String caption) {
-        this.title = caption;
+        return params.getOrDefault(key, def);
     }
 
     public String getParent() {
