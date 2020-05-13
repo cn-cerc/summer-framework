@@ -106,19 +106,19 @@ public enum BookVersion {
     /**
      * 根据角标获取版本号
      */
-    public static Map<Integer, String> getIndex() {
-        Map<Integer, String> items = new LinkedHashMap<>();
+    public static Map<String, String> getIndex() {
+        Map<String, String> items = new LinkedHashMap<>();
         for (BookVersion k : BookVersion.values()) {
             if (k == ctAll) {
                 continue;
             }
-            items.put(k.ordinal(), k.getCode());
+            items.put(String.valueOf(k.ordinal()), k.getCode());
         }
         return items;
     }
 
     public static void main(String[] args) throws JsonProcessingException {
-        Map<Integer, String> items = BookVersion.getIndex();
+        Map<String, String> items = BookVersion.getIndex();
         System.out.println(new ObjectMapper().writeValueAsString(items));
     }
 
