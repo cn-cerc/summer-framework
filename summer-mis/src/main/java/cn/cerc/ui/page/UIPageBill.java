@@ -1,5 +1,6 @@
 package cn.cerc.ui.page;
 
+import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
@@ -81,7 +82,11 @@ public class UIPageBill extends AbstractJspPage {
         String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
         String[] params = menuCode.split("\\.");
         String formId = params[0];
-        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+        if (Utils.isNotEmpty(this.getForm().getTitle())) {
+            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getTitle()));
+        } else {
+            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+        }
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");
