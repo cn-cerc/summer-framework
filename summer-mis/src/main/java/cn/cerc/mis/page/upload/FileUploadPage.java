@@ -45,22 +45,22 @@ public class FileUploadPage extends FileUploadBasePage {
     @Override
     public IPage exec() {
         UIPageSearch jspPage = new UIPageSearch(this);
-        UIHeader top = jspPage.getHeader();
+        UIHeader header = jspPage.getHeader();
         Map<String, String> menus = getMenuPath();
         if (!menus.isEmpty()) {
             for (String key : menus.keySet()) {
-                top.addLeftMenu(key, R.asString(this, menus.get(key)));
+                header.addLeftMenu(key, R.asString(this, menus.get(key)));
             }
         }
 
         setName(R.asString(this, getPageTitle()));
-        top.setPageTitle(R.asString(this, getPageTitle()));
+        header.setPageTitle(R.asString(this, getPageTitle()));
 
         jspPage.addScriptFile("../imgZoom/imgAlert.js");
         jspPage.addCssFile("../imgZoom/bigImg.css");
 
-        UIToolbar right = jspPage.getToolBar();
-        UISheetHelp section1 = new UISheetHelp(right);
+        UIToolbar toolbar = jspPage.getToolBar();
+        UISheetHelp section1 = new UISheetHelp(toolbar);
         section1.setCaption(R.asString(this, "操作提示"));
         section1.addLine(R.asString(this, "所支持上传的文件类型："), getSuportTypes());
         section1.addLine(getSuportTypes());
