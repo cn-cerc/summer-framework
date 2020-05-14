@@ -288,13 +288,25 @@ public class StartForms implements Filter {
                     IPage output = (IPage) pageOutput;
                     String cmd = output.execute();
                     if (cmd != null) {
-                        if (cmd.startsWith("redirect:"))
+                        if (cmd.startsWith("redirect:")) {
                             response.sendRedirect(cmd.substring(9));
-                        else {
+                            response.setHeader("responseURL", cmd.substring(9));
+                        } else {
                             String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
                                     cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
+                    } else if ("GET".equals(request.getMethod())) {
+                        StringBuffer jumpUrl = new StringBuffer();
+                        jumpUrl.append(request.getRequestURL().toString());
+                        if (request.getParameterMap().size() > 0) {
+                            jumpUrl.append("?");
+                            request.getParameterMap().forEach((key, value) -> {
+                                jumpUrl.append(key).append("=").append(String.join(",", value)).append("&");
+                            });
+                            jumpUrl.delete(jumpUrl.length() - 1, jumpUrl.length());
+                        }
+                        response.setHeader("jumpURL", jumpUrl.toString());
                     }
                 } else {
                     log.warn(String.format("%s pageOutput is not IPage: %s", funcCode, pageOutput));
