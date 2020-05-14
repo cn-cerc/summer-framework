@@ -21,7 +21,7 @@ import cn.cerc.ui.page.UIPageSearch;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
-import cn.cerc.ui.parts.UIToolBar;
+import cn.cerc.ui.parts.UIToolbar;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -59,7 +59,7 @@ public class FileUploadPage extends FileUploadBasePage {
         jspPage.addScriptFile("../imgZoom/imgAlert.js");
         jspPage.addCssFile("../imgZoom/bigImg.css");
 
-        UIToolBar right = jspPage.getToolBar();
+        UIToolbar right = jspPage.getToolBar();
         UISheetHelp section1 = new UISheetHelp(right);
         section1.setCaption(R.asString(this, "操作提示"));
         section1.addLine(R.asString(this, "所支持上传的文件类型："), getSuportTypes());

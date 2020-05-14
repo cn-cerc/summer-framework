@@ -18,7 +18,7 @@ public class UISheetModule extends UISheet {
         super();
     }
 
-    public UISheetModule(UIToolBar owner) {
+    public UISheetModule(UIToolbar owner) {
         super(owner);
     }
 

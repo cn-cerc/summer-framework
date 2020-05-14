@@ -8,10 +8,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UIToolBar extends UIComponent {
+public class UIToolbar extends UIComponent {
     private List<UISheet> sheets = new ArrayList<>();
 
-    public UIToolBar(UIComponent owner) {
+    public UIToolbar(UIComponent owner) {
         super(owner);
         this.setId("rightSide");
     }
