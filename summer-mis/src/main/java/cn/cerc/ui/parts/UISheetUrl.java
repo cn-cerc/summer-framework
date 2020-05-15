@@ -20,7 +20,7 @@ public class UISheetUrl extends UISheet {
         this.setCaption("相关操作");
     }
 
-    public UISheetUrl(UIToolBar owner) {
+    public UISheetUrl(UIToolbar owner) {
         super(owner);
         this.setCaption("相关操作");
     }

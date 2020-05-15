@@ -17,7 +17,7 @@ public class UISheetHelp extends UISheet {
         this.setCaption("操作提示");
     }
 
-    public UISheetHelp(UIToolBar owner) {
+    public UISheetHelp(UIToolbar owner) {
         super(owner);
         this.setCaption("操作提示");
     }

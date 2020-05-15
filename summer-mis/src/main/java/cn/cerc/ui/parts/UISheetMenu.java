@@ -16,7 +16,7 @@ public class UISheetMenu extends UISheet {
     private UISpan caption; // 标题
     private UIButton opera; // 操作
 
-    public UISheetMenu(UIToolBar owner) {
+    public UISheetMenu(UIToolbar owner) {
         super(owner);
         this.setCssClass("menuList");
     }

@@ -19,7 +19,7 @@ import cn.cerc.ui.parts.UIDocument;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
-import cn.cerc.ui.parts.UIToolBar;
+import cn.cerc.ui.parts.UIToolbar;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -45,7 +45,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     // 主体: 控制区(可选)+内容+消息区
     private UIDocument document;
     // 工具面板：多页形式
-    private UIToolBar toolBar;
+    private UIToolbar toolBar;
     // 状态栏：快捷操作+按钮组
     private UIFooter footer;
 
@@ -307,9 +307,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         return document;
     }
 
-    public UIToolBar getToolBar() {
+    public UIToolbar getToolBar() {
         if (toolBar == null) {
-            toolBar = new UIToolBar(this);
+            toolBar = new UIToolbar(this);
         }
         return toolBar;
     }
@@ -317,9 +317,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     /**
      * 获取指定菜单的描述和停用时间
      */
-    public UIToolBar getToolBar(AbstractForm handle) {
+    public UIToolbar getToolBar(AbstractForm handle) {
         if (toolBar == null) {
-            toolBar = new UIToolBar(this);
+            toolBar = new UIToolbar(this);
         }
         String menuCode = StartForms.getRequestCode(handle.getRequest());
         String[] params = menuCode.split("\\.");
