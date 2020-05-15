@@ -117,7 +117,7 @@ public class ApplicationConfig {
             }
 
             // 取消外围 []，还原标准的dataSet格式
-            String data = object.get("data").asText();
+            String data = object.get("data").toString();
             data = data.substring(1, data.length() - 1);
 
             DataSet dataSet = new DataSet();
