@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIFooter extends UIComponent {
-    private static final int MAX_MENUS = 6;
+    private static final int MAX_MENUS = 7;
     // protected UrlRecord checkAll;
     private boolean flag = false;
     private UIFooterOperation operation;
