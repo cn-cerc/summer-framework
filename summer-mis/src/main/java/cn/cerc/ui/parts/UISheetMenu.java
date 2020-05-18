@@ -59,8 +59,7 @@ public class UISheetMenu extends UISheet {
             html.print(">%s</a>", url.getName());
             if (url.isWindow()) {
                 String hrip = "hrip:" + url.getUrl();
-                html.print(" <a href='%s'/><img src='%s' role='icon'/></a>",hrip,"images/menu/erp-blue.png");
-                //html.print("<a href='%s' target='_blank'/>⚡</a>",hrip);
+                html.print(" <a href='%s' class='erp_menu'/><img src='%s' role='icon'/></a>", hrip, "images/menu/erp-blue.png");
             }
             if (Utils.isNotEmpty(url.getArrow())) {
                 html.println("<img src='%s' role='arrow' />", url.getArrow());
