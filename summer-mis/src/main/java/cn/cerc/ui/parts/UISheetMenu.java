@@ -41,12 +41,7 @@ public class UISheetMenu extends UISheet {
         html.println("<ul>");
         for (UrlRecord url : menus) {
             html.println("<li>");
-            if (url.isWindow()) {
-                String href = "hrip:" + url.getUrl();
-                html.print("<img src='%s' role='icon' onclick='window.open(\"%s\")'/>", url.getImgage(), href);
-            } else {
-                html.print("<img src='%s' role='icon'/>", url.getImgage());
-            }
+            html.print("<img src='%s' role='icon'/>", url.getImgage());
 
             html.print("<a href='%s' onclick=\"updateUserHit('%s')\"", url.getUrl(), url.getUrl());
             if (url.getId() != null) {
@@ -62,6 +57,11 @@ public class UISheetMenu extends UISheet {
                 html.print(" target='%s'", url.getTarget());
             }
             html.print(">%s</a>", url.getName());
+            if (url.isWindow()) {
+                String hrip = "hrip:" + url.getUrl();
+                html.print(" <a href='%s'/><img src='%s' role='icon'/></a>",hrip,"images/menu/erp-blue.png");
+                //html.print("<a href='%s' target='_blank'/>⚡</a>",hrip);
+            }
             if (Utils.isNotEmpty(url.getArrow())) {
                 html.println("<img src='%s' role='arrow' />", url.getArrow());
             }
