@@ -137,6 +137,4 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         return null;
     }
 
-
-
 }

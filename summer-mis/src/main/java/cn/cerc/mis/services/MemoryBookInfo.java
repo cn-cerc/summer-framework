@@ -76,11 +76,11 @@ public class MemoryBookInfo {
         return getBookType(handle, corpNo);
     }
 
-    /** 
-     * @param handle 环境变量   
-     * @param corpNo 帐套代码   
-     * @return 返回指定帐套的版本类型  
-     */ 
+    /**
+     * @param handle 环境变量
+     * @param corpNo 帐套代码
+     * @return 返回指定帐套的版本类型
+     */
     public static BookVersion getBookType(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {

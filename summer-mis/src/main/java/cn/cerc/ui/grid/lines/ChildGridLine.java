@@ -45,7 +45,7 @@ public class ChildGridLine extends AbstractGridLine {
             html.print(">");
             for (IField obj : item.getFields()) {
                 if (obj instanceof AbstractField) {
-                    String resultHtml ="";
+                    String resultHtml = "";
                     AbstractField field = (AbstractField) obj;
                     if (field instanceof IColumn) {
                         resultHtml = ((IColumn) field).format(dataSource.getDataSet().getCurrent());

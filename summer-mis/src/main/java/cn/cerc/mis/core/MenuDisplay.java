@@ -23,7 +23,6 @@ public class MenuDisplay {
     @Getter
     private String pageNo;
 
-
     // 上级菜单，若无，则为
     @Setter
     @Getter
