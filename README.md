@@ -22,10 +22,30 @@ IService有提供 RESTful 接口，可提供第三方访问。 实际使用时�
 
 # 模块
 
-[summer-core](/summer-core) 核心Record，DataSet服务
-
 [summer-db](/summer-db) 数据库操作服务
 
 [summer-mis](/summer-mis) 定位于页面组件，默认静态文件路径 forms
 
-[summer-sms](/summer-sms) 短信集成服务，支持阿里云、聚合、云片等平台
+# 私服
+
+## 在项目中引用
+pom.xml
+```xml
+<repositories>
+    <repository>
+        <id>nexus</id>
+        <url>https://nexus.diteng.site/nexus/content/groups/public</url>
+    </repository>
+</repositories>
+```
+
+## 在setting.xml中引用
+
+```xml
+<mirror>
+    <id>nexus-maven</id>
+    <mirrorOf>central</mirrorOf>
+    <url>https://nexus.diteng.site/nexus/content/groups/public</url>
+</mirror>
+```
+
