@@ -324,12 +324,6 @@
     </dependencyManagement>
 
     <!-- 私服配置 -->
-    <repositories>
-        <repository>
-            <id>diteng</id>
-            <url>https://nexus.diteng.site/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
