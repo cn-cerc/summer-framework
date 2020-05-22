@@ -28,9 +28,7 @@ IService有提供 RESTful 接口，可提供第三方访问。 实际使用时�
 
 # 私服
 
-## 在项目中引用
-
-pom.xml
+## 在pom.xml中引用
 
 ```xml
 <repositories>
@@ -53,7 +51,7 @@ pom.xml
 
 ## 开发人员使用
 
-若开发人员使用框架，建议直接将 summer-framework 克隆到自己本地电脑进行打包，以获取最佳的使用体验，同时更新和修改框架也方便.
+若开发人员使用框架，建议直接将 summer-framework 克隆到自己本地电脑进行打包，以获取最佳的使用体验，同时更新和修改框架也方便。
 
 ```bash
 git clone https://github.com/cn-cerc/summer-framework.git
