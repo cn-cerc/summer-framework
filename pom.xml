@@ -302,11 +302,11 @@
                 <artifactId>quartz</artifactId>
                 <version>${quartz.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib -->
             <dependency>
                 <groupId>net.sf.json-lib</groupId>
                 <artifactId>json-lib</artifactId>
                 <version>2.4</version>
-                <classifier>jdk15</classifier>
             </dependency>
             <!-- 支持docs,使用markdown技术 -->
             <dependency>
