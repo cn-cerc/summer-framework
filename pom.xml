@@ -307,6 +307,7 @@
                 <groupId>net.sf.json-lib</groupId>
                 <artifactId>json-lib</artifactId>
                 <version>2.4</version>
+                <classifier>jdk15</classifier><!--指定jdk版本-->
             </dependency>
             <!-- 支持docs,使用markdown技术 -->
             <dependency>
@@ -327,24 +328,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <!-- 私服配置 -->
-    <repositories>
-        <repository>
-            <id>vine</id>
-            <url>https://nexus.diteng.site/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
-    <distributionManagement>
-        <repository>
-            <id>nexus-releases</id>
-            <name>Nexus Release Repository</name>
-            <url>https://nexus.diteng.site/nexus/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>Nexus Snapshot Repository</name>
-            <url>https://nexus.diteng.site/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
