@@ -144,9 +144,7 @@ public class UIInfoList extends UIComponent {
 
         public Line addOpera(String text, String href) {
             UIBottom bottom = new UIBottom(null);
-            bottom.setCaption(text);
-            bottom.setUrl(href);
-            bottom.setCssClass("commonlyMenu");
+            bottom.setCaption(text).setUrl(href).setTarget("_blank").setCssClass("commonlyMenu");
             items.add(bottom);
             return this;
         }
