@@ -39,7 +39,7 @@ public class BigConnection implements Closeable {
 
     public synchronized static ComboPooledDataSource getDataSource() {
         if (dataSource == null) {
-            ServerConfig config = ServerConfig.INSTANCE;
+            ServerConfig config = ServerConfig.getInstance();
 
             String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
             String db = config.getProperty(MysqlConnection.rds_database, "appdb");
@@ -173,7 +173,7 @@ public class BigConnection implements Closeable {
     public Connection get() {
         if (debugConnection) {
             try {
-                ServerConfig config = ServerConfig.INSTANCE;
+                ServerConfig config = ServerConfig.getInstance();
                 String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
                 String db = config.getProperty(MysqlConnection.rds_database, "appdb");
                 String url = String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);

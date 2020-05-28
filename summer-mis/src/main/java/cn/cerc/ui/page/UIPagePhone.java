@@ -35,7 +35,7 @@ public class UIPagePhone extends AbstractJspPage {
     public UIPagePhone(IForm form) {
         super();
         setForm(form);
-        ServerConfig config = ServerConfig.INSTANCE;
+        ServerConfig config = ServerConfig.getInstance();
         initCssFile();
         this.addCssFile(config.getProperty("phone-block.css", "jui/phone/phone-block.css"));
         initJsFile();

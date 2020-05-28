@@ -28,7 +28,7 @@ public class QueueDB {
     public static final String TEST = "test";
 
     private static String getQueueDB(String queue) {
-        String queueDB = ServerConfig.INSTANCE.getProperty(queue);
+        String queueDB = ServerConfig.getInstance().getProperty(queue);
         if (queueDB == null) {
             throw new RuntimeException(String.format("配置文件中未配置该key %s", queue));
         }

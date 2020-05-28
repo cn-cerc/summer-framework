@@ -84,7 +84,7 @@ public class ResourceJstl extends SimpleTagSupport {
 
         // 取不到值，但当前是英文时，则原样返回
         if (Language.en_US.equals(lang)) {
-            if (ServerConfig.INSTANCE.isDebug()) {
+            if (ServerConfig.getInstance().isDebug()) {
                 return lang + ":" + text;
             } else {
                 return text;
@@ -98,7 +98,7 @@ public class ResourceJstl extends SimpleTagSupport {
             return result;
         }
 
-        if (ServerConfig.INSTANCE.isDebug()) {
+        if (ServerConfig.getInstance().isDebug()) {
             return lang + ":" + text;
         } else {
             return text;

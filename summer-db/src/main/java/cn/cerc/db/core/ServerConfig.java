@@ -26,6 +26,10 @@ public enum ServerConfig implements IConfig {
     private static final String confFile = "/application.properties";
     private static Properties properties = new Properties();
 
+    public static ServerConfig getInstance() {
+        return INSTANCE;
+    }
+
     // 是否为debug状态
     private int debug = -1;
 

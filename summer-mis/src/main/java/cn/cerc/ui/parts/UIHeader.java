@@ -55,7 +55,7 @@ public class UIHeader extends UIComponent {
 
     public UIHeader(AbstractJspPage owner) {
         super(owner);
-        ServerConfig config = ServerConfig.INSTANCE;
+        ServerConfig config = ServerConfig.getInstance();
         String homeImg = "images/Home.png";
         if (owner.getForm().getClient().isPhone()) {
             homeImg = config.getProperty("app.phone.home.image", homeImg);

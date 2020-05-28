@@ -92,7 +92,7 @@ public class FileUploadPage extends FileUploadBasePage {
                 return jspPage;
             }
 
-            ServerConfig config = ServerConfig.INSTANCE;
+            ServerConfig config = ServerConfig.getInstance();
             String ossSite = config.getProperty("oss.site") + "/";
 
             AbstractGrid gird = jspPage.createGrid(jspPage.getContent(), svr.getDataOut());

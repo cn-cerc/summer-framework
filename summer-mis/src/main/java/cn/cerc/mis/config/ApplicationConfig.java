@@ -52,7 +52,7 @@ public class ApplicationConfig {
     }
 
     public static boolean isMaster() {
-        String appRole = ServerConfig.INSTANCE.getProperty(ApplicationConfig.App_Role_Key, ApplicationConfig.App_Role_Master);
+        String appRole = ServerConfig.getInstance().getProperty(ApplicationConfig.App_Role_Key, ApplicationConfig.App_Role_Master);
         return ApplicationConfig.App_Role_Master.equals(appRole);
     }
 
