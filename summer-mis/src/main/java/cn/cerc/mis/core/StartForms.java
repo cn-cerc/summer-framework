@@ -356,7 +356,6 @@ public class StartForms implements Filter {
                     if (cmd != null) {
                         if (cmd.startsWith("redirect:")) {
                             response.sendRedirect(cmd.substring(9));
-                            response.setHeader("responseURL", cmd.substring(9));
                         } else {
                             String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
                                     cmd);
