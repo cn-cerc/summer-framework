@@ -12,7 +12,6 @@
     <modules>
         <module>summer-db</module>
         <module>summer-mis</module>
-        <module>summer-sms</module>
     </modules>
 
     <properties>
