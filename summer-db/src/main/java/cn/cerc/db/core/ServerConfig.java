@@ -13,16 +13,11 @@ public enum ServerConfig implements IConfig {
 
     INSTANCE;
 
-    public static final String TaskServiceToken = "task.token";
-    public static final String AdminMobile = "admin.mobile";
-    public static final String AdminEmail = "admin.email";
-
     // 是否为任务主机
     public static final String TaskServiceEnabled = "task.service";
     public static final String config_version = "version";
     public static final String config_debug = "debug";
     public static final String CONFIG_APP_NAME = "appName";
-    public static final int AppLevelMaster = 3;
     private static final String confFile = "/application.properties";
     private static final Properties properties = new Properties();
 
@@ -61,74 +56,6 @@ public enum ServerConfig implements IConfig {
         return "1".equals(getInstance().getProperty("docs.service", "0"));
     }
 
-    @Deprecated
-    public static String getTaskToken() {
-        return getInstance().getProperty(TaskServiceToken, null);
-    }
-
-    @Deprecated
-    public static String wx_appid() {
-        return getInstance().getProperty("wx.appid", null);
-    }
-
-    @Deprecated
-    public static String wx_secret() {
-        return getInstance().getProperty("wx.secret", null);
-    }
-
-    @Deprecated
-    public static String dayu_serverUrl() {
-        return getInstance().getProperty("dayu.serverUrl", null);
-    }
-
-    @Deprecated
-    public static String dayu_appKey() {
-        return getInstance().getProperty("dayu.appKey", null);
-    }
-
-    @Deprecated
-    public static String dayu_appSecret() {
-        return getInstance().getProperty("dayu.appSecret", null);
-    }
-
-    // 简讯服务(旧版本)
-    @Deprecated
-    public static String sms_host() {
-        return getInstance().getProperty("sms.host", null);
-    }
-
-    @Deprecated
-    public static String sms_username() {
-        return getInstance().getProperty("sms.username", null);
-    }
-
-    @Deprecated
-    public static String sms_password() {
-        return getInstance().getProperty("sms.password", null);
-    }
-
-    // 微信服务
-    @Deprecated
-    public static String wx_host() {
-        return getInstance().getProperty("wx.host", null);
-    }
-
-    @Deprecated // 请改使用 isServerMaster， isServerBeta，isServerDevelop
-    public static int getAppLevel() {
-        String tmp = getInstance().getProperty("version", "beta");
-        if ("test".equals(tmp)) {
-            return 1;
-        }
-        if ("beta".equals(tmp)) {
-            return 2;
-        }
-        if ("release".equals(tmp)) {
-            return AppLevelMaster;
-        } else {
-            return 0;
-        }
-    }
-
     // 正式环境
     public static boolean isServerMaster() {
         String tmp = getInstance().getProperty("version", "beta");
@@ -157,22 +84,6 @@ public enum ServerConfig implements IConfig {
             return false;
         }
         return true;
-    }
-
-    @Deprecated
-    public static int getTimeoutWarn() {
-        String str = getInstance().getProperty("timeout.warn", "60");
-        return Integer.parseInt(str); // 默认60秒
-    }
-
-    @Deprecated
-    public static String getAdminMobile() {
-        return getInstance().getProperty(AdminMobile, null);
-    }
-
-    @Deprecated
-    public static String getAdminEmail() {
-        return getInstance().getProperty(AdminEmail, null);
     }
 
     @Override
