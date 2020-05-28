@@ -17,7 +17,7 @@ public enum LocalConfig implements IConfig {
     private static final String confFile = System.getProperty("user.home") + System.getProperty("file.separator")
             + "summer-application.properties";
 
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
 
     public static LocalConfig getInstance() {
         return INSTANCE;
@@ -42,10 +42,7 @@ public enum LocalConfig implements IConfig {
 
     @Override
     public String getProperty(String key, String def) {
-        String result = null;
-        if (properties != null) {
-            result = properties.getProperty(key);
-        }
+        String result = properties.getProperty(key);
         return result != null ? result : def;
     }
 
