@@ -42,7 +42,8 @@ public class QueueConnection {
 
     /**
      * @param disname 消息队列id
-     * @param data    要发送的数据
+     * @param data    队列内容
+     * @throws JMSException JMS异常
      */
     public void sendMessage(String disname, String data) throws JMSException {
         // 创建一个消息队列
@@ -59,17 +60,20 @@ public class QueueConnection {
     }
 
     /**
+     * 取得消息
+     *
      * @param disname 消息队列id
      * @return 返回取得的消息
+     * @throws JMSException JMS异常
      */
     public Message receiveMessage(String disname) throws JMSException {
         Queue queue = session.createQueue(disname);
         MessageConsumer consumer = session.createConsumer(queue);
         Message msg = consumer.receive();
-        if (msg != null && msg instanceof TextMessage)
+        if (msg != null && msg instanceof TextMessage) {
             System.out.println(Thread.currentThread().getName() + " receive:" + ((TextMessage) msg).getText());
+        }
         consumer.close();
         return null;
     }
-
 }

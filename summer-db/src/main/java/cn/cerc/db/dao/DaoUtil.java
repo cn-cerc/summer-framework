@@ -31,11 +31,12 @@ public class DaoUtil {
                 Column column = findColumn(field.getAnnotations());
                 if (column != null) {
                     String fieldName = field.getName();
-                    if (!"".equals(column.name()))
+                    if (!"".equals(column.name())) {
                         fieldName = column.name();
-                    if (field.getModifiers() == PUBLIC)
+                    }
+                    if (field.getModifiers() == PUBLIC) {
                         record.setField(fieldName, field.get(obj));
-                    else if (field.getModifiers() == PRIVATE || field.getModifiers() == PROTECTED) {
+                    } else if (field.getModifiers() == PRIVATE || field.getModifiers() == PROTECTED) {
                         field.setAccessible(true);
                         record.setField(fieldName, field.get(obj));
                     }
@@ -55,9 +56,9 @@ public class DaoUtil {
             for (Field field : fields) {
                 Column column = findColumn(field.getAnnotations());
                 if (column != null) {
-                    if (field.getModifiers() == PUBLIC)
+                    if (field.getModifiers() == PUBLIC) {
                         items.put(field, column);
-                    else if (field.getModifiers() == PRIVATE || field.getModifiers() == PROTECTED) {
+                    } else if (field.getModifiers() == PRIVATE || field.getModifiers() == PROTECTED) {
                         field.setAccessible(true);
                         items.put(field, column);
                     }
@@ -80,38 +81,41 @@ public class DaoUtil {
                     // 默认等于对象的属性
                     String propertyName = field.getName();
                     Column column = items.get(field);
-                    if (!"".equals(column.name()))
+                    if (!"".equals(column.name())) {
                         propertyName = column.name();
+                    }
                     if (propertyName.equals(fieldName)) {
                         Object val = record.getField(fieldName);
-                        if (val == null)
+                        if (val == null) {
                             field.set(obj, null);
-                        else if (field.getType().equals(val.getClass()))
+                        } else if (field.getType().equals(val.getClass())) {
                             field.set(obj, val);
-                        else {
-                            if ("int".equals(field.getType().getName()))
+                        } else {
+                            if ("int".equals(field.getType().getName())) {
                                 field.setInt(obj, (Integer) val);
-                            else if ("double".equals(field.getType().getName()))
+                            } else if ("double".equals(field.getType().getName())) {
                                 field.setDouble(obj, (Double) val);
-                            else if ("long".equals(field.getType().getName()))
-                                if (val instanceof BigInteger)
+                            } else if ("long".equals(field.getType().getName())) {
+                                if (val instanceof BigInteger) {
                                     field.setLong(obj, ((BigInteger) val).longValue());
-                                else
+                                } else {
                                     field.setLong(obj, (Long) val);
-                            else if ("boolean".equals(field.getType().getName()))
+                                }
+                            } else if ("boolean".equals(field.getType().getName())) {
                                 field.setBoolean(obj, (Boolean) val);
-                            else if (TDateTime.class.getName().equals(field.getType().getName()))
+                            } else if (TDateTime.class.getName().equals(field.getType().getName())) {
                                 field.set(obj, new TDateTime((Date) val));
-                            else
-                                throw new RuntimeException(
-                                        "error: " + field.getType().getName() + " as " + val.getClass().getName());
+                            } else {
+                                throw new RuntimeException("error: " + field.getType().getName() + " as " + val.getClass().getName());
+                            }
                         }
                         exists = true;
                         break;
                     }
                 }
-                if (!exists)
+                if (!exists) {
                     log.warn("property not find: " + fieldName);
+                }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -141,8 +145,9 @@ public class DaoUtil {
                 break;
             }
         }
-        if (result == null)
+        if (result == null) {
             throw new RuntimeException("tableName not define");
+        }
         return result;
     }
 
@@ -171,21 +176,21 @@ public class DaoUtil {
                 Object val = record.getField(field);
                 if (val != null) {
                     // Class<?> clazz = val.getClass();
-                    if (val instanceof Integer)
+                    if (val instanceof Integer) {
                         sb.append("int");
-                    else if (val instanceof BigInteger)
+                    } else if (val instanceof BigInteger) {
                         sb.append("long");
-                    else if (val instanceof Boolean)
+                    } else if (val instanceof Boolean) {
                         sb.append("boolean");
-                    else if (val instanceof String)
+                    } else if (val instanceof String) {
                         sb.append("String");
-                    else if (val instanceof Double)
+                    } else if (val instanceof Double) {
                         sb.append("double");
-                    else if (val instanceof Long)
+                    } else if (val instanceof Long) {
                         sb.append("long");
-                    else if (val instanceof Timestamp)
+                    } else if (val instanceof Timestamp) {
                         sb.append("TDateTime");
-                    else {
+                    } else {
                         remark = val.getClass().getName();
                         sb.append("String");
                     }
@@ -202,14 +207,16 @@ public class DaoUtil {
                 sb.append("id");
             } else {
                 sb.append(field.substring(0, 1).toLowerCase());
-                if (field.endsWith("_"))
-                    sb.append(field.substring(1, field.length() - 1));
-                else
-                    sb.append(field.substring(1, field.length()));
+                if (field.endsWith("_")) {
+                    sb.append(field, 1, field.length() - 1);
+                } else {
+                    sb.append(field.substring(1));
+                }
             }
             sb.append(";");
-            if (remark != null)
+            if (remark != null) {
                 sb.append("//").append(remark);
+            }
             sb.append("\r\n");
             sb.append("\r\n");
         }

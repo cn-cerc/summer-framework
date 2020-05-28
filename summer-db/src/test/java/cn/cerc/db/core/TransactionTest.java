@@ -9,12 +9,12 @@ import org.junit.Test;
 import java.sql.SQLException;
 
 public class TransactionTest {
-    private StubHandle handle;
+    private StubHandleText handle;
     private MysqlConnection conn;
 
     @Before
     public void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         conn = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
     }
 

@@ -17,7 +17,7 @@ public class UISheetHelp extends UISheet {
         this.setCaption("操作提示");
     }
 
-    public UISheetHelp(UIToolBar owner) {
+    public UISheetHelp(UIToolbar owner) {
         super(owner);
         this.setCaption("操作提示");
     }
@@ -48,10 +48,12 @@ public class UISheetHelp extends UISheet {
         }
         html.println("</div>");
         html.println("<div class=\"contents\">");
-        if (this.content != null)
+        if (this.content != null) {
             html.println("<p>%s</p>", this.content);
-        for (String line : lines)
+        }
+        for (String line : lines) {
             html.println("<p>%s</p>", line);
+        }
         html.println("</div>");
         html.println("</section>");
     }

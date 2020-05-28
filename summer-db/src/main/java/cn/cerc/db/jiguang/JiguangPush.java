@@ -58,18 +58,20 @@ public class JiguangPush {
      * @param sound      声音类型
      */
     public void send(ClientType clientType, String clientId, String sound) {
-        if (msgId == null)
+        if (msgId == null) {
             throw new RuntimeException("msgId is null");
+        }
         addParam("msgId", msgId);
         addParam("sound", sound);
 
         Builder builder = PushPayload.newBuilder();
 
         // 发送给指定的设备
-        if (clientId != null)
+        if (clientId != null) {
             builder.setAudience(Audience.alias(clientId));
-        else
+        } else {
             builder.setAudience(Audience.all());
+        }
 
         // 发送给指定的设备类型
         if (clientType == ClientType.Android) {
@@ -86,8 +88,9 @@ public class JiguangPush {
             // 设置为生产环境
             builder.setOptions(Options.newBuilder().setApnsProduction(true).build()).build();
             sendMessage(builder.build());
-        } else
+        } else {
             throw new RuntimeException("暂不支持的设备类别：" + clientType.ordinal());
+        }
     }
 
     /**

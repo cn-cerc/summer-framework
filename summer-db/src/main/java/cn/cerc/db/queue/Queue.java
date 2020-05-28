@@ -35,8 +35,9 @@ public class Queue {
     public Object readObject() {
         try {
             String str = this.read();
-            if (str == null)
+            if (str == null) {
                 return null;
+            }
             return Utils.deserializeToObject(str);
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -59,8 +60,9 @@ public class Queue {
     }
 
     public void delete() {
-        if (receiptHandle == null)
+        if (receiptHandle == null) {
             return;
+        }
         client.deleteMessage(receiptHandle);
         receiptHandle = null;
         return;

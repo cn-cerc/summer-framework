@@ -20,14 +20,16 @@ public class UIPageLike extends UIPageDialog {
 
     @Override
     public String execute() throws ServletException, IOException {
-        if (menus != null)
+        if (menus != null) {
             add("menus", menus);
+        }
         return super.execute();
     }
 
     public UIMenuList getMenus() {
-        if (menus == null)
+        if (menus == null) {
             menus = new UIMenuList(this.getDocument().getContent());
+        }
         return menus;
     }
 
@@ -52,7 +54,7 @@ public class UIPageLike extends UIPageDialog {
     }
 
     public void setSessionKey(Object value) {
-        super.put(RequestData.appSession_Key, value);
+        super.put(RequestData.TOKEN, value);
     }
 
     public void setOnlineUsers(int value) {

@@ -1,0 +1,40 @@
+
+.show_cover {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 3333;
+    background: rgba(0, 0, 0, 0.6);
+    top: 0;
+    left: 0;
+}
+
+.show_block {
+    position: fixed;
+    z-index: 333333;
+    top: 50%;
+    left: 50%;
+    min-width: 30em;
+    width: auto;
+    min-height: 5em;
+    height: auto;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    background: #fff;
+}
+
+.show_block > img {
+    position: absolute;
+    top: -1em;
+    right: -1em;
+    width: 2em;
+    height: 2em;
+    z-index: 333;
+    cursor: pointer;
+}
+
+.show_content, .show_content > img {
+    width: 100%;
+    height: auto;
+    max-height: 90vh;
+}

@@ -26,8 +26,9 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
 
     public static AbstractTask getTask(IHandle handle, String beanId) {
         AbstractTask task = Application.getBean(beanId, AbstractTask.class);
-        if (task != null)
+        if (task != null) {
             task.setHandle(handle);
+        }
         return task;
     }
 
@@ -66,30 +67,35 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
     private void runTask(IHandle handle) {
         // 同一秒内，不允许执行2个及以上任务
         String str = TDateTime.Now().getTime();
-        if (str.equals(lock))
+        if (str.equals(lock)) {
             return;
+        }
 
         lock = str;
         for (String beanId : context.getBeanNamesForType(AbstractTask.class)) {
             AbstractTask task = getTask(handle, beanId);
-            if (task == null)
+            if (task == null) {
                 continue;
+            }
             try {
                 String curTime = TDateTime.Now().getTime().substring(0, 5);
-                if (!"".equals(task.getTime()) && !task.getTime().equals(curTime))
+                if (!"".equals(task.getTime()) && !task.getTime().equals(curTime)) {
                     continue;
+                }
 
                 int timeOut = task.getInterval();
                 String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(),
                         task.getClass().getName());
-                if (Redis.get(buffKey) != null)
+                if (Redis.get(buffKey) != null) {
                     continue;
+                }
 
                 // 标识为已执行
                 Redis.set(buffKey, "ok", timeOut);
 
-                if (task.getInterval() > 1)
+                if (task.getInterval() > 1) {
                     log.info("execute " + task.getClass().getName());
+                }
 
                 task.execute();
             } catch (Exception e) {

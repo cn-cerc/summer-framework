@@ -1,14 +1,13 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.mis.core.MenuItem;
+import cn.cerc.mis.core.MenuDisplay;
 import cn.cerc.ui.core.HtmlWriter;
 
 public class UIMenuItem extends UIComponent {
     private String img = "";
     private String name;
     private String code;
-    private int hrip;
-    private boolean delphi;
+    private boolean window;
     private boolean menuLock;
 
     private String target = "_blank";
@@ -36,7 +35,7 @@ public class UIMenuItem extends UIComponent {
 
         // 输出菜单名称
         html.println("<div role='menuName'>");
-        if (getHrip() == 2 && isDelphi()) {
+        if (isWindow()) {
             html.println("<a href=\"hrip:%s\" onclick=\"updateUserHit('%s')\">", getCode(), getCode());
             // 闪电 ⚡ 标记
             html.println("<img src=\"%s\"/>", "images/lightning.png");
@@ -58,16 +57,15 @@ public class UIMenuItem extends UIComponent {
         return this;
     }
 
-    public UIMenuItem init(MenuItem item) {
-        setHrip(item.getHrip());
-        setCode(item.getId());
+    public UIMenuItem init(MenuDisplay item) {
+        this.setCode(item.getCode());
 
         String str = item.getTitle();
         str = str.substring(str.indexOf("]") + 1);
         str = str.substring(str.indexOf("\\") + 1);
 
         setName(str);
-        setImg("menu/" + item.getId() + ".png");
+        setImg("menu/" + item.getCode() + ".png");
         return this;
     }
 
@@ -98,20 +96,12 @@ public class UIMenuItem extends UIComponent {
         return this;
     }
 
-    public int getHrip() {
-        return hrip;
+    public boolean isWindow() {
+        return window;
     }
 
-    public void setHrip(int hrip) {
-        this.hrip = hrip;
-    }
-
-    public boolean isDelphi() {
-        return delphi;
-    }
-
-    public UIMenuItem setDelphi(boolean delphi) {
-        this.delphi = delphi;
+    public UIMenuItem setWindow(boolean window) {
+        this.window = window;
         return this;
     }
 

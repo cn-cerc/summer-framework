@@ -9,20 +9,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-// 接收上传的文件，调用范例：
-// ImportFile imp = new ImportFile();
-// if (imp.setRequest(getRequest()).read() > 0) {
-// DataSet ds = imp.getDataSet();
-// log.info(ds.getHead());
-// while (ds.fetch()) {
-// log.info(imp.getFile(ds.getCurrent()).getName());
-// }
-// }
-
 public class ImportExcelFile {
-    // private static final Logger log = Logger.getLogger(ImportExcel.class);
     private HttpServletRequest request;
     private List<FileItem> uploadFiles;
     private DataSet dataSet;
@@ -46,7 +36,7 @@ public class ImportExcelFile {
                 FileItem fileItem = uploadFiles.get(i);
                 if (fileItem.isFormField()) {
                     // 普通数据
-                    String val = new String(fileItem.getString().getBytes("ISO-8859-1"), "UTF-8");
+                    String val = new String(fileItem.getString().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
                     dataSet.getHead().setField(fileItem.getFieldName(), val);
                 } else {
                     // 文件数据

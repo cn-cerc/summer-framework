@@ -1,13 +1,17 @@
 package cn.cerc.ui.page;
 
+import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.StartForms;
+import cn.cerc.mis.language.R;
 import cn.cerc.mis.page.IMenuBar;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.parts.RightMenus;
 
 import javax.servlet.ServletException;
@@ -23,9 +27,6 @@ public class UIPageView extends AbstractJspPage {
         setForm(form);
         initCssFile();
         initJsFile();
-        if (!this.getForm().getClient().isPhone()) {
-            this.getHeader().getAdvertisement();
-        }
     }
 
     @Override
@@ -59,7 +60,15 @@ public class UIPageView extends AbstractJspPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.printf("<title>%s</title>\n", this.getForm().getTitle());
+
+        String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
+        String[] params = menuCode.split("\\.");
+        String formId = params[0];
+        if (Utils.isNotEmpty(this.getForm().getName())) {
+            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
+        } else {
+            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+        }
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");

@@ -25,16 +25,19 @@ public class JiguangConnection implements IConnection {
 
     @Override
     public JPushClient getClient() {
-        if (client != null)
+        if (client != null) {
             return client;
+        }
 
         String masterSecret = config.getProperty(JiguangConnection.masterSecret);
-        if (masterSecret == null)
+        if (masterSecret == null) {
             throw new RuntimeException("jiguang.masterSecret is null");
+        }
 
         String appKey = config.getProperty(JiguangConnection.appKey);
-        if (appKey == null)
+        if (appKey == null) {
             throw new RuntimeException("jiguang.appKey is null");
+        }
 
         client = new JPushClient(masterSecret, appKey);
 

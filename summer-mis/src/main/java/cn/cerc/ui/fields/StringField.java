@@ -9,7 +9,6 @@ import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class StringField extends AbstractField implements IColumn {
-    // private static final Logger log = Logger.getLogger(Field.class);
     private ColumnEditor editor;
 
     public StringField(UIComponent owner, String name, String field) {
@@ -24,14 +23,15 @@ public class StringField extends AbstractField implements IColumn {
     }
 
     @Override
-    public String getText(Record rs) {
-        return getDefaultText(rs);
+    public String getText(Record record) {
+        return getDefaultText(record);
     }
 
     @Override
     public String format(Object value) {
-        if (!(value instanceof Record))
+        if (!(value instanceof Record)) {
             return value.toString();
+        }
 
         Record ds = (Record) value;
         String data = getDefaultText(ds);
@@ -50,22 +50,26 @@ public class StringField extends AbstractField implements IColumn {
                         html.print(" target=\"%s\"", url.getTarget());
                     }
                     html.println(">%s</a>", data);
-                } else
+                } else {
                     html.println(data);
+                }
                 return html.toString();
-            } else
+            } else {
                 return data;
+            }
         }
 
-        if (!(this.getOwner() instanceof AbstractGridLine))
+        if (!(this.getOwner() instanceof AbstractGridLine)) {
             return data;
+        }
 
         return getEditor().format(ds);
     }
 
     public ColumnEditor getEditor() {
-        if (editor == null)
+        if (editor == null) {
             editor = new ColumnEditor(this);
+        }
         return editor;
     }
 }

@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 import java.util.UUID;
 
 public class OssClientTest {
-    // private static final Logger log = Logger.getLogger(OssClientTest.class);
 
     @Test
     @Ignore

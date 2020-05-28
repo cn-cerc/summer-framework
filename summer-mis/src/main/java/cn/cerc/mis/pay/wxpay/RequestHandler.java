@@ -79,7 +79,7 @@ public class RequestHandler {
 
     // 获取参数值
     public String getParameter(String parameter) {
-        String s = (String) this.parameters.get(parameter);
+        String s = this.parameters.get(parameter);
         return (null == s) ? "" : s;
     }
 

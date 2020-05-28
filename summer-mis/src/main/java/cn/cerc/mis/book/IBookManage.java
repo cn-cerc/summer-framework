@@ -14,25 +14,27 @@ public interface IBookManage {
     void setDateRange(TDateTime beginDate, TDateTime endDate, boolean forceExecute);
 
     // 取得回算年月
-    default public String getBookMonth() {
+    default String getBookMonth() {
         TDateTime dateFrom = getDateFrom();
-        if (dateFrom == null)
+        if (dateFrom == null) {
             throw new RuntimeException("帐本年月不允许为空！");
+        }
         return dateFrom.getYearMonth();
     }
 
     default void setBookMonth(String beginYearMonth) {
         // 传入日期年月大于当前年月则默认为当前年月
-        if (beginYearMonth.compareTo(TDateTime.Now().getYearMonth()) > 0)
+        if (beginYearMonth.compareTo(TDateTime.Now().getYearMonth()) > 0) {
             beginYearMonth = TDateTime.Now().getYearMonth();
+        }
         setDateRange(TDateTime.fromYearMonth(beginYearMonth), TDateTime.Now(), false);
     }
 
     // 是否预览变更而不保存
-    public boolean isPreviewUpdate();
+    boolean isPreviewUpdate();
 
     // 是否指定料号回算
-    public String getPartCode();
+    String getPartCode();
 
     // 取得开始日期
     TDateTime getDateFrom();
@@ -44,5 +46,5 @@ public interface IBookManage {
     String getInitMonth();
 
     // 返回数据容器
-    public BookDataList getDatas();
+    BookDataList getDatas();
 }

@@ -52,7 +52,7 @@ public class BookHandle implements IHandle {
     }
 
     @Override
-    public boolean init(String bookNo, String userCode, String clientCode) {
+    public boolean init(String bookNo, String userCode, String password, String clientCode) {
         throw new RuntimeException("调用了未被实现的接口");
     }
 

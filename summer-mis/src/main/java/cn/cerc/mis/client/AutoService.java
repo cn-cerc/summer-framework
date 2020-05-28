@@ -3,29 +3,19 @@ package cn.cerc.mis.client;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 import cn.cerc.mis.core.ServiceException;
-import cn.cerc.mis.other.UserNotFindException;
 
-public class AutoService implements IHandle {
-    // private static final Logger log = Logger.getLogger(AutoService.class);
+public class AutoService {
     private DataSet dataOut = new DataSet();
     private String message;
     private IHandle handle;
     private ServiceRecord service;
 
-    public AutoService() {
-        handle = Application.getHandle();
-    }
-
-    public AutoService(ServiceRecord service) {
-        this.service = service;
-        handle = Application.getHandle();
-    }
-
-    public AutoService(String corpNo, String userCode, String service) {
-        handle = Application.getHandle();
+    public AutoService(IHandle handle, String corpNo, String userCode, String service) {
+        this.handle = handle;
         this.service = new ServiceRecord();
         this.service.setCorpNo(corpNo);
         this.service.setUserCode(userCode);
@@ -48,14 +38,21 @@ public class AutoService implements IHandle {
         this.message = message;
     }
 
-    public boolean exec() throws ServiceException, UserNotFindException, ServiceException {
-        if (service.getService() == null)
+    public boolean exec() throws ServiceException {
+        if (service.getService() == null) {
             throw new RuntimeException("没有指定 service");
+        }
 
-        handle.init(service.getCorpNo(), service.getUserCode(), "127.0.0.1");
-        IService bean = Application.getService(this, service.getService());
-        if (bean == null)
+        // handle.init(service.getCorpNo(), service.getUserCode(), "127.0.0.1");
+
+        BookHandle handle = new BookHandle(this.handle, service.getCorpNo());
+        handle.setUserCode(service.getUserCode());
+
+        // 根据xml进行反射初始化服务信息
+        IService bean = Application.getService(handle, service.getService());
+        if (bean == null) {
             throw new RuntimeException("无法创建服务：" + service.getService());
+        }
 
         IStatus status = bean.execute(service.getDataIn(), dataOut);
 
@@ -68,49 +65,67 @@ public class AutoService implements IHandle {
         return this.service;
     }
 
-    @Override
-    public String getCorpNo() {
-        return handle.getCorpNo();
-    }
+    public class ServiceRecord implements AutoCloseable {
+        private String service;
+        private String corpNo;
+        private String userCode;
+        private String error_email;
+        private String error_subject;
+        private DataSet dataIn;
 
-    @Override
-    public String getUserCode() {
-        return handle.getUserCode();
-    }
+        public ServiceRecord() {
+            super();
+            this.dataIn = new DataSet();
+        }
 
-    @Override
-    public String getUserName() {
-        return handle.getUserName();
-    }
+        public String getService() {
+            return service;
+        }
 
-    @Override
-    public Object getProperty(String key) {
-        return handle.getProperty(key);
-    }
+        public void setService(String service) {
+            this.service = service;
+        }
 
-    @Override
-    public void setProperty(String key, Object value) {
-        throw new RuntimeException("调用了未被实现的接口");
-    }
+        public String getUserCode() {
+            return userCode;
+        }
 
-    @Override
-    public boolean init(String bookNo, String userCode, String clientCode) {
-        throw new RuntimeException("调用了未被实现的接口");
-    }
+        public void setUserCode(String userCode) {
+            this.userCode = userCode;
+        }
 
-    @Override
-    public boolean init(String token) {
-        throw new RuntimeException("调用了未被实现的接口");
-    }
+        public DataSet getDataIn() {
+            return this.dataIn;
+        }
 
-    @Override
-    public boolean logon() {
-        return false;
-    }
+        @Override
+        public void close() {
+            this.dataIn.close();
+        }
 
-    @Override
-    public void close() {
-        handle.close();
+        public String getError_email() {
+            return error_email;
+        }
+
+        public void setError_email(String error_email) {
+            this.error_email = error_email;
+        }
+
+        public String getError_subject() {
+            return error_subject;
+        }
+
+        public void setError_subject(String error_subject) {
+            this.error_subject = error_subject;
+        }
+
+        public String getCorpNo() {
+            return corpNo;
+        }
+
+        public void setCorpNo(String corpNo) {
+            this.corpNo = corpNo;
+        }
     }
 
 }

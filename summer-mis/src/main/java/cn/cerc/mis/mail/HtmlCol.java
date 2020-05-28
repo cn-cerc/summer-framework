@@ -25,10 +25,11 @@ public class HtmlCol extends HtmlControl {
 
     @Override
     public void getHtml(StringBuffer html) {
-        if (this.header)
+        if (this.header) {
             html.append("<th");
-        else
+        } else {
             html.append("<td");
+        }
         if (this.style != null) {
             html.append(String.format(" style='%s'", this.style));
         }
@@ -43,10 +44,11 @@ public class HtmlCol extends HtmlControl {
         }
         html.append(">");
         html.append(this.text);
-        if (this.header)
+        if (this.header) {
             html.append("</th>");
-        else
+        } else {
             html.append("</td>");
+        }
     }
 
     public StringBuffer append(String text) {

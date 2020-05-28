@@ -4,6 +4,7 @@ import cn.cerc.core.IDataOperator;
 import cn.cerc.core.Record;
 
 public class QueueOperator implements IDataOperator {
+
     // 根据 sql 获取数据库表名
     public String findTableName(String sql) {
         String result = null;
@@ -20,8 +21,9 @@ public class QueueOperator implements IDataOperator {
             }
         }
 
-        if (result == null)
+        if (result == null) {
             throw new RuntimeException("SQL语句异常");
+        }
 
         return result;
     }

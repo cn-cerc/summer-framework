@@ -13,8 +13,10 @@ public abstract class AbstractTask extends AbstractHandle implements Runnable {
     @Autowired
     public ISystemTable systemTable;
     private String describe;
+
     /**
-     * 缓存时间/秒
+     * 缓存过期时间
+     * 单位：秒
      **/
     private int interval;
     private String time = "";

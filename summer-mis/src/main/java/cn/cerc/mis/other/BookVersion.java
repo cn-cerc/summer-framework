@@ -1,22 +1,65 @@
 package cn.cerc.mis.other;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * 帐套版本
+ */
 public enum BookVersion {
-    // 服务商
-    ctService,
-    // 专业版
-    ctProfession,
-    // 标准版
-    ctStandard,
-    // 基础版
-    ctBasic,
-    // 旗舰版
-    ctUltimate,
-    // 普及版
-    ctFree,
-    // 高级版
-    ctAdvanced,
-    // 所有版本, 仅权限判断专用，后须移除！
-    ctAll;
+    /**
+     * 服务商
+     */
+    ctService("admin"),
+
+    /**
+     * 专业版
+     */
+    ctProfession("professional"),
+
+    /**
+     * 标准版
+     */
+    ctStandard("standard"),
+
+    /**
+     * 基础版
+     */
+    ctBasic("base"),
+
+    /**
+     * 旗舰版
+     */
+    ctUltimate("ultimate"),
+
+    /**
+     * 普及版
+     */
+    ctFree("free"),
+
+    /**
+     * 高级版
+     */
+    ctAdvanced("advanced"),
+
+    /**
+     * ERP
+     */
+    erp("erp"),
+
+    /**
+     * 所有版本, 仅权限判断专用，后须移除！
+     */
+    ctAll("ctAll");
+
+    private String code;
+
+    BookVersion(String code) {
+        this.code = code;
+    }
 
     public String getVersionList() {
         String versions;
@@ -42,10 +85,41 @@ public enum BookVersion {
             case ctUltimate:
                 versions = "5,3,2,1,6,4,";
                 break;
+            case erp:
+                versions = "7,";
+                break;
             default:
                 versions = null;
                 break;
         }
         return versions;
     }
+
+    public int getType(BookVersion version) {
+        return version.ordinal();
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
+     * 根据角标获取版本号
+     */
+    public static Map<String, String> getIndex() {
+        Map<String, String> items = new LinkedHashMap<>();
+        for (BookVersion k : BookVersion.values()) {
+            if (k == ctAll) {
+                continue;
+            }
+            items.put(String.valueOf(k.ordinal()), k.getCode());
+        }
+        return items;
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        Map<String, String> items = BookVersion.getIndex();
+        System.out.println(new ObjectMapper().writeValueAsString(items));
+    }
+
 }

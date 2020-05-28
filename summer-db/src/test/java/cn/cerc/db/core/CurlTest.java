@@ -15,13 +15,13 @@ public class CurlTest {
         log.info(curl.sendGet(host));
     }
 
-    //    @Test
+    // @Test
     public void test_param() {
 //        https://tf.sanmaoyou.com/api/tips/list/v2?utm_tid=126&city_id=&country_id=5043&keyword=&page=1&page_size=10
 
         Curl curl = new Curl();
-        curl.putParameter("utm_tid", 126);
-        curl.putParameter("country_id", 5043);
+        curl.put("utm_tid", 126);
+        curl.put("country_id", 5043);
 
         String host = "http://smapi.sanmaoyou.com/api/tips/list/v2";
         log.info(curl.sendGet(host));
