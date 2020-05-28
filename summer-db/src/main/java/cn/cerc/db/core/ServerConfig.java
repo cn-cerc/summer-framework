@@ -65,10 +65,6 @@ public enum ServerConfig implements IConfig {
         return "master".equals(tmp);
     }
 
-    public static boolean isNotMaster() {
-        return !ServerConfig.isServerMaster();
-    }
-
     // 测试环境
     public static boolean isServerBeta() {
         String tmp = getInstance().getProperty("version", "beta");
