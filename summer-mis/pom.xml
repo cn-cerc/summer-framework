@@ -93,10 +93,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
         </dependency>
-        <dependency>
-            <groupId>pull-parser</groupId>
-            <artifactId>pull-parser</artifactId>
-        </dependency>
         <!-- spring 线程池 -->
         <dependency>
             <groupId>org.springframework</groupId>
