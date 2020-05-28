@@ -19,6 +19,10 @@ public enum LocalConfig implements IConfig {
 
     private static Properties properties = new Properties();
 
+    public static LocalConfig getInstance() {
+        return INSTANCE;
+    }
+
     static {
         try {
             properties.clear();
