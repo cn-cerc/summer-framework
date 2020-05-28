@@ -55,8 +55,8 @@ public enum LocalConfig implements IConfig {
     }
 
     public static void main(String[] args) {
-        LocalConfig config1 = LocalConfig.INSTANCE;
-        System.out.println(config1.getProperty("rds.site"));
+        LocalConfig config = LocalConfig.getInstance();
+        System.out.println(config.getProperty("rds.site"));
     }
 
 }

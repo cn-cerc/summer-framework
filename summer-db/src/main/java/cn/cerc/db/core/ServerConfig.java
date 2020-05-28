@@ -179,7 +179,7 @@ public enum ServerConfig implements IConfig {
     @Override
     public String getProperty(String key, String def) {
         String result = null;
-        LocalConfig config = LocalConfig.INSTANCE;
+        LocalConfig config = LocalConfig.getInstance();
         result = config.getProperty(key, null);
         if (result == null) {
             if (properties != null) {
