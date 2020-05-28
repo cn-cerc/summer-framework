@@ -26,7 +26,7 @@ public class StartDocs extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!"1".equals(ServerConfig.INSTANCE.getProperty("docs.service", "0"))) {
+        if (!ServerConfig.enableDocService()) {
             throw new RuntimeException("该功能暂不开放");
         }
         String uri = req.getRequestURI();

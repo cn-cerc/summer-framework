@@ -62,23 +62,23 @@ public class StubHandle implements IHandle, AutoCloseable {
         Object obj = handle.getProperty(key);
         if (obj == null && MysqlConnection.sessionId.equals(key)) {
             MysqlConnection conn = new MysqlConnection();
-            conn.setConfig(ServerConfig.INSTANCE);
+            conn.setConfig(ServerConfig.getInstance());
             handle.setProperty(key, conn);
         }
         if (obj == null && SlaveMysqlConnection.sessionId.equals(key)) {
             SlaveMysqlConnection conn = new SlaveMysqlConnection();
-            conn.setConfig(ServerConfig.INSTANCE);
+            conn.setConfig(ServerConfig.getInstance());
             handle.setProperty(key, conn);
         }
 
         if (obj == null && AliyunQueueConnection.sessionId.equals(key)) {
             AliyunQueueConnection conn = new AliyunQueueConnection();
-            conn.setConfig(ServerConfig.INSTANCE);
+            conn.setConfig(ServerConfig.getInstance());
             handle.setProperty(key, conn);
         }
         if (obj == null && JiguangConnection.sessionId.equals(key)) {
             JiguangConnection conn = new JiguangConnection();
-            conn.setConfig(ServerConfig.INSTANCE);
+            conn.setConfig(ServerConfig.getInstance());
             handle.setProperty(key, conn);
         }
         return obj;

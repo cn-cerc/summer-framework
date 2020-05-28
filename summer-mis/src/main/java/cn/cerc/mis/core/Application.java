@@ -155,7 +155,7 @@ public class Application {
     }
 
     public static String getLangage() {
-        String lang = ServerConfig.INSTANCE.getProperty(deviceLanguage);
+        String lang = ServerConfig.getInstance().getProperty(deviceLanguage);
         if (lang == null || "".equals(lang) || App_Language.equals(lang)) {
             return App_Language;
         } else if (Language.en_US.equals(lang)) {

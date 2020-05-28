@@ -53,7 +53,7 @@ public class JedisFactory {
         // evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义
         pool.setMinEvictableIdleTimeMillis(60000);
 
-        ServerConfig config = ServerConfig.INSTANCE;
+        ServerConfig config = ServerConfig.getInstance();
         String host = config.getProperty(redis_site, "127.0.0.1");// ip
         int port = Integer.parseInt(config.getProperty(redis_port, "6379"));// 端口号
 

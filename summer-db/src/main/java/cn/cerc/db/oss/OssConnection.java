@@ -45,7 +45,7 @@ public class OssConnection implements IConnection {
     private IConfig config;
 
     public OssConnection() {
-        config = ServerConfig.INSTANCE;
+        config = ServerConfig.getInstance();
     }
 
     @Override
@@ -55,26 +55,24 @@ public class OssConnection implements IConnection {
         }
 
         // 如果连接被意外断开了,那么重新建立连接
-        if (null == client) {
-            String endPoint = config.getProperty(OssConnection.oss_endpoint, null);
-            String acId = config.getProperty(OssConnection.oss_accessKeyId, null);
-            String secret = config.getProperty(OssConnection.oss_accessKeySecret, null);
-            bucket = config.getProperty(OssConnection.oss_bucket, null);
-            // 创建ClientConfiguration实例
-            ClientConfiguration conf = new ClientConfiguration();
-            // 设置OSSClient使用的最大连接数，默认1024
-            conf.setMaxConnections(1024);
-            // 设置请求超时时间，默认3秒
-            conf.setSocketTimeout(3 * 1000);
-            // 设置失败请求重试次数，默认3次
-            conf.setMaxErrorRetry(3);
+        String endPoint = config.getProperty(OssConnection.oss_endpoint, null);
+        String acId = config.getProperty(OssConnection.oss_accessKeyId, null);
+        String secret = config.getProperty(OssConnection.oss_accessKeySecret, null);
+        bucket = config.getProperty(OssConnection.oss_bucket, null);
+        // 创建ClientConfiguration实例
+        ClientConfiguration conf = new ClientConfiguration();
+        // 设置OSSClient使用的最大连接数，默认1024
+        conf.setMaxConnections(1024);
+        // 设置请求超时时间，默认3秒
+        conf.setSocketTimeout(3 * 1000);
+        // 设置失败请求重试次数，默认3次
+        conf.setMaxErrorRetry(3);
 
-            site = config.getProperty(OssConnection.oss_site);
+        site = config.getProperty(OssConnection.oss_site);
 
-            // 创建OSSClient实例
-            client = new OSSClient(endPoint, acId, secret, conf);
-            log.debug("建立oss连接成功");
-        }
+        // 创建OSSClient实例
+        client = new OSSClient(endPoint, acId, secret, conf);
+        log.debug("建立oss连接成功");
 
         return client;
     }

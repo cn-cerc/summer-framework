@@ -11,7 +11,7 @@ public class QueueFactory {
     private static ServerConfig config;
 
     static {
-        config = ServerConfig.INSTANCE;
+        config = ServerConfig.getInstance();
         String server = config.getProperty(AliyunQueueConnection.AccountEndpoint, null);
         String userCode = config.getProperty(AliyunQueueConnection.AccessKeyId, null);
         String password = config.getProperty(AliyunQueueConnection.AccessKeySecret, null);

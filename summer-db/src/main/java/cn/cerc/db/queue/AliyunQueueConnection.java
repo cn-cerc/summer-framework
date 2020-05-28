@@ -32,7 +32,7 @@ public class AliyunQueueConnection implements IConnection {
     private IConfig config;
 
     public AliyunQueueConnection() {
-        config = ServerConfig.INSTANCE;
+        config = ServerConfig.getInstance();
     }
 
     @Override

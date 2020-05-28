@@ -35,8 +35,7 @@ public class StartDocDefault {
     }
 
     private String execute(String uri) {
-        ServerConfig config = ServerConfig.INSTANCE;
-        if (!"1".equals(config.getProperty("docs.service", "0"))) {
+        if (!ServerConfig.enableDocService()) {
             outputHtml("sorry", "该功能暂不开放");
             return null;
         }
