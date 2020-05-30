@@ -5,6 +5,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class CodeNameField extends AbstractField {
+
     private String nameField;
 
     public CodeNameField(UIComponent owner, String name, String field) {
