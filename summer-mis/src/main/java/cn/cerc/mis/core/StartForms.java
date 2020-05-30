@@ -298,7 +298,13 @@ public class StartForms implements Filter {
                         }
                     } else if ("GET".equals(request.getMethod())) {
                         StringBuffer jumpUrl = new StringBuffer();
-                        jumpUrl.append(request.getRequestURL().toString());
+                        String[] zlass = form.getClass().getName().split("\\.");
+                        if (zlass != null && zlass.length > 0) {
+                            jumpUrl.append(zlass[zlass.length - 1]);
+                            jumpUrl.append(".").append(funcCode);
+                        } else {
+                            jumpUrl.append(request.getRequestURL().toString());
+                        }
                         if (request.getParameterMap().size() > 0) {
                             jumpUrl.append("?");
                             request.getParameterMap().forEach((key, value) -> {
