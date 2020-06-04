@@ -14,8 +14,10 @@ public class UISheetUrl extends UISheet {
     private Map<String, String> items = new LinkedHashMap<>();
     private boolean isCloseSheet;
 
-    @Deprecated
-    public UISheetUrl() {
+    /**
+     * page-link.xml
+     */
+    private UISheetUrl() {
         super();
         this.setCaption("相关操作");
     }
