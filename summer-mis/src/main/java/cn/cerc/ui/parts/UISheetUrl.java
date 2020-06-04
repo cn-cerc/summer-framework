@@ -14,6 +14,12 @@ public class UISheetUrl extends UISheet {
     private Map<String, String> items = new LinkedHashMap<>();
     private boolean isCloseSheet;
 
+    @Deprecated
+    public UISheetUrl() {
+        super();
+        this.setCaption("相关操作");
+    }
+
     public UISheetUrl(UIToolbar owner) {
         super(owner);
         this.setCaption("相关操作");
