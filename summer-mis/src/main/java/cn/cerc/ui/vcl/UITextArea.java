@@ -45,7 +45,7 @@ public class UITextArea extends UIComponent {
             html.print("cols='%s' ", cols);
         }
         if (placeholder != null) {
-            html.print("placeholder=%s ", placeholder);
+            html.print("placeholder='%s' ", placeholder);
         }
         if (readonly) {
             html.print("readonly='readonly'");
