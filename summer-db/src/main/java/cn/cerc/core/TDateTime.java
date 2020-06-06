@@ -240,28 +240,6 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         return date.after(begin) && date.before(end);
     }
 
-    public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis());
-        TDateTime date = TDateTime.fromDate("2016-02-28 08:00:01");
-        System.out.println(date.getTimestamp());
-        System.out.println(date.getUnixTimestamp());
-        System.out.println(date);
-        System.out.println(date.incMonth(1));
-        System.out.println(date.incMonth(2));
-        System.out.println(date.incMonth(3));
-        System.out.println(date.incMonth(4));
-        System.out.println(date.incMonth(12));
-        System.out.println(date.incMonth(13));
-        System.out.println(date);
-
-        TDateTime date2 = TDateTime.fromDate("2016-05-31 23:59:59");
-        System.out.println(date2);
-        System.out.println(date2.incMonth(1));
-        System.out.println(date2.incMonth(1).monthBof());
-
-        System.out.println(isInterval("05:30", "17:00"));
-    }
-
     @Override
     public String toString() {
         if (data == null) {
@@ -367,6 +345,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     // 若当前值大，则返回正数，否则返回负数
+
     public int compareDay(TDateTime dateFrom) {
         if (dateFrom == null) {
             return 0;
@@ -394,8 +373,8 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         }
         return count;
     }
-
     // 原MonthsBetween，改名为：compareMonth
+
     public int compareMonth(TDateTime dateFrom) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(this.getData());
@@ -407,7 +386,6 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
         return month1 - month2;
     }
-
     public int compareYear(TDateTime dateFrom) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(this.getData());
@@ -487,6 +465,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     // 返回value的当月第1天
+
     public TDateTime monthBof() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getData());
@@ -499,7 +478,6 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         tdt.setData(cal.getTime());
         return tdt;
     }
-
     public TDateTime monthEof() {
         // 返回value的当月最后1天
         Calendar cal = Calendar.getInstance();
@@ -543,13 +521,13 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     // 返回农历日期
+
     public String getGregDate() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getData());
         Lunar lunar = new Lunar(cal);
         return lunar.toString().substring(5, lunar.toString().length()).replaceAll("-", "/");
     }
-
     @Override
     public int compareTo(TDateTime tdt) {
         if (tdt == null) {
@@ -569,5 +547,28 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public boolean isNull() {
         return this.data == null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis());
+        TDateTime date = TDateTime.fromDate("2016-02-28 08:00:01");
+        System.out.println(date.getDay());
+        System.out.println(date.getTimestamp());
+        System.out.println(date.getUnixTimestamp());
+        System.out.println(date);
+        System.out.println(date.incMonth(1));
+        System.out.println(date.incMonth(2));
+        System.out.println(date.incMonth(3));
+        System.out.println(date.incMonth(4));
+        System.out.println(date.incMonth(12));
+        System.out.println(date.incMonth(13));
+        System.out.println(date);
+
+        TDateTime date2 = TDateTime.fromDate("2016-05-31 23:59:59");
+        System.out.println(date2);
+        System.out.println(date2.incMonth(1));
+        System.out.println(date2.incMonth(1).monthBof());
+
+        System.out.println(isInterval("05:30", "17:00"));
     }
 }
