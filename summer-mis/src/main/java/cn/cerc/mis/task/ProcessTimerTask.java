@@ -13,7 +13,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.TimerTask;
 
@@ -110,9 +109,9 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
         }
 
         // 凌晨1点整重新初始化token
-        LocalTime now = LocalTime.of(1, 0);
-        if (One_O_Clock.equals(now.toString())) {
-            if (Redis.get(now.toString()) != null) {
+        String now = TDateTime.Now().getTime().substring(0, 5);
+        if (One_O_Clock.equals(now)) {
+            if (Redis.get(now) != null) {
                 return;
             }
             if (handle != null) {
@@ -122,7 +121,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             log.warn("{} 队列重新初始化句柄", TDateTime.Now());
             handle = new StubHandle();
             // 60s内不重复初始化Handle
-            Redis.set(now.toString(), "true", 60);
+            Redis.set(now, "true", 60);
         }
     }
 
@@ -136,7 +135,6 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
 
     // 每天凌晨开始执行报表或回算任务
     private void report() {
-        return;
     }
 
     @Override
