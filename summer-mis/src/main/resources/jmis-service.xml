@@ -29,10 +29,6 @@
     <bean id="SvrUserLogin.getState" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
         <property name="funcCode" value="getState"/>
     </bean>
-    <!-- 退出系统 -->
-    <bean id="SvrUserLogin.exitSystem" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
-        <property name="funcCode" value="ExitSystem"/>
-    </bean>
     <!-- 获取设备信息 -->
     <bean id="SvrUserLogin.getMachInfo" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
         <property name="funcCode" value="getMachInfo"/>

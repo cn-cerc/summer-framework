@@ -223,24 +223,6 @@ public class SvrUserLogin extends CustomService {
         }
     }
 
-    /**
-     * 退出系统
-     *
-     * @return 暂未使用
-     */
-    @Webfunc
-    public boolean ExitSystem() {
-        if (getProperty(Application.userId) != null) {
-            // TODO 此处的key有问题
-            MemoryBuffer.delete(BufferType.getSessionInfo, (String) getProperty(Application.userId), "webclient");
-        }
-
-        String token = (String) getProperty(Application.token);
-        getConnection().execute(String.format("Update %s Set Viability_=-1,LogoutTime_=now() where LoginID_='%s'",
-                systemTable.getCurrentUser(), token));
-        return true;
-    }
-
     // 获取登录状态
     @Webfunc
     public boolean getState() {
