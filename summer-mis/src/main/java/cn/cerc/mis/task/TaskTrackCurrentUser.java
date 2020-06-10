@@ -19,12 +19,10 @@ public class TaskTrackCurrentUser extends AbstractTask {
         MysqlConnection conn = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
 
         // 删除超过100天的登录记录
-        StringBuffer sql1 = new StringBuffer();
-        sql1.append(String.format("delete from %s where datediff(now(),LoginTime_)>100", systemTable.getCurrentUser()));
-        conn.execute(sql1.toString());
+        conn.execute(String.format("delete from %s where datediff(now(),LoginTime_)>100", systemTable.getCurrentUser()));
 
         // 清除所有未正常登录的用户记录
-        StringBuffer sql2 = new StringBuffer();
+        StringBuilder sql2 = new StringBuilder();
         sql2.append(String.format("update %s set Viability_=-1,LogoutTime_='%s' ", systemTable.getCurrentUser(),
                 TDateTime.Now()));
 
