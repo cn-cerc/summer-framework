@@ -11,6 +11,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
+import cn.cerc.db.redis.JedisFactory;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.config.ApplicationConfig;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +61,8 @@ public class HandleDefault implements IHandle {
             throw new RuntimeException("token 值有错！");
         }
 
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token);
+             Jedis redis = JedisFactory.getJedis()) {
             if (buff.isNull()) {
                 buff.setField("exists", false);
                 IServiceProxy svr = ServiceFactory.get(this);
@@ -92,6 +95,9 @@ public class HandleDefault implements IHandle {
                 this.setProperty(Application.ProxyUsers, buff.getString("ProxyUsers_"));
                 this.setProperty(Application.roleCode, buff.getString("RoleCode_"));
                 this.setProperty(Application.deviceLanguage, buff.getString("Language_"));
+
+                // 刷新缓存生命值
+                redis.expire(buff.getKey(), buff.getExpires());
                 return true;
             } else {
                 return false;
