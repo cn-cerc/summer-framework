@@ -150,8 +150,10 @@ public class SvrUserMessages extends CustomService {
                     cdsMsg.getString("CorpNo_"), cdsMsg.getString("UserCode_"));
             Redis.delete(buffKey);
         }
-        // 极光推送
-        pushToJiGuang(cdsMsg);
+        if (!cdsMsg.getString("Subject_").contains("月账单明细回算")) {
+            // 极光推送
+            pushToJiGuang(cdsMsg);
+        }
         return true;
     }
 
