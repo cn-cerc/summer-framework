@@ -8,7 +8,7 @@ import java.util.List;
 @Component
 public class AppStaticFileDefault implements IAppStaticFile {
 
-    private static List<String> suffix = new ArrayList<>();
+    private static final List<String> suffix = new ArrayList<>();
 
     {
         // 网页文件

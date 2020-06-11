@@ -3,6 +3,7 @@ package cn.cerc.mis.core;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.config.IAppStaticFile;
 import cn.cerc.mis.language.R;
@@ -57,7 +58,7 @@ public class StartForms implements Filter {
         }
 
         // 1、静态文件直接输出
-        IAppStaticFile staticFile = Application.getBean(IAppStaticFile.class, "appStaticFile", "appStaticFileDefault");
+        IAppStaticFile staticFile = new AppStaticFileDefault();
         if (staticFile.isStaticFile(uri)) {
             // 默认没有重定向，直接读取资源文件的默认路径
             // TODO 暂时按该方法放行（jar包的资源文件）
@@ -195,27 +196,6 @@ public class StartForms implements Filter {
         }
     }
 
-    // 取得页面默认设置，如出错时指向哪个页面
-    protected IAppConfig createConfig() {
-        return Application.getAppConfig();
-    }
-
-    protected boolean checkEnableTime() {
-        // Calendar cal = Calendar.getInstance();
-        // 月底最后一天
-        // if (TDate.Today().compareTo(TDate.Today().monthEof()) == 0) {
-        // if (cal.get(Calendar.HOUR_OF_DAY) >= 23)
-        // throw new
-        // RuntimeException("系统现正在进行月初例行维护，维护时间为月底晚上23点至月初早上5点，请您在这段时间内不要使用系统，谢谢！");
-        // }
-        // 月初第一天
-        // if (TDate.Today().compareTo(TDate.Today().monthBof()) == 0)
-        // if (cal.get(Calendar.HOUR_OF_DAY) < 5)
-        // throw new
-        // RuntimeException("系统现正在进行月初例行维护，维护时间为月底晚上23点至月初早上5点，请您在这段时间内不要使用系统，谢谢！");
-        return true;
-    }
-
     // 是否在当前设备使用此菜单，如：检验此设备是否需要设备验证码
     protected boolean passDevice(IForm form) {
         // 若是iPhone应用商店测试或地藤体验账号则跳过验证
@@ -272,7 +252,7 @@ public class StartForms implements Filter {
             response.setContentType("text/html;charset=UTF-8");
         }
 
-        Object pageOutput = "";
+        Object pageOutput;
         Method method = null;
         long startTime = System.currentTimeMillis();
         try {
@@ -434,7 +414,7 @@ public class StartForms implements Filter {
         return experience.contains(userCode);
     }
 
-    private static List<String> experience = new ArrayList<>();
+    private static final List<String> experience = new ArrayList<>();
 
     static {
         // iPhone 上架时专用测试帐号以及专业版体验账号
