@@ -27,14 +27,15 @@ public class ProxyService extends AbstractForm {
         if (Utils.isEmpty(dataIn)) {
             return jsonPage.setResultMessage(false, "dataIn 不允许为空");
         }
-        log.info("请求者帐套 {} ", this.getCorpNo());
+        log.info("请求参数 {}", dataIn);
+        log.info("发起帐套 {} ", this.getCorpNo());
 
         String[] uri = this.getRequest().getRequestURI().split("/");
         String curBookNo = uri[1];
         if (Utils.isEmpty(curBookNo)) { // 131001
             return jsonPage.setResultMessage(false, "目标帐套 不允许为空");
         }
-        log.info("响应者帐套 {}", curBookNo);
+        log.info("响应帐套 {}", curBookNo);
 
         try {
             LocalService svr;
