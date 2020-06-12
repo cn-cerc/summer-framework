@@ -3,6 +3,7 @@ package cn.cerc.mis.core;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.config.ApplicationConfig;
+import cn.cerc.ui.core.UrlRecord;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.Filter;
@@ -14,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @Deprecated // 请改使用 StartAppDefault
@@ -24,6 +26,18 @@ public class StartApp implements Filter {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
+        StringBuffer builder = req.getRequestURL();
+
+        UrlRecord url = new UrlRecord();
+        url.setSite(builder.toString());
+        Map<String, String[]> items = req.getParameterMap();
+        for (String key : items.keySet()) {
+            String[] values = items.get(key);
+            for (String value : values) {
+                url.putParam(key, value);
+            }
+        }
+        log.info("url {}", url.getUrl());
 
         String uri = req.getRequestURI();
         Application.get(req);
@@ -68,16 +82,12 @@ public class StartApp implements Filter {
                 resp.getWriter().print(e.getMessage());
             }
             return;
-        } else {
-            StringBuffer url = req.getRequestURL();
-            log.debug("{}", url.toString());
         }
-
         chain.doFilter(req, resp);
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -85,4 +95,5 @@ public class StartApp implements Filter {
     public void destroy() {
 
     }
+
 }
