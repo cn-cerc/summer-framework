@@ -11,7 +11,7 @@ public enum AppStaticFileDefault {
         return INSTANCE;
     }
 
-    private static List<String> suffix = new ArrayList<>();
+    private static final List<String> suffix = new ArrayList<>();
 
     static {
         // 网页文件
