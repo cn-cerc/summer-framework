@@ -5,7 +5,6 @@ import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
-import cn.cerc.mis.config.IAppStaticFile;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -58,8 +57,7 @@ public class StartForms implements Filter {
         }
 
         // 1、静态文件直接输出
-        IAppStaticFile staticFile = new AppStaticFileDefault();
-        if (staticFile.isStaticFile(uri)) {
+        if (AppStaticFileDefault.getInstance().isStaticFile(uri)) {
             // 默认没有重定向，直接读取资源文件的默认路径
             // TODO 暂时按该方法放行（jar包的资源文件）
             if (uri.contains("imgZoom")) {
