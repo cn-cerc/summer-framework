@@ -1,6 +1,9 @@
 package cn.cerc.mis.core;
 
-import java.io.IOException;
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.ui.core.UrlRecord;
+import org.apache.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,19 +13,30 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
+import java.io.IOException;
+import java.util.Map;
 
 @Deprecated // 请改使用 StartAppDefault
 public class StartApp implements Filter {
-    // private static final Logger log = Logger.getLogger(AppStart.class);
+    private static final Logger log = Logger.getLogger(StartApp.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
+
+        StringBuffer builder = req.getRequestURL();
+        UrlRecord url = new UrlRecord();
+        url.setSite(builder.toString());
+        Map<String, String[]> items = req.getParameterMap();
+        for (String key : items.keySet()) {
+            String[] values = items.get(key);
+            for (String value : values) {
+                url.putParam(key, value);
+            }
+        }
+        log.info("url " + url.getUrl());
 
         String uri = req.getRequestURI();
         Application.get(req);
