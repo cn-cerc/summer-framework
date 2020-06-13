@@ -32,9 +32,6 @@ public class YunpianSMS {
     // 发送语音验证码接口
     private static final String URI_SEND_VOICE = "https://voice.yunpian.com/v2/voice/send.json";
 
-    // 编码格式 UTF-8
-    private static final String ENCODING = "UTF-8";
-
     private String apikey;
     private String message;
     private boolean sendVoice = false;
@@ -62,24 +59,22 @@ public class YunpianSMS {
         params.put(sendVoice ? "code" : "text", text);
         params.put("mobile", mobile);
 
-        CloseableHttpClient client = HttpClients.createDefault();
+        CloseableHttpClient http = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         try {
-            HttpPost method = new HttpPost(sendVoice ? URI_SEND_VOICE : URI_SEND_SMS);
-            if (params != null) {
-                List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-                for (Map.Entry<String, String> param : params.entrySet()) {
-                    NameValuePair pair = new BasicNameValuePair(param.getKey(), param.getValue());
-                    paramList.add(pair);
-                }
-                method.setEntity(new UrlEncodedFormEntity(paramList, ENCODING));
+            HttpPost post = new HttpPost(sendVoice ? URI_SEND_VOICE : URI_SEND_SMS);
+            List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+            for (Map.Entry<String, String> param : params.entrySet()) {
+                NameValuePair pair = new BasicNameValuePair(param.getKey(), param.getValue());
+                paramList.add(pair);
             }
+            post.setEntity(new UrlEncodedFormEntity(paramList, "utf-8"));
 
-            response = client.execute(method);
+            response = http.execute(post);
             HttpEntity entity = response.getEntity();
 
             if (entity != null) {
-                String responseText = EntityUtils.toString(entity, ENCODING);
+                String responseText = EntityUtils.toString(entity, "utf-8");
                 log.info("response: {}", responseText);
 
                 ObjectMapper mapper = new ObjectMapper();
