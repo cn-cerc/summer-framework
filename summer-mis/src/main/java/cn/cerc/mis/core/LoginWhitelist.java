@@ -5,6 +5,9 @@ import cn.cerc.mis.rds.StubHandle;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 用户免登录验证白名单
+ */
 public enum LoginWhitelist {
 
     INSTANCE;
