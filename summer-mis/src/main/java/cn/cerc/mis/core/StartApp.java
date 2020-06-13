@@ -26,8 +26,8 @@ public class StartApp implements Filter {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        StringBuffer builder = req.getRequestURL();
 
+        StringBuffer builder = req.getRequestURL();
         UrlRecord url = new UrlRecord();
         url.setSite(builder.toString());
         Map<String, String[]> items = req.getParameterMap();
