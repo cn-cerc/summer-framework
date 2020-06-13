@@ -3,6 +3,8 @@ package cn.cerc.mis.core;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.R;
@@ -215,7 +217,7 @@ public class StartForms implements Filter {
             }
 
             boolean result = false;
-            LocalService app = new LocalService(form.getHandle());
+            IServiceProxy app = ServiceFactory.get(form.getHandle());
             app.setService("SvrUserLogin.verifyMachine");
             app.getDataIn().getHead().setField("deviceId", deviceId);
             if (verifyCode != null && !"".equals(verifyCode)) {
