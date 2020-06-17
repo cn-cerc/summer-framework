@@ -10,17 +10,17 @@ public class QueueDB {
     /**
      * 系统消息
      **/
-    public static final String MESSAGE = "message";
+    public static final String MESSAGE = getQueueDB("queuedb.message");
 
     /**
      * 回算队列
      **/
-    public static final String SUMMER = getQueueDB("ququedb.summer");
+    public static final String SUMMER = getQueueDB("queuedb.summer");
 
     /**
      * 资料同步
      **/
-    public static final String MATERIAL = getQueueDB("ququedb.material");
+    public static final String MATERIAL = getQueueDB("queuedb.material");
 
     /**
      * 测试队列
