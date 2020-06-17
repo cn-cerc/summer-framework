@@ -5,6 +5,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.queue.QueueDB;
+import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.config.ApplicationConfig;
@@ -121,11 +122,8 @@ public class AsyncService implements IServiceProxy {
         if (this.process == MessageProcess.working.ordinal()) {
             // 返回消息的编号插入到阿里云消息队列
             QueueQuery ds = new QueueQuery(handle);
-            if (ServerConfig.isServerDevelop()) {
-                ds.add("select * from %s", QueueDB.TEST);
-            } else {
-                ds.add("select * from %s", QueueDB.SUMMER);
-            }
+            ds.setQueueMode(QueueMode.append);
+            ds.add("select * from %s", QueueDB.SUMMER);
             ds.open();
             ds.appendDataSet(this.getDataIn(), true);
             ds.getHead().setField("_queueId_", msgId);

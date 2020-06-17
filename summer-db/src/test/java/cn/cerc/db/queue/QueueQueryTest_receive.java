@@ -17,7 +17,7 @@ public class QueueQueryTest_receive {
     @Test
     public void test() {
         dataSet.setQueueMode(QueueMode.recevie);
-        dataSet.add("select * from %s", QueueDB.TEST);
+        dataSet.add("select * from test");
         dataSet.open();
 
         System.out.println(dataSet.getActive());

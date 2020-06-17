@@ -22,11 +22,6 @@ public class QueueDB {
      **/
     public static final String MATERIAL = getQueueDB("queuedb.material");
 
-    /**
-     * 测试队列
-     **/
-    public static final String TEST = "test";
-
     private static String getQueueDB(String queue) {
         String queueDB = ServerConfig.getInstance().getProperty(queue);
         if (queueDB == null) {
