@@ -1,5 +1,6 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.rds.StubHandle;
 
 import java.util.ArrayList;
@@ -11,6 +12,10 @@ import java.util.List;
 public enum LoginWhitelist {
 
     INSTANCE;
+
+    public static LoginWhitelist getInstance() {
+        return INSTANCE;
+    }
 
     private static final List<String> users = new ArrayList<>();
 
@@ -31,7 +36,7 @@ public enum LoginWhitelist {
         users.add(StubHandle.DefaultUser);
     }
 
-    public static boolean contains(String userCode) {
+    public boolean contains(String userCode) {
         return users.contains(userCode);
     }
 

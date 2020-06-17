@@ -408,7 +408,7 @@ public class StartForms implements Filter {
 
     protected boolean isExperienceAccount(IForm form) {
         String userCode = form.getHandle().getUserCode();
-        return LoginWhitelist.contains(userCode);
+        return LoginWhitelist.getInstance().contains(userCode);
     }
 
     @Override
