@@ -3,6 +3,10 @@ package cn.cerc.core;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -386,6 +390,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
         return month1 - month2;
     }
+
     public int compareYear(TDateTime dateFrom) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(this.getData());
@@ -478,6 +483,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         tdt.setData(cal.getTime());
         return tdt;
     }
+
     public TDateTime monthEof() {
         // 返回value的当月最后1天
         Calendar cal = Calendar.getInstance();
@@ -513,6 +519,28 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         return cal.get(Calendar.HOUR_OF_DAY);
     }
 
+    /**
+     * 获取指定日期的开始时刻
+     */
+    public static TDateTime getStartOfDay(TDateTime dateTime) {
+        Date date = dateTime.getData();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
+        Date start = Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
+        return new TDateTime(start);
+    }
+
+    /**
+     * 获取指定日期的结束时刻
+     */
+    public static TDateTime getEndOfDay(TDateTime dateTime) {
+        Date date = dateTime.getData();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+        Date end = Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+        return new TDateTime(end);
+    }
+
     public int getMinutes() {
         // 返回value的分钟值
         Calendar cal = Calendar.getInstance();
@@ -521,13 +549,13 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     // 返回农历日期
-
     public String getGregDate() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getData());
         Lunar lunar = new Lunar(cal);
-        return lunar.toString().substring(5, lunar.toString().length()).replaceAll("-", "/");
+        return lunar.toString().substring(5).replaceAll("-", "/");
     }
+
     @Override
     public int compareTo(TDateTime tdt) {
         if (tdt == null) {
