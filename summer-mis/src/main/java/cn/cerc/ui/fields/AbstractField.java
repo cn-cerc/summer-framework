@@ -171,17 +171,17 @@ public abstract class AbstractField extends UIComponent implements IField {
     public abstract String getText(Record record);
 
     /**
-     * @param rs 当前记录集
+     * @param record 当前记录集
      * @return 返回输出文本
      */
-    protected String getDefaultText(Record rs) {
-        if (rs != null) {
+    protected String getDefaultText(Record record) {
+        if (record != null) {
             if (buildText != null) {
                 HtmlWriter html = new HtmlWriter();
-                buildText.outputText(rs, html);
+                buildText.outputText(record, html);
                 return html.toString();
             }
-            return rs.getString(getField());
+            return record.getString(getField());
         } else {
             return null;
         }

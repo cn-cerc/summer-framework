@@ -33,14 +33,14 @@ public class StringField extends AbstractField implements IColumn {
             return value.toString();
         }
 
-        Record ds = (Record) value;
-        String data = getDefaultText(ds);
+        Record record = (Record) value;
+        String data = getDefaultText(record);
 
         if (this.isReadonly()) {
             if (buildUrl != null) {
                 HtmlWriter html = new HtmlWriter();
                 UrlRecord url = new UrlRecord();
-                buildUrl.buildUrl(ds, url);
+                buildUrl.buildUrl(record, url);
                 if (!"".equals(url.getUrl())) {
                     html.print("<a href=\"%s\"", url.getUrl());
                     if (url.getTitle() != null) {
@@ -63,7 +63,7 @@ public class StringField extends AbstractField implements IColumn {
             return data;
         }
 
-        return getEditor().format(ds);
+        return getEditor().format(record);
     }
 
     public ColumnEditor getEditor() {
