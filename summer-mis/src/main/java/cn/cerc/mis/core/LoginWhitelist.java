@@ -32,6 +32,9 @@ public enum LoginWhitelist {
         // 狼王专用APP测试账号与iPhone上架测试账号
         users.add("15531101");
 
+        // 电商专用测试
+        users.add("91100124");
+
         // 队列专用用户代码
         users.add(StubHandle.DefaultUser);
     }
