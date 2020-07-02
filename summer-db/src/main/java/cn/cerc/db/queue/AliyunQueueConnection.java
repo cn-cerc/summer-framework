@@ -6,6 +6,8 @@ import cn.cerc.db.core.ServerConfig;
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
+import com.aliyun.mns.common.ClientException;
+import com.aliyun.mns.common.ServiceException;
 import com.aliyun.mns.model.Message;
 import com.aliyun.mns.model.QueueMeta;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +47,6 @@ public class AliyunQueueConnection implements IConnection {
             String server = config.getProperty(AliyunQueueConnection.AccountEndpoint, null);
             String userCode = config.getProperty(AliyunQueueConnection.AccessKeyId, null);
             String password = config.getProperty(AliyunQueueConnection.AccessKeySecret, null);
-            String token = config.getProperty(AliyunQueueConnection.SecurityToken, "");
             if (server == null) {
                 throw new RuntimeException(AliyunQueueConnection.AccountEndpoint + " 配置为空");
             }
@@ -55,11 +56,8 @@ public class AliyunQueueConnection implements IConnection {
             if (password == null) {
                 throw new RuntimeException(AliyunQueueConnection.AccessKeySecret + " 配置为空");
             }
-            if (token == null) {
-                throw new RuntimeException(AliyunQueueConnection.SecurityToken + " 配置为空");
-            }
             if (account == null) {
-                account = new CloudAccount(userCode, password, server, token);
+                account = new CloudAccount(userCode, password, server);
             }
         }
 
@@ -122,13 +120,18 @@ public class AliyunQueueConnection implements IConnection {
      * @return value 返回请求的删除，可为null
      */
     public Message receive(CloudQueue queue) {
-        Message message = queue.popMessage();
-        if (message != null) {
-            log.debug("消息内容：" + message.getMessageBodyAsString());
-            log.debug("消息编号：" + message.getMessageId());
-            log.debug("访问代码：" + message.getReceiptHandle());
-        } else {
-            log.debug("msg is null");
+        Message message = null;
+        try {
+            message = queue.popMessage();
+            if (message != null) {
+                log.debug("消息内容：" + message.getMessageBodyAsString());
+                log.debug("消息编号：" + message.getMessageId());
+                log.debug("访问代码：" + message.getReceiptHandle());
+            } else {
+                log.debug("msg is null");
+            }
+        } catch (ServiceException | ClientException e) {
+            log.debug(e.getMessage());
         }
         return message;
     }
