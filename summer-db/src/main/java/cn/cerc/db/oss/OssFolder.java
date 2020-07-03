@@ -1,6 +1,6 @@
 package cn.cerc.db.oss;
 
-import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
@@ -40,7 +40,7 @@ public class OssFolder {
         this.setName(folderName);
         this.files.clear();
         this.subItems.clear();
-        OSSClient client = disk.getClient();
+        OSS client = disk.getClient();
 
         String marker = "";
         while (true) {

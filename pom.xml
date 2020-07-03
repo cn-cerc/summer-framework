@@ -16,7 +16,7 @@
 
     <properties>
         <org.springframework.version>4.3.25.RELEASE</org.springframework.version>
-        <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
         <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
         <quartz.version>2.3.2</quartz.version>
     </properties>
@@ -163,7 +163,7 @@
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
-                <version>3.9.1</version>
+                <version>3.10.2</version>
             </dependency>
             <dependency>
                 <groupId>cn.jpush.api</groupId>
