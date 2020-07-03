@@ -302,13 +302,11 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
             }
             operator = def;
         }
-        if (operator instanceof SqlOperator) {
-            SqlOperator opear = operator;
-            if (opear.getTableName() == null) {
-                String sql = this.getSqlText().getText();
-                if (sql != null) {
-                    opear.setTableName(SqlOperator.findTableName(sql));
-                }
+        SqlOperator opear = operator;
+        if (opear.getTableName() == null) {
+            String sql = this.getSqlText().getText();
+            if (sql != null) {
+                opear.setTableName(SqlOperator.findTableName(sql));
             }
         }
         return operator;
