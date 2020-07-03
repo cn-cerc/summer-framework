@@ -1,7 +1,7 @@
 package cn.cerc.db.oss;
 
 import cn.cerc.core.IHandle;
-import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.CopyObjectResult;
 import com.aliyun.oss.model.ObjectMetadata;
@@ -14,7 +14,7 @@ import java.io.InputStream;
 public class OssDisk {
 
     private OssConnection connection;
-    private OSSClient client;
+    private OSS client;
     private String localPath;
 
     public OssDisk(IHandle handle) {
@@ -80,7 +80,7 @@ public class OssDisk {
         log.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
     }
 
-    public OSSClient getClient() {
+    public OSS getClient() {
         return client;
     }
 

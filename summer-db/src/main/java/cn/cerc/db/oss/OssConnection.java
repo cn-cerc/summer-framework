@@ -3,8 +3,11 @@ package cn.cerc.db.oss;
 import cn.cerc.core.IConfig;
 import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
+import com.aliyun.oss.ClientBuilderConfiguration;
 import com.aliyun.oss.ClientConfiguration;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.Bucket;
 import com.aliyun.oss.model.GetObjectRequest;
@@ -49,18 +52,18 @@ public class OssConnection implements IConnection {
     }
 
     @Override
-    public OSSClient getClient() {
+    public OSS getClient() {
         if (client != null) {
             return client;
         }
 
         // 如果连接被意外断开了,那么重新建立连接
-        String endPoint = config.getProperty(OssConnection.oss_endpoint, null);
-        String acId = config.getProperty(OssConnection.oss_accessKeyId, null);
-        String secret = config.getProperty(OssConnection.oss_accessKeySecret, null);
+        String endpoint = config.getProperty(OssConnection.oss_endpoint, null);
+        String accessKeyId = config.getProperty(OssConnection.oss_accessKeyId, null);
+        String accessKeySecret = config.getProperty(OssConnection.oss_accessKeySecret, null);
         bucket = config.getProperty(OssConnection.oss_bucket, null);
-        // 创建ClientConfiguration实例
-        ClientConfiguration conf = new ClientConfiguration();
+
+        ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
         // 设置OSSClient使用的最大连接数，默认1024
         conf.setMaxConnections(1024);
         // 设置请求超时时间，默认3秒
@@ -71,7 +74,8 @@ public class OssConnection implements IConnection {
         site = config.getProperty(OssConnection.oss_site);
 
         // 创建OSSClient实例
-        client = new OSSClient(endPoint, acId, secret, conf);
+        OSS client = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, conf);
+
         log.debug("建立oss连接成功");
 
         return client;
