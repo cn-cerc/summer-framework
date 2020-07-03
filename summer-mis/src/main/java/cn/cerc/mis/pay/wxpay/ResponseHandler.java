@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -51,9 +52,9 @@ public class ResponseHandler {
     public ResponseHandler(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
-        this.smap = new TreeMap<String, String>();
+        this.smap = new TreeMap<>();
         this.key = "";
-        this.parameters = new TreeMap<String, String>();
+        this.parameters = new TreeMap<>();
         this.debugInfo = "";
         this.uriEncoding = "";
 
@@ -64,11 +65,11 @@ public class ResponseHandler {
             String v = ((String[]) m.get(k))[0];
             this.setParameter(k, v);
         }
-        BufferedReader reader = null;
+        BufferedReader reader;
         try {
-            reader = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
@@ -108,7 +109,7 @@ public class ResponseHandler {
         // 算出摘要
         String enc = TenpayUtil.getCharacterEncoding(this.request, this.response);
         String sign = MD5Util.MD5Encode(sb.toString(), enc).toLowerCase();
-        String ValidSign = ((String) this.smap.get("sign")).toLowerCase();
+        String ValidSign = this.smap.get("sign").toLowerCase();
 
         // debug信息
         System.out.println(sb.toString() + " => sign:" + sign + " ValidSign:" + ValidSign);
@@ -128,7 +129,7 @@ public class ResponseHandler {
 
     // 获取参数值
     public String getParameter(String parameter) {
-        String s = (String) this.parameters.get(parameter);
+        String s = this.parameters.get(parameter);
         return (null == s) ? "" : s;
     }
 

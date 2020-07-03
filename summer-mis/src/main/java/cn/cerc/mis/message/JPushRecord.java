@@ -46,8 +46,9 @@ public class JPushRecord {
                     push.send(ClientType.IOS, machineCode, this.sound);
                     break;
                 case 7:
-                    // 过滤掉没有注册IMEI码的移动设备
-                    if (!"n_null".equals(machineCode) && !"n_000000000000000".equals(machineCode)) {
+                    // 过滤掉没有注册IMEI码的移动设备，并且设备码长度大于6
+                    if (!"n_null".equals(machineCode) && !"n_000000000000000".equals(machineCode)
+                            && !"n_".equals(machineCode) && machineCode.length() > 6) {
                         push.send(ClientType.Android, machineCode, this.sound);
                     }
                     break;

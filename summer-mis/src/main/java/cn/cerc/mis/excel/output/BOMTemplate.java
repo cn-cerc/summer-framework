@@ -5,7 +5,6 @@ import cn.cerc.core.Record;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class BOMTemplate extends ExcelTemplate {
     }
 
     @Override
-    public void output(WritableSheet sheet) throws RowsExceededException, WriteException {
+    public void output(WritableSheet sheet) throws WriteException {
         // 输出列头
         Record head = this.getDataSet().getHead();
         if (heads != null) {

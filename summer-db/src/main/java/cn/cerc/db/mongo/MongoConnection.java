@@ -36,8 +36,9 @@ public class MongoConnection implements IConnection, AutoCloseable {
 
     @Override
     public MongoDatabase getClient() {
-        if (database != null)
+        if (database != null) {
             return database;
+        }
 
         if (MongoConnection.pool == null) {
             dbname = config.getProperty(MongoConnection.mgdb_dbname);
@@ -57,21 +58,22 @@ public class MongoConnection implements IConnection, AutoCloseable {
                 sb.append("?").append("replicaSet=").append(config.getProperty(MongoConnection.mgdb_replicaset));
                 // poolsize
                 sb.append("&").append("maxPoolSize=").append(config.getProperty(MongoConnection.mgdb_maxpoolsize));
+                sb.append("&").append("connectTimeoutMS=").append("3000");
+                sb.append("&").append("serverSelectionTimeoutMS=").append("3000");
                 log.info("连接到MongoDB分片集群:" + sb.toString());
             }
             MongoClientURI connectionString = new MongoClientURI(sb.toString());
             pool = new MongoClient(connectionString);
         }
-
         database = pool.getDatabase(dbname);
-
         return database;
     }
 
     @Override
-    public void close() throws Exception {
-        if (database != null)
+    public void close() {
+        if (database != null) {
             database = null;
+        }
     }
 
     @Override
@@ -87,4 +89,5 @@ public class MongoConnection implements IConnection, AutoCloseable {
     public void setConfig(IConfig config) {
         this.config = config;
     }
+
 }

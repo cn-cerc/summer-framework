@@ -1,6 +1,6 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,11 +12,11 @@ public class SqlQueryTest {
 
     private String userInfo;
     private SqlQuery ds;
-    private StubHandle handle;
+    private StubHandleText handle;
 
     @Before
     public void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         ds = new SqlQuery(handle);
         userInfo = "Account";
     }
@@ -34,7 +34,7 @@ public class SqlQueryTest {
         String sql;
         sql = String.format("select Code_,Name_ from %s", userInfo);
         ds.add(sql);
-        assertEquals(String.format("%s limit %s", sql, String.valueOf(BigdataException.MAX_RECORDS + 2)),
+        assertEquals(String.format("%s limit %s", sql, (BigdataException.MAX_RECORDS + 2)),
                 ds.getSqlText().getCommand());
 
         ds.clear();
@@ -48,7 +48,7 @@ public class SqlQueryTest {
         sql = String.format("select Code_,Name_ from %s", userInfo);
         ds.add(sql);
 
-        assertEquals(String.format("%s limit %s", sql, String.valueOf(BigdataException.MAX_RECORDS + 2)),
+        assertEquals(String.format("%s limit %s", sql, (BigdataException.MAX_RECORDS + 2)),
                 ds.getSqlText().getCommand());
     }
 

@@ -18,10 +18,9 @@ import static cn.cerc.core.Utils.safeString;
  */
 public class BuildQuery {
     public static final String vbCrLf = "\r\n";
-    // private static final Logger log = Logger.getLogger(BuildSQL.class);
     private SqlQuery dataSet;
-    private List<String> sqlWhere = new ArrayList<String>();
-    private List<String> sqlText = new ArrayList<String>();
+    private List<String> sqlWhere = new ArrayList<>();
+    private List<String> sqlText = new ArrayList<>();
     private String orderText;
     private String sql;
     private IHandle handle;
@@ -38,14 +37,16 @@ public class BuildQuery {
      * @return 返回自身
      */
     public BuildQuery byParam(String param) {
-        if (!"".equals(param))
+        if (!"".equals(param)) {
             sqlWhere.add("(" + param + ")");
+        }
         return this;
     }
 
     public BuildQuery byLink(String[] fields, String value) {
-        if (value == null || "".equals(value))
+        if (value == null || "".equals(value)) {
             return this;
+        }
         String str = "";
         String s1 = "%" + safeString(value).replaceAll("\\*", "") + "%";
         for (String sql : fields) {
@@ -65,10 +66,12 @@ public class BuildQuery {
 
     public BuildQuery byField(String field, String text) {
         String value = safeString(text);
-        if ("".equals(value))
+        if ("".equals(value)) {
             return this;
-        if ("*".equals(value))
+        }
+        if ("*".equals(value)) {
             return this;
+        }
         if (value.contains("*")) {
             sqlWhere.add(String.format("%s like '%s'", field, value.replace("*", "%")));
             return this;
@@ -179,8 +182,9 @@ public class BuildQuery {
 
     public BuildQuery add(String text) {
         String regex = "((\\bselect)|(\\bSelect)|(\\s*select)|(\\s*Select))\\s*(distinct)*\\s+%s";
-        if (text.matches(regex))
+        if (text.matches(regex)) {
             text = text.replaceFirst("%s", "");
+        }
         sqlText.add(text);
         return this;
     }
@@ -199,8 +203,9 @@ public class BuildQuery {
     }
 
     public SqlQuery getDataSet() {
-        if (this.dataSet == null)
+        if (this.dataSet == null) {
             this.dataSet = new SqlQuery(handle);
+        }
         return this.dataSet;
     }
 
@@ -215,21 +220,24 @@ public class BuildQuery {
         }
         StringBuffer str = new StringBuffer();
         for (String sql : sqlText) {
-            if (str.length() > 0)
+            if (str.length() > 0) {
                 str.append(vbCrLf);
+            }
             str.append(sql);
         }
         if (sqlWhere.size() > 0) {
-            if (str.length() > 0)
+            if (str.length() > 0) {
                 str.append(vbCrLf);
+            }
             str.append("where ");
             for (String sql : sqlWhere) {
                 str.append(sql).append(" and ");
             }
             str.setLength(str.length() - 5);
         }
-        if (orderText != null)
+        if (orderText != null) {
             str.append(vbCrLf).append(orderText);
+        }
 
         String sqls = str.toString().trim();
         sqls = sqls.replaceAll(" %s ", " ");
@@ -238,12 +246,14 @@ public class BuildQuery {
 
     public String getCommandText() {
         String sql = getSelectCommand();
-        if ("".equals(sql))
+        if ("".equals(sql)) {
             return sql;
-        if (getDataSet().getSqlText().getMaximum() > -1)
+        }
+        if (getDataSet().getSqlText().getMaximum() > -1) {
             return sql + " limit " + getDataSet().getSqlText().getMaximum();
-        else
+        } else {
             return sql;
+        }
     }
 
     public SqlQuery open() {
@@ -264,25 +274,31 @@ public class BuildQuery {
 
     public SqlQuery open(Record head, Record foot) {
         SqlQuery ds = getDataSet();
-        if (head.exists("__offset__"))
+        if (!head.exists("__offset__")) {
+        } else {
             this.setOffset(head.getInt("__offset__"));
+        }
         ds.getSqlText().clear();
         ds.add(this.getSelectCommand());
         ds.open();
-        if (foot != null)
-            foot.setField("__finish__", ds.getFetchFinish());
+        if (foot == null) {
+            return ds;
+        }
+        foot.setField("__finish__", ds.getFetchFinish());
         return ds;
     }
 
     public SqlQuery openReadonly(Record head, Record foot) {
         SqlQuery ds = getDataSet();
-        if (head.exists("__offset__"))
+        if (head.exists("__offset__")) {
             this.setOffset(head.getInt("__offset__"));
+        }
         ds.getSqlText().clear();
         ds.add(this.getSelectCommand());
         ds.openReadonly();
-        if (foot != null)
+        if (foot != null) {
             foot.setField("__finish__", ds.getFetchFinish());
+        }
         return ds;
     }
 
@@ -292,8 +308,9 @@ public class BuildQuery {
         sqlText.clear();
         sqlWhere.clear();
         orderText = null;
-        if (this.dataSet != null)
+        if (this.dataSet != null) {
             this.dataSet.close();
+        }
     }
 
     public int getOffset() {

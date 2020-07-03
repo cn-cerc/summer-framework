@@ -52,7 +52,7 @@ public enum BufferType {
     // 24.专用于单据复制
     getTicket,
     // 25.订购菜单缓存
-    getCusMenu,
+    getOrderMenu,
     // 26.总库存缓存
     getPartStock,
     // 27.分仓库存缓存

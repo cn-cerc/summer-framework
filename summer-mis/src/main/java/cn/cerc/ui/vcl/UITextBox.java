@@ -38,27 +38,37 @@ public class UITextBox extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (caption != null)
+        if (caption != null) {
             caption.output(html);
+        }
         html.print("<input");
-        if (this.getId() != null)
+        if (this.getId() != null) {
             html.print(" id='%s'", this.getId());
-        if (this.name != null)
+        }
+        if (this.name != null) {
             html.print(" name='%s'", this.getName());
-        if (type != null)
+        }
+        if (type != null) {
             html.print(" type=\"%s\"", type);
-        if (maxlength != null)
+        }
+        if (maxlength != null) {
             html.print(" maxlength=%s", this.maxlength);
-        if (value != null)
+        }
+        if (value != null) {
             html.print(" value='%s'", this.value);
-        if (pattern != null)
+        }
+        if (pattern != null) {
             html.print(" pattern=\"%s\"", this.pattern);
-        if (onclick != null)
+        }
+        if (onclick != null) {
             html.print(" onclick='%s'", this.onclick);
-        if (oninput != null)
+        }
+        if (oninput != null) {
             html.print(" oninput='%s'", this.oninput);
-        if (placeholder != null)
+        }
+        if (placeholder != null) {
             html.print(" placeholder='%s'", this.placeholder);
+        }
 
         if (this.autocomplete) {
             html.print(" autocomplete=\"on\"");
@@ -67,22 +77,26 @@ public class UITextBox extends UIComponent {
         }
 
         if (Utils.isNotEmpty(this.accept)) {
-            html.print(" accept='%s'",this.accept);
+            html.print(" accept='%s'", this.accept);
         }
 
-        if (this.autofocus)
+        if (this.autofocus) {
             html.print(" autofocus");
-        if (this.required)
+        }
+        if (this.required) {
             html.print(" required");
-        if (this.readonly)
+        }
+        if (this.readonly) {
             html.print(" readonly='readonly'");
+        }
         super.outputCss(html);
         html.println("/>");
     }
 
     public UISpan getCaption() {
-        if (caption == null)
+        if (caption == null) {
             caption = new UISpan();
+        }
         return caption;
     }
 

@@ -48,52 +48,60 @@ public class BigOperator {
                 if (field != null) {
                     Object val = items.get(fieldCode);
                     if (val == null) {
-                        if ("int,double,long".indexOf(field.getType().getName()) > -1)
+                        if ("int,double,long".indexOf(field.getType().getName()) > -1) {
                             field.set(obj, 0);
-                        else if ("boolean".indexOf(field.getType().getName()) > -1)
+                        } else if ("boolean".indexOf(field.getType().getName()) > -1) {
                             field.set(obj, false);
-                        else
+                        } else {
                             field.set(obj, null);
-                    } else if (field.getType().equals(val.getClass()))
+                        }
+                    } else if (field.getType().equals(val.getClass())) {
                         field.set(obj, val);
-                    else {
+                    } else {
                         msg = field.getName();
-                        if ("int".equals(field.getType().getName()))
-                            if (val instanceof Long)
+                        if ("int".equals(field.getType().getName())) {
+                            if (val instanceof Long) {
                                 field.setInt(obj, ((Long) val).intValue());
-                            else
+                            } else {
                                 field.setInt(obj, (Integer) val);
-                        else if ("double".equals(field.getType().getName()))
-                            if (val instanceof BigDecimal)
+                            }
+                        } else if ("double".equals(field.getType().getName())) {
+                            if (val instanceof BigDecimal) {
                                 field.setDouble(obj, ((BigDecimal) val).doubleValue());
-                            else
+                            } else {
                                 field.setDouble(obj, (Double) val);
-                        else if ("long".equals(field.getType().getName()))
-                            if (val instanceof BigInteger)
+                            }
+                        } else if ("long".equals(field.getType().getName())) {
+                            if (val instanceof BigInteger) {
                                 field.setLong(obj, ((BigInteger) val).longValue());
-                            else if (val instanceof Integer)
+                            } else if (val instanceof Integer) {
                                 field.setLong(obj, (Integer) val);
-                            else
+                            } else {
                                 field.setLong(obj, (Long) val);
-                        else if ("boolean".equals(field.getType().getName()))
+                            }
+                        } else if ("boolean".equals(field.getType().getName())) {
                             field.setBoolean(obj, (Boolean) val);
-                        else if (TDateTime.class.getName().equals(field.getType().getName()))
-                            if (val instanceof TDate)
+                        } else if (TDateTime.class.getName().equals(field.getType().getName())) {
+                            if (val instanceof TDate) {
                                 field.set(obj, new TDateTime(((TDate) val).getData()));
-                            else if (val instanceof TDateTime)
+                            } else if (val instanceof TDateTime) {
                                 field.set(obj, new TDateTime(((TDateTime) val).getData()));
-                            else
+                            } else {
                                 field.set(obj, new TDateTime((Date) val));
-                        else
+                            }
+                        } else {
                             throw new RuntimeException(String.format("error: fieldCode-%s, value-%s %s as %s",
                                     fieldCode, val, field.getType().getName(), val.getClass().getName()));
+                        }
                     }
-                } else
+                } else {
                     log.warn("property not find: " + fieldCode);
+                }
             }
         } catch (IllegalAccessException | ClassCastException e) {
-            if (msg != null)
+            if (msg != null) {
                 log.error("field: " + msg);
+            }
             e.printStackTrace();
         }
     }

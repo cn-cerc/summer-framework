@@ -16,15 +16,17 @@ public class SumRecord extends Record {
     }
 
     public SumRecord addField(String field) {
-        if (!fields.containsKey(field))
+        if (!fields.containsKey(field)) {
             fields.put(field, 0.0);
+        }
         return this;
     }
 
     public SumRecord addField(String... args) {
         for (String field : args) {
-            if (!fields.containsKey(field))
+            if (!fields.containsKey(field)) {
                 fields.put(field, 0.0);
+            }
         }
         return this;
     }
@@ -44,10 +46,12 @@ public class SumRecord extends Record {
         return this;
     }
 
+    @Override
     public DataSet getDataSet() {
         return dataSet;
     }
 
+    @Override
     public void setDataSet(DataSet dataSet) {
         this.dataSet = dataSet;
     }

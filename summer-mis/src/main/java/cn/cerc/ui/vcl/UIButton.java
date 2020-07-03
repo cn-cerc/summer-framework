@@ -9,6 +9,7 @@ public class UIButton extends UIComponent {
     private String text;
     private String onclick;
     private String role;
+    private String type;
 
     public UIButton() {
         super();
@@ -32,6 +33,9 @@ public class UIButton extends UIComponent {
         }
         if (role != null) {
             html.print(" role='%s'", this.role);
+        }
+        if (type != null) {
+            html.print(" type='%s'", this.type);
         }
         if (onclick != null) {
             html.print(String.format(" onclick=\"%s\"", onclick));
@@ -92,4 +96,11 @@ public class UIButton extends UIComponent {
         return this;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

@@ -1,16 +1,16 @@
 package cn.cerc.db.queue;
 
-import cn.cerc.db.core.StubHandle;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
 public class QueueQueryTest_append {
     private QueueQuery dataSet;
-    private StubHandle handle;
+    private StubHandleText handle;
 
     @Before
     public void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         dataSet = new QueueQuery(handle);
     }
 
@@ -18,7 +18,7 @@ public class QueueQueryTest_append {
     public void test() {
         // 增加模式
         dataSet.setQueueMode(QueueMode.append);
-        dataSet.add("select * from %s", QueueDB.TEST);
+        dataSet.add("select * from test");
         dataSet.open();
         System.out.println(dataSet.getActive());
 

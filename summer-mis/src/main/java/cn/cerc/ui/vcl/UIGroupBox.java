@@ -12,8 +12,9 @@ public class UIGroupBox extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         html.print("<div role='group'");
-        if (getId() != null)
+        if (getId() != null) {
             html.print(" id='%s'", getId());
+        }
 
         super.outputCss(html);
         html.println(">");

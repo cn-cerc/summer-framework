@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
     <bean id="TWebPartModel" class="cn.cerc.mis.excel.input.ImportExcelTemplate" scope="prototype">
@@ -32,7 +32,7 @@
             <list>
                 <bean class="cn.cerc.mis.excel.input.ImportStringColumn">
                     <property name="code" value="PartCode_"/>
-                    <property name="name" value="商品料号"></property>
+                    <property name="name" value="商品料号"/>
                 </bean>
                 <bean class="cn.cerc.mis.excel.input.ImportStringColumn">
                     <property name="code" value="Desc_"/>
@@ -44,7 +44,7 @@
                 </bean>
                 <bean class="cn.cerc.mis.excel.input.ImportStringColumn">
                     <property name="code" value="Unit_"/>
-                    <property name="name" value="单位"></property>
+                    <property name="name" value="单位"/>
                 </bean>
                 <bean class="cn.cerc.mis.excel.input.ImportNumberColumn">
                     <property name="code" value="OriUP_"/>
@@ -52,7 +52,7 @@
                 </bean>
                 <bean class="cn.cerc.mis.excel.input.ImportStringColumn">
                     <property name="code" value="Remark_"/>
-                    <property name="name" value="备注"></property>
+                    <property name="name" value="备注"/>
                 </bean>
             </list>
         </property>

@@ -19,10 +19,11 @@ public class CountRecord {
         for (Record rs : dataSet) {
             String group = count.getGroup(rs);
             Integer value = groups.get(group);
-            if (value == null)
+            if (value == null) {
                 groups.put(group, 1);
-            else
+            } else {
                 groups.put(group, value + 1);
+            }
         }
         return this;
     }

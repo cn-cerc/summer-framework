@@ -17,9 +17,10 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     private HttpServletResponse response;
     private IClient client;
     private Map<String, String> params = new HashMap<>();
-    private String caption;
+    private String name;
     private String parent;
     private String permission;
+    private String module;
 
     public Map<String, String> getParams() {
         return params;
@@ -67,18 +68,23 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public Object getProperty(String key) {
-        if ("request".equals(key))
+        if ("request".equals(key)) {
             return this.getRequest();
-        if ("session".equals(key))
+        }
+        if ("session".equals(key)) {
             return this.getRequest().getSession();
+        }
 
         return handle.getProperty(key);
     }
 
     @Override
-    @Deprecated
-    public String getTitle() {
-        return getCaption();
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -102,19 +108,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public String getParam(String key, String def) {
-        if (params.containsKey(key))
-            return params.get(key);
-        else {
-            return def;
-        }
-    }
-
-    public String getCaption() {
-        return caption;
-    }
-
-    public void setCaption(String caption) {
-        this.caption = caption;
+        return params.getOrDefault(key, def);
     }
 
     public String getParent() {
@@ -132,5 +126,13 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 }

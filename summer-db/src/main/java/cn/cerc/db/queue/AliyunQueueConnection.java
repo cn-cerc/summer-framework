@@ -6,6 +6,8 @@ import cn.cerc.db.core.ServerConfig;
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
+import com.aliyun.mns.common.ClientException;
+import com.aliyun.mns.common.ServiceException;
 import com.aliyun.mns.model.Message;
 import com.aliyun.mns.model.QueueMeta;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +26,7 @@ public class AliyunQueueConnection implements IConnection {
     public static final String SecurityToken = "mns.securitytoken";
     // IHandle中识别码
     public static final String sessionId = "aliyunQueueSession";
-    // 默认消息队列
-    public static final String defaultQueue = QueueDB.SUMMER;
+
     // 默认不可见时间
     private static int visibilityTimeout = 50;
     private static MNSClient client;
@@ -38,28 +39,31 @@ public class AliyunQueueConnection implements IConnection {
 
     @Override
     public MNSClient getClient() {
-        if (client != null)
+        if (client != null) {
             return client;
+        }
 
         if (account == null) {
             String server = config.getProperty(AliyunQueueConnection.AccountEndpoint, null);
             String userCode = config.getProperty(AliyunQueueConnection.AccessKeyId, null);
             String password = config.getProperty(AliyunQueueConnection.AccessKeySecret, null);
-            String token = config.getProperty(AliyunQueueConnection.SecurityToken, "");
-            if (server == null)
+            if (server == null) {
                 throw new RuntimeException(AliyunQueueConnection.AccountEndpoint + " 配置为空");
-            if (userCode == null)
+            }
+            if (userCode == null) {
                 throw new RuntimeException(AliyunQueueConnection.AccessKeyId + " 配置为空");
-            if (password == null)
+            }
+            if (password == null) {
                 throw new RuntimeException(AliyunQueueConnection.AccessKeySecret + " 配置为空");
-            if (token == null)
-                throw new RuntimeException(AliyunQueueConnection.SecurityToken + " 配置为空");
-            if (account == null)
-                account = new CloudAccount(userCode, password, server, token);
+            }
+            if (account == null) {
+                account = new CloudAccount(userCode, password, server);
+            }
         }
 
-        if (client == null)
+        if (client == null) {
             client = account.getMNSClient();
+        }
 
         return client;
     }
@@ -116,13 +120,18 @@ public class AliyunQueueConnection implements IConnection {
      * @return value 返回请求的删除，可为null
      */
     public Message receive(CloudQueue queue) {
-        Message message = queue.popMessage();
-        if (message != null) {
-            log.debug("消息内容：" + message.getMessageBodyAsString());
-            log.debug("消息编号：" + message.getMessageId());
-            log.debug("访问代码：" + message.getReceiptHandle());
-        } else {
-            log.debug("msg is null");
+        Message message = null;
+        try {
+            message = queue.popMessage();
+            if (message != null) {
+                log.debug("消息内容：" + message.getMessageBodyAsString());
+                log.debug("消息编号：" + message.getMessageId());
+                log.debug("访问代码：" + message.getReceiptHandle());
+            } else {
+                log.debug("msg is null");
+            }
+        } catch (ServiceException | ClientException e) {
+            log.debug(e.getMessage());
         }
         return message;
     }

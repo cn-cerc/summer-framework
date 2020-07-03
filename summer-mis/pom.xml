@@ -5,10 +5,12 @@
     <parent>
         <groupId>cn.cerc</groupId>
         <artifactId>summer-framework</artifactId>
-        <version>2.1.0</version>
+        <version>2.3.0</version>
     </parent>
 
     <artifactId>summer-mis</artifactId>
+    <packaging>jar</packaging>
+
     <description>用于快速开发资讯管理系统（MIS），如进销存系统、财务系统、人力资源系统等</description>
 
     <build>
@@ -42,7 +44,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>summer-security</artifactId>
+            <artifactId>summer-db</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -91,10 +93,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
         </dependency>
-        <dependency>
-            <groupId>pull-parser</groupId>
-            <artifactId>pull-parser</artifactId>
-        </dependency>
         <!-- spring 线程池 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -129,17 +127,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <classifier>jdk15</classifier><!--指定jdk版本-->
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.vladsch.flexmark</groupId>
             <artifactId>flexmark</artifactId>
         </dependency>
@@ -161,6 +148,32 @@
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!-- Jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+        <!-- aliyun-log-sdk-->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>aliyun-log-log4j-appender</artifactId>
         </dependency>
     </dependencies>
 </project>

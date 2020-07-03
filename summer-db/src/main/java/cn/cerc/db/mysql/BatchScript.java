@@ -24,15 +24,17 @@ public class BatchScript {
 
     public BatchScript add(String sql) {
         items.append(sql.trim() + " ");
-        if (newLine)
+        if (newLine) {
             items.append(Utils.vbCrLf);
+        }
         return this;
     }
 
     public BatchScript add(String format, Object... args) {
         items.append(String.format(format.trim(), args) + " ");
-        if (newLine)
+        if (newLine) {
             items.append(Utils.vbCrLf);
+        }
         return this;
     }
 
@@ -46,18 +48,18 @@ public class BatchScript {
     }
 
     public void print() {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         for (String item : tmp) {
-            if (!item.trim().equals("")) {
+            if (!"".equals(item.trim())) {
                 log.info(item.trim() + ";");
             }
         }
     }
 
     public BatchScript exec() {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         for (String item : tmp) {
-            if (!item.trim().equals("")) {
+            if (!"".equals(item.trim())) {
                 log.debug(item.trim() + ";");
                 connection.execute(item.trim());
             }
@@ -66,15 +68,16 @@ public class BatchScript {
     }
 
     public boolean exists() {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         for (String item : tmp) {
-            if (!item.trim().equals("")) {
+            if (!"".equals(item.trim())) {
                 log.debug(item.trim() + ";");
                 SqlQuery ds = new SqlQuery(handle);
                 ds.add(item.trim());
                 ds.open();
-                if (ds.eof())
+                if (ds.eof()) {
                     return false;
+                }
             }
         }
         return tmp.length > 0;
@@ -89,19 +92,21 @@ public class BatchScript {
     }
 
     public int size() {
-        String tmp[] = items.toString().split(";");
+        String[] tmp = items.toString().split(";");
         int len = 0;
         for (String item : tmp) {
-            if (!item.trim().equals(""))
+            if (!"".equals(item.trim())) {
                 len++;
+            }
         }
         return len;
     }
 
     public String getItem(int i) {
-        String tmp[] = items.toString().split(";");
-        if (i < 0 && i > (tmp.length - 1))
+        String[] tmp = items.toString().split(";");
+        if (i < 0 && i > (tmp.length - 1)) {
             throw new RuntimeException("命令索引超出范围！");
+        }
         return tmp[i].trim();
     }
 

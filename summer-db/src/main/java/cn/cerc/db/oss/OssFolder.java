@@ -1,6 +1,6 @@
 package cn.cerc.db.oss;
 
-import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public class OssFolder {
-    // private static final Logger log = Logger.getLogger(WebFolder.class);
     private OssDisk disk;
     private String name;
     private List<String> subItems = new ArrayList<>();
@@ -41,7 +40,7 @@ public class OssFolder {
         this.setName(folderName);
         this.files.clear();
         this.subItems.clear();
-        OSSClient client = disk.getClient();
+        OSS client = disk.getClient();
 
         String marker = "";
         while (true) {

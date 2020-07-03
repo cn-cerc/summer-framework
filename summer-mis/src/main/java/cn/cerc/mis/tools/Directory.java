@@ -26,7 +26,7 @@ public class Directory {
                 paths.add(f.getPath());
                 getAllFilePaths(f);
             } else {
-                if (onFilter == null ? true : onFilter.check((f))) {
+                if (onFilter == null || onFilter.check((f))) {
                     this.files.add(f.getPath());
                 }
             }

@@ -1,6 +1,7 @@
 package cn.cerc.ui.other;
 
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.parts.UIComponent;
@@ -20,8 +21,9 @@ public class OperaPages extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
-        if (pages.getCount() <= 1)
+        if (pages.getCount() <= 1) {
             return;
+        }
 
         HttpServletRequest request = form.getRequest();
         StringBuffer url = new StringBuffer();
@@ -39,17 +41,20 @@ public class OperaPages extends UISheet {
             html.println("<div class=\"foot-page\">");
         } else {
             html.println("<section>");
-            html.println("<div class=\"title\">数据分页</div>");
+            html.println("<div class=\"title\">%s</div>", R.asString(form.getHandle(), "数据分页"));
             html.println("<div class=\"contents\">");
-            html.println("总记录数：%d, 当前页：%d，总页数：%d <br/>", pages.getRecordCount(), pages.getCurrent(), pages.getCount());
+            html.println("%s：%d，%s：%d/%d 页<br/>",
+                    R.asString(form.getHandle(), "总记录数"), pages.getRecordCount(),
+                    R.asString(form.getHandle(), "当前页"), pages.getCurrent(), pages.getCount());
             html.println("<div align=\"center\">");
         }
-        html.println("<a href=\"?pageno=1%s\">首页</a>", url);
-        html.println("<a href=\"?pageno=%d%s\">上一页</a>", pages.getPrior(), url);
-        html.println("<a href=\"?pageno=%d%s\">下一页</a>", pages.getNext(), url);
-        html.println("<a href=\"?pageno=%d%s\">尾页</a>", pages.getCount(), url);
+        html.println("<a href=\"?pageno=1%s\">%s</a>", url, R.asString(form.getHandle(), "首页"));
+        html.println("<a href=\"?pageno=%d%s\">%s</a>", pages.getPrior(), url, R.asString(form.getHandle(), "上一页"));
+        html.println("<a href=\"?pageno=%d%s\">%s</a>", pages.getNext(), url, R.asString(form.getHandle(), "下一页"));
+        html.println("<a href=\"?pageno=%d%s\">%s</a>", pages.getCount(), url, R.asString(form.getHandle(), "尾页"));
         if (isPhone) {
-            html.println("笔数：%s, 页数：%d / %d", pages.getRecordCount(), pages.getCurrent(), pages.getCount());
+            html.println("%s：%s, %s：%d / %d", R.asString(form.getHandle(), "笔数"), pages.getRecordCount(),
+                    R.asString(form.getHandle(), "页数"), pages.getCurrent(), pages.getCount());
             html.println("</div>");
         } else {
             html.println("</div>");

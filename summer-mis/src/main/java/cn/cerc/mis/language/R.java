@@ -28,13 +28,22 @@ public class R {
             }
         }
         String language = temp == null ? Application.getLangage() : (String) temp;
+        // FIXME: 2019/11/21 用户配置表需要改为动态获取
+        SqlQuery ds = new SqlQuery(handle);
+        ds.add("select Value_ from %s where Code_='%s' and UserCode_='%s'", "UserOptions", "Lang_",
+                handle.getUserCode());
+        ds.open();
+        if (!ds.eof()) {
+            language = ds.getString("Value_");
+        }
         return language;
     }
 
     public static String asString(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if (Application.LangageDefault.equals(language))
+        if (Application.App_Language.equals(language)) {
             return text;
+        }
 
         if (text == null || "".equals(text.trim())) {
             log.error("字符串为空");
@@ -79,7 +88,8 @@ public class R {
         SqlQuery dsLang = new SqlQuery(handle);
         dsLang.add("select key_,max(value_) as value_ from %s", systemTable.getLanguage());
         dsLang.add("where key_='%s'", Utils.safeString(text));
-        if ("en".equals(language)) {
+        // FIXME: 2019/12/7 此处应该取反了，未来得及翻译的语言应该直接显示中文
+        if (Language.en_US.equals(language)) {
             dsLang.add("and (lang_='%s')", language);
         } else {
             dsLang.add("and (lang_='%s' or lang_='en')", language);
@@ -92,15 +102,16 @@ public class R {
 
     public static String get(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if ("cn".equals(language))
+        if (Language.zh_CN.equals(language)) {
             return text;
+        }
 
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         // 处理英文界面
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select value_ from %s", systemTable.getLanguage());
         ds.add("where key_='%s'", Utils.safeString(text));
-        if (!"en".equals(language)) {
+        if (!Language.en_US.equals(language)) {
             ds.add("and (lang_='en' or lang_='%s')", language);
             ds.add("order by value_ desc");
         } else {
@@ -122,10 +133,11 @@ public class R {
         String result = "";
         String en_result = ""; // 默认英文
         while (ds.fetch()) {
-            if ("en".equals(ds.getString("lang_")))
+            if (Language.en_US.equals(ds.getString("lang_"))) {
                 en_result = ds.getString("value_");
-            else
+            } else {
                 result = ds.getString("value_");
+            }
         }
         if (!"".equals(result)) {
             return result;

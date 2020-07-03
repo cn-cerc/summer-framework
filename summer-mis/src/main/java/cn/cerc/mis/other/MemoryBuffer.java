@@ -15,16 +15,19 @@ public class MemoryBuffer extends Buffer implements AutoCloseable {
     }
 
     public static String buildKey(BufferType bt, String... keys) {
-        if (keys == null || keys.length == 0)
+        if (keys == null || keys.length == 0) {
             throw new RuntimeException("[MemoryBuffer]错误的初始化参数！");
+        }
 
-        if (keys.length == 1 && keys[0] == null)
+        if (keys.length == 1 && keys[0] == null) {
             throw new RuntimeException("传值有误！");
+        }
 
         StringBuffer str = new StringBuffer();
         str.append(bt.ordinal());
-        for (String key : keys)
+        for (String key : keys) {
             str.append(".").append(key);
+        }
         return str.toString();
     }
 
