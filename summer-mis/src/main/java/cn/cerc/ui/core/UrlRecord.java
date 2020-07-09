@@ -3,6 +3,7 @@ package cn.cerc.ui.core;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class UrlRecord {
@@ -17,7 +18,7 @@ public class UrlRecord {
 
     private boolean isWindow;
 
-    private Map<String, String> params = new HashMap<>();
+    private Map<String, String> params = new LinkedHashMap<>();
 
     public static class Builder {
         // Required parameters
