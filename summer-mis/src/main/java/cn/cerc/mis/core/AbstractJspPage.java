@@ -68,6 +68,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
             // 为兼容而设计
             ServerConfig config = ServerConfig.getInstance();
             this.add("summer_js", config.getProperty("summer.js", "js/summer.js"));
+            this.add("jquery.js", config.getProperty("summer.js", "js/jquery.js"));
             this.add("myapp_js", config.getProperty("myapp.js", "js/myapp.js"));
         }
     }
