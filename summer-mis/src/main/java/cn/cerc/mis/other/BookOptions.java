@@ -155,7 +155,7 @@ public class BookOptions {
         items.put(EnableStockLessControl, "启用商品库存不足控制，不允许库存数量出现负数");
         items.put(EnableSendMailIntro, "启用邮件发送功能，在接单及出货时，自动发送邮件于客户");
         items.put(EnableSendMobileIntro, "启动简讯发送功能，在出货等时机点，自动发送简讯（<font color=red>此项额外收费：0.06元/条</font>）");
-        items.put(EnableNotODToBC, "启用无订单出货模式，允许直接录入批发出货单");
+        items.put(EnableNotODToBC, "启用无订单出货模式，允许直接录入销售单");
         items.put(EnablePackageNumInput, "启用包装单位录单,即在录单时可以录入包装的数量");
         items.put(AllowDiyPartCode, "关闭商品自动编号，改为手动录入商品编号");
         items.put(EanbleSalesPromotion, "启用促销包作业模式，用于满足如买M送N，或量大优惠等");
