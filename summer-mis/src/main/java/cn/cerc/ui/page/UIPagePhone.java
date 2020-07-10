@@ -77,10 +77,11 @@ public class UIPagePhone extends AbstractJspPage {
         }
 
         // 开始输出
+        StringBuilder builder = new StringBuilder();
         PrintWriter out = getResponse().getWriter();
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
+        builder.append("<!DOCTYPE html>");
+        builder.append("<html>");
+        builder.append("<head>");
 
         String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
         String[] params = menuCode.split("\\.");
@@ -92,18 +93,18 @@ public class UIPagePhone extends AbstractJspPage {
         }
 
         // 所有的请求都不发送 referrer
-        out.println("<meta name=\"referrer\" content=\"no-referrer\" />");
-        out.println("<meta name=\"format-detection\" content=\"telephone=no\" />");
-        out.println("<meta name=\"format-detection\" content=\"email=no\" />");
+        builder.append("<meta name=\"referrer\" content=\"no-referrer\" />");
+        builder.append("<meta name=\"format-detection\" content=\"telephone=no\" />");
+        builder.append("<meta name=\"format-detection\" content=\"email=no\" />");
         out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
         out.printf("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>\n");
-        out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
+        builder.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
         out.printf(
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
         out.print(this.getCssHtml());
         out.print(getScriptHtml());
-        out.println("<script>");
-        out.println("var Application = new TApplication();");
+        builder.append("<script>");
+        builder.append("var Application = new TApplication();");
         out.printf("Application.device = '%s';\n", form.getClient().getDevice());
 
         out.printf("Application.bottom = '%s';\n", this.getFooter().getId());
@@ -113,13 +114,14 @@ public class UIPagePhone extends AbstractJspPage {
         out.printf("Application.message = '%s';\n", msg);
         out.printf("Application.searchFormId = '%s';\n", this.searchWaitingId);
 
-        out.println("$(document).ready(function() {");
-        out.println("Application.init();");
-        out.println("});");
-        out.println("</script>");
-        out.println("</head>");
-        outBody(out);
-        out.println("</html>");
+        builder.append("$(document).ready(function() {");
+        builder.append("Application.init();");
+        builder.append("});");
+        builder.append("</script>");
+        builder.append("</head>");
+        outBody(builder);
+        builder.append("</html>");
+        out.print(builder.toString());
         return null;
     }
 

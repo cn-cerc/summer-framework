@@ -346,17 +346,17 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         return toolBar;
     }
 
-    protected void outBody(PrintWriter out) {
-        out.println("<body>");
-        out.println(this.getHeader());
-        out.println(this.getToolBar());
-        out.println(this.getDocument());
-        out.println(this.getFooter());
+    protected void outBody(StringBuilder builder) {
+        builder.append("<body>");
+        builder.append(this.getHeader());
+        builder.append(this.getToolBar());
+        builder.append(this.getDocument());
+        builder.append(this.getFooter());
         if (getForm().getClient().isPhone()) {
-            out.println("<span id='back-top' style='display: none'>顶部</span>");
-            out.println("<span id='back-bottom' style='display: none'>底部</span>");
+            builder.append("<span id='back-top' style='display: none'>顶部</span>");
+            builder.append("<span id='back-bottom' style='display: none'>底部</span>");
         }
-        out.println("</body>");
+        builder.append("</body>");
     }
 
     public String getHtmlBody() {
