@@ -79,8 +79,8 @@ public class UIPageView extends AbstractJspPage {
         builder.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
         builder.append(String.format(
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>"));
-        out.print(this.getCssHtml());
-        out.print(getScriptHtml());
+        builder.append(this.getCssHtml());
+        builder.append(getScriptHtml());
         builder.append("<script>");
         builder.append("var Application = new TApplication();");
         builder.append(String.format("Application.device = '%s';", form.getClient().getDevice()));

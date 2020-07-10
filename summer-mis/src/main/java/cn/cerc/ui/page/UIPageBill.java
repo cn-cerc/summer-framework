@@ -84,28 +84,28 @@ public class UIPageBill extends AbstractJspPage {
         String[] params = menuCode.split("\\.");
         String formId = params[0];
         if (Utils.isNotEmpty(this.getForm().getName())) {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
+            builder.append(String.format("<title>%s</title>", R.asString(form.getHandle(), this.getForm().getName())));
         } else {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+            builder.append(String.format("<title>%s</title>", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId))));
         }
 
         // 所有的请求都不发送 referrer
         builder.append("<meta name=\"referrer\" content=\"no-referrer\" />");
         builder.append("<meta name=\"format-detection\" content=\"telephone=no\" />");
         builder.append("<meta name=\"format-detection\" content=\"email=no\" />");
-        out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
+        builder.append(String.format("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>"));
         builder.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
-        out.printf("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
-        out.print(this.getCssHtml());
-        out.print(getScriptHtml());
+        builder.append(String.format("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>"));
+        builder.append(this.getCssHtml());
+        builder.append(getScriptHtml());
         builder.append("<script>");
         builder.append("var Application = new TApplication();");
-        out.printf("Application.device = '%s';\n", form.getClient().getDevice());
-        out.printf("Application.bottom = '%s';\n", getFooter().getId());
+        builder.append(String.format("Application.device = '%s';", form.getClient().getDevice()));
+        builder.append(String.format("Application.bottom = '%s';", getFooter().getId()));
         String msg = form.getParam("message", "");
         msg = msg == null ? "" : msg.replaceAll("\r\n", "<br/>");
-        out.printf("Application.message = '%s';\n", msg);
-        out.printf("Application.searchFormId = '%s';\n", this.searchWaitingId);
+        builder.append(String.format("Application.message = '%s';", msg));
+        builder.append(String.format("Application.searchFormId = '%s';", this.searchWaitingId));
         builder.append("$(document).ready(function() {");
         builder.append("Application.init();");
         builder.append("});");
