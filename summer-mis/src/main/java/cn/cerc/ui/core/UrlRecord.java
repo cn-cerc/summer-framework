@@ -1,7 +1,8 @@
 package cn.cerc.ui.core;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import cn.cerc.core.Utils;
+
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -150,18 +151,10 @@ public class UrlRecord {
             sl.append("=");
             String value = params.get(key);
             if (value != null) {
-                sl.append(encodeUTF8(value));
+                sl.append(Utils.encode(value, StandardCharsets.UTF_8.name()));
             }
         }
         return sl.toString();
-    }
-
-    private String encodeUTF8(String value) {
-        try {
-            return URLEncoder.encode(value, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return value;
-        }
     }
 
     public String getTitle() {
