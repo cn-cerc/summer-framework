@@ -199,9 +199,8 @@ public class Utils {
      * @return 生成token字符串
      */
     public static String generateToken() {
-        String guid = Utils.newGuid();
-        String str = guid.substring(1, guid.length() - 1);
-        return str.replaceAll("-", "");
+        String uuid = UUID.randomUUID().toString();
+        return uuid.replaceAll("-", "");
     }
 
     // 兼容 delphi 代码
