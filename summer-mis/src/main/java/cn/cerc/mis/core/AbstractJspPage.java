@@ -7,6 +7,7 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlContent;
@@ -37,7 +38,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     private IForm form;
     private String browserCacheVersion;
     private List<String> cssFiles = new ArrayList<>();
-    private List<String> scriptFiles = new ArrayList<>();
+    private List<String> jsFiles = new ArrayList<>();
     private List<HtmlContent> scriptFunctions = new ArrayList<>();
     private List<HtmlContent> scriptCodes = new ArrayList<>();
     // 头部：广告+菜单
@@ -178,8 +179,8 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         return cssFiles;
     }
 
-    public final List<String> getScriptFiles() {
-        return scriptFiles;
+    public final List<String> getJsFiles() {
+        return jsFiles;
     }
 
     public final List<HtmlContent> getScriptCodes() {
@@ -187,11 +188,13 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     public final void addCssFile(String file) {
+        file = CDN.get(file);
         cssFiles.add(file);
     }
 
-    public final void addScriptFile(String scriptFile) {
-        scriptFiles.add(scriptFile);
+    public final void addScriptFile(String file) {
+        file = CDN.get(file);
+        jsFiles.add(file);
     }
 
     public final void addScriptCode(HtmlContent scriptCode) {
@@ -216,7 +219,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         HtmlWriter html = new HtmlWriter();
 
         // 加入脚本文件
-        for (String file : getScriptFiles()) {
+        for (String file : getJsFiles()) {
             html.println("<script src=\"%s?v=%s\"></script>", file, browserCacheVersion);
         }
         // 加入脚本代码
