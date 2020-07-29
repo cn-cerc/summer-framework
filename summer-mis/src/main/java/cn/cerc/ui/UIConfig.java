@@ -16,4 +16,6 @@ public class UIConfig {
     // 操作说明
     public static final String GUIDE = CDN.get("images/guide.png");
 
+    public static final String searchIocn = CDN.get("images/searchIocn.png");
+    public static final String dateIcon = CDN.get("images/dateIocn.png");
 }
