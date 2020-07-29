@@ -3,6 +3,7 @@ package cn.cerc.ui.fields;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
+import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
@@ -294,7 +295,7 @@ public abstract class AbstractField extends UIComponent implements IField {
                 if (this.icon != null) {
                     html.print("<img src=\"%s\">", this.icon);
                 } else {
-                    html.print("<img src=\"images/searchIocn.png\">");
+                    html.print("<img src=\"%s\">", UIConfig.searchIocn);
                 }
 
                 html.print("</a>");

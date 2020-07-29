@@ -4,7 +4,6 @@ import cn.cerc.core.IConfig;
 import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
 import com.aliyun.oss.ClientBuilderConfiguration;
-import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
@@ -40,6 +39,9 @@ public class OssConnection implements IConnection {
     public static final String oss_accessKeyId = "oss.accessKeyId";
     // 连接密码
     public static final String oss_accessKeySecret = "oss.accessKeySecret";
+    // 启用内容网络分发
+    public static final String oss_cdn_enable = "oss.cdn.enable";
+
     // IHandle 标识
     public static final String sessionId = "ossSession";
     private static OSSClient client;
