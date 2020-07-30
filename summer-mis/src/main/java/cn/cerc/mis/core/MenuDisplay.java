@@ -35,4 +35,6 @@ public class MenuDisplay {
     // 是否为原生窗口
     private boolean window;
 
+    // 是否支持手机
+    private boolean phone;
 }

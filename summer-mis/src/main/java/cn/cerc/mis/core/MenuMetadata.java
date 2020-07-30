@@ -24,9 +24,11 @@ public class MenuMetadata {
     private String versions;
     // 页面版面代码，用于排版定位
     private String pageNo = "000";
+
     private boolean web; // 是否支持Web调用
-    private boolean win; // 是否支持Window调用
     private boolean phone; // 是否支持phone调用
+    private boolean win; // 是否支持Window调用
+
     private boolean hide; // 是否隐藏菜单
     private boolean folder; // 是否为目录结构
     private boolean custom; // 是否客制化菜单
