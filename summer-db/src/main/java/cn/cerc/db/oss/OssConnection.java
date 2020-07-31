@@ -5,7 +5,6 @@ import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
 import com.aliyun.oss.ClientBuilderConfiguration;
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.Bucket;
@@ -44,7 +43,7 @@ public class OssConnection implements IConnection {
 
     // IHandle 标识
     public static final String sessionId = "ossSession";
-    private static OSSClient client;
+    private static OSS client;
     private static String bucket;
     private static String site;
     private IConfig config;
@@ -58,12 +57,13 @@ public class OssConnection implements IConnection {
         if (client != null) {
             return client;
         }
+        bucket = config.getProperty(OssConnection.oss_bucket, null);
+        site = config.getProperty(OssConnection.oss_site);
 
         // 如果连接被意外断开了,那么重新建立连接
         String endpoint = config.getProperty(OssConnection.oss_endpoint, null);
         String accessKeyId = config.getProperty(OssConnection.oss_accessKeyId, null);
         String accessKeySecret = config.getProperty(OssConnection.oss_accessKeySecret, null);
-        bucket = config.getProperty(OssConnection.oss_bucket, null);
 
         ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
         // 设置OSSClient使用的最大连接数，默认1024
@@ -73,13 +73,8 @@ public class OssConnection implements IConnection {
         // 设置失败请求重试次数，默认3次
         conf.setMaxErrorRetry(3);
 
-        site = config.getProperty(OssConnection.oss_site);
-
         // 创建OSSClient实例
-        OSS client = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, conf);
-
-        log.debug("建立oss连接成功");
-
+        client = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, conf);
         return client;
     }
 
