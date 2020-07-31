@@ -1,6 +1,7 @@
 package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
+import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
@@ -92,7 +93,7 @@ public class CodeNameField extends AbstractField {
             html.print("<span>");
             if (this.getDialog() != null && this.getDialog().isOpen()) {
                 html.print("<a href=\"%s\">", getUrl(this.getDialog()));
-                html.print("<img src=\"images/searchIocn.png\">");
+                html.print("<img src=\"%s\">", UIConfig.searchIocn);
                 html.print("</a>");
             }
             html.print("</span>");

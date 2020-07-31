@@ -3,6 +3,7 @@ package cn.cerc.ui.parts;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
@@ -11,6 +12,7 @@ import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.services.BookInfoRecord;
 import cn.cerc.mis.services.MemoryBookInfo;
+import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
@@ -48,23 +50,40 @@ public class UIHeader extends UIComponent {
     // 菜单模组
     private String moduleCode = null;
 
+    private final ServerConfig config = ServerConfig.getInstance();
+
     public void setHeadInfo(String logoSrc, String welcome) {
         this.logoSrc = logoSrc;
         this.welcome = welcome;
     }
 
+    private String getHomeImage(AbstractJspPage owner) {
+        String homeImg = UIConfig.home_index;
+        if (owner.getForm().getClient().isPhone()) {
+            String phoneIndex = config.getProperty("app.phone.home.image");
+            if (Utils.isNotEmpty(homeImg)) {
+                homeImg = CDN.get(phoneIndex);
+            }
+        }
+        return String.format("<img src=\"%s\"/>", homeImg);
+    }
+
+    private String getLogo() {
+        String logo = config.getProperty("app.logo.src");
+        if (Utils.isNotEmpty(logo)) {
+            return CDN.get(logo);
+        }
+        return UIConfig.app_logo;
+    }
+
     public UIHeader(AbstractJspPage owner) {
         super(owner);
-        ServerConfig config = ServerConfig.getInstance();
-        String homeImg = "images/Home.png";
-        if (owner.getForm().getClient().isPhone()) {
-            homeImg = config.getProperty("app.phone.home.image", homeImg);
-        }
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
-                String.format("<img src=\"%s\"/>", homeImg));
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), getHomeImage(owner));
         leftMenus.add(homePage);
+
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
                 R.asString(owner.getForm().getHandle(), "开始"));
+
         IClient client = owner.getForm().getClient();
         boolean isShowBar = "true".equals(config.getProperty("app.ui.head.show", "true"));
         if (!client.isPhone() && isShowBar) {
@@ -78,8 +97,9 @@ public class UIHeader extends UIComponent {
                 BookInfoRecord item = MemoryBookInfo.get(handle, handle.getCorpNo());
                 this.corpNoName = item.getShortName();
             }
-            logoSrc = config.getProperty("app.logo.src", "images/logo_dt.png");
+            logoSrc = getLogo();
             welcome = config.getProperty("app.welcome.language", "欢迎使用系统");
+
             String exitName = config.getProperty("app.exit.name", "#");
             String exitUrl = config.getProperty("app.exit.url");
             exitSystem = new UrlRecord();

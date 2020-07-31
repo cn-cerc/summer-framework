@@ -30,7 +30,7 @@ public class UISheetMenu extends UISheet {
         html.println("<section class='%s'>", this.cssClass);
         if (caption != null) {
             html.println("<div class='nowpage'>");
-            icon.output(html);
+            // icon.output(html);
             caption.output(html);
             if (opera != null) {
                 opera.output(html);

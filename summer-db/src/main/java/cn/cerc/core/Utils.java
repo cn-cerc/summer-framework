@@ -12,9 +12,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -67,6 +70,38 @@ public class Utils {
         ByteArrayInputStream byteIn = new ByteArrayInputStream(str.getBytes(StandardCharsets.ISO_8859_1));
         ObjectInputStream objIn = new ObjectInputStream(byteIn);
         return objIn.readObject();
+    }
+
+    /**
+     * 按照指定的编码格式进行url编码
+     *
+     * @param value 原始字符串
+     * @param enc   编码格式
+     *              StandardCharsets.UTF_8.name()
+     * @return 编码后的字符串
+     */
+    public static String encode(String value, String enc) {
+        try {
+            return URLEncoder.encode(value, enc);
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex.getCause());
+        }
+    }
+
+    /**
+     * 按照指定的编码格式进行url解码
+     *
+     * @param value 原始字符串
+     * @param enc   编码格式
+     *              StandardCharsets.UTF_8.name()
+     * @return 解码后的字符串
+     */
+    public static String decode(String value, String enc) {
+        try {
+            return URLDecoder.decode(value, enc);
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex.getCause());
+        }
     }
 
     public static String encode(Object obj) {
@@ -164,9 +199,8 @@ public class Utils {
      * @return 生成token字符串
      */
     public static String generateToken() {
-        String guid = Utils.newGuid();
-        String str = guid.substring(1, guid.length() - 1);
-        return str.replaceAll("-", "");
+        String uuid = UUID.randomUUID().toString();
+        return uuid.replaceAll("-", "");
     }
 
     // 兼容 delphi 代码

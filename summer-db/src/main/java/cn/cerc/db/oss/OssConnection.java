@@ -38,6 +38,9 @@ public class OssConnection implements IConnection {
     public static final String oss_accessKeyId = "oss.accessKeyId";
     // 连接密码
     public static final String oss_accessKeySecret = "oss.accessKeySecret";
+    // 启用内容网络分发
+    public static final String oss_cdn_enable = "oss.cdn.enable";
+
     // IHandle 标识
     public static final String sessionId = "ossSession";
     private static OSS client;
