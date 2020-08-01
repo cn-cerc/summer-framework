@@ -49,7 +49,7 @@ public class StartFormDefault implements ApplicationContextAware {
         }
 
         Application.setContext(context);
-        appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage");
+        appLogin = Application.getBean(IAppLogin.class, "appLogin");
         IForm form = context.getBean(formId, IForm.class);
         try {
             form.setHandle(handle);
