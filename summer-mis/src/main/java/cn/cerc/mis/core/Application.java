@@ -72,7 +72,6 @@ public class Application {
     }
 
     public static <T> T getBean(Class<T> requiredType, String... beans) {
-        Arrays.stream(beans).forEach(System.out::println);
         for (String key : beans) {
             if (!context.containsBean(key)) {
                 continue;
