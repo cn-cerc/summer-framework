@@ -21,18 +21,24 @@ import javax.servlet.http.HttpServletResponse;
 public class StartFormDefault implements ApplicationContextAware {
 
     private ApplicationContext context;
+
     @Autowired
     private HttpServletRequest request;
+
     @Autowired
     private HttpServletResponse response;
+
     @Autowired
     @Qualifier("handle")
     private IHandle handle;
+
     @Autowired
     @Qualifier("clientDevice")
     private ClientDevice clientDevice;
+
     @Autowired
     private IPassport passport;
+
     private IAppLogin appLogin;
 
     @RequestMapping("/{formId}.{funcId}")
@@ -43,7 +49,7 @@ public class StartFormDefault implements ApplicationContextAware {
         }
 
         Application.setContext(context);
-        appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage", "appLoginManageDefault");
+        appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginManage");
         IForm form = context.getBean(formId, IForm.class);
         try {
             form.setHandle(handle);

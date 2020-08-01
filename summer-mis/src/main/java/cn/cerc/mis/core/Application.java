@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 @Slf4j
 public class Application {
@@ -70,8 +71,9 @@ public class Application {
         return context.getBean(beanId, requiredType);
     }
 
-    public static <T> T getBean(Class<T> requiredType, String... beanId) {
-        for (String key : beanId) {
+    public static <T> T getBean(Class<T> requiredType, String... beans) {
+        Arrays.stream(beans).forEach(System.out::println);
+        for (String key : beans) {
             if (!context.containsBean(key)) {
                 continue;
             }
@@ -91,8 +93,7 @@ public class Application {
             beanId = itemId.substring(0, 1).toLowerCase() + itemId.substring(1);
         }
 
-        T bean = context.getBean(beanId, requiredType);
-        return bean;
+        return context.getBean(beanId, requiredType);
     }
 
     public static IHandle getHandle() {
@@ -154,7 +155,7 @@ public class Application {
         return form;
     }
 
-    public static String getLangage() {
+    public static String getLanguage() {
         String lang = ServerConfig.getInstance().getProperty(deviceLanguage);
         if (lang == null || "".equals(lang) || App_Language.equals(lang)) {
             return App_Language;
