@@ -42,8 +42,9 @@ public class BigConnection implements Closeable {
             ServerConfig config = ServerConfig.getInstance();
 
             String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
-            String db = config.getProperty(MysqlConnection.rds_database, "appdb");
-            String url = String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);
+            String database = config.getProperty(MysqlConnection.rds_database, "appdb");
+            String url = String.format("jdbc:mysql://%s/%s?useSSL=false&autoReconnect=true&autoCommit=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai", host, database);
+
             String user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
             String pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
             int min_size = Integer.parseInt(config.getProperty("c3p0.min_size", "5"));
@@ -53,7 +54,7 @@ public class BigConnection implements Closeable {
 
             dataSource = new ComboPooledDataSource();
             try {
-                dataSource.setDriverClass("com.mysql.jdbc.Driver");
+                dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
             } catch (PropertyVetoException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
@@ -68,7 +69,7 @@ public class BigConnection implements Closeable {
             dataSource.setMaxStatements(max_statement);
 
             // 防止断开连接，自动测试链接是否有效
-            boolean openAutoTestConn = Boolean.valueOf(config.getProperty("c3p0.open_auto_test_conn", "false"));
+            boolean openAutoTestConn = Boolean.parseBoolean(config.getProperty("c3p0.open_auto_test_conn", "false"));
             if (openAutoTestConn) {
                 // 每隔多少时间（时间请小于 数据库的 timeout）,测试一下链接，防止失效，会损失小部分性能
                 int test_conn_time = Integer.parseInt(config.getProperty("c3p0.idle_connection_test_period", "60"));
@@ -175,12 +176,12 @@ public class BigConnection implements Closeable {
             try {
                 ServerConfig config = ServerConfig.getInstance();
                 String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
-                String db = config.getProperty(MysqlConnection.rds_database, "appdb");
-                String url = String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);
+                String database = config.getProperty(MysqlConnection.rds_database, "appdb");
+                String url = String.format("jdbc:mysql://%s/%s?useSSL=false&autoReconnect=true&autoCommit=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai", host, database);
                 String user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
                 String pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
-                Class.forName("com.mysql.jdbc.Driver");
-                if (host == null || user == null || pwd == null || db == null) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                if (host == null || user == null || pwd == null || database == null) {
                     throw new RuntimeException("RDS配置为空，无法连接主机！");
                 }
                 log.debug("create connection for mysql: " + host);

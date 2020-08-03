@@ -48,7 +48,7 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
                 url = getConnectUrl();
             }
             log.debug("create connection for mysql: " + url);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, pwd);
             return connection;
         } catch (SQLException | ClassNotFoundException e) {

@@ -3,8 +3,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
-
-
     <!-- 登入系统 -->
     <bean id="SvrUserLogin.check" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
         <property name="funcCode" value="Check"/>
@@ -95,10 +93,10 @@
     </bean>
 
     <!-- jsp 语言 -->
-    <bean id="SvrLanguage.downloadAll" class="cn.cerc.mis.services.SvrLanguage">
+    <bean id="SvrLanguage.downloadAll" class="cn.cerc.mis.services.SvrLanguage" scope="prototype">
         <property name="funcCode" value="downloadAll"/>
     </bean>
-    <bean id="SvrLanguage.download" class="cn.cerc.mis.services.SvrLanguage">
+    <bean id="SvrLanguage.download" class="cn.cerc.mis.services.SvrLanguage" scope="prototype">
         <property name="funcCode" value="download"/>
     </bean>
 </beans>
