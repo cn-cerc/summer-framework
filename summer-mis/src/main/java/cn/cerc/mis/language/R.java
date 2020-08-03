@@ -27,7 +27,7 @@ public class R {
                 }
             }
         }
-        String language = temp == null ? Application.getLangage() : (String) temp;
+        String language = temp == null ? Application.getLanguage() : (String) temp;
         // FIXME: 2019/11/21 用户配置表需要改为动态获取
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select Value_ from %s where Code_='%s' and UserCode_='%s'", "UserOptions", "Lang_",

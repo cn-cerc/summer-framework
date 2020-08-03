@@ -27,14 +27,11 @@ import java.io.IOException;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
 
-    // 配置在服务器的用户名下面 summer-application.properties
-    public static final String Notify_Url = "app.notify_url";
-
     public AppLoginDefault() {
         super();
     }
 
-    @Override
+    @Override   
     public void init(IForm form) {
         this.setForm(form);
         IAppConfig conf = Application.getAppConfig();
