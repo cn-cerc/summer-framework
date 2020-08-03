@@ -22,11 +22,6 @@ public class OptionField extends AbstractField {
         this.setField(field);
     }
 
-    @Deprecated
-    public OptionField add(String key, String text) {
-        return this.put(key, text);
-    }
-
     public OptionField put(String key, String text) {
         if (this.defaultValue == null) {
             defaultValue = key;
@@ -37,7 +32,7 @@ public class OptionField extends AbstractField {
 
     public OptionField copyValues(Map<String, String> items) {
         for (String key : items.keySet()) {
-            this.add(key, items.get(key));
+            this.put(key, items.get(key));
         }
         return this;
     }

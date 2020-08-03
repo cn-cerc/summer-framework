@@ -1,6 +1,8 @@
 package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
+import cn.cerc.mis.cdn.CDN;
+import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
@@ -10,7 +12,7 @@ public class DateField extends AbstractField {
         super(owner, name, 5);
         this.setField(field);
         this.setDialog("showDateDialog");
-        this.setIcon("images/dateIocn.png");
+        this.setIcon(UIConfig.dateIcon);
         this.setAlign("center");
     }
 
