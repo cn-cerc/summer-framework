@@ -29,11 +29,8 @@ public class FormTemplate extends ExcelTemplate {
                 int row = this.getRow() + lineNo;
                 Label item1 = new Label(0, row, column.getName());
                 sheet.addCell(item1);
-                // Label item2 = new Label(1, lineNo,
-                // head.getString(column.getCode()));
-                // sheet.addCell(item2);
                 column.setRecord(head);
-                writeColumn(sheet, 1, row, column);
+                writeColumn(sheet, 1, row, column, null);
             }
             // 设置新的起点行号
             this.setRow(this.getRow() + heads.size());

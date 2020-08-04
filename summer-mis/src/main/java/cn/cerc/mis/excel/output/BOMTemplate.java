@@ -39,7 +39,7 @@ public class BOMTemplate extends ExcelTemplate {
                 Label item1 = new Label(0, row, column.getName());
                 sheet.addCell(item1);
                 column.setRecord(head);
-                writeColumn(sheet, 1, row, column);
+                writeColumn(sheet, 1, row, column, null);
             }
             // 设置新的起点行号
             this.setRow(this.getRow() + heads.size());
