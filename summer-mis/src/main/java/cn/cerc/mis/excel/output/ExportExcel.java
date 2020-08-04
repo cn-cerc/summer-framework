@@ -15,7 +15,7 @@ import java.net.URLEncoder;
 
 public class ExportExcel {
     private static ApplicationContext app;
-    private static String xmlFile = "classpath:export-excel.xml";
+    private final static String xmlFile = "classpath:export-excel.xml";
     private HttpServletResponse response;
     private String templateId;
     private ExcelTemplate template;
@@ -65,7 +65,6 @@ public class ExportExcel {
 
         // 创建新的一页
         WritableSheet sheet = workbook.createSheet("Sheet1", 0);
-
         template.output(sheet);
 
         // 把创建的内容写入到输出流中，并关闭输出流
@@ -93,13 +92,13 @@ public class ExportExcel {
 
     public ExcelTemplate getTemplate() {
         if (template == null) {
-            if (templateId == null) {
+            if (getTemplateId() == null) {
                 throw new RuntimeException("templateId is null");
             }
             if (app == null) {
                 app = new FileSystemXmlApplicationContext(xmlFile);
             }
-            template = app.getBean(templateId, ExcelTemplate.class);
+            template = app.getBean(getTemplateId(), ExcelTemplate.class);
         }
         return template;
     }

@@ -2,13 +2,21 @@ package cn.cerc.mis.excel.output;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.TDate;
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
+import cn.cerc.db.oss.OssConnection;
+import com.aliyun.oss.HttpMethod;
+import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import jxl.write.DateFormat;
 import jxl.write.DateTime;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
+import jxl.write.WritableImage;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +26,8 @@ public class ExcelTemplate {
     private IAccreditManager accreditManager;
     private HistoryWriter historyWriter;
     private DataSet dataSet;
-    private DateFormat df1 = new DateFormat("yyyy-MM-dd");
-    private DateFormat df2 = new DateFormat("yyyy-MM-dd HH:mm:ss");
+    private final DateFormat df1 = new DateFormat("yyyy-MM-dd");
+    private final DateFormat df2 = new DateFormat("yyyy-MM-dd HH:mm:ss");
     private int row = 0;
 
     public String getFileName() {
@@ -59,13 +67,24 @@ public class ExcelTemplate {
     }
 
     public void output(WritableSheet sheet) throws WriteException {
+        boolean changeRowHeight = false;
         // 输出列头
         for (int col = 0; col < columns.size(); col++) {
             Column column = columns.get(col);
+            // 若导出模板中包含图片列，则调整行高
+            if (column instanceof ImageColumn) {
+                changeRowHeight = true;
+            }
             Label item = new Label(col, row, column.getName());
             sheet.addCell(item);
         }
 
+        OssConnection oss = null;
+        if (changeRowHeight) {
+            oss = new OssConnection();
+            // 先初始化一次
+            oss.getClient();
+        }
         // 输出列数据
         if (dataSet != null) {
             dataSet.first();
@@ -74,14 +93,17 @@ public class ExcelTemplate {
                 for (int col = 0; col < columns.size(); col++) {
                     Column column = columns.get(col);
                     column.setRecord(dataSet.getCurrent());
-                    writeColumn(sheet, col, row, column);
+                    // 650像素大约每一行占2.5行
+                    if (changeRowHeight) {
+                        sheet.setRowView(row, 650, false);
+                    }
+                    writeColumn(sheet, col, row, column, oss);
                 }
             }
         }
     }
 
-    protected void writeColumn(WritableSheet sheet, int col, int row, Column column)
-            throws WriteException {
+    protected void writeColumn(WritableSheet sheet, int col, int row, Column column, OssConnection oss) throws WriteException {
         if (column instanceof NumberColumn) {
             jxl.write.Number item = new jxl.write.Number(col, row, (double) column.getValue());
             sheet.addCell(item);
@@ -92,6 +114,36 @@ public class ExcelTemplate {
         } else if (column instanceof DateTimeColumn) {
             DateTime item = new DateTime(col, row, (Date) column.getValue(), new WritableCellFormat(df2));
             sheet.addCell(item);
+        } else if (column instanceof ImageColumn) {
+            if (oss != null && Utils.isNotEmpty(column.getValue().toString())) {
+                String imageUrl = column.getValue().toString();
+                try {
+                    GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(oss.getBucket(), imageUrl);
+                    // 设置失效时间
+                    req.setExpiration(TDateTime.Now().incMinute(5).getData());
+                    // 压缩方式，长宽80，png格式
+                    req.setProcess("image/resize,m_lfit,h_80,w_80/format,png");
+                    InputStream inputStream = oss.getClient().generatePresignedUrl(req).openStream();
+                    byte[] bytes = new byte[1024];
+                    ByteArrayOutputStream output = new ByteArrayOutputStream();
+                    int n;
+                    while ((n = inputStream.read(bytes)) != -1) {
+                        output.write(bytes, 0, n);
+                    }
+                    WritableImage item = new WritableImage(col, row, 1, 1, output.toByteArray());
+                    sheet.addImage(item);
+                    inputStream.close();
+                    output.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // 图片解析错误默认输出空白，保证正常导出
+                    Label item = new Label(col, row, "");
+                    sheet.addCell(item);
+                }
+            } else {
+                Label item = new Label(col, row, "");
+                sheet.addCell(item);
+            }
         } else {
             Label item = new Label(col, row, column.getValue().toString());
             sheet.addCell(item);
