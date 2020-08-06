@@ -118,6 +118,10 @@ public class ExcelTemplate {
             if (oss != null && Utils.isNotEmpty(column.getValue().toString())) {
                 String imageUrl = column.getValue().toString();
                 try {
+                    // 截取https://ossBucket.ossSite后面的部分
+                    if (imageUrl.startsWith("https://") && imageUrl.contains("com/")) {
+                        imageUrl = imageUrl.substring(imageUrl.indexOf("com/") + 4);
+                    }
                     GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(oss.getBucket(), imageUrl);
                     // 设置失效时间
                     req.setExpiration(TDateTime.Now().incMinute(5).getData());
