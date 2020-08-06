@@ -5,7 +5,6 @@ import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.oss.OssConnection;
-import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import jxl.write.DateFormat;
 import jxl.write.DateTime;
@@ -119,8 +118,12 @@ public class ExcelTemplate {
                 String imageUrl = column.getValue().toString();
                 try {
                     // 截取https://ossBucket.ossSite后面的部分
-                    if (imageUrl.startsWith("https://") && imageUrl.contains("com/")) {
-                        imageUrl = imageUrl.substring(imageUrl.indexOf("com/") + 4);
+                    if (imageUrl.startsWith("https://")) {
+                        if (imageUrl.contains("com/")) {
+                            imageUrl = imageUrl.substring(imageUrl.indexOf("com/") + 4);
+                        } else if (imageUrl.contains("site/")) {
+                            imageUrl = imageUrl.substring(imageUrl.indexOf("site/") + 5);
+                        }
                     }
                     GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(oss.getBucket(), imageUrl);
                     // 设置失效时间
