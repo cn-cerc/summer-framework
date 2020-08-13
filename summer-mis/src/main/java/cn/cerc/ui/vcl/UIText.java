@@ -53,4 +53,13 @@ public class UIText extends UIComponent {
         this.lines = lines;
         return this;
     }
+
+    public UIText add(String line) {
+        if (lines == null) {
+            lines = new ArrayList<>();
+        }
+        this.lines.add(line);
+        return this;
+    }
+
 }
