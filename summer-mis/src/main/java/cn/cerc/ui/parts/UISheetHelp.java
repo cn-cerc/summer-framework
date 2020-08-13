@@ -42,7 +42,7 @@ public class UISheetHelp extends UISheet {
     public void output(HtmlWriter html) {
         html.println("<section");
         if (this.getId() != null) {
-            html.println("id=\"%s\"", this.getId());
+            html.println(" id=\"%s\"", this.getId());
         }
         html.println(">");
         html.print("<div class=\"title\">");
