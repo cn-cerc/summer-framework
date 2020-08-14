@@ -64,12 +64,13 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     @Override
     public final void setForm(IForm form) {
         this.form = form;
+        this.add("cdn", CDN.getSite());
         if (form != null) {
             this.put("jspPage", this);
             // 为兼容而设计
             ServerConfig config = ServerConfig.getInstance();
-            this.add("summer_js", config.getProperty("summer.js", "js/summer.js"));
-            this.add("myapp_js", config.getProperty("myapp.js", "js/myapp.js"));
+            this.add("summer_js", CDN.get(config.getProperty("summer.js", "js/summer.js")));
+            this.add("myapp_js", CDN.get(config.getProperty("myapp.js", "js/myapp.js")));
         }
     }
 
@@ -111,7 +112,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         if (getRequest() == null || jspFile == null) {
             return jspFile;
         }
-        if (jspFile.indexOf(".jsp") == -1) {
+        if (!jspFile.contains(".jsp")) {
             return jspFile;
         }
 

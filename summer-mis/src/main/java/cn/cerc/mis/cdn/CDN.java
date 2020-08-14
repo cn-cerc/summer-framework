@@ -6,22 +6,25 @@ import cn.cerc.db.oss.OssConnection;
 
 public class CDN {
 
-    public static String get(String file) {
+    public static String getSite() {
+        String site = "";
         // 判断cdn是否启用
         boolean enable = "true".equals(ServerConfig.getInstance().getProperty(OssConnection.oss_cdn_enable));
         if (!enable) {
-            return file;
+            return site;
         }
-
         // 获取cdn的地址
-        String site = ServerConfig.getInstance().getProperty(OssConnection.oss_site);
+        site = ServerConfig.getInstance().getProperty(OssConnection.oss_site);
         if (Utils.isEmpty(site)) {
-            return file;
+            site = "";
+        } else {
+            site += "/resources/";
         }
-
-        site += "/resources/";
-        site += file;
         return site;
+    }
+
+    public static String get(String file) {
+        return getSite() + file;
     }
 
 }
