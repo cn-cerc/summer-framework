@@ -6,8 +6,7 @@
 
 1. summer开源框架包含summer-bean,summer-core,summer-db,summer-mis.使用业界成熟的MVC架构，以spring为基础，提供快速开发服务的基础框架服务。
 2. 框架地址：https://github.com/cn-cerc/summer-framework
-3. 安全服务：[聚安](https://www.jayun.site)
-4. 其中核心部分summer-bean对象主要有IForm与IService，二者结合可低成本地实现微服务架构，同时保障系统功能弹性与性能弹性：
+3. 其中核心部分summer-bean对象主要有IForm与IService，二者结合可低成本地实现微服务架构，同时保障系统功能弹性与性能弹性：
 
 > **IForm**，定位于页面控制器，用于接收web输入，以及输出IPage接口。 其中IPage实现有：JspPage、JsonPage、RedirectPage等，可自由扩充。实际编写时，可直接继承AbstractForm后快速实现具体的页面控制器。
 
