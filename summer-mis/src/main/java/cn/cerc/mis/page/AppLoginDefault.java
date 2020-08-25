@@ -29,8 +29,6 @@ import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.page.qrcode.SocketTool;
-import cn.cerc.security.sapi.JayunAPI;
-import cn.cerc.security.sapi.JayunSecurity;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -80,27 +78,6 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         if (!isWeb) {
             return;
         }
-
-        String appKey = config.getProperty(JayunAPI.JAYUN_APP_KEY);
-        Map<String, Object> items = new TreeMap<>();
-        items.put("appKey", appKey);
-        items.put("action", "login");
-        items.put("sessionId", getRequest().getSession().getId());
-        items.put("domain", domain);
-
-        String notify_url = config.getProperty(Notify_Url);
-        if (notify_url != null && !"".equals(notify_url)) {
-            items.put("notify_url", notify_url);
-            log.warn("notify_url {}", notify_url);
-        }
-
-        JayunSecurity api = new JayunSecurity(form.getRequest());
-        boolean result = api.encodeQrcode(new Gson().toJson(items));
-        if (!result) {
-            log.error(api.getMessage());
-            this.add("msg", api.getMessage());
-        }
-        this.add("qrcode", (String) api.getData());
     }
 
     @Override
@@ -145,7 +122,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         req.setAttribute("needVerify", "false");
 
         IUserLoginCheck obj = Application.getBean("userLoginCheck", IUserLoginCheck.class);
-        if (obj != null ) {
+        if (obj != null) {
             if (obj instanceof SupportHandle) {
                 if (form instanceof AbstractForm)
                     ((SupportHandle) obj).init((AbstractForm) form);
@@ -169,14 +146,6 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
             if (sid != null && !sid.equals("")) {
                 log.debug(String.format("认证成功，取得sid(%s)", sid));
                 ((ClientDevice) this.getForm().getClient()).setSid(sid);
-            }
-            // 登记聚安应用帐号
-            String mobile = Utils.safeString(obj.getMobile());
-            if (mobile != null && !"".equals(mobile)) {
-                JayunSecurity api = new JayunSecurity(req);
-                if (!api.register(userCode, mobile)) {
-                    log.error(api.getMessage());
-                }
             }
             req.getSession().setAttribute("loginMsg", "");
             req.getSession().setAttribute("mobile", "");

@@ -47,7 +47,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <aggregate>true</aggregate>
                     <charset>UTF-8</charset>
                     <encoding>UTF-8</encoding>
                     <docencoding>UTF-8</docencoding>
@@ -122,12 +121,6 @@
             <groupId>cn.cerc</groupId>
             <artifactId>summer-db</artifactId>
             <version>2.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.cerc</groupId>
-            <artifactId>summer-security</artifactId>
-            <version>2.0.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
@@ -284,12 +277,7 @@
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>
             <version>2.4</version>
-        </dependency>
-        <!-- 支付宝支持 -->
-        <dependency>
-            <groupId>alipay</groupId>
-            <artifactId>alipay-sdk</artifactId>
-            <version>java20170411150054</version>
+            <classifier>jdk15</classifier>
         </dependency>
         <dependency>
             <groupId>cn.jpush.api</groupId>
