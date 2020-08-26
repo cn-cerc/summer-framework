@@ -16,6 +16,14 @@ public class DateField extends AbstractField {
         this.setAlign("center");
     }
 
+    public DateField(UIComponent owner, String name, String field, int width) {
+        super(owner, name, width);
+        this.setField(field);
+        this.setDialog("showDateDialog");
+        this.setIcon(UIConfig.dateIcon);
+        this.setAlign("center");
+    }
+
     @Override
     public Title createTitle() {
         Title title = super.createTitle();
