@@ -76,7 +76,12 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     // 当时，带时分秒
+    @Deprecated
     public static TDateTime Now() {
+        return TDateTime.now();
+    }
+
+    public static TDateTime now() {
         TDateTime result = new TDateTime();
         result.setData(new Date());
         return result;
