@@ -323,7 +323,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         long second = 1000;
 
         long start = startTime.getData().getTime();
-        long end = TDateTime.Now().getData().getTime();
+        long end = TDateTime.now().getData().getTime();
         return (end - start) / second;
     }
 
@@ -336,7 +336,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         long minute = 1000 * 60;
 
         long start = startTime.getData().getTime();
-        long end = TDateTime.Now().getData().getTime();
+        long end = TDateTime.now().getData().getTime();
         return (end - start) / minute;
     }
 
@@ -349,7 +349,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         long hour = 1000 * 60 * 60;
 
         long start = startTime.getData().getTime();
-        long end = TDateTime.Now().getData().getTime();
+        long end = TDateTime.now().getData().getTime();
         return (end - start) / hour;
     }
 
