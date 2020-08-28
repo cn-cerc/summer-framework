@@ -69,7 +69,7 @@ public class SvrFileUpload extends CustomService {
                 ds.setField("Path_", current.getString("path").trim());
                 ds.setField("Size_", current.getInt("size"));
                 ds.setField("AppUser_", getUserCode());
-                ds.setField("AppDate_", TDateTime.Now());
+                ds.setField("AppDate_", TDateTime.now());
                 ds.post();
             }
 

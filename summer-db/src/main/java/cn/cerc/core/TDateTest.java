@@ -9,6 +9,6 @@ public class TDateTest {
     @Test
     public void test_Today() {
         TDate obj = TDate.Today();
-        assertEquals(obj.getDate(), TDateTime.Now().getDate());
+        assertEquals(obj.getDate(), TDateTime.now().getDate());
     }
 }

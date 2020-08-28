@@ -42,9 +42,9 @@ public class SvrLanguage extends CustomService {
             dslang.append();
             dslang.setField("Key_", key);
             dslang.setField("Lang_", lang);
-            dslang.setField("CreateDate_", TDateTime.Now());
+            dslang.setField("CreateDate_", TDateTime.now());
             dslang.setField("CreateUser_", "admin");
-            dslang.setField("UpdateDate_", TDateTime.Now());
+            dslang.setField("UpdateDate_", TDateTime.now());
             dslang.setField("UpdateUser_", "admin");
             dslang.post();
             getDataOut().getHead().setField("value", key);

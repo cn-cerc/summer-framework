@@ -40,7 +40,7 @@ public class TDate extends TDateTime {
 
     public static void main(String[] args) {
         TDate val;
-        val = new TDate(TDateTime.Now().incMonth(-13).getData());
+        val = new TDate(TDateTime.now().incMonth(-13).getData());
         System.out.println(val.getShortValue());
         val = TDate.Today();
         System.out.println(val.getShortValue());
@@ -55,7 +55,7 @@ public class TDate extends TDateTime {
         String year = this.getYearMonth().substring(2, 4);
         int month = this.getMonth();
         int day = this.getDay();
-        if (TDateTime.Now().compareYear(this) != 0) {
+        if (TDateTime.now().compareYear(this) != 0) {
             return String.format("%s年%d月", year, month);
         } else {
             return String.format("%d月%d日", month, day);

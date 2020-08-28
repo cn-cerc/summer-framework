@@ -85,7 +85,7 @@ public class ProcessService extends AbstractTask {
      * 更新队列的消息状态
      */
     private void updateTaskprocess(AsyncService async, String taskId, String subject) {
-        async.setProcessTime(TDateTime.Now().toString());
+        async.setProcessTime(TDateTime.now().toString());
         LocalService svr = new LocalService(this, "SvrUserMessages.updateAsyncService");
         if (!svr.exec("msgId", taskId, "content", async.toString(), "process", async.getProcess())) {
             throw new RuntimeException("更新任务队列进度异常：" + svr.getMessage());

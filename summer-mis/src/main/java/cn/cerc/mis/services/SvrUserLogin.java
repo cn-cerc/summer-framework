@@ -357,7 +357,7 @@ public class SvrUserLogin extends CustomService {
 
         cdsVer.edit();
         cdsVer.setField("Used_", 1);
-        cdsVer.setField("FirstTime_", TDateTime.Now());
+        cdsVer.setField("FirstTime_", TDateTime.now());
         cdsVer.post();
 
         cdsUser.edit();
@@ -407,7 +407,7 @@ public class SvrUserLogin extends CustomService {
 
             cdsVer.edit();
             cdsVer.setField("VerifyCode_", verifyCode);
-            cdsVer.setField("DeadLine_", TDateTime.Now().incDay(1));
+            cdsVer.setField("DeadLine_", TDateTime.now().incDay(1));
             cdsVer.post();
 
             // 发送认证码到手机上
@@ -464,7 +464,7 @@ public class SvrUserLogin extends CustomService {
         ds.setField("CorpNo_", corpNo);
         ds.setField("UserCode_", userCode);
         ds.setField("VerifyCode_", Utils.intToStr(Utils.random(900000) + 100000));
-        ds.setField("DeadLine_", TDateTime.Now().incDay(1));
+        ds.setField("DeadLine_", TDateTime.now().incDay(1));
         ds.setField("MachineCode_", deviceId);
         if (deviceId.startsWith("i_")) {
             // iOS
@@ -482,9 +482,9 @@ public class SvrUserLogin extends CustomService {
         ds.setField("Remark_", "");
         ds.setField("Used_", 0);
         ds.setField("UpdateUser_", userCode);
-        ds.setField("UpdateDate_", TDateTime.Now());
+        ds.setField("UpdateDate_", TDateTime.now());
         ds.setField("AppUser_", userCode);
-        ds.setField("AppDate_", TDateTime.Now());
+        ds.setField("AppDate_", TDateTime.now());
         ds.setField("UpdateKey_", Utils.newGuid());
         ds.post();
     }
@@ -495,7 +495,7 @@ public class SvrUserLogin extends CustomService {
         ds.add("where UserCode_='%s' and MachineCode_='%s' ", userCode, deviceId);
         ds.open();
         ds.edit();
-        ds.setField("LastTime_", TDateTime.Now());
+        ds.setField("LastTime_", TDateTime.now());
         ds.post();
         return ds.getInt("Used_") != 2;
     }
@@ -550,11 +550,11 @@ public class SvrUserLogin extends CustomService {
 
     public void updateCurrentUser(String computer, String screen, String language) {
 //        getConnection().execute(String.format("Update %s Set Viability_=0 Where Viability_>0 and LogoutTime_<'%s'",
-//                systemTable.getCurrentUser(), TDateTime.Now().incHour(-1)));
+//                systemTable.getCurrentUser(), TDateTime.now().incHour(-1)));
         // FIXME: 2020/6/10 一次只能有一个token存活，此项有bug，没有清理掉redis缓存的信息，造成HandleDefault的缓存还可以使用
         String SQLCmd = String.format(
                 "update %s set Viability_=-1,LogoutTime_='%s' where Account_='%s' and Viability_>-1",
-                systemTable.getCurrentUser(), TDateTime.Now(), getUserCode());
+                systemTable.getCurrentUser(), TDateTime.now(), getUserCode());
         getConnection().execute(SQLCmd);
 
         // 增加新的记录
@@ -565,7 +565,7 @@ public class SvrUserLogin extends CustomService {
         rs.setField("LoginID_", this.getProperty(Application.token));
         rs.setField("Computer_", computer);
         rs.setField("clientIP_", this.getProperty(Application.clientIP));
-        rs.setField("LoginTime_", TDateTime.Now());
+        rs.setField("LoginTime_", TDateTime.now());
         rs.setField("ParamValue_", handle.getCorpNo());
         rs.setField("KeyCardID_", GuidNull);
         rs.setField("Viability_", Utils.intToStr(Max_Viability));

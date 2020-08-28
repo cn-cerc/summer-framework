@@ -66,7 +66,7 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
 
     private void runTask(IHandle handle) {
         // 同一秒内，不允许执行2个及以上任务
-        String str = TDateTime.Now().getTime();
+        String str = TDateTime.now().getTime();
         if (str.equals(lock)) {
             return;
         }
@@ -78,7 +78,7 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
                 continue;
             }
             try {
-                String curTime = TDateTime.Now().getTime().substring(0, 5);
+                String curTime = TDateTime.now().getTime().substring(0, 5);
                 if (!"".equals(task.getTime()) && !task.getTime().equals(curTime)) {
                     continue;
                 }

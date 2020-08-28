@@ -77,7 +77,7 @@ public class SvrAutoLogin {
                 buff.setField("UserID_", userId);
                 buff.setField("UserCode_", dsUser.getString("Code_"));
                 buff.setField("UserName_", dsUser.getString("Name_"));
-                buff.setField("LoginTime_", TDateTime.Now());
+                buff.setField("LoginTime_", TDateTime.now());
                 buff.setField("VerifyMachine", true);
             }
 

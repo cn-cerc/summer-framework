@@ -66,9 +66,9 @@ public class DirectoryTest {
             dsLang.setField("supportIphone_", false);
             dsLang.setField("enable_", true);
             dsLang.setField("updateUser_", handle.getUserCode());
-            dsLang.setField("updateDate_", TDateTime.Now());
+            dsLang.setField("updateDate_", TDateTime.now());
             dsLang.setField("createUser_", handle.getUserCode());
-            dsLang.setField("createDate_", TDateTime.Now());
+            dsLang.setField("createDate_", TDateTime.now());
             dsLang.post();
             return 1;
         }
