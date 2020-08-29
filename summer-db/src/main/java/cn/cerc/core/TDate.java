@@ -25,6 +25,7 @@ public class TDate extends TDateTime {
     }
 
     // 当天，不带时分秒
+    @Deprecated
     public static TDate Today() {
         return today();
     }
