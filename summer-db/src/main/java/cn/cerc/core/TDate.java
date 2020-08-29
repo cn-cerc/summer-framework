@@ -26,6 +26,10 @@ public class TDate extends TDateTime {
 
     // 当天，不带时分秒
     public static TDate Today() {
+        return today();
+    }
+
+    public static TDate today() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String str = sdf.format(date);
