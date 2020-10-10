@@ -89,6 +89,10 @@ public class OssConnection implements IConnection {
     }
 
     public String getBucket() {
+        // 若bucket为空则初始化客户端
+        if (bucket == null) {
+            getClient();
+        }
         return bucket;
     }
 
