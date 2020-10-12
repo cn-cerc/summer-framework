@@ -216,4 +216,12 @@ public class UrlRecord {
     public void setWindow(boolean window) {
         isWindow = window;
     }
+
+    public enum Target {
+        _blank,
+        _self,
+        _parent,
+        _top;
+    }
+
 }
