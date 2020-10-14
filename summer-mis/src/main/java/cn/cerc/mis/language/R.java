@@ -29,12 +29,16 @@ public class R {
         }
         String language = temp == null ? Application.getLanguage() : (String) temp;
         // FIXME: 2019/11/21 用户配置表需要改为动态获取
-        SqlQuery ds = new SqlQuery(handle);
-        ds.add("select Value_ from %s where Code_='%s' and UserCode_='%s'", "UserOptions", "Lang_",
-                handle.getUserCode());
-        ds.open();
-        if (!ds.eof()) {
-            language = ds.getString("Value_");
+        try {
+            SqlQuery ds = new SqlQuery(handle);
+            ds.add("select Value_ from %s where Code_='%s' and UserCode_='%s'", "UserOptions", "Lang_",
+                    handle.getUserCode());
+            ds.open();
+            if (!ds.eof()) {
+                language = ds.getString("Value_");
+            }
+        } catch (Exception e) {
+            language = Language.zh_CN;
         }
         return language;
     }
