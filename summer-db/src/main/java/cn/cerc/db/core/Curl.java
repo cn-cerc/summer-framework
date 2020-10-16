@@ -322,7 +322,7 @@ public class Curl {
             httpPost.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
             CloseableHttpResponse response = httpClient.execute(httpPost);
             HttpEntity entity = response.getEntity();
-            responseContent = EntityUtils.toString(entity, "UTF-8");
+            responseContent = EntityUtils.toString(entity, StandardCharsets.UTF_8);
             response.close();
             httpClient.close();
         } catch (IOException e) {
