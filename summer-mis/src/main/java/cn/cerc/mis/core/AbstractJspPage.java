@@ -65,12 +65,14 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     public final void setForm(IForm form) {
         this.form = form;
         this.add("cdn", CDN.getSite());
+        this.add("version", browserCacheVersion);
         if (form != null) {
             this.put("jspPage", this);
             // 为兼容而设计
             ServerConfig config = ServerConfig.getInstance();
-            this.add("summer_js", CDN.get(config.getProperty("summer.js", "js/summer.js")));
-            this.add("myapp_js", CDN.get(config.getProperty("myapp.js", "js/myapp.js")));
+            String version = "?v=" + browserCacheVersion;
+            this.add("summer_js", CDN.get(config.getProperty("summer.js", "js/summer.js")) + version);
+            this.add("myapp_js", CDN.get(config.getProperty("myapp.js", "js/myapp.js")) + version);
         }
     }
 
@@ -383,18 +385,20 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     protected void initCssFile() {
+        String version = "?v=" + browserCacheVersion;
         ServerConfig config = ServerConfig.getInstance();
-        this.addCssFile(config.getProperty("summer.css", "css/summer.css"));
+        this.addCssFile(config.getProperty("summer.css", "css/summer.css") + version);
         if (!getForm().getClient().isPhone()) {
-            this.addCssFile(config.getProperty("summer-pc.css", "css/summer-pc.css"));
+            this.addCssFile(config.getProperty("summer-pc.css", "css/summer-pc.css") + version);
         }
     }
 
     protected void initJsFile() {
+        String version = "?v=" + browserCacheVersion;
         ServerConfig config = ServerConfig.getInstance();
-        this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js"));
-        this.addScriptFile(config.getProperty("summer.js", "js/summer.js"));
-        this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js"));
+        this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js") + version);
+        this.addScriptFile(config.getProperty("summer.js", "js/summer.js") + version);
+        this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js") + version);
     }
 
 }
