@@ -8,7 +8,7 @@ public class TDateTest {
 
     @Test
     public void test_Today() {
-        TDate obj = TDate.Today();
+        TDate obj = TDate.today();
         assertEquals(obj.getDate(), TDateTime.now().getDate());
     }
 }

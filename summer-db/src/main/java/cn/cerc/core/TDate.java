@@ -25,11 +25,6 @@ public class TDate extends TDateTime {
     }
 
     // 当天，不带时分秒
-    @Deprecated
-    public static TDate Today() {
-        return today();
-    }
-
     public static TDate today() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
@@ -47,7 +42,7 @@ public class TDate extends TDateTime {
         TDate val;
         val = new TDate(TDateTime.now().incMonth(-13).getData());
         System.out.println(val.getShortValue());
-        val = TDate.Today();
+        val = TDate.today();
         System.out.println(val.getShortValue());
     }
 
