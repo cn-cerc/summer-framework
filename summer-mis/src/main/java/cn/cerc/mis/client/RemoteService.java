@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
-    private IHandle handle;
+    private final IHandle handle;
 
     private String host;
     private String path;
@@ -41,7 +41,7 @@ public class RemoteService implements IServiceProxy {
         this.path = bookNo;
     }
 
-    public static final String getApiHost(String bookNo) {
+    public static String getApiHost(String bookNo) {
         LocalConfig localConfig = LocalConfig.getInstance();
         String key = ApplicationConfig.Rempte_Host_Key + "." + bookNo;
         if (localConfig.getProperty(key) == null) {
