@@ -385,20 +385,18 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     protected void initCssFile() {
-        String version = "?v=" + browserCacheVersion;
         ServerConfig config = ServerConfig.getInstance();
-        this.addCssFile(config.getProperty("summer.css", "css/summer.css") + version);
+        this.addCssFile(config.getProperty("summer.css", "css/summer.css"));
         if (!getForm().getClient().isPhone()) {
-            this.addCssFile(config.getProperty("summer-pc.css", "css/summer-pc.css") + version);
+            this.addCssFile(config.getProperty("summer-pc.css", "css/summer-pc.css"));
         }
     }
 
     protected void initJsFile() {
-        String version = "?v=" + browserCacheVersion;
         ServerConfig config = ServerConfig.getInstance();
-        this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js") + version);
-        this.addScriptFile(config.getProperty("summer.js", "js/summer.js") + version);
-        this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js") + version);
+        this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js"));
+        this.addScriptFile(config.getProperty("summer.js", "js/summer.js"));
+        this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js"));
     }
 
 }
