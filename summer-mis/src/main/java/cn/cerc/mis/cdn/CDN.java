@@ -3,6 +3,7 @@ package cn.cerc.mis.cdn;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.oss.OssConnection;
+import cn.cerc.mis.core.HTMLResource;
 
 public class CDN {
 
@@ -24,7 +25,7 @@ public class CDN {
     }
 
     public static String get(String file) {
-        return getSite() + file;
+        return getSite() + file + "?v=" + HTMLResource.getVersion();
     }
 
 }
