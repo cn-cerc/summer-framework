@@ -1,15 +1,14 @@
 package cn.cerc.mis.core;
 
-import java.io.Serializable;
-
-import javax.servlet.http.HttpServletRequest;
-
+import cn.cerc.core.Utils;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
@@ -126,6 +125,14 @@ public class ClientDevice implements IClient, Serializable {
     }
 
     public void clear() {
+        if (Utils.isNotEmpty(sid)) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, sid)) {
+                buff.clear();
+            }
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, sid)) {
+                buff.clear();
+            }
+        }
         this.sid = null;
     }
 

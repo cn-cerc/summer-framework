@@ -1,5 +1,12 @@
 package cn.cerc.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Transient;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,21 +23,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Transient;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class Utils {
     private static final Logger log = LoggerFactory.getLogger(Utils.class);
     public static final String vbCrLf = "\r\n";
 
     /**
      * 保障查询安全，防范注入攻击
-     * 
+     *
      * @param value 用户输入值
      * @return 经过处理后的值
      */
@@ -187,6 +186,7 @@ public class Utils {
     }
 
     // 兼容 delphi 代码
+
     /**
      * @param text=要检测的文本
      * @return 判断字符串是否全部为数字
@@ -425,4 +425,78 @@ public class Utils {
     public static int round(double d) {
         return (int) Math.round(d);
     }
+
+    /**
+     * <pre>
+     * Utils.isEmpty(null)      = true
+     * Utils.isEmpty("")        = true
+     * Utils.isEmpty(" ")       = false
+     * Utils.isEmpty("bob")     = false
+     * Utils.isEmpty("  bob  ") = false
+     * </pre>
+     *
+     * @param str 目标字符串
+     * @return 判断字符串是否为空
+     */
+    public static boolean isEmpty(String str) {
+        return str == null || str.length() == 0;
+    }
+
+    /**
+     * <pre>
+     * Utils.isNotEmpty(null)      = false
+     * Utils.isNotEmpty("")        = false
+     * Utils.isNotEmpty(" ")       = true
+     * Utils.isNotEmpty("bob")     = true
+     * Utils.isNotEmpty("  bob  ") = true
+     * </pre>
+     *
+     * @param str 目标字符串
+     * @return 判断字符串不为空
+     */
+    public static boolean isNotEmpty(String str) {
+        return !Utils.isEmpty(str);
+    }
+
+    /**
+     * <pre>
+     * Utils.isBlank(null)      = true
+     * Utils.isBlank("")        = true
+     * Utils.isBlank(" ")       = true
+     * Utils.isBlank("bob")     = false
+     * Utils.isBlank("  bob  ") = false
+     * </pre>
+     *
+     * @param str 目标字符串
+     * @return 判断是否为纯空格
+     */
+    public static boolean isBlank(String str) {
+        int strLen;
+        if (str == null || (strLen = str.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if ((!Character.isWhitespace(str.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <pre>
+     * StringUtils.isNotBlank(null)      = false
+     * StringUtils.isNotBlank("")        = false
+     * StringUtils.isNotBlank(" ")       = false
+     * StringUtils.isNotBlank("bob")     = true
+     * StringUtils.isNotBlank("  bob  ") = true
+     * </pre>
+     *
+     * @param str 目标字符串
+     * @return 判断是否不含纯空格
+     */
+    public static boolean isNotBlank(String str) {
+        return !Utils.isBlank(str);
+    }
+
 }
