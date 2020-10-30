@@ -337,7 +337,7 @@ public class StartForms implements Filter {
                     } else if ("GET".equals(request.getMethod())) {
                         StringBuffer jumpUrl = new StringBuffer();
                         String[] zlass = form.getClass().getName().split("\\.");
-                        if (zlass != null && zlass.length > 0) {
+                        if (zlass.length > 0) {
                             jumpUrl.append(zlass[zlass.length - 1]);
                             jumpUrl.append(".").append(funcCode);
                         } else {
