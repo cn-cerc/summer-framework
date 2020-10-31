@@ -149,7 +149,9 @@ public class StartForms implements Filter {
                 if (cmd != null) {
                     // 若需要登录，则跳转到登录页
                     if (cmd.startsWith("redirect:")) {
-                        resp.sendRedirect(cmd.substring(9));
+                        String redirect = cmd.substring(9);
+                        resp.encodeRedirectURL(redirect);
+                        resp.sendRedirect(redirect);
                     } else {
                         String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
                                 cmd);
@@ -328,7 +330,9 @@ public class StartForms implements Filter {
                     String cmd = output.execute();
                     if (cmd != null) {
                         if (cmd.startsWith("redirect:")) {
-                            response.sendRedirect(cmd.substring(9));
+                            String redirect = cmd.substring(9);
+                            response.encodeRedirectURL(redirect);
+                            response.sendRedirect(redirect);
                         } else {
                             String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
                                     cmd);
