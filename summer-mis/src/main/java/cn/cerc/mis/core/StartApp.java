@@ -44,24 +44,24 @@ public class StartApp implements Filter {
 
         // 处理默认首页问题
         if ("/".equals(uri)) {
-            if (req.getParameter(AppClient.APP_CLIENT_ID) != null) {
-                req.getSession().setAttribute(AppClient.APP_CLIENT_ID, req.getParameter(AppClient.APP_CLIENT_ID));
+            if (req.getParameter(AppClient.CLIENTID) != null) {
+                req.getSession().setAttribute(AppClient.CLIENTID, req.getParameter(AppClient.CLIENTID));
             }
-            if (req.getParameter(AppClient.APP_DEVICE_TYPE) != null) {
-                req.getSession().setAttribute(AppClient.APP_DEVICE_TYPE,
-                        req.getParameter(AppClient.APP_DEVICE_TYPE));
+            if (req.getParameter(AppClient.Device) != null) {
+                req.getSession().setAttribute(AppClient.Device,
+                        req.getParameter(AppClient.Device));
             }
 
             IAppConfig conf = Application.getAppConfig();
             resp.sendRedirect(String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome()));
             return;
         } else if ("/MobileConfig".equals(uri) || "/mobileConfig".equals(uri)) {
-            if (req.getParameter(AppClient.APP_CLIENT_ID) != null) {
-                req.getSession().setAttribute(AppClient.APP_CLIENT_ID, req.getParameter(AppClient.APP_CLIENT_ID));
+            if (req.getParameter(AppClient.CLIENTID) != null) {
+                req.getSession().setAttribute(AppClient.CLIENTID, req.getParameter(AppClient.CLIENTID));
             }
-            if (req.getParameter(AppClient.APP_DEVICE_TYPE) != null) {
-                req.getSession().setAttribute(AppClient.APP_DEVICE_TYPE,
-                        req.getParameter(AppClient.APP_DEVICE_TYPE));
+            if (req.getParameter(AppClient.Device) != null) {
+                req.getSession().setAttribute(AppClient.Device,
+                        req.getParameter(AppClient.Device));
             }
             try {
                 IForm form;

@@ -41,7 +41,7 @@ public class UIPageBill extends AbstractJspPage {
     }
 
     public void addExportFile(String service, String key) {
-        if (AppClient.APP_DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
+        if (AppClient.EE.equals(this.getForm().getClient().getDevice())) {
             ExportFile item = new ExportFile(service, key);
             this.put("export", item);
         }
