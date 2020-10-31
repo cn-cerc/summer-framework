@@ -201,16 +201,15 @@ public class ClientDevice implements IClient, Serializable {
         // 取得并保存token
         String token = request.getParameter(RequestData.TOKEN);// 获取客户端的 token
         if (token == null || "".equals(token)) {
-            log.warn("request.getParameter 获取的token为空，改为从 attribute 中读取");
             token = (String) request.getSession().getAttribute(RequestData.TOKEN); // 获取服务端的 token
             // 设置token
             if (Utils.isEmpty(token)) {
-                log.error("从 request attribute 获取的 token 为空");
+                log.debug("从 request attribute 获取的 token 为空");
             } else {
-                log.info("从 request attribute 获取的 token 为 {}", token);
+                log.debug("从 request attribute 获取的 token 为 {}", token);
             }
         }
-        log.warn("request session id {}", request.getSession().getId());
+        log.debug("request session id {}", request.getSession().getId());
 
         setToken(token);
     }
