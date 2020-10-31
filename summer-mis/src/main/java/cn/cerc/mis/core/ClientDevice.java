@@ -181,7 +181,7 @@ public class ClientDevice implements IClient, Serializable {
         }
         request.setAttribute(APP_DEVICE_TYPE, this.device == null ? "" : this.device);
 
-        // 保存并取得device_id
+        // 保存并取得 CLIENTID
         this.deviceId = request.getParameter(APP_CLIENT_ID);
         if (this.deviceId == null || "".equals(this.deviceId)) {
             this.deviceId = (String) request.getSession().getAttribute(APP_CLIENT_ID);
@@ -201,11 +201,15 @@ public class ClientDevice implements IClient, Serializable {
         // 取得并保存token
         String token = request.getParameter(RequestData.TOKEN);// 获取客户端的 token
         if (token == null || "".equals(token)) {
+            log.warn("request.getParameter 获取的token为空，改为从 attribute 中读取");
             token = (String) request.getSession().getAttribute(RequestData.TOKEN); // 获取服务端的 token
         }
-        log.debug("sessionID 1: {}", request.getSession().getId());
+        log.warn("request session id {}", request.getSession().getId());
 
         // 设置token
+        if (Utils.isEmpty(token)) {
+            log.error("从 request 获取的 token 为空");
+        }
         setToken(token);
     }
 
