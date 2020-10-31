@@ -33,8 +33,8 @@ public class StartFormDefault implements ApplicationContextAware {
     private IHandle handle;
 
     @Autowired
-    @Qualifier("clientDevice")
-    private ClientDevice clientDevice;
+    @Qualifier("appClient")
+    private AppClient client;
 
     @Autowired
     private IPassport passport;
@@ -56,15 +56,15 @@ public class StartFormDefault implements ApplicationContextAware {
             form.setRequest(request);
             form.setResponse(response);
 
-            clientDevice.setRequest(request);
+            client.setRequest(request);
 
             handle.setProperty(Application.sessionId, request.getSession().getId());
-            handle.setProperty(Application.deviceLanguage, clientDevice.getLanguage());
+            handle.setProperty(Application.deviceLanguage, client.getLanguage());
 
             request.setAttribute("myappHandle", handle);
-            request.setAttribute("_showMenu_", !ClientDevice.APP_DEVICE_EE.equals(clientDevice.getDevice()));
+            request.setAttribute("_showMenu_", !AppClient.APP_DEVICE_EE.equals(client.getDevice()));
 
-            form.setClient(clientDevice);
+            form.setClient(client);
 
             if ("excel".equals(funcId)) {
                 response.setContentType("application/vnd.ms-excel; charset=UTF-8");
@@ -75,7 +75,7 @@ public class StartFormDefault implements ApplicationContextAware {
 
             // 执行自动登录
             appLogin.init(form);
-            String jspFile = appLogin.checkToken(clientDevice.getToken());
+            String jspFile = appLogin.checkToken(client.getToken());
             if (jspFile != null) {
                 log.info("需要登录： {}", request.getRequestURL());
                 return jspFile;

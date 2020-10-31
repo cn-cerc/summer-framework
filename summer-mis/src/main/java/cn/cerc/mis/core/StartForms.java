@@ -127,9 +127,9 @@ public class StartForms implements Filter {
             }
 
             // 设备讯息
-            ClientDevice client = new ClientDevice();
+            AppClient client = new AppClient();
             client.setRequest(req);
-            req.setAttribute("_showMenu_", !ClientDevice.APP_DEVICE_EE.equals(client.getDevice()));
+            req.setAttribute("_showMenu_", !AppClient.APP_DEVICE_EE.equals(client.getDevice()));
             form.setClient(client);
 
             // 建立数据库资源
@@ -303,7 +303,7 @@ public class StartForms implements Filter {
                     ServerConfig config = ServerConfig.getInstance();
                     String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
                     // 若是专用APP登录并且是iPhone，则不跳转设备登录页，由iPhone原生客户端处理
-                    if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(ClientDevice.APP_DEVICE_IPHONE)) {
+                    if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(AppClient.APP_DEVICE_IPHONE)) {
                         try {
                             method = form.getClass().getMethod(funcCode + "_phone");
                         } catch (NoSuchMethodException e) {
