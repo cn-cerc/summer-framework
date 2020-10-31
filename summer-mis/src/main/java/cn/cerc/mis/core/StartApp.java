@@ -37,10 +37,7 @@ public class StartApp implements Filter {
                 url.putParam(key, value);
             }
         }
-        String path = url.getUrl();
-        if (path.contains("?code=")) {
-            log.info("url {}", url.getUrl());
-        }
+        log.info("url {}", url.getUrl());
 
         String uri = req.getRequestURI();
         Application.get(req);
