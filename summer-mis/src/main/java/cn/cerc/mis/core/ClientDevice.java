@@ -226,11 +226,12 @@ public class ClientDevice implements IClient, Serializable {
             }
         } else {
             if (this.token != null && !"".equals(this.token)) {
+                log.warn("取不到传入token的值，清理掉当前类的 token {}", this.token);
                 MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
             }
         }
-
         log.debug("sessionID 2: {}", request.getSession().getId());
+
         this.token = token;
         request.getSession().setAttribute(RequestData.TOKEN, this.token);
         request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
