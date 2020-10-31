@@ -31,8 +31,7 @@ public class StartAppDefault {
             req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE, req.getParameter(ClientDevice.APP_DEVICE_TYPE));
         }
 
-        String url = String.format("redirect:/%s/%s", appConfig.getPathForms(), appConfig.getFormWelcome());
-        return url;
+        return String.format("redirect:/%s/%s", appConfig.getPathForms(), appConfig.getFormWelcome());
     }
 
     @RequestMapping("/MobileConfig")
