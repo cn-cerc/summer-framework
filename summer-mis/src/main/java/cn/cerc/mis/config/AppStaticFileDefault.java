@@ -41,6 +41,7 @@ public enum AppStaticFileDefault {
         suffix.add(".exe");
         suffix.add(".manifest");
         suffix.add(".ttf");
+        suffix.add(".woff");
     }
 
     public boolean isStaticFile(String uri) {
