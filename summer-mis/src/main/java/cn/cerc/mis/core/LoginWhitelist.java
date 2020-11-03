@@ -35,6 +35,9 @@ public enum LoginWhitelist {
         // 电商专用测试
         users.add("91100124");
 
+        // diteng-mall-business
+        users.add("16310801");
+
         // 队列专用用户代码
         users.add(StubHandle.DefaultUser);
     }
