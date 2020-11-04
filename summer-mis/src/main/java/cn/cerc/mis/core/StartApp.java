@@ -53,7 +53,9 @@ public class StartApp implements Filter {
             }
 
             IAppConfig conf = Application.getAppConfig();
-            resp.sendRedirect(String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome()));
+            String redirect = String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome());
+            redirect = resp.encodeRedirectURL(redirect);
+            resp.sendRedirect(redirect);
             return;
         } else if ("/MobileConfig".equals(uri) || "/mobileConfig".equals(uri)) {
             if (req.getParameter(AppClient.CLIENT_ID) != null) {
