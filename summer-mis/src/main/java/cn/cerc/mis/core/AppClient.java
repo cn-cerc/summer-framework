@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Slf4j
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
-public class ClientDevice implements IClient, Serializable {
+public class AppClient implements IClient, Serializable {
 
     private static final long serialVersionUID = -3593077761901636920L;
 
@@ -42,7 +42,7 @@ public class ClientDevice implements IClient, Serializable {
     private String languageId; // device language: cn/en
     private HttpServletRequest request;
 
-    public ClientDevice() {
+    public AppClient() {
         super();
     }
 

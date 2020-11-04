@@ -33,8 +33,8 @@ public class StartFormDefault implements ApplicationContextAware {
     private IHandle handle;
 
     @Autowired
-    @Qualifier("clientDevice")
-    private ClientDevice clientDevice;
+    @Qualifier("appClient")
+    private AppClient clientDevice;
 
     @Autowired
     private IPassport passport;
@@ -62,7 +62,7 @@ public class StartFormDefault implements ApplicationContextAware {
             handle.setProperty(Application.deviceLanguage, clientDevice.getLanguage());
 
             request.setAttribute("myappHandle", handle);
-            request.setAttribute("_showMenu_", !ClientDevice.APP_DEVICE_EE.equals(clientDevice.getDevice()));
+            request.setAttribute("_showMenu_", !AppClient.APP_DEVICE_EE.equals(clientDevice.getDevice()));
 
             form.setClient(clientDevice);
 
