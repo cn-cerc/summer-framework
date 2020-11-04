@@ -9,7 +9,7 @@ import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ClientDevice;
+import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
@@ -121,7 +121,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
             String token = obj.getToken();
             if (token != null && !"".equals(token)) {
                 log.debug(String.format("认证成功，取得sid(%s)", token));
-                ((ClientDevice) this.getForm().getClient()).setToken(token);
+                ((AppClient) this.getForm().getClient()).setToken(token);
             }
             req.getSession().setAttribute("loginMsg", "");
             req.getSession().setAttribute("mobile", "");
