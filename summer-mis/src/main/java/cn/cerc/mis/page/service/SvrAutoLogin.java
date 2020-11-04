@@ -6,7 +6,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ClientDevice;
+import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
@@ -86,13 +86,13 @@ public class SvrAutoLogin {
             svrLogin.enrollMachineInfo(dsUser.getString("CorpNo_"), userCode, deviceId, "浏览器");
 
             // 设置登录信息
-            ClientDevice client = new ClientDevice();
+            AppClient client = new AppClient();
             client.setRequest(request);
             client.setToken(token);
             sess.init(token);
 
             form.getRequest().setAttribute(RequestData.TOKEN, token);
-            ((ClientDevice) form.getClient()).setToken(token);
+            ((AppClient) form.getClient()).setToken(token);
             tx.commit();
         }
         return true;
