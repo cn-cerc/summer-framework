@@ -14,7 +14,7 @@ public class RequestData {
     public static final String TOKEN = "sid";
     public static final String WEBCLIENT = "webclient";
 
-    private String token;
+    private final String token;
     private String param;
     private String serviceCode;
 

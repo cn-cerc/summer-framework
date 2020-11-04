@@ -12,9 +12,6 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
-/**
- * // TODO: 2019/12/7 建议更名为 AppClient
- */
 @Slf4j
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
@@ -24,6 +21,7 @@ public class AppClient implements IClient, Serializable {
 
     public static final String CLIENT_ID = "CLIENTID";
     public static final String DEVICE = "device";
+
     // 手机
     public static final String phone = "phone";
     public static final String android = "android";
@@ -41,10 +39,6 @@ public class AppClient implements IClient, Serializable {
     private String device; // phone/pad/ee/pc
     private String languageId; // device language: cn/en
     private HttpServletRequest request;
-
-    public AppClient() {
-        super();
-    }
 
     private String getValue(MemoryBuffer buff, String key, String def) {
         String result = def;
