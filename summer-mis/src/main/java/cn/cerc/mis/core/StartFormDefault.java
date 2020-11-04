@@ -62,7 +62,7 @@ public class StartFormDefault implements ApplicationContextAware {
             handle.setProperty(Application.deviceLanguage, clientDevice.getLanguage());
 
             request.setAttribute("myappHandle", handle);
-            request.setAttribute("_showMenu_", !AppClient.APP_DEVICE_EE.equals(clientDevice.getDevice()));
+            request.setAttribute("_showMenu_", !AppClient.ee.equals(clientDevice.getDevice()));
 
             form.setClient(clientDevice);
 

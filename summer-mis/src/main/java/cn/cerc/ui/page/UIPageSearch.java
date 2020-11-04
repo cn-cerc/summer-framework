@@ -50,7 +50,7 @@ public class UIPageSearch extends AbstractJspPage {
     }
 
     public void addExportFile(String service, String key) {
-        if (AppClient.APP_DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
+        if (AppClient.ee.equals(this.getForm().getClient().getDevice())) {
             ExportFile item = new ExportFile(service, key);
             this.put("export", item);
         }

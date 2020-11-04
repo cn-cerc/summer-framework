@@ -22,19 +22,19 @@ public class AppClient implements IClient, Serializable {
 
     private static final long serialVersionUID = -3593077761901636920L;
 
-    public static final String APP_CLIENT_ID = "CLIENTID";
-    public static final String APP_DEVICE_TYPE = "device";
+    public static final String CLIENT_ID = "CLIENTID";
+    public static final String DEVICE = "device";
     // 手机
-    public static final String APP_DEVICE_PHONE = "phone";
-    public static final String APP_DEVICE_ANDROID = "android";
-    public static final String APP_DEVICE_IPHONE = "iphone";
-    public static final String APP_DEVICE_WEIXIN = "weixin";
+    public static final String phone = "phone";
+    public static final String android = "android";
+    public static final String iphone = "iphone";
+    public static final String wechat = "weixin";
     // 平板
-    public static final String APP_DEVICE_PAD = "pad";
+    public static final String pad = "pad";
     // 电脑
-    public static final String APP_DEVICE_PC = "pc";
+    public static final String pc = "pc";
     // 客户端专用浏览器
-    public static final String APP_DEVICE_EE = "ee";
+    public static final String ee = "ee";
 
     private String token; // application session id;
     private String deviceId; // device id
@@ -73,15 +73,15 @@ public class AppClient implements IClient, Serializable {
 
     public void setId(String value) {
         this.deviceId = value;
-        request.setAttribute(APP_CLIENT_ID, this.deviceId == null ? "" : this.deviceId);
-        request.getSession().setAttribute(APP_CLIENT_ID, value);
+        request.setAttribute(CLIENT_ID, this.deviceId == null ? "" : this.deviceId);
+        request.getSession().setAttribute(CLIENT_ID, value);
         if (value != null && value.length() == 28) {
-            setDevice(APP_DEVICE_PHONE);
+            setDevice(phone);
         }
 
         if (token != null && this.deviceId != null && !"".equals(this.deviceId)) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
-                getValue(buff, APP_CLIENT_ID, this.deviceId);
+                getValue(buff, CLIENT_ID, this.deviceId);
             }
         }
     }
@@ -93,7 +93,7 @@ public class AppClient implements IClient, Serializable {
      */
     @Override
     public String getDevice() {
-        return this.device == null ? APP_DEVICE_PC : device;
+        return this.device == null ? pc : device;
     }
 
     @Override
@@ -106,13 +106,13 @@ public class AppClient implements IClient, Serializable {
         this.device = device;
 
         // 更新request属性
-        request.setAttribute(APP_DEVICE_TYPE, device == null ? "" : device);
-        request.getSession().setAttribute(APP_DEVICE_TYPE, device);
+        request.setAttribute(DEVICE, device == null ? "" : device);
+        request.getSession().setAttribute(DEVICE, device);
 
         // 更新设备缓存
         if (token != null) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
-                getValue(buff, APP_DEVICE_TYPE, device);
+                getValue(buff, DEVICE, device);
             }
         }
         return;
@@ -155,8 +155,8 @@ public class AppClient implements IClient, Serializable {
 
     @Override
     public boolean isPhone() {
-        return APP_DEVICE_PHONE.equals(getDevice()) || APP_DEVICE_ANDROID.equals(getDevice())
-                || APP_DEVICE_IPHONE.equals(getDevice()) || APP_DEVICE_WEIXIN.equals(getDevice());
+        return phone.equals(getDevice()) || android.equals(getDevice())
+                || iphone.equals(getDevice()) || wechat.equals(getDevice());
     }
 
     public boolean isNotPhone() {
@@ -172,23 +172,23 @@ public class AppClient implements IClient, Serializable {
         this.request = request;
 
         // 保存设备类型
-        this.device = request.getParameter(APP_DEVICE_TYPE);
+        this.device = request.getParameter(DEVICE);
         if (this.device == null || "".equals(this.device)) {
-            this.device = (String) request.getSession().getAttribute(APP_DEVICE_TYPE);
+            this.device = (String) request.getSession().getAttribute(DEVICE);
         }
         if (this.device != null && !"".equals(this.device)) {
-            request.getSession().setAttribute(APP_DEVICE_TYPE, this.device);
+            request.getSession().setAttribute(DEVICE, this.device);
         }
-        request.setAttribute(APP_DEVICE_TYPE, this.device == null ? "" : this.device);
+        request.setAttribute(DEVICE, this.device == null ? "" : this.device);
 
         // 保存并取得 CLIENTID
-        this.deviceId = request.getParameter(APP_CLIENT_ID);
+        this.deviceId = request.getParameter(CLIENT_ID);
         if (this.deviceId == null || "".equals(this.deviceId)) {
-            this.deviceId = (String) request.getSession().getAttribute(APP_CLIENT_ID);
+            this.deviceId = (String) request.getSession().getAttribute(CLIENT_ID);
         }
 
-        request.setAttribute(APP_CLIENT_ID, this.deviceId);
-        request.getSession().setAttribute(APP_CLIENT_ID, this.deviceId);
+        request.setAttribute(CLIENT_ID, this.deviceId);
+        request.getSession().setAttribute(CLIENT_ID, this.deviceId);
 
         this.languageId = request.getParameter(Application.deviceLanguage);
         if (this.languageId == null || "".equals(this.languageId)) {
@@ -219,9 +219,9 @@ public class AppClient implements IClient, Serializable {
         if (token != null) {
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
                 // 设备ID
-                this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
+                this.deviceId = getValue(buff, CLIENT_ID, this.deviceId);
                 // 设备类型
-                this.device = getValue(buff, APP_DEVICE_TYPE, this.device);
+                this.device = getValue(buff, DEVICE, this.device);
             }
         } else {
             if (this.token != null && !"".equals(this.token)) {
