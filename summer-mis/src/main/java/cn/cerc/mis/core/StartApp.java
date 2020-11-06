@@ -38,7 +38,7 @@ public class StartApp implements Filter {
             }
         }
         if (url.getUrl().contains("sid")) {
-            log.debug("url {}", url.getUrl());
+            log.info("url {}", url.getUrl());
         }
 
         String uri = req.getRequestURI();
