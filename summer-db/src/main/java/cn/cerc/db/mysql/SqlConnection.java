@@ -55,6 +55,11 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
             config.setJdbcUrl(url);
             config.setUsername(user);
             config.setPassword(pwd);
+            config.addDataSourceProperty("cachePrepStmts", "true");
+            // 连接池大小默认25，官方推荐250-500
+            config.addDataSourceProperty("prepStmtCacheSize", "250");
+            // 最大连接数
+            config.addDataSourceProperty("maximumPoolSize", "25");
             HikariDataSource dataSource = new HikariDataSource(config);
             connection = dataSource.getConnection();
             return connection;
