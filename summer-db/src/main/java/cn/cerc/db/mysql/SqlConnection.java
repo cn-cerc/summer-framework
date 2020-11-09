@@ -3,10 +3,11 @@ package cn.cerc.db.mysql;
 import cn.cerc.core.IConfig;
 import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -25,7 +26,7 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         try {
             if (connection != null) {
                 log.debug("close connection.");
@@ -49,7 +50,13 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
             }
             log.debug("create connection for mysql: " + url);
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url, user, pwd);
+
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(url);
+            config.setUsername(user);
+            config.setPassword(pwd);
+            HikariDataSource dataSource = new HikariDataSource(config);
+            connection = dataSource.getConnection();
             return connection;
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
