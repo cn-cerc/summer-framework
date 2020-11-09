@@ -20,7 +20,7 @@ public class BigConnection implements Closeable {
      * 它为null表示没有事务 它不为null表示有事务 当开启事务时，需要给它赋值 当结束事务时，需要给它赋值为null
      * 并且在开启事务时，让dao的多个方法共享这个Connection
      */
-    private static ThreadLocal<Connection> connections = new ThreadLocal<Connection>();
+    private static ThreadLocal<Connection> connections = new ThreadLocal<>();
     private Connection connection;
     private boolean debugConnection = false;
 
