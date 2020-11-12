@@ -77,7 +77,7 @@ public class JsonPage implements IPage {
 
     public JsonPage setData(Object data) {
         if (this.items != null) {
-            throw new RuntimeException("items is not null");
+            throw new RuntimeException("data is not null, json page items must be null.");
         }
         this.data = data;
         return this;
