@@ -44,27 +44,27 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
             return connection;
         }
 
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(url);
+        config.setUsername(user);
+        config.setPassword(pwd);
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        // 连接池大小默认25，官方推荐250-500
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        // 最大连接数
+        config.addDataSourceProperty("maximumPoolSize", "25");
+        HikariDataSource dataSource = new HikariDataSource(config);
+
         try {
             if (url == null) {
                 url = getConnectUrl();
             }
             log.debug("create connection for mysql: " + url);
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            HikariConfig config = new HikariConfig();
-            config.setJdbcUrl(url);
-            config.setUsername(user);
-            config.setPassword(pwd);
-            config.addDataSourceProperty("cachePrepStmts", "true");
-            // 连接池大小默认25，官方推荐250-500
-            config.addDataSourceProperty("prepStmtCacheSize", "250");
-            // 最大连接数
-            config.addDataSourceProperty("maximumPoolSize", "25");
-            HikariDataSource dataSource = new HikariDataSource(config);
             connection = dataSource.getConnection();
             return connection;
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
