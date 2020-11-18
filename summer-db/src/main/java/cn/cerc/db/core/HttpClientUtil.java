@@ -3,10 +3,12 @@ package cn.cerc.db.core;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -24,8 +26,9 @@ public class HttpClientUtil {
             StringEntity entity = new StringEntity(json);
             post.setEntity(entity);
             post.addHeader("Content-Type", "application/json;charset=utf-8");
+            post.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
 
-            HttpResponse response = http.execute(post);
+            CloseableHttpResponse response = http.execute(post);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
                 log.error("post 请求返回状态 {}", statusCode);
