@@ -14,8 +14,8 @@ public enum LocalConfig implements IConfig {
 
     INSTANCE;
 
-    private static final String confFile = System.getProperty("user.home") + System.getProperty("file.separator")
-            + "summer-application.properties";
+    public static final String path = System.getProperty("user.home") + System.getProperty("file.separator");
+    private static final String confFile = path + "summer-application.properties";
 
     private static final Properties properties = new Properties();
 
