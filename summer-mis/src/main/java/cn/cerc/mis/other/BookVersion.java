@@ -41,16 +41,6 @@ public enum BookVersion {
     ctFree("free"),
 
     /**
-     * 高级版
-     */
-    ctAdvanced("advanced"),
-
-    /**
-     * ERP
-     */
-    erp("erp"),
-
-    /**
      * 所有版本, 仅权限判断专用，后须移除！
      */
     ctAll("ctAll");
@@ -70,23 +60,11 @@ public enum BookVersion {
             case ctFree:
                 versions = "5,";
                 break;
-            case ctBasic:
-                versions = "5,3,";
-                break;
             case ctStandard:
-                versions = "5,3,2,";
-                break;
-            case ctProfession:
-                versions = "5,3,2,1,";
-                break;
-            case ctAdvanced:
-                versions = "5,3,2,1,6,";
+                versions = "2,5,";
                 break;
             case ctUltimate:
-                versions = "5,3,2,1,6,4,";
-                break;
-            case erp:
-                versions = "7,";
+                versions = "4,2,5,";
                 break;
             default:
                 versions = null;
