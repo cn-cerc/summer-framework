@@ -1,6 +1,5 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.rds.StubHandle;
 
 import java.util.ArrayList;
