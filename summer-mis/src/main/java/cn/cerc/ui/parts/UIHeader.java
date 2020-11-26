@@ -76,21 +76,20 @@ public class UIHeader extends UIComponent {
         return UIConfig.app_logo;
     }
 
-    public UIHeader(AbstractJspPage owner) {
-        super(owner);
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), getHomeImage(owner));
+    public UIHeader(AbstractJspPage page) {
+        super(page);
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), getHomeImage(page));
         leftMenus.add(homePage);
 
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
-                R.asString(owner.getForm().getHandle(), "开始"));
+        IHandle handle = page.getForm().getHandle();
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), R.asString(handle, "开始"));
 
-        IClient client = owner.getForm().getClient();
+        IClient client = page.getForm().getClient();
         boolean isShowBar = "true".equals(config.getProperty("app.ui.head.show", "true"));
         if (!client.isPhone() && isShowBar) {
-            IHandle handle = owner.getForm().getHandle();
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
-            currentUser = R.asString(owner.getForm().getHandle(), "用户");
+            currentUser = R.asString(handle, "用户");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {
@@ -130,9 +129,7 @@ public class UIHeader extends UIComponent {
             html.print("</div>");
             html.print("<span>%s</span>", welcome);
             html.print("<div class='user_right'>");
-            html.print(
-                    "<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>",
-                    currentUser, ApplicationConfig.App_Path, corpNoName, userName);
+            html.print("<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>", currentUser, ApplicationConfig.App_Path, corpNoName, userName);
             html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
             html.print("</div>");
             html.print("</div>");
