@@ -27,7 +27,7 @@ public class Block115 extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         html.println("<!-- %s -->", this.getClass().getName());
-        html.print("<div class='block115'>");
+        html.print("<div class='block115 %s'>", getClass() != null ? getClass() : "");
         image.output(html);
         title.output(html);
         html.println("</div>");
