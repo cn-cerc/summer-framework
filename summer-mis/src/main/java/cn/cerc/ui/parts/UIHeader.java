@@ -158,11 +158,6 @@ public class UIHeader extends UIComponent {
                 i++;
                 html.print("</li>");
             }
-            if (menuSearchArea != null) {
-                html.print("<li>");
-                menuSearchArea.output(html);
-                html.print("</li>");
-            }
             html.print("</ul>");
             if (leftBottom.size() > 0) {
                 html.println("<div role='headerButtons'>");
@@ -176,6 +171,9 @@ public class UIHeader extends UIComponent {
 
         // 降序输出：右边
         html.println("<section role='rightMenu'>");
+        if (menuSearchArea != null) {
+            menuSearchArea.output(html);
+        }
         if (rightMenus.size() > 0) {
             html.print("<ul>");
             int i = rightMenus.size() - 1;
