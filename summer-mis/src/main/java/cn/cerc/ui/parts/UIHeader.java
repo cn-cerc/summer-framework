@@ -16,6 +16,7 @@ import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.phone.Block104;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ public class UIHeader extends UIComponent {
     private UrlRecord homePage;
     // 左边菜单
     private List<UrlRecord> leftMenus = new ArrayList<>();
+    // 菜单搜索区域
+    private Block104 menuSearchArea = null;
     // 左菜单按钮
     private List<UIBottom> leftBottom = new ArrayList<>();
     // 右边菜单
@@ -153,6 +156,11 @@ public class UIHeader extends UIComponent {
                 }
                 html.print("<a href=\"%s\">%s</a>", menu.getUrl(), menu.getName());
                 i++;
+                html.print("</li>");
+            }
+            if (menuSearchArea != null) {
+                html.print("<li>");
+                menuSearchArea.output(html);
                 html.print("</li>");
             }
             html.print("</ul>");
@@ -342,4 +350,10 @@ public class UIHeader extends UIComponent {
         return currentUser;
     }
 
+    public Block104 getMenuSearchArea() {
+        if (menuSearchArea == null) {
+            menuSearchArea = new Block104(this);
+        }
+        return menuSearchArea;
+    }
 }
