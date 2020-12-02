@@ -37,9 +37,9 @@ public class RecordComparator implements Comparator<Record> {
             }
 
             if (tmp != 0) {
-                if (params.length == 1 || "ASC".equals(params[1].toUpperCase())) {
+                if (params.length == 1 || "ASC".equalsIgnoreCase(params[1])) {
                     return tmp > 0 ? 1 : -1;
-                } else if ("DESC".equals(params[1].toUpperCase())) {
+                } else if ("DESC".equalsIgnoreCase(params[1])) {
                     return tmp > 0 ? -1 : 1;
                 } else {
                     throw new RuntimeException(String.format("不支持【%s】排序模式", params[1]));
