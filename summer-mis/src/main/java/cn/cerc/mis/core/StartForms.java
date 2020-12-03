@@ -154,8 +154,7 @@ public class StartForms implements Filter {
                         redirect = resp.encodeRedirectURL(redirect);
                         resp.sendRedirect(redirect);
                     } else {
-                        String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
-                                cmd);
+                        String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
                         request.getServletContext().getRequestDispatcher(url).forward(request, response);
                     }
                 } else {
