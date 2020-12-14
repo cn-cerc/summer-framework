@@ -74,21 +74,16 @@ public class JiguangPush {
             builder.setAudience(Audience.all());
         }
 
-        if (clientType == ClientType.Android || clientType == ClientType.IOS) {
-            builder.setNotification(Notification.newBuilder()
-                    .setAlert(message)
-                    .addPlatformNotification(AndroidNotification.newBuilder()
-                            .setTitle(this.title)
-                            .addExtras(params).build())
-                    .addPlatformNotification(IosNotification.newBuilder()
-                            .incrBadge(1)
-                            .addExtras(params).setSound(sound).build())
-                    .build())
-                    .build();
-            sendMessage(builder.build());
-        } else {
+        if (clientType != ClientType.Android && clientType != ClientType.IOS) {
             throw new RuntimeException("暂不支持的设备类别：" + clientType.ordinal());
         }
+
+        builder.setNotification(Notification.newBuilder().setAlert(message)
+                .addPlatformNotification(AndroidNotification.newBuilder().setTitle(this.title).addExtras(params).build())
+                .addPlatformNotification(IosNotification.newBuilder().incrBadge(1).addExtras(params).setSound(sound).build())
+                .build()
+        ).build();
+        sendMessage(builder.build());
     }
 
     /**
