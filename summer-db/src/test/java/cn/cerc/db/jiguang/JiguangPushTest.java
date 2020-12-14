@@ -35,8 +35,10 @@ public class JiguangPushTest {
         // 发送给指定的设备Id
         push.send(ClientType.Android, "n_e201ff3670a4174b");// itjun-xiaomi-mix2
         push.send(ClientType.Android, "n_a86ddf4df465a83f");// weibo-xiaomi-5c
-//        push.send(ClientType.IOS, "i_59C532BB213C41D5BE3A117EB4D9FB67");// HuangRongjun-iPhone
-//        push.send(ClientType.IOS, "i_77598CF689994EE3B110D6B20F1368B7", sound);// HuangRongjun-iPhone
+        push.send(ClientType.IOS, "i_0C005500702F4F97AD81C2E992E36108");// ly-iPhone-SE2
+        push.send(ClientType.IOS, "i_A1688A8910B04499ABC64B035B559921");// wsg-iPhone-xr
+        push.send(ClientType.IOS, "i_87E2C6FB4D2347F49FC17CD564B07AEE");// itjun-iPhone-SE2
+//        push.send(ClientType.IOS, "i_87E2C6FB4D2347F49FC17CD564B07AEE", sound);// HuangRongjun-iPhone
 
         // 发送给指定的设备类型
         // push.send(ClientType.IOS, null);
