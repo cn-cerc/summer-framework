@@ -4,6 +4,7 @@ import cn.cerc.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.PushPayload.Builder;
@@ -83,6 +84,8 @@ public class JiguangPush {
                 .addPlatformNotification(IosNotification.newBuilder().incrBadge(1).addExtras(params).setSound(sound).build())
                 .build()
         ).build();
+        // 设置生产环境
+        builder.setOptions(Options.newBuilder().setApnsProduction(true).build()).build();
         sendMessage(builder.build());
     }
 
