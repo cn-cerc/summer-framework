@@ -28,10 +28,9 @@ public class JiguangPushTest {
         push.setMsgId("3707");
 
         // 发送给指定的设备Id
-//        push.send(ClientType.Android, "n_f94e14e75bd846d1");// ly-Android
-        push.send(ClientType.Android, "n_862391030069496");// ly-Android
-//        push.send(ClientType.IOS, "i_59C532BB213C41D5BE3A117EB4D9FB67");// HuangRongjun-iPhone
-//        push.send(ClientType.IOS, "i_77598CF689994EE3B110D6B20F1368B7", sound);// HuangRongjun-iPhone
+        push.send(ClientType.Android, "n_868568025516789");// ly-Android
+        push.send(ClientType.IOS, "i_77598CF689994EE3B110D6B20F1368B7");// HuangRongjun-iPhone
+        push.send(ClientType.IOS, "i_77598CF689994EE3B110D6B20F1368B7", sound);// HuangRongjun-iPhone
 
         // 发送给指定的设备类型
         // push.send(ClientType.IOS, null);
