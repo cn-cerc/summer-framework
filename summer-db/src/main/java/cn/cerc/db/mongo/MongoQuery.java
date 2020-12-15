@@ -43,9 +43,9 @@ public class MongoQuery extends DataQuery {
         // 增加排序条件
         BasicDBObject sort = decodeOrder(this.getSqlText().getText());
         // 执行查询
-        ArrayList<Document> list = coll.find(filter).sort(sort).into(new ArrayList<Document>());
+        ArrayList<Document> list = coll.find(filter).sort(sort).into(new ArrayList<>());
         // 数据不存在,则状态不为更新,并返回一个空数据
-        if (list == null || list.isEmpty()) {
+        if (list.isEmpty()) {
             return this;
         }
 

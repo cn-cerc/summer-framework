@@ -127,7 +127,7 @@ public class ExcelTemplate {
                     }
                     GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(oss.getBucket(), imageUrl);
                     // 设置失效时间
-                    req.setExpiration(TDateTime.Now().incMinute(5).getData());
+                    req.setExpiration(TDateTime.now().incMinute(5).getData());
                     // 压缩方式，长宽80，png格式
                     req.setProcess("image/resize,m_lfit,h_80,w_80/format,png");
                     InputStream inputStream = oss.getClient().generatePresignedUrl(req).openStream();

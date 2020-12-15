@@ -22,9 +22,14 @@ public class OssDisk {
         client = connection.getClient();
     }
 
-    // 上传文件流
+    // 默认Bucket上传文件流
     public void upload(String fileName, InputStream inputStream) {
         connection.upload(fileName, inputStream);
+    }
+
+    // 指定Bucket上传文件流
+    public void upload(String bucket, String fileName, InputStream inputStream) {
+        connection.upload(bucket, fileName, inputStream);
     }
 
     // 上传文件
@@ -63,9 +68,14 @@ public class OssDisk {
         return connection.download(fileName, localFile);
     }
 
-    // 删除文件
+    // 默认Bucket删除文件
     public void delete(String fileName) {
         connection.delete(fileName);
+    }
+
+    // 指定Bucket删除文件
+    public void delete(String bucket, String fileName) {
+        connection.delete(bucket, fileName);
     }
 
     // 拷贝Object

@@ -33,7 +33,7 @@ public class SvrSession extends CustomService {
         }
 
         Record headOut = getDataOut().getHead();
-        headOut.setField("LoginTime_", TDateTime.Now());
+        headOut.setField("LoginTime_", TDateTime.now());
         copyData(cdsUser, headOut);
         return true;
     }

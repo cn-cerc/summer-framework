@@ -61,7 +61,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
         init();
 
         // 同一秒内，不允许执行2个及以上任务
-        String str = TDateTime.Now().getTime();
+        String str = TDateTime.now().getTime();
         if (str.equals(lock)) {
             return;
         }
@@ -73,7 +73,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 continue;
             }
             try {
-                String timeNow = TDateTime.Now().getTime().substring(0, 5);
+                String timeNow = TDateTime.now().getTime().substring(0, 5);
                 if (!"".equals(task.getTime()) && !task.getTime().equals(timeNow)) {
                     continue;
                 }
@@ -109,7 +109,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
         }
 
         // 凌晨1点整重新初始化token
-        String now = TDateTime.Now().getTime().substring(0, 5);
+        String now = TDateTime.now().getTime().substring(0, 5);
         if (One_O_Clock.equals(now)) {
             if (Redis.get(now) != null) {
                 return;
@@ -118,7 +118,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 handle.close();
                 handle = null;
             }
-            log.warn("{} 队列重新初始化句柄", TDateTime.Now());
+            log.warn("{} 队列重新初始化句柄", TDateTime.now());
             handle = new StubHandle();
             // 60s内不重复初始化Handle
             Redis.set(now, "true", 60);

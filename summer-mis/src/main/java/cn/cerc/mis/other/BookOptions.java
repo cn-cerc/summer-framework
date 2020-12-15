@@ -96,6 +96,7 @@ public class BookOptions {
     public static final String UpdateTBDateToEffectiveDate = "UpdateTBDateToEffectiveDate";
     public static final String IsViewOldMenu = "IsViewOldMenu";
     public static final String DefaultProfitMargin = "DefaultProfitMargin";
+    public static final String AutoMergeOnlineOrder = "AutoMergeOnlineOrder";
     public static final String OnlineToOfflineMenu = "OnlineToOfflineMenu";
     public static final String OnlineToOfflineMaxScale = "OnlineToOfflineMaxScale";
     public static final String OnlineToOfflineArea = "OnlineToOfflineArea";
@@ -194,6 +195,7 @@ public class BookOptions {
         items.put(UpdateTBDateToEffectiveDate, "单据生效时，单据日期自动等于生效日期");
         items.put(IsViewOldMenu, "是否显示旧版菜单链接（带闪电标识）");
         items.put(DefaultProfitMargin, "网单代发货利润率（<font color=red>需启用O2O模组</font>）");
+        items.put(AutoMergeOnlineOrder, "自动合并相同店铺、同一个收货人的订单，合并在一个包裹发货");
         items.put(OnlineToOfflineMaxScale, "商家代发允许的最大时间，按分钟计（<font color=red>需启用O2O模组</font>）");
         items.put(OnlineToOfflineArea, "网单代发区域等级范围设置（<font color=red>0、按省 1、按市 2、按县 3、指定市 4、指定县 5、指定镇</font>）");
         items.put(SupplyQuotationGrade, "是否开启采购报价单阶梯报价");

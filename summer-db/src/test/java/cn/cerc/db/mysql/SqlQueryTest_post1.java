@@ -24,7 +24,7 @@ public class SqlQueryTest_post1 {
         ds.add("select * from Dept where CorpNo_='%s'", "144001");
         ds.open();
         ds.edit();
-        ds.setField("updateDate_", TDateTime.Now().incDay(-1));
+        ds.setField("updateDate_", TDateTime.now().incDay(-1));
         ds.post();
     }
 
@@ -38,7 +38,7 @@ public class SqlQueryTest_post1 {
         });
         ds.edit();
         ds.setField("Test", "aOK");
-        ds.setField("UpdateDate_", TDateTime.Now().incDay(-1));
+        ds.setField("UpdateDate_", TDateTime.now().incDay(-1));
         ds.post();
     }
 }

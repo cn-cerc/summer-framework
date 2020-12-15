@@ -10,7 +10,7 @@
 
 * IForm，定位于页面控制器，用于接收web输入，以及输出IPage接口。其中IPage实现有：JspPage、JsonPage、RedirectPage等，可自由扩充。实际编写时，可直接继承AbstractForm后快速实现具体的页面控制器。
 
-* IService，定位于业务逻辑，用于接收web输出，以及输出IStatus与DataSet-JSON，并可透过包装类，转化为其它格式如xml的输出，此项与IForm的差别在于：IForm有提供对getRequest().getSession()的访问，可使用HttpSession。IService有提供RESTful接口，可提供第三方访问。
+* IService，定位于业务逻辑，用于接收web输出，以及输出IStatus与DataSet-JSON，并可通过包装类，转化为其它格式如xml的输出，此项与IForm的差别在于：IForm有提供对getRequest().getSession()的访问，可使用HttpSession。IService有提供RESTful接口，可提供第三方访问。
 
 实际使用时，IForm会调用IService，而IService既对内提供业务服务，也对外提供业务服务。
 

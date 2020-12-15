@@ -3,21 +3,16 @@ package cn.cerc.mis.config;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.HttpClientUtil;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.client.ServiceFactory;
+import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ClientDevice;
 import cn.cerc.mis.language.Language;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
@@ -88,23 +83,19 @@ public class ApplicationConfig {
         dataIn.getHead().setField("userCode", userCode);
         dataIn.getHead().setField("password", password);
         dataIn.getHead().setField("clientId", machineCode);
-        dataIn.getHead().setField("device", ClientDevice.APP_DEVICE_PC);
+        dataIn.getHead().setField("device", AppClient.pc);
         dataIn.getHead().setField("languageId", Language.zh_CN);
         dataIn.getHead().setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
         String json = dataIn.getJSON();
         log.info("请求参数 {}", json);
 
         String token;
-        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
-            HttpPost post = new HttpPost(url);
-            StringEntity postingString = new StringEntity(json);
-            post.setEntity(postingString);
-            post.addHeader("Content-Type", "application/json;charset=utf-8");
-
-            // 发起post请求
-            HttpResponse response = client.execute(post);
-            String content = EntityUtils.toString(response.getEntity(), "utf-8");
+        try {
+            String content = HttpClientUtil.post(url, json);
             log.info("返回数据 {}", content);
+            if (Utils.isEmpty(content)) {
+                throw new RuntimeException("请求 public 服务器获取 token 失败");
+            }
 
             // 解析post结果
             ObjectMapper mapper = new ObjectMapper();

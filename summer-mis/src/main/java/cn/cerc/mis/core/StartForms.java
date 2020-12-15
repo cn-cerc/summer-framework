@@ -51,6 +51,7 @@ public class StartForms implements Filter {
         if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
             IAppConfig conf = Application.getAppConfig();
             String redirect = String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome());
+            redirect = resp.encodeRedirectURL(redirect);
             resp.sendRedirect(redirect);
             return;
         }
@@ -127,9 +128,9 @@ public class StartForms implements Filter {
             }
 
             // 设备讯息
-            ClientDevice client = new ClientDevice();
+            AppClient client = new AppClient();
             client.setRequest(req);
-            req.setAttribute("_showMenu_", !ClientDevice.APP_DEVICE_EE.equals(client.getDevice()));
+            req.setAttribute("_showMenu_", !AppClient.ee.equals(client.getDevice()));
             form.setClient(client);
 
             // 建立数据库资源
@@ -149,10 +150,11 @@ public class StartForms implements Filter {
                 if (cmd != null) {
                     // 若需要登录，则跳转到登录页
                     if (cmd.startsWith("redirect:")) {
-                        resp.sendRedirect(cmd.substring(9));
+                        String redirect = cmd.substring(9);
+                        redirect = resp.encodeRedirectURL(redirect);
+                        resp.sendRedirect(redirect);
                     } else {
-                        String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
-                                cmd);
+                        String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
                         request.getServletContext().getRequestDispatcher(url).forward(request, response);
                     }
                 } else {
@@ -301,7 +303,7 @@ public class StartForms implements Filter {
                     ServerConfig config = ServerConfig.getInstance();
                     String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
                     // 若是专用APP登录并且是iPhone，则不跳转设备登录页，由iPhone原生客户端处理
-                    if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(ClientDevice.APP_DEVICE_IPHONE)) {
+                    if (!"".equals(supCorpNo) && form.getClient().getDevice().equals(AppClient.iphone)) {
                         try {
                             method = form.getClass().getMethod(funcCode + "_phone");
                         } catch (NoSuchMethodException e) {
@@ -328,16 +330,17 @@ public class StartForms implements Filter {
                     String cmd = output.execute();
                     if (cmd != null) {
                         if (cmd.startsWith("redirect:")) {
-                            response.sendRedirect(cmd.substring(9));
+                            String redirect = cmd.substring(9);
+                            redirect = response.encodeRedirectURL(redirect);
+                            response.sendRedirect(redirect);
                         } else {
-                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(),
-                                    cmd);
+                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
                             request.getServletContext().getRequestDispatcher(url).forward(request, response);
                         }
                     } else if ("GET".equals(request.getMethod())) {
                         StringBuffer jumpUrl = new StringBuffer();
                         String[] zlass = form.getClass().getName().split("\\.");
-                        if (zlass != null && zlass.length > 0) {
+                        if (zlass.length > 0) {
                             jumpUrl.append(zlass[zlass.length - 1]);
                             jumpUrl.append(".").append(funcCode);
                         } else {

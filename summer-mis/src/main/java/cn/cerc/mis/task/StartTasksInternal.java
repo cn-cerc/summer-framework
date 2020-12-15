@@ -27,7 +27,7 @@ public class StartTasksInternal implements ServletContextListener {
             ProcessTimerTask task = new ProcessTimerTask();
             task.setApplicationContext(Application.getContext());
 
-            /**
+            /*
              * 1、项目启动完成3秒后开始启动task
              * 2、每次执行完成一个，500毫秒以后开始执行下一个
              */

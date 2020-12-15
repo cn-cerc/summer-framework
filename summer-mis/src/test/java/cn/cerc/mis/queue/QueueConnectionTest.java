@@ -32,7 +32,7 @@ public class QueueConnectionTest {
                             // 消息生产者
                             MessageProducer messageProducer = session.createProducer(queue);
                             // 创建一条消息
-                            TextMessage msg = session.createTextMessage("curTime:" + TDateTime.Now());
+                            TextMessage msg = session.createTextMessage("curTime:" + TDateTime.now());
                             System.out.println(Thread.currentThread().getName() + " send:" + msg.getText());
                             // 发送消息
                             messageProducer.send(msg);

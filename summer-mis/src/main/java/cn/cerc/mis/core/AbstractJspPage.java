@@ -36,7 +36,6 @@ import java.util.Map;
 public abstract class AbstractJspPage extends UIComponent implements IPage {
     private String jspFile;
     private IForm form;
-    private String browserCacheVersion;
     private List<String> cssFiles = new ArrayList<>();
     private List<String> jsFiles = new ArrayList<>();
     private List<HtmlContent> scriptFunctions = new ArrayList<>();
@@ -52,8 +51,6 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     public AbstractJspPage() {
         super();
-        ServerConfig config = ServerConfig.getInstance();
-        this.browserCacheVersion = config.getProperty("browser.cache.version", "1.0.0.0");
     }
 
     @Override
@@ -64,12 +61,14 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     @Override
     public final void setForm(IForm form) {
         this.form = form;
+        this.add("cdn", CDN.getSite());
+        this.add("version", HTMLResource.getVersion());
         if (form != null) {
             this.put("jspPage", this);
             // 为兼容而设计
             ServerConfig config = ServerConfig.getInstance();
-            this.add("summer_js", config.getProperty("summer.js", "js/summer.js"));
-            this.add("myapp_js", config.getProperty("myapp.js", "js/myapp.js"));
+            this.add("summer_js", CDN.get(config.getProperty("summer.js", "js/summer.js")));
+            this.add("myapp_js", CDN.get(config.getProperty("myapp.js", "js/myapp.js")));
         }
     }
 
@@ -111,7 +110,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         if (getRequest() == null || jspFile == null) {
             return jspFile;
         }
-        if (jspFile.indexOf(".jsp") == -1) {
+        if (!jspFile.contains(".jsp")) {
             return jspFile;
         }
 
@@ -209,7 +208,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     public final HtmlWriter getCssHtml() {
         HtmlWriter html = new HtmlWriter();
         for (String file : cssFiles) {
-            html.println("<link href=\"%s?v=%s\" rel=\"stylesheet\">", file, browserCacheVersion);
+            html.println("<link href=\"%s\" rel=\"stylesheet\">", file);
         }
         return html;
     }
@@ -220,8 +219,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
         // 加入脚本文件
         for (String file : getJsFiles()) {
-            html.println("<script src=\"%s?v=%s\"></script>", file, browserCacheVersion);
+            html.println("<script src=\"%s\"></script>", file);
         }
+
         // 加入脚本代码
         List<HtmlContent> scriptCode1 = getScriptCodes();
         if (scriptFunctions.size() > 0 || scriptCode1.size() > 0) {

@@ -89,13 +89,22 @@ public class OssConnection implements IConnection {
     }
 
     public String getBucket() {
+        // 若bucket为空则初始化客户端
+        if (bucket == null) {
+            getClient();
+        }
         return bucket;
     }
 
     // 上传文件
     public void upload(String fileName, InputStream inputStream) {
+        upload(getBucket(), fileName, inputStream);
+    }
+
+    // 指定上传Bucket
+    public void upload(String bucket, String fileName, InputStream inputStream) {
         // 例：upload(inputStream, "131001/Default/131001/temp.txt")
-        getClient().putObject(getBucket(), fileName, inputStream);
+        getClient().putObject(bucket, fileName, inputStream);
     }
 
     // 下载文件
@@ -108,7 +117,12 @@ public class OssConnection implements IConnection {
 
     // 删除文件
     public void delete(String fileName) {
-        getClient().deleteObject(getBucket(), fileName);
+        delete(getBucket(), fileName);
+    }
+
+    // 指定Bucket删除文件
+    public void delete(String bucket, String fileName) {
+        getClient().deleteObject(bucket, fileName);
     }
 
     public String getContent(String fileName) {

@@ -8,6 +8,7 @@ import cn.cerc.core.Utils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static cn.cerc.core.Utils.safeString;
 
@@ -40,6 +41,44 @@ public class BuildQuery {
         if (!"".equals(param)) {
             sqlWhere.add("(" + param + ")");
         }
+        return this;
+    }
+
+    /**
+     * 支持多个组合模糊查询条件组合查询
+     * <p>
+     * 一个查询文本对应一个字段组合的 List
+     * <p>
+     * 生成 SQL 的指令如下：
+     * <p>
+     * and (
+     * CusCode_ like '%05559255%'
+     * or SalesCode_ like '%05559255%'
+     * or AppUser_ like '%05559255%'
+     * or UpdateUser_ like '%05559255%'
+     * or Address_ like '%05559255%'
+     * or Mobile_ like '%$i8OknluCnFsW$%'
+     * )
+     *
+     * @param items
+     * @return
+     */
+    public BuildQuery byLink(Map<String, List<String>> items) {
+        if (items == null) {
+            return this;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (String k : items.keySet()) {
+            List<String> fields = items.get(k);
+            String text = "%" + safeString(k).replaceAll("\\*", "") + "%";
+            for (String field : fields) {
+                builder.append(String.format("%s like '%s'", field, text));
+                builder.append(" or ");
+            }
+        }
+        String str = builder.toString();
+        str = str.substring(0, str.length() - 3);
+        sqlWhere.add("(" + str + ")");
         return this;
     }
 

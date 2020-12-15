@@ -24,10 +24,10 @@ public interface IBookManage {
 
     default void setBookMonth(String beginYearMonth) {
         // 传入日期年月大于当前年月则默认为当前年月
-        if (beginYearMonth.compareTo(TDateTime.Now().getYearMonth()) > 0) {
-            beginYearMonth = TDateTime.Now().getYearMonth();
+        if (beginYearMonth.compareTo(TDateTime.now().getYearMonth()) > 0) {
+            beginYearMonth = TDateTime.now().getYearMonth();
         }
-        setDateRange(TDateTime.fromYearMonth(beginYearMonth), TDateTime.Now(), false);
+        setDateRange(TDateTime.fromYearMonth(beginYearMonth), TDateTime.now(), false);
     }
 
     // 是否预览变更而不保存

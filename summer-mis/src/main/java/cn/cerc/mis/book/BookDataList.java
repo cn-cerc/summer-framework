@@ -19,8 +19,8 @@ public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
     }
 
     public static void main(String[] args) {
-        TDateTime dateFrom = TDateTime.Now().incDay(1);
-        System.out.println(TDateTime.Now().compareDay(dateFrom));
+        TDateTime dateFrom = TDateTime.now().incDay(1);
+        System.out.println(TDateTime.now().compareDay(dateFrom));
     }
 
     public void add(IBookData data) {

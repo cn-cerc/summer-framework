@@ -105,7 +105,7 @@ public class SqlText {
             throw new RuntimeException("SqlText.text is null ！");
         }
 
-        if (sql.indexOf("call ") > -1) {
+        if (sql.contains("call ")) {
             return sql;
         }
 
@@ -120,8 +120,6 @@ public class SqlText {
                 sql = sql + String.format(" limit %d", this.maximum + 2);
             } else if (this.maximum > -1) {
                 sql = sql + String.format(" limit %d", this.maximum + 1);
-            } else if (this.maximum == 0) {
-                sql = sql + String.format(" limit %d", 0);
             }
         }
         return sql;

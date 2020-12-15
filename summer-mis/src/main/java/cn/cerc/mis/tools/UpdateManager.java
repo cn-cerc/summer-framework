@@ -44,7 +44,7 @@ public class UpdateManager implements IBookManage {
         }
 
         duration = new DurationSplit(beginDate, endDate);
-        dataList = new BookDataList(new DurationSection(beginDate, TDateTime.Now()));
+        dataList = new BookDataList(new DurationSection(beginDate, TDateTime.now()));
     }
 
     public void execute() throws DataUpdateException {
@@ -88,8 +88,8 @@ public class UpdateManager implements IBookManage {
                         } else {
                             boolean ok = book.enroll(bookData, false);
                             if (ok && book.isKnowMonth()) {
-                                if (TDateTime.Now().compareMonth(bookData.getDate()) > 0) {
-                                    for (int i = 1; i <= TDateTime.Now().compareMonth(bookData.getDate()); i++) {
+                                if (TDateTime.now().compareMonth(bookData.getDate()) > 0) {
+                                    for (int i = 1; i <= TDateTime.now().compareMonth(bookData.getDate()); i++) {
                                         dataList.add(new VirtualData(book, bookData, i));
                                     }
                                 }

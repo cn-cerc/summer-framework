@@ -133,11 +133,6 @@
             <artifactId>spring-context</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!-- 阿里的 source -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
         <dependency>
             <groupId>c3p0</groupId>
             <artifactId>c3p0</artifactId>

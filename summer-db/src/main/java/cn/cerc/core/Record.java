@@ -382,7 +382,7 @@ public class Record implements IRecord, Serializable {
         } else if (obj == null) {
             return 0.0;
         } else if (obj instanceof BigInteger) {
-            return Double.valueOf(((BigInteger) obj).doubleValue());
+            return ((BigInteger) obj).doubleValue();
         } else if (obj instanceof Long) {
             Long tmp = (Long) obj;
             return tmp * 1.0;

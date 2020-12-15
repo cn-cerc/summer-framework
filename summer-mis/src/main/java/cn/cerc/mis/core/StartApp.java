@@ -37,8 +37,7 @@ public class StartApp implements Filter {
                 url.putParam(key, value);
             }
         }
-        String path = url.getUrl();
-        if (path.contains("?code=")) {
+        if (url.getUrl().contains("sid")) {
             log.info("url {}", url.getUrl());
         }
 
@@ -47,24 +46,26 @@ public class StartApp implements Filter {
 
         // 处理默认首页问题
         if ("/".equals(uri)) {
-            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null) {
-                req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
+            if (req.getParameter(AppClient.CLIENT_ID) != null) {
+                req.getSession().setAttribute(AppClient.CLIENT_ID, req.getParameter(AppClient.CLIENT_ID));
             }
-            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null) {
-                req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE,
-                        req.getParameter(ClientDevice.APP_DEVICE_TYPE));
+            if (req.getParameter(AppClient.DEVICE) != null) {
+                req.getSession().setAttribute(AppClient.DEVICE,
+                        req.getParameter(AppClient.DEVICE));
             }
 
             IAppConfig conf = Application.getAppConfig();
-            resp.sendRedirect(String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome()));
+            String redirect = String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome());
+            redirect = resp.encodeRedirectURL(redirect);
+            resp.sendRedirect(redirect);
             return;
         } else if ("/MobileConfig".equals(uri) || "/mobileConfig".equals(uri)) {
-            if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null) {
-                req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
+            if (req.getParameter(AppClient.CLIENT_ID) != null) {
+                req.getSession().setAttribute(AppClient.CLIENT_ID, req.getParameter(AppClient.CLIENT_ID));
             }
-            if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null) {
-                req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE,
-                        req.getParameter(ClientDevice.APP_DEVICE_TYPE));
+            if (req.getParameter(AppClient.DEVICE) != null) {
+                req.getSession().setAttribute(AppClient.DEVICE,
+                        req.getParameter(AppClient.DEVICE));
             }
             try {
                 IForm form;
