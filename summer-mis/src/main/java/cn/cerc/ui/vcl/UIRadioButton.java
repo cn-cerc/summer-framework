@@ -13,10 +13,6 @@ public class UIRadioButton extends UIComponent {
         super(owner);
     }
 
-    public UIRadioButton() {
-        super();
-    }
-
     @Override
     public void output(HtmlWriter html) {
         if (label != null) {
@@ -35,16 +31,18 @@ public class UIRadioButton extends UIComponent {
         return name;
     }
 
-    public void setName(String name) {
+    public UIRadioButton setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public UIRadioButton setValue(String value) {
         this.value = value;
+        return this;
     }
 
     public UILabel getLabel() {
@@ -58,8 +56,9 @@ public class UIRadioButton extends UIComponent {
         return isSelected;
     }
 
-    public void setIsSelected(boolean isSelected) {
+    public UIRadioButton setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
+        return this;
     }
 
 }
