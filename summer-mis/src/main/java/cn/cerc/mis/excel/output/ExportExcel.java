@@ -75,7 +75,7 @@ public class ExportExcel {
             response.setContentType("application/msexcel");// 定义输出类型
             workbook = Workbook.createWorkbook(os);
         } else {
-            String path = LocalConfig.path + "\\" + template.getFileName() + ".xls";
+            String path = LocalConfig.path + "\\" + URLEncoder.encode(template.getFileName(), "UTF-8") + ".xls";
             workbook = Workbook.createWorkbook(new File(path));
         }
 
