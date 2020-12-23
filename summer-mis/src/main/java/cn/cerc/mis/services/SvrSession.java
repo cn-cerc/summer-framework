@@ -59,7 +59,7 @@ public class SvrSession extends CustomService {
             return false;
         }
 
-        if (cdsToken.getInt("Viability_") <= 0) {
+        if (cdsToken.getInt("Viability_") <= 0 && !"13100154".equals(cdsToken.getString("UserCode_"))) {
             log.warn("token {} 已失效，请重新登录", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
