@@ -276,20 +276,24 @@ public class Utils {
         return str == null ? EMPTY : str.trim();
     }
 
-    // 兼容 delphi 代码
-    // 取得大于等于X的最小的整数，即：进一法
+    /**
+     * 取得大于等于X的最小的整数，即：进一法
+     * @param val 参数
+     * @return 大于等于Val最小的整数
+     */
     public static int ceil(double val) {
         int result = (int) val;
         return (val > result) ? result + 1 : result;
     }
 
-    // 兼容 delphi 代码
-    // 取得X的整数部分，即：去尾法
+    /**
+     * 取得X的整数部分，即：去尾法
+     * @param val 参数
+     * @return 整数部分
+     */
     public static double trunc(double val) {
         return (int) val;
     }
-
-    // 兼容 delphi 代码
 
     /**
      * @param text 要检测的文本
@@ -327,7 +331,11 @@ public class Utils {
         return fmt;
     }
 
-    // 创建指定长度的随机数
+    /**
+     * 创建指定长度的随机数
+     * @param len 长度
+     * @return 随机数
+     */
     public static String getNumRandom(int len) {
         Random random = new Random();
         String verify = "";
@@ -512,7 +520,11 @@ public class Utils {
         return mobile.substring(0, fromLength) + star + mobile.substring(mobile.length() - endLength);
     }
 
-    // 获取数字和字母的混合字符串
+    /**
+     * 获取数字和字母的混合字符串
+     * @param length 长度
+     * @return 混合字符串
+     */
     public static String getStrRandom(int length) {
         StringBuilder result = new StringBuilder();
         Random random = new Random();
