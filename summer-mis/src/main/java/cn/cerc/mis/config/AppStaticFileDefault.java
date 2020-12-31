@@ -37,6 +37,10 @@ public class AppStaticFileDefault implements IAppStaticFile {
         suffix.add(".apk");
         suffix.add(".exe");
         suffix.add(".manifest");
+
+        // 字体文件
+        suffix.add(".woff");
+        suffix.add(".ttf");
     }
 
     @Override
