@@ -191,6 +191,10 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         cssFiles.add(file);
     }
 
+    public final void addOnlineScript(String address) {
+        jsFiles.add(address);
+    }
+
     public final void addScriptFile(String file) {
         file = CDN.get(file);
         jsFiles.add(file);
