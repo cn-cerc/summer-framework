@@ -16,6 +16,8 @@ public class UITextArea extends UIComponent {
     private String placeholder;
     private int cols;// 列
     private int rows;// 行
+    private String onInput;
+    private boolean autofocus;
     private boolean readonly;
 
     public UITextArea() {
@@ -33,27 +35,33 @@ public class UITextArea extends UIComponent {
 
         html.print("<textarea ");
         if (this.getId() != null) {
-            html.print(" id='%s'", this.getId());
+            html.print("id='%s' ", this.getId());
         }
-        if (name != null) {
+        if (getName() != null) {
             html.print("name='%s' ", name);
         }
-        if (rows != 0) {
+        if (getRows() != 0) {
             html.print("rows='%s' ", rows);
         }
-        if (cols != 0) {
+        if (getCols() != 0) {
             html.print("cols='%s' ", cols);
         }
-        if (placeholder != null) {
+        if (getPlaceholder() != null) {
             html.print("placeholder='%s' ", placeholder);
         }
-        if (readonly) {
-            html.print("readonly='readonly'");
+        if (isReadonly()) {
+            html.print("readonly='readonly' ");
+        }
+        if (getOnInput() != null) {
+            html.print("oninput='%s' ", onInput);
+        }
+        if (isAutofocus()) {
+            html.print("autofocus ");
         }
         super.outputCss(html);
         html.print(">");
 
-        if (text != null) {
+        if (getText() != null) {
             html.print(text);
         }
         html.print("</textarea>");
@@ -123,6 +131,22 @@ public class UITextArea extends UIComponent {
     public UITextArea setReadonly(boolean readonly) {
         this.readonly = readonly;
         return this;
+    }
+
+    public String getOnInput() {
+        return onInput;
+    }
+
+    public void setOnInput(String onInput) {
+        this.onInput = onInput;
+    }
+
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    public void setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
     }
 
 }
