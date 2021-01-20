@@ -118,6 +118,11 @@ public class MessageQueue {
         return subject;
     }
 
+    public MessageQueue setSubject(String subject) {
+        this.subject = subject;
+        return this;
+    }
+
     public MessageQueue setSubject(String format, Object... args) {
         this.subject = String.format(format, args);
         return this;
