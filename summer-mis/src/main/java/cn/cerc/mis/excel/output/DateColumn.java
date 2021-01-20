@@ -12,6 +12,6 @@ public class DateColumn extends Column {
 
     @Override
     public Object getValue() {
-        return getRecord().getDate(getCode());
+        return getRecord().hasValue(getCode()) ? getRecord().getDate(getCode()) : "";
     }
 }

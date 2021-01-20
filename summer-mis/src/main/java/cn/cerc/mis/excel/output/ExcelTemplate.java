@@ -107,9 +107,15 @@ public class ExcelTemplate {
             jxl.write.Number item = new jxl.write.Number(col, row, (double) column.getValue());
             sheet.addCell(item);
         } else if (column instanceof DateColumn) {
-            TDate day = (TDate) column.getValue();
-            DateTime item = new DateTime(col, row, day.getData(), new WritableCellFormat(df1));
-            sheet.addCell(item);
+            Object value = column.getValue();
+            if (value instanceof String) {
+                Label item = new Label(col, row, value.toString());
+                sheet.addCell(item);
+            } else {
+                TDate day = (TDate) column.getValue();
+                DateTime item = new DateTime(col, row, day.getData(), new WritableCellFormat(df1));
+                sheet.addCell(item);
+            }
         } else if (column instanceof DateTimeColumn) {
             DateTime item = new DateTime(col, row, (Date) column.getValue(), new WritableCellFormat(df2));
             sheet.addCell(item);
