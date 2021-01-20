@@ -278,6 +278,7 @@ public class Utils {
 
     /**
      * 取得大于等于X的最小的整数，即：进一法
+     *
      * @param val 参数
      * @return 大于等于Val最小的整数
      */
@@ -288,6 +289,7 @@ public class Utils {
 
     /**
      * 取得X的整数部分，即：去尾法
+     *
      * @param val 参数
      * @return 整数部分
      */
@@ -333,6 +335,7 @@ public class Utils {
 
     /**
      * 创建指定长度的随机数
+     *
      * @param len 长度
      * @return 随机数
      */
@@ -522,6 +525,7 @@ public class Utils {
 
     /**
      * 获取数字和字母的混合字符串
+     *
      * @param length 长度
      * @return 混合字符串
      */
