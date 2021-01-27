@@ -119,31 +119,12 @@ public class UIHeader extends UIComponent {
     public void output(HtmlWriter html) {
         if (this.leftBottom.size() > MAX_MENUS) {
             throw new RuntimeException(
-                    String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
+                    String.format(R.asString(this.getForm().getHandle(), "左侧菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
         }
 
         html.print("<header role='header'");
         super.outputCss(html);
         html.println(">");
-        if (userName != null) {
-            html.print("<div class='titel_top'>");
-            html.print("<div class='logo_box'>");
-            html.print("<img src='%s'/>", logoSrc);
-            html.print("</div>");
-            html.print("<span>%s</span>", welcome);
-            html.print("<div class='user_right'>");
-            html.print("<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>", currentUser, ApplicationConfig.App_Path, corpNoName, userName);
-            html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
-            html.print("</div>");
-            html.print("</div>");
-        }
-        if (advertisement != null) {
-            html.println("<section role='advertisement'>");
-            html.println(advertisement.toString());
-            html.println("</section>");
-        }
-        html.println("<nav role='mainMenu'>");
-
         // 输出：左边
         html.println("<section role='leftMenu'>");
         if (leftMenus.size() > 0) {
@@ -169,11 +150,14 @@ public class UIHeader extends UIComponent {
         }
         html.println("</section>");
 
+        if (menuSearchArea != null) {
+            html.println("<section role='center'>");
+            menuSearchArea.output(html);
+            html.println("</section>");
+        }
+
         // 降序输出：右边
         html.println("<section role='rightMenu'>");
-        if (menuSearchArea != null) {
-            menuSearchArea.output(html);
-        }
         if (rightMenus.size() > 0) {
             html.print("<ul>");
             int i = rightMenus.size() - 1;
@@ -186,9 +170,12 @@ public class UIHeader extends UIComponent {
             }
             html.print("</ul>");
         }
+        if (userName != null) {
+            html.print(
+                    "<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>",
+                    currentUser, ApplicationConfig.App_Path, corpNoName, userName);
+        }
         html.println("</section>");
-
-        html.println("</nav>");
         html.println("</header>");
     }
 

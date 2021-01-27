@@ -1,5 +1,15 @@
 package cn.cerc.mis.core;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
@@ -22,15 +32,6 @@ import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolbar;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.ServletException;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public abstract class AbstractJspPage extends UIComponent implements IPage {
@@ -356,9 +357,11 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     protected void outBody(PrintWriter out) {
         out.println("<body>");
         out.println(this.getHeader());
+        out.println("<div role='main'>");
         out.println(this.getToolBar());
         out.println(this.getDocument());
         out.println(this.getFooter());
+        out.println("</div>");
         if (getForm().getClient().isPhone()) {
             out.println("<span id='back-top' style='display: none'>顶部</span>");
             out.println("<span id='back-bottom' style='display: none'>底部</span>");
