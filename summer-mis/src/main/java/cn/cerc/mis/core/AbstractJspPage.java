@@ -357,11 +357,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     protected void outBody(PrintWriter out) {
         out.println("<body>");
         out.println(this.getHeader());
-        out.println("<div role='main'>");
         out.println(this.getToolBar());
         out.println(this.getDocument());
         out.println(this.getFooter());
-        out.println("</div>");
         if (getForm().getClient().isPhone()) {
             out.println("<span id='back-top' style='display: none'>顶部</span>");
             out.println("<span id='back-bottom' style='display: none'>底部</span>");
