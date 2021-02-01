@@ -42,8 +42,6 @@ public class UIHeader extends UIComponent {
     private String welcome;
     // logo图标src
     private String logoSrc;
-    // 当前用户
-    private String currentUser;
     // 当前帐套名称
     private String corpNoName;
     // 退出
@@ -92,7 +90,6 @@ public class UIHeader extends UIComponent {
         if (!client.isPhone() && isShowBar) {
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
-            currentUser = R.asString(handle, "用户");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {
@@ -172,8 +169,8 @@ public class UIHeader extends UIComponent {
         }
         if (userName != null) {
             html.print(
-                    "<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>",
-                    currentUser, ApplicationConfig.App_Path, corpNoName, userName);
+                    "<span class='userName'><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i>[<i>%s</i>]</span>",
+                    ApplicationConfig.App_Path, corpNoName, userName);
         }
         html.println("</section>");
         html.println("</header>");
@@ -329,10 +326,6 @@ public class UIHeader extends UIComponent {
 
     public UrlRecord getExitSystem() {
         return exitSystem;
-    }
-
-    public String getCurrentUser() {
-        return currentUser;
     }
 
     public Block104 getMenuSearchArea() {
