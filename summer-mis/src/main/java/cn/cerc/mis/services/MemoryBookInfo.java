@@ -55,6 +55,14 @@ public class MemoryBookInfo {
     }
 
     /**
+     * 检查帐套代码是否是系统生成
+     */
+    public static boolean exist(IHandle handle, String corpNo) {
+        BookInfoRecord book = MemoryBookInfo.get(handle, corpNo);
+        return Utils.isNotEmpty(book.getShortName());
+    }
+
+    /**
      * @param handle 环境变量
      * @param corpNo 帐套代码
      * @return 返回帐套状态
