@@ -105,7 +105,7 @@ public class SqlText {
             throw new RuntimeException("SqlText.text is null ！");
         }
 
-        if (sql.contains("call ")) {
+        if (sql.contains("call ") || sql.contains("show")) {
             return sql;
         }
 
