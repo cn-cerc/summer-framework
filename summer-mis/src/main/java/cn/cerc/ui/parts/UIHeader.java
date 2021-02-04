@@ -171,6 +171,7 @@ public class UIHeader extends UIComponent {
             html.print(
                     "<span class='userName'><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i>[<i>%s</i>]</span>",
                     ApplicationConfig.App_Path, corpNoName, userName);
+            html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
         }
         html.println("</section>");
         html.println("</header>");
