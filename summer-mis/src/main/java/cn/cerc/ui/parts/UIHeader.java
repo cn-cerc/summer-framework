@@ -6,6 +6,7 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AbstractJspPage;
+import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;
@@ -171,7 +172,10 @@ public class UIHeader extends UIComponent {
             html.print(
                     "<span class='userName'><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i>[<i>%s</i>]</span>",
                     ApplicationConfig.App_Path, corpNoName, userName);
-            html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
+            IClient client = ((AbstractJspPage) this.getOwner()).getForm().getClient();
+            if (!AppClient.ee.equals(client.getDevice())) {
+                html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
+            }
         }
         html.println("</section>");
         html.println("</header>");
