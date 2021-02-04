@@ -1,10 +1,15 @@
 package cn.cerc.ui.page;
 
-import cn.cerc.core.Utils;
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.AppClient;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.page.ExportFile;
@@ -16,11 +21,6 @@ import cn.cerc.ui.grid.AbstractGrid;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.List;
 
 public class UIPageDialog extends AbstractJspPage {
     private boolean showMenus = true; // 是否显示主菜单
@@ -65,14 +65,7 @@ public class UIPageDialog extends AbstractJspPage {
         if (form instanceof AbstractForm) {
             if (this.isShowMenus()) {
                 this.getHeader().initHeader();
-
-                this.getRequest().setAttribute("logoSrc", this.getHeader().getLogoSrc());
-                this.getRequest().setAttribute("welcomeLanguage", this.getHeader().getWelcome());
-                if (Utils.isNotEmpty(this.getHeader().getUserName())) {
-                    this.getRequest().setAttribute("exitSystem", this.getHeader().getExitSystem());
-                    this.getRequest().setAttribute("userName", this.getHeader().getUserName());
-                    this.getRequest().setAttribute("currentUser", this.getHeader().getCurrentUser());
-                }
+                this.getRequest().setAttribute("jspHeader", this.getHeader().toString());
             }
         }
         String msg = form.getParam("message", "");

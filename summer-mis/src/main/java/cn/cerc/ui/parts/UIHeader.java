@@ -6,6 +6,7 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AbstractJspPage;
+import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;
@@ -42,8 +43,6 @@ public class UIHeader extends UIComponent {
     private String welcome;
     // logo图标src
     private String logoSrc;
-    // 当前用户
-    private String currentUser;
     // 当前帐套名称
     private String corpNoName;
     // 退出
@@ -92,7 +91,6 @@ public class UIHeader extends UIComponent {
         if (!client.isPhone() && isShowBar) {
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
-            currentUser = R.asString(handle, "用户");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {
@@ -119,31 +117,12 @@ public class UIHeader extends UIComponent {
     public void output(HtmlWriter html) {
         if (this.leftBottom.size() > MAX_MENUS) {
             throw new RuntimeException(
-                    String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
+                    String.format(R.asString(this.getForm().getHandle(), "左侧菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
         }
 
         html.print("<header role='header'");
         super.outputCss(html);
         html.println(">");
-        if (userName != null) {
-            html.print("<div class='titel_top'>");
-            html.print("<div class='logo_box'>");
-            html.print("<img src='%s'/>", logoSrc);
-            html.print("</div>");
-            html.print("<span>%s</span>", welcome);
-            html.print("<div class='user_right'>");
-            html.print("<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>", currentUser, ApplicationConfig.App_Path, corpNoName, userName);
-            html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
-            html.print("</div>");
-            html.print("</div>");
-        }
-        if (advertisement != null) {
-            html.println("<section role='advertisement'>");
-            html.println(advertisement.toString());
-            html.println("</section>");
-        }
-        html.println("<nav role='mainMenu'>");
-
         // 输出：左边
         html.println("<section role='leftMenu'>");
         if (leftMenus.size() > 0) {
@@ -169,11 +148,14 @@ public class UIHeader extends UIComponent {
         }
         html.println("</section>");
 
+        if (menuSearchArea != null) {
+            html.println("<section role='center'>");
+            menuSearchArea.output(html);
+            html.println("</section>");
+        }
+
         // 降序输出：右边
         html.println("<section role='rightMenu'>");
-        if (menuSearchArea != null) {
-            menuSearchArea.output(html);
-        }
         if (rightMenus.size() > 0) {
             html.print("<ul>");
             int i = rightMenus.size() - 1;
@@ -186,9 +168,16 @@ public class UIHeader extends UIComponent {
             }
             html.print("</ul>");
         }
+        if (userName != null) {
+            html.print(
+                    "<span class='userName'><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i>[<i>%s</i>]</span>",
+                    ApplicationConfig.App_Path, corpNoName, userName);
+            IClient client = ((AbstractJspPage) this.getOwner()).getForm().getClient();
+            if (!AppClient.ee.equals(client.getDevice())) {
+                html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
+            }
+        }
         html.println("</section>");
-
-        html.println("</nav>");
         html.println("</header>");
     }
 
@@ -342,10 +331,6 @@ public class UIHeader extends UIComponent {
 
     public UrlRecord getExitSystem() {
         return exitSystem;
-    }
-
-    public String getCurrentUser() {
-        return currentUser;
     }
 
     public Block104 getMenuSearchArea() {
