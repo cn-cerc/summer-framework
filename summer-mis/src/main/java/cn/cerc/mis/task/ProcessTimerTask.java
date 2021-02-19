@@ -1,5 +1,14 @@
 package cn.cerc.mis.task;
 
+import java.util.Calendar;
+import java.util.TimerTask;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
@@ -7,38 +16,24 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
-import java.util.TimerTask;
-
-@Component
-@Slf4j
 @Deprecated // 请改使用 StartTaskDefault
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
-
+    private static final Logger log = LoggerFactory.getLogger(ProcessTimerTask.class);
+    private static boolean isRunning = false;
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
-    private static boolean isRunning = false;
-    private static final String One_O_Clock = "01:00";
-
     private static String lock;
-    private IHandle handle;
-
     // 运行环境
     private ApplicationContext context;
 
     // 循环反复执行
     @Override
     public void run() {
-        Calendar calendar = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         if (!isRunning) {
             isRunning = true;
-            if (C_SCHEDULE_HOUR == calendar.get(Calendar.HOUR_OF_DAY)) {
+            if (C_SCHEDULE_HOUR == c.get(Calendar.HOUR_OF_DAY)) {
                 try {
                     report();
                 } catch (Exception e) {
@@ -46,7 +41,8 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 }
             } else if (ServerConfig.enableTaskService()) {
                 try {
-                    runTask();
+                    StubHandle handle = new StubHandle();
+                    runTask(handle);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -57,39 +53,38 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
         }
     }
 
-    private void runTask() {
-        init();
+    // 每天凌晨开始执行报表或回算任务
+    private void report() {
+        return;
+    }
 
+    private void runTask(IHandle handle) {
         // 同一秒内，不允许执行2个及以上任务
-        String str = TDateTime.now().getTime();
-        if (str.equals(lock)) {
+        String str = TDateTime.Now().getTime();
+        if (str.equals(lock))
             return;
-        }
-        lock = str;
 
+        lock = str;
         for (String beanId : context.getBeanNamesForType(AbstractTask.class)) {
             AbstractTask task = getTask(handle, beanId);
-            if (task == null) {
+            if (task == null)
                 continue;
-            }
             try {
-                String timeNow = TDateTime.now().getTime().substring(0, 5);
-                if (!"".equals(task.getTime()) && !task.getTime().equals(timeNow)) {
+                String curTime = TDateTime.Now().getTime().substring(0, 5);
+                if (!"".equals(task.getTime()) && !task.getTime().equals(curTime))
                     continue;
-                }
 
                 int timeOut = task.getInterval();
-                String buffKey = String.format("%d.%s.%s.%s", BufferType.getObject.ordinal(), ServerConfig.getAppName(), this.getClass().getName(), task.getClass().getName());
-                if (Redis.get(buffKey) != null) {
+                String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(),
+                        task.getClass().getName());
+                if (Redis.get(buffKey) != null)
                     continue;
-                }
 
                 // 标识为已执行
                 Redis.set(buffKey, "ok", timeOut);
 
-                if (task.getInterval() > 1) {
-                    log.debug("执行任务 {}", task.getClass().getName());
-                }
+                if (task.getInterval() > 1)
+                    log.info("execute " + task.getClass().getName());
 
                 task.execute();
             } catch (Exception e) {
@@ -99,47 +94,15 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
         }
     }
 
-    /**
-     * 初始化特殊用户的 handle
-     */
-    private void init() {
-        if (handle == null) {
-            handle = new StubHandle();
-            return;
-        }
-
-        // 凌晨1点整重新初始化token
-        String now = TDateTime.now().getTime().substring(0, 5);
-        if (One_O_Clock.equals(now)) {
-            if (Redis.get(now) != null) {
-                return;
-            }
-            if (handle != null) {
-                handle.close();
-                handle = null;
-            }
-            log.warn("{} 队列重新初始化句柄", TDateTime.now());
-            handle = new StubHandle();
-            // 60s内不重复初始化Handle
-            Redis.set(now, "true", 60);
-        }
-    }
-
     public static AbstractTask getTask(IHandle handle, String beanId) {
         AbstractTask task = Application.getBean(beanId, AbstractTask.class);
-        if (task != null) {
+        if (task != null)
             task.setHandle(handle);
-        }
         return task;
-    }
-
-    // 每天凌晨开始执行报表或回算任务
-    private void report() {
     }
 
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         this.context = context;
     }
-
 }

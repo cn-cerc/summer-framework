@@ -2,11 +2,11 @@ package cn.cerc.ui.docs;
 
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.parts.UISheetHelp;
-import cn.cerc.ui.parts.UIToolbar;
+import cn.cerc.ui.parts.UIToolBar;
 
 public class MarkdownHelp extends UISheetHelp {
 
-    public MarkdownHelp(UIToolbar owner) {
+    public MarkdownHelp(UIToolBar owner) {
         super(owner);
     }
 

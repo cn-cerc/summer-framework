@@ -1,9 +1,9 @@
 package cn.cerc.mis.excel.output;
 
-import cn.cerc.core.Record;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.cerc.core.Record;
 
 public class ComplexColumn extends Column {
     private List<String> fields = new ArrayList<>();
@@ -38,9 +38,8 @@ public class ComplexColumn extends Column {
         StringBuffer buff = new StringBuffer();
         for (String field : fields) {
             if (record.hasValue(field)) {
-                if (buff.length() > 0) {
+                if (buff.length() > 0)
                     buff.append(",");
-                }
                 buff.append(record.getString(field));
             }
         }

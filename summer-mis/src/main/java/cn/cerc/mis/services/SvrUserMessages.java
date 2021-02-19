@@ -1,5 +1,7 @@
 package cn.cerc.mis.services;
 
+import java.math.BigInteger;
+
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -13,15 +15,11 @@ import cn.cerc.mis.message.MessageRecord;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.queue.AsyncService;
 
-import java.math.BigInteger;
-
-/**
- * 异步消息操作
- */
+//用户消息操作
 public class SvrUserMessages extends CustomService {
 
-    /*
-     * 取出所有的等待处理的消息列表
+    /**
+     * @return 取出所有的等待处理的消息列表
      */
     public boolean getWaitList() {
         SqlQuery ds = new SqlQuery(this);
@@ -34,8 +32,8 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /*
-     * 增加一条新的消息记录
+    /**
+     * @return 增加一条新的消息记录
      */
     public boolean appendRecord() {
         Record headIn = getDataIn().getHead();
@@ -74,11 +72,10 @@ public class SvrUserMessages extends CustomService {
         cdsMsg.setField("UserCode_", userCode);
         cdsMsg.setField("Level_", level);
         cdsMsg.setField("Subject_", subject);
-        if (content.length() > 0) {
-            cdsMsg.setField("Content_", content);
-        }
+        if (content.length() > 0)
+            cdsMsg.setField("Content_", content.toString());
         cdsMsg.setField("AppUser_", handle.getUserCode());
-        cdsMsg.setField("AppDate_", TDateTime.now());
+        cdsMsg.setField("AppDate_", TDateTime.Now());
         // 日志类消息默认为已读
         cdsMsg.setField("Status_", level == MessageLevel.Logger.ordinal() ? 1 : 0);
         cdsMsg.setField("Process_", process);
@@ -95,21 +92,20 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /*
-     * 读取指定的消息记录
+    /**
+     * @return 读取指定的消息记录
      */
     public boolean readAsyncService() {
         String msgId = getDataIn().getHead().getString("msgId");
+
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", systemTable.getUserMessages());
         ds.add("where Level_=%s", MessageLevel.Service.ordinal());
         ds.add("and Process_=%s", MessageProcess.wait.ordinal());
         ds.add("and UID_='%s'", msgId);
         ds.open();
-        // 此任务可能被其它主机抢占
-        if (ds.eof()) {
+        if (ds.eof()) // 此任务可能被其它主机抢占
             return false;
-        }
 
         Record headOut = getDataOut().getHead();
         headOut.setField("corpNo", ds.getString("CorpNo_"));
@@ -119,8 +115,8 @@ public class SvrUserMessages extends CustomService {
         return true;
     }
 
-    /*
-     * 更新异步服务进度
+    /**
+     * @return 更新异步服务进度
      */
     public boolean updateAsyncService() {
         String msgId = getDataIn().getHead().getString("msgId");
@@ -150,10 +146,8 @@ public class SvrUserMessages extends CustomService {
                     cdsMsg.getString("CorpNo_"), cdsMsg.getString("UserCode_"));
             Redis.delete(buffKey);
         }
-        if (!cdsMsg.getString("Subject_").contains("月账单明细回算")) {
-            // 极光推送
-            pushToJiGuang(cdsMsg);
-        }
+        // 极光推送
+        pushToJiGuang(cdsMsg);
         return true;
     }
 

@@ -9,26 +9,22 @@ public class UIRadioButton extends UIComponent {
     private boolean isSelected = false;
     private UILabel label;
 
+    @Override
+    public void output(HtmlWriter html) {
+        if (label != null)
+            label.output(html);
+        html.print("<input type='radio' ");
+        if (isSelected)
+            html.print(" checked=checked");
+        html.print(" name='%s' value='%s'>", name, value);
+    }
+
     public UIRadioButton(UIComponent owner) {
         super(owner);
     }
 
     public UIRadioButton() {
         super();
-    }
-
-    @Override
-    public void output(HtmlWriter html) {
-        if (label != null) {
-            label.output(html);
-        }
-        html.print("<input type='radio'");
-        if (isSelected) {
-            html.print(" checked=checked");
-        }
-        html.print(" name='%s' value='%s'", name, value);
-        super.outputCss(html);
-        html.println("/>");
     }
 
     public String getName() {
@@ -48,9 +44,8 @@ public class UIRadioButton extends UIComponent {
     }
 
     public UILabel getLabel() {
-        if (label == null) {
+        if (label == null)
             label = new UILabel();
-        }
         return label;
     }
 

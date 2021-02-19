@@ -1,7 +1,5 @@
 package cn.cerc.mis.queue;
 
-import cn.cerc.core.TDateTime;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
@@ -9,6 +7,8 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+
+import cn.cerc.core.TDateTime;
 
 public class QueueConnectionTest {
 
@@ -32,7 +32,7 @@ public class QueueConnectionTest {
                             // 消息生产者
                             MessageProducer messageProducer = session.createProducer(queue);
                             // 创建一条消息
-                            TextMessage msg = session.createTextMessage("curTime:" + TDateTime.now());
+                            TextMessage msg = session.createTextMessage("curTime:" + TDateTime.Now());
                             System.out.println(Thread.currentThread().getName() + " send:" + msg.getText());
                             // 发送消息
                             messageProducer.send(msg);
@@ -61,7 +61,7 @@ public class QueueConnectionTest {
                         if (msg != null && msg instanceof TextMessage) {
                             System.out.println(
                                     Thread.currentThread().getName() + " receive:" + ((TextMessage) msg).getText());
-                            msg.acknowledge();
+                             msg.acknowledge();
                         } else {
                             System.out.println("receive is null");
                             break;

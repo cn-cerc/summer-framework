@@ -3,7 +3,7 @@ package cn.cerc.mis.book;
 import cn.cerc.core.TDateTime;
 
 public interface IBookData {
-    TDateTime getDate();
+    public TDateTime getDate();
 
-    boolean check();
+    public boolean check();
 }

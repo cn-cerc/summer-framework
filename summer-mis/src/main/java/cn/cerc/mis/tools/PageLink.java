@@ -1,21 +1,20 @@
 package cn.cerc.mis.tools;
 
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.parts.UISheetUrl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import cn.cerc.ui.core.Component;
+import cn.cerc.ui.parts.UISheetUrl;
 
 public class PageLink {
     private static ApplicationContext app;
     private static String xmlFile = "classpath:page-link.xml";
 
     public static UISheetUrl get(Component owner, String beanId) {
-        if (app == null) {
+        if (app == null)
             app = new FileSystemXmlApplicationContext(xmlFile);
-        }
-        if (!app.containsBean(beanId)) {
+        if (!app.containsBean(beanId))
             return null;
-        }
         UISheetUrl side = app.getBean(beanId, UISheetUrl.class);
         side.setOwner(owner);
         return side;

@@ -1,5 +1,10 @@
 package cn.cerc.mis.page.service;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -14,12 +19,9 @@ import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
-
-@Slf4j
 public class SvrAutoLogin {
+    private static final Logger log = LoggerFactory.getLogger(SvrAutoLogin.class);
 
     private IHandle handle;
     private String message;
@@ -53,10 +55,10 @@ public class SvrAutoLogin {
                     systemTable.getDeviceVerify(), userCode, deviceId);
             sess.getConnection().execute(sql);
 
-            String token = Utils.generateToken();
+            String token = Utils.guidFixStr();
             sess.setProperty(Application.token, token);
             sess.setProperty("deviceId", deviceId);
-            sess.setProperty(RequestData.TOKEN, token);
+            sess.setProperty("sid", token);
             log.info("扫码登录 sid {}", token);
 
             String userId = dsUser.getString("ID_");
@@ -77,7 +79,7 @@ public class SvrAutoLogin {
                 buff.setField("UserID_", userId);
                 buff.setField("UserCode_", dsUser.getString("Code_"));
                 buff.setField("UserName_", dsUser.getString("Name_"));
-                buff.setField("LoginTime_", TDateTime.now());
+                buff.setField("LoginTime_", TDateTime.Now());
                 buff.setField("VerifyMachine", true);
             }
 
@@ -86,13 +88,13 @@ public class SvrAutoLogin {
             svrLogin.enrollMachineInfo(dsUser.getString("CorpNo_"), userCode, deviceId, "浏览器");
 
             // 设置登录信息
-            ClientDevice client = new ClientDevice();
-            client.setRequest(request);
-            client.setToken(token);
+            ClientDevice info = new ClientDevice();
+            info.setRequest(request);
+            info.setSid(token);
             sess.init(token);
 
-            form.getRequest().setAttribute(RequestData.TOKEN, token);
-            ((ClientDevice) form.getClient()).setToken(token);
+            form.getRequest().setAttribute(RequestData.appSession_Key, token);
+            ((ClientDevice) form.getClient()).setSid(token);
             tx.commit();
         }
         return true;

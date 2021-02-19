@@ -1,5 +1,8 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.UIConfig;
@@ -8,20 +11,15 @@ import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
-import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIText;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UIFormVertical extends UIComponent implements DataSource {
+    private UIContent content;
     protected String CSSClass = "info";
     protected String method = "post";
     protected DataSet dataSet;
     protected List<AbstractField> fields = new ArrayList<>();
-    protected List<UIButton> buttons = new ArrayList<>();
     protected String action;
-    private UIContent content;
     private String enctype;
     private String submit;
     private boolean readAll;
@@ -50,11 +48,10 @@ public class UIFormVertical extends UIComponent implements DataSource {
 
     @Override
     public void addField(IField field) {
-        if (field instanceof AbstractField) {
+        if (field instanceof AbstractField)
             fields.add((AbstractField) field);
-        } else {
+        else
             throw new RuntimeException("不支持的数据类型：" + field.getClass().getName());
-        }
     }
 
     public String getAction() {
@@ -89,27 +86,20 @@ public class UIFormVertical extends UIComponent implements DataSource {
             outputFields(html);
         }
 
-        if (buttons.size() > 0) {
-            for (UIButton button : buttons) {
-                button.output(html);
-            }
-        }
         html.println("</form>");
     }
 
     private void outputFields(HtmlWriter html) {
         html.print("<ul");
-        if (this.CSSClass != null) {
+        if (this.CSSClass != null)
             html.print(" class=\"%s\"", this.CSSClass);
-        }
         html.println(">");
 
         for (AbstractField field : fields) {
             if (!field.isHidden()) {
                 html.print("<li");
-                if (field.getRole() != null) {
+                if (field.getRole() != null)
                     html.print(" role='%s'", field.getRole());
-                }
                 html.print(">");
                 field.output(html);
 
@@ -121,12 +111,10 @@ public class UIFormVertical extends UIComponent implements DataSource {
                     html.println("</li>");
                     html.println("<li role=\"%s\" style=\"display: none;\">", field.getId());
                     html.print("<mark>");
-                    if (mark.getContent() != null) {
+                    if (mark.getContent() != null)
                         html.println("%s", mark.getContent());
-                    }
-                    for (String line : mark.getLines()) {
+                    for (String line : mark.getLines())
                         html.println("<p>%s</p>", line);
-                    }
                     html.println("</mark>");
                     html.println("</li>");
                 } else {
@@ -138,9 +126,8 @@ public class UIFormVertical extends UIComponent implements DataSource {
     }
 
     public String readAll() {
-        if (readAll) {
+        if (readAll)
             return submit;
-        }
 
         submit = content.getRequest().getParameter("opera");
 
@@ -159,14 +146,18 @@ public class UIFormVertical extends UIComponent implements DataSource {
         if (submit != null) {
             dataSet.setField(code, val);
         } else {
-            if (val != null) {
+            if (val != null)
                 dataSet.setField(code, val);
-            }
         }
     }
 
     public String getExtGrid() {
         return null;
+    }
+
+    public void setRecord(Record record) {
+        dataSet.getCurrent().copyValues(record, record.getFieldDefs());
+        dataSet.setRecNo(dataSet.size());
     }
 
     @Override
@@ -176,11 +167,6 @@ public class UIFormVertical extends UIComponent implements DataSource {
 
     public Record getRecord() {
         return dataSet.getCurrent();
-    }
-
-    public void setRecord(Record record) {
-        dataSet.getCurrent().copyValues(record, record.getFieldDefs());
-        dataSet.setRecNo(dataSet.size());
     }
 
     @Override
@@ -194,22 +180,5 @@ public class UIFormVertical extends UIComponent implements DataSource {
 
     public void setEnctype(String enctype) {
         this.enctype = enctype;
-    }
-
-    public UIButton addButton(String text, String name, String value, String type) {
-        UIButton button = getButton(text, name);
-        button.setText(text);
-        button.setName(name);
-        button.setType(type);
-        button.setValue(value);
-        return button;
-    }
-
-    public UIButton getButton(String text, String name) {
-        UIButton button = new UIButton(this);
-        button.setText(text);
-        button.setName(name);
-        buttons.add(button);
-        return button;
     }
 }

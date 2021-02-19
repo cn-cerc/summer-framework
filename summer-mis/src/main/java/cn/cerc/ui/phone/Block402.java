@@ -7,7 +7,9 @@ import cn.cerc.ui.vcl.UITextBox;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
+ * 
  * @author 张弓
+ *
  */
 public class Block402 extends UIComponent {
     private String title = "(title)";
@@ -17,14 +19,15 @@ public class Block402 extends UIComponent {
     private UISpan describe = new UISpan();
     private UISpan remark = new UISpan();
     private UITextBox input = new UITextBox();
-    private String role = "";
-    private String dataName = "";
-    private String dataJson = "";
+    private String role = new String();
+    private String dataName = new String();
+    private String dataJson = new String();
 
     /**
      * 进出库单据明细之显示与数量修改
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block402(UIComponent owner) {
         super(owner);
@@ -56,12 +59,10 @@ public class Block402 extends UIComponent {
         html.println("<!-- %s -->", this.getClass().getName());
         html.print("<section class='block402'");
 
-        if (!"".equals(this.role)) {
+        if (!"".equals(this.role))
             html.print(" role='%s'", this.role);
-        }
-        if (!"".equals(this.dataName)) {
+        if (!"".equals(this.dataName))
             html.print(" data-%s='%s'", this.dataName, this.dataJson);
-        }
 
         html.print(">");
         html.print("<div class='up_con'>");

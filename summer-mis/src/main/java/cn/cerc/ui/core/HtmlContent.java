@@ -1,5 +1,5 @@
 package cn.cerc.ui.core;
 
 public interface HtmlContent {
-    void output(HtmlWriter html);
+    public void output(HtmlWriter html);
 }

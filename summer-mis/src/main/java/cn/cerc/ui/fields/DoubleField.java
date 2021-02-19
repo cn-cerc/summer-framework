@@ -1,5 +1,7 @@
 package cn.cerc.ui.fields;
 
+import java.text.DecimalFormat;
+
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
@@ -7,8 +9,6 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.parts.UIComponent;
-
-import java.text.DecimalFormat;
 
 public class DoubleField extends AbstractField implements IColumn {
     private ColumnEditor editor;
@@ -27,17 +27,16 @@ public class DoubleField extends AbstractField implements IColumn {
     }
 
     @Override
-    public String getText(Record record) {
-        if (record == null) {
+    public String getText(Record dataSet) {
+        if (dataSet == null)
             return null;
-        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            buildText.outputText(dataSet, html);
             return html.toString();
         }
         try {
-            double val = record.getDouble(field);
+            double val = dataSet.getDouble(field);
             DecimalFormat df = new DecimalFormat(format);
             return df.format(val);
         } catch (NumberFormatException e) {
@@ -54,9 +53,8 @@ public class DoubleField extends AbstractField implements IColumn {
 
     @Override
     public String format(Object value) {
-        if (!(value instanceof Record)) {
+        if (!(value instanceof Record))
             return value.toString();
-        }
 
         Record ds = (Record) value;
         if (this.isReadonly()) {
@@ -73,25 +71,21 @@ public class DoubleField extends AbstractField implements IColumn {
                         html.print(" target=\"%s\"", url.getTarget());
                     }
                     html.println(">%s</a>", getText(ds));
-                } else {
+                } else
                     html.println(getText(ds));
-                }
                 return html.toString();
-            } else {
+            } else
                 return getText(ds);
-            }
         }
-        if (!(this.getOwner() instanceof AbstractGridLine)) {
+        if (!(this.getOwner() instanceof AbstractGridLine))
             return getText(ds);
-        }
 
         return getEditor().format(ds);
     }
 
     public ColumnEditor getEditor() {
-        if (editor == null) {
+        if (editor == null)
             editor = new ColumnEditor(this);
-        }
         return editor;
     }
 

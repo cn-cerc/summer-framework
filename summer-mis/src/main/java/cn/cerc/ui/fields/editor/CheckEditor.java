@@ -31,14 +31,12 @@ public class CheckEditor {
         html.print(" value='true'");
         html.print(" autocomplete='off'");
         html.print(" data-%s='[%s]'", owner.getField(), data);
-        if (ds.getBoolean(owner.getField())) {
+        if (ds.getBoolean(owner.getField()))
             html.print(" checked");
-        }
-        if (onUpdate != null) {
+        if (onUpdate != null)
             html.print(" onclick=\"tableOnChanged(this,'%s')\"", onUpdate);
-        } else {
+        else
             html.print(" onclick='tableOnChanged(this)'");
-        }
         html.println("/>");
         return html.toString();
     }

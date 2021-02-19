@@ -12,7 +12,7 @@ public class UploadField extends AbstractField {
     }
 
     @Override
-    public String getText(Record record) {
-        return record.getString(field);
+    public String getText(Record ds) {
+        return ds.getString(field);
     }
 }

@@ -1,10 +1,10 @@
 package cn.cerc.ui.vcl;
 
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.parts.UIComponent;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.parts.UIComponent;
 
 /*
  * 专用于简单或原始文字输出
@@ -23,13 +23,11 @@ public class UIText extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (content != null) {
+        if (content != null)
             html.print(content);
-        }
         if (lines != null) {
-            for (String line : lines) {
+            for (String line : lines)
                 html.println("<p>%s</p>", line);
-            }
         }
     }
 
@@ -43,9 +41,8 @@ public class UIText extends UIComponent {
     }
 
     public List<String> getLines() {
-        if (lines == null) {
+        if (lines == null)
             lines = new ArrayList<>();
-        }
         return lines;
     }
 
@@ -53,13 +50,4 @@ public class UIText extends UIComponent {
         this.lines = lines;
         return this;
     }
-
-    public UIText add(String line) {
-        if (lines == null) {
-            lines = new ArrayList<>();
-        }
-        this.lines.add(line);
-        return this;
-    }
-
 }

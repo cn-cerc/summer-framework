@@ -12,9 +12,8 @@ public class UIControl extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         for (Component component : this.getComponents()) {
-            if (component instanceof UIComponent) {
+            if (component instanceof UIComponent)
                 ((UIComponent) component).output(html);
-            }
         }
     }
 

@@ -1,12 +1,13 @@
 package cn.cerc.mis.page;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.ui.core.HtmlWriter;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 public class HtmlPage implements IPage {
     private IForm form;
@@ -18,13 +19,13 @@ public class HtmlPage implements IPage {
     }
 
     @Override
-    public IForm getForm() {
-        return form;
+    public void setForm(IForm form) {
+        this.form = form;
     }
 
     @Override
-    public void setForm(IForm form) {
-        this.form = form;
+    public IForm getForm() {
+        return form;
     }
 
     @Override

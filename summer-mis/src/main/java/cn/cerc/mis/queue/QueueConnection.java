@@ -1,8 +1,5 @@
 package cn.cerc.mis.queue;
 
-import org.apache.activemq.ActiveMQConnection;
-import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -12,6 +9,9 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+
+import org.apache.activemq.ActiveMQConnection;
+import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class QueueConnection {
     // ActiveMq 的默认用户名
@@ -41,9 +41,13 @@ public class QueueConnection {
     }
 
     /**
-     * @param disname 消息队列id
-     * @param data    队列内容
-     * @throws JMSException JMS异常
+     * 发送消息
+     * 
+     * @param disname
+     *            消息队列id
+     * @param data
+     *            要发送的数据
+     * @throws JMSException
      */
     public void sendMessage(String disname, String data) throws JMSException {
         // 创建一个消息队列
@@ -61,18 +65,18 @@ public class QueueConnection {
 
     /**
      * 取得消息
-     *
-     * @param disname 消息队列id
+     * 
+     * @param disname
+     *            消息队列id
      * @return 返回取得的消息
-     * @throws JMSException JMS异常
+     * @throws JMSException
      */
     public Message receiveMessage(String disname) throws JMSException {
         Queue queue = session.createQueue(disname);
         MessageConsumer consumer = session.createConsumer(queue);
         Message msg = consumer.receive();
-        if (msg != null && msg instanceof TextMessage) {
+        if (msg != null && msg instanceof TextMessage)
             System.out.println(Thread.currentThread().getName() + " receive:" + ((TextMessage) msg).getText());
-        }
         consumer.close();
         return null;
     }

@@ -1,20 +1,23 @@
 package cn.cerc.mis.excel.output;
 
-import cn.cerc.core.DataSet;
-import jxl.write.WriteException;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import cn.cerc.core.DataSet;
+import cn.cerc.mis.excel.output.DataSetFile;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 public class DataSetFileTest {
 
     @Test
     @Ignore(value = "测试文件建立，仅在本地执行")
-    public void testExecute() throws WriteException, IOException {
+    public void testExecute() throws RowsExceededException, WriteException, IOException {
         DataSet ds = new DataSet();
         ds.append();
         ds.setField("code", "code1");

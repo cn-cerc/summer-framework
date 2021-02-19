@@ -1,17 +1,17 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.HtmlWriter;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UIToolbar extends UIComponent {
+import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.HtmlWriter;
+
+public class UIToolBar extends UIComponent {
     private List<UISheet> sheets = new ArrayList<>();
 
-    public UIToolbar(UIComponent owner) {
+    public UIToolBar(UIComponent owner) {
         super(owner);
         this.setId("rightSide");
     }
@@ -26,13 +26,10 @@ public class UIToolbar extends UIComponent {
     public void output(HtmlWriter html) {
         html.print("\n<aside role='toolBar' id='%s'", this.getId());
         if (isEmpty()) {
-            // html.print(" style='display:none'");
-            // FIXME: 2019/6/16 此处需改进
-            this.cssStyle = "display:none";
+            html.print(" style='display:none'");
         }
-        super.outputCss(html);
         html.println(">");
-        html.println("<div style='overflow-y: auto; height: 100%; position: relative;'>");
+        html.println("<div style='overflow-y: auto; height: 100%;'>");
 
         if (sheets.size() > 0) {
             // 分组归类

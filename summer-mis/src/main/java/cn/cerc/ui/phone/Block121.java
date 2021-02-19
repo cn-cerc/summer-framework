@@ -8,8 +8,9 @@ import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
  * 标题
- *
+ * 
  * @author 郭向军
+ *
  */
 public class Block121 extends UIComponent {
     private UISpan title = new UISpan();
@@ -26,7 +27,7 @@ public class Block121 extends UIComponent {
     public void output(HtmlWriter html) {
         html.println("<!-- %s -->", this.getClass().getName());
         html.print("<header  class='block121'>");
-        if (this.leftImage.getSrc() != null && !"".equals(this.leftImage.getSrc())) {
+        if (this.leftImage.getSrc() != null && !this.leftImage.getSrc().equals("")) {
             html.print("<a href='%s'  class='arrow-left'>", this.leftUrl.getUrl());
             this.leftImage.output(html);
             html.print("</a>");
@@ -34,7 +35,7 @@ public class Block121 extends UIComponent {
         html.print("<h1 class='title'>");
         this.title.output(html);
         html.print("</h1>");
-        if (this.rightText.getText() != null && !"".equals(this.rightText.getText())) {
+        if (this.rightText.getText() != null && !this.rightText.getText().equals("")) {
             html.print("<a href='%s' class='arrow-right'>", this.rightUrl.getUrl());
             this.rightText.output(html);
             html.print("</a>");

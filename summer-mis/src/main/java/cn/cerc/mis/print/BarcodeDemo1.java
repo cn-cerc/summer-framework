@@ -1,12 +1,10 @@
 package cn.cerc.mis.print;
 
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.pdf.Barcode128;
-import com.itextpdf.text.pdf.BarcodeEAN;
-import com.itextpdf.text.pdf.BarcodePDF417;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
@@ -16,6 +14,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
+
+import javax.imageio.ImageIO;
+
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.pdf.Barcode128;
+import com.itextpdf.text.pdf.BarcodeEAN;
+import com.itextpdf.text.pdf.BarcodePDF417;
 
 public class BarcodeDemo1 {
     private static final String codeString = "9780201615883X";
@@ -56,7 +61,7 @@ public class BarcodeDemo1 {
         BarcodePDF417 pdf = new BarcodePDF417();
         pdf.setText(codeString);
         Image pdfImg = pdf.createAwtImage(Color.black, Color.white);
-        BufferedImage img = new BufferedImage(pdfImg.getWidth(null), pdfImg.getHeight(null),
+        BufferedImage img = new BufferedImage((int) pdfImg.getWidth(null), (int) pdfImg.getHeight(null),
                 BufferedImage.TYPE_INT_RGB);
         Graphics g = img.getGraphics();
         g.drawImage(pdfImg, 0, 0, Color.white, null);

@@ -1,11 +1,11 @@
 package cn.cerc.mis.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.mis.core.AbstractHandle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FieldUseCheck extends AbstractHandle {
     private List<String> items = new ArrayList<>();
@@ -17,9 +17,8 @@ public class FieldUseCheck extends AbstractHandle {
     public boolean exists(String fieldValue) {
         for (String key : items) {
             String[] args = key.split(":");
-            if (checkTable(args[0], args[1], fieldValue)) {
+            if (checkTable(args[0], args[1], fieldValue))
                 return true;
-            }
         }
         return false;
     }

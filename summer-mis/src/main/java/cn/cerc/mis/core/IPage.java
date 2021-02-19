@@ -1,23 +1,24 @@
 package cn.cerc.mis.core;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public interface IPage {
-    IForm getForm();
+    public void setForm(IForm form);
 
-    void setForm(IForm form);
+    public IForm getForm();
 
-    String execute() throws ServletException, IOException;
+    public String execute() throws ServletException, IOException;
 
-    default HttpServletRequest getRequest() {
+    default public HttpServletRequest getRequest() {
         IForm form = getForm();
         return form != null ? form.getRequest() : null;
     }
 
-    default HttpServletResponse getResponse() {
+    default public HttpServletResponse getResponse() {
         IForm form = getForm();
         return form != null ? form.getResponse() : null;
     }

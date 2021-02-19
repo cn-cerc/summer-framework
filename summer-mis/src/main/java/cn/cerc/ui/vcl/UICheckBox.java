@@ -4,9 +4,11 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 /**
+ * 
  * 单选框
- *
+ * 
  * @author 张弓
+ *
  */
 public class UICheckBox extends UIComponent {
     private String name;
@@ -30,25 +32,18 @@ public class UICheckBox extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         html.print("<input");
-        if (this.getId() != null) {
+        if (this.getId() != null)
             html.print(" id='%s'", this.getId());
-        }
-        if (this.name != null) {
+        if (this.name != null)
             html.print(" name='%s'", this.getName());
-        }
-        if (type != null) {
+        if (type != null)
             html.print(" type=\"%s\"", type);
-        }
-        if (value != null) {
+        if (value != null)
             html.print(" value='%s'", this.value);
-        }
-        if (role != null) {
+        if (role != null)
             html.print(" role='%s'", this.role);
-        }
-        if (checked) {
+        if (checked)
             html.print(" checked='checked'");
-        }
-        super.outputCss(html);
         html.println("/>");
     }
 

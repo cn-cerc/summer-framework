@@ -1,15 +1,16 @@
 package cn.cerc.mis.excel.output;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+
 import cn.cerc.core.DataSet;
 import jxl.Workbook;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
+import jxl.write.biff.RowsExceededException;
 
 public class DataSetFile {
     private ExcelTemplate template;
@@ -20,11 +21,11 @@ public class DataSetFile {
         this.dataSet = dataSet;
     }
 
-    public void save() throws IOException, WriteException {
+    public void save() throws IOException, RowsExceededException, WriteException {
         save(this.fileName);
     }
 
-    public void save(String fileName) throws IOException, WriteException {
+    public void save(String fileName) throws IOException, RowsExceededException, WriteException {
         setFileName(fileName);
         OutputStream os = new FileOutputStream(fileName);
         ExcelTemplate template = this.getTemplate();

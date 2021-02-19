@@ -1,17 +1,19 @@
 package cn.cerc.ui.docs;
 
-import cn.cerc.db.core.ServerConfig;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import cn.cerc.db.core.ServerConfig;
 
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
@@ -35,7 +37,8 @@ public class StartDocDefault {
     }
 
     private String execute(String uri) {
-        if (!ServerConfig.enableDocService()) {
+        ServerConfig config = ServerConfig.getInstance();
+        if (!"1".equals(config.getProperty("docs.service", "0"))) {
             outputHtml("sorry", "该功能暂不开放");
             return null;
         }
@@ -63,7 +66,7 @@ public class StartDocDefault {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" ")).trim();
+            title = title.substring(title.indexOf(" "), title.length()).trim();
         }
 
         outputHtml(title, context);
@@ -75,7 +78,7 @@ public class StartDocDefault {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" ")).trim();
+            title = title.substring(title.indexOf(" "), title.length()).trim();
         }
 
         outputMDFile(title, context);
@@ -84,9 +87,8 @@ public class StartDocDefault {
     private void processImage(String uri) {
         resp.setHeader("Content-Type", "image/jped");// 设置响应的媒体类型，这样浏览器会识别出响应的是图片
         InputStream fos = req.getServletContext().getResourceAsStream("/WEB-INF/" + uri);
-        if (fos == null) {
+        if (fos == null)
             return;
-        }
         try {
             OutputStream os = resp.getOutputStream();// 获得servlet的servletoutputstream对象
             byte[] buffer = new byte[2048];

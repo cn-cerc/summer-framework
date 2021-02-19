@@ -1,22 +1,23 @@
 package cn.cerc.ui.vcl;
 
-import cn.cerc.core.Utils;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
+ * 
  * 单行文本输入框
- *
+ * 
  * @author 张弓
+ *
  */
 public class UITextBox extends UIComponent {
-    // 正则过滤
-    protected String pattern;
     private UISpan caption;
     private String name;
     private String type;
     private String value;
+    // 正则过滤
+    protected String pattern;
     private String maxlength;
     private String placeholder;
     // 自动完成（默认为 off）
@@ -26,7 +27,6 @@ public class UITextBox extends UIComponent {
     private boolean required;
     private String onclick;
     private String oninput;
-    private String accept;
 
     public UITextBox() {
         super();
@@ -38,37 +38,27 @@ public class UITextBox extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (caption != null) {
+        if (caption != null)
             caption.output(html);
-        }
         html.print("<input");
-        if (this.getId() != null) {
+        if (this.getId() != null)
             html.print(" id='%s'", this.getId());
-        }
-        if (this.name != null) {
+        if (this.name != null)
             html.print(" name='%s'", this.getName());
-        }
-        if (type != null) {
+        if (type != null)
             html.print(" type=\"%s\"", type);
-        }
-        if (maxlength != null) {
+        if (maxlength != null)
             html.print(" maxlength=%s", this.maxlength);
-        }
-        if (value != null) {
+        if (value != null)
             html.print(" value='%s'", this.value);
-        }
-        if (pattern != null) {
+        if (pattern != null)
             html.print(" pattern=\"%s\"", this.pattern);
-        }
-        if (onclick != null) {
+        if (onclick != null)
             html.print(" onclick='%s'", this.onclick);
-        }
-        if (oninput != null) {
+        if (oninput != null)
             html.print(" oninput='%s'", this.oninput);
-        }
-        if (placeholder != null) {
+        if (placeholder != null)
             html.print(" placeholder='%s'", this.placeholder);
-        }
 
         if (this.autocomplete) {
             html.print(" autocomplete=\"on\"");
@@ -76,27 +66,18 @@ public class UITextBox extends UIComponent {
             html.print(" autocomplete=\"off\"");
         }
 
-        if (Utils.isNotEmpty(this.accept)) {
-            html.print(" accept='%s'", this.accept);
-        }
-
-        if (this.autofocus) {
+        if (this.autofocus)
             html.print(" autofocus");
-        }
-        if (this.required) {
+        if (this.required)
             html.print(" required");
-        }
-        if (this.readonly) {
+        if (this.readonly)
             html.print(" readonly='readonly'");
-        }
-        super.outputCss(html);
-        html.println("/>");
+        html.println(" />");
     }
 
     public UISpan getCaption() {
-        if (caption == null) {
+        if (caption == null)
             caption = new UISpan();
-        }
         return caption;
     }
 
@@ -210,15 +191,6 @@ public class UITextBox extends UIComponent {
 
     public UITextBox setOninput(String oninput) {
         this.oninput = oninput;
-        return this;
-    }
-
-    public String getAccept() {
-        return accept;
-    }
-
-    public UITextBox setAccept(String accept) {
-        this.accept = accept;
         return this;
     }
 

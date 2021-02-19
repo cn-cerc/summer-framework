@@ -33,9 +33,8 @@ public class UIComponent extends Component {
 
     public void output(HtmlWriter html) {
         for (Component component : this.getComponents()) {
-            if (component instanceof UIComponent) {
+            if (component instanceof UIComponent)
                 ((UIComponent) component).output(html);
-            }
         }
     }
 
@@ -46,12 +45,4 @@ public class UIComponent extends Component {
         return html.toString();
     }
 
-    protected void outputCss(HtmlWriter html) {
-        if (this.cssClass != null) {
-            html.print(" class='%s'", cssClass);
-        }
-        if (this.cssStyle != null) {
-            html.print(" style='%s'", cssStyle);
-        }
-    }
 }

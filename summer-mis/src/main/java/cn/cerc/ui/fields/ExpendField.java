@@ -25,16 +25,14 @@ public class ExpendField extends AbstractField implements SearchItem {
     }
 
     @Override
-    public String getText(Record record) {
-        if (record == null) {
+    public String getText(Record dataSet) {
+        if (dataSet == null)
             return null;
-        }
-        if (this.search) {
+        if (this.search)
             return this.getName();
-        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            buildText.outputText(dataSet, html);
             return html.toString();
         }
         return String.format("<a href=\"javascript:displaySwitch('%d')\">展开</a>", dataSource.getDataSet().getRecNo());
@@ -59,9 +57,8 @@ public class ExpendField extends AbstractField implements SearchItem {
     }
 
     public String getHiddenId() {
-        if (this.search) {
+        if (this.search)
             return hiddenId;
-        }
         return "" + dataSource.getDataSet().getRecNo();
     }
 

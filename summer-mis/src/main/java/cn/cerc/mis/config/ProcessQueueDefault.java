@@ -1,36 +1,31 @@
 package cn.cerc.mis.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.mysql.BatchScript;
-import cn.cerc.db.queue.QueueDB;
+import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.task.AbstractTask;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
 
-@Slf4j
 public class ProcessQueueDefault extends AbstractTask {
-
-    public static void main(String[] args) {
-        ProcessQueueDefault obj = new ProcessQueueDefault();
-        obj.run();
-    }
+    private static final Logger log = LoggerFactory.getLogger(ProcessQueueDefault.class);
 
     @Override
     public void execute() throws Exception {
         QueueQuery query = new QueueQuery(this);
         query.setQueueMode(QueueMode.recevie);
-        query.add("select * from %s ", QueueDB.SUMMER);
+        query.add("select * from %s ", AliyunQueueConnection.defaultQueue);
         query.open();
         if (!query.getActive()) {
             return;
         }
-        log.warn("ProcessQueueDefault {}", query.getJSON());
 
         // 建立服务执行环境
         String corpNo = query.getHead().getString("_corpNo_");
@@ -54,15 +49,12 @@ public class ProcessQueueDefault extends AbstractTask {
         // 调用队列内容中指定的服务
         BookHandle bh = new BookHandle(this, corpNo);
         bh.setUserCode(userCode);
-
         LocalService svr = new LocalService(bh);
         svr.setService(service);
         svr.getDataIn().appendDataSet(query, true);
 
         String msgId = query.getHead().getString("_queueId_");
-
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode content = mapper.readTree(query.getHead().getString("_content_"));
+        JSONObject content = JSONObject.fromObject(query.getHead().getString("_content_"));
 
         // 更新消息状态
         BatchScript bs = new BatchScript(this);
@@ -84,5 +76,10 @@ public class ProcessQueueDefault extends AbstractTask {
         if (ServerConfig.enableTaskService()) {
             super.run();
         }
+    }
+
+    public static void main(String[] args) {
+        ProcessQueueDefault obj = new ProcessQueueDefault();
+        obj.run();
     }
 }

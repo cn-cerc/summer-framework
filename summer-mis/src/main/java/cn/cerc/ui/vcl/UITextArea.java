@@ -6,16 +6,17 @@ import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
  * 多行文本输入框
- *
+ * 
  * @author 黄荣君
+ *
  */
 public class UITextArea extends UIComponent {
     private UISpan caption;
     private String name;
     private String text;
     private String placeholder;
-    private int cols;// 列
-    private int rows;// 行
+    private int cols;
+    private int rows;
     private boolean readonly;
 
     public UITextArea() {
@@ -38,19 +39,18 @@ public class UITextArea extends UIComponent {
         if (name != null) {
             html.print("name='%s' ", name);
         }
+        if (cols != 0) {
+            html.print("rows='%s' ", cols);
+        }
         if (rows != 0) {
             html.print("rows='%s' ", rows);
         }
-        if (cols != 0) {
-            html.print("cols='%s' ", cols);
-        }
         if (placeholder != null) {
-            html.print("placeholder='%s' ", placeholder);
+            html.print("placeholder=%s ", placeholder);
         }
         if (readonly) {
             html.print("readonly='readonly'");
         }
-        super.outputCss(html);
         html.print(">");
 
         if (text != null) {
@@ -60,69 +60,61 @@ public class UITextArea extends UIComponent {
     }
 
     public UISpan getCaption() {
-        if (caption == null) {
+        if (caption == null)
             caption = new UISpan();
-        }
         return caption;
     }
 
-    public UITextArea setCaption(UISpan caption) {
+    public void setCaption(UISpan caption) {
         this.caption = caption;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public UITextArea setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public String getText() {
         return text;
     }
 
-    public UITextArea setText(String text) {
+    public void setText(String text) {
         this.text = text;
-        return this;
     }
 
     public String getPlaceholder() {
         return placeholder;
     }
 
-    public UITextArea setPlaceholder(String placeholder) {
+    public void setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
-        return this;
     }
 
     public int getCols() {
         return cols;
     }
 
-    public UITextArea setCols(int cols) {
+    public void setCols(int cols) {
         this.cols = cols;
-        return this;
     }
 
     public int getRows() {
         return rows;
     }
 
-    public UITextArea setRows(int rows) {
+    public void setRows(int rows) {
         this.rows = rows;
-        return this;
     }
 
     public boolean isReadonly() {
         return readonly;
     }
 
-    public UITextArea setReadonly(boolean readonly) {
+    public void setReadonly(boolean readonly) {
         this.readonly = readonly;
-        return this;
     }
 
 }

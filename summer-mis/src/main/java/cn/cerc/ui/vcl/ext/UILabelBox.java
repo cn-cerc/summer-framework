@@ -19,16 +19,13 @@ public class UILabelBox extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         html.print("<label");
-        if (getId() != null) {
+        if (getId() != null)
             html.print(" id='%s'", this.getId());
-        }
-        if (role != null) {
+        if (role != null)
             html.print(" role='%s'", this.role);
-        }
         if (forid != null) {
             html.print(" for='%s'", this.forid);
         }
-        super.outputCss(html);
         html.print(">");
         html.print(text);
         html.println("</label>");

@@ -1,5 +1,14 @@
 package cn.cerc.mis.services;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
 import cn.cerc.core.Record;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
@@ -9,16 +18,9 @@ import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.rds.StubHandle;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class SvrUserLoginTest {
+    // private static final Logger log = Logger.getLogger(TAppLoginTest.class);
 
     // 测试帐号找不到时的提示
     @Test(expected = ServiceException.class)

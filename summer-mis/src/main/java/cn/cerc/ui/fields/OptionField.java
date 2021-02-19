@@ -1,11 +1,11 @@
 package cn.cerc.ui.fields;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class OptionField extends AbstractField {
     private String defaultValue;
@@ -22,7 +22,7 @@ public class OptionField extends AbstractField {
         this.setField(field);
     }
 
-    public OptionField put(String key, String text) {
+    public OptionField add(String key, String text) {
         if (this.defaultValue == null) {
             defaultValue = key;
         }
@@ -32,30 +32,28 @@ public class OptionField extends AbstractField {
 
     public OptionField copyValues(Map<String, String> items) {
         for (String key : items.keySet()) {
-            this.put(key, items.get(key));
+            this.add(key, items.get(key));
         }
         return this;
     }
 
     @Override
-    public String getText(Record record) {
-        if (record == null) {
+    public String getText(Record dataSet) {
+        if (dataSet == null)
             return null;
-        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            buildText.outputText(dataSet, html);
             return html.toString();
         }
-        return record.getString(getField());
+        return dataSet.getString(getField());
     }
 
     @Override
     public String getString() {
         String result = super.getString();
-        if (result == null || "".equals(result)) {
+        if (result == null || "".equals(result))
             return this.defaultValue;
-        }
         return result;
     }
 
@@ -78,9 +76,8 @@ public class OptionField extends AbstractField {
         for (String key : items.keySet()) {
             String value = items.get(key);
             html.print("<option value=\"%s\"", key);
-            if (key.equals(current)) {
+            if (key.equals(current))
                 html.print(" selected");
-            }
             html.print(">");
             html.println(String.format("%s</option>", value));
         }

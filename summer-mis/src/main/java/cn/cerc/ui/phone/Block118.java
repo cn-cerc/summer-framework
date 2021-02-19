@@ -1,12 +1,12 @@
 package cn.cerc.ui.phone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Block118 extends UIComponent {
     private UISpan left = new UISpan();
@@ -14,8 +14,9 @@ public class Block118 extends UIComponent {
 
     /**
      * 文字 ：多个链接
-     *
-     * @param owner 内容显示区
+     * 
+     * @param owner
+     *            内容显示区
      */
     public Block118(UIComponent owner) {
         super(owner);

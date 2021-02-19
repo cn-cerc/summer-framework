@@ -1,32 +1,33 @@
 package cn.cerc.mis.core;
 
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@Slf4j
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+
 public class RequestData {
-
-    // FIXME: 2019/12/7 sid 应该改为 token
-    public static final String TOKEN = "sid";
-    public static final String WEBCLIENT = "webclient";
-
-    private String token;
+    private static final Logger log = LoggerFactory.getLogger(RequestData.class);
+    public static final String appSession_Key = "sid";
+    public static final String webclient = "webclient";
+    private String sid;
     private String param;
     private String serviceCode;
 
     public RequestData() {
+
     }
 
     public RequestData(HttpServletRequest request) {
-        this.token = request.getParameter(RequestData.TOKEN);
-        this.serviceCode = request.getParameter("class");
-        if (this.serviceCode == null) {
+        sid = request.getParameter(appSession_Key);
+        serviceCode = request.getParameter("class");
+        if (serviceCode == null) {
             try {
-                this.serviceCode = request.getPathInfo().substring(1);
+                serviceCode = request.getPathInfo().substring(1);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 throw new RuntimeException("服务名不能为空！");
@@ -41,26 +42,26 @@ public class RequestData {
                 params.append(line);
             }
 
-            this.param = params.toString();
-            if (this.param != null && this.param.length() > 1 && this.param.startsWith("[")) {
-                if (this.param.endsWith("]\r\n")) {
-                    this.param = this.param.substring(1, this.param.length() - 3);
-                } else if (this.param.endsWith("]")) {
-                    this.param = this.param.substring(1, this.param.length() - 1);
+            param = params.toString();
+            if (param != null && param.length() > 1 && param.startsWith("[")) {
+                if (param.endsWith("]\r\n")) {
+                    param = param.substring(1, param.length() - 3);
+                } else if (param.endsWith("]")) {
+                    param = param.substring(1, param.length() - 1);
                 }
             }
 
-            if (this.param != null && "".equals(this.param)) {
-                this.param = null;
+            if (param != null && param.equals("")) {
+                param = null;
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            this.param = null;
+            param = null;
         }
     }
 
-    public String getToken() {
-        return token;
+    public String getSid() {
+        return sid;
     }
 
     public String getParam() {
@@ -79,7 +80,6 @@ public class RequestData {
         this.serviceCode = service;
     }
 
-    @Override
     public String toString() {
         Gson gson = new Gson();
         return gson.toJson(this);

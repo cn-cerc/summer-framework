@@ -9,21 +9,18 @@ public class DataValidateException extends ServiceException {
 
     // 满足条件即抛出错误
     public static void stopRun(String errorMsg, boolean stopValue) throws DataValidateException {
-        if (stopValue) {
+        if (stopValue)
             throw new DataValidateException(errorMsg);
-        }
     }
 
     public static void stopRun(String errorMsg, String dataValue, String stopValue) throws DataValidateException {
-        if (stopValue.equals(dataValue)) {
+        if (stopValue.equals(dataValue))
             throw new DataValidateException(errorMsg);
-        }
     }
 
     public static void stopRun(String errorMsg, int dataValue, int stopValue) throws DataValidateException {
-        if (stopValue == dataValue) {
+        if (stopValue == dataValue)
             throw new DataValidateException(errorMsg);
-        }
 
     }
 }

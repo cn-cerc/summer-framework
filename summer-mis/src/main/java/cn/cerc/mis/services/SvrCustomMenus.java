@@ -1,0 +1,73 @@
+package cn.cerc.mis.services;
+
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.mysql.BuildQuery;
+import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.core.CustomService;
+
+public class SvrCustomMenus extends CustomService {
+
+    public boolean append() {
+        DataSet dataIn = getDataIn();
+        String corpNo = dataIn.getHead().getString("CorpNo_");
+        BuildQuery f1 = new BuildQuery(this);
+        BuildQuery f2 = new BuildQuery(this);
+
+        f1.byField("Custom_", true);
+        f1.add("select * from %s ", systemTable.getAppMenus());
+        SqlQuery ds1 = f1.open();
+
+        f2.byField("CorpNo_", corpNo);
+        f2.add("select * from %s ", systemTable.getCustomMenus());
+        SqlQuery ds2 = f2.open();
+
+        while (!ds2.eof()) {
+            if (!dataIn.locate("id", ds2.getString("ID_")))
+                ds2.delete();
+            else
+                ds2.next();
+        }
+
+        while (dataIn.fetch()) {
+            if (!ds1.locate("ID_", dataIn.getString("id")))
+                throw new RuntimeException("菜单错误，请核查！");
+            if (!ds2.locate("ID_", dataIn.getString("id"))) {
+                ds1.locate("ID_", dataIn.getString("id"));
+
+                ds2.append();
+                ds2.setField("CorpNo_", corpNo);
+                ds2.setField("Code_", ds1.getString("Code_"));
+                ds2.setField("Name_", ds1.getString("Name_"));
+                ds2.setField("AppUser_", getUserCode());
+                ds2.setField("AppDate_", TDateTime.Now().getDate());
+                ds2.setField("Remark_", "");
+                ds2.post();
+            }
+        }
+        return true;
+    }
+
+    public boolean search() {
+        if (!systemTable.getManageBook().equals(handle.getCorpNo()))
+            throw new RuntimeException("您不是运营商账号不允许操作！");
+
+        Record headIn = getDataIn().getHead();
+        BuildQuery f = new BuildQuery(this);
+        f.byField("s.Custom_", true);
+        if (headIn.exists("SearchText_"))
+            f.byLink(new String[] { "s.Name_", "c.CorpNo_", "oi.ShortName_" }, headIn.getString("SearchText_"));
+        if (headIn.exists("MaxRecord_"))
+            f.setMaximum(headIn.getInt("MaxRecord_"));
+        if (headIn.exists("Custom"))
+            f.byParam("c.CorpNo_ !='' and c.CorpNo_ is Not null");
+        f.add("select s.Code_,s.Name_,c.Code_ as CostomCode_,oi.ShortName_,c.Remark_,c.CorpNo_,c.AppUser_,c.AppDate_ ");
+        f.add("from %s s ", systemTable.getAppMenus());
+        f.add("left join %s c on s.Code_ = c.Code_", systemTable.getCustomMenus());
+        f.add("left join %s oi on oi.CorpNo_ = c.CorpNo_", systemTable.getBookInfo());
+        getDataOut().appendDataSet(f.open());
+
+        return true;
+    }
+}

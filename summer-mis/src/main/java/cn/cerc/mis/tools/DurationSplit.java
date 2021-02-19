@@ -1,9 +1,9 @@
 package cn.cerc.mis.tools;
 
-import cn.cerc.core.TDateTime;
-
 import java.util.Calendar;
 import java.util.Iterator;
+
+import cn.cerc.core.TDateTime;
 
 public class DurationSplit implements Iterable<DurationSection>, Iterator<DurationSection> {
     private TDateTime beginDate;
@@ -15,16 +15,8 @@ public class DurationSplit implements Iterable<DurationSection>, Iterator<Durati
     public DurationSplit(TDateTime beginDate, TDateTime endDate) {
         this.beginDate = beginDate;
         this.endDate = endDate;
-        if (beginDate == null) {
+        if (beginDate == null)
             throw new RuntimeException("beginDate is null");
-        }
-    }
-
-    public static void main(String[] args) {
-        DurationSplit duration = new DurationSplit(TDateTime.fromDate("2016-07-01"), TDateTime.fromYearMonth("201609"));
-        for (DurationSection section : duration) {
-            System.out.println(String.format("beginDate: %s, endDate: %s", section.getDateFrom(), section.getDateTo()));
-        }
     }
 
     public TDateTime getDateFrom() {
@@ -53,9 +45,8 @@ public class DurationSplit implements Iterable<DurationSection>, Iterator<Durati
 
     @Override
     public boolean hasNext() {
-        if (++total == 0) {
+        if (++total == 0)
             return beginDate.getData().before(endDate.getData());
-        }
 
         dateFrom = dateTo.incMonth(1).monthBof();
         return endDate.getData().after(dateTo.getData());
@@ -70,15 +61,21 @@ public class DurationSplit implements Iterable<DurationSection>, Iterator<Durati
             dateFrom = dateTo.incMonth(1).monthBof();
             dateTo = dateFrom.monthEof();
         }
-        if (dateTo.compareDay(endDate) > 0) {
+        if (dateTo.compareDay(endDate) > 0)
             dateTo = endDate;
-        }
-        if ("00:00:00".equals(dateTo.getTime())) {
+        if (dateTo.getTime().equals("00:00:00")) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(dateTo.incDay(1).getData());
             cal.set(Calendar.MILLISECOND, cal.get(Calendar.MILLISECOND) - 1);
             dateTo.setData(cal.getTime());
         }
         return new DurationSection(dateFrom, dateTo);
+    }
+
+    public static void main(String[] args) {
+        DurationSplit duration = new DurationSplit(TDateTime.fromDate("2016-07-01"), TDateTime.fromYearMonth("201609"));
+        for (DurationSection section : duration) {
+            System.out.println(String.format("beginDate: %s, endDate: %s", section.getDateFrom(), section.getDateTo()));
+        }
     }
 }

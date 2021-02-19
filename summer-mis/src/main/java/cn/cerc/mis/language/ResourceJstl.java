@@ -1,31 +1,27 @@
 package cn.cerc.mis.language;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.core.Application;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.core.Application;
+import cn.cerc.core.IHandle;
+
 public class ResourceJstl extends SimpleTagSupport {
-
-    private static Map<String, ResourceBuffer> items = new HashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(ResourceJstl.class);
     private String toId = null;
-
-    public static void clearBuffer() {
-        for (String lang : items.keySet()) {
-            items.get(lang).clear();
-        }
-    }
+    private static Map<String, ResourceBuffer> items = new HashMap<>();
 
     @Override
     public void doTag() throws JspException, IOException {
@@ -62,8 +58,8 @@ public class ResourceJstl extends SimpleTagSupport {
         jf.invoke(sw);
         text = sw.toString();
         Object temp = handle.getProperty(Application.deviceLanguage);
-        String lang = (temp == null || "".equals(temp)) ? Application.getLanguage() : (String) temp;
-        if (Language.zh_CN.equals(lang)) {
+        String lang = (temp == null || "".equals(temp)) ? Application.getLangage() : (String) temp;
+        if ("cn".equals(lang)) {
             return text;
         }
 
@@ -83,7 +79,7 @@ public class ResourceJstl extends SimpleTagSupport {
         }
 
         // 取不到值，但当前是英文时，则原样返回
-        if (Language.en_US.equals(lang)) {
+        if ("en".equals(lang)) {
             if (ServerConfig.getInstance().isDebug()) {
                 return lang + ":" + text;
             } else {
@@ -92,7 +88,7 @@ public class ResourceJstl extends SimpleTagSupport {
         }
 
         // 如果是其它语言，则取英文的默认值
-        ResourceBuffer en = items.get(Language.en_US);
+        ResourceBuffer en = items.get("en");
         result = en.get(handle, text);
         if (result != null && !"".equals(result)) {
             return result;
@@ -107,5 +103,11 @@ public class ResourceJstl extends SimpleTagSupport {
 
     public void setToId(String toId) {
         this.toId = toId;
+    }
+
+    public static void clearBuffer() {
+        for (String lang : items.keySet()) {
+            items.get(lang).clear();
+        }
     }
 }

@@ -13,8 +13,9 @@ public class Block101 extends UIComponent {
 
     /**
      * 上游在线订货单手机版页面
-     *
-     * @param owner 所在内容显示区
+     * 
+     * @param owner
+     *            所在内容显示区
      */
     public Block101(UIComponent owner) {
         super(owner);

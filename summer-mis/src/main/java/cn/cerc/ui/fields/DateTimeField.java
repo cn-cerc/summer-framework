@@ -18,15 +18,14 @@ public class DateTimeField extends AbstractField {
     }
 
     @Override
-    public String getText(Record record) {
-        if (record == null) {
+    public String getText(Record dataSet) {
+        if (dataSet == null)
             return null;
-        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            buildText.outputText(dataSet, html);
             return html.toString();
         }
-        return record.getString(getField());
+        return dataSet.getString(getField());
     }
 }

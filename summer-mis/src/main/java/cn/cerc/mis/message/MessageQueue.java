@@ -2,13 +2,14 @@ package cn.cerc.mis.message;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
+import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.queue.QueueDB;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
 
 /**
  * 消息发送队列
- * <p>
+ * 
  * 注意：公司别和用户代码必须配套
  */
 public class MessageQueue {
@@ -56,7 +57,11 @@ public class MessageQueue {
         // 将消息发送至阿里云MNS
         QueueQuery query = new QueueQuery(handle);
         query.setQueueMode(QueueMode.append);
-        query.add("select * from %s", QueueDB.MESSAGE);
+        if (ServerConfig.isServerDevelop()) {
+            query.add("select * from %s", QueueDB.MESSAGE_TEST);
+        } else {
+            query.add("select * from %s", QueueDB.MESSAGE);
+        }
         query.open();
 
         Record headIn = query.getHead();
@@ -72,11 +77,6 @@ public class MessageQueue {
 
     public String getContent() {
         return content.toString();
-    }
-
-    public MessageQueue setContent(String content) {
-        this.content = new StringBuilder(content);
-        return this;
     }
 
     public void append(Object obj) {
@@ -120,6 +120,11 @@ public class MessageQueue {
 
     public MessageQueue setSubject(String format, Object... args) {
         this.subject = String.format(format, args);
+        return this;
+    }
+
+    public MessageQueue setContent(String content) {
+        this.content = new StringBuilder(content);
         return this;
     }
 

@@ -1,5 +1,14 @@
 package cn.cerc.mis.core;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.MD5;
@@ -7,17 +16,12 @@ import cn.cerc.core.Record;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.Microservice;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
-@Slf4j
 public class LocalService implements IServiceProxy {
+    private static final Logger log = LoggerFactory.getLogger(LocalService.class);
     private String serviceCode;
 
     private String message;
@@ -31,15 +35,13 @@ public class LocalService implements IServiceProxy {
 
     public LocalService(IHandle handle) {
         this.handle = handle;
-        if (handle == null) {
+        if (handle == null)
             throw new RuntimeException("handle is null.");
-        }
 
         String pageNo = null;
         HttpServletRequest req = (HttpServletRequest) handle.getProperty("request");
-        if (req != null) {
+        if (req != null)
             pageNo = req.getParameter("pageno");
-        }
 
         // 遇到分页符时，尝试读取缓存
         this.bufferRead = pageNo != null;
@@ -48,27 +50,6 @@ public class LocalService implements IServiceProxy {
     public LocalService(IHandle handle, String service) {
         this(handle);
         this.setService(service);
-    }
-
-    public static void listMethod(Class<?> clazz) {
-        Map<String, Class<?>> items = new HashMap<>();
-        String[] args = clazz.getName().split("\\.");
-        String classCode = args[args.length - 1];
-        Method[] methods = clazz.getDeclaredMethods();
-        for (Method method : methods) {
-            if ("boolean".equals(method.getReturnType().getName())) {
-                if (method.getParameters().length == 0) {
-                    String name = method.getName();
-                    if (method.getName().startsWith("_")) {
-                        name = name.substring(1);
-                    }
-                    items.put(classCode + "." + name, clazz);
-                }
-            }
-        }
-        for (String key : items.keySet()) {
-            log.info(key);
-        }
     }
 
     @Override
@@ -100,28 +81,26 @@ public class LocalService implements IServiceProxy {
     public boolean exec(Object... args) {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0) {
+            if (args.length % 2 != 0)
                 throw new RuntimeException("传入的参数数量必须为偶数！");
-            }
-            for (int i = 0; i < args.length; i = i + 2) {
+            for (int i = 0; i < args.length; i = i + 2)
                 headIn.setField(args[i].toString(), args[i + 1]);
-            }
         }
-        if (handle == null) {
+        if (handle == null)
             throw new RuntimeException("handle is null.");
-        }
-        if (serviceCode == null) {
+        if (serviceCode == null)
             throw new RuntimeException("service is null.");
-        }
 
         IService bean = Application.getService(handle, serviceCode);
         if (bean == null) {
             this.message = String.format("bean %s not find", serviceCode);
             return false;
         }
+        if ((bean instanceof Microservice) && ((Microservice) bean).getService() == null)
+            ((Microservice) bean).setService(serviceCode);
 
         try {
-            if (!"SvrSession.byUserCode".equals(this.serviceCode)
+            if (!"AppSessionRestore.byUserCode".equals(this.serviceCode)
                     && !"SvrUserMessages.getWaitList".equals(this.serviceCode)) {
                 log.info(this.serviceCode);
             }
@@ -160,9 +139,8 @@ public class LocalService implements IServiceProxy {
             return result;
         } catch (Exception e) {
             Throwable err = e;
-            if (e.getCause() != null) {
+            if (e.getCause() != null)
                 err = e.getCause();
-            }
             log.error(err.getMessage(), err);
             message = err.getMessage();
             return false;
@@ -173,24 +151,21 @@ public class LocalService implements IServiceProxy {
     public IStatus execute(Object... args) {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0) {
+            if (args.length % 2 != 0)
                 return new ServiceStatus(false, "传入的参数数量必须为偶数！");
-            }
-            for (int i = 0; i < args.length; i = i + 2) {
+            for (int i = 0; i < args.length; i = i + 2)
                 headIn.setField(args[i].toString(), args[i + 1]);
-            }
         }
-        if (handle == null) {
+        if (handle == null)
             return new ServiceStatus(false, "handle is null.");
-        }
-        if (serviceCode == null) {
+        if (serviceCode == null)
             return new ServiceStatus(false, "service is null.");
-        }
 
         IService bean = Application.getService(handle, serviceCode);
-        if (bean == null) {
+        if (bean == null)
             return new ServiceStatus(false, String.format("bean %s not find", serviceCode));
-        }
+        if ((bean instanceof Microservice) && ((Microservice) bean).getService() == null)
+            ((Microservice) bean).setService(serviceCode);
 
         try {
             log.info(this.serviceCode);
@@ -199,9 +174,8 @@ public class LocalService implements IServiceProxy {
             return status;
         } catch (Exception e) {
             Throwable err = e;
-            if (e.getCause() != null) {
+            if (e.getCause() != null)
                 err = e.getCause();
-            }
             log.error(err.getMessage(), err);
             message = err.getMessage();
             return new ServiceStatus(false, message);
@@ -218,7 +192,6 @@ public class LocalService implements IServiceProxy {
         return this.dataIn;
     }
 
-    @Override
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getExportKey, handle.getUserCode(), tmp)) {
@@ -235,6 +208,26 @@ public class LocalService implements IServiceProxy {
     public LocalService setBufferWrite(boolean bufferWrite) {
         this.bufferWrite = bufferWrite;
         return this;
+    }
+
+    public static void listMethod(Class<?> clazz) {
+        Map<String, Class<?>> items = new HashMap<>();
+        String[] args = clazz.getName().split("\\.");
+        String classCode = args[args.length - 1];
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.getReturnType().getName().equals("boolean")) {
+                if (method.getParameters().length == 0) {
+                    String name = method.getName();
+                    if (method.getName().startsWith("_"))
+                        name = name.substring(1, name.length());
+                    items.put(classCode + "." + name, clazz);
+                }
+            }
+        }
+        for (String key : items.keySet()) {
+            log.info(key);
+        }
     }
 
 }

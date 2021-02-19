@@ -15,8 +15,8 @@ public class RangeField extends AbstractField implements DataSource {
     }
 
     @Override
-    public String getText(Record record) {
-        return getDefaultText(record);
+    public String getText(Record rs) {
+        return getDefaultText(rs);
     }
 
     @Override
@@ -28,18 +28,16 @@ public class RangeField extends AbstractField implements DataSource {
             html.print(" name=\"%s\"", this.getId());
             html.print(" id=\"%s\"", this.getId());
             String value = this.getText(record);
-            if (value != null) {
+            if (value != null)
                 html.print(" value=\"%s\"", value);
-            }
             html.println("/>");
         } else {
             html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             AbstractField child = null;
             for (Component component : this.getComponents()) {
                 if (component instanceof AbstractField) {
-                    if (child != null) {
+                    if (child != null)
                         html.print("-");
-                    }
                     child = (AbstractField) component;
                     String val = child.getCSSClass_phone();
                     child.setCSSClass_phone("price");
@@ -61,11 +59,10 @@ public class RangeField extends AbstractField implements DataSource {
 
     @Override
     public void addField(IField field) {
-        if (field instanceof Component) {
+        if (field instanceof Component)
             this.addComponent((Component) field);
-        } else {
+        else
             throw new RuntimeException("不支持的数据类型：" + field.getClass().getName());
-        }
     }
 
     @Override

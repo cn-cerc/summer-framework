@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
     <!-- 根据token，取得当前用户代码、帐套等基本资料 -->
-    <bean id="SvrSession.byToken" class="cn.cerc.mis.services.SvrSession" scope="prototype">
-        <property name="funcCode" value="byToken"/>
+    <bean id="AppSessionRestore.byToken" class="cn.cerc.mis.services.AppSessionRestore" scope="prototype">
+        <property name="funcCode" value="byToken" />
     </bean>
     <!-- 根据用户帐号，取得当前用户姓名、帐套等基本资料 -->
-    <bean id="SvrSession.byUserCode" class="cn.cerc.mis.services.SvrSession" scope="prototype">
-        <property name="funcCode" value="byUserCode"/>
+    <bean id="AppSessionRestore.byUserCode" class="cn.cerc.mis.services.AppSessionRestore" scope="prototype">
+        <property name="funcCode" value="byUserCode" />
     </bean>
     <!-- 获取用户参数 -->
-    <bean id="SvrUserOption" class="cn.cerc.mis.services.SvrUserOption" scope="prototype"/>
+    <bean id="SvrUserOption" class="cn.cerc.mis.services.SvrUserOption" scope="prototype"></bean>
     <!-- 获取帐套参数 -->
-    <bean id="SvrBookOption" class="cn.cerc.mis.services.SvrBookOption" scope="prototype"/>
-    <!-- 文件上传服务 -->
-    <bean id="SvrFileUpload.search" class="cn.cerc.mis.page.service.SvrFileUpload" scope="prototype">
-        <property name="funcCode" value="search"/>
-    </bean>
-    <bean id="SvrFileUpload.delete" class="cn.cerc.mis.page.service.SvrFileUpload" scope="prototype">
-        <property name="funcCode" value="delete"/>
-    </bean>
-    <bean id="SvrFileUpload.append" class="cn.cerc.mis.page.service.SvrFileUpload" scope="prototype">
-        <property name="funcCode" value="append"/>
-    </bean>
+    <bean id="SvrBookOption" class="cn.cerc.mis.services.SvrBookOption" scope="prototype"></bean>
 </beans>

@@ -1,6 +1,7 @@
 package cn.cerc.mis.print;
 
-import cn.cerc.core.DataSet;
+import java.io.IOException;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -10,7 +11,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.IOException;
+import cn.cerc.core.DataSet;
 
 public class BarcodeTemplate extends PrintTemplate {
 
@@ -28,17 +29,6 @@ public class BarcodeTemplate extends PrintTemplate {
         barHeight = 24;
     }
 
-    public static void main(String[] args) {
-        // Servlet sample:
-        // ExportPdf export = new ExportPdf(getResponse());
-        // export.setTemplateId("BarcodeEAN");
-        // BarcodeTemplate bt = (BarcodeTemplate) export.getTemplate();
-        // bt.add("2222222220013", "赠品切换条码");
-        // bt.add("2222222220020", "会员切换条码");
-        // bt.add("2222222220037", "单据结帐条码");
-        // export.export();
-    }
-
     @Override
     public void output(Document document, PdfWriter writer) throws DocumentException, IOException {
         PdfContentByte cb = writer.getDirectContent();
@@ -49,9 +39,8 @@ public class BarcodeTemplate extends PrintTemplate {
         dataSet.first();
         while (dataSet.fetch()) {
             // 商品名称
-            if (dataSet.getCurrent().hasValue("Name_")) {
+            if (dataSet.getCurrent().hasValue("Name_"))
                 document.add(new Paragraph(dataSet.getString("Name_"), f8));
-            }
             // 商品条码
             BarcodeEAN codeEAN = new BarcodeEAN();
             codeEAN.setBarHeight(barHeight);
@@ -71,6 +60,17 @@ public class BarcodeTemplate extends PrintTemplate {
         ds.setField("Code_", barcode);
         ds.setField("Name_", descspec);
         return this;
+    }
+
+    public static void main(String[] args) {
+        // Servlet sample:
+        // ExportPdf export = new ExportPdf(getResponse());
+        // export.setTemplateId("BarcodeEAN");
+        // BarcodeTemplate bt = (BarcodeTemplate) export.getTemplate();
+        // bt.add("2222222220013", "赠品切换条码");
+        // bt.add("2222222220020", "会员切换条码");
+        // bt.add("2222222220037", "单据结帐条码");
+        // export.export();
     }
 
     public float getBarHeight() {

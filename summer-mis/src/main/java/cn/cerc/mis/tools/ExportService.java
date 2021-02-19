@@ -1,32 +1,22 @@
 package cn.cerc.mis.tools;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Utils;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.mis.core.AbstractForm;
+import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.excel.output.AccreditException;
 import cn.cerc.mis.excel.output.ExportExcel;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.IHandle;
 import jxl.write.WriteException;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 public class ExportService extends ExportExcel {
     private String service;
     private String exportKey;
-    private String corpNo;
-
-    public String getCorpNo() {
-        return corpNo;
-    }
-
-    public void setCorpNo(String corpNo) {
-        this.corpNo = corpNo;
-    }
 
     public ExportService(AbstractForm owner) {
         super(owner.getResponse());
@@ -36,20 +26,13 @@ public class ExportService extends ExportExcel {
         exportKey = request.getParameter("exportKey");
     }
 
-    @Override
     public void export() throws WriteException, IOException, AccreditException {
-        if (service == null || "".equals(service)) {
+        if (service == null || "".equals(service))
             throw new RuntimeException("错误的调用：service is null");
-        }
-        if (exportKey == null || "".equals(exportKey)) {
+        if (exportKey == null || "".equals(exportKey))
             throw new RuntimeException("错误的调用：exportKey is null");
-        }
-
         IHandle handle = (IHandle) this.getHandle();
-        if (Utils.isEmpty(this.corpNo)) {
-            this.corpNo = handle.getCorpNo();
-        }
-        IServiceProxy app = ServiceFactory.get(handle, this.corpNo);
+        LocalService app = new LocalService(handle);
         app.setService(service);
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getExportKey, handle.getUserCode(), exportKey)) {
             app.getDataIn().close();
@@ -64,9 +47,8 @@ public class ExportService extends ExportExcel {
         // 对分类进行处理
         dataOut.first();
         while (dataOut.fetch()) {
-            if (dataOut.getBoolean("IsType_")) {
+            if (dataOut.getBoolean("IsType_"))
                 dataOut.delete();
-            }
         }
         this.getTemplate().setDataSet(dataOut);
         super.export();

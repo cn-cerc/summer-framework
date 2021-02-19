@@ -1,19 +1,20 @@
 package cn.cerc.ui.phone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Block117 extends UIComponent {
     private List<UISpan> addBlock = new ArrayList<>();
 
     /**
      * 以span显示内容块
-     *
+     * 
      * @param owner 内容显示区
+     * 
      */
     public Block117(UIComponent owner) {
         super(owner);
@@ -27,9 +28,8 @@ public class Block117 extends UIComponent {
             addBlock("(addBlock)");
             addBlock("(addBlock)");
         }
-        for (UISpan span : addBlock) {
+        for (UISpan span : addBlock)
             span.output(html);
-        }
         html.println("</div>");
     }
 

@@ -7,12 +7,23 @@ import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 import cn.cerc.mis.core.ServiceException;
+import cn.cerc.mis.other.UserNotFindException;
 
-public class AutoService {
+public class AutoService implements IHandle {
+    // private static final Logger log = Logger.getLogger(AutoService.class);
     private DataSet dataOut = new DataSet();
     private String message;
     private IHandle handle;
     private ServiceRecord service;
+
+    public AutoService(IHandle handle) {
+        this.handle = handle;
+    }
+
+    public AutoService(IHandle handle, ServiceRecord service) {
+        this.handle = handle;
+        this.service = service;
+    }
 
     public AutoService(IHandle handle, String corpNo, String userCode, String service) {
         this.handle = handle;
@@ -38,22 +49,17 @@ public class AutoService {
         this.message = message;
     }
 
-    public boolean exec() throws ServiceException {
+    public boolean exec() throws ServiceException, UserNotFindException, ServiceException {
         if (service.getService() == null) {
             throw new RuntimeException("没有指定 service");
         }
-
-        // handle.init(service.getCorpNo(), service.getUserCode(), "127.0.0.1");
-
         BookHandle handle = new BookHandle(this.handle, service.getCorpNo());
         handle.setUserCode(service.getUserCode());
 
-        // 根据xml进行反射初始化服务信息
         IService bean = Application.getService(handle, service.getService());
         if (bean == null) {
             throw new RuntimeException("无法创建服务：" + service.getService());
         }
-
         IStatus status = bean.execute(service.getDataIn(), dataOut);
 
         boolean result = status.getResult();
@@ -65,67 +71,49 @@ public class AutoService {
         return this.service;
     }
 
-    public class ServiceRecord implements AutoCloseable {
-        private String service;
-        private String corpNo;
-        private String userCode;
-        private String error_email;
-        private String error_subject;
-        private DataSet dataIn;
+    @Override
+    public String getCorpNo() {
+        return handle.getCorpNo();
+    }
 
-        public ServiceRecord() {
-            super();
-            this.dataIn = new DataSet();
-        }
+    @Override
+    public String getUserCode() {
+        return handle.getUserCode();
+    }
 
-        public String getService() {
-            return service;
-        }
+    @Override
+    public String getUserName() {
+        return handle.getUserName();
+    }
 
-        public void setService(String service) {
-            this.service = service;
-        }
+    @Override
+    public Object getProperty(String key) {
+        return handle.getProperty(key);
+    }
 
-        public String getUserCode() {
-            return userCode;
-        }
+    @Override
+    public void setProperty(String key, Object value) {
+        throw new RuntimeException("调用了未被实现的接口");
+    }
 
-        public void setUserCode(String userCode) {
-            this.userCode = userCode;
-        }
+    @Override
+    public boolean init(String bookNo, String userCode, String clientCode) {
+        throw new RuntimeException("调用了未被实现的接口");
+    }
 
-        public DataSet getDataIn() {
-            return this.dataIn;
-        }
+    @Override
+    public boolean init(String token) {
+        throw new RuntimeException("调用了未被实现的接口");
+    }
 
-        @Override
-        public void close() {
-            this.dataIn.close();
-        }
+    @Override
+    public boolean logon() {
+        return false;
+    }
 
-        public String getError_email() {
-            return error_email;
-        }
-
-        public void setError_email(String error_email) {
-            this.error_email = error_email;
-        }
-
-        public String getError_subject() {
-            return error_subject;
-        }
-
-        public void setError_subject(String error_subject) {
-            this.error_subject = error_subject;
-        }
-
-        public String getCorpNo() {
-            return corpNo;
-        }
-
-        public void setCorpNo(String corpNo) {
-            this.corpNo = corpNo;
-        }
+    @Override
+    public void close() {
+        handle.close();
     }
 
 }

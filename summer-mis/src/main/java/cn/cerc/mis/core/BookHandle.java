@@ -28,22 +28,22 @@ public class BookHandle implements IHandle {
         return userCode != null ? userCode : handle.getUserCode();
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
-
     @Override
     public String getUserName() {
         return userName != null ? userName : handle.getUserName();
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     @Override
     public Object getProperty(String key) {
         return handle.getProperty(key);
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BookHandle implements IHandle {
     }
 
     @Override
-    public boolean init(String bookNo, String userCode, String password, String clientCode) {
+    public boolean init(String bookNo, String userCode, String clientCode) {
         throw new RuntimeException("调用了未被实现的接口");
     }
 

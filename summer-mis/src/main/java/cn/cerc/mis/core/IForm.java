@@ -1,50 +1,49 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.cerc.core.IHandle;
+
 public interface IForm {
+    // 页面标题
+    public String getTitle();
 
-    // 页面名称
-    String getName();
+    public void setRequest(HttpServletRequest request);
 
-    HttpServletRequest getRequest();
+    public HttpServletRequest getRequest();
 
-    void setRequest(HttpServletRequest request);
+    public void setResponse(HttpServletResponse response);
 
-    HttpServletResponse getResponse();
-
-    void setResponse(HttpServletResponse response);
-
-    IHandle getHandle();
+    public HttpServletResponse getResponse();
 
     // 数据库连接
-    void setHandle(IHandle handle);
+    public void setHandle(IHandle handle);
+
+    public IHandle getHandle();
 
     // 是否有登录
-    boolean logon();
+    public boolean logon();
 
     // 取得访问设备讯息
-    IClient getClient();
+    public IClient getClient();
 
-    void setClient(IClient client);
+    public void setClient(IClient client);
 
     // 设置参数
-    void setParam(String key, String value);
+    public void setParam(String key, String value);
 
     // 取得参数
-    String getParam(String key, String def);
+    public String getParam(String key, String def);
 
     // 输出页面（支持jsp、reddirect、json等）
-    IPage execute() throws Exception;
+    public IPage execute() throws Exception;
 
     // 取得权限代码
-    String getPermission();
+    public String getPermission();
 
     // 设备安全检查通过否，为true时需要进行进一步授权
-    default boolean passDevice() {
+    default public boolean passDevice() {
         return false;
     }
 

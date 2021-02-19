@@ -1,46 +1,40 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.Utils;
-import cn.cerc.mis.language.Language;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
-import lombok.extern.slf4j.Slf4j;
+import java.io.Serializable;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
 
-/**
- * // TODO: 2019/12/7 建议更名为 AppClient
- */
-@Slf4j
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class ClientDevice implements IClient, Serializable {
-
+    // private static final Logger log = Logger.LoggerFactory(DeviceInfo.class);
     private static final long serialVersionUID = -3593077761901636920L;
-
-    public static final String APP_CLIENT_ID = "CLIENTID";
-    public static final String APP_DEVICE_TYPE = "device";
-    // 手机
-    public static final String APP_DEVICE_PHONE = "phone";
-    public static final String APP_DEVICE_ANDROID = "android";
-    public static final String APP_DEVICE_IPHONE = "iphone";
-    public static final String APP_DEVICE_WEIXIN = "weixin";
-    // 平板
-    public static final String APP_DEVICE_PAD = "pad";
-    // 电脑
-    public static final String APP_DEVICE_PC = "pc";
-    // 客户端专用浏览器
-    public static final String APP_DEVICE_EE = "ee";
-
-    private String token; // application session id;
+    private String sid; // application session id;
     private String deviceId; // device id
-    private String device; // phone/pad/ee/pc
+    private String deviceType; // phone/pad/ee/pc
     private String languageId; // device language: cn/en
     private HttpServletRequest request;
+
+    public static final String deviceId_key = "CLIENTID";
+    public static final String deviceType_key = "device";
+    // 手机
+    public static final String device_phone = "phone";
+    public static final String device_android = "android";
+    public static final String device_iphone = "iphone";
+    public static final String device_weixin = "weixin";
+    // 平板
+    public static final String device_pad = "pad";
+    // 电脑
+    public static final String device_pc = "pc";
+    // 电脑专用浏览器
+    public static final String device_ee = "ee";
 
     public ClientDevice() {
         super();
@@ -49,184 +43,142 @@ public class ClientDevice implements IClient, Serializable {
     private String getValue(MemoryBuffer buff, String key, String def) {
         String result = def;
         String tmp = buff.getString(key);
-
         // 如果缓存有值，则从缓存中取值，且当def无值时，返回缓存值
         if (tmp != null && !"".equals(tmp)) {
-            if (def == null || "".equals(def)) {
+            if (def == null || "".equals(def))
                 result = tmp;
-            }
         }
-
         // 如果def有值，且与缓存不同时，更新缓存
         if (def != null && !"".equals(def)) {
-            if (tmp == null || !tmp.equals(def)) {
+            if (tmp == null || !tmp.equals(def))
                 buff.setField(key, def);
-            }
         }
         return result;
     }
 
     @Override
     public String getId() {
-        return this.deviceId == null ? RequestData.WEBCLIENT : this.deviceId;
+        return deviceId == null ? RequestData.webclient : deviceId;
     }
 
-    public void setId(String value) {
-        this.deviceId = value;
-        request.setAttribute(APP_CLIENT_ID, this.deviceId == null ? "" : this.deviceId);
-        request.getSession().setAttribute(APP_CLIENT_ID, value);
-        if (value != null && value.length() == 28) {
-            setDevice(APP_DEVICE_PHONE);
-        }
-
-        if (token != null && this.deviceId != null && !"".equals(this.deviceId)) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
-                getValue(buff, APP_CLIENT_ID, this.deviceId);
-            }
-        }
-    }
-
-    /**
-     * 设备类型默认是 pc
-     *
-     * @return device
-     */
     @Override
     public String getDevice() {
-        return this.device == null ? APP_DEVICE_PC : device;
+        return deviceType == null ? device_pc : deviceType;
     }
 
     @Override
-    public void setDevice(String device) {
-        if (device == null || "".equals(device)) {
+    public String getLanguage() {
+        return languageId == null ? "cn" : languageId;
+    }
+
+    @Override
+    public void setDevice(String deviceType) {
+        if (deviceType == null || "".equals(deviceType))
             return;
-        }
 
-        // 更新类属性
-        this.device = device;
-
-        // 更新request属性
-        request.setAttribute(APP_DEVICE_TYPE, device == null ? "" : device);
-        request.getSession().setAttribute(APP_DEVICE_TYPE, device);
-
-        // 更新设备缓存
-        if (token != null) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
-                getValue(buff, APP_DEVICE_TYPE, device);
+        this.deviceType = deviceType;
+        request.setAttribute(deviceType_key, deviceType == null ? "" : deviceType);
+        request.getSession().setAttribute(deviceType_key, deviceType);
+        if (sid != null && deviceType != null && !"".equals(deviceType)) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, sid)) {
+                getValue(buff, deviceType_key, deviceType);
             }
         }
         return;
     }
 
-    @Override
-    public String getLanguage() {
-        return languageId == null ? Language.zh_CN : languageId;
-    }
-
-    public String getToken() {
-        return "".equals(token) ? null : token;
-    }
-
-    /**
-     * 清空token信息
-     * <p>
-     * TODO: 2019/12/7 考虑要不要加上缓存一起清空
-     */
-    public void clear() {
-        if (Utils.isNotEmpty(token)) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
-                buff.clear();
+    public void setSid(String value) {
+        String tmp = value == null || "".equals(value) ? null : value;
+        if (tmp != null) {
+            // device_id = (String)
+            // req.getSession().getAttribute(deviceId_key);
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, tmp)) {
+                // 设备ID
+                deviceId = getValue(buff, deviceId_key, deviceId);
+                // 设备样式
+                deviceType = getValue(buff, deviceType_key, deviceType);
             }
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
-                buff.clear();
+        } else if (tmp == null) {
+            if (this.sid != null && !"".equals(this.sid)) {
+                MemoryBuffer.delete(BufferType.getDeviceInfo, this.sid);
             }
         }
-        this.token = null;
+        this.sid = tmp;
+        request.getSession().setAttribute(RequestData.appSession_Key, this.sid);
+        request.setAttribute(RequestData.appSession_Key, this.sid == null ? "" : this.sid);
+    }
+
+    public void setId(String value) {
+        this.deviceId = value;
+        request.setAttribute(deviceId_key, deviceId == null ? "" : deviceId);
+        request.getSession().setAttribute(deviceId_key, value);
+        if (value != null && value.length() == 28)
+            setDevice(device_phone);
+        if (sid != null && deviceId != null && !"".equals(deviceId)) {
+            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, sid)) {
+                getValue(buff, deviceId_key, deviceId);
+            }
+        }
+    }
+
+    public String getSid() {
+        return sid != null && "".equals(sid) ? null : sid;
+    }
+
+    public void clear() {
+        this.sid = null;
     }
 
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("token:").append(this.token).append(", ");
-        buffer.append("deviceId:").append(this.deviceId).append(", ");
-        buffer.append("deviceType:").append(this.device);
-        return buffer.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append("sid:").append(sid).append(", ");
+        sb.append("deviceId:").append(deviceId).append(", ");
+        sb.append("deviceType:").append(deviceType);
+        return sb.toString();
     }
 
     @Override
     public boolean isPhone() {
-        return APP_DEVICE_PHONE.equals(getDevice()) || APP_DEVICE_ANDROID.equals(getDevice())
-                || APP_DEVICE_IPHONE.equals(getDevice()) || APP_DEVICE_WEIXIN.equals(getDevice());
-    }
-
-    public boolean isNotPhone() {
-        return !isPhone();
+        return device_phone.equals(getDevice()) || device_android.equals(getDevice())
+                || device_iphone.equals(getDevice()) || device_weixin.equals(getDevice());
     }
 
     public HttpServletRequest getRequest() {
-        return this.request;
+        return request;
     }
 
     @Override
     public void setRequest(HttpServletRequest request) {
         this.request = request;
-
         // 保存设备类型
-        this.device = request.getParameter(APP_DEVICE_TYPE);
-        if (this.device == null || "".equals(this.device)) {
-            this.device = (String) request.getSession().getAttribute(APP_DEVICE_TYPE);
-        }
-        if (this.device != null && !"".equals(this.device)) {
-            request.getSession().setAttribute(APP_DEVICE_TYPE, this.device);
-        }
-        request.setAttribute(APP_DEVICE_TYPE, this.device == null ? "" : this.device);
+        deviceType = request.getParameter(deviceType_key);
+        if (deviceType == null || "".equals(deviceType))
+            deviceType = (String) request.getSession().getAttribute(deviceType_key);
+        if (deviceType != null && !"".equals(deviceType))
+            request.getSession().setAttribute(deviceType_key, deviceType);
+        request.setAttribute(deviceType_key, deviceType == null ? "" : deviceType);
 
         // 保存并取得device_id
-        this.deviceId = request.getParameter(APP_CLIENT_ID);
-        if (this.deviceId == null || "".equals(this.deviceId)) {
-            this.deviceId = (String) request.getSession().getAttribute(APP_CLIENT_ID);
-        }
+        deviceId = request.getParameter(deviceId_key);
+        if (deviceId == null || "".equals(deviceId))
+            deviceId = (String) request.getSession().getAttribute(deviceId_key);
 
-        request.setAttribute(APP_CLIENT_ID, this.deviceId);
-        request.getSession().setAttribute(APP_CLIENT_ID, this.deviceId);
+        request.setAttribute(deviceId_key, deviceId);
+        request.getSession().setAttribute(deviceId_key, deviceId);
 
-        this.languageId = request.getParameter(Application.deviceLanguage);
-        if (this.languageId == null || "".equals(this.languageId)) {
-            this.languageId = (String) request.getSession().getAttribute(Application.deviceLanguage);
-        }
+        languageId = request.getParameter(Application.deviceLanguage);
+        if (languageId == null || "".equals(languageId))
+            languageId = (String) request.getSession().getAttribute(Application.deviceLanguage);
 
-        request.setAttribute(Application.deviceLanguage, this.languageId);
-        request.getSession().setAttribute(Application.deviceLanguage, this.languageId);
+        request.setAttribute(Application.deviceLanguage, languageId);
+        request.getSession().setAttribute(Application.deviceLanguage, languageId);
 
-        // 取得并保存token
-        String token = request.getParameter(RequestData.TOKEN);// 获取客户端的 token
-        if (token == null || "".equals(token)) {
-            token = (String) request.getSession().getAttribute(RequestData.TOKEN); // 获取服务端的 token
-        }
-        log.debug("sessionID 1: {}", request.getSession().getId());
-
-        // 设置token
-        setToken(token);
-    }
-
-    public void setToken(String value) {
-        String token = Utils.isEmpty(value) ? null : value;
-        if (token != null) {
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
-                // 设备ID
-                this.deviceId = getValue(buff, APP_CLIENT_ID, this.deviceId);
-                // 设备类型
-                this.device = getValue(buff, APP_DEVICE_TYPE, this.device);
-            }
-        } else {
-            if (this.token != null && !"".equals(this.token)) {
-                MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
-            }
-        }
-
-        log.debug("sessionID 2: {}", request.getSession().getId());
-        this.token = token;
-        request.getSession().setAttribute(RequestData.TOKEN, this.token);
-        request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
+        // 取得并保存token(sid)
+        String sid = request.getParameter(RequestData.appSession_Key);
+        if (sid == null || "".equals(sid))
+            sid = (String) request.getSession().getAttribute(RequestData.appSession_Key);
+        // 设置sid
+        setSid(sid);
     }
 }

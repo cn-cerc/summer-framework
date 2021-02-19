@@ -17,9 +17,8 @@ public class ImportOptionColumn extends ImportColumn {
     @Override
     public Object getValue() {
         String key = this.getString();
-        if (key == null) {
+        if (key == null)
             key = "";
-        }
         String val = items.get(key);
         return val != null ? val : key;
     }

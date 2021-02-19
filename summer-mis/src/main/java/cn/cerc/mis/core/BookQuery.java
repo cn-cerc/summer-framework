@@ -31,27 +31,24 @@ public class BookQuery extends SqlQuery implements IDataOperator {
     @Override
     public boolean insert(Record record) {
         String corpNo = record.getString("CorpNo_");
-        if (!handle.getCorpNo().equals(corpNo)) {
+        if (!handle.getCorpNo().equals(corpNo))
             throw new RuntimeException(String.format("corpNo: %s, insert error value: %s", handle.getCorpNo(), corpNo));
-        }
         return operator.insert(record);
     }
 
     @Override
     public boolean update(Record record) {
         String corpNo = record.getString("CorpNo_");
-        if (!handle.getCorpNo().equals(corpNo)) {
+        if (!handle.getCorpNo().equals(corpNo))
             throw new RuntimeException(String.format("corpNo: %s, update error value: %s", handle.getCorpNo(), corpNo));
-        }
         return operator.update(record);
     }
 
     @Override
     public boolean delete(Record record) {
         String corpNo = record.getString("CorpNo_");
-        if (!handle.getCorpNo().equals(corpNo)) {
+        if (!handle.getCorpNo().equals(corpNo))
             throw new RuntimeException(String.format("corpNo: %s, delete error value: %s", handle.getCorpNo(), corpNo));
-        }
         return operator.delete(record);
     }
 }

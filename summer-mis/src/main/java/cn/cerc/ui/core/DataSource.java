@@ -4,11 +4,11 @@ import cn.cerc.core.DataSet;
 
 public interface DataSource {
 
-    void addField(IField field);
+    public void addField(IField field);
 
-    DataSet getDataSet();
+    public DataSet getDataSet();
 
-    boolean isReadonly();
+    public boolean isReadonly();
 
-    void updateValue(String id, String code);
+    public void updateValue(String id, String code);
 }

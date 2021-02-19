@@ -1,15 +1,15 @@
 package cn.cerc.mis.tools;
 
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
-import cn.cerc.mis.language.Language;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class DirectoryTest {
     private IHandle handle;
@@ -60,15 +60,15 @@ public class DirectoryTest {
             System.out.println(text);
             dsLang.append();
             dsLang.setField("key_", Utils.safeString(text));
-            dsLang.setField("lang_", Language.en_US);
+            dsLang.setField("lang_", "en");
             dsLang.setField("value_", "");
             dsLang.setField("supportAndroid_", false);
             dsLang.setField("supportIphone_", false);
             dsLang.setField("enable_", true);
             dsLang.setField("updateUser_", handle.getUserCode());
-            dsLang.setField("updateDate_", TDateTime.now());
+            dsLang.setField("updateDate_", TDateTime.Now());
             dsLang.setField("createUser_", handle.getUserCode());
-            dsLang.setField("createDate_", TDateTime.now());
+            dsLang.setField("createDate_", TDateTime.Now());
             dsLang.post();
             return 1;
         }

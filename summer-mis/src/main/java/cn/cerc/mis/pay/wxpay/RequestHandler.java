@@ -1,7 +1,5 @@
 package cn.cerc.mis.pay.wxpay;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Iterator;
@@ -9,6 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /*
  '微信支付服务器签名支付请求请求类
@@ -30,17 +31,11 @@ import java.util.TreeMap;
 public class RequestHandler {
 
     private String key;
-    /**
-     * 请求的参数
-     */
+    /** 请求的参数 */
     private SortedMap<String, String> parameters;
-    /**
-     * Token
-     */
+    /** Token */
     private String charset;
-    /**
-     * debug信息
-     */
+    /** debug信息 */
     private String debugInfo;
     private String last_errcode;
 
@@ -79,7 +74,7 @@ public class RequestHandler {
 
     // 获取参数值
     public String getParameter(String parameter) {
-        String s = this.parameters.get(parameter);
+        String s = (String) this.parameters.get(parameter);
         return (null == s) ? "" : s;
     }
 
@@ -171,13 +166,13 @@ public class RequestHandler {
         return enc;
     }
 
-    public String getDebugInfo() {
-        return debugInfo;
-    }
-
     // 设置debug信息
     protected void setDebugInfo(String debugInfo) {
         this.debugInfo = debugInfo;
+    }
+
+    public String getDebugInfo() {
+        return debugInfo;
     }
 
     public String getKey() {

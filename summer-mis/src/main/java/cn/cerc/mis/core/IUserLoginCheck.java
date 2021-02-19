@@ -3,17 +3,17 @@ package cn.cerc.mis.core;
 public interface IUserLoginCheck {
 
     // 登录验证
-    boolean check(String userCode, String password, String machineCode, String clientIP, String language);
+    public boolean check(String userCode, String password, String deviceId, String clientIP, String languageId);
 
-    // 返回 token
-    String getToken();
+    // 返回SessionId
+    public String getSessionId();
 
     // 返回手机号
-    String getMobile();
+    public String getMobile();
 
     // 通过手机号获取帐号
-    String getUserCode(String mobile);
+    public String getTelToUserCode(String mobile);
 
     // 错误消息
-    String getMessage();
+    public String getMessage();
 }

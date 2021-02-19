@@ -1,10 +1,10 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.other.UrlMenu;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.UrlMenu;
 
 public class UISheetHelp extends UISheet {
     private String content;
@@ -17,7 +17,7 @@ public class UISheetHelp extends UISheet {
         this.setCaption("操作提示");
     }
 
-    public UISheetHelp(UIToolbar owner) {
+    public UISheetHelp(UIToolBar owner) {
         super(owner);
         this.setCaption("操作提示");
     }
@@ -41,8 +41,14 @@ public class UISheetHelp extends UISheet {
     @Override
     public void output(HtmlWriter html) {
         html.println("<section");
+        if (this.cssStyle != null) {
+            html.print(" style=\"%s\"", this.cssStyle);
+        }
+        if (this.cssClass != null) {
+            html.print(" class=\"%s\"", this.cssClass);
+        }
         if (this.getId() != null) {
-            html.println(" id=\"%s\"", this.getId());
+            html.print(" id=\"%s\"", this.getId());
         }
         html.println(">");
         html.print("<div class=\"title\">");
@@ -52,12 +58,10 @@ public class UISheetHelp extends UISheet {
         }
         html.println("</div>");
         html.println("<div class=\"contents\">");
-        if (this.content != null) {
+        if (this.content != null)
             html.println("<p>%s</p>", this.content);
-        }
-        for (String line : lines) {
+        for (String line : lines)
             html.println("<p>%s</p>", line);
-        }
         html.println("</div>");
         html.println("</section>");
     }

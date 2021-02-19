@@ -22,24 +22,24 @@ public class ServiceStatus implements IStatus {
         return status;
     }
 
-    public ServiceStatus setStatus(int status) {
-        this.status = status;
-        return this;
-    }
-
     @Override
     public boolean getResult() {
         return result;
     }
 
-    public ServiceStatus setResult(boolean result) {
-        this.result = result;
-        return this;
-    }
-
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public ServiceStatus setStatus(int status) {
+        this.status = status;
+        return this;
+    }
+
+    public ServiceStatus setResult(boolean result) {
+        this.result = result;
+        return this;
     }
 
     public ServiceStatus setMessage(String message) {

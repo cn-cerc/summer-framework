@@ -1,9 +1,9 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.ui.core.HtmlWriter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.cerc.ui.core.HtmlWriter;
 
 public class UIMenuList extends UIComponent {
     private List<UIMenuItem> items = new ArrayList<>();

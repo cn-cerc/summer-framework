@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class StringList {
         }
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(f), StandardCharsets.UTF_8));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
             try {
                 String line;
                 while ((line = br.readLine()) != null) {

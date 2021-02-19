@@ -1,29 +1,5 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDate;
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
-import cn.cerc.db.cache.Buffer;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.cdn.CDN;
-import cn.cerc.mis.language.R;
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.HtmlContent;
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.menu.MenuList;
-import cn.cerc.ui.menu.MenuModel;
-import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.parts.UIContent;
-import cn.cerc.ui.parts.UIDocument;
-import cn.cerc.ui.parts.UIFooter;
-import cn.cerc.ui.parts.UIHeader;
-import cn.cerc.ui.parts.UISheetHelp;
-import cn.cerc.ui.parts.UIToolbar;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,13 +8,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
+import javax.servlet.ServletException;
+
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDate;
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
+import cn.cerc.db.cache.Buffer;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.language.R;
+import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.HtmlContent;
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UIContent;
+import cn.cerc.ui.parts.UIDocument;
+import cn.cerc.ui.parts.UIFooter;
+import cn.cerc.ui.parts.UIHeader;
+import cn.cerc.ui.parts.UIToolBar;
+
 public abstract class AbstractJspPage extends UIComponent implements IPage {
     private String jspFile;
     private IForm form;
     private String browserCacheVersion;
     private List<String> cssFiles = new ArrayList<>();
-    private List<String> jsFiles = new ArrayList<>();
+    private List<String> scriptFiles = new ArrayList<>();
     private List<HtmlContent> scriptFunctions = new ArrayList<>();
     private List<HtmlContent> scriptCodes = new ArrayList<>();
     // 头部：广告+菜单
@@ -46,7 +41,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     // 主体: 控制区(可选)+内容+消息区
     private UIDocument document;
     // 工具面板：多页形式
-    private UIToolbar toolBar;
+    private UIToolBar toolBar;
     // 状态栏：快捷操作+按钮组
     private UIFooter footer;
 
@@ -57,30 +52,26 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     @Override
+    public final void setForm(IForm form) {
+        this.form = form;
+        if (form != null) {
+            this.put("jspPage", this);
+            // 为兼容而设计
+            ServerConfig config = ServerConfig.getInstance();
+            this.add("summer_js", config.getProperty("summer.js", "js/summer.js"));
+            this.add("myapp_js", config.getProperty("myapp.js", "js/myapp.js"));
+        }
+    }
+
+    @Override
     public final IForm getForm() {
         return form;
     }
 
     @Override
-    public final void setForm(IForm form) {
-        this.form = form;
-        this.add("cdn", CDN.getSite());
-        this.add("version", browserCacheVersion);
-        if (form != null) {
-            this.put("jspPage", this);
-            // 为兼容而设计
-            ServerConfig config = ServerConfig.getInstance();
-            String version = "?v=" + browserCacheVersion;
-            this.add("summer_js", CDN.get(config.getProperty("summer.js", "js/summer.js")) + version);
-            this.add("myapp_js", CDN.get(config.getProperty("myapp.js", "js/myapp.js")) + version);
-        }
-    }
-
-    @Override
     public void addComponent(Component component) {
-        if (component.getId() != null) {
+        if (component.getId() != null)
             this.put(component.getId(), component);
-        }
         super.addComponent(component);
     }
 
@@ -111,12 +102,10 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     public final String getViewFile() {
         String jspFile = this.getJspFile();
-        if (getRequest() == null || jspFile == null) {
+        if (getRequest() == null || jspFile == null)
             return jspFile;
-        }
-        if (!jspFile.contains(".jsp")) {
+        if (jspFile.indexOf(".jsp") == -1)
             return jspFile;
-        }
 
         String rootPath = String.format("/WEB-INF/%s/", Application.getAppConfig().getPathForms());
         String fileName = jspFile.substring(0, jspFile.indexOf(".jsp"));
@@ -126,16 +115,15 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         String newFile = String.format("%s-%s.%s", fileName, "pc", extName);
         if (!this.getForm().getClient().isPhone() && fileExists(rootPath + newFile)) {
             // 检查是否存在相对应的语言版本
-            String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
+            String langCode = form == null ? Application.LangageDefault : R.getLanguage(form.getHandle());
             String langFile = String.format("%s-%s-%s.%s", fileName, "pc", langCode, extName);
-            if (fileExists(rootPath + langFile)) {
+            if (fileExists(rootPath + langFile))
                 return langFile;
-            }
             return newFile;
         }
 
         // 检查是否存在相对应的语言版本
-        String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
+        String langCode = form == null ? Application.LangageDefault : R.getLanguage(form.getHandle());
         String langFile = String.format("%s-%s.%s", fileName, langCode, extName);
         if (fileExists(rootPath + langFile)) {
             return langFile;
@@ -150,9 +138,8 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
 
     protected boolean fileExists(String fileName) {
         URL url = AbstractJspPage.class.getClassLoader().getResource("");
-        if (url == null) {
+        if (url == null)
             return false;
-        }
         String filepath = url.getPath();
         String appPath = filepath.substring(0, filepath.indexOf("/WEB-INF"));
         String file = appPath + fileName;
@@ -165,11 +152,10 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         String result = getRequest().getParameter(reqKey);
         if (result == null) {
             String val = buff.getString(reqKey).replace("{}", "");
-            if (Utils.isNumeric(val) && val.endsWith(".0")) {
+            if (Utils.isNumeric(val) && val.endsWith(".0"))
                 result = val.substring(0, val.length() - 2);
-            } else {
+            else
                 result = val;
-            }
         } else {
             result = result.trim();
             buff.setField(reqKey, result);
@@ -182,8 +168,8 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         return cssFiles;
     }
 
-    public final List<String> getJsFiles() {
-        return jsFiles;
+    public final List<String> getScriptFiles() {
+        return scriptFiles;
     }
 
     public final List<HtmlContent> getScriptCodes() {
@@ -191,13 +177,11 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     public final void addCssFile(String file) {
-        file = CDN.get(file);
         cssFiles.add(file);
     }
 
-    public final void addScriptFile(String file) {
-        file = CDN.get(file);
-        jsFiles.add(file);
+    public final void addScriptFile(String scriptFile) {
+        scriptFiles.add(scriptFile);
     }
 
     public final void addScriptCode(HtmlContent scriptCode) {
@@ -211,9 +195,8 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     // 返回所有的样式定义，供jsp中使用 ${jspPage.css}调用
     public final HtmlWriter getCssHtml() {
         HtmlWriter html = new HtmlWriter();
-        for (String file : cssFiles) {
+        for (String file : cssFiles)
             html.println("<link href=\"%s?v=%s\" rel=\"stylesheet\">", file, browserCacheVersion);
-        }
         return html;
     }
 
@@ -222,7 +205,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         HtmlWriter html = new HtmlWriter();
 
         // 加入脚本文件
-        for (String file : getJsFiles()) {
+        for (String file : getScriptFiles()) {
             html.println("<script src=\"%s?v=%s\"></script>", file, browserCacheVersion);
         }
         // 加入脚本代码
@@ -313,41 +296,9 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         return document;
     }
 
-    public UIToolbar getToolBar() {
+    public UIToolBar getToolBar() {
         if (toolBar == null) {
-            toolBar = new UIToolbar(this);
-        }
-        return toolBar;
-    }
-
-    /**
-     * 获取指定菜单的描述和停用时间
-     */
-    public UIToolbar getToolBar(AbstractForm handle) {
-        if (toolBar == null) {
-            toolBar = new UIToolbar(this);
-        }
-        String menuCode = StartForms.getRequestCode(handle.getRequest());
-        String[] params = menuCode.split("\\.");
-        String formId = params[0];
-        if (!menuCode.equals(formId)) {
-            return toolBar;
-        }
-
-        // 输出菜单信息
-        MenuModel item = MenuList.create(handle).get(formId);
-        if (item == null) {
-            return toolBar;
-        }
-        if (Utils.isNotEmpty(item.getRemark())) {
-            UISheetHelp section = new UISheetHelp(toolBar);
-            section.setCaption("菜单描述");
-            section.addLine("%s", item.getRemark());
-        }
-        if (Utils.isNotEmpty(item.getDeadline())) {
-            UISheetHelp section = new UISheetHelp(toolBar);
-            section.setCaption("停用时间");
-            section.addLine("<font color='red'>%s</font>", item.getDeadline());
+            toolBar = new UIToolBar(this);
         }
         return toolBar;
     }
@@ -355,29 +306,14 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     protected void outBody(PrintWriter out) {
         out.println("<body>");
         out.println(this.getHeader());
-        out.println(this.getToolBar());
         out.println(this.getDocument());
+        out.println(this.getToolBar());
         out.println(this.getFooter());
         if (getForm().getClient().isPhone()) {
             out.println("<span id='back-top' style='display: none'>顶部</span>");
             out.println("<span id='back-bottom' style='display: none'>底部</span>");
         }
         out.println("</body>");
-    }
-
-    public String getHtmlBody() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("<body>");
-        builder.append(this.getHeader());
-        builder.append(this.getDocument());
-        builder.append(this.getToolBar());
-        builder.append(this.getFooter());
-        if (getForm().getClient().isPhone()) {
-            builder.append("<span id='back-top' style='display: none'>顶部</span>");
-            builder.append("<span id='back-bottom' style='display: none'>底部</span>");
-        }
-        builder.append("</body>");
-        return builder.toString();
     }
 
     public final UIContent getContent() {

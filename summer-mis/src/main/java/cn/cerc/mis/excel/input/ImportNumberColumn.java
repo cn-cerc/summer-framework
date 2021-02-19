@@ -1,8 +1,8 @@
 package cn.cerc.mis.excel.input;
 
-import cn.cerc.core.Utils;
-
 import java.text.DecimalFormat;
+
+import cn.cerc.core.Utils;
 
 public class ImportNumberColumn extends ImportColumn {
     @Override
@@ -14,7 +14,7 @@ public class ImportNumberColumn extends ImportColumn {
     public boolean validate(int row, int col, String value) {
         String result = "";
         if (!"".equals(value)) {
-            result = String.valueOf(Math.abs(Double.parseDouble(value)));
+            result = String.valueOf(Math.abs(Double.parseDouble(value.replace(",", ""))));
         } else {
             result = "0";
         }

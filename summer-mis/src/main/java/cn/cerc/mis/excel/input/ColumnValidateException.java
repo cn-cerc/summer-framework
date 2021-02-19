@@ -1,7 +1,6 @@
 package cn.cerc.mis.excel.input;
 
 public class ColumnValidateException extends Exception {
-    private static final long serialVersionUID = 4218729854214897220L;
     private String title;
     private String value;
     private int row;
@@ -10,6 +9,8 @@ public class ColumnValidateException extends Exception {
     public ColumnValidateException(String message) {
         super(message);
     }
+
+    private static final long serialVersionUID = 4218729854214897220L;
 
     public int getRow() {
         return row;

@@ -16,9 +16,8 @@ public class UISheetCard extends UISheet {
         html.println("<section role='sheetCard'>");
         html.print("<label>");
         html.println(this.getCaption());
-        if (url != null) {
+        if (url != null)
             url.output(html);
-        }
         html.println("</label>");
         for (Component component : this.getComponents()) {
             if (component instanceof UIComponent) {
@@ -31,9 +30,8 @@ public class UISheetCard extends UISheet {
     }
 
     public UrlMenu getUrl() {
-        if (url == null) {
+        if (url == null)
             url = new UrlMenu(null);
-        }
         return url;
     }
 

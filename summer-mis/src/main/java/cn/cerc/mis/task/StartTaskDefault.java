@@ -1,5 +1,14 @@
 package cn.cerc.mis.task;
 
+import java.util.Calendar;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.scheduling.annotation.Scheduled;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
@@ -7,30 +16,14 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.Calendar;
-
-@Slf4j
 public class StartTaskDefault implements Runnable, ApplicationContextAware {
-
+    private static final Logger log = LoggerFactory.getLogger(StartTaskDefault.class);
+    private static boolean isRunning = false;
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
-    private static boolean isRunning = false;
     private static String lock;
     private ApplicationContext context;
-
-    public static AbstractTask getTask(IHandle handle, String beanId) {
-        AbstractTask task = Application.getBean(beanId, AbstractTask.class);
-        if (task != null) {
-            task.setHandle(handle);
-        }
-        return task;
-    }
 
     // 循环反复执行
     @Override
@@ -66,36 +59,31 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
 
     private void runTask(IHandle handle) {
         // 同一秒内，不允许执行2个及以上任务
-        String str = TDateTime.now().getTime();
-        if (str.equals(lock)) {
+        String str = TDateTime.Now().getTime();
+        if (str.equals(lock))
             return;
-        }
 
         lock = str;
         for (String beanId : context.getBeanNamesForType(AbstractTask.class)) {
             AbstractTask task = getTask(handle, beanId);
-            if (task == null) {
+            if (task == null)
                 continue;
-            }
             try {
-                String curTime = TDateTime.now().getTime().substring(0, 5);
-                if (!"".equals(task.getTime()) && !task.getTime().equals(curTime)) {
+                String curTime = TDateTime.Now().getTime().substring(0, 5);
+                if (!"".equals(task.getTime()) && !task.getTime().equals(curTime))
                     continue;
-                }
 
                 int timeOut = task.getInterval();
                 String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(),
                         task.getClass().getName());
-                if (Redis.get(buffKey) != null) {
+                if (Redis.get(buffKey) != null)
                     continue;
-                }
 
                 // 标识为已执行
                 Redis.set(buffKey, "ok", timeOut);
 
-                if (task.getInterval() > 1) {
+                if (task.getInterval() > 1)
                     log.info("execute " + task.getClass().getName());
-                }
 
                 task.execute();
             } catch (Exception e) {
@@ -103,6 +91,13 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
                 log.error(e.getMessage());
             }
         }
+    }
+
+    public static AbstractTask getTask(IHandle handle, String beanId) {
+        AbstractTask task = Application.getBean(beanId, AbstractTask.class);
+        if (task != null)
+            task.setHandle(handle);
+        return task;
     }
 
     @Override

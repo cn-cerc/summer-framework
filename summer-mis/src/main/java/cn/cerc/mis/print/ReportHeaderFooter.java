@@ -1,5 +1,7 @@
 package cn.cerc.mis.print;
 
+import java.io.IOException;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -13,8 +15,6 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
-
-import java.io.IOException;
 
 public class ReportHeaderFooter extends PdfPageEventHelper {
     /**
@@ -53,25 +53,20 @@ public class ReportHeaderFooter extends PdfPageEventHelper {
         this.presentFontSize = presentFontSize;
     }
 
-    @Override
     public void onOpenDocument(PdfWriter writer, Document document) {
         total = writer.getDirectContent().createTemplate(50, 50);// 共 页 的矩形的长宽高
     }
 
-    @Override
     public void onEndPage(PdfWriter writer, Document document) {
 
         Font f8 = null;
         try {
-            if (bf == null) {
+            if (bf == null)
                 bf = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", false);
-            }
-            if (fontDetail == null) {
+            if (fontDetail == null)
                 fontDetail = new Font(bf, presentFontSize, Font.NORMAL);// 数据体字体
-            }
-            if (f8 == null) {
+            if (f8 == null)
                 f8 = new Font(bf, 8);
-            }
         } catch (DocumentException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -110,7 +105,6 @@ public class ReportHeaderFooter extends PdfPageEventHelper {
 
     }
 
-    @Override
     public void onCloseDocument(PdfWriter writer, Document document) {
         // 7.最后一步了，就是关闭文档的时候，将模板替换成实际的 Y 值,至此，page x of y 制作完毕，完美兼容各种文档size。
         total.beginText();

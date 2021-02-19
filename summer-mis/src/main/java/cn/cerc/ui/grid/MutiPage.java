@@ -1,13 +1,10 @@
 package cn.cerc.ui.grid;
 
-import cn.cerc.core.DataSet;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.servlet.http.HttpServletRequest;
 
-@Slf4j
+import cn.cerc.core.DataSet;
+import net.sf.json.JSONObject;
+
 public class MutiPage {
     // 数据源
     private DataSet dataSet;
@@ -56,59 +53,36 @@ public class MutiPage {
         return prior;
     }
 
-    public void setPrior(int prior) {
-        this.prior = prior;
-    }
-
     public int getNext() {
         return next;
     }
 
-    public void setNext(int next) {
-        this.next = next;
-    }
-
     public int getCount() {
         this.count = recordCount / pageSize;
-        if ((recordCount % pageSize) > 0) {
+        if ((recordCount % pageSize) > 0)
             this.count = this.count + 1;
-        }
         return this.count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 
     public final int getBegin() {
         return begin;
     }
 
-    public void setBegin(int begin) {
-        this.begin = begin;
-    }
-
     public final int getEnd() {
         return end;
     }
 
-    public void setEnd(int end) {
-        this.end = end;
-    }
-
     private void reset() {
         // set prior:
-        if (current > 1) {
+        if (current > 1)
             this.prior = current - 1;
-        } else {
+        else
             this.prior = 1;
-        }
         // set next:
-        if (current >= this.getCount()) {
+        if (current >= this.getCount())
             this.next = current;
-        } else {
+        else
             this.next = current + 1;
-        }
         // set begin:
         begin = (current - 1) * pageSize;
         if (begin < 0) {
@@ -127,19 +101,33 @@ public class MutiPage {
         }
     }
 
-    @Override
     public String toString() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
-            return null;
-        }
+        JSONObject json = JSONObject.fromObject(this);
+        return json.toString();
     }
 
     public boolean isRange(int value) {
         return (value >= this.getBegin()) && (value <= this.getEnd());
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setPrior(int prior) {
+        this.prior = prior;
+    }
+
+    public void setNext(int next) {
+        this.next = next;
+    }
+
+    public void setBegin(int begin) {
+        this.begin = begin;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
     }
 
     public DataSet getDataSet() {
@@ -162,7 +150,7 @@ public class MutiPage {
         this.request = request;
         if (request != null) {
             String tmp = request.getParameter("pageno");
-            if (tmp != null && !"".equals(tmp)) {
+            if (tmp != null && !tmp.equals("")) {
                 int current = Integer.parseInt(tmp);
                 if (current > 0 && current != this.current) {
                     this.current = current;

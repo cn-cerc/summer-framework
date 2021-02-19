@@ -37,7 +37,12 @@ public class UIImage extends UIComponent {
         if (onclick != null) {
             html.print(" onclick='%s'", this.onclick);
         }
-        super.outputCss(html);
+        if (cssClass != null) {
+            html.print(" class='%s'", this.cssClass);
+        }
+        if (cssStyle != null) {
+            html.print(" style='%s'", this.cssStyle);
+        }
         html.println("/>");
     }
 

@@ -1,24 +1,25 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-@Slf4j
-public class CustomService extends AbstractHandle implements IService, IRestful {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-    @Autowired
-    public ISystemTable systemTable;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.IHandle;
+
+public class CustomService extends AbstractHandle implements IService, IRestful {
+    private static final Logger log = LoggerFactory.getLogger(CustomService.class);
     protected DataSet dataIn = null; // request
     protected DataSet dataOut = null; // response
     protected String funcCode;
     private String message = "";
     private StringBuffer msg = null;
     private String restPath;
+    @Autowired
+    public ISystemTable systemTable;
 
     @Override
     public void init(IHandle handle) {
@@ -36,15 +37,12 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
 
     @Override
     public IStatus execute(DataSet dataIn, DataSet dataOut) {
-        if (this.funcCode == null) {
+        if (this.funcCode == null)
             throw new RuntimeException("funcCode is null");
-        }
-        if (dataIn != null) {
+        if (dataIn != null)
             this.dataIn = dataIn;
-        }
-        if (dataOut != null) {
+        if (dataOut != null)
             this.dataOut = dataOut;
-        }
 
         ServiceStatus ss = new ServiceStatus(false);
         Class<?> self = this.getClass();
@@ -78,13 +76,12 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
                     return (IStatus) mt.invoke(this, dataIn, dataOut);
                 }
             } finally {
-                if (dataOut != null) {
+                if (dataOut != null)
                     dataOut.first();
-                }
                 long totalTime = System.currentTimeMillis() - startTime;
                 long timeout = webfunc != null ? webfunc.timeout() : 1000;
                 if (totalTime > timeout) {
-                    String[] tmp = this.getClass().getName().split("\\.");
+                    String tmp[] = this.getClass().getName().split("\\.");
                     String service = tmp[tmp.length - 1] + "." + this.funcCode;
                     log.warn(String.format("corpNo:%s, userCode:%s, service:%s, tickCount:%s", getCorpNo(),
                             getUserCode(), service, totalTime));
@@ -109,16 +106,14 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
     }
 
     public DataSet getDataIn() {
-        if (dataIn == null) {
+        if (dataIn == null)
             dataIn = new DataSet();
-        }
         return dataIn;
     }
 
     public DataSet getDataOut() {
-        if (dataOut == null) {
+        if (dataOut == null)
             dataOut = new DataSet();
-        }
         return dataOut;
     }
 
@@ -129,9 +124,8 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
     }
 
     public StringBuffer getMsg() {
-        if (msg == null) {
+        if (msg == null)
             msg = new StringBuffer(message);
-        }
         return msg;
     }
 
@@ -140,14 +134,12 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
     }
 
     public void setMessage(String message) {
-        if (message == null || "".equals(message.trim())) {
+        if (message == null || "".equals(message.trim()))
             return;
-        }
-        if (msg != null) {
+        if (msg != null)
             this.msg.append(message);
-        } else {
+        else
             this.message = message;
-        }
     }
 
     @Override
@@ -159,7 +151,7 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
     @Override
     public boolean checkSecurity(IHandle handle) {
         IHandle sess = (IHandle) handle.getProperty(null);
-        return sess != null && sess.logon();
+        return sess != null ? sess.logon() : false;
     }
 
     public String getFuncCode() {
@@ -171,12 +163,12 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
     }
 
     @Override
-    public String getRestPath() {
-        return restPath;
+    public void setRestPath(String restPath) {
+        this.restPath = restPath;
     }
 
     @Override
-    public void setRestPath(String restPath) {
-        this.restPath = restPath;
+    public String getRestPath() {
+        return restPath;
     }
 }

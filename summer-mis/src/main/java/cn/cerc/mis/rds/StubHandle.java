@@ -1,38 +1,62 @@
 package cn.cerc.mis.rds;
 
 import cn.cerc.core.IHandle;
+import cn.cerc.core.TDateTime;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mysql.MysqlConnection;
-import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlConnection;
+import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.core.Application;
-import lombok.extern.slf4j.Slf4j;
+import cn.cerc.mis.core.ISystemTable;
 
-@Slf4j
+import java.util.Date;
+
 public class StubHandle implements IHandle, AutoCloseable {
     public static final String DefaultBook = "999001";
     public static final String DefaultUser = DefaultBook + "01";
     public static final String DefaultProduct = "999001000001";
-    public static final String password = "123456";
-    public static final String machineCode = "T800";
-
     // 生产部
-    public static final String DefaultDept = "10050001";
+    private static final String DefaultDept = "10050001";
+    private static IHandle handle;
+    private static final String clientIP = "127.0.0.1";
 
-    private IHandle handle;
+    {
+        if (handle == null) {
+            handle = Application.getHandle();
+        }
+        // 每个小时的00分00秒，将旧的handle释放，获得一个新的
+        long time = new TDateTime(TDateTime.Now().toString()).getData().getTime();
+        if (time % (1000 * 60 * 60) == 0) {
+            handle.close();
+            handle = null;
+            handle = Application.getHandle();
+        }
+    }
 
     public StubHandle() {
-        handle = Application.getHandle();
-        log.info("StubHandle {}", handle.getClass());
-        handle.init(DefaultBook, DefaultUser, password, machineCode);
+        handle.init(DefaultBook, DefaultUser, clientIP);
     }
 
     public StubHandle(String corpNo, String userCode) {
-        handle = Application.getHandle();
-        log.info("StubHandle {}", handle.getClass());
-        handle.init(corpNo, userCode, password, machineCode);
+        handle.init(corpNo, userCode, clientIP);
+    }
+
+    @Deprecated
+    public StubHandle(String corpNo) {
+        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        SqlQuery ds = new SqlQuery(this);
+        ds.setMaximum(1);
+        ds.add("select Code_ from " + systemTable.getUserInfo());
+        ds.add("where CorpNo_='%s'", corpNo);
+        ds.open();
+        if (ds.eof()) {
+            throw new RuntimeException("找不到默认帐号：CorpNo=" + corpNo);
+        }
+        String userCode = ds.getString("Code_");
+
+        handle.init(corpNo, userCode, clientIP);
     }
 
     public SqlConnection getConnection() {
@@ -65,12 +89,6 @@ public class StubHandle implements IHandle, AutoCloseable {
             conn.setConfig(ServerConfig.getInstance());
             handle.setProperty(key, conn);
         }
-        if (obj == null && SlaveMysqlConnection.sessionId.equals(key)) {
-            SlaveMysqlConnection conn = new SlaveMysqlConnection();
-            conn.setConfig(ServerConfig.getInstance());
-            handle.setProperty(key, conn);
-        }
-
         if (obj == null && AliyunQueueConnection.sessionId.equals(key)) {
             AliyunQueueConnection conn = new AliyunQueueConnection();
             conn.setConfig(ServerConfig.getInstance());
@@ -90,7 +108,7 @@ public class StubHandle implements IHandle, AutoCloseable {
     }
 
     @Override
-    public boolean init(String bookNo, String userCode, String password, String clientCode) {
+    public boolean init(String bookNo, String userCode, String clientCode) {
         throw new RuntimeException("调用了未被实现的接口");
     }
 

@@ -2,9 +2,9 @@ package cn.cerc.mis.core;
 
 public interface IStatus {
     // 服务执行结果状态,默认：2xx=ok, 1xx=fail
-    int getStatus();
+    public int getStatus();
 
-    boolean getResult();
+    public boolean getResult();
 
-    String getMessage();
+    public String getMessage();
 }

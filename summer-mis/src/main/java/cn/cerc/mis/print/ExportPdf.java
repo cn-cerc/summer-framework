@@ -1,18 +1,19 @@
 package cn.cerc.mis.print;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class ExportPdf {
     private static ApplicationContext app;
@@ -35,12 +36,10 @@ public class ExportPdf {
 
     public PrintTemplate getTemplate() {
         if (template == null) {
-            if (templateId == null) {
+            if (templateId == null)
                 throw new RuntimeException("templateId is null");
-            }
-            if (app == null) {
+            if (app == null)
                 app = new FileSystemXmlApplicationContext(xmlFile);
-            }
             template = app.getBean(templateId, PrintTemplate.class);
         }
         return template;
@@ -57,7 +56,7 @@ public class ExportPdf {
         response.reset();
         if ("file".equals(template.getOutputDevice())) {
             response.setCharacterEncoding("UTF-8");// 设置相应内容的编码格式
-            String fname = new String(template.getFileName().getBytes(), StandardCharsets.ISO_8859_1);
+            String fname = new String(template.getFileName().getBytes(), "ISO-8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + fname + ".pdf");
             response.setContentType("application/pdf");// 定义输出类型
         }
