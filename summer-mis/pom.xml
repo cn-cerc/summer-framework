@@ -133,12 +133,7 @@
         <dependency>
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
+            <classifier>jdk15</classifier>
         </dependency>
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
