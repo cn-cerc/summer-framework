@@ -82,6 +82,11 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         return result;
     }
 
+    @Deprecated
+    public static TDateTime Now() {
+        return TDateTime.now();
+    }
+
     public static TDateTime fromDate(String val) {
         String fmt = getFormat(val);
         if (fmt == null) {

@@ -24,6 +24,11 @@ public class TDate extends TDateTime {
         this.setData(val.getData());
     }
 
+    @Deprecated
+    public static TDate Today() {
+        return TDate.today();
+    }
+
     // 当天，不带时分秒
     public static TDate today() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
