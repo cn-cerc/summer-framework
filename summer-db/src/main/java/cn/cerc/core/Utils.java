@@ -644,25 +644,4 @@ public class Utils {
         return !Utils.isBlank(str);
     }
 
-    /**
-     * @param request HttpServletRequest
-     * @return 获取客户端的访问地址
-     */
-    public static String getIP(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        if ("0:0:0:0:0:0:0:1".equals(ip)) {
-            ip = "0.0.0.0";
-        }
-        return ip;
-    }
-
 }
