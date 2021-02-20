@@ -33,11 +33,12 @@ public class JiguangPushTest {
         push.setMsgId("3707");
 
         // 发送给指定的设备Id
-        push.send(ClientType.Android, "n_e201ff3670a4174b");// itjun-xiaomi-mix2
-        push.send(ClientType.Android, "n_a86ddf4df465a83f");// weibo-xiaomi-5c
-        push.send(ClientType.IOS, "i_0C005500702F4F97AD81C2E992E36108");// ly-iPhone-SE2
-        push.send(ClientType.IOS, "i_A1688A8910B04499ABC64B035B559921");// wsg-iPhone-xr
-        push.send(ClientType.IOS, "i_87E2C6FB4D2347F49FC17CD564B07AEE");// itjun-iPhone-SE2
+//        push.send(ClientType.Android, "n_f526c72cf13474d7");// itjun-xiaomi-mix2
+        push.send(ClientType.Android, "n_d4ffa59ea6d1d9f3");// joylee-xiaomi-mix2
+//        push.send(ClientType.Android, "n_a86ddf4df465a83f");// weibo-xiaomi-5c
+//        push.send(ClientType.IOS, "i_82D7A281FC37497F810085A6D7EFB1B2");// ly-iPhone-SE2
+//        push.send(ClientType.IOS, "i_A1688A8910B04499ABC64B035B559921");// wsg-iPhone-xr
+//        push.send(ClientType.IOS, "i_82D7A281FC37497F810085A6D7EFB1B2");// itjun-iPhone-SE2
 //        push.send(ClientType.IOS, "i_87E2C6FB4D2347F49FC17CD564B07AEE", sound);// HuangRongjun-iPhone
 
         // 发送给指定的设备类型
