@@ -31,7 +31,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
         super();
     }
 
-    @Override   
+    @Override
     public void init(IForm form) {
         this.setForm(form);
         IAppConfig conf = Application.getAppConfig();
@@ -116,7 +116,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
 
         log.debug(String.format("进行用户帐号(%s)与密码认证", userCode));
         // 进行用户名、密码认证
-        String IP = Utils.getIP(this.getRequest());
+        String IP = AppLoginDefault.getIP(this.getRequest());
         if (obj.check(userCode, password, deviceId, IP, form.getClient().getLanguage())) {
             String token = obj.getToken();
             if (token != null && !"".equals(token)) {
@@ -132,6 +132,27 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
             return this.execute();
         }
         return null;
+    }
+
+    /**
+     * @param request HttpServletRequest
+     * @return 获取客户端的访问地址
+     */
+    public static String getIP(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
+            ip = "0.0.0.0";
+        }
+        return ip;
     }
 
 }
