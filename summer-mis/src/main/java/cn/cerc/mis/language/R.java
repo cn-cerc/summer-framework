@@ -115,7 +115,7 @@ public class R {
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select Value_ from %s", systemTable.getLanguage());
         ds.add("where Key_='%s'", Utils.safeString(text));
-        if (!LanguageType.en_US.equals(language)) {
+        if (!Language.en_US.equals(language)) {
             ds.add("and (Lang_='en' or Lang_='%s')", language);
             ds.add("order by Value_ desc");
         } else {
@@ -128,19 +128,20 @@ public class R {
             ds.setField("Lang_", language);
             ds.setField("Value_", "");
             ds.setField("UpdateUser_", handle.getUserCode());
-            ds.setField("UpdateTime_", TDateTime.Now());
+            ds.setField("UpdateTime_", TDateTime.now());
             ds.setField("CreateUser_", handle.getUserCode());
-            ds.setField("CreateTime_", TDateTime.Now());
+            ds.setField("CreateTime_", TDateTime.now());
             ds.post();
             return text;
         }
         String result = "";
         String en_result = ""; // 默认英文
         while (ds.fetch()) {
-            if (Language.en_US.equals(ds.getString("Lang_")))
+            if (Language.en_US.equals(ds.getString("Lang_"))) {
                 en_result = ds.getString("Value_");
-            else
+            } else {
                 result = ds.getString("Value_");
+            }
         }
         if (!"".equals(result)) {
             return result;
