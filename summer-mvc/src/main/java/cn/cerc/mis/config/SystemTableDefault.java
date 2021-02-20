@@ -15,6 +15,21 @@ public class SystemTableDefault implements ISystemTable {
     }
 
     @Override
+    public String getAppMenus() {
+        return "s_AppMenus";
+    }
+
+    @Override
+    public String getCustomMenus() {
+        return "s_CustomMenus";
+    }
+
+    @Override
+    public String getUserMenus() {
+        return "s_UserMenus";
+    }
+
+    @Override
     public String getUserInfo() {
         return "s_UserInfo";
     }
