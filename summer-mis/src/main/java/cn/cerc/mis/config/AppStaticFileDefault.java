@@ -40,8 +40,8 @@ public enum AppStaticFileDefault {
         suffix.add(".apk");
         suffix.add(".exe");
         suffix.add(".manifest");
-        suffix.add(".woff");
         suffix.add(".ttf");
+        suffix.add(".woff");
     }
 
     public boolean isStaticFile(String uri) {
