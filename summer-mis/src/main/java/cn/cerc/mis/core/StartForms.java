@@ -191,51 +191,6 @@ public class StartForms implements Filter {
         }
     }
 
-    // 是否在当前设备使用此菜单，如：检验此设备是否需要设备验证码
-    protected boolean passDevice(IForm form) {
-        // 若是iPhone应用商店测试或地藤体验账号则跳过验证
-        if (isExperienceAccount(form)) {
-            return true;
-        }
-
-        String deviceId = form.getClient().getId();
-        // TODO 验证码变量，需要改成静态变量，统一取值
-        String verifyCode = form.getRequest().getParameter("verifyCode");
-        log.debug(String.format("进行设备认证, deviceId=%s", deviceId));
-        String userId = (String) form.getHandle().getProperty(Application.userId);
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionInfo, userId, deviceId)) {
-            if (!buff.isNull()) {
-                if (buff.getBoolean("VerifyMachine")) {
-                    log.debug("已经认证过，跳过认证");
-                    return true;
-                }
-            }
-
-            boolean result = false;
-            IServiceProxy app = ServiceFactory.get(form.getHandle());
-            app.setService("SvrUserLogin.verifyMachine");
-            app.getDataIn().getHead().setField("deviceId", deviceId);
-            if (verifyCode != null && !"".equals(verifyCode)) {
-                app.getDataIn().getHead().setField("verifyCode", verifyCode);
-            }
-
-            if (app.exec()) {
-                result = true;
-            } else {
-                int used = app.getDataOut().getHead().getInt("Used_");
-                if (used == 1) {
-                    result = true;
-                } else {
-                    form.setParam("message", app.getMessage());
-                }
-            }
-            if (result) {
-                buff.setField("VerifyMachine", true);
-            }
-            return result;
-        }
-    }
-
     // 调用页面控制器指定的函数
     protected void callForm(IForm form, String funcCode) throws ServletException, IOException {
         HttpServletResponse response = form.getResponse();
@@ -246,7 +201,7 @@ public class StartForms implements Filter {
         } else {
             response.setContentType("text/html;charset=UTF-8");
         }
-
+    
         Object pageOutput;
         Method method = null;
         long startTime = System.currentTimeMillis();
@@ -256,13 +211,13 @@ public class StartForms implements Filter {
             if (CLIENTVER != null) {
                 request.getSession().setAttribute("CLIENTVER", CLIENTVER);
             }
-
+    
             // 是否拥有此菜单调用权限
             if (!Application.getPassport(form.getHandle()).passForm(form)) {
                 log.warn(String.format("无权限执行 %s", request.getRequestURL()));
                 throw new RuntimeException(R.asString(form.getHandle(), "对不起，您没有权限执行此功能！"));
             }
-
+    
             // 专用测试账号则跳过设备认证的判断
             if (isExperienceAccount(form)) {
                 try {
@@ -322,7 +277,7 @@ public class StartForms implements Filter {
                     }
                 }
             }
-
+    
             // 处理返回值
             if (pageOutput != null) {
                 if (pageOutput instanceof IPage) {
@@ -373,6 +328,51 @@ public class StartForms implements Filter {
                 }
                 checkTimeout(form, funcCode, startTime, timeout);
             }
+        }
+    }
+
+    // 是否在当前设备使用此菜单，如：检验此设备是否需要设备验证码
+    protected boolean passDevice(IForm form) {
+        // 若是iPhone应用商店测试或地藤体验账号则跳过验证
+        if (isExperienceAccount(form)) {
+            return true;
+        }
+
+        String deviceId = form.getClient().getId();
+        // TODO 验证码变量，需要改成静态变量，统一取值
+        String verifyCode = form.getRequest().getParameter("verifyCode");
+        log.debug(String.format("进行设备认证, deviceId=%s", deviceId));
+        String userId = (String) form.getHandle().getProperty(Application.userId);
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionInfo, userId, deviceId)) {
+            if (!buff.isNull()) {
+                if (buff.getBoolean("VerifyMachine")) {
+                    log.debug("已经认证过，跳过认证");
+                    return true;
+                }
+            }
+
+            boolean result = false;
+            IServiceProxy app = ServiceFactory.get(form.getHandle());
+            app.setService("SvrUserLogin.verifyMachine");
+            app.getDataIn().getHead().setField("deviceId", deviceId);
+            if (verifyCode != null && !"".equals(verifyCode)) {
+                app.getDataIn().getHead().setField("verifyCode", verifyCode);
+            }
+
+            if (app.exec()) {
+                result = true;
+            } else {
+                int used = app.getDataOut().getHead().getInt("Used_");
+                if (used == 1) {
+                    result = true;
+                } else {
+                    form.setParam("message", app.getMessage());
+                }
+            }
+            if (result) {
+                buff.setField("VerifyMachine", true);
+            }
+            return result;
         }
     }
 
