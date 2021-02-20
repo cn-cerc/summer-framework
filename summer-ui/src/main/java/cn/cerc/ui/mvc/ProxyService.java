@@ -1,11 +1,11 @@
-package cn.cerc.mis.client;
+package cn.cerc.ui.mvc;
 
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mis.core.LocalService;
-import cn.cerc.mis.page.JsonPage;
+import cn.cerc.ui.page.JsonPage;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

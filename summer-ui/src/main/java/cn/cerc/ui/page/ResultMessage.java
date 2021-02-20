@@ -1,4 +1,4 @@
-package cn.cerc.mis.page;
+package cn.cerc.ui.page;
 
 import com.google.gson.Gson;
 

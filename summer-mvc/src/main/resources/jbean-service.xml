@@ -15,13 +15,13 @@
     <!-- 获取帐套参数 -->
     <bean id="SvrBookOption" class="cn.cerc.mis.services.SvrBookOption" scope="prototype"/>
     <!-- 文件上传服务 -->
-    <bean id="SvrFileUpload.search" class="cn.cerc.mis.page.service.SvrFileUpload" scope="prototype">
+    <bean id="SvrFileUpload.search" class="cn.cerc.ui.page.service.SvrFileUpload" scope="prototype">
         <property name="funcCode" value="search"/>
     </bean>
-    <bean id="SvrFileUpload.delete" class="cn.cerc.mis.page.service.SvrFileUpload" scope="prototype">
+    <bean id="SvrFileUpload.delete" class="cn.cerc.ui.page.service.SvrFileUpload" scope="prototype">
         <property name="funcCode" value="delete"/>
     </bean>
-    <bean id="SvrFileUpload.append" class="cn.cerc.mis.page.service.SvrFileUpload" scope="prototype">
+    <bean id="SvrFileUpload.append" class="cn.cerc.ui.page.service.SvrFileUpload" scope="prototype">
         <property name="funcCode" value="append"/>
     </bean>
 </beans>

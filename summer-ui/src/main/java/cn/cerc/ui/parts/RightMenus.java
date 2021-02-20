@@ -1,7 +1,7 @@
 package cn.cerc.ui.parts;
 
 import cn.cerc.mis.core.AbstractHandle;
-import cn.cerc.mis.page.IMenuBar;
+import cn.cerc.ui.mvc.IMenuBar;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

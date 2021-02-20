@@ -1,4 +1,4 @@
-package cn.cerc.mis.page;
+package cn.cerc.ui.mvc;
 
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.UrlRecord;

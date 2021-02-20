@@ -1,4 +1,4 @@
-package cn.cerc.mis.core;
+package cn.cerc.ui.mvc;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
@@ -8,6 +8,11 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
+import cn.cerc.mis.core.AbstractForm;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.HTMLResource;
+import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.IPage;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlContent;

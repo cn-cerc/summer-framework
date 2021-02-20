@@ -1,28 +1,28 @@
-package cn.cerc.mis.tools;
+package cn.cerc.ui.mvc;
 
 import cn.cerc.ui.core.Component;
-import cn.cerc.ui.parts.UISheetUrl;
+import cn.cerc.ui.parts.UISheetHelp;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-public class PageLink {
+public class PageHelp {
     private static ApplicationContext app;
-    private static String xmlFile = "classpath:page-link.xml";
+    private static String xmlFile = "classpath:page-help.xml";
 
-    public static UISheetUrl get(Component owner, String beanId) {
+    public static UISheetHelp get(Component owner, String beanId) {
         if (app == null) {
             app = new FileSystemXmlApplicationContext(xmlFile);
         }
         if (!app.containsBean(beanId)) {
             return null;
         }
-        UISheetUrl side = app.getBean(beanId, UISheetUrl.class);
+        UISheetHelp side = app.getBean(beanId, UISheetHelp.class);
         side.setOwner(owner);
         return side;
     }
 
     public static void main(String[] args) {
-        UISheetUrl help = get(null, "TFrmPartBrand");
+        UISheetHelp help = get(null, "TFrmTranBG");
         System.out.println(help.toString());
     }
 }

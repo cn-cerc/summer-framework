@@ -1,4 +1,4 @@
-package cn.cerc.mis.tools;
+package cn.cerc.ui.mvc;
 
 import cn.cerc.ui.vcl.UIText;
 import org.springframework.context.ApplicationContext;

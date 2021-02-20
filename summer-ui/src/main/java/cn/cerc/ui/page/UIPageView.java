@@ -2,16 +2,16 @@ package cn.cerc.ui.page;
 
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
-import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.StartForms;
 import cn.cerc.mis.language.R;
-import cn.cerc.mis.page.IMenuBar;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.menu.MenuList;
+import cn.cerc.ui.mvc.AbstractJspPage;
+import cn.cerc.ui.mvc.IMenuBar;
+import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.parts.RightMenus;
 
 import javax.servlet.ServletException;

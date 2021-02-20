@@ -1,8 +1,12 @@
-package cn.cerc.mis.core;
+package cn.cerc.ui.mvc;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.config.ApplicationConfig;
+import cn.cerc.mis.core.AppClient;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.IPage;
 import cn.cerc.ui.core.UrlRecord;
 import lombok.extern.slf4j.Slf4j;
 

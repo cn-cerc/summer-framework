@@ -1,4 +1,4 @@
-package cn.cerc.mis.page.upload;
+package cn.cerc.ui.mvc;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
@@ -9,7 +9,7 @@ import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mis.page.RedirectPage;
+import cn.cerc.ui.page.RedirectPage;
 import cn.cerc.ui.fields.ButtonField;
 import cn.cerc.ui.fields.DateTimeField;
 import cn.cerc.ui.fields.ItField;
@@ -18,6 +18,7 @@ import cn.cerc.ui.fields.UploadField;
 import cn.cerc.ui.grid.AbstractGrid;
 import cn.cerc.ui.grid.PhoneGrid;
 import cn.cerc.ui.page.UIPageSearch;
+import cn.cerc.ui.page.upload.FileUploadBasePage;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;

@@ -5,7 +5,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.config.ApplicationConfig;
-import cn.cerc.mis.core.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;

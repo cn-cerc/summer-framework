@@ -1,4 +1,4 @@
-package cn.cerc.mis.page;
+package cn.cerc.ui.page;
 
 import cn.cerc.mis.core.IAppErrorPage;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.mis.core.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;

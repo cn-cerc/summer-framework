@@ -1,13 +1,12 @@
-package cn.cerc.mis.page;
+package cn.cerc.ui.mvc;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
-import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AbstractForm;
-import cn.cerc.mis.core.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.IAppLogin;

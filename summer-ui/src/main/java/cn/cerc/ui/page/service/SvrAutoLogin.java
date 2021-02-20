@@ -1,4 +1,4 @@
-package cn.cerc.mis.page.service;
+package cn.cerc.ui.page.service;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;

@@ -1,4 +1,4 @@
-package cn.cerc.mis.page.upload;
+package cn.cerc.ui.page.upload;
 
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.IPage;
