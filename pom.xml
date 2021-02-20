@@ -11,7 +11,7 @@
 
     <modules>
         <module>summer-db</module>
-        <module>summer-mis</module>
+        <module>summer-mvc</module>
     </modules>
 
     <properties>
