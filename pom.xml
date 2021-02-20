@@ -12,6 +12,11 @@
     <modules>
         <module>summer-db</module>
         <module>summer-mvc</module>
+        <module>summer-security</module>
+        <module>summer-ui</module>
+        <module>summer-mis-cn</module>
+        <module>summer-mis-tw</module>
+        <module>summer-mis-sg</module>
     </modules>
 
     <properties>
