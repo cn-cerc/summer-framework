@@ -22,6 +22,11 @@ public class OptionField extends AbstractField {
         this.setField(field);
     }
 
+    @Deprecated
+    public OptionField add(String key, String text) {
+        return this.put(key, text);
+    }
+
     public OptionField put(String key, String text) {
         if (this.defaultValue == null) {
             defaultValue = key;
