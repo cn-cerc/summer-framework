@@ -1,11 +1,10 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.cdn.CDN;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IClient;
@@ -13,9 +12,14 @@ import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.services.BookInfoRecord;
 import cn.cerc.mis.services.MemoryBookInfo;
+import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.phone.Block104;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UIHeader extends UIComponent {
     private static final int MAX_MENUS = 4;
@@ -26,6 +30,8 @@ public class UIHeader extends UIComponent {
     private UrlRecord homePage;
     // 左边菜单
     private List<UrlRecord> leftMenus = new ArrayList<>();
+    // 菜单搜索区域
+    private Block104 menuSearchArea = null;
     // 左菜单按钮
     private List<UIBottom> leftBottom = new ArrayList<>();
     // 右边菜单
@@ -38,9 +44,7 @@ public class UIHeader extends UIComponent {
     private String logoSrc;
     // 当前用户
     private String currentUser;
-    // 当前账套
-    private String currentCorpNo;
-    // 当前账套名称
+    // 当前帐套名称
     private String corpNoName;
     // 退出
     private UrlRecord exitPage = null;
@@ -49,38 +53,55 @@ public class UIHeader extends UIComponent {
     // 菜单模组
     private String moduleCode = null;
 
+    private final ServerConfig config = ServerConfig.getInstance();
+
     public void setHeadInfo(String logoSrc, String welcome) {
         this.logoSrc = logoSrc;
         this.welcome = welcome;
     }
 
-    public UIHeader(AbstractJspPage owner) {
-        super(owner);
-        ServerConfig config = ServerConfig.getInstance();
-        String homeImg = "images/Home.png";
+    private String getHomeImage(AbstractJspPage owner) {
+        String homeImg = UIConfig.home_index;
         if (owner.getForm().getClient().isPhone()) {
-            homeImg = config.getProperty("app.phone.home.image", homeImg);
+            String phoneIndex = config.getProperty("app.phone.home.image");
+            if (Utils.isNotEmpty(homeImg)) {
+                homeImg = CDN.get(phoneIndex);
+            }
         }
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
-                String.format("<img src=\"%s\"/>", homeImg));
+        return String.format("<img src=\"%s\"/>", homeImg);
+    }
+
+    private String getLogo() {
+        String logo = config.getProperty("app.logo.src");
+        if (Utils.isNotEmpty(logo)) {
+            return CDN.get(logo);
+        }
+        return UIConfig.app_logo;
+    }
+
+    public UIHeader(AbstractJspPage page) {
+        super(page);
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), getHomeImage(page));
         leftMenus.add(homePage);
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(),
-                R.asString(owner.getForm().getHandle(), "开始"));
-        IClient client = owner.getForm().getClient();
-        if (!client.isPhone()) {
-            IHandle handle = owner.getForm().getHandle();
+
+        IHandle handle = page.getForm().getHandle();
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), R.asString(handle, "开始"));
+
+        IClient client = page.getForm().getClient();
+        boolean isShowBar = "true".equals(config.getProperty("app.ui.head.show", "true"));
+        if (!client.isPhone() && isShowBar) {
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
-            currentUser = R.asString(owner.getForm().getHandle(), "当前用户");
-            currentCorpNo = R.asString(owner.getForm().getHandle(), "当前账套");
+            currentUser = R.asString(handle, "用户");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {
                 BookInfoRecord item = MemoryBookInfo.get(handle, handle.getCorpNo());
                 this.corpNoName = item.getShortName();
             }
-            logoSrc = config.getProperty("app.logo.src", "images/logo_dt.png");
+            logoSrc = getLogo();
             welcome = config.getProperty("app.welcome.language", "欢迎使用系统");
+
             String exitName = config.getProperty("app.exit.name", "#");
             String exitUrl = config.getProperty("app.exit.url");
             exitSystem = new UrlRecord();
@@ -96,20 +117,22 @@ public class UIHeader extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        if (this.leftBottom.size() > MAX_MENUS)
+        if (this.leftBottom.size() > MAX_MENUS) {
             throw new RuntimeException(
                     String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
+        }
 
         html.print("<header role='header'");
         super.outputCss(html);
         html.println(">");
         if (userName != null) {
             html.print("<div class='titel_top'>");
+            html.print("<div class='logo_box'>");
             html.print("<img src='%s'/>", logoSrc);
+            html.print("</div>");
             html.print("<span>%s</span>", welcome);
             html.print("<div class='user_right'>");
-            html.print("<span>%s:<i>%s</i></span>", currentCorpNo, corpNoName);
-            html.print("<span>%s:<i>%s</i></span>", currentUser, userName);
+            html.print("<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>", currentUser, ApplicationConfig.App_Path, corpNoName, userName);
             html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
             html.print("</div>");
             html.print("</div>");
@@ -128,8 +151,9 @@ public class UIHeader extends UIComponent {
             int i = 0;
             for (UrlRecord menu : leftMenus) {
                 html.print("<li>");
-                if (i > 1)
+                if (i > 1) {
                     html.println("<span>></span>");
+                }
                 html.print("<a href=\"%s\">%s</a>", menu.getUrl(), menu.getName());
                 i++;
                 html.print("</li>");
@@ -147,6 +171,9 @@ public class UIHeader extends UIComponent {
 
         // 降序输出：右边
         html.println("<section role='rightMenu'>");
+        if (menuSearchArea != null) {
+            menuSearchArea.output(html);
+        }
         if (rightMenus.size() > 0) {
             html.print("<ul>");
             int i = rightMenus.size() - 1;
@@ -166,8 +193,9 @@ public class UIHeader extends UIComponent {
     }
 
     public UIAdvertisement getAdvertisement() {
-        if (advertisement == null)
+        if (advertisement == null) {
             advertisement = new UIAdvertisement(this);
+        }
         return advertisement;
     }
 
@@ -201,7 +229,9 @@ public class UIHeader extends UIComponent {
 
     public void setModule(String moduleCode, String moduleName) {
         this.moduleCode = moduleCode;
-        this.addLeftMenu("TWebModule?module=" + moduleCode, moduleName);
+        if (!"".equals(moduleCode)) {
+            this.addLeftMenu("FrmModule?module=" + moduleCode, moduleName);
+        }
     }
 
     public String getPageTitle() {
@@ -215,9 +245,9 @@ public class UIHeader extends UIComponent {
     public void addLeftMenu(UrlRecord urlRecord) {
 //        if (this.moduleCode == null) {
 //            this.moduleCode = urlRecord.getSite();
-//            urlRecord.setSite("TWebModule?module=" + urlRecord.getSite());
+//            urlRecord.setSite("FrmModule?module=" + urlRecord.getSite());
 //        }
-        leftMenus.add(urlRecord);
+//        leftMenus.add(urlRecord);
     }
 
     public void addRightMenu(UrlRecord urlRecord) {
@@ -245,8 +275,9 @@ public class UIHeader extends UIComponent {
     }
 
     public void setExitPage(String url) {
-        if (exitPage == null)
+        if (exitPage == null) {
             exitPage = new UrlRecord();
+        }
         exitPage.setName("<img src=\"images/return.png\"/>");
         exitPage.setSite(url);
     }
@@ -317,4 +348,10 @@ public class UIHeader extends UIComponent {
         return currentUser;
     }
 
+    public Block104 getMenuSearchArea() {
+        if (menuSearchArea == null) {
+            menuSearchArea = new Block104(this);
+        }
+        return menuSearchArea;
+    }
 }

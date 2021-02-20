@@ -1,20 +1,19 @@
 package cn.cerc.mis.language;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.core.Application;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.core.Application;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class ResourceJstl extends SimpleTagSupport {
@@ -63,8 +62,8 @@ public class ResourceJstl extends SimpleTagSupport {
         jf.invoke(sw);
         text = sw.toString();
         Object temp = handle.getProperty(Application.deviceLanguage);
-        String lang = (temp == null || "".equals(temp)) ? Application.getLangage() : (String) temp;
-        if (LanguageType.zh_CN.equals(lang)) {
+        String lang = (temp == null || "".equals(temp)) ? Application.getLanguage() : (String) temp;
+        if (Language.zh_CN.equals(lang)) {
             return text;
         }
 
@@ -84,7 +83,7 @@ public class ResourceJstl extends SimpleTagSupport {
         }
 
         // 取不到值，但当前是英文时，则原样返回
-        if (LanguageType.en_US.equals(lang)) {
+        if (Language.en_US.equals(lang)) {
             if (ServerConfig.getInstance().isDebug()) {
                 return lang + ":" + text;
             } else {
@@ -93,7 +92,7 @@ public class ResourceJstl extends SimpleTagSupport {
         }
 
         // 如果是其它语言，则取英文的默认值
-        ResourceBuffer en = items.get(LanguageType.en_US);
+        ResourceBuffer en = items.get(Language.en_US);
         result = en.get(handle, text);
         if (result != null && !"".equals(result)) {
             return result;

@@ -1,11 +1,11 @@
 package cn.cerc.db.other;
 
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
 
 public class CountRecord {
     private DataSet dataSet;
@@ -19,10 +19,11 @@ public class CountRecord {
         for (Record rs : dataSet) {
             String group = count.getGroup(rs);
             Integer value = groups.get(group);
-            if (value == null)
+            if (value == null) {
                 groups.put(group, 1);
-            else
+            } else {
                 groups.put(group, value + 1);
+            }
         }
         return this;
     }

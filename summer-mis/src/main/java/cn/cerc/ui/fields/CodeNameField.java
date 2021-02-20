@@ -1,10 +1,12 @@
 package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
+import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class CodeNameField extends AbstractField {
+
     private String nameField;
 
     public CodeNameField(UIComponent owner, String name, String field) {
@@ -21,15 +23,16 @@ public class CodeNameField extends AbstractField {
     }
 
     @Override
-    public String getText(Record dataSet) {
-        if (dataSet == null)
+    public String getText(Record record) {
+        if (record == null) {
             return null;
+        }
         if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(dataSet, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
-        return dataSet.getString(getField());
+        return record.getString(getField());
     }
 
     @Override
@@ -41,8 +44,9 @@ public class CodeNameField extends AbstractField {
             html.print(" name=\"%s\"", this.getId());
             html.print(" id=\"%s\"", this.getId());
             String value = this.getText(record);
-            if (value != null)
+            if (value != null) {
                 html.print(" value=\"%s\"", value);
+            }
             html.println("/>");
         } else {
             html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
@@ -52,8 +56,9 @@ public class CodeNameField extends AbstractField {
             html.print(" name=\"%s\"", this.getId());
             html.print(" id=\"%s\"", this.getId());
             String codeValue = this.getText(record);
-            if (codeValue != null)
+            if (codeValue != null) {
                 html.print(" value=\"%s\"", codeValue);
+            }
             html.println("/>");
 
             html.print("<input");
@@ -63,17 +68,22 @@ public class CodeNameField extends AbstractField {
             String nameValue = null;
             if (record != null) {
                 nameValue = record.getString(getNameField());
-                if (nameValue != null)
+                if (nameValue != null) {
                     html.print(" value=\"%s\"", nameValue);
+                }
             }
-            if (this.isReadonly())
+            if (this.isReadonly()) {
                 html.print(" readonly=\"readonly\"");
-            if (this.isAutofocus())
+            }
+            if (this.isAutofocus()) {
                 html.print(" autofocus");
-            if (this.isRequired())
+            }
+            if (this.isRequired()) {
                 html.print(" required");
-            if (this.getPlaceholder() != null)
+            }
+            if (this.getPlaceholder() != null) {
                 html.print(" placeholder=\"%s\"", this.getPlaceholder());
+            }
             html.println("/>");
 
             if (this.isShowStar()) {
@@ -83,7 +93,7 @@ public class CodeNameField extends AbstractField {
             html.print("<span>");
             if (this.getDialog() != null && this.getDialog().isOpen()) {
                 html.print("<a href=\"%s\">", getUrl(this.getDialog()));
-                html.print("<img src=\"images/searchIocn.png\">");
+                html.print("<img src=\"%s\">", UIConfig.searchIocn);
                 html.print("</a>");
             }
             html.print("</span>");
@@ -126,8 +136,9 @@ public class CodeNameField extends AbstractField {
     }
 
     public String getNameField() {
-        if (nameField != null)
+        if (nameField != null) {
             return nameField;
+        }
         return this.getField() + "_name";
     }
 

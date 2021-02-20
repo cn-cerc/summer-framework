@@ -4,20 +4,17 @@ import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 
 public class MailAuthenticator extends Authenticator {
-    private String userName = null;
-    private String password = null;
-
-    public MailAuthenticator() {
-
-    }
+    private final String userName;
+    private final String authorizeCode;
 
     public MailAuthenticator(String username, String password) {
         this.userName = username;
-        this.password = password;
+        this.authorizeCode = password;
     }
 
+    @Override
     protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(userName, password);
+        return new PasswordAuthentication(userName, authorizeCode);
     }
 
 }

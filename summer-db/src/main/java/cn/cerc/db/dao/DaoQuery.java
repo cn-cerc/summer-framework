@@ -1,17 +1,5 @@
 package cn.cerc.db.dao;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
@@ -25,6 +13,17 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlOperator;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.sql.DataSource;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public abstract class DaoQuery<T extends Serializable> extends DataQuery {
@@ -103,14 +102,16 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
 
     @Override
     public DataQuery open() {
-        if (session == null)
+        if (session == null) {
             throw new RuntimeException("SqlConnection is null");
+        }
         return this._open(false);
     }
 
     public int open(SqlText sqlText) {
-        if (session == null)
+        if (session == null) {
             throw new RuntimeException("SqlConnection is null");
+        }
         this.close();
         this.setSqlText(sqlText);
         this._open(false);
@@ -155,11 +156,13 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
             this.open();
             return this.size();
         }
-        if (session == null)
+        if (session == null) {
             throw new RuntimeException("SqlSession is null");
+        }
         Connection conn = session.getClient();
-        if (conn == null)
+        if (conn == null) {
             throw new RuntimeException("Connection is null");
+        }
         try {
             try (Statement st = conn.createStatement()) {
                 log.debug(sql.replaceAll("\r\n", " "));
@@ -180,15 +183,17 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
         try {
             this.setOnAfterAppend(null);
             rs.last();
-            if (getSqlText().getMaximum() > -1)
+            if (getSqlText().getMaximum() > -1) {
                 BigdataException.check(this, this.size() + rs.getRow());
+            }
             // 取得字段清单
             ResultSetMetaData meta = rs.getMetaData();
             FieldDefs defs = this.getFieldDefs();
             for (int i = 1; i <= meta.getColumnCount(); i++) {
                 String field = meta.getColumnLabel(i);
-                if (!defs.exists(field))
+                if (!defs.exists(field)) {
                     defs.add(field);
+                }
             }
             // 取得所有数据
             if (rs.first()) {
@@ -221,8 +226,9 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
     @Override
     public DaoQuery<T> setActive(boolean value) {
         if (value) {
-            if (!this.active)
+            if (!this.active) {
                 this.open();
+            }
             this.active = true;
         } else {
             this.close();
@@ -232,8 +238,9 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
 
     @Override
     public void post() {
-        if (this.isBatchSave())
+        if (this.isBatchSave()) {
             return;
+        }
         Record record = this.getCurrent();
         if (record.getState() == DataSetState.dsInsert) {
             beforePost();
@@ -250,23 +257,26 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
     public void delete() {
         Record record = this.getCurrent();
         super.delete();
-        if (record.getState() == DataSetState.dsInsert)
+        if (record.getState() == DataSetState.dsInsert) {
             return;
-        if (this.isBatchSave())
+        }
+        if (this.isBatchSave()) {
             delList.add(record);
-        else {
+        } else {
             getDefaultOperator().delete(record);
         }
     }
 
     @Override
     public void save() {
-        if (!this.isBatchSave())
+        if (!this.isBatchSave()) {
             throw new RuntimeException("batchSave is false");
+        }
         IDataOperator operator = getDefaultOperator();
         // 先执行删除
-        for (Record record : delList)
+        for (Record record : delList) {
             operator.delete(record);
+        }
         delList.clear();
         // 再执行增加、修改
         this.first();
@@ -287,16 +297,16 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
         if (operator == null) {
             SqlOperator def = new SqlOperator(this.handle);
             String sql = this.getSqlText().getText();
-            if (sql != null)
+            if (sql != null) {
                 def.setTableName(SqlOperator.findTableName(sql));
+            }
             operator = def;
         }
-        if (operator instanceof SqlOperator) {
-            SqlOperator opear = operator;
-            if (opear.getTableName() == null) {
-                String sql = this.getSqlText().getText();
-                if (sql != null)
-                    opear.setTableName(SqlOperator.findTableName(sql));
+        SqlOperator opear = operator;
+        if (opear.getTableName() == null) {
+            String sql = this.getSqlText().getText();
+            if (sql != null) {
+                opear.setTableName(SqlOperator.findTableName(sql));
             }
         }
         return operator;
@@ -363,8 +373,9 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
 
     // 将对象追加到数据表中
     public void append(T item) {
-        if (item instanceof DaoEvent)
+        if (item instanceof DaoEvent) {
             ((DaoEvent) item).beforePost();
+        }
         this.append();
         DaoUtil.copy(item, this.getCurrent());
         this.post();
@@ -372,8 +383,9 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
 
     // 与read函数配套，将对象内容保存到数据库中
     public void save(T item) {
-        if (item instanceof DaoEvent)
+        if (item instanceof DaoEvent) {
             ((DaoEvent) item).beforePost();
+        }
         this.edit();
         DaoUtil.copy(item, this.getCurrent());
         this.post();

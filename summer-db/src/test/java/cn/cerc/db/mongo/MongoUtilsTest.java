@@ -1,18 +1,16 @@
 package cn.cerc.db.mongo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
+import cn.cerc.db.core.StubHandleText;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-
-import cn.cerc.db.core.StubHandle;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @Slf4j
 public class MongoUtilsTest {
@@ -21,7 +19,7 @@ public class MongoUtilsTest {
 
     @BeforeClass
     public static void init() {
-        StubHandle handle = new StubHandle();
+        StubHandleText handle = new StubHandleText();
         utils = new MongoUtils(handle);
     }
 

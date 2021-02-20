@@ -1,12 +1,12 @@
 package cn.cerc.ui.phone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 两行文字列表描述，右侧带导航栏箭头

@@ -1,11 +1,11 @@
 package cn.cerc.ui.parts;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.vcl.UIGroupBox;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UIActionForm extends UIComponent {
     private String action;
@@ -67,14 +67,18 @@ public class UIActionForm extends UIComponent {
      */
     public void outHead(HtmlWriter html) {
         html.print("<form");
-        if (this.action != null)
+        if (this.action != null) {
             html.print(" action=\"%s\"", this.action);
-        if (this.method != null)
+        }
+        if (this.method != null) {
             html.print(" method=\"%s\"", this.method);
-        if (this.getId() != null)
+        }
+        if (this.getId() != null) {
             html.print(" id=\"%s\"", this.getId());
-        if (this.enctype != null)
+        }
+        if (this.enctype != null) {
             html.print(" enctype=\"%s\"", this.enctype);
+        }
         html.println(">");
         for (String key : items.keySet()) {
             String value = items.get(key);

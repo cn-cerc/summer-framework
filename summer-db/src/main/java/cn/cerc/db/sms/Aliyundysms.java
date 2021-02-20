@@ -1,16 +1,14 @@
 package cn.cerc.db.sms;
 
+import cn.cerc.core.IConfig;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-
-import cn.cerc.core.IConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -88,13 +86,11 @@ public class Aliyundysms {
 
             SendSmsResponse response = acsClient.getAcsResponse(request);
             this.message = response.getMessage();
-            log.info("短信接口返回的数据----------------");
-            log.info("Code=" + response.getCode());
-            log.info("Message=" + response.getMessage());
-            log.info("RequestId=" + response.getRequestId());
-            log.info("BizId=" + response.getBizId());
-        } catch (ServerException e) {
-            log.error(e.getMessage());
+            log.info("----------------阿里云短信接口返回的数据----------------");
+            log.info("Code={}", response.getCode());
+            log.info("Message={}", response.getMessage());
+            log.info("RequestId={}", response.getRequestId());
+            log.info("BizId={}", response.getBizId());
         } catch (ClientException e) {
             log.error(e.getMessage());
         }

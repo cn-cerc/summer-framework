@@ -28,8 +28,9 @@ public class Timing {
     }
 
     public int getTotal() {
-        if (stopTime == 0)
+        if (stopTime == 0) {
             stop();
+        }
         return total;
     }
 

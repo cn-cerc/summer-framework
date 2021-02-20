@@ -8,5 +8,5 @@ package cn.cerc.mis.book;
 public interface IBookRecord {
 
     // 接收原始数据
-    public void write(IBookData bookData);
+    void write(IBookData bookData);
 }

@@ -1,10 +1,10 @@
 package cn.cerc.db.mysql;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import cn.cerc.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @Slf4j
 public class Transaction implements AutoCloseable {
@@ -41,10 +41,12 @@ public class Transaction implements AutoCloseable {
     }
 
     public boolean commit() {
-        if (!active)
+        if (!active) {
             return false;
-        if (locked)
+        }
+        if (locked) {
             throw new RuntimeException("Transaction locked is true");
+        }
         try {
             conn.commit();
             locked = true;
@@ -57,8 +59,9 @@ public class Transaction implements AutoCloseable {
 
     @Override
     public void close() {
-        if (!active)
+        if (!active) {
             return;
+        }
         try {
             try {
                 conn.rollback();

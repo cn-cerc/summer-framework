@@ -1,8 +1,5 @@
 package cn.cerc.mis.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.book.BookDataList;
@@ -12,6 +9,9 @@ import cn.cerc.mis.book.IBookManage;
 import cn.cerc.mis.book.IBookSource;
 import cn.cerc.mis.other.BookOptions;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class SearchManager implements IBookManage {
@@ -32,24 +32,29 @@ public class SearchManager implements IBookManage {
 
     @Override
     public void setDateRange(TDateTime beginDate, TDateTime endDate, boolean forceExecute) {
-        if (initMonth.compareTo(beginDate.getYearMonth()) > 0)
+        if (initMonth.compareTo(beginDate.getYearMonth()) > 0) {
             throw new RuntimeException(String.format("起始日期(%s)小于开账年月(%s)", beginDate.getYearMonth(), initMonth));
+        }
 
-        if (beginDate.compareTo(endDate) > 0)
+        if (beginDate.compareTo(endDate) > 0) {
             throw new RuntimeException(String.format("起始日期(%s)大于截止日期(%s)", beginDate, endDate));
+        }
 
         duration = new DurationSplit(beginDate, endDate);
     }
 
     public void execute() throws Exception {
-        if (handle == null)
+        if (handle == null) {
             throw new RuntimeException("handle is null");
+        }
 
-        if (duration == null)
+        if (duration == null) {
             throw new RuntimeException("duration is null");
+        }
 
-        if (books.size() == 0)
+        if (books.size() == 0) {
             throw new RuntimeException("帐本对象不允许为空！");
+        }
 
         timer.get("process total").start();
 
@@ -89,6 +94,7 @@ public class SearchManager implements IBookManage {
         log.info("完成");
     }
 
+    @Override
     public IHandle getHandle() {
         return handle;
     }
@@ -111,6 +117,7 @@ public class SearchManager implements IBookManage {
         return this;
     }
 
+    @Override
     public String getInitMonth() {
         return initMonth;
     }
@@ -120,6 +127,7 @@ public class SearchManager implements IBookManage {
         return sources.size() > 0;
     }
 
+    @Override
     public BookDataList getDatas() {
         return dataList;
     }

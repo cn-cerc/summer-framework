@@ -1,10 +1,9 @@
 package cn.cerc.mis.pay.wxpay;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TenpayUtil {
 
@@ -19,8 +18,9 @@ public class TenpayUtil {
     public static int toInt(Object obj) {
         int a = 0;
         try {
-            if (obj != null)
+            if (obj != null) {
                 a = Integer.parseInt(obj.toString());
+            }
         } catch (Exception e) {
 
         }

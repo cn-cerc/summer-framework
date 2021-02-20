@@ -1,14 +1,12 @@
 package cn.cerc.mis.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import cn.cerc.core.IHandle;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import cn.cerc.core.IHandle;
+import java.util.HashMap;
+import java.util.Map;
 
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
@@ -19,7 +17,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     private HttpServletResponse response;
     private IClient client;
     private Map<String, String> params = new HashMap<>();
-    private String title;
+    private String name;
     private String parent;
     private String permission;
     private String module;
@@ -70,27 +68,29 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public Object getProperty(String key) {
-        if ("request".equals(key))
+        if ("request".equals(key)) {
             return this.getRequest();
-        if ("session".equals(key))
+        }
+        if ("session".equals(key)) {
             return this.getRequest().getSession();
+        }
 
         return handle.getProperty(key);
     }
 
     @Override
-    public String getTitle() {
-        return this.title;
+    public String getName() {
+        return this.name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public IClient getClient() {
         if (client == null) {
-            client = new ClientDevice();
+            client = new AppClient();
             client.setRequest(request);
         }
         return client;
@@ -108,24 +108,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     @Override
     public String getParam(String key, String def) {
-        if (params.containsKey(key))
-            return params.get(key);
-        else {
-            return def;
-        }
-    }
-
-    /**
-     * 删除此项需要将xml的配套属性改为 title
-     */
-    @Deprecated
-    public String getCaption() {
-        return this.getTitle();
-    }
-
-    @Deprecated
-    public void setCaption(String caption) {
-        this.title = caption;
+        return params.getOrDefault(key, def);
     }
 
     public String getParent() {

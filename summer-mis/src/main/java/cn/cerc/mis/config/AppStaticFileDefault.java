@@ -3,14 +3,17 @@ package cn.cerc.mis.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+public enum AppStaticFileDefault {
 
-@Component
-public class AppStaticFileDefault implements IAppStaticFile {
+    INSTANCE;
 
-    private static List<String> suffix = new ArrayList<>();
+    public static AppStaticFileDefault getInstance() {
+        return INSTANCE;
+    }
 
-    {
+    private static final List<String> suffix = new ArrayList<>();
+
+    static {
         // 网页文件
         suffix.add(".css");
         suffix.add(".js");
@@ -37,15 +40,20 @@ public class AppStaticFileDefault implements IAppStaticFile {
         suffix.add(".apk");
         suffix.add(".exe");
         suffix.add(".manifest");
-
-        // 字体文件
         suffix.add(".woff");
         suffix.add(".ttf");
     }
 
-    @Override
     public boolean isStaticFile(String uri) {
         return suffix.stream().anyMatch(uri::endsWith);
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 5555; i++) {
+            new Thread(() -> {
+                AppStaticFileDefault.getInstance().isStaticFile(".ico");
+            }).start();
+        }
     }
 
 }

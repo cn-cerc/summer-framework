@@ -9,7 +9,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class RadioField extends AbstractField {
-    private List<String> items = new ArrayList<>();
+
+    private final List<String> items = new ArrayList<>();
 
     public RadioField(UIComponent owner, String name, String field, int width) {
         super(owner, name, width);
@@ -17,11 +18,11 @@ public class RadioField extends AbstractField {
     }
 
     @Override
-    public String getText(Record dataSet) {
-        if (dataSet == null) {
+    public String getText(Record record) {
+        if (record == null) {
             return null;
         }
-        int val = dataSet.getInt(field);
+        int val = record.getInt(field);
         if (val < 0 || val > items.size() - 1) {
             return "" + val;
         }
@@ -42,4 +43,5 @@ public class RadioField extends AbstractField {
         this.items.addAll(items);
         return this;
     }
+
 }

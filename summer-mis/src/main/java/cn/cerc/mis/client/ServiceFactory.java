@@ -3,7 +3,7 @@ package cn.cerc.mis.client;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.mysql.MysqlConnection;
-import cn.cerc.mis.config.ApplicationProperties;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.LocalService;
 
@@ -18,7 +18,7 @@ public class ServiceFactory {
 
     public static IServiceProxy get(IHandle handle, String corpNo) {
         if ("public".equals(corpNo)) {
-            if (ApplicationProperties.isMaster()) {
+            if (ApplicationConfig.isMaster()) {
                 return new LocalService(handle);
             } else {
                 return RemoteService.create(handle, corpNo);
@@ -50,12 +50,6 @@ public class ServiceFactory {
                 return RemoteService.create(handle, corpNo);
             }
         }
-    }
-
-    public static IServiceProxy get(IHandle handle, String corpNo, String service) {
-        IServiceProxy svr = ServiceFactory.get(handle, corpNo);
-        svr.setService(service);
-        return svr;
     }
 
 }

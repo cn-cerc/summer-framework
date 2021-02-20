@@ -2,7 +2,6 @@ package cn.cerc.mis.message;
 
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.queue.QueueDB;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
@@ -57,11 +56,7 @@ public class MessageQueue {
         // 将消息发送至阿里云MNS
         QueueQuery query = new QueueQuery(handle);
         query.setQueueMode(QueueMode.append);
-        if (ServerConfig.isServerDevelop()) {
-            query.add("select * from %s", QueueDB.MESSAGE_TEST);
-        } else {
-            query.add("select * from %s", QueueDB.MESSAGE);
-        }
+        query.add("select * from %s", QueueDB.MESSAGE);
         query.open();
 
         Record headIn = query.getHead();
@@ -121,6 +116,11 @@ public class MessageQueue {
 
     public String getSubject() {
         return subject;
+    }
+
+    public MessageQueue setSubject(String subject) {
+        this.subject = subject;
+        return this;
     }
 
     public MessageQueue setSubject(String format, Object... args) {

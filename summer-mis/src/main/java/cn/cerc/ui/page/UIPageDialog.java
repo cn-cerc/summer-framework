@@ -1,17 +1,10 @@
 package cn.cerc.ui.page;
 
-import static cn.cerc.mis.core.ClientDevice.APP_DEVICE_EE;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.page.ExportFile;
@@ -24,6 +17,11 @@ import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.List;
+
 public class UIPageDialog extends AbstractJspPage {
     private boolean showMenus = true; // 是否显示主菜单
     private MutiPage pages;
@@ -34,7 +32,7 @@ public class UIPageDialog extends AbstractJspPage {
     }
 
     public void addExportFile(String service, String key) {
-        if (APP_DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
+        if (AppClient.ee.equals(this.getForm().getClient().getDevice())) {
             ExportFile item = new ExportFile(service, key);
             this.put("export", item);
         }
@@ -51,16 +49,18 @@ public class UIPageDialog extends AbstractJspPage {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
             menus.setHandle(form.getHandle());
-            for (IMenuBar item : menus.getItems())
+            for (IMenuBar item : menus.getItems()) {
                 item.enrollMenu(form, rightMenus);
+            }
         } else {
             getHeader().getHomePage().setSite(Application.getAppConfig().getFormWelcome());
         }
         // 设置首页
         request.setAttribute("_showMenu_", "true".equals(form.getParam("showMenus", "true")));
         // 系统通知消息
-        if (request.getAttribute("message") == null)
+        if (request.getAttribute("message") == null) {
             request.setAttribute("message", "");
+        }
 
         if (form instanceof AbstractForm) {
             if (this.isShowMenus()) {

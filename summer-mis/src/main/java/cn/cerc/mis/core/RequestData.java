@@ -1,13 +1,11 @@
 package cn.cerc.mis.core;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.google.gson.Gson;
-
-import lombok.extern.slf4j.Slf4j;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 @Slf4j
 public class RequestData {
@@ -16,12 +14,9 @@ public class RequestData {
     public static final String TOKEN = "sid";
     public static final String WEBCLIENT = "webclient";
 
-    private String token;
+    private final String token;
     private String param;
     private String serviceCode;
-
-    public RequestData() {
-    }
 
     public RequestData(HttpServletRequest request) {
         this.token = request.getParameter(RequestData.TOKEN);
@@ -37,14 +32,14 @@ public class RequestData {
         BufferedReader reader;
         try {
             reader = request.getReader();
-            StringBuffer params = new StringBuffer();
-            String line = null;
+            StringBuilder params = new StringBuilder();
+            String line;
             while ((line = reader.readLine()) != null) {
                 params.append(line);
             }
 
             this.param = params.toString();
-            if (this.param != null && this.param.length() > 1 && this.param.startsWith("[")) {
+            if (this.param.length() > 1 && this.param.startsWith("[")) {
                 if (this.param.endsWith("]\r\n")) {
                     this.param = this.param.substring(1, this.param.length() - 3);
                 } else if (this.param.endsWith("]")) {
@@ -52,7 +47,7 @@ public class RequestData {
                 }
             }
 
-            if (this.param != null && this.param.equals("")) {
+            if ("".equals(this.param)) {
                 this.param = null;
             }
         } catch (IOException e) {
@@ -81,6 +76,7 @@ public class RequestData {
         this.serviceCode = service;
     }
 
+    @Override
     public String toString() {
         Gson gson = new Gson();
         return gson.toJson(this);
@@ -94,43 +90,5 @@ public class RequestData {
             return "execute";
         }
     }
-
-    // private static String base64Decode(String param)
-    // {
-    // if (param == null)
-    // {
-    // return null;
-    // }
-    // byte[] bs = null;
-    // String result = null;
-    // BASE64Decoder decoder = new BASE64Decoder();
-    // try
-    // {
-    // bs = decoder.decodeBuffer(param);
-    // result = new String(bs, "UTF-8");
-    // }
-    // catch (IOException e)
-    // {
-    // e.printStackTrace();
-    // }
-    // return result;
-    // }
-
-    // public String urlDecode(String text)
-    // {
-    // if (text == null)
-    // {
-    // return null;
-    // }
-    // try
-    // {
-    // return java.net.URLDecoder.decode(text, "UTF-8");
-    // }
-    // catch (Exception e)
-    // {
-    // e.printStackTrace();
-    // return text;
-    // }
-    // }
 
 }

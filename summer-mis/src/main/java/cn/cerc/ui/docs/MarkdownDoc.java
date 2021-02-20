@@ -1,19 +1,17 @@
 package cn.cerc.ui.docs;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import javax.servlet.ServletContext;
-
+import cn.cerc.mis.core.IForm;
 import com.vladsch.flexmark.ast.Node;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
-import cn.cerc.mis.core.IForm;
+import javax.servlet.ServletContext;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class MarkdownDoc {
     private ServletContext servletContext;
@@ -70,8 +68,9 @@ public class MarkdownDoc {
             String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line + System.lineSeparator());
-                if (firstLine == null)
+                if (firstLine == null) {
                     firstLine = line;
+                }
             }
         }
         return builder.toString();

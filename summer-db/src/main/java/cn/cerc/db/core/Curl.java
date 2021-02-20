@@ -1,5 +1,15 @@
 package cn.cerc.db.core;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,12 +20,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * HTTP请求代理类
@@ -46,14 +54,14 @@ public class Curl {
     /**
      * 调用参数
      */
-    private Map<String, Object> parameters = new HashMap<>();
+    private final Map<String, Object> parameters = new HashMap<>();
     /**
      * 返回内容
      */
     private String responseContent = null;
 
     public String sendGet(String reqUrl) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         BufferedReader in = null;
         try {
 
@@ -88,7 +96,7 @@ public class Curl {
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,7 +109,7 @@ public class Curl {
                 e.printStackTrace();
             }
         }
-        return result;
+        return result.toString();
     }
 
     private String encodeUTF8(String value) {
@@ -118,11 +126,10 @@ public class Curl {
         HttpURLConnection url_con = null;
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
-                Entry<?, ?> element = (Entry<?, ?>) iter.next();
-                params.append(element.getKey().toString());
+            for (Entry<String, Object> stringObjectEntry : parameters.entrySet()) {
+                params.append(((Entry<?, ?>) stringObjectEntry).getKey().toString());
                 params.append("=");
-                params.append(URLEncoder.encode(element.getValue().toString(), this.requestEncoding));
+                params.append(URLEncoder.encode(((Entry<?, ?>) stringObjectEntry).getValue().toString(), this.requestEncoding));
                 params.append("&");
             }
 
@@ -150,7 +157,7 @@ public class Curl {
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(in, this.recvEncoding));
             String tempLine = rd.readLine();
-            StringBuffer temp = new StringBuffer();
+            StringBuilder temp = new StringBuilder();
             while (tempLine != null) {
                 temp.append(tempLine);
                 tempLine = rd.readLine();
@@ -179,14 +186,13 @@ public class Curl {
 
             if (paramIndex > 0) {
                 queryUrl = reqUrl.substring(0, paramIndex);
-                String parameters = reqUrl.substring(paramIndex + 1, reqUrl.length());
+                String parameters = reqUrl.substring(paramIndex + 1);
                 String[] paramArray = parameters.split("&");
-                for (int i = 0; i < paramArray.length; i++) {
-                    String string = paramArray[i];
+                for (String string : paramArray) {
                     int index = string.indexOf("=");
                     if (index > 0) {
                         String parameter = string.substring(0, index);
-                        String value = string.substring(index + 1, string.length());
+                        String value = string.substring(index + 1);
                         params.append(parameter);
                         params.append("=");
                         params.append(URLEncoder.encode(value, this.requestEncoding));
@@ -213,7 +219,7 @@ public class Curl {
             InputStream in = url_con.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(in, recvEncoding));
             String tempLine = rd.readLine();
-            StringBuffer temp = new StringBuffer();
+            StringBuilder temp = new StringBuilder();
             while (tempLine != null) {
                 temp.append(tempLine);
                 tempLine = rd.readLine();
@@ -236,11 +242,10 @@ public class Curl {
     public String doPost(String reqUrl) {
         try {
             StringBuffer params = new StringBuffer();
-            for (Iterator<?> iter = parameters.entrySet().iterator(); iter.hasNext();) {
-                Entry<?, ?> element = (Entry<?, ?>) iter.next();
-                Object val = element.getValue();
+            for (Entry<String, Object> stringObjectEntry : parameters.entrySet()) {
+                Object val = ((Entry<?, ?>) stringObjectEntry).getValue();
                 if (val != null) {
-                    params.append(element.getKey().toString());
+                    params.append(((Entry<?, ?>) stringObjectEntry).getKey().toString());
                     params.append("=");
                     params.append(URLEncoder.encode(val.toString(), this.requestEncoding));
                     params.append("&");
@@ -259,10 +264,10 @@ public class Curl {
 
     }
 
-    protected String doPost(String reqUrl, StringBuffer params) {
+    public String doPost(String reqUrl, StringBuffer params) {
         HttpURLConnection url_con = null;
         try {
-            reqUrl = new String(reqUrl.getBytes("utf-8"), "utf-8");
+            reqUrl = new String(reqUrl.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
             URL url = new URL(reqUrl);
             url_con = (HttpURLConnection) url.openConnection();
@@ -291,7 +296,7 @@ public class Curl {
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(in, recvEncoding));
             String tempLine = rd.readLine();
-            StringBuffer tempStr = new StringBuffer();
+            StringBuilder tempStr = new StringBuilder();
             while (tempLine != null) {
                 tempStr.append(tempLine);
                 tempLine = rd.readLine();
@@ -305,6 +310,24 @@ public class Curl {
             if (url_con != null) {
                 url_con.disconnect();
             }
+        }
+        return responseContent;
+    }
+
+    public String doPost(String url, String json) {
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader("Content-Type", "application/json");
+            httpPost.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            responseContent = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+            response.close();
+            httpClient.close();
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
         }
         return responseContent;
     }
@@ -355,9 +378,15 @@ public class Curl {
         return this;
     }
 
-    public Curl putParameter(String key, Object value) {
+    public Curl put(String key, Object value) {
         this.parameters.put(key, value);
         return this;
+    }
+
+    // 改使用 put 方法
+    @Deprecated
+    public Curl putParameter(String key, Object value) {
+        return this.put(key, value);
     }
 
 }

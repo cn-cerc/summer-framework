@@ -1,10 +1,11 @@
 package cn.cerc.mis.core;
 
-import org.junit.Test;
-
 import cn.cerc.core.DataSet;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
+import org.junit.Test;
 
 @Slf4j
 public class RemoteServiceTest {
@@ -27,11 +28,13 @@ public class RemoteServiceTest {
 //        assertTrue(svr.getMessage(), result);
     }
 
-//    @Test
-    public void test_dataOut() {
+    @Test
+    public void test_dataOut() throws JsonProcessingException {
         String response = "{\"result\":true,\"dataOut\":\"{\\\"head\\\":{\\\"_message_\\\":\\\"\\\",\\\"_result_\\\":true},\\\"dataset\\\":[[\\\"TBNo_\\\",\\\"TBDate_\\\",\\\"CusCode_\\\",\\\"TOriAmount_\\\",\\\"ManageNo_\\\",\\\"Remark_\\\",\\\"Status_\\\",\\\"Final_\\\",\\\"Process_\\\",\\\"UpdateUser_\\\",\\\"UpdateDate_\\\",\\\"AppUser_\\\",\\\"AppDate_\\\",\\\"AppName_\\\",\\\"UpdateName_\\\",\\\"CorpName_\\\"],[\\\"DE161101001-155174\\\",\\\"2016-11-01 00:00:00\\\",\\\"C00243\\\",43.5,\\\"{}\\\",\\\"{}\\\",-1,false,0,\\\"91100124\\\",\\\"2016-11-02 09:27:53\\\",\\\"91100124\\\",\\\"2016-11-01 15:19:36\\\",\\\"AppUser_\\\",\\\"UpdateUser_\\\",\\\"中国渔具\\\"],[\\\"DE161102002-155174\\\",\\\"2016-11-03 00:00:00\\\",\\\"C00243\\\",36.0,\\\"\\\",\\\"\\\",1,true,0,\\\"91100124\\\",\\\"2016-11-03 17:32:11\\\",\\\"91100124\\\",\\\"2016-11-02 14:55:32\\\",\\\"AppUser_\\\",\\\"UpdateUser_\\\",\\\"中国渔具\\\"],[\\\"DE161102003-155174\\\",\\\"2016-11-02 00:00:00\\\",\\\"C00243\\\",30.0,\\\"\\\",\\\"\\\",1,true,0,\\\"15517401\\\",\\\"2016-11-04 14:10:01\\\",\\\"91100124\\\",\\\"2016-11-02 15:25:34\\\",\\\"AppUser_\\\",\\\"UpdateUser_\\\",\\\"中国渔具\\\"]]}\",\"message\":\"\"}";
-        JSONObject json = JSONObject.fromObject(response);
-        String dataJson = json.getString("dataOut");
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json = mapper.readTree(response);
+        String dataJson = json.get("dataOut").asText();
         DataSet dataOut = new DataSet();
         if (dataJson != null) {
             dataOut.setJSON(dataJson);

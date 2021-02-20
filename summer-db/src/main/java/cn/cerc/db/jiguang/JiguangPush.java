@@ -1,8 +1,5 @@
 package cn.cerc.db.jiguang;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import cn.cerc.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
@@ -12,9 +9,13 @@ import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.PushPayload.Builder;
 import cn.jpush.api.push.model.audience.Audience;
+import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Slf4j
 public class JiguangPush {
@@ -58,36 +59,34 @@ public class JiguangPush {
      * @param sound      声音类型
      */
     public void send(ClientType clientType, String clientId, String sound) {
-        if (msgId == null)
+        if (msgId == null) {
             throw new RuntimeException("msgId is null");
+        }
         addParam("msgId", msgId);
         addParam("sound", sound);
 
         Builder builder = PushPayload.newBuilder();
 
         // 发送给指定的设备
-        if (clientId != null)
+        if (clientId != null) {
             builder.setAudience(Audience.alias(clientId));
-        else
+            builder.setPlatform(Platform.android_ios());
+        } else {
             builder.setAudience(Audience.all());
+        }
 
-        // 发送给指定的设备类型
-        if (clientType == ClientType.Android) {
-            builder.setPlatform(Platform.android());
-            builder.setNotification(Notification.android(message, this.title, params));
-            sendMessage(builder.build());
-        } else if (clientType == ClientType.IOS) {
-            builder.setPlatform(Platform.ios());
-            // builder.setNotification(Notification.ios(message, params));
-            builder.setNotification(Notification.newBuilder()
-                    .addPlatformNotification(
-                            IosNotification.newBuilder().setAlert(message).addExtras(params).setSound(sound).build())
-                    .build());
-            // 设置为生产环境
-            builder.setOptions(Options.newBuilder().setApnsProduction(true).build()).build();
-            sendMessage(builder.build());
-        } else
+        if (clientType != ClientType.Android && clientType != ClientType.IOS) {
             throw new RuntimeException("暂不支持的设备类别：" + clientType.ordinal());
+        }
+
+        builder.setNotification(Notification.newBuilder().setAlert(message)
+                .addPlatformNotification(AndroidNotification.newBuilder().setTitle(this.title).addExtras(params).build())
+                .addPlatformNotification(IosNotification.newBuilder().incrBadge(1).addExtras(params).setSound(sound).build())
+                .build()
+        ).build();
+        // 设置生产环境
+        builder.setOptions(Options.newBuilder().setApnsProduction(true).build()).build();
+        sendMessage(builder.build());
     }
 
     /**

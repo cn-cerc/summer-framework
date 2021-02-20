@@ -1,21 +1,5 @@
 package cn.cerc.mis.page.upload;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ServerConfig;
@@ -37,7 +21,21 @@ import cn.cerc.ui.page.UIPageSearch;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
-import cn.cerc.ui.parts.UIToolBar;
+import cn.cerc.ui.parts.UIToolbar;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 文件上传实现Form
@@ -47,22 +45,22 @@ public class FileUploadPage extends FileUploadBasePage {
     @Override
     public IPage exec() {
         UIPageSearch jspPage = new UIPageSearch(this);
-        UIHeader top = jspPage.getHeader();
+        UIHeader header = jspPage.getHeader();
         Map<String, String> menus = getMenuPath();
         if (!menus.isEmpty()) {
             for (String key : menus.keySet()) {
-                top.addLeftMenu(key, R.asString(this, menus.get(key)));
+                header.addLeftMenu(key, R.asString(this, menus.get(key)));
             }
         }
 
-        setTitle(R.asString(this, getPageTitle()));
-        top.setPageTitle(R.asString(this, getPageTitle()));
+        setName(R.asString(this, getPageTitle()));
+        header.setPageTitle(R.asString(this, getPageTitle()));
 
         jspPage.addScriptFile("../imgZoom/imgAlert.js");
         jspPage.addCssFile("../imgZoom/bigImg.css");
 
-        UIToolBar right = jspPage.getToolBar();
-        UISheetHelp section1 = new UISheetHelp(right);
+        UIToolbar toolbar = jspPage.getToolBar();
+        UISheetHelp section1 = new UISheetHelp(toolbar);
         section1.setCaption(R.asString(this, "操作提示"));
         section1.addLine(R.asString(this, "所支持上传的文件类型："), getSuportTypes());
         section1.addLine(getSuportTypes());

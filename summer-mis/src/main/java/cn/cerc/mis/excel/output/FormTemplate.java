@@ -1,12 +1,11 @@
 package cn.cerc.mis.excel.output;
 
-import java.util.List;
-
 import cn.cerc.core.Record;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
+
+import java.util.List;
 
 public class FormTemplate extends ExcelTemplate {
     private List<Column> heads;
@@ -21,7 +20,7 @@ public class FormTemplate extends ExcelTemplate {
     }
 
     @Override
-    public void output(WritableSheet sheet) throws RowsExceededException, WriteException {
+    public void output(WritableSheet sheet) throws WriteException {
         // 输出列头
         Record head = this.getDataSet().getHead();
         if (heads != null) {
@@ -30,11 +29,8 @@ public class FormTemplate extends ExcelTemplate {
                 int row = this.getRow() + lineNo;
                 Label item1 = new Label(0, row, column.getName());
                 sheet.addCell(item1);
-                // Label item2 = new Label(1, lineNo,
-                // head.getString(column.getCode()));
-                // sheet.addCell(item2);
                 column.setRecord(head);
-                writeColumn(sheet, 1, row, column);
+                writeColumn(sheet, 1, row, column, null);
             }
             // 设置新的起点行号
             this.setRow(this.getRow() + heads.size());
@@ -43,8 +39,9 @@ public class FormTemplate extends ExcelTemplate {
         super.output(sheet);
 
         // 输出合计
-        if (footer != null)
+        if (footer != null) {
             footer.output(this, sheet);
+        }
     }
 
     public OutputExcel getFooter() {

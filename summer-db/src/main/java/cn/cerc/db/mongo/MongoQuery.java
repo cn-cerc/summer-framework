@@ -1,18 +1,5 @@
 package cn.cerc.db.mongo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import org.bson.Document;
-
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetState;
@@ -21,6 +8,17 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlOperator;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class MongoQuery extends DataQuery {
     private static final long serialVersionUID = -1262005194419604476L;
@@ -45,10 +43,11 @@ public class MongoQuery extends DataQuery {
         // 增加排序条件
         BasicDBObject sort = decodeOrder(this.getSqlText().getText());
         // 执行查询
-        ArrayList<Document> list = coll.find(filter).sort(sort).into(new ArrayList<Document>());
+        ArrayList<Document> list = coll.find(filter).sort(sort).into(new ArrayList<>());
         // 数据不存在,则状态不为更新,并返回一个空数据
-        if (list == null || list.isEmpty())
+        if (list.isEmpty()) {
             return this;
+        }
 
         for (Document doc : list) {
             Record record = append().getCurrent();
@@ -56,8 +55,9 @@ public class MongoQuery extends DataQuery {
                 if ("_id".equals(field)) {
                     Object uid = doc.get(field);
                     record.setField(field, uid != null ? uid.toString() : uid);
-                } else
+                } else {
                     record.setField(field, doc.get(field));
+                }
             }
             record.setState(DataSetState.dsNone);
         }
@@ -73,24 +73,25 @@ public class MongoQuery extends DataQuery {
         if (offset > -1) {
             int endIndex = sql.toLowerCase().indexOf("order");
             String[] items;
-            if (endIndex > -1)
+            if (endIndex > -1) {
                 items = sql.substring(offset + 5, endIndex).split(" and ");
-            else
+            } else {
                 items = sql.substring(offset + 5).split(" and ");
+            }
             for (String item : items) {
-                if (item.split(">=").length == 2)
+                if (item.split(">=").length == 2) {
                     setCondition(filter, item, ">=");
-                else if (item.split("<=").length == 2)
+                } else if (item.split("<=").length == 2) {
                     setCondition(filter, item, "<=");
-                else if (item.split("<>").length == 2)
+                } else if (item.split("<>").length == 2) {
                     setCondition(filter, item, "<>");
-                else if (item.split("=").length == 2)
+                } else if (item.split("=").length == 2) {
                     setCondition(filter, item, "=");
-                else if (item.split(">").length == 2)
+                } else if (item.split(">").length == 2) {
                     setCondition(filter, item, ">");
-                else if (item.split("<").length == 2)
+                } else if (item.split("<").length == 2) {
                     setCondition(filter, item, "<");
-                else if (item.split("like").length == 2) {
+                } else if (item.split("like").length == 2) {
                     String[] tmp = item.split("like");
                     String field = tmp[0].trim();
                     String value = tmp[1].trim();
@@ -99,8 +100,9 @@ public class MongoQuery extends DataQuery {
                         Pattern queryPattern = Pattern.compile(value.substring(1, value.length() - 1),
                                 Pattern.CASE_INSENSITIVE);
                         filter.append(field, queryPattern);
-                    } else
+                    } else {
                         throw new RuntimeException(String.format("模糊查询条件：%s 必须为字符串", item));
+                    }
                 } else if (item.split("in").length == 2) {
                     String[] tmp = item.split("in");
                     String field = tmp[0].trim();
@@ -108,16 +110,19 @@ public class MongoQuery extends DataQuery {
                     if (value.startsWith("(") && value.endsWith(")")) {
                         BasicDBList values = new BasicDBList();
                         for (String str : value.substring(1, value.length() - 1).split(",")) {
-                            if (str.startsWith("'") && str.endsWith("'"))
+                            if (str.startsWith("'") && str.endsWith("'")) {
                                 values.add(str.substring(1, str.length() - 1));
-                            else
+                            } else {
                                 values.add(str);
+                            }
                         }
                         filter.put(field, new BasicDBObject("$in", values));
-                    } else
+                    } else {
                         throw new RuntimeException(String.format("in查询条件：%s 必须有带有()", item));
-                } else
+                    }
+                } else {
                     throw new RuntimeException("暂不支持的查询条件：" + item);
+                }
             }
         }
         return filter;
@@ -135,19 +140,21 @@ public class MongoQuery extends DataQuery {
         String field = tmp[0].trim();
         String value = tmp[1].trim();
         if (filter.get(field) != null) {
-            if (value.startsWith("'") && value.endsWith("'"))
+            if (value.startsWith("'") && value.endsWith("'")) {
                 ((BasicDBObject) filter.get(field)).append(compare.get(symbol), value.substring(1, value.length() - 1));
-            else if (Utils.isNumeric(value))
+            } else if (Utils.isNumeric(value)) {
                 ((BasicDBObject) filter.get(field)).append(compare.get(symbol), Double.parseDouble(value));
-            else
+            } else {
                 ((BasicDBObject) filter.get(field)).append(compare.get(symbol), value);
+            }
         } else {
-            if (value.startsWith("'") && value.endsWith("'"))
+            if (value.startsWith("'") && value.endsWith("'")) {
                 filter.put(field, new BasicDBObject(compare.get(symbol), value.substring(1, value.length() - 1)));
-            else if (Utils.isNumeric(value))
+            } else if (Utils.isNumeric(value)) {
                 filter.put(field, new BasicDBObject(compare.get(symbol), Double.parseDouble(value)));
-            else
+            } else {
                 filter.put(field, new BasicDBObject(compare.get(symbol), value));
+            }
         }
     }
 
@@ -155,29 +162,33 @@ public class MongoQuery extends DataQuery {
     protected BasicDBObject decodeOrder(String sql) {
         BasicDBObject sort = new BasicDBObject();
         int offset = sql.toLowerCase().indexOf("order");
-        if (offset == -1)
+        if (offset == -1) {
             return sort;
+        }
         String[] items = sql.substring(offset + 5).split(",");
         for (String item : items) {
             String str = item.trim();
             if (str.split(" ").length == 2) {
                 String[] tmp = str.split(" ");
-                if (tmp[1].equals("ASC"))
+                if ("ASC".equals(tmp[1])) {
                     sort.append(tmp[0], 1);
-                else if (tmp[1].equals("DESC"))
+                } else if ("DESC".equals(tmp[1])) {
                     sort.append(tmp[0], -1);
-                else
+                } else {
                     throw new RuntimeException("暂不支持的排序条件：" + str);
-            } else
+                }
+            } else {
                 sort.append(str, 1);
+            }
         }
         return sort;
     }
 
     @Override
     public void post() {
-        if (this.isBatchSave())
+        if (this.isBatchSave()) {
             return;
+        }
         Record record = this.getCurrent();
         if (record.getState() == DataSetState.dsInsert) {
             beforePost();
@@ -203,23 +214,26 @@ public class MongoQuery extends DataQuery {
     public void delete() {
         Record record = this.getCurrent();
         super.delete();
-        if (record.getState() == DataSetState.dsInsert)
+        if (record.getState() == DataSetState.dsInsert) {
             return;
-        if (this.isBatchSave())
+        }
+        if (this.isBatchSave()) {
             delList.add(record);
-        else {
+        } else {
             getDefaultOperator().delete(record);
         }
     }
 
     @Override
     public void save() {
-        if (!this.isBatchSave())
+        if (!this.isBatchSave()) {
             throw new RuntimeException("batchSave is false");
+        }
         IDataOperator operator = getDefaultOperator();
         // 先执行删除
-        for (Record record : delList)
+        for (Record record : delList) {
             operator.delete(record);
+        }
         delList.clear();
         // 再执行增加、修改
         this.first();
@@ -248,17 +262,20 @@ public class MongoQuery extends DataQuery {
     // 将通用类型，转成DataSet，方便操作
     public DataSet getChildDataSet(String field) {
         Object value = this.getField(field);
-        if (value == null)
+        if (value == null) {
             return null;
-        if (!(value instanceof List<?>))
+        }
+        if (!(value instanceof List<?>)) {
             throw new RuntimeException("错误的数据类型！");
+        }
         @SuppressWarnings("unchecked")
         List<Map<String, Object>> items = (List<Map<String, Object>>) value;
         DataSet dataSet = new DataSet();
         for (Map<String, Object> item : items) {
             Record record = dataSet.append().getCurrent();
-            for (String key : item.keySet())
+            for (String key : item.keySet()) {
                 record.setField(key, item.get(key));
+            }
             record.setState(DataSetState.dsNone);
         }
         return dataSet;
@@ -267,8 +284,9 @@ public class MongoQuery extends DataQuery {
     // 将DataSet转成通用类型，方便存入MongoDB
     public void setChildDataSet(String field, DataSet dataSet) {
         List<Map<String, Object>> items = new ArrayList<>();
-        for (Record child : dataSet.getRecords())
+        for (Record child : dataSet.getRecords()) {
             items.add(child.getItems());
+        }
         this.setField(field, items);
     }
 
@@ -280,8 +298,9 @@ public class MongoQuery extends DataQuery {
             this.setField(field, items);
             return items;
         }
-        if (!(value instanceof List<?>))
+        if (!(value instanceof List<?>)) {
             throw new RuntimeException("错误的数据类型！");
+        }
         return (List<Object>) value;
     }
 
@@ -293,8 +312,9 @@ public class MongoQuery extends DataQuery {
             this.setField(field, items);
             return items;
         }
-        if (!(value instanceof List<?>))
+        if (!(value instanceof List<?>)) {
             throw new RuntimeException("错误的数据类型！");
+        }
         return (Map<String, Object>) value;
     }
 

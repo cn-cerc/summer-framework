@@ -1,10 +1,9 @@
 package cn.cerc.mis.core;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.rds.StubHandle;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class BookQueryTest {
 
@@ -17,7 +16,7 @@ public class BookQueryTest {
         ds.add("select * from %s where CorpNo_='144001'", systemTable.getBookInfo());
         ds.open();
         ds.edit();
-        ds.setField("UpdateKey_", TDateTime.Now());
+        ds.setField("UpdateKey_", TDateTime.now());
         ds.post();
     }
 

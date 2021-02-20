@@ -1,13 +1,13 @@
 package cn.cerc.ui.other;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UISheet;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class OperaPages extends UISheet {
     private IForm form;
@@ -21,8 +21,9 @@ public class OperaPages extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
-        if (pages.getCount() <= 1)
+        if (pages.getCount() <= 1) {
             return;
+        }
 
         HttpServletRequest request = form.getRequest();
         StringBuffer url = new StringBuffer();
@@ -42,9 +43,9 @@ public class OperaPages extends UISheet {
             html.println("<section>");
             html.println("<div class=\"title\">%s</div>", R.asString(form.getHandle(), "数据分页"));
             html.println("<div class=\"contents\">");
-            html.println("%s：%d, %s：%d，%s：%d <br/>", R.asString(form.getHandle(), "总记录数"), pages.getRecordCount(),
-                    R.asString(form.getHandle(), "当前页"), pages.getCurrent(), R.asString(form.getHandle(), "总页数"),
-                    pages.getCount());
+            html.println("%s：%d，%s：%d/%d 页<br/>",
+                    R.asString(form.getHandle(), "总记录数"), pages.getRecordCount(),
+                    R.asString(form.getHandle(), "当前页"), pages.getCurrent(), pages.getCount());
             html.println("<div align=\"center\">");
         }
         html.println("<a href=\"?pageno=1%s\">%s</a>", url, R.asString(form.getHandle(), "首页"));

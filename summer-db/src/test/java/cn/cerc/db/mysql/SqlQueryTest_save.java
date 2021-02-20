@@ -1,20 +1,19 @@
 package cn.cerc.db.mysql;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cn.cerc.db.core.StubHandle;
+import static org.junit.Assert.assertEquals;
 
 public class SqlQueryTest_save {
-    private StubHandle handle;
+    private StubHandleText handle;
     private MysqlConnection conn;
 
     @Before
     public void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         conn = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
     }
 

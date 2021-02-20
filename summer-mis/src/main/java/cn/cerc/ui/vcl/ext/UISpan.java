@@ -8,6 +8,7 @@ public class UISpan extends UIComponent {
     private String role;
     private String onclick;
     private String url;
+    private String target = "_blank";
 
     public UISpan() {
         super();
@@ -20,17 +21,24 @@ public class UISpan extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         html.print("<span");
-        if (getId() != null)
+        if (getId() != null) {
             html.print(" id='%s'", this.getId());
+        }
         super.outputCss(html);
-        if (role != null)
+        if (role != null) {
             html.print(" role='%s'", this.role);
-        if (onclick != null)
+        }
+        if (onclick != null) {
             html.print(" onclick='%s'", this.onclick);
+        }
         html.print(">");
 
         if (this.url != null) {
-            html.print("<a href='%s' target='_blank'>", this.url);
+            html.print("<a href='%s'", this.url);
+            if (this.target != null) {
+                html.print(" target='%s'", this.target);
+            }
+            html.print(">");
         }
         html.print(text);
         if (this.url != null) {
@@ -73,5 +81,13 @@ public class UISpan extends UIComponent {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
     }
 }

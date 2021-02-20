@@ -1,10 +1,10 @@
 package cn.cerc.ui.vcl;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class UIOption extends UIComponent {
     private String name;

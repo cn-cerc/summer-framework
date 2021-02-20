@@ -1,16 +1,15 @@
 package cn.cerc.ui.docs;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import cn.cerc.db.core.ServerConfig;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import cn.cerc.db.core.ServerConfig;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 @Deprecated // 请改使用 StartDocDefault
 public class StartDocs extends HttpServlet {
@@ -27,7 +26,7 @@ public class StartDocs extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!"1".equals(ServerConfig.getInstance().getProperty("docs.service", "0"))) {
+        if (!ServerConfig.enableDocService()) {
             throw new RuntimeException("该功能暂不开放");
         }
         String uri = req.getRequestURI();
@@ -56,7 +55,7 @@ public class StartDocs extends HttpServlet {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" "), title.length()).trim();
+            title = title.substring(title.indexOf(" ")).trim();
         }
 
         resp.setContentType("text/html;charset=UTF-8");
@@ -78,7 +77,7 @@ public class StartDocs extends HttpServlet {
         String context = mdm.getContext(uri, "not found file: " + uri);
         String title = mdm.getFirstLine();
         if (title.startsWith("#")) {
-            title = title.substring(title.indexOf(" "), title.length()).trim();
+            title = title.substring(title.indexOf(" ")).trim();
         }
 
         resp.setContentType("text/html;charset=UTF-8");
@@ -99,8 +98,9 @@ public class StartDocs extends HttpServlet {
     private void processImage(HttpServletRequest req, HttpServletResponse resp, String uri) throws IOException {
         resp.setHeader("Content-Type", "image/jped");// 设置响应的媒体类型，这样浏览器会识别出响应的是图片
         InputStream fos = req.getServletContext().getResourceAsStream("/WEB-INF/" + uri);
-        if (fos == null)
+        if (fos == null) {
             return;
+        }
         OutputStream os = resp.getOutputStream();// 获得servlet的servletoutputstream对象
         byte[] buffer = new byte[2048];
         int count;

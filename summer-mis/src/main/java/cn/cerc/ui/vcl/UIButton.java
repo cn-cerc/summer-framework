@@ -100,7 +100,8 @@ public class UIButton extends UIComponent {
         return type;
     }
 
-    public void setType(String type) {
+    public UIButton setType(String type) {
         this.type = type;
+        return this;
     }
 }

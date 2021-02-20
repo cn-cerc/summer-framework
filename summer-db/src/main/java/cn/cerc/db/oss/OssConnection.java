@@ -1,28 +1,27 @@
 package cn.cerc.db.oss;
 
+import cn.cerc.core.IConfig;
+import cn.cerc.core.IConnection;
+import cn.cerc.db.core.ServerConfig;
+import com.aliyun.oss.ClientBuilderConfiguration;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.OSSException;
+import com.aliyun.oss.model.Bucket;
+import com.aliyun.oss.model.GetObjectRequest;
+import com.aliyun.oss.model.OSSObject;
+import com.aliyun.oss.model.ObjectMetadata;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.aliyun.oss.ClientConfiguration;
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.OSSException;
-import com.aliyun.oss.model.Bucket;
-import com.aliyun.oss.model.GetObjectRequest;
-import com.aliyun.oss.model.OSSObject;
-import com.aliyun.oss.model.ObjectMetadata;
-
-import cn.cerc.core.IConfig;
-import cn.cerc.core.IConnection;
-import cn.cerc.db.core.ServerConfig;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -39,9 +38,12 @@ public class OssConnection implements IConnection {
     public static final String oss_accessKeyId = "oss.accessKeyId";
     // 连接密码
     public static final String oss_accessKeySecret = "oss.accessKeySecret";
+    // 启用内容网络分发
+    public static final String oss_cdn_enable = "oss.cdn.enable";
+
     // IHandle 标识
     public static final String sessionId = "ossSession";
-    private static OSSClient client;
+    private static OSS client;
     private static String bucket;
     private static String site;
     private IConfig config;
@@ -51,32 +53,28 @@ public class OssConnection implements IConnection {
     }
 
     @Override
-    public OSSClient getClient() {
-        if (client != null)
+    public OSS getClient() {
+        if (client != null) {
             return client;
+        }
+        bucket = config.getProperty(OssConnection.oss_bucket, null);
+        site = config.getProperty(OssConnection.oss_site);
 
         // 如果连接被意外断开了,那么重新建立连接
-        if (null == client) {
-            String endPoint = config.getProperty(OssConnection.oss_endpoint, null);
-            String acId = config.getProperty(OssConnection.oss_accessKeyId, null);
-            String secret = config.getProperty(OssConnection.oss_accessKeySecret, null);
-            bucket = config.getProperty(OssConnection.oss_bucket, null);
-            // 创建ClientConfiguration实例
-            ClientConfiguration conf = new ClientConfiguration();
-            // 设置OSSClient使用的最大连接数，默认1024
-            conf.setMaxConnections(1024);
-            // 设置请求超时时间，默认3秒
-            conf.setSocketTimeout(3 * 1000);
-            // 设置失败请求重试次数，默认3次
-            conf.setMaxErrorRetry(3);
+        String endpoint = config.getProperty(OssConnection.oss_endpoint, null);
+        String accessKeyId = config.getProperty(OssConnection.oss_accessKeyId, null);
+        String accessKeySecret = config.getProperty(OssConnection.oss_accessKeySecret, null);
 
-            site = config.getProperty(OssConnection.oss_site);
+        ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
+        // 设置OSSClient使用的最大连接数，默认1024
+        conf.setMaxConnections(1024);
+        // 设置请求超时时间，默认3秒
+        conf.setSocketTimeout(3 * 1000);
+        // 设置失败请求重试次数，默认3次
+        conf.setMaxErrorRetry(3);
 
-            // 创建OSSClient实例
-            client = new OSSClient(endPoint, acId, secret, conf);
-            log.debug("建立oss连接成功");
-        }
-
+        // 创建OSSClient实例
+        client = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, conf);
         return client;
     }
 
@@ -91,13 +89,22 @@ public class OssConnection implements IConnection {
     }
 
     public String getBucket() {
+        // 若bucket为空则初始化客户端
+        if (bucket == null) {
+            getClient();
+        }
         return bucket;
     }
 
     // 上传文件
     public void upload(String fileName, InputStream inputStream) {
+        upload(getBucket(), fileName, inputStream);
+    }
+
+    // 指定上传Bucket
+    public void upload(String bucket, String fileName, InputStream inputStream) {
         // 例：upload(inputStream, "131001/Default/131001/temp.txt")
-        getClient().putObject(getBucket(), fileName, inputStream);
+        getClient().putObject(bucket, fileName, inputStream);
     }
 
     // 下载文件
@@ -110,7 +117,12 @@ public class OssConnection implements IConnection {
 
     // 删除文件
     public void delete(String fileName) {
-        getClient().deleteObject(getBucket(), fileName);
+        delete(getBucket(), fileName);
+    }
+
+    // 指定Bucket删除文件
+    public void delete(String bucket, String fileName) {
+        getClient().deleteObject(bucket, fileName);
     }
 
     public String getContent(String fileName) {
@@ -125,8 +137,9 @@ public class OssConnection implements IConnection {
             while (true) {
                 String line;
                 line = reader.readLine();
-                if (line == null)
+                if (line == null) {
                     break;
+                }
                 sb.append(line);
             }
             return sb.toString();
@@ -158,10 +171,11 @@ public class OssConnection implements IConnection {
      * @return 若存在则返回路径，否则返回默认值
      */
     public String getFileUrl(String fileName, String def) {
-        if (existsFile(fileName))
+        if (existsFile(fileName)) {
             return String.format("%s/%s", site, fileName);
-        else
+        } else {
             return def;
+        }
     }
 
     public String getSite() {

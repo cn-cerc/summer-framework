@@ -1,10 +1,9 @@
 package cn.cerc.db.mssql;
 
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
-
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.StubHandle;
 
 public class MssqlQueryTest {
 
@@ -12,7 +11,7 @@ public class MssqlQueryTest {
 
     @Before
     public void setUP() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
     }
 
     @Test
@@ -33,8 +32,8 @@ public class MssqlQueryTest {
 //        query.setField("Name_", "研发部");
 //        query.setField("UpdateUser_", "admin");
 //        query.setField("AppUser_", "admin");
-//        query.setField("UpdateDate_", TDateTime.Now());
-//        query.setField("AppDate_", TDateTime.Now());
+//        query.setField("UpdateDate_", TDateTime.now());
+//        query.setField("AppDate_", TDateTime.now());
 //        query.post();
     }
 

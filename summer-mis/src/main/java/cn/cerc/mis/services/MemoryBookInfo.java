@@ -1,7 +1,5 @@
 package cn.cerc.mis.services;
 
-import com.google.gson.Gson;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
@@ -10,7 +8,10 @@ import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MemoryBookInfo {
 
     private static final String buffVersion = "5";
@@ -22,29 +23,43 @@ public class MemoryBookInfo {
             return gson.fromJson(tmp, BookInfoRecord.class);
         }
 
-        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "SvrBookInfo.getRecord");
+        BookInfoRecord item = new BookInfoRecord();
+        IServiceProxy svr = ServiceFactory.get(handle);
+        svr.setService("SvrBookInfo.getRecord");
         if (!svr.exec("corpNo", corpNo)) {
-            return null;
+            log.error(svr.getMessage());
+            item.setCode(corpNo);
+            return item;
         }
         Record record = svr.getDataOut().getHead();
 
-        BookInfoRecord result = new BookInfoRecord();
-        result.setCode(record.getString("CorpNo_"));
-        result.setShortName(record.getString("ShortName_"));
-        result.setName(record.getString("Name_"));
-        result.setAddress(record.getString("Address_"));
-        result.setTel(record.getString("Tel_"));
-        result.setManagerPhone(record.getString("ManagerPhone_"));
-        result.setStartHost(record.getString("StartHost_"));
-        result.setContact(record.getString("Contact_"));
-        result.setAuthentication(record.getBoolean("Authentication_"));
-        result.setStatus(record.getInt("Status_"));
-        result.setCorpType(record.getInt("Type_"));
-        result.setIndustry(record.getString("Industry_"));
+        item.setCode(record.getString("CorpNo_"));
+        item.setShortName(record.getString("ShortName_"));
+        item.setName(record.getString("Name_"));
+        item.setAddress(record.getString("Address_"));
+        item.setTel(record.getString("Tel_"));
+        item.setFastTel(record.getString("FastTel_"));
+        item.setManagerPhone(record.getString("ManagerPhone_"));
+        item.setStartHost(record.getString("StartHost_"));
+        item.setContact(record.getString("Contact_"));
+        item.setAuthentication(record.getBoolean("Authentication_"));
+        item.setStatus(record.getInt("Status_"));
+        item.setCorpType(record.getInt("Type_"));
+        item.setIndustry(record.getString("Industry_"));
+        item.setCurrency(record.getString("Currency_"));
+        item.setEmail(record.getString("Email_"));
+        item.setFax(record.getString("Fax_"));
 
-        Redis.set(getBuffKey(corpNo), gson.toJson(result));
+        Redis.set(getBuffKey(corpNo), gson.toJson(item));
+        return item;
+    }
 
-        return result;
+    /**
+     * 检查帐套代码是否是系统生成
+     */
+    public static boolean exist(IHandle handle, String corpNo) {
+        BookInfoRecord book = MemoryBookInfo.get(handle, corpNo);
+        return Utils.isNotEmpty(book.getShortName());
     }
 
     /**
@@ -54,8 +69,9 @@ public class MemoryBookInfo {
      */
     public static int getStatus(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
-        if (item == null)
+        if (item == null) {
             throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+        }
         return item.getStatus();
     }
 
@@ -65,7 +81,7 @@ public class MemoryBookInfo {
      */
     public static BookVersion getBookType(IHandle handle) {
         String corpNo = handle.getCorpNo();
-        return getCorpType(handle, corpNo);
+        return getBookType(handle, corpNo);
     }
 
     /**
@@ -73,10 +89,11 @@ public class MemoryBookInfo {
      * @param corpNo 帐套代码
      * @return 返回指定帐套的版本类型
      */
-    public static BookVersion getCorpType(IHandle handle, String corpNo) {
+    public static BookVersion getBookType(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
-        if (item == null)
+        if (item == null) {
             throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+        }
         int result = item.getCorpType();
         return BookVersion.values()[result];
     }
@@ -88,15 +105,30 @@ public class MemoryBookInfo {
      */
     public static String getShortName(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
-        if (item == null)
+        if (item == null) {
             throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+        }
         return item.getShortName();
+    }
+
+    /**
+     * @param handle 环境变量
+     * @param corpNo 帐套代码
+     * @return 返回帐套全称
+     */
+    public static String getName(IHandle handle, String corpNo) {
+        BookInfoRecord item = get(handle, corpNo);
+        if (item == null) {
+            throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+        }
+        return item.getName();
     }
 
     public static String getIndustry(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
-        if (item == null)
+        if (item == null) {
             throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+        }
         return item.getIndustry();
     }
 

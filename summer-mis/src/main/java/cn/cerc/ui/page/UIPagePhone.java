@@ -1,26 +1,27 @@
 package cn.cerc.ui.page;
 
-import static cn.cerc.mis.core.ClientDevice.APP_DEVICE_EE;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
+import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AbstractJspPage;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.StartForms;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.page.ExportFile;
 import cn.cerc.mis.page.IMenuBar;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.parts.RightMenus;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * 主体子页面(公用)
@@ -42,7 +43,7 @@ public class UIPagePhone extends AbstractJspPage {
     }
 
     public void addExportFile(String service, String key) {
-        if (APP_DEVICE_EE.equals(this.getForm().getClient().getDevice())) {
+        if (AppClient.ee.equals(this.getForm().getClient().getDevice())) {
             ExportFile item = new ExportFile(service, key);
             this.put("export", item);
         }
@@ -58,8 +59,9 @@ public class UIPagePhone extends AbstractJspPage {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
             menus.setHandle(form.getHandle());
-            for (IMenuBar item : menus.getItems())
+            for (IMenuBar item : menus.getItems()) {
                 item.enrollMenu(form, rightMenus);
+            }
         } else {
             getHeader().getHomePage().setSite(Application.getAppConfig().getFormWelcome());
         }
@@ -79,7 +81,15 @@ public class UIPagePhone extends AbstractJspPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getTitle()));
+
+        String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
+        String[] params = menuCode.split("\\.");
+        String formId = params[0];
+        if (Utils.isNotEmpty(this.getForm().getName())) {
+            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
+        } else {
+            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+        }
 
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");

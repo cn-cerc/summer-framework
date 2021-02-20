@@ -1,8 +1,5 @@
 package cn.cerc.mis.other;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -15,6 +12,9 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class BookOptions {
@@ -96,6 +96,7 @@ public class BookOptions {
     public static final String UpdateTBDateToEffectiveDate = "UpdateTBDateToEffectiveDate";
     public static final String IsViewOldMenu = "IsViewOldMenu";
     public static final String DefaultProfitMargin = "DefaultProfitMargin";
+    public static final String AutoMergeOnlineOrder = "AutoMergeOnlineOrder";
     public static final String OnlineToOfflineMenu = "OnlineToOfflineMenu";
     public static final String OnlineToOfflineMaxScale = "OnlineToOfflineMaxScale";
     public static final String OnlineToOfflineArea = "OnlineToOfflineArea";
@@ -155,7 +156,7 @@ public class BookOptions {
         items.put(EnableStockLessControl, "启用商品库存不足控制，不允许库存数量出现负数");
         items.put(EnableSendMailIntro, "启用邮件发送功能，在接单及出货时，自动发送邮件于客户");
         items.put(EnableSendMobileIntro, "启动简讯发送功能，在出货等时机点，自动发送简讯（<font color=red>此项额外收费：0.06元/条</font>）");
-        items.put(EnableNotODToBC, "启用无订单出货模式，允许直接录入批发出货单");
+        items.put(EnableNotODToBC, "启用无订单出货模式，允许直接录入销售单");
         items.put(EnablePackageNumInput, "启用包装单位录单,即在录单时可以录入包装的数量");
         items.put(AllowDiyPartCode, "关闭商品自动编号，改为手动录入商品编号");
         items.put(EanbleSalesPromotion, "启用促销包作业模式，用于满足如买M送N，或量大优惠等");
@@ -194,6 +195,7 @@ public class BookOptions {
         items.put(UpdateTBDateToEffectiveDate, "单据生效时，单据日期自动等于生效日期");
         items.put(IsViewOldMenu, "是否显示旧版菜单链接（带闪电标识）");
         items.put(DefaultProfitMargin, "网单代发货利润率（<font color=red>需启用O2O模组</font>）");
+        items.put(AutoMergeOnlineOrder, "自动合并相同店铺、同一个收货人的订单，合并在一个包裹发货");
         items.put(OnlineToOfflineMaxScale, "商家代发允许的最大时间，按分钟计（<font color=red>需启用O2O模组</font>）");
         items.put(OnlineToOfflineArea, "网单代发区域等级范围设置（<font color=red>0、按省 1、按市 2、按县 3、指定市 4、指定县 5、指定镇</font>）");
         items.put(SupplyQuotationGrade, "是否开启采购报价单阶梯报价");
@@ -211,7 +213,7 @@ public class BookOptions {
         // 其它参数
         items.put(ZZTPY_VERSION, "启动【郑州太平洋】专用功能项");
         items.put(AllowMallShare, "是否开放在线商城（允许所有人查看本公司商品信息）");
-        items.put(StudentFileSupCorpNo, "设置互联上游账套（助学计划）");
+        items.put(StudentFileSupCorpNo, "设置互联上游帐套（助学计划）");
     }
 
     private IHandle handle;
@@ -244,10 +246,11 @@ public class BookOptions {
                 f.byField("CorpNo_", handle.getCorpNo());
                 f.byField("Code_", ACode);
                 f.open();
-                if (!f.getDataSet().eof())
+                if (!f.getDataSet().eof()) {
                     buff.setField("Value_", f.getDataSet().getString("Value_"));
-                else
+                } else {
                     buff.setField("Value_", ADefault);
+                }
 
             }
             return buff.getString("Value_");
@@ -256,13 +259,14 @@ public class BookOptions {
 
     public static String getOption2(IHandle handle, String ACode, String def) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
-            if (buff.isNull() || buff.getString("Value_").equals("")) {
+            if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 log.info("reset buffer.");
                 LocalService ser = new LocalService(handle, "SvrBookOption");
-                if (ser.exec("Code_", ACode) && !ser.getDataOut().eof())
+                if (ser.exec("Code_", ACode) && !ser.getDataOut().eof()) {
                     buff.setField("Value_", ser.getDataOut().getString("Value_"));
-                else
+                } else {
                     buff.setField("Value_", def);
+                }
 
             }
             return buff.getString("Value_");
@@ -270,21 +274,23 @@ public class BookOptions {
     }
 
     public static boolean checkStockNum(IHandle handle, double AStock) {
-        if (getOption(handle, EnableStockLessControl, "off").equals("on"))
+        if ("on".equals(getOption(handle, EnableStockLessControl, "off"))) {
             return AStock >= 0;
-        else
+        } else {
             return true;
+        }
     }
 
     // 是否不允许库存为负数
     public static boolean isEnableStockLessControl(IHandle handle) {
-        return getOption(handle, EnableStockLessControl, "off").equals("on");
+        return "on".equals(getOption(handle, EnableStockLessControl, "off"));
     }
 
     // 是否启动与ERP同步
     public static boolean isEnableSyncERP(IHandle handle, DataSet dataIn) {
-        if (dataIn.getHead().exists("SyncERPToVine"))
+        if (dataIn.getHead().exists("SyncERPToVine")) {
             return false;
+        }
         return getEnabled(handle, EnableSyncERP);
     }
 
@@ -313,7 +319,7 @@ public class BookOptions {
         String paramKey = AccInitYearMonth;
         // String result = getOption(owner, paramKey, "201301";
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), paramKey)) {
-            if (buff.isNull() || buff.getString("Value_").equals("")) {
+            if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
                 BuildQuery f = new BuildQuery(handle);
                 String corpNo = handle.getCorpNo();
@@ -340,29 +346,33 @@ public class BookOptions {
             result = buff.getString("Value_");
         }
         // 做返回值复查
-        if (result == null || "".equals(result))
+        if (result == null || "".equals(result)) {
             throw new RuntimeException("期初年月未设置，请先到系统参数中设置好后再进行此作业!");
+        }
         return result;
     }
 
     // 从系统帐套中取开帐日期
     private static TDate getBookCreateDate(IHandle handle) {
-        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.getBookCreateDate");
+        IServiceProxy svr = ServiceFactory.get(handle);
+        svr.setService("ApiOurInfo.getBookCreateDate");
         if (!svr.exec("CorpNo_", handle.getCorpNo())) {
             throw new RuntimeException(svr.getMessage());
         }
 
         DataSet cdsTmp = svr.getDataOut();
-        if (cdsTmp.size() == 0)
+        if (cdsTmp.size() == 0) {
             throw new RuntimeException(String.format("没有找到帐套：%s", handle.getCorpNo()));
+        }
         return cdsTmp.getDate("AppDate_");
 
     }
 
     public static String getParamName(String paramCode) {
         String result = items.get(paramCode);
-        if (result == null || "".equals(result))
+        if (result == null || "".equals(result)) {
             throw new RuntimeException("没有注册的帐套参数: " + paramCode);
+        }
         return result;
     }
 
@@ -373,8 +383,9 @@ public class BookOptions {
 
     public static String getDefaultCWCode(IHandle handle) {
         String result = getOption(handle, DefaultCWCode).trim();
-        if (result == null || "".equals(result))
+        if (result == null || "".equals(result)) {
             result = "仓库";
+        }
         return result;
     }
 
@@ -384,20 +395,6 @@ public class BookOptions {
 
     public static boolean getEnableTranDetailCW(IHandle handle) {
         return getEnabled(handle, EnableTranDetailCW);
-    }
-
-    // 仓别控制权限
-    public static TWHControl getWHControl(IHandle handle) {
-        // 拆装单单头仓别管控
-        boolean enableWHManage = BookOptions.getEnableWHManage(handle);
-        // 拆装单单身仓别管控
-        boolean enableTranDetailCW = BookOptions.getEnableTranDetailCW(handle);
-        if (enableWHManage && enableTranDetailCW)
-            return TWHControl.whcBody;
-        else if (enableWHManage)
-            return TWHControl.whcHead;
-        else
-            return TWHControl.whcNone;
     }
 
     /*
@@ -428,7 +425,7 @@ public class BookOptions {
         return getEnabled(handle, UpdateCurrentMonthProfit);
     }
 
-    // 是否禁止所有用户在电脑上保存帐号，禁止后首页不显示账套信息
+    // 是否禁止所有用户在电脑上保存帐号，禁止后首页不显示帐套信息
     public static boolean isDissableAccountSave(IHandle handle) {
         return getEnabled(handle, DisableAccountSave);
     }
@@ -448,18 +445,21 @@ public class BookOptions {
         return getEnabled(handle, OnlineToOfflineMenu);
     }
 
-    // 增加账套参数
+    // 增加帐套参数
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
-        IServiceProxy svr1 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.getVineOptionsByCode");
+        IServiceProxy svr1 = ServiceFactory.get(handle);
+        svr1.setService("ApiOurInfo.getVineOptionsByCode");
         if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {
             throw new RuntimeException(svr1.getMessage());
         }
         DataSet dataSet = svr1.getDataOut();
-        if (!dataSet.eof())
+        if (!dataSet.eof()) {
             return;
+        }
         String paramName = getParamName(paramKey);
 
-        IServiceProxy svr2 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.appendToCorpOption");
+        IServiceProxy svr2 = ServiceFactory.get(handle);
+        svr2.setService("ApiOurInfo.appendToCorpOption");
         Record headIn = svr2.getDataIn().getHead();
         headIn.setField("CorpNo_", corpNo);
         headIn.setField("Code_", paramKey);

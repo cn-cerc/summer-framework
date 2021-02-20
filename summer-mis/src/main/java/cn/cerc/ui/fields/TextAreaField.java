@@ -18,8 +18,8 @@ public class TextAreaField extends AbstractField {
     }
 
     @Override
-    public String getText(Record rs) {
-        return getDefaultText(rs);
+    public String getText(Record record) {
+        return getDefaultText(record);
     }
 
 }

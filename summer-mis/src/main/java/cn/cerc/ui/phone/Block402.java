@@ -17,9 +17,9 @@ public class Block402 extends UIComponent {
     private UISpan describe = new UISpan();
     private UISpan remark = new UISpan();
     private UITextBox input = new UITextBox();
-    private String role = new String();
-    private String dataName = new String();
-    private String dataJson = new String();
+    private String role = "";
+    private String dataName = "";
+    private String dataJson = "";
 
     /**
      * 进出库单据明细之显示与数量修改
@@ -56,10 +56,12 @@ public class Block402 extends UIComponent {
         html.println("<!-- %s -->", this.getClass().getName());
         html.print("<section class='block402'");
 
-        if (!"".equals(this.role))
+        if (!"".equals(this.role)) {
             html.print(" role='%s'", this.role);
-        if (!"".equals(this.dataName))
+        }
+        if (!"".equals(this.dataName)) {
             html.print(" data-%s='%s'", this.dataName, this.dataJson);
+        }
 
         html.print(">");
         html.print("<div class='up_con'>");

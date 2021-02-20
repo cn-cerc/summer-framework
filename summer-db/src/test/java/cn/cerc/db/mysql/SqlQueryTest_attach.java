@@ -1,18 +1,17 @@
 package cn.cerc.db.mysql;
 
+import cn.cerc.core.Record;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
-import cn.cerc.core.Record;
-import cn.cerc.db.core.StubHandle;
-
 public class SqlQueryTest_attach {
     private SqlQuery ds;
-    private StubHandle handle;
+    private StubHandleText handle;
 
     @Before
     public void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         ds = new SqlQuery(handle);
     }
 

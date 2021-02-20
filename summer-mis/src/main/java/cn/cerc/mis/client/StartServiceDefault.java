@@ -1,20 +1,5 @@
 package cn.cerc.mis.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -25,6 +10,19 @@ import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 //@Controller
@@ -43,8 +41,9 @@ public class StartServiceDefault {
     private HttpServletResponse resp;
 
     private static void loadServices(HttpServletRequest req) {
-        if (services != null)
+        if (services != null) {
             return;
+        }
         services = new HashMap<>();
         for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
             IRestful service = Application.getBean(serviceCode, IRestful.class);
@@ -88,8 +87,9 @@ public class StartServiceDefault {
 
     private void doProcess(String method, String uri) {
         IAppConfig conf = Application.getAppConfig();
-        if (!uri.startsWith("/" + conf.getPathServices()))
+        if (!uri.startsWith("/" + conf.getPathServices())) {
             return;
+        }
 
         try {
             req.setCharacterEncoding("UTF-8");
@@ -102,8 +102,9 @@ public class StartServiceDefault {
         // 将restPath转成service代码
         DataSet dataIn = new DataSet();
         String str = getParams(req);
-        if (null != str && !"[{}]".equals(str))
+        if (null != str && !"[{}]".equals(str)) {
             dataIn.setJSON(str);
+        }
         String serviceCode = getServiceCode(req, method, req.getRequestURI().substring(1), dataIn.getHead());
         log.info(req.getRequestURI() + " => " + serviceCode);
         if (serviceCode == null) {
@@ -155,8 +156,9 @@ public class StartServiceDefault {
     public String getServiceCode(HttpServletRequest req, String method, String uri, Record headIn) {
         loadServices(req);
         String[] paths = uri.split("/");
-        if (paths.length < 2)
+        if (paths.length < 2) {
             return null;
+        }
 
         int offset = 0;
         String bookNo = null;
@@ -170,8 +172,9 @@ public class StartServiceDefault {
         }
 
         for (String key : services.keySet()) {
-            if (!key.startsWith(method + "://"))
+            if (!key.startsWith(method + "://")) {
                 continue;
+            }
             int beginIndex = method.length() + 3;
             int endIndex = key.indexOf("?");
             String[] keys;
@@ -185,8 +188,9 @@ public class StartServiceDefault {
             if (!"*".equals(keys[0]) && !bookNo.equals(keys[0])) {
                 continue;
             }
-            if ((keys.length + params.length) != (paths.length - offset))
+            if ((keys.length + params.length) != (paths.length - offset)) {
                 continue;
+            }
             boolean find = true;
             for (int i = 1; i < keys.length; i++) {
                 if (!paths[i + offset].equals(keys[i])) {
@@ -207,8 +211,9 @@ public class StartServiceDefault {
                 return serviceCode;
             }
         }
-        if (paths.length == 2)
+        if (paths.length == 2) {
             return paths[1];
+        }
         return null;
     }
 

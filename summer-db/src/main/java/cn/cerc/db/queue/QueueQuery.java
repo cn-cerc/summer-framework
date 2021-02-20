@@ -1,11 +1,10 @@
 package cn.cerc.db.queue;
 
+import cn.cerc.core.DataQuery;
+import cn.cerc.core.IHandle;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
 import com.google.gson.JsonSyntaxException;
-
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -31,10 +30,12 @@ public class QueueQuery extends DataQuery {
             queueCode = getOperator().findTableName(this.getSqlText().getText());
             queue = connection.openQueue(queueCode);
         }
-        if (null == queueCode || "".equals(queueCode))
+        if (null == queueCode || "".equals(queueCode)) {
             throw new RuntimeException("queueCode is null");
-        if (this.active)
+        }
+        if (this.active) {
             throw new RuntimeException("active is true");
+        }
 
         // 当maximum设置为1时，读取消息
         if (this.queueMode == QueueMode.recevie) {
@@ -54,8 +55,9 @@ public class QueueQuery extends DataQuery {
 
     @Override
     public void save() {
-        if (this.queueMode != QueueMode.append)
+        if (this.queueMode != QueueMode.append) {
             throw new RuntimeException("当前作业模式下，不允许保存");
+        }
         connection.append(queue, getJSON());
         log.info("消息保存成功");
     }
@@ -64,8 +66,9 @@ public class QueueQuery extends DataQuery {
      * @return 移除消息队列
      */
     public boolean remove() {
-        if (receiptHandle == null)
+        if (receiptHandle == null) {
             return false;
+        }
         connection.delete(queue, receiptHandle);
         receiptHandle = null;
         return true;
@@ -88,16 +91,18 @@ public class QueueQuery extends DataQuery {
 
     @Override
     public QueueOperator getOperator() {
-        if (operator == null)
+        if (operator == null) {
             operator = new QueueOperator();
+        }
         return operator;
     }
 
     @Override
     public final void setBatchSave(boolean batchSave) {
         super.setBatchSave(batchSave);
-        if (!batchSave)
+        if (!batchSave) {
             throw new RuntimeException("QueueQuery.batchSave 不允许为 false");
+        }
     }
 
     public QueueMode getQueueMode() {

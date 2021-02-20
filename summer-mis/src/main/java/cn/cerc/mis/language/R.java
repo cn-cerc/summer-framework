@@ -1,7 +1,5 @@
 package cn.cerc.mis.language;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -9,6 +7,8 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class R {
@@ -27,22 +27,27 @@ public class R {
                 }
             }
         }
-        String language = temp == null ? Application.getLangage() : (String) temp;
+        String language = temp == null ? Application.getLanguage() : (String) temp;
         // FIXME: 2019/11/21 用户配置表需要改为动态获取
-        SqlQuery ds = new SqlQuery(handle);
-        ds.add("select Value_ from %s where Code_='%s' and UserCode_='%s'", "UserOptions", "Lang_",
-                handle.getUserCode());
-        ds.open();
-        if (!ds.eof()) {
-            language = ds.getString("Value_");
+        try {
+            SqlQuery ds = new SqlQuery(handle);
+            ds.add("select Value_ from %s where Code_='%s' and UserCode_='%s'", "UserOptions", "Lang_",
+                    handle.getUserCode());
+            ds.open();
+            if (!ds.eof()) {
+                language = ds.getString("Value_");
+            }
+        } catch (Exception e) {
+            language = Language.zh_CN;
         }
         return language;
     }
 
     public static String asString(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if (Application.App_Language.equals(language))
+        if (Application.App_Language.equals(language)) {
             return text;
+        }
 
         if (text == null || "".equals(text.trim())) {
             log.error("字符串为空");
@@ -75,9 +80,9 @@ public class R {
             dsLang.setField("SupportIphone_", false);
             dsLang.setField("Enable_", true);
             dsLang.setField("UpdateUser_", handle.getUserCode());
-            dsLang.setField("UpdateDate_", TDateTime.Now());
+            dsLang.setField("UpdateDate_", TDateTime.now());
             dsLang.setField("CreateUser_", handle.getUserCode());
-            dsLang.setField("CreateDate_", TDateTime.Now());
+            dsLang.setField("CreateDate_", TDateTime.now());
             dsLang.post();
         }
     }
@@ -88,7 +93,7 @@ public class R {
         dsLang.add("select Key_,max(Value_) as Value_ from %s", systemTable.getLanguage());
         dsLang.add("where Key_='%s'", Utils.safeString(text));
         // FIXME: 2019/12/7 此处应该取反了，未来得及翻译的语言应该直接显示中文
-        if (LanguageType.en_US.equals(language)) {
+        if (Language.en_US.equals(language)) {
             dsLang.add("and (Lang_='%s')", language);
         } else {
             dsLang.add("and (Lang_='%s' or Lang_='en')", language);
@@ -101,8 +106,9 @@ public class R {
 
     public static String get(IHandle handle, String text) {
         String language = getLanguage(handle);
-        if (LanguageType.zh_CN.equals(language))
+        if (Language.zh_CN.equals(language)) {
             return text;
+        }
 
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         // 处理英文界面
@@ -131,7 +137,7 @@ public class R {
         String result = "";
         String en_result = ""; // 默认英文
         while (ds.fetch()) {
-            if (LanguageType.en_US.equals(ds.getString("Lang_")))
+            if (Language.en_US.equals(ds.getString("Lang_")))
                 en_result = ds.getString("Value_");
             else
                 result = ds.getString("Value_");

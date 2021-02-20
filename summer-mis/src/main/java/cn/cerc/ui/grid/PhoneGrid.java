@@ -1,8 +1,5 @@
 package cn.cerc.ui.grid;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.mis.core.IForm;
@@ -14,6 +11,9 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.fields.ExpendField;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // 手机专用表格
 public class PhoneGrid extends AbstractGrid {
@@ -44,8 +44,9 @@ public class PhoneGrid extends AbstractGrid {
     public void outputGrid(HtmlWriter html) {
         DataSet dataSet = this.getDataSet();
         MutiPage pages = this.getPages();
-        if (dataSet.size() == 0)
+        if (dataSet.size() == 0) {
             return;
+        }
 
         html.println(String.format("<ol class=\"%s\">", "context"));
 
@@ -145,26 +146,31 @@ public class PhoneGrid extends AbstractGrid {
         }
 
         private void outputTableString(HtmlWriter html) {
-            if (dataSource == null)
+            if (dataSource == null) {
                 throw new RuntimeException("dataView is null");
-            if (dataSource.getDataSet() == null)
+            }
+            if (dataSource.getDataSet() == null) {
                 throw new RuntimeException("dataSet is null");
+            }
             Record record = dataSource.getDataSet().getCurrent();
             html.print("<tr");
-            if (this.expender != null)
+            if (this.expender != null) {
                 html.print(String.format(" role=\"%s\" style=\"display: none;\"", expender.getHiddenId()));
+            }
             html.print(">");
             for (AbstractField field : columns) {
                 html.print("<td");
-                if (columns.size() == 1)
+                if (columns.size() == 1) {
                     html.print(" colspan=2");
+                }
                 html.print(">");
 
                 BuildUrl build = field.getBuildUrl();
                 if (build != null) {
                     String name = field.getShortName();
-                    if (!"".equals(name))
+                    if (!"".equals(name)) {
                         html.print(name + ": ");
+                    }
                     UrlRecord url = new UrlRecord();
                     build.buildUrl(record, url);
                     if (!"".equals(url.getUrl())) {
@@ -187,8 +193,9 @@ public class PhoneGrid extends AbstractGrid {
             html.print("<section>");
             for (AbstractField field : columns) {
                 html.print("<span");
-                if (field.getCSSClass_phone() != null)
+                if (field.getCSSClass_phone() != null) {
                     html.print(String.format(" class=\"%s\"", field.getCSSClass_phone()));
+                }
                 html.print(">");
                 BuildUrl build = field.getBuildUrl();
                 if (build != null) {
@@ -213,28 +220,32 @@ public class PhoneGrid extends AbstractGrid {
         private void outputColumn(AbstractField field, HtmlWriter html) {
             DataSet dataSet = dataSource != null ? dataSource.getDataSet() : null;
             String name = field.getShortName();
-            if (!"".equals(name))
+            if (!"".equals(name)) {
                 html.print(name + ": ");
+            }
             html.print(field.getText(dataSet.getCurrent()));
         }
 
         @Override
         public void output(HtmlWriter html) {
-            if (this.Table)
+            if (this.Table) {
                 outputTableString(html);
-            else
+            } else {
                 outputListString(html);
+            }
         }
 
         @Override
         public void addField(IField field) {
-            if (field instanceof AbstractField)
+            if (field instanceof AbstractField) {
                 columns.add((AbstractField) field);
+            }
         }
 
         public PhoneLine addItem(AbstractField... fields) {
-            for (AbstractField field : fields)
+            for (AbstractField field : fields) {
                 addField(field);
+            }
             return this;
         }
 

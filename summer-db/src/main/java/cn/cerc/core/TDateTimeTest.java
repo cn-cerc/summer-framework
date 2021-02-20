@@ -1,11 +1,11 @@
 package cn.cerc.core;
 
+import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
 
 public class TDateTimeTest {
     private String ym = "201512";
@@ -47,8 +47,8 @@ public class TDateTimeTest {
 
     @Test
     public void test_compareDay() {
-        obj = TDateTime.Now();
-        assertSame(obj.compareDay(TDateTime.Now().incDay(-1)), 1);
+        obj = TDateTime.now();
+        assertSame(obj.compareDay(TDateTime.now().incDay(-1)), 1);
     }
 
     @Test

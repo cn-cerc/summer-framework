@@ -1,12 +1,12 @@
 package cn.cerc.db.mssql;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JdbcMssqlExample {

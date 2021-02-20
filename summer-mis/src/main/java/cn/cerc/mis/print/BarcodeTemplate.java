@@ -1,7 +1,6 @@
 package cn.cerc.mis.print;
 
-import java.io.IOException;
-
+import cn.cerc.core.DataSet;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -11,7 +10,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import cn.cerc.core.DataSet;
+import java.io.IOException;
 
 public class BarcodeTemplate extends PrintTemplate {
 
@@ -50,8 +49,9 @@ public class BarcodeTemplate extends PrintTemplate {
         dataSet.first();
         while (dataSet.fetch()) {
             // 商品名称
-            if (dataSet.getCurrent().hasValue("Name_"))
+            if (dataSet.getCurrent().hasValue("Name_")) {
                 document.add(new Paragraph(dataSet.getString("Name_"), f8));
+            }
             // 商品条码
             BarcodeEAN codeEAN = new BarcodeEAN();
             codeEAN.setBarHeight(barHeight);

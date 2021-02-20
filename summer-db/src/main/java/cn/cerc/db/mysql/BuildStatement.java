@@ -1,5 +1,8 @@
 package cn.cerc.db.mysql;
 
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,9 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
 
 /**
  * 生成原生sql操作对象
@@ -43,8 +43,9 @@ public class BuildStatement implements AutoCloseable {
             result = Utils.roundTo((Double) data, -8);
         } else {
             if (data instanceof Date) {
-                if (sdf == null)
+                if (sdf == null) {
                     sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                }
                 result = sdf.format(data);
             }
         }
@@ -52,8 +53,9 @@ public class BuildStatement implements AutoCloseable {
     }
 
     public PreparedStatement build() throws SQLException {
-        if (ps != null)
+        if (ps != null) {
             throw new RuntimeException("ps not is null");
+        }
 
         ps = conn.prepareStatement(build.toString());
 
@@ -67,8 +69,9 @@ public class BuildStatement implements AutoCloseable {
     }
 
     public String getCommand() {
-        if (ps == null)
+        if (ps == null) {
             return null;
+        }
 
         String result = ps.toString();
         return result.substring(result.indexOf(':') + 2);

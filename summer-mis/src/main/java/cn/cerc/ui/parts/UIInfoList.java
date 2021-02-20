@@ -1,11 +1,11 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.ext.UISpan;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ·提示信息列表
@@ -18,9 +18,32 @@ public class UIInfoList extends UIComponent {
         super(owner);
     }
 
+    public Line setTitle(String title) {
+        Line line = new Line();
+        line.setTitle(title);
+        items.add(line);
+        return line;
+    }
+
     public Line setTitle(String imgSrc, String title) {
         Line line = new Line();
         line.setTitle(imgSrc, title);
+        items.add(line);
+        return line;
+    }
+
+    public Line setTitle(String title, String operaText, String href) {
+        Line line = new Line();
+        line.setTitle(title);
+        line.setRightOpera(operaText, href);
+        items.add(line);
+        return line;
+    }
+
+    public Line setTitle(String imgSrc, String title, String operaText, String href) {
+        Line line = new Line();
+        line.setTitle(imgSrc, title);
+        line.setRightOpera(operaText, href);
         items.add(line);
         return line;
     }
@@ -42,14 +65,6 @@ public class UIInfoList extends UIComponent {
         return line;
     }
 
-    public Line setTitle(String imgSrc, String title, String operaText, String href) {
-        Line line = new Line();
-        line.setTitle(imgSrc, title);
-        line.setRightOpera(operaText, href);
-        items.add(line);
-        return line;
-    }
-
     public UIInfoList setOnClick(String onClick) {
         this.onClick = onClick;
         return this;
@@ -57,6 +72,18 @@ public class UIInfoList extends UIComponent {
 
     public UIInfoList setClickUrl(String url) {
         this.onClick = String.format("window.location.href=\"%s\";", url);
+        return this;
+    }
+
+    // 在一行里设置多个组件
+    public UIInfoList addLineUIComponent(UIComponent... components) {
+        if (components == null || components.length == 0) {
+            throw new RuntimeException("components array null or length is 0");
+        }
+        Line line = this.getLine();
+        for (UIComponent component : components) {
+            line.getItems().add(component);
+        }
         return this;
     }
 
@@ -99,10 +126,7 @@ public class UIInfoList extends UIComponent {
             return uiText;
         }
 
-        public Line setTitle(String imgSrc, String title) {
-            UIImage img = new UIImage();
-            img.setSrc(imgSrc);
-            items.add(img);
+        public Line setTitle(String title) {
             UISpan uiTitle = new UISpan();
             uiTitle.setText(title);
             uiTitle.setRole("title");
@@ -110,11 +134,17 @@ public class UIInfoList extends UIComponent {
             return this;
         }
 
+        public Line setTitle(String imgSrc, String title) {
+            UIImage img = new UIImage();
+            img.setSrc(imgSrc);
+            items.add(img);
+            setTitle(title);
+            return this;
+        }
+
         public Line addOpera(String text, String href) {
             UIBottom bottom = new UIBottom(null);
-            bottom.setCaption(text);
-            bottom.setUrl(href);
-            bottom.setCssClass("commonlyMenu");
+            bottom.setCaption(text).setUrl(href).setTarget("_blank").setCssClass("commonlyMenu");
             items.add(bottom);
             return this;
         }

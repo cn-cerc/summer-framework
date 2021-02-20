@@ -1,5 +1,29 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDate;
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
+import cn.cerc.db.cache.Buffer;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.cdn.CDN;
+import cn.cerc.mis.language.R;
+import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.HtmlContent;
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.menu.MenuList;
+import cn.cerc.ui.menu.MenuModel;
+import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UIContent;
+import cn.cerc.ui.parts.UIDocument;
+import cn.cerc.ui.parts.UIFooter;
+import cn.cerc.ui.parts.UIHeader;
+import cn.cerc.ui.parts.UISheetHelp;
+import cn.cerc.ui.parts.UIToolbar;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,32 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDate;
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
-import cn.cerc.db.cache.Buffer;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.language.R;
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.HtmlContent;
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.parts.UIContent;
-import cn.cerc.ui.parts.UIDocument;
-import cn.cerc.ui.parts.UIFooter;
-import cn.cerc.ui.parts.UIHeader;
-import cn.cerc.ui.parts.UIToolBar;
-
+@Slf4j
 public abstract class AbstractJspPage extends UIComponent implements IPage {
     private String jspFile;
     private IForm form;
-    private String browserCacheVersion;
     private List<String> cssFiles = new ArrayList<>();
-    private List<String> scriptFiles = new ArrayList<>();
+    private List<String> jsFiles = new ArrayList<>();
     private List<HtmlContent> scriptFunctions = new ArrayList<>();
     private List<HtmlContent> scriptCodes = new ArrayList<>();
     // 头部：广告+菜单
@@ -41,14 +45,12 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     // 主体: 控制区(可选)+内容+消息区
     private UIDocument document;
     // 工具面板：多页形式
-    private UIToolBar toolBar;
+    private UIToolbar toolBar;
     // 状态栏：快捷操作+按钮组
     private UIFooter footer;
 
     public AbstractJspPage() {
         super();
-        ServerConfig config = ServerConfig.getInstance();
-        this.browserCacheVersion = config.getProperty("browser.cache.version", "1.0.0.0");
     }
 
     @Override
@@ -59,12 +61,14 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     @Override
     public final void setForm(IForm form) {
         this.form = form;
+        this.add("cdn", CDN.getSite());
+        this.add("version", HTMLResource.getVersion());
         if (form != null) {
             this.put("jspPage", this);
             // 为兼容而设计
             ServerConfig config = ServerConfig.getInstance();
-            this.add("summer_js", config.getProperty("summer.js", "js/summer.js"));
-            this.add("myapp_js", config.getProperty("myapp.js", "js/myapp.js"));
+            this.add("summer_js", CDN.get(config.getProperty("summer.js", "js/summer.js")));
+            this.add("myapp_js", CDN.get(config.getProperty("myapp.js", "js/myapp.js")));
         }
     }
 
@@ -106,7 +110,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         if (getRequest() == null || jspFile == null) {
             return jspFile;
         }
-        if (jspFile.indexOf(".jsp") == -1) {
+        if (!jspFile.contains(".jsp")) {
             return jspFile;
         }
 
@@ -174,8 +178,8 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         return cssFiles;
     }
 
-    public final List<String> getScriptFiles() {
-        return scriptFiles;
+    public final List<String> getJsFiles() {
+        return jsFiles;
     }
 
     public final List<HtmlContent> getScriptCodes() {
@@ -183,11 +187,17 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     }
 
     public final void addCssFile(String file) {
+        file = CDN.get(file);
         cssFiles.add(file);
     }
 
-    public final void addScriptFile(String scriptFile) {
-        scriptFiles.add(scriptFile);
+    public final void addOnlineScript(String address) {
+        jsFiles.add(address);
+    }
+
+    public final void addScriptFile(String file) {
+        file = CDN.get(file);
+        jsFiles.add(file);
     }
 
     public final void addScriptCode(HtmlContent scriptCode) {
@@ -202,7 +212,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
     public final HtmlWriter getCssHtml() {
         HtmlWriter html = new HtmlWriter();
         for (String file : cssFiles) {
-            html.println("<link href=\"%s?v=%s\" rel=\"stylesheet\">", file, browserCacheVersion);
+            html.println("<link href=\"%s\" rel=\"stylesheet\">", file);
         }
         return html;
     }
@@ -212,9 +222,10 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         HtmlWriter html = new HtmlWriter();
 
         // 加入脚本文件
-        for (String file : getScriptFiles()) {
-            html.println("<script src=\"%s?v=%s\"></script>", file, browserCacheVersion);
+        for (String file : getJsFiles()) {
+            html.println("<script src=\"%s\"></script>", file);
         }
+
         // 加入脚本代码
         List<HtmlContent> scriptCode1 = getScriptCodes();
         if (scriptFunctions.size() > 0 || scriptCode1.size() > 0) {
@@ -303,9 +314,41 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         return document;
     }
 
-    public UIToolBar getToolBar() {
+    public UIToolbar getToolBar() {
         if (toolBar == null) {
-            toolBar = new UIToolBar(this);
+            toolBar = new UIToolbar(this);
+        }
+        return toolBar;
+    }
+
+    /**
+     * 获取指定菜单的描述和停用时间
+     */
+    public UIToolbar getToolBar(AbstractForm handle) {
+        if (toolBar == null) {
+            toolBar = new UIToolbar(this);
+        }
+        String menuCode = StartForms.getRequestCode(handle.getRequest());
+        String[] params = menuCode.split("\\.");
+        String formId = params[0];
+        if (!menuCode.equals(formId)) {
+            return toolBar;
+        }
+
+        // 输出菜单信息
+        MenuModel item = MenuList.create(handle).get(formId);
+        if (item == null) {
+            return toolBar;
+        }
+        if (Utils.isNotEmpty(item.getRemark())) {
+            UISheetHelp section = new UISheetHelp(toolBar);
+            section.setCaption("菜单描述");
+            section.addLine("%s", item.getRemark());
+        }
+        if (Utils.isNotEmpty(item.getDeadline())) {
+            UISheetHelp section = new UISheetHelp(toolBar);
+            section.setCaption("停用时间");
+            section.addLine("<font color='red'>%s</font>", item.getDeadline());
         }
         return toolBar;
     }

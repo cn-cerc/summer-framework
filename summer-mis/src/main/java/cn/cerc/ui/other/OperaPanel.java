@@ -1,10 +1,10 @@
 package cn.cerc.ui.other;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OperaPanel extends UIComponent {
     // 操作提示
@@ -32,8 +32,9 @@ public class OperaPanel extends UIComponent {
     }
 
     public void addMenu(UrlRecord item) {
-        if (menus == null)
+        if (menus == null) {
             menus = new ArrayList<>();
+        }
         menus.add(item);
     }
 
@@ -48,8 +49,9 @@ public class OperaPanel extends UIComponent {
     }
 
     public void addLine(String html) {
-        if (lines == null)
+        if (lines == null) {
             lines = new ArrayList<>();
+        }
         lines.add(html);
     }
 }

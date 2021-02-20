@@ -1,8 +1,8 @@
 package cn.cerc.db.mysql;
 
-import java.io.Serializable;
-
 import cn.cerc.core.DataQuery;
+
+import java.io.Serializable;
 
 /**
  * 单次数据请求，超过最大笔数限制
@@ -18,8 +18,9 @@ public class BigdataException extends RuntimeException implements Serializable {
     }
 
     public static void check(DataQuery dataset, int rows) {
-        if (rows > (MAX_RECORDS + 1))
+        if (rows > (MAX_RECORDS + 1)) {
             throw new BigdataException(dataset, rows);
+        }
     }
 
 }

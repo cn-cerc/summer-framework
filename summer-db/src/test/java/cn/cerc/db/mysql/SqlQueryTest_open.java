@@ -1,17 +1,16 @@
 package cn.cerc.db.mysql;
 
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
-import cn.cerc.db.core.StubHandle;
-
 public class SqlQueryTest_open {
     private SqlQuery ds;
-    private StubHandle handl;
+    private StubHandleText handl;
 
     @Before
     public void setUp() {
-        handl = new StubHandle();
+        handl = new StubHandleText();
         ds = new SqlQuery(handl);
         ds.getSqlText().setMaximum(1);
         ds.add("select CorpNo_,CWCode_,PartCode_ from TranB1B where CorpNo_='%s'", "911001");

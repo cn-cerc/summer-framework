@@ -1,11 +1,11 @@
 package cn.cerc.ui.phone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 张弓
@@ -26,8 +26,9 @@ public class Block992 extends UIComponent {
     public void output(HtmlWriter html) {
         html.println("<!-- %s -->", this.getClass().getName());
         html.println("<div class=\"block992\">");
-        for (UIButton button : items)
+        for (UIButton button : items) {
             button.output(html);
+        }
         html.println("</div>");
     }
 

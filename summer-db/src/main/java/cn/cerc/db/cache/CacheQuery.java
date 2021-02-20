@@ -1,13 +1,13 @@
 package cn.cerc.db.cache;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import cn.cerc.core.IRecord;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import lombok.extern.slf4j.Slf4j;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Slf4j
 public class CacheQuery implements IRecord {
@@ -26,7 +26,7 @@ public class CacheQuery implements IRecord {
         if (this.modified) {
             try {
                 Redis.set(key, record.toString(), this.expires);
-                log.debug("cache set:" + key.toString() + ":" + record.toString());
+                log.debug("cache set:" + key + ":" + record.toString());
                 this.modified = false;
             } catch (Exception e) {
                 log.error(e.getMessage());
@@ -47,16 +47,18 @@ public class CacheQuery implements IRecord {
     }
 
     public CacheQuery setKey(String key) {
-        if (this.key != null)
+        if (this.key != null) {
             throw new RuntimeException("[CacheQuery]错误的初始化参数！");
-        if (key == null)
+        }
+        if (key == null) {
             throw new RuntimeException("[CacheQuery]错误的初始化参数！");
+        }
         this.key = key;
 
         connected = true;
         existsData = false;
         String recordStr = Redis.get(key);
-        log.debug("cache get:" + key.toString() + ":" + recordStr);
+        log.debug("cache get:" + key + ":" + recordStr);
         if (recordStr != null && !"".equals(recordStr)) {
             try {
                 record.setJSON(recordStr);
@@ -135,10 +137,11 @@ public class CacheQuery implements IRecord {
 
     @Override
     public String toString() {
-        if (record != null)
+        if (record != null) {
             return record.toString();
-        else
+        } else {
             return null;
+        }
     }
 
     public Record getRecord() {

@@ -25,12 +25,13 @@ public class SlaveMysqlConnection extends SqlConnection {
     @Override
     protected String getConnectUrl() {
         String host = config.getProperty(SlaveMysqlConnection.rds_slave_site, "127.0.0.1:3306");
-        String db = config.getProperty(SlaveMysqlConnection.rds_slave_database, "appdb");
+        String database = config.getProperty(SlaveMysqlConnection.rds_slave_database, "appdb");
         user = config.getProperty(SlaveMysqlConnection.rds_slave_username, "appdb_user");
         pwd = config.getProperty(SlaveMysqlConnection.rds_slave_password, "appdb_password");
-        if (host == null || user == null || pwd == null || db == null)
+        if (host == null || user == null || pwd == null || database == null) {
             throw new RuntimeException("RDS配置为空，无法连接主机！");
+        }
 
-        return String.format("jdbc:mysql://%s/%s?useSSL=false", host, db);
+        return String.format("jdbc:mysql://%s/%s?useSSL=false&autoReconnect=true&autoCommit=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai", host, database);
     }
 }

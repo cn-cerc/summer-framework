@@ -1,8 +1,5 @@
 package cn.cerc.ui.grid;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.DataSource;
@@ -14,6 +11,9 @@ import cn.cerc.ui.grid.lines.ChildGridLine;
 import cn.cerc.ui.grid.lines.MasterGridLine;
 import cn.cerc.ui.parts.UIActionForm;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractGrid extends UIComponent implements DataSource {
     // 主行
@@ -61,8 +61,9 @@ public abstract class AbstractGrid extends UIComponent implements DataSource {
     public List<AbstractField> getFields() {
         List<AbstractField> items = new ArrayList<>();
         for (IField obj : lines.get(0).getFields()) {
-            if (obj instanceof AbstractField)
+            if (obj instanceof AbstractField) {
                 items.add((AbstractField) obj);
+            }
         }
         return items;
     }
@@ -86,8 +87,9 @@ public abstract class AbstractGrid extends UIComponent implements DataSource {
     }
 
     public AbstractGridLine getLine(int index) {
-        if (index == lines.size())
+        if (index == lines.size()) {
             lines.add(new ChildGridLine(this));
+        }
         return lines.get(index);
     }
 

@@ -1,15 +1,5 @@
 package cn.cerc.db.mssql;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
@@ -19,6 +9,15 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.mysql.BigdataException;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class MssqlQuery extends DataQuery {
@@ -98,8 +97,9 @@ public class MssqlQuery extends DataQuery {
             FieldDefs defs = this.getFieldDefs();
             for (int i = 1; i <= meta.getColumnCount(); i++) {
                 String field = meta.getColumnLabel(i);
-                if (!defs.exists(field))
+                if (!defs.exists(field)) {
                     defs.add(field);
+                }
             }
 
             // 取得所有数据
@@ -204,8 +204,9 @@ public class MssqlQuery extends DataQuery {
         }
         IDataOperator operator = getDefaultOperator();
         // 先执行删除
-        for (Record record : delList)
+        for (Record record : delList) {
             operator.delete(record);
+        }
         delList.clear();
         // 再执行增加、修改
         this.first();
@@ -252,11 +253,13 @@ public class MssqlQuery extends DataQuery {
             this.open();
             return this.size();
         }
-        if (session == null)
+        if (session == null) {
             throw new RuntimeException("SqlSession is null");
+        }
         Connection conn = session.getClient();
-        if (conn == null)
+        if (conn == null) {
             throw new RuntimeException("Connection is null");
+        }
         try {
             try (Statement st = conn.createStatement()) {
                 log.debug(sql.replaceAll("\r\n", " "));

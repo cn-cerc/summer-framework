@@ -1,22 +1,21 @@
 package cn.cerc.db.mysql;
 
-import static org.junit.Assert.assertEquals;
-
+import cn.cerc.core.Record;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cn.cerc.core.Record;
-import cn.cerc.db.core.StubHandle;
+import static org.junit.Assert.assertEquals;
 
 public class OperatorTest {
     private int maxTest = 50;
 
-    private StubHandle handle;
+    private StubHandleText handle;
 
     @Before
     public void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         new SqlOperator(handle);
     }
 

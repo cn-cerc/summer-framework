@@ -20,8 +20,9 @@ public class OssOperator implements IDataOperator {
             }
         }
 
-        if (result == null)
+        if (result == null) {
             throw new RuntimeException("SQL语句异常");
+        }
 
         return result;
     }

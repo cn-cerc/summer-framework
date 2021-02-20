@@ -1,9 +1,5 @@
 package cn.cerc.mis.services;
 
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.MD5;
@@ -28,6 +24,9 @@ import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * 用于用户登录
@@ -64,7 +63,7 @@ public class SvrUserLogin extends CustomService {
 
         // 开始进行用户验证
         String userCode = headIn.getString("Account_");
-        if (userCode.equals("")) {
+        if ("".equals(userCode)) {
             throw new SecurityCheckException("用户帐号不允许为空！");
         }
 
@@ -113,7 +112,7 @@ public class SvrUserLogin extends CustomService {
 
         boolean YGLogin = buff.getCorpType() == BookVersion.ctFree.ordinal();
         if (buff.getStatus() == 3) {
-            throw new SecurityCheckException("对不起，您的账套处于暂停录入状态，禁止登录！若需启用，请您联系客服处理！");
+            throw new SecurityCheckException("对不起，您的帐套处于暂停录入状态，禁止登录！若需启用，请您联系客服处理！");
         }
         if (buff.getStatus() == 4) {
             throw new SecurityCheckException("对不起，您的帐套已过期，请联系客服续费！");
@@ -174,7 +173,7 @@ public class SvrUserLogin extends CustomService {
                     systemTable.getDeviceVerify(), userCode, deviceId);
             getConnection().execute(sql);
 
-            // 若该账套是待安装，则改为已启用
+            // 若该帐套是待安装，则改为已启用
             SqlQuery dsCorp = new SqlQuery(this);
             dsCorp.add("select * from %s ", systemTable.getBookInfo());
             dsCorp.add("where CorpNo_='%s' and Status_=1 ", corpNo);
@@ -186,7 +185,7 @@ public class SvrUserLogin extends CustomService {
                 MemoryBookInfo.clear(corpNo);
             }
 
-            sess.setProperty(Application.token, guidFixStr());
+            sess.setProperty(Application.token, Utils.generateToken());
             sess.setProperty(Application.userId, dsUser.getString("ID_"));
             sess.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
             sess.setProperty(Application.userCode, dsUser.getString("Code_"));
@@ -231,7 +230,7 @@ public class SvrUserLogin extends CustomService {
      */
     @Webfunc
     public boolean ExitSystem() {
-        if ((String) getProperty(Application.userId) != null) {
+        if (getProperty(Application.userId) != null) {
             // TODO 此处的key有问题
             MemoryBuffer.delete(BufferType.getSessionInfo, (String) getProperty(Application.userId), "webclient");
         }
@@ -358,21 +357,25 @@ public class SvrUserLogin extends CustomService {
 
         cdsVer.edit();
         cdsVer.setField("Used_", 1);
-        cdsVer.setField("FirstTime_", TDateTime.Now());
+        cdsVer.setField("FirstTime_", TDateTime.now());
         cdsVer.post();
 
         cdsUser.edit();
         cdsUser.setField("VerifyTimes_", 0);
         cdsUser.post();
+
+        // 校验成功清理验证码缓存
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
+            buff.clear();
+        }
         return true;
     }
 
     @Webfunc
     public boolean sendVerifyCode() throws DataValidateException {
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(),
-                "sendVerifyCode")) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
             if (!buff.isNull()) {
-                log.info(String.format("verifyCode %s", buff.getString("VerifyCode_")));
+                log.info("verifyCode {}", buff.getString("verifyCode"));
                 throw new RuntimeException(String.format("请勿在 %d 分钟内重复点击获取认证码！", TimeOut));
             }
 
@@ -388,8 +391,10 @@ public class SvrUserLogin extends CustomService {
             cdsUser.add("select Mobile_ from %s ", systemTable.getUserInfo());
             cdsUser.add("where Code_='%s' ", getUserCode());
             cdsUser.open();
-            DataValidateException.stopRun("系统检测到该帐号还未登记过手机号，无法发送认证码到该手机上，请您联系管理员，让其开一个认证码给您登录系统！", cdsUser.eof());
+            DataValidateException.stopRun(String.format(R.asString(this, "没有找到用户帐号 %s"), getUserCode()), cdsUser.eof());
+
             String mobile = cdsUser.getString("Mobile_");
+            DataValidateException.stopRun("系统检测到该帐号还未登记过手机号，无法发送认证码到该手机上，请您联系管理员，让其开一个认证码给您登录系统！", Utils.isEmpty(mobile));
 
             SqlQuery cdsVer = new SqlQuery(this);
             cdsVer.add("select * from %s", systemTable.getDeviceVerify());
@@ -402,7 +407,7 @@ public class SvrUserLogin extends CustomService {
 
             cdsVer.edit();
             cdsVer.setField("VerifyCode_", verifyCode);
-            cdsVer.setField("DeadLine_", TDateTime.Now().incDay(1));
+            cdsVer.setField("DeadLine_", TDateTime.now().incDay(1));
             cdsVer.post();
 
             // 发送认证码到手机上
@@ -410,9 +415,9 @@ public class SvrUserLogin extends CustomService {
             LocalService svr = new LocalService(this, "SvrNotifyMachineVerify");
             if (svr.exec("verifyCode", verifyCode, "mobile", mobile)) {
                 record.setField("Msg_", String.format("系统已将认证码发送到您尾号为 %s 的手机上，并且该认证码 %d 分钟内有效，请注意查收！",
-                        mobile.substring(mobile.length() - 4, mobile.length()), TimeOut));
+                        mobile.substring(mobile.length() - 4), TimeOut));
                 buff.setExpires(TimeOut * 60);
-                buff.setField("VerifyCode", verifyCode);
+                buff.setField("verifyCode", verifyCode);
             } else {
                 record.setField("Msg_", String.format("验证码发送失败，失败原因：%s", svr.getMessage()));
             }
@@ -459,7 +464,7 @@ public class SvrUserLogin extends CustomService {
         ds.setField("CorpNo_", corpNo);
         ds.setField("UserCode_", userCode);
         ds.setField("VerifyCode_", Utils.intToStr(Utils.random(900000) + 100000));
-        ds.setField("DeadLine_", TDateTime.Now().incDay(1));
+        ds.setField("DeadLine_", TDateTime.now().incDay(1));
         ds.setField("MachineCode_", deviceId);
         if (deviceId.startsWith("i_")) {
             // iOS
@@ -477,9 +482,9 @@ public class SvrUserLogin extends CustomService {
         ds.setField("Remark_", "");
         ds.setField("Used_", 0);
         ds.setField("UpdateUser_", userCode);
-        ds.setField("UpdateDate_", TDateTime.Now());
+        ds.setField("UpdateDate_", TDateTime.now());
         ds.setField("AppUser_", userCode);
-        ds.setField("AppDate_", TDateTime.Now());
+        ds.setField("AppDate_", TDateTime.now());
         ds.setField("UpdateKey_", Utils.newGuid());
         ds.post();
     }
@@ -490,18 +495,9 @@ public class SvrUserLogin extends CustomService {
         ds.add("where UserCode_='%s' and MachineCode_='%s' ", userCode, deviceId);
         ds.open();
         ds.edit();
-        ds.setField("LastTime_", TDateTime.Now());
+        ds.setField("LastTime_", TDateTime.now());
         ds.post();
-        if (ds.getInt("Used_") == 2) {
-            return false;
-        }
-        return true;
-    }
-
-    private String guidFixStr() {
-        String guid = Utils.newGuid();
-        String str = guid.substring(1, guid.length() - 1);
-        return str.replaceAll("-", "");
+        return ds.getInt("Used_") != 2;
     }
 
     private boolean isAutoLogin(String userCode, String deviceId) {
@@ -554,10 +550,11 @@ public class SvrUserLogin extends CustomService {
 
     public void updateCurrentUser(String computer, String screen, String language) {
 //        getConnection().execute(String.format("Update %s Set Viability_=0 Where Viability_>0 and LogoutTime_<'%s'",
-//                systemTable.getCurrentUser(), TDateTime.Now().incHour(-1)));
+//                systemTable.getCurrentUser(), TDateTime.now().incHour(-1)));
+        // FIXME: 2020/6/10 一次只能有一个token存活，此项有bug，没有清理掉redis缓存的信息，造成HandleDefault的缓存还可以使用
         String SQLCmd = String.format(
                 "update %s set Viability_=-1,LogoutTime_='%s' where Account_='%s' and Viability_>-1",
-                systemTable.getCurrentUser(), TDateTime.Now(), getUserCode());
+                systemTable.getCurrentUser(), TDateTime.now(), getUserCode());
         getConnection().execute(SQLCmd);
 
         // 增加新的记录
@@ -568,7 +565,7 @@ public class SvrUserLogin extends CustomService {
         rs.setField("LoginID_", this.getProperty(Application.token));
         rs.setField("Computer_", computer);
         rs.setField("clientIP_", this.getProperty(Application.clientIP));
-        rs.setField("LoginTime_", TDateTime.Now());
+        rs.setField("LoginTime_", TDateTime.now());
         rs.setField("ParamValue_", handle.getCorpNo());
         rs.setField("KeyCardID_", GuidNull);
         rs.setField("Viability_", Utils.intToStr(Max_Viability));

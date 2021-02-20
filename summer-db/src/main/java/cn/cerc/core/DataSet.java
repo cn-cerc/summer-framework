@@ -1,12 +1,16 @@
 package cn.cerc.core;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,12 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
 public class DataSet implements IRecord, Serializable, Iterable<Record> {
-    // private static final Logger log = Logger.getLogger(DataSet.class);
     private static final long serialVersionUID = 873159747066855363L;
     private int recNo = 0;
     private int fetchNo = -1;
@@ -46,17 +45,20 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     public DataSet append(Record record) {
         if (onBeforeAppend != null) {
             record = onBeforeAppend.filter(this, record);
-            if (record == null)
+            if (record == null) {
                 return this;
+            }
         }
-        if (search != null)
+        if (search != null) {
             search.clear();
+        }
 
         this.records.add(record);
         recNo = records.size();
 
-        if (onAfterAppend != null)
+        if (onAfterAppend != null) {
             onAfterAppend.execute(this);
+        }
         return this;
     }
 
@@ -65,8 +67,9 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public DataSet append(int index) {
-        if (search != null)
+        if (search != null) {
             search.clear();
+        }
 
         Record record = newRecord();
 
@@ -84,27 +87,32 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public void edit() {
-        if (bof() || eof())
+        if (bof() || eof()) {
             throw new RuntimeException("当前记录为空，无法修改");
-        if (search != null)
+        }
+        if (search != null) {
             search.clear();
+        }
         this.getCurrent().setState(DataSetState.dsEdit);
     }
 
     public void delete() {
-        if (bof() || eof())
+        if (bof() || eof()) {
             throw new RuntimeException("当前记录为空，无法修改");
-        if (search != null)
+        }
+        if (search != null) {
             search.clear();
+        }
         records.remove(recNo - 1);
-        if (this.fetchNo > -1)
+        if (this.fetchNo > -1) {
             this.fetchNo--;
-        return;
+        }
     }
 
     public void post() {
-        if (search != null)
+        if (search != null) {
             search.clear();
+        }
         this.getCurrent().setState(DataSetState.dsNone);
     }
 
@@ -124,8 +132,9 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public boolean prior() {
-        if (this.recNo > 0)
+        if (this.recNo > 0) {
             this.recNo--;
+        }
         return this.recNo > 0;
     }
 
@@ -188,13 +197,16 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
 
     // 仅用于查找一次时，调用此函数，速度最快
     public boolean locateOnlyOne(String fields, Object... values) {
-        if (fields == null || "".equals(fields))
+        if (fields == null || "".equals(fields)) {
             throw new RuntimeException("参数名称不能为空");
-        if (values == null || values.length == 0)
+        }
+        if (values == null || values.length == 0) {
             throw new RuntimeException("值列表不能为空或者长度不能为0");
+        }
         String[] fieldslist = fields.split(";");
-        if (fieldslist.length != values.length)
+        if (fieldslist.length != values.length) {
             throw new RuntimeException("参数名称 与 值列表长度不匹配");
+        }
         Map<String, Object> fieldValueMap = new HashMap<String, Object>();
         for (int i = 0; i < fieldslist.length; i++) {
             fieldValueMap.put(fieldslist[i], values[i]);
@@ -202,28 +214,32 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
 
         this.first();
         while (this.fetch()) {
-            if (this.getCurrent().equalsValues(fieldValueMap))
+            if (this.getCurrent().equalsValues(fieldValueMap)) {
                 return true;
+            }
         }
         return false;
     }
 
     // 用于查找多次，调用时，会先进行排序，以方便后续的相同Key查找
     public boolean locate(String fields, Object... values) {
-        if (search == null)
+        if (search == null) {
             search = new SearchDataSet(this);
+        }
         search.setFields(fields);
         Record record = values.length == 1 ? search.get(values[0]) : search.get(values);
 
-        if (record == null)
+        if (record == null) {
             return false;
+        }
         this.setRecNo(this.records.indexOf(record) + 1);
         return true;
     }
 
     public Record lookup(String fields, Object... values) {
-        if (search == null)
+        if (search == null) {
             search = new SearchDataSet(this);
+        }
         search.setFields(fields);
         return values.length == 1 ? search.get(values[0]) : search.get(values);
     }
@@ -288,10 +304,12 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
 
     @Override
     public Record setField(String field, Object value) {
-        if (field == null || "".equals(field))
+        if (field == null || "".equals(field)) {
             throw new RuntimeException("field is null!");
-        if (search != null && search.existsKey(field))
+        }
+        if (search != null && search.existsKey(field)) {
             search.clear();
+        }
         return this.getCurrent().setField(field, value);
     }
 
@@ -306,58 +324,68 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public void copyRecord(Record source, FieldDefs defs) {
-        if (search != null)
+        if (search != null) {
             search.clear();
+        }
         this.getCurrent().copyValues(source, defs);
     }
 
     public void copyRecord(Record source, String... fields) {
-        if (search != null)
+        if (search != null) {
             search.clear();
+        }
         this.getCurrent().copyValues(source, fields);
     }
 
     public void copyRecord(Record sourceRecord, String[] sourceFields, String[] targetFields) {
-        if (search != null)
+        if (search != null) {
             search.clear();
-        if (targetFields.length != sourceFields.length)
+        }
+        if (targetFields.length != sourceFields.length) {
             throw new RuntimeException("前后字段数目不一样，请您确认！");
+        }
         Record targetRecord = this.getCurrent();
-        for (int i = 0; i < sourceFields.length; i++)
+        for (int i = 0; i < sourceFields.length; i++) {
             targetRecord.setField(targetFields[i], sourceRecord.getField(sourceFields[i]));
+        }
     }
 
     public DataSet setField(String field, TDateTime value) {
-        if (search != null && search.existsKey(field))
+        if (search != null && search.existsKey(field)) {
             search.clear();
+        }
         this.getCurrent().setField(field, value);
         return this;
     }
 
     public DataSet setField(String field, int value) {
-        if (search != null && search.existsKey(field))
+        if (search != null && search.existsKey(field)) {
             search.clear();
+        }
         this.getCurrent().setField(field, value);
         return this;
     }
 
     public DataSet setField(String field, String value) {
-        if (search != null && search.existsKey(field))
+        if (search != null && search.existsKey(field)) {
             search.clear();
+        }
         this.getCurrent().setField(field, value);
         return this;
     }
 
     public DataSet setField(String field, Boolean value) {
-        if (search != null && search.existsKey(field))
+        if (search != null && search.existsKey(field)) {
             search.clear();
+        }
         this.getCurrent().setField(field, value);
         return this;
     }
 
     public DataSet setNull(String field) {
-        if (search != null && search.existsKey(field))
+        if (search != null && search.existsKey(field)) {
             search.clear();
+        }
         this.getCurrent().setField(field, null);
         return this;
     }
@@ -386,8 +414,9 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     protected void beforePost() {
-        if (onBeforePost != null)
+        if (onBeforePost != null) {
             onBeforePost.execute(this);
+        }
     }
 
     public DataSetEvent getOnBeforePost() {
@@ -399,10 +428,12 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public void close() {
-        if (this.head != null)
+        if (this.head != null) {
             this.head.clear();
-        if (this.head_defs != null)
+        }
+        if (this.head_defs != null) {
             this.head_defs.clear();
+        }
         this.search = null;
         fieldDefs.clear();
         records.clear();
@@ -411,10 +442,12 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public Record getHead() {
-        if (head_defs == null)
+        if (head_defs == null) {
             head_defs = new FieldDefs();
-        if (head == null)
+        }
+        if (head == null) {
             head = new Record(head_defs);
+        }
         return head;
     }
 
@@ -440,22 +473,24 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
             builder.append("\"dataset\":[").append(gson.toJson(fields));
             for (int i = 0; i < this.size(); i++) {
                 Record record = this.getRecords().get(i);
-                if (i < beginLine || i > endLine)
+                if (i < beginLine || i > endLine) {
                     continue;
+                }
                 Map<String, Object> tmp1 = record.getItems();
                 Map<String, Object> tmp2 = new LinkedHashMap<String, Object>();
                 for (String field : fields) {
                     Object obj = tmp1.get(field);
-                    if (obj == null)
+                    if (obj == null) {
                         tmp2.put(field, "{}");
-                    else if (obj instanceof TDateTime)
+                    } else if (obj instanceof TDateTime) {
                         tmp2.put(field, obj.toString());
-                    else if (obj instanceof Date)
+                    } else if (obj instanceof Date) {
                         tmp2.put(field, (new TDateTime((Date) obj)).toString());
-                    else
+                    } else {
                         tmp2.put(field, obj);
+                    }
                 }
-                builder.append(",").append(gson.toJson(tmp2.values()).toString());
+                builder.append(",").append(gson.toJson(tmp2.values()));
             }
             builder.append("]");
         }
@@ -465,10 +500,10 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public boolean setJSON(String json) {
-        if (json == null || json.equals("")) {
+        if (json == null || "".equals(json)) {
             return false;
         }
-        if (json.equals("")) {
+        if ("".equals(json)) {
             this.close();
             return true;
         }
@@ -505,8 +540,9 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
                             double tmp = (double) obj;
                             if (tmp >= Integer.MIN_VALUE && tmp <= Integer.MAX_VALUE) {
                                 Integer val = (int) tmp;
-                                if (tmp == val)
+                                if (tmp == val) {
                                     obj = val;
+                                }
                             }
                         }
                         record.setField(fields.get(j).toString(), obj);
@@ -525,14 +561,16 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     }
 
     public DataSet appendDataSet(DataSet source) {
-        if (search != null)
+        if (search != null) {
             search.clear();
+        }
 
         // 先复制字段定义
         FieldDefs tarDefs = this.getFieldDefs();
         for (String field : source.getFieldDefs().getFields()) {
-            if (!tarDefs.exists(field))
+            if (!tarDefs.exists(field)) {
                 tarDefs.add(field);
+            }
         }
 
         // 再复制所有数据
@@ -555,8 +593,9 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
     public DataSet appendDataSet(DataSet source, boolean includeHead) {
         this.appendDataSet(source);
 
-        if (includeHead)
+        if (includeHead) {
             this.getHead().copyValues(source.getHead(), source.getHead().getFieldDefs());
+        }
 
         return this;
     }
@@ -566,7 +605,7 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
         String json = this.getJSON();
         int strLen = json.length();
         out.writeInt(strLen);
-        out.write(json.getBytes(Charset.forName("UTF-8")));
+        out.write(json.getBytes(StandardCharsets.UTF_8));
     }
 
     // 支持对象序列化
@@ -574,7 +613,7 @@ public class DataSet implements IRecord, Serializable, Iterable<Record> {
         int strLen = in.readInt();
         byte[] strBytes = new byte[strLen];
         in.readFully(strBytes);
-        String json = new String(strBytes, Charset.forName("UTF-8"));
+        String json = new String(strBytes, StandardCharsets.UTF_8);
         this.setJSON(json);
     }
 

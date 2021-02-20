@@ -27,14 +27,18 @@ public class FieldDefs implements Serializable, Iterable<String> {
     }
 
     public FieldDefs add(String field) {
-        if (this.locked)
+        if (this.locked) {
             throw new RuntimeException("locked is true");
-        if (this.strict)
+        }
+        if (this.strict) {
             throw new RuntimeException("strict is true");
-        if (field == null || "".equals(field))
+        }
+        if (field == null || "".equals(field)) {
             throw new RuntimeException("field is null!");
-        if (!fields.contains(field))
+        }
+        if (!fields.contains(field)) {
             fields.add(field);
+        }
         return this;
     }
 
@@ -67,7 +71,8 @@ public class FieldDefs implements Serializable, Iterable<String> {
 
     public void delete(String field) {
         int index = fields.indexOf(field);
-        if (index != -1)
+        if (index != -1) {
             fields.remove(index);
+        }
     }
 }

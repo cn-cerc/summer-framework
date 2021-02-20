@@ -1,19 +1,17 @@
 package cn.cerc.db.mongo;
 
-import java.util.Date;
-
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.UpdateResult;
-
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import java.util.Date;
 
 public class MongoOperator implements IDataOperator {
     private String tableName;
@@ -62,15 +60,17 @@ public class MongoOperator implements IDataOperator {
         Document doc = new Document();
         for (int i = 0; i < record.getFieldDefs().size(); i++) {
             String field = record.getFieldDefs().getFields().get(i);
-            if (field.equals("_id"))
+            if ("_id".equals(field)) {
                 continue;
+            }
             Object obj = record.getField(field);
-            if (obj instanceof TDateTime)
-                doc.append(field, ((TDateTime) obj).toString());
-            else if (obj instanceof Date)
+            if (obj instanceof TDateTime) {
+                doc.append(field, obj.toString());
+            } else if (obj instanceof Date) {
                 doc.append(field, (new TDateTime((Date) obj)).toString());
-            else
+            } else {
                 doc.append(field, obj);
+            }
         }
         return doc;
     }

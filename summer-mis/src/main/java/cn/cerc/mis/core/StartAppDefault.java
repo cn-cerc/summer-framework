@@ -1,16 +1,14 @@
 package cn.cerc.mis.core;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
@@ -26,13 +24,14 @@ public class StartAppDefault {
 
     @RequestMapping("/")
     public String doGet() {
-        if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null)
-            req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
-        if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null)
-            req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE, req.getParameter(ClientDevice.APP_DEVICE_TYPE));
+        if (req.getParameter(AppClient.CLIENT_ID) != null) {
+            req.getSession().setAttribute(AppClient.CLIENT_ID, req.getParameter(AppClient.CLIENT_ID));
+        }
+        if (req.getParameter(AppClient.DEVICE) != null) {
+            req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
+        }
 
-        String url = String.format("redirect:/%s/%s", appConfig.getPathForms(), appConfig.getFormWelcome());
-        return url;
+        return String.format("redirect:/%s/%s", appConfig.getPathForms(), appConfig.getFormWelcome());
     }
 
     @RequestMapping("/MobileConfig")
@@ -43,10 +42,12 @@ public class StartAppDefault {
 
     @RequestMapping("/mobileConfig")
     public String mobileConfig() {
-        if (req.getParameter(ClientDevice.APP_CLIENT_ID) != null)
-            req.getSession().setAttribute(ClientDevice.APP_CLIENT_ID, req.getParameter(ClientDevice.APP_CLIENT_ID));
-        if (req.getParameter(ClientDevice.APP_DEVICE_TYPE) != null)
-            req.getSession().setAttribute(ClientDevice.APP_DEVICE_TYPE, req.getParameter(ClientDevice.APP_DEVICE_TYPE));
+        if (req.getParameter(AppClient.CLIENT_ID) != null) {
+            req.getSession().setAttribute(AppClient.CLIENT_ID, req.getParameter(AppClient.CLIENT_ID));
+        }
+        if (req.getParameter(AppClient.DEVICE) != null) {
+            req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
+        }
         try {
             IForm form = Application.getBean(IForm.class, "MobileConfig", "mobileConfig");
             form.setRequest(req);

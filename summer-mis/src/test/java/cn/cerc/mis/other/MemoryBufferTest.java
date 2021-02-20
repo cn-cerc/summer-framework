@@ -1,11 +1,10 @@
 package cn.cerc.mis.other;
 
-import static org.junit.Assert.assertEquals;
-
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import lombok.extern.slf4j.Slf4j;
+import static org.junit.Assert.assertEquals;
 
 @Slf4j
 public class MemoryBufferTest {
@@ -13,7 +12,7 @@ public class MemoryBufferTest {
     @Test
     @Ignore
     public void test_connect() {
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test");) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test")) {
             if (buff.Connected()) {
                 if (buff.isNull()) {
                     buff.setField("Code_", "1000");
@@ -34,14 +33,14 @@ public class MemoryBufferTest {
     @Ignore
     public void test_read_write() {
         String data = "AAA";
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test");) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test")) {
             buff.setField("A", data);
         }
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test");) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test")) {
             assertEquals(data, buff.getString("A"));
         }
         MemoryBuffer.delete(BufferType.test, "test");
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test");) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test")) {
             assertEquals(null, buff.getRecord().getField("A"));
         }
     }

@@ -1,20 +1,19 @@
 package cn.cerc.db.nas;
 
+import cn.cerc.db.core.StubHandleText;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-
-import cn.cerc.db.core.StubHandle;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class NasQueryTest {
 
     private NasQuery ds;
-    private StubHandle handle;
+    private StubHandleText handle;
 
     @Before
     public void setUp() {
-        handle = new StubHandle();
+        handle = new StubHandleText();
         ds = new NasQuery(handle);
     }
 

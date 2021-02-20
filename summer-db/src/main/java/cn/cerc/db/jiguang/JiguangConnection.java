@@ -1,13 +1,12 @@
 package cn.cerc.db.jiguang;
 
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import cn.cerc.core.IConfig;
 import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
 import cn.jpush.api.JPushClient;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -26,16 +25,19 @@ public class JiguangConnection implements IConnection {
 
     @Override
     public JPushClient getClient() {
-        if (client != null)
+        if (client != null) {
             return client;
+        }
 
         String masterSecret = config.getProperty(JiguangConnection.masterSecret);
-        if (masterSecret == null)
+        if (masterSecret == null) {
             throw new RuntimeException("jiguang.masterSecret is null");
+        }
 
         String appKey = config.getProperty(JiguangConnection.appKey);
-        if (appKey == null)
+        if (appKey == null) {
             throw new RuntimeException("jiguang.appKey is null");
+        }
 
         client = new JPushClient(masterSecret, appKey);
 

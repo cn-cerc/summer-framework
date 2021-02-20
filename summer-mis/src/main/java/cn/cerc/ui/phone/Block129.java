@@ -1,13 +1,13 @@
 package cn.cerc.ui.phone;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
 import cn.cerc.ui.vcl.UITextBox;
 import cn.cerc.ui.vcl.ext.UISpan;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 用户下拉选择框，选中立即提交参数
@@ -15,8 +15,8 @@ import cn.cerc.ui.vcl.ext.UISpan;
 public class Block129 extends UIComponent {
     private UITextBox input = new UITextBox();
     private UIImage image = new UIImage();
-    private String content = new String();
-    private String placeholder = new String();
+    private String content = "";
+    private String placeholder = "";
     private Map<String, String> items = new LinkedHashMap<String, String>();
     private String formId;
 

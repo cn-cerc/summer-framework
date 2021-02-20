@@ -14,8 +14,10 @@ public class UITextArea extends UIComponent {
     private String name;
     private String text;
     private String placeholder;
-    private int cols;
-    private int rows;
+    private int cols;// 列
+    private int rows;// 行
+    private String onInput;
+    private boolean autofocus;
     private boolean readonly;
 
     public UITextArea() {
@@ -33,88 +35,118 @@ public class UITextArea extends UIComponent {
 
         html.print("<textarea ");
         if (this.getId() != null) {
-            html.print(" id='%s'", this.getId());
+            html.print("id='%s' ", this.getId());
         }
-        if (name != null) {
+        if (getName() != null) {
             html.print("name='%s' ", name);
         }
-        if (cols != 0) {
-            html.print("rows='%s' ", cols);
-        }
-        if (rows != 0) {
+        if (getRows() != 0) {
             html.print("rows='%s' ", rows);
         }
-        if (placeholder != null) {
-            html.print("placeholder=%s ", placeholder);
+        if (getCols() != 0) {
+            html.print("cols='%s' ", cols);
         }
-        if (readonly) {
-            html.print("readonly='readonly'");
+        if (getPlaceholder() != null) {
+            html.print("placeholder='%s' ", placeholder);
+        }
+        if (isReadonly()) {
+            html.print("readonly='readonly' ");
+        }
+        if (getOnInput() != null) {
+            html.print("oninput='%s' ", onInput);
+        }
+        if (isAutofocus()) {
+            html.print("autofocus ");
         }
         super.outputCss(html);
         html.print(">");
 
-        if (text != null) {
+        if (getText() != null) {
             html.print(text);
         }
         html.print("</textarea>");
     }
 
     public UISpan getCaption() {
-        if (caption == null)
+        if (caption == null) {
             caption = new UISpan();
+        }
         return caption;
     }
 
-    public void setCaption(UISpan caption) {
+    public UITextArea setCaption(UISpan caption) {
         this.caption = caption;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public UITextArea setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public UITextArea setText(String text) {
         this.text = text;
+        return this;
     }
 
     public String getPlaceholder() {
         return placeholder;
     }
 
-    public void setPlaceholder(String placeholder) {
+    public UITextArea setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
+        return this;
     }
 
     public int getCols() {
         return cols;
     }
 
-    public void setCols(int cols) {
+    public UITextArea setCols(int cols) {
         this.cols = cols;
+        return this;
     }
 
     public int getRows() {
         return rows;
     }
 
-    public void setRows(int rows) {
+    public UITextArea setRows(int rows) {
         this.rows = rows;
+        return this;
     }
 
     public boolean isReadonly() {
         return readonly;
     }
 
-    public void setReadonly(boolean readonly) {
+    public UITextArea setReadonly(boolean readonly) {
         this.readonly = readonly;
+        return this;
+    }
+
+    public String getOnInput() {
+        return onInput;
+    }
+
+    public void setOnInput(String onInput) {
+        this.onInput = onInput;
+    }
+
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    public void setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
     }
 
 }

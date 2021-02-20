@@ -26,7 +26,7 @@ public class Block121 extends UIComponent {
     public void output(HtmlWriter html) {
         html.println("<!-- %s -->", this.getClass().getName());
         html.print("<header  class='block121'>");
-        if (this.leftImage.getSrc() != null && !this.leftImage.getSrc().equals("")) {
+        if (this.leftImage.getSrc() != null && !"".equals(this.leftImage.getSrc())) {
             html.print("<a href='%s'  class='arrow-left'>", this.leftUrl.getUrl());
             this.leftImage.output(html);
             html.print("</a>");
@@ -34,7 +34,7 @@ public class Block121 extends UIComponent {
         html.print("<h1 class='title'>");
         this.title.output(html);
         html.print("</h1>");
-        if (this.rightText.getText() != null && !this.rightText.getText().equals("")) {
+        if (this.rightText.getText() != null && !"".equals(this.rightText.getText())) {
             html.print("<a href='%s' class='arrow-right'>", this.rightUrl.getUrl());
             this.rightText.output(html);
             html.print("</a>");

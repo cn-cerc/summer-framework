@@ -1,13 +1,12 @@
 package cn.cerc.mis.excel.output;
 
-import java.util.List;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
+
+import java.util.List;
 
 /**
  * 定义BOM导出模版
@@ -30,7 +29,7 @@ public class BOMTemplate extends ExcelTemplate {
     }
 
     @Override
-    public void output(WritableSheet sheet) throws RowsExceededException, WriteException {
+    public void output(WritableSheet sheet) throws WriteException {
         // 输出列头
         Record head = this.getDataSet().getHead();
         if (heads != null) {
@@ -40,7 +39,7 @@ public class BOMTemplate extends ExcelTemplate {
                 Label item1 = new Label(0, row, column.getName());
                 sheet.addCell(item1);
                 column.setRecord(head);
-                writeColumn(sheet, 1, row, column);
+                writeColumn(sheet, 1, row, column, null);
             }
             // 设置新的起点行号
             this.setRow(this.getRow() + heads.size());

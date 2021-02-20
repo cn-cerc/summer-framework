@@ -23,8 +23,9 @@ public class ExpenderGridLine extends AbstractGridLine {
         if (getCells().size() == 0) {
             col = new RowCell();
             getCells().add(col);
-        } else
+        } else {
             col = getCells().get(0);
+        }
         col.addField(field);
     }
 
@@ -34,22 +35,27 @@ public class ExpenderGridLine extends AbstractGridLine {
         html.print("<tr");
         html.print(" id='%s_%s'", "tr" + dataSet.getRecNo(), lineNo);
         html.print(" role=\"%s\"", dataSet.getRecNo());
-        if (!this.isVisible())
+        if (!this.isVisible()) {
             html.print(" style=\"display:none\"");
+        }
         html.println(">");
         for (RowCell item : this.getCells()) {
             IField objField = item.getFields().get(0);
             html.print("<td");
-            if (item.getColSpan() > 1)
+            if (item.getColSpan() > 1) {
                 html.print(" colspan=\"%d\"", item.getColSpan());
-            if (item.getStyle() != null)
+            }
+            if (item.getStyle() != null) {
                 html.print(" style=\"%s\"", item.getStyle());
-            if (item.getAlign() != null)
+            }
+            if (item.getAlign() != null) {
                 html.print(" align=\"%s\"", item.getAlign());
-            else if (objField.getAlign() != null)
+            } else if (objField.getAlign() != null) {
                 html.print(" align=\"%s\"", objField.getAlign());
-            if (item.getRole() != null)
+            }
+            if (item.getRole() != null) {
                 html.print(" role=\"%s\"", item.getRole());
+            }
 
             html.print(">");
             for (IField obj : item.getFields()) {
@@ -60,12 +66,13 @@ public class ExpenderGridLine extends AbstractGridLine {
                         html.print(field.getName());
                         html.print(": ");
                     }
-                    if (field instanceof IColumn)
+                    if (field instanceof IColumn) {
                         html.print(((IColumn) field).format(dataSource.getDataSet().getCurrent()));
-                    else if (field instanceof AbstractField)
+                    } else if (field instanceof AbstractField) {
                         outputField(html, field);
-                    else
+                    } else {
                         throw new RuntimeException("暂不支持的数据类型：" + field.getClass().getName());
+                    }
                     html.println("</span>");
                 }
             }

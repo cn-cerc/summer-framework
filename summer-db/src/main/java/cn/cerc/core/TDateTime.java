@@ -3,6 +3,10 @@ package cn.cerc.core;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,8 +51,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public TDateTime(String value) {
         String fmt = getFormat(value);
-        if (fmt == null)
+        if (fmt == null) {
             fmt = "yyyy-MM-dd HH:mm:ss";
+        }
         SimpleDateFormat sdf = new SimpleDateFormat(fmt);
         try {
             data = sdf.parse(value);
@@ -71,7 +76,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     // 当时，带时分秒
-    public static TDateTime Now() {
+    public static TDateTime now() {
         TDateTime result = new TDateTime();
         result.setData(new Date());
         return result;
@@ -79,8 +84,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public static TDateTime fromDate(String val) {
         String fmt = getFormat(val);
-        if (fmt == null)
+        if (fmt == null) {
             return null;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat(fmt);
         TDateTime tdtTo = new TDateTime();
         try {
@@ -103,17 +109,20 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     public static String getFormat(String val) {
-        if (val == null)
+        if (val == null) {
             return null;
-        if (val.equals(""))
+        }
+        if ("".equals(val)) {
             return null;
+        }
         String fmt = null;
         java.util.Iterator<String> it = dateFormats.keySet().iterator();
         while (it.hasNext() && fmt == null) {
             String key = it.next();
             String str = dateFormats.get(key);
-            if (val.matches(str))
+            if (val.matches(str)) {
                 fmt = key;
+            }
         }
         return fmt;
     }
@@ -187,8 +196,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public static TDateTime StrToDate(String val) {
         String fmt = TDateTime.getFormat(val);
-        if (fmt == null)
+        if (fmt == null) {
             throw new RuntimeException("时间格式不正确: value=" + val);
+        }
         return new TDateTime(fmt, val);
     }
 
@@ -234,32 +244,11 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         return date.after(begin) && date.before(end);
     }
 
-    public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis());
-        TDateTime date = TDateTime.fromDate("2016-02-28 08:00:01");
-        System.out.println(date.getTimestamp());
-        System.out.println(date.getUnixTimestamp());
-        System.out.println(date);
-        System.out.println(date.incMonth(1));
-        System.out.println(date.incMonth(2));
-        System.out.println(date.incMonth(3));
-        System.out.println(date.incMonth(4));
-        System.out.println(date.incMonth(12));
-        System.out.println(date.incMonth(13));
-        System.out.println(date);
-
-        TDateTime date2 = TDateTime.fromDate("2016-05-31 23:59:59");
-        System.out.println(date2);
-        System.out.println(date2.incMonth(1));
-        System.out.println(date2.incMonth(1).monthBof());
-
-        System.out.println(isInterval("05:30", "17:00"));
-    }
-
     @Override
     public String toString() {
-        if (data == null)
+        if (data == null) {
             return "";
+        }
         return format("yyyy-MM-dd HH:mm:ss");
     }
 
@@ -302,10 +291,12 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     public String format(String fmt) {
-        if (data == null)
+        if (data == null) {
             return null;
-        if (data.compareTo(new Date(0)) == 0)
+        }
+        if (data.compareTo(new Date(0)) == 0) {
             return "";
+        }
         SimpleDateFormat sdf = new SimpleDateFormat(fmt);
         return sdf.format(data);
     }
@@ -327,7 +318,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         long second = 1000;
 
         long start = startTime.getData().getTime();
-        long end = TDateTime.Now().getData().getTime();
+        long end = TDateTime.now().getData().getTime();
         return (end - start) / second;
     }
 
@@ -340,7 +331,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         long minute = 1000 * 60;
 
         long start = startTime.getData().getTime();
-        long end = TDateTime.Now().getData().getTime();
+        long end = TDateTime.now().getData().getTime();
         return (end - start) / minute;
     }
 
@@ -353,14 +344,16 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         long hour = 1000 * 60 * 60;
 
         long start = startTime.getData().getTime();
-        long end = TDateTime.Now().getData().getTime();
+        long end = TDateTime.now().getData().getTime();
         return (end - start) / hour;
     }
 
     // 若当前值大，则返回正数，否则返回负数
+
     public int compareDay(TDateTime dateFrom) {
-        if (dateFrom == null)
+        if (dateFrom == null) {
             return 0;
+        }
         // 返回this - to 的差异天数 ,返回相对值
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal1 = Calendar.getInstance();
@@ -372,8 +365,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
             cal1.setTime(sdf.parse(str2));
             cal2.setTime(sdf.parse(str1));
             int flag = 1;
-            if (cal1.after(cal2))
+            if (cal1.after(cal2)) {
                 flag = -1;
+            }
             while (cal1.compareTo(cal2) != 0) {
                 cal1.set(Calendar.DAY_OF_YEAR, cal1.get(Calendar.DAY_OF_YEAR) + flag);
                 count = count + flag;
@@ -383,8 +377,8 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         }
         return count;
     }
-
     // 原MonthsBetween，改名为：compareMonth
+
     public int compareMonth(TDateTime dateFrom) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(this.getData());
@@ -451,8 +445,9 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public TDateTime incMonth(int offset) {
         TDateTime result = this.clone();
-        if (offset == 0)
+        if (offset == 0) {
             return result;
+        }
         Calendar cal = Calendar.getInstance();
         cal.setTime(result.getData());
         int day = cal.get(Calendar.DATE);
@@ -460,10 +455,11 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         boolean isMaxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH) == day;
         cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + offset);
         int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        if (isMaxDay || day > maxDay)
+        if (isMaxDay || day > maxDay) {
             cal.set(Calendar.DATE, maxDay);
-        else
+        } else {
             cal.set(Calendar.DATE, day);
+        }
         result.setData(cal.getTime());
         return result;
     }
@@ -474,6 +470,7 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
     }
 
     // 返回value的当月第1天
+
     public TDateTime monthBof() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getData());
@@ -522,6 +519,28 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         return cal.get(Calendar.HOUR_OF_DAY);
     }
 
+    /**
+     * 获取指定日期的开始时刻
+     */
+    public static TDateTime getStartOfDay(TDateTime dateTime) {
+        Date date = dateTime.getData();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
+        Date start = Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
+        return new TDateTime(start);
+    }
+
+    /**
+     * 获取指定日期的结束时刻
+     */
+    public static TDateTime getEndOfDay(TDateTime dateTime) {
+        Date date = dateTime.getData();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+        Date end = Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+        return new TDateTime(end);
+    }
+
     public int getMinutes() {
         // 返回value的分钟值
         Calendar cal = Calendar.getInstance();
@@ -534,18 +553,19 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getData());
         Lunar lunar = new Lunar(cal);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
-        return sdf.format(TDateTime.StrToDate(lunar.toString()).getData());
+        return lunar.toString().substring(5).replaceAll("-", "/");
     }
 
     @Override
     public int compareTo(TDateTime tdt) {
-        if (tdt == null)
+        if (tdt == null) {
             return 1;
-        if (tdt.getData().getTime() == this.getData().getTime())
+        }
+        if (tdt.getData().getTime() == this.getData().getTime()) {
             return 0;
-        else
+        } else {
             return this.getData().getTime() > tdt.getData().getTime() ? 1 : -1;
+        }
     }
 
     @Override
@@ -555,5 +575,28 @@ public class TDateTime implements Serializable, Comparable<TDateTime>, Cloneable
 
     public boolean isNull() {
         return this.data == null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis());
+        TDateTime date = TDateTime.fromDate("2016-02-28 08:00:01");
+        System.out.println(date.getDay());
+        System.out.println(date.getTimestamp());
+        System.out.println(date.getUnixTimestamp());
+        System.out.println(date);
+        System.out.println(date.incMonth(1));
+        System.out.println(date.incMonth(2));
+        System.out.println(date.incMonth(3));
+        System.out.println(date.incMonth(4));
+        System.out.println(date.incMonth(12));
+        System.out.println(date.incMonth(13));
+        System.out.println(date);
+
+        TDateTime date2 = TDateTime.fromDate("2016-05-31 23:59:59");
+        System.out.println(date2);
+        System.out.println(date2.incMonth(1));
+        System.out.println(date2.incMonth(1).monthBof());
+
+        System.out.println(isInterval("05:30", "17:00"));
     }
 }

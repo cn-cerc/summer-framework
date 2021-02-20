@@ -1,12 +1,11 @@
 package cn.cerc.ui.page;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.ui.parts.UIMenuList;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 系统登录页
@@ -21,14 +20,16 @@ public class UIPageLike extends UIPageDialog {
 
     @Override
     public String execute() throws ServletException, IOException {
-        if (menus != null)
+        if (menus != null) {
             add("menus", menus);
+        }
         return super.execute();
     }
 
     public UIMenuList getMenus() {
-        if (menus == null)
+        if (menus == null) {
             menus = new UIMenuList(this.getDocument().getContent());
+        }
         return menus;
     }
 

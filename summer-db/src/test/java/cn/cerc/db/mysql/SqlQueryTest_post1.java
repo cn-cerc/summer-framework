@@ -1,20 +1,19 @@
 package cn.cerc.db.mysql;
 
+import cn.cerc.core.PostFieldException;
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cn.cerc.core.PostFieldException;
-import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.StubHandle;
-
 public class SqlQueryTest_post1 {
     private SqlQuery ds;
-    private StubHandle conn;
+    private StubHandleText conn;
 
     @Before
     public void setUp() {
-        conn = new StubHandle();
+        conn = new StubHandleText();
         ds = new SqlQuery(conn);
     }
 
@@ -25,7 +24,7 @@ public class SqlQueryTest_post1 {
         ds.add("select * from Dept where CorpNo_='%s'", "144001");
         ds.open();
         ds.edit();
-        ds.setField("updateDate_", TDateTime.Now().incDay(-1));
+        ds.setField("updateDate_", TDateTime.now().incDay(-1));
         ds.post();
     }
 
@@ -39,7 +38,7 @@ public class SqlQueryTest_post1 {
         });
         ds.edit();
         ds.setField("Test", "aOK");
-        ds.setField("UpdateDate_", TDateTime.Now().incDay(-1));
+        ds.setField("UpdateDate_", TDateTime.now().incDay(-1));
         ds.post();
     }
 }

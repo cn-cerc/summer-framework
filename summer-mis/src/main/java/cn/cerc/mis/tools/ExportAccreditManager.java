@@ -19,13 +19,14 @@ public class ExportAccreditManager implements IAccreditManager {
             throw new RuntimeException("securityCode is null");
         }
         IHandle appHandle = (IHandle) handle;
-        return userOptionEnabled(appHandle, securityCode).equals("on");
+        return "on".equals(userOptionEnabled(appHandle, securityCode));
     }
 
     private String userOptionEnabled(IHandle handle, String optCode) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), optCode)) {
             if (buff.isNull()) {
-                IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public, "ApiUserOption.getOptValue");
+                IServiceProxy svr = ServiceFactory.get(handle);
+                svr.setService("ApiUserOption.getOptValue");
                 Record headIn = svr.getDataIn().getHead();
                 headIn.setField("UserCode_", handle.getUserCode());
                 headIn.setField("OptCode_", optCode);

@@ -1,14 +1,12 @@
 package cn.cerc.mis.page.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ClientDevice;
+import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
@@ -17,6 +15,8 @@ import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class SvrAutoLogin {
@@ -53,7 +53,7 @@ public class SvrAutoLogin {
                     systemTable.getDeviceVerify(), userCode, deviceId);
             sess.getConnection().execute(sql);
 
-            String token = Utils.guidFixStr();
+            String token = Utils.generateToken();
             sess.setProperty(Application.token, token);
             sess.setProperty("deviceId", deviceId);
             sess.setProperty(RequestData.TOKEN, token);
@@ -77,7 +77,7 @@ public class SvrAutoLogin {
                 buff.setField("UserID_", userId);
                 buff.setField("UserCode_", dsUser.getString("Code_"));
                 buff.setField("UserName_", dsUser.getString("Name_"));
-                buff.setField("LoginTime_", TDateTime.Now());
+                buff.setField("LoginTime_", TDateTime.now());
                 buff.setField("VerifyMachine", true);
             }
 
@@ -86,13 +86,13 @@ public class SvrAutoLogin {
             svrLogin.enrollMachineInfo(dsUser.getString("CorpNo_"), userCode, deviceId, "浏览器");
 
             // 设置登录信息
-            ClientDevice client = new ClientDevice();
+            AppClient client = new AppClient();
             client.setRequest(request);
             client.setToken(token);
             sess.init(token);
 
             form.getRequest().setAttribute(RequestData.TOKEN, token);
-            ((ClientDevice) form.getClient()).setToken(token);
+            ((AppClient) form.getClient()).setToken(token);
             tx.commit();
         }
         return true;

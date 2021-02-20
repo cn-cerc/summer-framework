@@ -6,16 +6,17 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.LocalConfig;
-import cn.cerc.mis.config.ApplicationProperties;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
-    private IHandle handle;
+    private final IHandle handle;
 
     private String host;
     private String path;
@@ -34,16 +35,19 @@ public class RemoteService implements IServiceProxy {
 
     private RemoteService(IHandle handle, String bookNo) {
         this.handle = handle;
-        this.token = ApplicationProperties.getToken(handle);
+        this.token = ApplicationConfig.getToken(handle);
 
         this.host = getApiHost(bookNo);
         this.path = bookNo;
     }
 
-    private String getApiHost(String bookNo) {
+    public static String getApiHost(String bookNo) {
         LocalConfig localConfig = LocalConfig.getInstance();
-        String key = ApplicationProperties.Rempte_Host_Key + "." + bookNo;
-        return localConfig.getProperty(key, ApplicationProperties.Local_Host);
+        String key = ApplicationConfig.Rempte_Host_Key + "." + bookNo;
+        if (localConfig.getProperty(key) == null) {
+            key = ApplicationConfig.Rempte_Host_Key + "." + ServiceFactory.Public;
+        }
+        return localConfig.getProperty(key);
     }
 
     @Override
@@ -73,8 +77,8 @@ public class RemoteService implements IServiceProxy {
 
         try {
             Curl curl = new Curl();
-            curl.putParameter("dataIn", getDataIn().getJSON());
-            curl.putParameter(RequestData.TOKEN, this.token);
+            curl.put("dataIn", getDataIn().getJSON());
+            curl.put(RequestData.TOKEN, this.token);
             log.info("url {}", this.getUrl());
             log.info("params {}", curl.getParameters());
 
@@ -88,18 +92,19 @@ public class RemoteService implements IServiceProxy {
                 return false;
             }
 
-            JSONObject json = JSONObject.fromObject(response);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode json = mapper.readTree(response);
             if (json.get("message") != null) {
-                this.setMessage(json.getString("message"));
+                this.setMessage(json.get("message").asText());
             }
 
-            if (json.containsKey("data")) {
-                String dataJson = json.getString("data");
+            if (json.has("data")) {
+                String dataJson = json.get("data").asText();
                 if (dataJson != null) {
                     this.getDataOut().setJSON(dataJson);
                 }
             }
-            return json.getBoolean("result");
+            return json.get("result").asBoolean();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             if (e.getCause() != null) {
@@ -146,8 +151,9 @@ public class RemoteService implements IServiceProxy {
 
     @Override
     public DataSet getDataOut() {
-        if (dataOut == null)
+        if (dataOut == null) {
             dataOut = new DataSet();
+        }
         return dataOut;
     }
 
@@ -165,8 +171,9 @@ public class RemoteService implements IServiceProxy {
 
     @Override
     public DataSet getDataIn() {
-        if (dataIn == null)
+        if (dataIn == null) {
             dataIn = new DataSet();
+        }
         return dataIn;
     }
 

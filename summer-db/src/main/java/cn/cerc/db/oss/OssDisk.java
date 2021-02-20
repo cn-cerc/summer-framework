@@ -1,21 +1,20 @@
 package cn.cerc.db.oss;
 
-import java.io.File;
-import java.io.InputStream;
-
-import com.aliyun.oss.OSSClient;
+import cn.cerc.core.IHandle;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.CopyObjectResult;
 import com.aliyun.oss.model.ObjectMetadata;
-
-import cn.cerc.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.io.InputStream;
 
 @Slf4j
 public class OssDisk {
 
     private OssConnection connection;
-    private OSSClient client;
+    private OSS client;
     private String localPath;
 
     public OssDisk(IHandle handle) {
@@ -23,9 +22,14 @@ public class OssDisk {
         client = connection.getClient();
     }
 
-    // 上传文件流
+    // 默认Bucket上传文件流
     public void upload(String fileName, InputStream inputStream) {
         connection.upload(fileName, inputStream);
+    }
+
+    // 指定Bucket上传文件流
+    public void upload(String bucket, String fileName, InputStream inputStream) {
+        connection.upload(bucket, fileName, inputStream);
     }
 
     // 上传文件
@@ -33,8 +37,9 @@ public class OssDisk {
         // 上传本地文件到服务器
         // 例：upload("D:\\oss\\temp.png", "131001/Default/131001/temp.png")
         File file = new File(localFile);
-        if (!file.exists())
+        if (!file.exists()) {
             throw new RuntimeException("文件不存在：" + localFile);
+        }
         try {
             ObjectMetadata summary = client.getObjectMetadata(connection.getBucket(), remoteFile);
             if (summary != null && summary.getContentLength() == file.length()) {
@@ -52,8 +57,9 @@ public class OssDisk {
 
     // 下载文件
     public boolean download(String fileName) {
-        if (localPath == null || "".equals(localPath))
+        if (localPath == null || "".equals(localPath)) {
             throw new RuntimeException("localPath 必须先进行设置！");
+        }
 
         // 创建本地目录
         String localFile = localPath + fileName.replace('/', '\\');
@@ -62,9 +68,14 @@ public class OssDisk {
         return connection.download(fileName, localFile);
     }
 
-    // 删除文件
+    // 默认Bucket删除文件
     public void delete(String fileName) {
         connection.delete(fileName);
+    }
+
+    // 指定Bucket删除文件
+    public void delete(String bucket, String fileName) {
+        connection.delete(bucket, fileName);
     }
 
     // 拷贝Object
@@ -79,7 +90,7 @@ public class OssDisk {
         log.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
     }
 
-    public OSSClient getClient() {
+    public OSS getClient() {
         return client;
     }
 
@@ -106,15 +117,17 @@ public class OssDisk {
         int fromIndex = 0;
         while (tmpPath.indexOf("\\", fromIndex) > -1) {
             int beginIndex = tmpPath.indexOf("\\", fromIndex);
-            if (fromIndex == -1)
+            if (fromIndex == -1) {
                 break;
+            }
             subPath = tmpPath.substring(0, beginIndex);
             fromIndex = subPath.length() + 1;
             if (subPath.length() > 2) {
                 File file = new File(subPath);
                 // 如果文件夹不存在则创建
-                if (!file.exists() && !file.isDirectory())
+                if (!file.exists() && !file.isDirectory()) {
                     file.mkdir();
+                }
             }
         }
     }

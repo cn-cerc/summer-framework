@@ -4,5 +4,5 @@ import cn.cerc.core.Record;
 
 public interface CountRecordInterface {
 
-    public String getGroup(Record rs);
+    String getGroup(Record rs);
 }

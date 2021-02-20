@@ -1,12 +1,11 @@
 package cn.cerc.db.queue;
 
-import java.io.IOException;
-
+import cn.cerc.core.Utils;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
-
-import cn.cerc.core.Utils;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 @Slf4j
 public class Queue {
@@ -36,8 +35,9 @@ public class Queue {
     public Object readObject() {
         try {
             String str = this.read();
-            if (str == null)
+            if (str == null) {
                 return null;
+            }
             return Utils.deserializeToObject(str);
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -60,8 +60,9 @@ public class Queue {
     }
 
     public void delete() {
-        if (receiptHandle == null)
+        if (receiptHandle == null) {
             return;
+        }
         client.deleteMessage(receiptHandle);
         receiptHandle = null;
         return;

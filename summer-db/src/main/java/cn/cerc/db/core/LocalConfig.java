@@ -1,23 +1,27 @@
 package cn.cerc.db.core;
 
+import cn.cerc.core.IConfig;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import cn.cerc.core.IConfig;
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
-public class LocalConfig implements IConfig {
+public enum LocalConfig implements IConfig {
 
-    private static final String confFile = System.getProperty("user.home") + System.getProperty("file.separator")
-            + "summer-application.properties";
+    INSTANCE;
 
-    private static Properties properties = new Properties();
+    public static final String path = System.getProperty("user.home") + System.getProperty("file.separator");
+    private static final String confFile = path + "summer-application.properties";
 
-    private static final LocalConfig INSTANCE = new LocalConfig();
+    private static final Properties properties = new Properties();
+
+    public static LocalConfig getInstance() {
+        return INSTANCE;
+    }
 
     static {
         try {
@@ -36,22 +40,9 @@ public class LocalConfig implements IConfig {
         }
     }
 
-    public synchronized static LocalConfig getInstance() {
-        return INSTANCE;
-    }
-
-    private LocalConfig() {
-        if (INSTANCE != null) {
-            log.error("LocalConfig instance is not null");
-        }
-    }
-
     @Override
     public String getProperty(String key, String def) {
-        String result = null;
-        if (properties != null) {
-            result = properties.getProperty(key);
-        }
+        String result = properties.getProperty(key);
         return result != null ? result : def;
     }
 
@@ -61,8 +52,8 @@ public class LocalConfig implements IConfig {
     }
 
     public static void main(String[] args) {
-        LocalConfig config1 = LocalConfig.getInstance();
-        System.out.println(config1.getProperty("rds.site"));
+        LocalConfig config = LocalConfig.getInstance();
+        System.out.println(config.getProperty("rds.site"));
     }
 
 }

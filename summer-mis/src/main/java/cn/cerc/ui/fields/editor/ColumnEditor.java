@@ -1,9 +1,5 @@
 package cn.cerc.ui.fields.editor;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
@@ -13,6 +9,10 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.MasterGridLine;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ColumnEditor {
     private AbstractField owner;
@@ -25,8 +25,9 @@ public class ColumnEditor {
 
     public ColumnEditor(AbstractField owner) {
         this.owner = owner;
-        if (!(owner.getOwner() instanceof AbstractGridLine))
+        if (!(owner.getOwner() instanceof AbstractGridLine)) {
             throw new RuntimeException("不支持的数据类型：" + owner.getOwner().getClass().getName());
+        }
         gridLine = (AbstractGridLine) (owner.getOwner());
     }
 
@@ -54,28 +55,32 @@ public class ColumnEditor {
             columns = new ArrayList<>();
             for (IField field : gridLine.getFields()) {
                 if (field instanceof IColumn) {
-                    if (((AbstractField) field).isReadonly())
+                    if (((AbstractField) field).isReadonly()) {
                         continue;
-                    if (field.getWidth() == 0)
+                    }
+                    if (field.getWidth() == 0) {
                         continue;
+                    }
                     columns.add(field);
                 }
             }
             if (gridLine.getOwner() instanceof DataGrid) {
                 DataGrid grid = (DataGrid) gridLine.getOwner();
-                if (columns.size() > 0 && grid.getPrimaryKey() == null)
+                if (columns.size() > 0 && grid.getPrimaryKey() == null) {
                     throw new RuntimeException("BaseGrid.primaryKey is null");
+                }
             }
             this.init = true;
         }
         HtmlWriter html = new HtmlWriter();
         String inputStyle = "";
         html.print("<input");
-        if (gridLine instanceof MasterGridLine)
+        if (gridLine instanceof MasterGridLine) {
             html.print(" id='%s'", this.getDataId());
-        else {
-            if (owner.getId() != null)
+        } else {
+            if (owner.getId() != null) {
                 html.print(" id='%s'", owner.getId());
+            }
             inputStyle = "width:80%;";
         }
         inputStyle += "border: 1px solid #dcdcdc;";
@@ -86,25 +91,29 @@ public class ColumnEditor {
         html.print(" data-%s='[%s]'", owner.getField(), data);
         if (gridLine instanceof MasterGridLine) {
             html.print(" data-focus='[%s]'", this.getDataFocus());
-            if (owner.getAlign() != null)
+            if (owner.getAlign() != null) {
                 inputStyle += String.format("text-align:%s;", owner.getAlign());
+            }
             if (owner.getOnclick() != null) {
                 html.print(" onclick=\"%s\"", owner.getOnclick());
-            } else
+            } else {
                 html.print(" onclick='this.select()'");
+            }
         }
-        if (!"".equals(inputStyle))
+        if (!"".equals(inputStyle)) {
             html.print(" style='%s'", inputStyle);
+        }
         html.print(" onkeydown='return tableDirection(event,this)'");
         if (dataField.size() > 0) {
             for (String field : dataField) {
                 html.print(" data-%s='%s'", field, ds.getString(field));
             }
         }
-        if (onUpdate != null)
+        if (onUpdate != null) {
             html.print(" oninput=\"tableOnChanged(this,'%s')\"", onUpdate);
-        else
+        } else {
             html.print(" oninput='tableOnChanged(this)'");
+        }
         html.println("/>");
         return html.toString();
     }
