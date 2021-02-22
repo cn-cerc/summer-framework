@@ -11,7 +11,7 @@
     <artifactId>summer-mis-tw</artifactId>
     <packaging>jar</packaging>
 
-    <description>summer-mis-cn</description>
+    <description>summer-mis-tw</description>
 
     <build>
         <plugins>
