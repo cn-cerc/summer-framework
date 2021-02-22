@@ -5,6 +5,7 @@ import cn.cerc.ui.parts.UIComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class RadioField extends AbstractField {
@@ -35,6 +36,11 @@ public class RadioField extends AbstractField {
 
     public RadioField add(String... items) {
         this.items.addAll(Arrays.asList(items));
+        return this;
+    }
+
+    public RadioField add(Collection<String> items) {
+        this.items.addAll(items);
         return this;
     }
 

@@ -22,6 +22,11 @@ public class QueueDB {
      **/
     public static final String MATERIAL = getQueueDB("queuedb.material");
 
+    /**
+     * 全文检索
+     */
+    public static final String ELASTICSEARCH = getQueueDB("ququedb.elasticsearch");
+
     private static String getQueueDB(String queue) {
         String queueDB = ServerConfig.getInstance().getProperty(queue);
         if (queueDB == null) {

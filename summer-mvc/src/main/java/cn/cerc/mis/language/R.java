@@ -67,22 +67,22 @@ public class R {
     private static void validateKey(IHandle handle, String text, String language) {
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         SqlQuery dsLang = new SqlQuery(handle);
-        dsLang.add("select value_ from %s", systemTable.getLanguage());
-        dsLang.add("where key_='%s'", Utils.safeString(text));
-        dsLang.add("and lang_='%s'", language);
+        dsLang.add("select Value_ from %s", systemTable.getLanguage());
+        dsLang.add("where Key_='%s'", Utils.safeString(text));
+        dsLang.add("and Lang_='%s'", language);
         dsLang.open();
         if (dsLang.eof()) {
             dsLang.append();
-            dsLang.setField("key_", Utils.safeString(text));
-            dsLang.setField("lang_", language);
-            dsLang.setField("value_", "");
-            dsLang.setField("supportAndroid_", false);
-            dsLang.setField("supportIphone_", false);
-            dsLang.setField("enable_", true);
-            dsLang.setField("updateUser_", handle.getUserCode());
-            dsLang.setField("updateDate_", TDateTime.now());
-            dsLang.setField("createUser_", handle.getUserCode());
-            dsLang.setField("createDate_", TDateTime.now());
+            dsLang.setField("Key_", Utils.safeString(text));
+            dsLang.setField("Lang_", language);
+            dsLang.setField("Value_", "");
+            dsLang.setField("SupportAndroid_", false);
+            dsLang.setField("SupportIphone_", false);
+            dsLang.setField("Enable_", true);
+            dsLang.setField("UpdateUser_", handle.getUserCode());
+            dsLang.setField("UpdateDate_", TDateTime.now());
+            dsLang.setField("CreateUser_", handle.getUserCode());
+            dsLang.setField("CreateDate_", TDateTime.now());
             dsLang.post();
         }
     }
@@ -90,17 +90,17 @@ public class R {
     private static String getValue(IHandle handle, String text, String language) {
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         SqlQuery dsLang = new SqlQuery(handle);
-        dsLang.add("select key_,max(value_) as value_ from %s", systemTable.getLanguage());
-        dsLang.add("where key_='%s'", Utils.safeString(text));
+        dsLang.add("select Key_,max(Value_) as Value_ from %s", systemTable.getLanguage());
+        dsLang.add("where Key_='%s'", Utils.safeString(text));
         // FIXME: 2019/12/7 此处应该取反了，未来得及翻译的语言应该直接显示中文
         if (Language.en_US.equals(language)) {
-            dsLang.add("and (lang_='%s')", language);
+            dsLang.add("and (Lang_='%s')", language);
         } else {
-            dsLang.add("and (lang_='%s' or lang_='en')", language);
+            dsLang.add("and (Lang_='%s' or Lang_='en')", language);
         }
-        dsLang.add("group by key_");
+        dsLang.add("group by Key_");
         dsLang.open();
-        String result = dsLang.getString("value_");
+        String result = dsLang.getString("Value_");
         return result.length() > 0 ? result : text;
     }
 
@@ -113,34 +113,34 @@ public class R {
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         // 处理英文界面
         SqlQuery ds = new SqlQuery(handle);
-        ds.add("select value_ from %s", systemTable.getLanguage());
-        ds.add("where key_='%s'", Utils.safeString(text));
+        ds.add("select Value_ from %s", systemTable.getLanguage());
+        ds.add("where Key_='%s'", Utils.safeString(text));
         if (!Language.en_US.equals(language)) {
-            ds.add("and (lang_='en' or lang_='%s')", language);
-            ds.add("order by value_ desc");
+            ds.add("and (Lang_='en' or Lang_='%s')", language);
+            ds.add("order by Value_ desc");
         } else {
-            ds.add("and lang_='en'", language);
+            ds.add("and Lang_='en'", language);
         }
         ds.open();
         if (ds.eof()) {
             ds.append();
-            ds.setField("key_", text);
-            ds.setField("lang_", language);
-            ds.setField("value_", "");
-            ds.setField("updateUser_", handle.getUserCode());
-            ds.setField("updateTime_", TDateTime.now());
-            ds.setField("createUser_", handle.getUserCode());
-            ds.setField("createTime_", TDateTime.now());
+            ds.setField("Key_", text);
+            ds.setField("Lang_", language);
+            ds.setField("Value_", "");
+            ds.setField("UpdateUser_", handle.getUserCode());
+            ds.setField("UpdateTime_", TDateTime.now());
+            ds.setField("CreateUser_", handle.getUserCode());
+            ds.setField("CreateTime_", TDateTime.now());
             ds.post();
             return text;
         }
         String result = "";
         String en_result = ""; // 默认英文
         while (ds.fetch()) {
-            if (Language.en_US.equals(ds.getString("lang_"))) {
-                en_result = ds.getString("value_");
+            if (Language.en_US.equals(ds.getString("Lang_"))) {
+                en_result = ds.getString("Value_");
             } else {
-                result = ds.getString("value_");
+                result = ds.getString("Value_");
             }
         }
         if (!"".equals(result)) {

@@ -103,4 +103,5 @@ public class SystemTableDefault implements ISystemTable {
     public String getManageBook() {
         return "000000";
     }
+
 }
