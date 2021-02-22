@@ -230,7 +230,7 @@ public class UIHeader extends UIComponent {
     public void setModule(String moduleCode, String moduleName) {
         this.moduleCode = moduleCode;
         if (!"".equals(moduleCode)) {
-            this.addLeftMenu("FrmModule?module=" + moduleCode, moduleName);
+            this.addLeftMenu(moduleCode, moduleName);
         }
     }
 
