@@ -7,6 +7,7 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
+import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.client.IServiceProxy;
@@ -116,7 +117,6 @@ public class BookOptions {
         items.put("_HideLoginInfo_", "禁止所有用户在电脑上保存帐号或密码");
 
         // 基本资料
-        items.put(AccInitYearMonth, "财务期初开帐年月");
         items.put(AllowScanBCMode, "允许出货作业时，使用条码枪备货扫描作业模式");
         items.put(Report, "可对报表台头、销售订单页头和页尾、条码标签广告语、小票打印、销售对账页尾进行设置");
         items.put(SenderInfo, "对寄往本公司的收件人姓名、电话、地址进行设置");
@@ -221,79 +221,93 @@ public class BookOptions {
         this.handle = handle;
     }
 
-    // 启用单据签核流程管理
+    /**
+     * 启用单据签核流程管理
+     */
     public static boolean isEnableApproveFlow(IHandle handle) {
         String val = getOption(handle, EnableApproveFlow, "");
         return "on".equals(val);
     }
 
-    public static String getOption(IHandle handle, String ACode) {
-        return getOption(handle, ACode, "");
+    public static String getOption(IHandle handle, String code) {
+        return getOption(handle, code, "");
     }
 
-    public static String getOption(IHandle handle, String ACode, String ADefault) {
-        if (ACode.equals(AccInitYearMonth)) {
-            return getOption2(handle, ACode, ADefault);
+    public static String getOption(IHandle handle, String code, String defaultValue) {
+        if (code.equals(AccInitYearMonth)) {
+            return getOption2(handle, code, defaultValue);
         }
 
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), code)) {
             if (buff.isNull()) {
                 ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
                 BuildQuery f = new BuildQuery(handle);
                 f.add("select Value_ from %s ", systemTable.getBookOptions());
                 f.byField("CorpNo_", handle.getCorpNo());
-                f.byField("Code_", ACode);
+                f.byField("Code_", code);
                 f.open();
-                if (!f.getDataSet().eof())
+                if (!f.getDataSet().eof()) {
                     buff.setField("Value_", f.getDataSet().getString("Value_"));
-                else
-                    buff.setField("Value_", ADefault);
+                } else {
+                    buff.setField("Value_", defaultValue);
+                }
 
             }
             return buff.getString("Value_");
         }
     }
 
-    public static String getOption2(IHandle handle, String ACode, String def) {
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
-            if (buff.isNull() || buff.getString("Value_").equals("")) {
+    public static String getOption2(IHandle handle, String code, String def) {
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), code)) {
+            if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 log.info("reset buffer.");
                 LocalService ser = new LocalService(handle, "SvrBookOption");
-                if (ser.exec("Code_", ACode) && !ser.getDataOut().eof())
+                if (ser.exec("Code_", code) && !ser.getDataOut().eof()) {
                     buff.setField("Value_", ser.getDataOut().getString("Value_"));
-                else
+                } else {
                     buff.setField("Value_", def);
+                }
 
             }
             return buff.getString("Value_");
         }
     }
 
-    public static boolean checkStockNum(IHandle handle, double AStock) {
-        if (getOption(handle, EnableStockLessControl, "off").equals("on"))
-            return AStock >= 0;
-        else
+    public static boolean checkStockNum(IHandle handle, double stock) {
+        if ("on".equals(getOption(handle, EnableStockLessControl, "off"))) {
+            return stock >= 0;
+        } else {
             return true;
+        }
     }
 
-    // 是否不允许库存为负数
+    /**
+     * 是否不允许库存为负数
+     */
     public static boolean isEnableStockLessControl(IHandle handle) {
-        return getOption(handle, EnableStockLessControl, "off").equals("on");
+        return "on".equals(getOption(handle, EnableStockLessControl, "off"));
     }
 
-    // 是否启动与ERP同步
+    /**
+     * 是否启动与ERP同步
+     */
     public static boolean isEnableSyncERP(IHandle handle, DataSet dataIn) {
-        if (dataIn.getHead().exists("SyncERPToVine"))
+        if (dataIn.getHead().exists("SyncERPToVine")) {
             return false;
+        }
         return getEnabled(handle, EnableSyncERP);
     }
 
-    // 启用商品区域专卖控制，防范同区域恶性竞争
+    /**
+     * 启用商品区域专卖控制，防范同区域恶性竞争
+     */
     public static boolean isAllowAreaControl(IHandle handle) {
         return getEnabled(handle, AllowAreaControl);
     }
 
-    // 将退货单自动设置成销售黑名单（须先启动区域专卖管控）
+    /**
+     * 将退货单自动设置成销售黑名单（须先启动区域专卖管控）
+     */
     public static boolean isAGAutoAreaBlack(IHandle handle) {
         return getEnabled(handle, AGAutoAreaBlack);
     }
@@ -302,7 +316,9 @@ public class BookOptions {
         return getEnabled(handle, EnableSendMobileIntro);
     }
 
-    // 成本价是否取加权价
+    /**
+     * 成本价是否取加权价
+     */
     @Deprecated
     public static boolean isCostPriceSet(IHandle handle) {
         return getEnabled(handle, CostPriceSet);
@@ -313,7 +329,7 @@ public class BookOptions {
         String paramKey = AccInitYearMonth;
         // String result = getOption(owner, paramKey, "201301";
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), paramKey)) {
-            if (buff.isNull() || buff.getString("Value_").equals("")) {
+            if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
                 BuildQuery f = new BuildQuery(handle);
                 String corpNo = handle.getCorpNo();
@@ -340,8 +356,9 @@ public class BookOptions {
             result = buff.getString("Value_");
         }
         // 做返回值复查
-        if (result == null || "".equals(result))
+        if (result == null || "".equals(result)) {
             throw new RuntimeException("期初年月未设置，请先到系统参数中设置好后再进行此作业!");
+        }
         return result;
     }
 
@@ -353,28 +370,31 @@ public class BookOptions {
         }
 
         DataSet cdsTmp = svr.getDataOut();
-        if (cdsTmp.size() == 0)
+        if (cdsTmp.size() == 0) {
             throw new RuntimeException(String.format("没有找到帐套：%s", handle.getCorpNo()));
+        }
         return cdsTmp.getDate("AppDate_");
 
     }
 
     public static String getParamName(String paramCode) {
         String result = items.get(paramCode);
-        if (result == null || "".equals(result))
+        if (result == null || "".equals(result)) {
             throw new RuntimeException("没有注册的帐套参数: " + paramCode);
+        }
         return result;
     }
 
-    public static boolean getEnabled(IHandle handle, String ACode) {
-        String val = getOption(handle, ACode, "");
+    public static boolean getEnabled(IHandle handle, String code) {
+        String val = getOption(handle, code, "");
         return "on".equals(val);
     }
 
     public static String getDefaultCWCode(IHandle handle) {
         String result = getOption(handle, DefaultCWCode).trim();
-        if (result == null || "".equals(result))
+        if (Utils.isEmpty(result)) {
             result = "仓库";
+        }
         return result;
     }
 
@@ -386,21 +406,24 @@ public class BookOptions {
         return getEnabled(handle, EnableTranDetailCW);
     }
 
-    // 仓别控制权限
+    /**
+     * 仓别控制权限
+     */
     public static TWHControl getWHControl(IHandle handle) {
         // 拆装单单头仓别管控
         boolean enableWHManage = BookOptions.getEnableWHManage(handle);
         // 拆装单单身仓别管控
         boolean enableTranDetailCW = BookOptions.getEnableTranDetailCW(handle);
-        if (enableWHManage && enableTranDetailCW)
+        if (enableWHManage && enableTranDetailCW) {
             return TWHControl.whcBody;
-        else if (enableWHManage)
+        } else if (enableWHManage) {
             return TWHControl.whcHead;
-        else
+        } else {
             return TWHControl.whcNone;
+        }
     }
 
-    /*
+    /**
      * 可用库存
      */
     public static boolean isEnableAvailableStock(IHandle handle) {
@@ -408,13 +431,17 @@ public class BookOptions {
         return "1".equals(result);
     }
 
-    // 是否允许设置分仓安全库存(请使用新的函数：isEnableDetailSafeStock);
+    /**
+     * 是否允许设置分仓安全库存(请使用新的函数：isEnableDetailSafeStock);
+     */
     @Deprecated
     public static boolean isSafetyStockSynPartStock(IHandle handle) {
         return getEnabled(handle, SafetyStockSynPartStock);
     }
 
-    // 是否允许设置分仓安全库存
+    /**
+     * 是否允许设置分仓安全库存
+     */
     public static boolean isEnableDetailSafeStock(IHandle handle) {
         return getEnabled(handle, SafetyStockSynPartStock);
     }
@@ -423,40 +450,53 @@ public class BookOptions {
         return getEnabled(handle, EnableAccBook);
     }
 
-    // 是否在修改进货价后，每晚自动更新本月所有单据的成本价与毛利
+    /**
+     * 是否在修改进货价后，每晚自动更新本月所有单据的成本价与毛利
+     */
     public static boolean isUpdateCurrentMonthProfit(IHandle handle) {
         return getEnabled(handle, UpdateCurrentMonthProfit);
     }
 
-    // 是否禁止所有用户在电脑上保存帐号，禁止后首页不显示账套信息
+    /**
+     * 是否禁止所有用户在电脑上保存帐号，禁止后首页不显示账套信息
+     */
     public static boolean isDissableAccountSave(IHandle handle) {
         return getEnabled(handle, DisableAccountSave);
     }
 
-    // 是否开启不允许无销售订单进行退货
+    /**
+     * 是否开启不允许无销售订单进行退货
+     */
     public static boolean isAllowSaleBCToAG(IHandle handle) {
         return getEnabled(handle, NoAllowSalesBCToAG);
     }
 
-    // 是否开启单据生效时，单据日期等于生效日期
+    /**
+     * 是否开启单据生效时，单据日期等于生效日期
+     */
     public static boolean isUpdateTBDateToEffectiveDate(IHandle handle) {
         return getEnabled(handle, UpdateTBDateToEffectiveDate);
     }
 
-    // 是否开启网上订单菜单
+    /**
+     * 是否开启网上订单菜单
+     */
     public static boolean isEnableOnlineToOfflineMenu(IHandle handle) {
         return getEnabled(handle, OnlineToOfflineMenu);
     }
 
-    // 增加账套参数
+    /**
+     * 增加账套参数
+     */
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
         IServiceProxy svr1 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.getVineOptionsByCode");
         if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {
             throw new RuntimeException(svr1.getMessage());
         }
         DataSet dataSet = svr1.getDataOut();
-        if (!dataSet.eof())
+        if (!dataSet.eof()) {
             return;
+        }
         String paramName = getParamName(paramKey);
 
         IServiceProxy svr2 = ServiceFactory.get(handle, ServiceFactory.Public, "ApiOurInfo.appendToCorpOption");
