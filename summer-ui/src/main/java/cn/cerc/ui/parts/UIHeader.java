@@ -5,7 +5,6 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.config.ApplicationConfig;
-import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;
@@ -16,6 +15,7 @@ import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.ui.phone.Block104;
 
 import java.util.ArrayList;
@@ -242,18 +242,6 @@ public class UIHeader extends UIComponent {
         this.pageTitle = pageTitle;
     }
 
-    public void addLeftMenu(UrlRecord urlRecord) {
-//        if (this.moduleCode == null) {
-//            this.moduleCode = urlRecord.getSite();
-//            urlRecord.setSite("FrmModule?module=" + urlRecord.getSite());
-//        }
-//        leftMenus.add(urlRecord);
-    }
-
-    public void addRightMenu(UrlRecord urlRecord) {
-        rightMenus.add(urlRecord);
-    }
-
     public UrlRecord getHomePage() {
         return homePage;
     }
@@ -282,12 +270,16 @@ public class UIHeader extends UIComponent {
         exitPage.setSite(url);
     }
 
-    public void addLeftMenu(String url, String name) {
-        addLeftMenu(new UrlRecord(url, name));
-    }
-
     public void addRightMenu(String url, String name) {
         addRightMenu(new UrlRecord(url, name));
+    }
+
+    public void addRightMenu(UrlRecord urlRecord) {
+        rightMenus.add(urlRecord);
+    }
+
+    public void addLeftMenu(String url, String name) {
+        leftMenus.add(new UrlRecord(url, name));
     }
 
     public void setExitUrl(String url) {
