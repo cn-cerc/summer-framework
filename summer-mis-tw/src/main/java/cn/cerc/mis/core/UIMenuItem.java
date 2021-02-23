@@ -1,6 +1,5 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.mis.core.MenuItem;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
