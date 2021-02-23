@@ -1,9 +1,12 @@
 package cn.cerc.db.jiguang;
 
+import cn.cerc.core.TDateTime;
 import cn.cerc.db.core.StubHandleText;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 
+@Slf4j
 public class JiguangPushTest {
     private static final String sound = "trade_mall.wav";
     private StubHandleText handle;
@@ -22,15 +25,21 @@ public class JiguangPushTest {
         push.setTitle("消息推送测试");
 
         // 通知栏消息内容
-        push.setMessage("这是系统向您发送的测试消息，如有打扰，请您忽略，谢谢！");
+        String message = TDateTime.now().toString() + "这是系统向您发送的测试消息，如有打扰，请您忽略，谢谢！";
+        log.info(message);
+        push.setMessage(message);
 
         // 附加的消息id
         push.setMsgId("3707");
 
         // 发送给指定的设备Id
-        push.send(ClientType.Android, "n_868568025516789");// ly-Android
-        push.send(ClientType.IOS, "i_77598CF689994EE3B110D6B20F1368B7");// HuangRongjun-iPhone
-        push.send(ClientType.IOS, "i_77598CF689994EE3B110D6B20F1368B7", sound);// HuangRongjun-iPhone
+//        push.send(ClientType.Android, "n_f526c72cf13474d7");// itjun-xiaomi-mix2
+        push.send(ClientType.Android, "n_d4ffa59ea6d1d9f3");// joylee-xiaomi-mix2
+//        push.send(ClientType.Android, "n_a86ddf4df465a83f");// weibo-xiaomi-5c
+//        push.send(ClientType.IOS, "i_82D7A281FC37497F810085A6D7EFB1B2");// ly-iPhone-SE2
+//        push.send(ClientType.IOS, "i_A1688A8910B04499ABC64B035B559921");// wsg-iPhone-xr
+//        push.send(ClientType.IOS, "i_82D7A281FC37497F810085A6D7EFB1B2");// itjun-iPhone-SE2
+//        push.send(ClientType.IOS, "i_87E2C6FB4D2347F49FC17CD564B07AEE", sound);// HuangRongjun-iPhone
 
         // 发送给指定的设备类型
         // push.send(ClientType.IOS, null);
