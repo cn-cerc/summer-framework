@@ -39,26 +39,26 @@ public class UserList implements IDataList {
     }
 
     public String getNameDef(String key) {
-        // 不允许用户帐号为空
+        // 不允許用戶帳號為空
         if (key == null || "".equals(key))
             return "";
 
-        // 初始化缓存
+        // 初始化緩存
         this.init();
 
-        // 从缓存中取回值
+        // 從緩存中取回值
         UserRecord result = buff.get(key);
         return result == null ? key : result.getName();
     }
 
     public UserRecord get(String userCode) {
         if (userCode == null || "".equals(userCode))
-            throw new RuntimeException("用户代码不允许为空！");
+            throw new RuntimeException("用戶代碼不允許為空！");
 
-        // 初始化缓存
+        // 初始化緩存
         this.init();
 
-        // 从缓存中取回值
+        // 從緩存中取回值
         return buff.get(userCode);
     }
 
@@ -66,7 +66,7 @@ public class UserList implements IDataList {
         if (buff.size() > 0)
             return;
 
-        // 从缓存中读取
+        // 從緩存中讀取
         Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
         String data = Redis.get(buffKey);
         if (data != null && !"".equals(data)) {
@@ -76,12 +76,12 @@ public class UserList implements IDataList {
             for (String key : items.keySet()) {
                 buff.put(key, items.get(key));
             }
-            log.debug(this.getClass().getName() + " 缓存成功！");
+            log.debug(this.getClass().getName() + " 緩存成功！");
             return;
         }
 
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
-        // 从数据库中读取
+        // 從數據庫中讀取
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select ID_,CorpNo_,Code_,Name_,QQ_,Mobile_,SuperUser_,");
         ds.add("LastRemindDate_,EmailAddress_,RoleCode_,ProxyUsers_,Enabled_,DiyRole_ ");
@@ -116,9 +116,9 @@ public class UserList implements IDataList {
             buff.put(key, value);
         }
 
-        // 存入到缓存中
+        // 存入到緩存中
         Redis.set(buffKey, gson.toJson(buff));
-        log.debug(this.getClass().getName() + " 缓存初始化！");
+        log.debug(this.getClass().getName() + " 緩存初始化！");
     }
 
     private Map<String, Integer> getPriceValue(String userCode) {
@@ -152,7 +152,7 @@ public class UserList implements IDataList {
     }
 
     /*
-     * 切换帐号到指定的公司别
+     * 切換帳號到指定的公司別
      */
     public void changeCorpNo(IHandle handle, String corpNo, String userCode, String roleCode)
             throws UserNotFindException {
@@ -176,7 +176,7 @@ public class UserList implements IDataList {
                 systemTable.getUserOptions(), roleCode, userCode);
         conn.execute(sql);
 
-        log.info(String.format("%s 已被切换到 corpNo=%s, roleCode=%s", userCode, corpNo, roleCode));
+        log.info(String.format("%s 已被切換到 corpNo=%s, roleCode=%s", userCode, corpNo, roleCode));
     }
 
 }

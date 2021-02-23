@@ -3,25 +3,25 @@ package cn.cerc.mis.core;
 import java.util.HashMap;
 import java.util.Map;
 
-// 此对象应该换为 MenuItem
+// 此對象應該換為 MenuItem
 public class MenuItem {
-    // 菜单代码
+    // 菜單代碼
     private String id;
-    // 菜单标题
+    // 菜單標題
     public static final String TITLE = "title";
-    // 菜单编号，一般为数字
+    // 菜單編號，一般為數字
     public static final String PAGENO = "formNo";
-    // 软件类别，如 1,2,，其中1及2各代表一种软件
+    // 軟件類別，如 1,2,，其中1及2各代表一種軟件
     public static final String SOFTWARE = "versions";
-    // 菜单授权码
+    // 菜單授權碼
     public static final String PERMISSION = "permission";
-    // true: 需要登录方可使用
+    // true: 需要登錄方可使用
     public static final String SECURITY = "security";
-    // 上级菜单，若无，则为""
+    // 上級菜單，若無，則為""
     public static final String PARENT = "parentId";
-    // 菜单图标，为URL值
+    // 菜單圖標，為URL值
     public static final String IMAGE = "image";
-    // 所有参数值
+    // 所有參數值
     private Map<String, String> params = new HashMap<>();
 
     public MenuItem() {

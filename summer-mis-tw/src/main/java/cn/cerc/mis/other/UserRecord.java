@@ -1,6 +1,12 @@
 package cn.cerc.mis.other;
 
+import cn.cerc.core.Utils;
+
 import java.io.Serializable;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class UserRecord implements Serializable {
     private static final long serialVersionUID = 4744827168403991038L;

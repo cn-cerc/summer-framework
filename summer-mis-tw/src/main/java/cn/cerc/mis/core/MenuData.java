@@ -3,29 +3,29 @@ package cn.cerc.mis.core;
 import com.google.gson.Gson;
 
 public class MenuData {
-    // 页面类名代码，用于css定位
+    // 頁麵類名代碼，用於css定位
     private String id = "";
-    // 页面标题
+    // 頁面標題
     private String caption;
-    // 页面描述
+    // 頁面描述
     private String describe;
     private boolean security;
     private String parent = "";
-    // 页面图标名称
+    // 頁面圖標名稱
     private String image;
-    // 授权权限代码
+    // 授權權限代碼
     private String proccode;
-    // 适用版本
+    // 適用版本
     private String versions;
-    // 页面版面代码，用于排版定位
+    // 頁面版面代碼，用於排版定位
     private String pageNo = "000";
-    private boolean web; // 是否支持Web调用
-    private boolean win; // 是否支持Window调用
-    private boolean phone; // 是否支持phone调用
-    private boolean hide; // 是否隐藏菜单
-    private String process; // Web化进度
-    private boolean folder; // 是否为目录结构
-    private boolean custom; // 是否客制化菜单
+    private boolean web; // 是否支持Web調用
+    private boolean win; // 是否支持Window調用
+    private boolean phone; // 是否支持phone調用
+    private boolean hide; // 是否隱藏菜單
+    private String process; // Web化進度
+    private boolean folder; // 是否為目錄結構
+    private boolean custom; // 是否客制化菜單
     private String funcCode;
 
     public String getId() {
@@ -74,12 +74,12 @@ public class MenuData {
         this.parent = parent;
     }
 
-    @Deprecated // 此函数不再需要
+    @Deprecated // 此函數不再需要
     public String getClazz() {
         return "";
     }
 
-    @Deprecated // 此函数不再需要
+    @Deprecated // 此函數不再需要
     public void setClazz(String clazz) {
     }
 
@@ -113,7 +113,7 @@ public class MenuData {
         this.versions = versions;
     }
 
-    @Deprecated // 请改使用 getPageNo
+    @Deprecated // 請改使用 getPageNo
     public String getFormNo() {
         return pageNo;
     }
@@ -122,7 +122,7 @@ public class MenuData {
         return pageNo;
     }
 
-    @Deprecated // 请改使用 setPageNo
+    @Deprecated // 請改使用 setPageNo
     public void setFormNo(String pageNo) {
         this.pageNo = pageNo;
     }

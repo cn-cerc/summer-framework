@@ -20,7 +20,7 @@ public class Memory_UserInfo {
             ds.add("where a.Code_='%s'", usercode);
             ds.open();
             if (ds.eof())
-                throw new RuntimeException(String.format("用户代码 %s 不存在!", usercode));
+                throw new RuntimeException(String.format("用戶代碼 %s 不存在!", usercode));
             Record record = ds.getCurrent();
             buff.setField("Name_", record.getString("Name_"));
             buff.setField("Enabled_", record.getInt("Enabled_"));

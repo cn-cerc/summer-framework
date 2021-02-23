@@ -19,7 +19,7 @@ public class UIMenuItem extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        // 输出菜单图像
+        // 輸出菜單圖像
         html.println("<div role='menuIcon'>");
         html.print("<a href='%s' onclick=\"updateUserHit('%s')\"", getCode(), getCode());
         if (target != null && !"".equals(target)) {
@@ -34,11 +34,11 @@ public class UIMenuItem extends UIComponent {
         html.println("</a>");
         html.println("</div>");
 
-        // 输出菜单名称
+        // 輸出菜單名稱
         html.println("<div role='menuName'>");
         if (getHrip() == 2 && isDelphi()) {
             html.println("<a href=\"hrip:%s\" onclick=\"updateUserHit('%s')\">", getCode(), getCode());
-            // 闪电 ⚡ 标记
+            // 閃電 ⚡ 標記
             html.println("<img src=\"%s\"/>", "images/lightning.png");
             html.println("</a>");
         }
