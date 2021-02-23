@@ -1,6 +1,7 @@
 package cn.cerc.db.core;
 
 import cn.cerc.core.IConfig;
+import cn.cerc.core.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
@@ -37,6 +38,7 @@ public enum ServerConfig implements IConfig {
             } else {
                 log.warn("suggested use file: " + confFile);
             }
+            Utils.locale = properties.getProperty("locale", "cn");
         } catch (FileNotFoundException e) {
             log.error("The settings file '" + confFile + "' does not exist.");
         } catch (IOException e) {
