@@ -1,5 +1,6 @@
 package cn.cerc.db.queue;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IConfig;
 import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AliyunQueueConnection implements IConnection {
+    private static final ClassResource res = new ClassResource("summer-db", AliyunQueueConnection.class);
 
     public static final String AccountEndpoint = "mns.accountendpoint";
     public static final String AccessKeyId = "mns.accesskeyid";
@@ -48,13 +50,13 @@ public class AliyunQueueConnection implements IConnection {
             String userCode = config.getProperty(AliyunQueueConnection.AccessKeyId, null);
             String password = config.getProperty(AliyunQueueConnection.AccessKeySecret, null);
             if (server == null) {
-                throw new RuntimeException(AliyunQueueConnection.AccountEndpoint + " 配置为空");
+                throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccountEndpoint));
             }
             if (userCode == null) {
-                throw new RuntimeException(AliyunQueueConnection.AccessKeyId + " 配置为空");
+                throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeyId));
             }
             if (password == null) {
-                throw new RuntimeException(AliyunQueueConnection.AccessKeySecret + " 配置为空");
+                throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeySecret));
             }
             if (account == null) {
                 account = new CloudAccount(userCode, password, server);
@@ -124,11 +126,11 @@ public class AliyunQueueConnection implements IConnection {
         try {
             message = queue.popMessage();
             if (message != null) {
-                log.debug("消息内容：" + message.getMessageBodyAsString());
-                log.debug("消息编号：" + message.getMessageId());
-                log.debug("访问代码：" + message.getReceiptHandle());
+                log.debug("messageBody：{}", message.getMessageBodyAsString());
+                log.debug("messageId：{}", message.getMessageId());
+                log.debug("receiptHandle ：{}", message.getReceiptHandle());
             } else {
-                log.debug("msg is null");
+                log.debug("message  is null");
             }
         } catch (ServiceException | ClientException e) {
             log.debug(e.getMessage());
@@ -165,7 +167,7 @@ public class AliyunQueueConnection implements IConnection {
     public void changeVisibility(CloudQueue queue, String receiptHandle) {
         // 第一个参数为旧的ReceiptHandle值，第二个参数为新的不可见时间（VisibilityTimeout）
         String newReceiptHandle = queue.changeMessageVisibilityTimeout(receiptHandle, visibilityTimeout);
-        log.debug("新的消息句柄: " + newReceiptHandle);
+        log.debug("new receipt handle: " + newReceiptHandle);
     }
 
     @Override
