@@ -17,9 +17,10 @@ import java.util.Map;
 
 @Slf4j
 public class BigUpdateSql {
+    private static final ClassResource res = new ClassResource("summer-db", BigUpdateSql.class);
 
     public static boolean exec(Connection conn, Object oldRecord, Object curRecord, UpdateMode updateMode,
-                               boolean preview) throws Exception {
+            boolean preview) throws Exception {
         String lastCommand = null;
         ClassData classData = ClassFactory.get(curRecord.getClass());
         String updateKey = classData.getUpdateKey();
@@ -102,7 +103,6 @@ public class BigUpdateSql {
 
             if (ps.executeUpdate() != 1) {
                 log.error(lastCommand);
-                final ClassResource res = new ClassResource("summer-db", BigUpdateSql.class);
                 throw new RuntimeException(res.getString(1, "当前记录已被其它用户修改或不存在，更新失败"));
             } else {
                 log.debug(lastCommand);
@@ -152,8 +152,7 @@ public class BigUpdateSql {
             BigDecimal n2 = (BigDecimal) newValue;
             value = n2.subtract(n1);
         } else {
-            final ClassResource res = new ClassResource("summer-db", BigUpdateSql.class);
-            throw new RuntimeException(res.getString(2, "不支持的数据类型：") + typeName);
+            throw new RuntimeException(String.format(res.getString(2, "不支持的数据类型：%s"), typeName));
         }
         return value;
     }
