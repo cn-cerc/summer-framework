@@ -8,16 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
-//@Controller
-//@Scope(WebApplicationContext.SCOPE_REQUEST)
-//@RequestMapping("/forms")
+@Controller
+@Scope(WebApplicationContext.SCOPE_REQUEST)
+@RequestMapping("/springmvc")
 public class StartFormDefault implements ApplicationContextAware {
 
     private ApplicationContext context;
@@ -42,8 +50,15 @@ public class StartFormDefault implements ApplicationContextAware {
     private IAppLogin appLogin;
 
     @RequestMapping("/{formId}.{funcId}")
-    public String execute(@PathVariable String formId, @PathVariable String funcId) {
-        log.debug(String.format("formId: %s, funcId: %s", formId, funcId));
+    public ModelAndView execute(@PathVariable String formId, @PathVariable String funcId) {
+        log.info(String.format("formId: %s, funcId: %s", formId, funcId));
+        String jspFile = build(formId, funcId);
+        if (jspFile == null)
+            return null;
+        return new ModelAndView(jspFile);
+    }
+
+    private String build(String formId, String funcId) {
         if (!context.containsBean(formId)) {
             return String.format("formId: %s, funcId: %s", formId, funcId);
         }
@@ -74,12 +89,18 @@ public class StartFormDefault implements ApplicationContextAware {
             }
 
             // 执行自动登录
-            appLogin.init(form);
-            String jspFile = appLogin.checkToken(appClient.getToken());
-            if (jspFile != null) {
-                log.info("需要登录： {}", request.getRequestURL());
-                return jspFile;
-            }
+//            if (appLogin == null) {
+//                log.error("bean[appLogin] or class[IAppLogin] not define.");
+//                return null;
+//            }
+
+            String jspFile;
+//            appLogin.init(form);
+//            String jspFile = appLogin.checkToken(appClient.getToken());
+//            if (jspFile != null) {
+//                log.info("需要登录： {}", request.getRequestURL());
+//                return jspFile;
+//            }
 
             // 执行权限检查
             passport.setHandle(handle);
@@ -89,16 +110,34 @@ public class StartFormDefault implements ApplicationContextAware {
                 throw new RuntimeException(R.asString(form.getHandle(), "对不起，您没有权限执行此功能！"));
             }
 
-            IPage page = form.execute();
-            if (page == null) {
+            Object pageOutput = null;
+            Method method = null;
+            try {
+                if (form.getClient().isPhone()) {
+                    try {
+                        method = form.getClass().getMethod(funcId + "_phone");
+                    } catch (NoSuchMethodException e) {
+                        method = form.getClass().getMethod(funcId);
+                    }
+                } else {
+                    method = form.getClass().getMethod(funcId);
+                }
+                pageOutput = method.invoke(form);
+            } catch (PageException e) {
+                form.setParam("message", e.getMessage());
+                pageOutput = e.getViewFile();
+            }
+
+            if (pageOutput instanceof IPage) {
+                IPage output = (IPage) pageOutput;
+                output.setForm(form);
+                return output.execute();
+            } else if (pageOutput instanceof String) {
+                return (String) pageOutput;
+            } else {
                 return null;
             }
 
-            jspFile = page.execute();
-            if (log.isDebugEnabled()) {
-                log.debug(jspFile);
-            }
-            return jspFile;
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
@@ -107,11 +146,6 @@ public class StartFormDefault implements ApplicationContextAware {
                 handle.close();
             }
         }
-    }
-
-    @RequestMapping("/{formId}")
-    public String execute(@PathVariable String formId) {
-        return execute(formId, "execute");
     }
 
     @Override
