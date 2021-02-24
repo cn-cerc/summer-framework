@@ -2,6 +2,7 @@ package cn.cerc.db.dao;
 
 import cn.cerc.core.ClassData;
 import cn.cerc.core.ClassFactory;
+import cn.cerc.core.ClassResource;
 import cn.cerc.db.mysql.BuildStatement;
 import cn.cerc.db.mysql.UpdateMode;
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +102,8 @@ public class BigUpdateSql {
 
             if (ps.executeUpdate() != 1) {
                 log.error(lastCommand);
-                throw new RuntimeException("当前记录已被其它用户修改或不存在，更新失败");
+                final ClassResource res = new ClassResource("summer-db", BigUpdateSql.class);
+                throw new RuntimeException(res.getString(1, "当前记录已被其它用户修改或不存在，更新失败"));
             } else {
                 log.debug(lastCommand);
                 return true;
@@ -150,7 +152,8 @@ public class BigUpdateSql {
             BigDecimal n2 = (BigDecimal) newValue;
             value = n2.subtract(n1);
         } else {
-            throw new RuntimeException("不支持的数据类型：" + typeName);
+            final ClassResource res = new ClassResource("summer-db", BigUpdateSql.class);
+            throw new RuntimeException(res.getString(2, "不支持的数据类型：") + typeName);
         }
         return value;
     }

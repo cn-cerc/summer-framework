@@ -27,7 +27,7 @@ public class BigDeleteSql {
 
             Object value = items.get(updateKey);
             if (value == null) {
-                throw new RuntimeException("主键值为空");
+                throw new RuntimeException("primary key is null");
             }
 
             bs.append(" where ");

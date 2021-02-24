@@ -64,7 +64,7 @@ public class SqlOperator implements IDataOperator {
         }
 
         if (result == null) {
-            throw new RuntimeException("SQL语句异常");
+            throw new RuntimeException("sql command error");
         }
 
         return result;

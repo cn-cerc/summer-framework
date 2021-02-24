@@ -60,7 +60,7 @@ public class MongoConnection implements IConnection, AutoCloseable {
                 sb.append("&").append("maxPoolSize=").append(config.getProperty(MongoConnection.mgdb_maxpoolsize));
                 sb.append("&").append("connectTimeoutMS=").append("3000");
                 sb.append("&").append("serverSelectionTimeoutMS=").append("3000");
-                log.info("连接到MongoDB分片集群:" + sb.toString());
+                log.info("Connect to the MongoDB sharded cluster:" + sb.toString());
             }
             MongoClientURI connectionString = new MongoClientURI(sb.toString());
             pool = new MongoClient(connectionString);

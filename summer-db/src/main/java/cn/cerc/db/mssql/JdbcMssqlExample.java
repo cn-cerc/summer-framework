@@ -33,7 +33,7 @@ public class JdbcMssqlExample {
             // 1、注册数据库驱动
             Class.forName(JDBC_DRIVER);
         } catch (ClassNotFoundException e) {
-            log.error("加载数据库引擎失败 {}", e.getMessage());
+            log.error("jdbc driver load error {}", e.getMessage());
             System.exit(0);
         }
 
@@ -41,7 +41,7 @@ public class JdbcMssqlExample {
             // 2、创建数据库连接
             Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
             if (connection == null) {
-                log.error("加载数据库引擎失败");
+                log.error("jdbc connection is error");
                 System.exit(0);
             }
 

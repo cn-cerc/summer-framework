@@ -70,7 +70,7 @@ public class BigInsertSql {
                 throw new RuntimeException("未获取:" + updateKey);
             }
 
-            log.debug("自增列uid value：" + uidvalue);
+            log.debug("auto increment uid value：" + uidvalue);
             setAutoUid(oldRecord, uidvalue.longValue());
             return result > 0;
         } catch (SQLException e) {
