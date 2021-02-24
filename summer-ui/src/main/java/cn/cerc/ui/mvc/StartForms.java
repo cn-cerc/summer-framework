@@ -23,7 +23,6 @@ import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.ui.page.JsonPage;
-import cn.cerc.ui.page.JspPage;
 import cn.cerc.ui.page.RedirectPage;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -294,39 +293,11 @@ public class StartForms implements Filter {
             if (pageOutput != null) {
                 if (pageOutput instanceof IPage) {
                     IPage output = (IPage) pageOutput;
-                    String cmd = output.execute();
-                    if (cmd != null) {
-                        if (cmd.startsWith("redirect:")) {
-                            String redirect = cmd.substring(9);
-                            redirect = response.encodeRedirectURL(redirect);
-                            response.sendRedirect(redirect);
-                        } else {
-                            String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), cmd);
-                            request.getServletContext().getRequestDispatcher(url).forward(request, response);
-                        }
-                    } else if ("GET".equals(request.getMethod())) {
-                        StringBuffer jumpUrl = new StringBuffer();
-                        String[] zlass = form.getClass().getName().split("\\.");
-                        if (zlass.length > 0) {
-                            jumpUrl.append(zlass[zlass.length - 1]);
-                            jumpUrl.append(".").append(funcCode);
-                        } else {
-                            jumpUrl.append(request.getRequestURL().toString());
-                        }
-                        if (request.getParameterMap().size() > 0) {
-                            jumpUrl.append("?");
-                            request.getParameterMap().forEach((key, value) -> {
-                                jumpUrl.append(key).append("=").append(String.join(",", value)).append("&");
-                            });
-                            jumpUrl.delete(jumpUrl.length() - 1, jumpUrl.length());
-                        }
-                        response.setHeader("jumpURL", jumpUrl.toString());
-                    }
+                    String url = output.execute();
+                    form.outView(funcCode, url);
                 } else {
                     log.warn(String.format("%s pageOutput is not IPage: %s", funcCode, pageOutput));
-                    JspPage output = new JspPage(form);
-                    output.setJspFile((String) pageOutput);
-                    output.execute();
+                    form.outView(funcCode, (String) pageOutput);
                 }
             }
         } catch (Exception e) {

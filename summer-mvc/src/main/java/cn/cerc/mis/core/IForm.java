@@ -2,6 +2,9 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.IHandle;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,4 +53,7 @@ public interface IForm {
 
     // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
     String getView(String funcId);
+
+    //对getView的输出进行处理，支持旧的StartForm模式
+    void outView(String funcCode, String url) throws IOException, ServletException;
 }

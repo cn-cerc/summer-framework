@@ -3,8 +3,11 @@ package cn.cerc.mis.core;
 import cn.cerc.core.IHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,4 +144,41 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     public String getView(String funcId) {
         return null;
     }
+
+    @Override
+    public void outView(String funcCode, String url) throws IOException, ServletException {
+        if (url == null)
+            return;
+
+        if (url.startsWith("redirect:")) {
+            String redirect = url.substring(9);
+            redirect = response.encodeRedirectURL(redirect);
+            response.sendRedirect(redirect);
+            return;
+        }
+
+        if ("GET".equals(request.getMethod())) {
+            StringBuffer jumpUrl = new StringBuffer();
+            String[] zlass = this.getClass().getName().split("\\.");
+            if (zlass.length > 0) {
+                jumpUrl.append(zlass[zlass.length - 1]);
+                jumpUrl.append(".").append(funcCode);
+            } else {
+                jumpUrl.append(request.getRequestURL().toString());
+            }
+            if (request.getParameterMap().size() > 0) {
+                jumpUrl.append("?");
+                request.getParameterMap().forEach((key, value) -> {
+                    jumpUrl.append(key).append("=").append(String.join(",", value)).append("&");
+                });
+                jumpUrl.delete(jumpUrl.length() - 1, jumpUrl.length());
+            }
+            response.setHeader("jumpURL", jumpUrl.toString());
+        }
+        
+        String jspFile = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), url);
+        request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
+    }
+    
+    
 }
