@@ -124,7 +124,7 @@ public class MongoQuery extends DataQuery {
                         throw new RuntimeException(String.format(res.getString(2, "in查询条件：%s 必须有带有()"), item));
                     }
                 } else {
-                    throw new RuntimeException(res.getString(3, "暂不支持的查询条件：") + item);
+                    throw new RuntimeException(String.format(res.getString(3, "暂不支持的查询条件：%s"), item));
                 }
             }
         }
