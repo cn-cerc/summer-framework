@@ -1,7 +1,4 @@
-package cn.cerc.ui.page;
-
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IPage;
+package cn.cerc.mis.core;
 
 import javax.servlet.ServletException;
 import java.io.IOException;

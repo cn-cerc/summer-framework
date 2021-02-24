@@ -1,7 +1,5 @@
-package cn.cerc.ui.page;
+package cn.cerc.mis.core;
 
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IPage;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
