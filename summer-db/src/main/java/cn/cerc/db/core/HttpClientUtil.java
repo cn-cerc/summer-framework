@@ -31,7 +31,7 @@ public class HttpClientUtil {
             CloseableHttpResponse response = http.execute(post);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
-                log.error("post 请求返回状态 {}", statusCode);
+                log.error("post response status {}", statusCode);
                 return null;
             }
             return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);

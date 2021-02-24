@@ -1,5 +1,6 @@
 package cn.cerc.db.mssql;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @Slf4j
 public class MssqlOperator implements IDataOperator {
+    private static final ClassResource res = new ClassResource("summer-db", MssqlOperator.class);
 
     private String updateKey = "UID_";
     private String tableName;
@@ -64,9 +66,8 @@ public class MssqlOperator implements IDataOperator {
         }
 
         if (result == null) {
-            throw new RuntimeException("SQL语句异常");
+            throw new RuntimeException("sql command is error");
         }
-
         return result;
     }
 
@@ -83,7 +84,7 @@ public class MssqlOperator implements IDataOperator {
     @Override
     public boolean insert(Record record) {
         if (record.getFieldDefs().size() == 0) {
-            throw new RuntimeException("字段为空");
+            throw new RuntimeException("sql field is null");
         }
         Connection conn = getConnection();
         try (BuildStatement bs = new BuildStatement(conn)) {
@@ -226,7 +227,7 @@ public class MssqlOperator implements IDataOperator {
 
             if (ps.executeUpdate() != 1) {
                 log.error(lastCommand);
-                throw new RuntimeException("当前记录已被其它用户修改或不存在，更新失败");
+                throw new RuntimeException(res.getString(1, "当前记录已被其它用户修改或不存在，更新失败"));
             } else {
                 log.debug(lastCommand);
                 return true;
@@ -245,7 +246,7 @@ public class MssqlOperator implements IDataOperator {
                 initPrimaryKeys(conntion, record);
             }
             if (searchKeys.size() == 0) {
-                throw new RuntimeException("primary keys  not exists");
+                throw new RuntimeException("primary keys not exists");
             }
             if (!searchKeys.contains(updateKey)) {
                 log.warn(String.format("not find primary key %s in %s", updateKey, this.tableName));
@@ -257,7 +258,7 @@ public class MssqlOperator implements IDataOperator {
             for (String pk : searchKeys) {
                 Object value = delta.containsKey(pk) ? delta.get(pk) : record.getField(pk);
                 if (value == null) {
-                    throw new RuntimeException("主键值为空");
+                    throw new RuntimeException("primary key is null");
                 }
                 i++;
                 bs.append(i == 1 ? " where " : " and ");
@@ -291,7 +292,7 @@ public class MssqlOperator implements IDataOperator {
             }
         }
         if (searchKeys.size() == 0) {
-            throw new RuntimeException("获取不到主键PK");
+            throw new RuntimeException("the primary keys can not be found");
         }
     }
 

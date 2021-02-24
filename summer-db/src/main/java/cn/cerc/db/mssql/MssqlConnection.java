@@ -90,7 +90,7 @@ public class MssqlConnection implements IConnection, AutoCloseable {
         password = config.getProperty(MssqlConfig.MSSQL_PASSWORD, "appdb_password");
 
         if (site == null || database == null || user == null || password == null) {
-            throw new RuntimeException("RDS配置为空，无法连接主机！");
+            throw new RuntimeException("mssql connection error.");
         }
 
         // jdbc:sqlserver://112.124.37.146:1433;databaseName=MIMRC_Std;

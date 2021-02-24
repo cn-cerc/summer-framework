@@ -105,7 +105,7 @@ public class BatchScript {
     public String getItem(int i) {
         String[] tmp = items.toString().split(";");
         if (i < 0 && i > (tmp.length - 1)) {
-            throw new RuntimeException("命令索引超出范围！");
+            throw new RuntimeException("Command index out of range.");
         }
         return tmp[i].trim();
     }

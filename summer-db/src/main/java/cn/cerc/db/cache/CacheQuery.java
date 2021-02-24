@@ -48,23 +48,23 @@ public class CacheQuery implements IRecord {
 
     public CacheQuery setKey(String key) {
         if (this.key != null) {
-            throw new RuntimeException("[CacheQuery]错误的初始化参数！");
+            throw new RuntimeException("[CacheQuery] param init error");
         }
         if (key == null) {
-            throw new RuntimeException("[CacheQuery]错误的初始化参数！");
+            throw new RuntimeException("[CacheQuery] param init error");
         }
         this.key = key;
 
         connected = true;
         existsData = false;
         String recordStr = Redis.get(key);
-        log.debug("cache get:" + key + ":" + recordStr);
+        log.debug("cache get: {} - {}" , key  , recordStr);
         if (recordStr != null && !"".equals(recordStr)) {
             try {
                 record.setJSON(recordStr);
                 existsData = true;
             } catch (Exception e) {
-                log.error("缓存数据格式有误：" + recordStr, e);
+                log.error("cache data error：" + recordStr, e);
                 e.printStackTrace();
             }
         }
