@@ -52,8 +52,5 @@ public interface IForm {
     }
 
     // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
-    String getView(String funcId);
-
-    //对getView的输出进行处理，支持旧的StartForm模式
-    void outView(String funcCode, String url) throws IOException, ServletException;
+    String getView(String funcId) throws ServletException, IOException;
 }

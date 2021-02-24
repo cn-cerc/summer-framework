@@ -9,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import java.io.IOException;
+
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -162,6 +165,23 @@ public class Application {
         } else {
             throw new RuntimeException("not support language: " + lang);
         }
+    }
+
+    public static void outputView(HttpServletRequest request, HttpServletResponse response, String url)
+            throws IOException, ServletException {
+        if (url == null)
+            return;
+
+        if (url.startsWith("redirect:")) {
+            String redirect = url.substring(9);
+            redirect = response.encodeRedirectURL(redirect);
+            response.sendRedirect(redirect);
+            return;
+        }
+
+        // 输出jsp文件
+        String jspFile = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), url);
+        request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
 
 }

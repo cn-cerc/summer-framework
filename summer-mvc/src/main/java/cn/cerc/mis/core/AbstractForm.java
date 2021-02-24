@@ -1,18 +1,31 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.IHandle;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.ServiceFactory;
+import cn.cerc.mis.language.R;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.MemoryBuffer;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
+@Slf4j
 public abstract class AbstractForm extends AbstractHandle implements IForm {
     @Autowired
     public ISystemTable systemTable;
@@ -138,47 +151,178 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     public void setModule(String module) {
         this.module = module;
     }
-    
+
     // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
     @Override
-    public String getView(String funcId) {
-        return null;
-    }
-
-    @Override
-    public void outView(String funcCode, String url) throws IOException, ServletException {
-        if (url == null)
-            return;
-
-        if (url.startsWith("redirect:")) {
-            String redirect = url.substring(9);
-            redirect = response.encodeRedirectURL(redirect);
-            response.sendRedirect(redirect);
-            return;
+    public String getView(String funcCode) throws ServletException, IOException {
+        HttpServletResponse response = this.getResponse();
+        HttpServletRequest request = this.getRequest();
+        if ("excel".equals(funcCode)) {
+            response.setContentType("application/vnd.ms-excel; charset=UTF-8");
+            response.addHeader("Content-Disposition", "attachment; filename=excel.csv");
+        } else {
+            response.setContentType("text/html;charset=UTF-8");
         }
 
-        if ("GET".equals(request.getMethod())) {
-            StringBuffer jumpUrl = new StringBuffer();
-            String[] zlass = this.getClass().getName().split("\\.");
-            if (zlass.length > 0) {
-                jumpUrl.append(zlass[zlass.length - 1]);
-                jumpUrl.append(".").append(funcCode);
+        try {
+            String CLIENTVER = request.getParameter("CLIENTVER");
+            if (CLIENTVER != null)
+                request.getSession().setAttribute("CLIENTVER", CLIENTVER);
+
+            // 是否拥有此菜单调用权限
+            if (!Application.getPassport(this.getHandle()).passForm(this)) {
+                log.warn(String.format("无权限执行 %s", request.getRequestURL()));
+                JsonPage output = new JsonPage(this);
+                output.setResultMessage(false, R.asString(this.getHandle(), "对不起，您没有权限执行此功能！"));
+                output.execute();
+                return null;
+            }
+
+            // 专用测试账号则跳过设备认证的判断
+            if (isExperienceAccount(this)) {
+                return this.getPage(funcCode);
+            }
+
+            // 通过设备验证
+            if (this.getHandle().getProperty(Application.userId) == null || this.passDevice() || passDevice(this)) {
+                return this.getPage(funcCode);
+            }
+
+            log.debug("没有进行认证过，跳转到设备认证页面");
+            // 若是专用APP登录并且是iPhone，则不跳转设备登录页，由iPhone原生客户端处理
+            ServerConfig config = ServerConfig.getInstance();
+            String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
+            if (!"".equals(supCorpNo) && this.getClient().getDevice().equals(AppClient.iphone)) {
+                this.getRequest().setAttribute("needVerify", "true");
+                return this.getPage(funcCode);
+            }
+
+            if (this instanceof IJSONForm) {
+                JsonPage output = new JsonPage(this);
+                output.setResultMessage(false, "您的设备没有经过安全校验，无法继续作业");
+                output.execute();
+                return null;
+            }
+
+            // 跳转到校验设备画面
+            return "redirect:" + Application.getAppConfig().getFormVerifyDevice();
+        } catch (Exception e) {
+            Throwable err = e.getCause();
+            if (err == null) {
+                err = e;
+            }
+            IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
+            if (errorPage == null) {
+                log.warn("not define bean: errorPage");
+                log.error(err.getMessage());
+                err.printStackTrace();
+                return null;
+            }
+            return errorPage.getErrorPage(request, response, err);
+        }
+    }
+
+    private String getPage(String funcCode) throws NoSuchMethodException, SecurityException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, ServletException, IOException {
+        Object result;
+        Method method = null;
+        long startTime = System.currentTimeMillis();
+        try {
+            if (this.getClient().isPhone()) {
+                try {
+                    method = this.getClass().getMethod(funcCode + "_phone");
+                } catch (NoSuchMethodException e) {
+                    method = this.getClass().getMethod(funcCode);
+                }
             } else {
-                jumpUrl.append(request.getRequestURL().toString());
+                method = this.getClass().getMethod(funcCode);
             }
-            if (request.getParameterMap().size() > 0) {
-                jumpUrl.append("?");
-                request.getParameterMap().forEach((key, value) -> {
-                    jumpUrl.append(key).append("=").append(String.join(",", value)).append("&");
-                });
-                jumpUrl.delete(jumpUrl.length() - 1, jumpUrl.length());
+            result = method.invoke(this);
+            if (result == null)
+                return null;
+
+            if (result instanceof IPage) {
+                IPage output = (IPage) result;
+                return output.execute();
+            } else {
+                log.warn(String.format("%s pageOutput is not IPage: %s", funcCode, result));
+                return (String) result;
             }
-            response.setHeader("jumpURL", jumpUrl.toString());
+        } catch (PageException e) {
+            this.setParam("message", e.getMessage());
+            return e.getViewFile();
+        } finally {
+            if (method != null) {
+                long timeout = 1000;
+                Webpage webpage = method.getAnnotation(Webpage.class);
+                if (webpage != null) {
+                    timeout = webpage.timeout();
+                }
+                checkTimeout(this, funcCode, startTime, timeout);
+            }
         }
-        
-        String jspFile = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), url);
-        request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
-    
-    
+
+    private boolean isExperienceAccount(IForm form) {
+        String userCode = form.getHandle().getUserCode();
+        return LoginWhitelist.getInstance().contains(userCode);
+    }
+
+    // 是否在当前设备使用此菜单，如：检验此设备是否需要设备验证码
+    private boolean passDevice(IForm form) {
+        // 若是iPhone应用商店测试或地藤体验账号则跳过验证
+        if (isExperienceAccount(form)) {
+            return true;
+        }
+
+        String deviceId = form.getClient().getId();
+        // TODO 验证码变量，需要改成静态变量，统一取值
+        String verifyCode = form.getRequest().getParameter("verifyCode");
+        log.debug(String.format("进行设备认证, deviceId=%s", deviceId));
+        String userId = (String) form.getHandle().getProperty(Application.userId);
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionInfo, userId, deviceId)) {
+            if (!buff.isNull()) {
+                if (buff.getBoolean("VerifyMachine")) {
+                    log.debug("已经认证过，跳过认证");
+                    return true;
+                }
+            }
+
+            boolean result = false;
+            IServiceProxy app = ServiceFactory.get(form.getHandle());
+            app.setService("SvrUserLogin.verifyMachine");
+            app.getDataIn().getHead().setField("deviceId", deviceId);
+            if (verifyCode != null && !"".equals(verifyCode)) {
+                app.getDataIn().getHead().setField("verifyCode", verifyCode);
+            }
+
+            if (app.exec()) {
+                result = true;
+            } else {
+                int used = app.getDataOut().getHead().getInt("Used_");
+                if (used == 1) {
+                    result = true;
+                } else {
+                    form.setParam("message", app.getMessage());
+                }
+            }
+            if (result) {
+                buff.setField("VerifyMachine", true);
+            }
+            return result;
+        }
+    }
+
+    private void checkTimeout(IForm form, String funcCode, long startTime, long timeout) {
+        long totalTime = System.currentTimeMillis() - startTime;
+        if (totalTime > timeout) {
+            String[] tmp = form.getClass().getName().split("\\.");
+            String pageCode = tmp[tmp.length - 1] + "." + funcCode;
+            String dataIn = new Gson().toJson(form.getRequest().getParameterMap());
+            if (dataIn.length() > 200) {
+                dataIn = dataIn.substring(0, 200);
+            }
+            log.warn("pageCode: {}, tickCount: {}, dataIn: {}", pageCode, totalTime, dataIn);
+        }
+    }
 }
