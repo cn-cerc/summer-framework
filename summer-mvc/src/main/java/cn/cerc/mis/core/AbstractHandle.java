@@ -1,9 +1,13 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.mysql.MysqlConnection;
 
 public class AbstractHandle implements IHandle {
+
+    private static final ClassResource res = new ClassResource("summer-mvc", AbstractHandle.class);
+
     protected IHandle handle;
 
     public MysqlConnection getConnection() {
@@ -40,17 +44,17 @@ public class AbstractHandle implements IHandle {
 
     @Override
     public void setProperty(String key, Object value) {
-        throw new RuntimeException("调用了未被实现的接口");
+        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 
     @Override
     public boolean init(String bookNo, String userCode, String password, String clientCode) {
-        throw new RuntimeException("调用了未被实现的接口");
+        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 
     @Override
     public boolean init(String token) {
-        throw new RuntimeException("调用了未被实现的接口");
+        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 
     @Override

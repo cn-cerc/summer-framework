@@ -1,5 +1,6 @@
 package cn.cerc.mis.client;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -22,6 +23,7 @@ import java.util.Map;
 @Slf4j
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
+    private static final ClassResource res = new ClassResource("summer-mvc", StartServices.class);
 
     private static final long serialVersionUID = 1L;
     private static final String sessionId = "sessionId";
@@ -100,7 +102,7 @@ public class StartServices extends HttpServlet {
                 return;
             }
             if (!bean.checkSecurity(handle)) {
-                respData.setMessage("请您先登入系统");
+                respData.setMessage(res.getString(1, "请您先登入系统"));
                 resp.getWriter().write(respData.toString());
                 return;
             }

@@ -198,9 +198,9 @@ public class AppClient implements IClient, Serializable {
             token = (String) request.getSession().getAttribute(RequestData.TOKEN); // 获取服务端的 token
             // 设置token
             if (Utils.isEmpty(token)) {
-                log.debug("从 request attribute 获取的 token 为空");
+                log.debug("get token from request attribute is empty");
             } else {
-                log.debug("从 request attribute 获取的 token 为 {}", token);
+                log.debug("get token from request attribute is {}", token);
             }
         }
         log.debug("request session id {}", request.getSession().getId());
@@ -208,9 +208,13 @@ public class AppClient implements IClient, Serializable {
         setToken(token);
     }
 
+    /**
+     * 设置token的值到session
+     */
     public void setToken(String value) {
         String token = Utils.isEmpty(value) ? null : value;
         if (token != null) {
+            // 判断缓存是否过期
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getDeviceInfo, token)) {
                 // 设备ID
                 this.deviceId = getValue(buff, CLIENT_ID, this.deviceId);
@@ -219,7 +223,7 @@ public class AppClient implements IClient, Serializable {
             }
         } else {
             if (this.token != null && !"".equals(this.token)) {
-                log.warn("取不到传入token的值，清理掉当前类的 token {}", this.token);
+                log.warn("the param value is null，delete the token of cache: {}", this.token);
                 MemoryBuffer.delete(BufferType.getDeviceInfo, this.token);
             }
         }

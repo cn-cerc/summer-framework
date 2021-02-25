@@ -1,5 +1,6 @@
 package cn.cerc.mis.services;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
@@ -14,13 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SvrSession extends CustomService {
+    private static final ClassResource res = new ClassResource("summer-mvc", SvrSession.class);
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();
-        DataValidateException.stopRun("CorpNo_ 不允许为空", !headIn.hasValue("CorpNo_"));
+        DataValidateException.stopRun(String.format(res.getString(1, "%s 不允许为空"), "CorpNo_"), !headIn.hasValue("CorpNo_"));
         String corpNo = headIn.getString("CorpNo_");
 
-        DataValidateException.stopRun("UserCode_ 不允许为空", !headIn.hasValue("UserCode_"));
+        DataValidateException.stopRun(String.format(res.getString(1, "%s 不允许为空"), "UserCode_"), !headIn.hasValue("UserCode_"));
         String userCode = headIn.getString("UserCode_");
 
         SqlQuery cdsUser = new SqlQuery(this);
@@ -44,7 +46,7 @@ public class SvrSession extends CustomService {
      */
     public boolean byToken() throws ServiceException {
         Record headIn = getDataIn().getHead();
-        DataValidateException.stopRun("token不允许为空", !headIn.hasValue("token"));
+        DataValidateException.stopRun(String.format(res.getString(1, "%s 不允许为空"), "token"), !headIn.hasValue("token"));
         String token = headIn.getString("token");
 
         SqlQuery cdsToken = new SqlQuery(this);
@@ -53,14 +55,14 @@ public class SvrSession extends CustomService {
         cdsToken.add("where loginID_='%s'", token);
         cdsToken.open();
         if (cdsToken.eof()) {
-            log.warn("token {} 没有找到！", token);
+            log.warn("can not find token in database: {}", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
             return false;
         }
 
         if (cdsToken.getInt("Viability_") <= 0 && !"13100154".equals(cdsToken.getString("UserCode_"))) {
-            log.warn("token {} 已失效，请重新登录", token);
+            log.warn("token expired，please login again {}", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
             sess.setProperty(Application.token, null);
             return false;

@@ -1,5 +1,6 @@
 package cn.cerc.mis.client;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -16,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
+    private static final ClassResource res = new ClassResource("summer-mvc", RemoteService.class);
+
     private final IHandle handle;
 
     private String host;
@@ -55,7 +58,7 @@ public class RemoteService implements IServiceProxy {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
             if (args.length % 2 != 0) {
-                throw new RuntimeException("传入的参数数量必须为偶数！");
+                throw new RuntimeException(res.getString(1, "传入的参数数量必须为偶数！"));
             }
             for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
@@ -63,15 +66,15 @@ public class RemoteService implements IServiceProxy {
         }
         log.info(this.service);
         if (Utils.isEmpty(this.service)) {
-            this.setMessage("服务代码不允许为空");
+            this.setMessage(res.getString(2, "服务代码不允许为空"));
             return false;
         }
         if (Utils.isEmpty(this.token)) {
-            this.setMessage("token 不允许为空");
+            this.setMessage(res.getString(3, "token 不允许为空"));
             return false;
         }
         if (Utils.isEmpty(this.host)) {
-            this.setMessage("host 不允许为空");
+            this.setMessage(res.getString(4, "host 不允许为空"));
             return false;
         }
 
@@ -88,7 +91,7 @@ public class RemoteService implements IServiceProxy {
             if (response == null) {
                 log.warn("url {}", this.getUrl());
                 log.warn("params {}", curl.getParameters());
-                this.setMessage("远程服务异常");
+                this.setMessage(res.getString(5, "远程服务异常"));
                 return false;
             }
 

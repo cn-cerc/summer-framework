@@ -40,7 +40,7 @@ public class AutoService {
 
     public boolean exec() throws ServiceException {
         if (service.getService() == null) {
-            throw new RuntimeException("没有指定 service");
+            throw new RuntimeException("not specified service");
         }
 
         // handle.init(service.getCorpNo(), service.getUserCode(), "127.0.0.1");
@@ -51,7 +51,7 @@ public class AutoService {
         // 根据xml进行反射初始化服务信息
         IService bean = Application.getService(handle, service.getService());
         if (bean == null) {
-            throw new RuntimeException("无法创建服务：" + service.getService());
+            throw new RuntimeException(String.format("could not create service：%s" , service.getService()));
         }
 
         IStatus status = bean.execute(service.getDataIn(), dataOut);

@@ -1,5 +1,6 @@
 package cn.cerc.mis.print;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.mis.excel.output.Column;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class PrintTemplate {
+    private static final ClassResource res = new ClassResource("summer-mvc", PrintTemplate.class);
+
     protected DataSet dataSet;
     protected Document document;
     private String fileName;
@@ -211,12 +214,12 @@ public class PrintTemplate {
 
     public void setOutputDevice(String outputDevice) {
         if (null == outputDevice || "".equals(outputDevice)) {
-            throw new RuntimeException("输出设备不允许为空！");
+            throw new RuntimeException(res.getString(1, "输出设备不允许为空！"));
         }
         if ("screen".equals(outputDevice) || "printer".equals(outputDevice) || "file".equals(outputDevice)) {
             this.outputDevice = outputDevice;
         } else {
-            throw new RuntimeException("输出设备只能为 screen(默认)、printer、file三者之一!");
+            throw new RuntimeException(res.getString(2, "输出设备只能为 screen(默认)、printer、file三者之一!"));
         }
     }
 

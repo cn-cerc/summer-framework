@@ -1,5 +1,6 @@
 package cn.cerc.mis.rds;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StubHandle implements IHandle, AutoCloseable {
+    private static final ClassResource res = new ClassResource("summer-mvc", StubHandle.class);
+
     public static final String DefaultBook = "999001";
     public static final String DefaultUser = DefaultBook + "01";
     public static final String DefaultProduct = "999001000001";
@@ -86,17 +89,17 @@ public class StubHandle implements IHandle, AutoCloseable {
 
     @Override
     public void setProperty(String key, Object value) {
-        throw new RuntimeException("调用了未被实现的接口");
+        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 
     @Override
     public boolean init(String bookNo, String userCode, String password, String clientCode) {
-        throw new RuntimeException("调用了未被实现的接口");
+        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 
     @Override
     public boolean init(String token) {
-        throw new RuntimeException("调用了未被实现的接口");
+        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 
     @Override

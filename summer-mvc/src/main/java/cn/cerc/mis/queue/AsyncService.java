@@ -1,5 +1,6 @@
 package cn.cerc.mis.queue;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -22,16 +23,17 @@ import java.util.List;
 
 @Slf4j
 public class AsyncService implements IServiceProxy {
+    private static final ClassResource res = new ClassResource("summer-mvc", AsyncService.class);
 
     // 状态列表
     private static List<String> processTiles = new ArrayList<>();
 
     static {
-        processTiles.add("中止执行");
-        processTiles.add("排队中");
-        processTiles.add("正在执行中");
-        processTiles.add("执行成功");
-        processTiles.add("执行失败");
+        processTiles.add(res.getString(1, "中止执行"));
+        processTiles.add(res.getString(2, "排队中"));
+        processTiles.add(res.getString(3, "正在执行中"));
+        processTiles.add(res.getString(4, "执行成功"));
+        processTiles.add(res.getString(5, "执行失败"));
     }
 
     private String corpNo;
@@ -103,7 +105,7 @@ public class AsyncService implements IServiceProxy {
         Record headIn = getDataIn().getHead();
         if (args.length > 0) {
             if (args.length % 2 != 0) {
-                throw new RuntimeException("传入的参数数量必须为偶数！");
+                throw new RuntimeException(res.getString(6, "传入的参数数量必须为偶数！"));
             }
             for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
@@ -113,7 +115,7 @@ public class AsyncService implements IServiceProxy {
 
         String subject = this.getSubject();
         if ("".equals(subject)) {
-            throw new RuntimeException("后台任务标题不允许为空！");
+            throw new RuntimeException(res.getString(7, "后台任务标题不允许为空！"));
         }
         this.send(); // 发送到队列服务器
 
@@ -215,7 +217,7 @@ public class AsyncService implements IServiceProxy {
 
     public void setProcess(int process) {
         if (process < 0 || process > processTiles.size()) {
-            throw new RuntimeException("非法的任务进度值：" + process);
+            throw new RuntimeException(String.format(res.getString(8, "非法的任务进度值：%s"), process));
         }
         this.process = process;
     }

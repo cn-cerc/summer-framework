@@ -1,5 +1,6 @@
 package cn.cerc.mis.services;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MemoryBookInfo {
+    private static final ClassResource res = new ClassResource("summer-mvc", MemoryBookInfo.class);
 
     private static final String buffVersion = "5";
 
@@ -70,7 +72,7 @@ public class MemoryBookInfo {
     public static int getStatus(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
-            throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+            throw new RuntimeException(String.format(res.getString(1, "没有找到注册的帐套 %s"), corpNo));
         }
         return item.getStatus();
     }
@@ -92,7 +94,7 @@ public class MemoryBookInfo {
     public static BookVersion getBookType(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
-            throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+            throw new RuntimeException(String.format(res.getString(1, "没有找到注册的帐套 %s"), corpNo));
         }
         int result = item.getCorpType();
         return BookVersion.values()[result];
@@ -106,7 +108,7 @@ public class MemoryBookInfo {
     public static String getShortName(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
-            throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+            throw new RuntimeException(String.format(res.getString(1,"没有找到注册的帐套 %s"), corpNo));
         }
         return item.getShortName();
     }
@@ -119,7 +121,7 @@ public class MemoryBookInfo {
     public static String getName(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
-            throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+            throw new RuntimeException(String.format(res.getString(1,"没有找到注册的帐套 %s"), corpNo));
         }
         return item.getName();
     }
@@ -127,7 +129,7 @@ public class MemoryBookInfo {
     public static String getIndustry(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
-            throw new RuntimeException(String.format("没有找到注册的帐套  %s ", corpNo));
+            throw new RuntimeException(String.format(res.getString(1, "没有找到注册的帐套 %s"), corpNo));
         }
         return item.getIndustry();
     }

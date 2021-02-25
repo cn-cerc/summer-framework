@@ -53,7 +53,7 @@ public class HandleDefault implements IHandle {
     @Override
     public boolean init(String token) {
         this.setProperty(Application.token, token);
-        log.info("根据 token={} 初始化 session", token);
+        log.info("initialize session by token {}", token);
         if (token == null) {
             return false;
         }
@@ -68,7 +68,7 @@ public class HandleDefault implements IHandle {
                 IServiceProxy svr = ServiceFactory.get(this);
                 svr.setService("SvrSession.byToken");
                 if (!svr.exec("token", token)) {
-                    log.error("token 恢复错误，原因 {}", svr.getMessage());
+                    log.error("token restore error，{}", svr.getMessage());
                     this.setProperty(Application.token, null);
                     return false;
                 }
