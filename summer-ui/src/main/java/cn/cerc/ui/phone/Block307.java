@@ -1,5 +1,6 @@
 package cn.cerc.ui.phone;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
@@ -17,6 +18,8 @@ import java.util.List;
  * @author HuangRongjun
  */
 public class Block307 extends UIComponent {
+    private static final ClassResource res = new ClassResource("summer-ui", Block307.class);
+
     private UISpan title;
     private UrlRecord url;
     private UIImage icon = new UIImage();
@@ -85,7 +88,7 @@ public class Block307 extends UIComponent {
 
     public void addItem(String line) {
         if (items.size() > 2) {
-            throw new RuntimeException("最多只能放3行信息");
+            throw new RuntimeException(res.getString(1, "最多只能放3行信息"));
         }
         items.add(line);
     }

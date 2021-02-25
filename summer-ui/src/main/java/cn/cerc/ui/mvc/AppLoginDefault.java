@@ -1,5 +1,6 @@
 package cn.cerc.ui.mvc;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
 import cn.cerc.db.core.IAppConfig;
@@ -25,6 +26,7 @@ import java.io.IOException;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
+    private static final ClassResource res = new ClassResource("summer-ui", AppLoginDefault.class);
 
     // 配置在服务器的用户名下面 summer-application.properties
     @Deprecated
@@ -62,7 +64,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
             if (form.getRequest().getParameter("login_usr") != null) {
                 // 检查服务器的角色状态
                 if (ApplicationConfig.isReplica()) {
-                    throw new RuntimeException("当前服务不支持登录，请返回首页重新登录");
+                    throw new RuntimeException(res.getString(1, "当前服务不支持登录，请返回首页重新登录"));
                 }
 
                 userCode = getRequest().getParameter("login_usr");
@@ -70,7 +72,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
                 return checkLogin(userCode, password);
             }
 
-            log.debug(String.format("根据 token(%s) 创建 Session", token));
+            log.debug("create session by token {}", token);
 
             IHandle sess = (IHandle) form.getHandle().getProperty(null);
             if (sess.init(token)) {

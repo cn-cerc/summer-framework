@@ -1,5 +1,6 @@
 package cn.cerc.ui.fields;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
@@ -12,8 +13,10 @@ import java.util.Map;
  * 列表下拉框组件（不适用搜索查询表单）
  */
 public class SelectField extends AbstractField implements IColumn {
-    private String trueText = "是";
-    private String falseText = "否";
+    private static final ClassResource res = new ClassResource("summer-ui", SelectField.class);
+
+    private String trueText = res.getString(1, "是");
+    private String falseText = res.getString(2, "否");
     private String title;
     private String onChange;
     private Map<String, String> items = new LinkedHashMap<>();

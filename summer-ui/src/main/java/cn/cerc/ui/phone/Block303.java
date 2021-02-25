@@ -1,5 +1,6 @@
 package cn.cerc.ui.phone;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
@@ -16,6 +17,8 @@ import java.util.Map;
  * @author HuangRongjun
  */
 public class Block303 extends UIComponent {
+    private static final ClassResource res = new ClassResource("summer-ui", Block303.class);
+
     private Map<UrlRecord, UIImage> items = new LinkedHashMap<>();
 
     public Block303(UIComponent owner) {
@@ -54,7 +57,7 @@ public class Block303 extends UIComponent {
 
     public void addItem(UrlRecord url, UIImage image) {
         if (items.size() > 3) {
-            throw new RuntimeException("一个菜单组件最多容纳4个对象");
+            throw new RuntimeException(res.getString(1, "一个菜单组件最多容纳4个对象"));
         }
         items.put(url, image);
     }

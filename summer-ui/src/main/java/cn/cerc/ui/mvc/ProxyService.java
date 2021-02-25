@@ -1,5 +1,6 @@
 package cn.cerc.ui.mvc;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.BookHandle;
@@ -13,29 +14,30 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ProxyService extends AbstractForm {
+    private static final ClassResource res = new ClassResource("summer-ui", ProxyService.class);
 
     @Override
     public IPage execute() throws Exception {
         JsonPage jsonPage = new JsonPage(this);
         String service = getRequest().getParameter("service");
         if (Utils.isEmpty(service)) {
-            return jsonPage.setResultMessage(false, "service 不允许为空");
+            return jsonPage.setResultMessage(false, String.format("%s 不允许为空", "service"));
         }
         log.info("url {}", getRequest().getRequestURL());
 
         String dataIn = getRequest().getParameter("dataIn");
         if (Utils.isEmpty(dataIn)) {
-            return jsonPage.setResultMessage(false, "dataIn 不允许为空");
+            return jsonPage.setResultMessage(false, String.format("%s 不允许为空", "dataIn"));
         }
-        log.info("请求参数 {}", dataIn);
-        log.info("发起帐套 {} ", this.getCorpNo());
+        log.info("dataIn {}", dataIn);
+        log.info("request corpNo {} ", this.getCorpNo());
 
         String[] uri = this.getRequest().getRequestURI().split("/");
         String curBookNo = uri[1];
         if (Utils.isEmpty(curBookNo)) { // 131001
-            return jsonPage.setResultMessage(false, "目标帐套 不允许为空");
+            return jsonPage.setResultMessage(false, String.format("%s 不允许为空", "目标帐套"));
         }
-        log.info("响应帐套 {}", curBookNo);
+        log.info("url corpNo {}", curBookNo);
 
         try {
             LocalService svr;
@@ -43,7 +45,7 @@ public class ProxyService extends AbstractForm {
                 svr = new LocalService(this, service);
             } else {
                 if (curBookNo.equals(this.getCorpNo())) {
-                    return jsonPage.setResultMessage(false, "服务调用错误");
+                    return jsonPage.setResultMessage(false, res.getString(2, "服务调用错误"));
                 }
 
                 BookHandle bHandle = new BookHandle(this, curBookNo);

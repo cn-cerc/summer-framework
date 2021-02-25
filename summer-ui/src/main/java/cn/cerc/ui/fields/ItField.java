@@ -1,12 +1,15 @@
 package cn.cerc.ui.fields;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class ItField extends AbstractField {
+    private static final ClassResource res = new ClassResource("summer-ui", ItField.class);
+
     public ItField(UIComponent owner) {
-        super(owner, "序", 2);
+        super(owner, res.getString(1, "序"), 2);
         this.setReadonly(true);
         this.setShortName("");
         this.setAlign("center");

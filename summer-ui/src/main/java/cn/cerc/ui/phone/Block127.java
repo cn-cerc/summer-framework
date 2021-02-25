@@ -10,7 +10,6 @@ import cn.cerc.ui.vcl.UIImage;
  *
  * @author HuangRongjun
  */
-
 public class Block127 extends UIComponent {
     private String text;
     private int number;
