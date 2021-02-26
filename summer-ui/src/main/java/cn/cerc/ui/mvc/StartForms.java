@@ -23,7 +23,6 @@ import cn.cerc.mis.core.IAppErrorPage;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IFormFilter;
-import cn.cerc.mis.core.LoginWhitelist;
 import cn.cerc.mis.core.RequestData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +32,6 @@ public class StartForms implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
@@ -216,8 +214,4 @@ public class StartForms implements Filter {
 
     }
 
-    protected boolean isExperienceAccount(IForm form) {
-        String userCode = form.getHandle().getUserCode();
-        return LoginWhitelist.getInstance().contains(userCode);
-    }
 }

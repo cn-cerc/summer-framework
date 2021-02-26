@@ -32,6 +32,17 @@ public class StartFormDefault implements ApplicationContextAware {
     @Autowired
     private HttpServletResponse response;
 
+    @RequestMapping("/{formId}")
+    public ModelAndView execute(@PathVariable String formId) {
+        log.info(this.getClass().getName());
+        String funcId = "execute";
+        log.info("formId: {}, funcId: {}", formId, funcId);
+        String viewId = build(formId, funcId);
+        if (viewId == null)
+            return null;
+        return new ModelAndView(viewId);
+    }
+
     @RequestMapping("/{formId}.{funcId}")
     public ModelAndView execute(@PathVariable String formId, @PathVariable String funcId) {
         log.info(String.format("formId: %s, funcId: %s", formId, funcId));

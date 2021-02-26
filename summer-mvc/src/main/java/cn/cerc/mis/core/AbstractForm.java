@@ -154,7 +154,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
     @Override
-    public String getView(String funcCode) throws ServletException, IOException {
+    public String getView(String funcCode) {
         HttpServletResponse response = this.getResponse();
         HttpServletRequest request = this.getRequest();
         if ("excel".equals(funcCode)) {
