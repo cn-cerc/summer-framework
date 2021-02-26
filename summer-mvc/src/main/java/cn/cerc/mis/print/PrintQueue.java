@@ -1,11 +1,13 @@
 package cn.cerc.mis.print;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
 
 public class PrintQueue {
+
     // 设置共享打印服务的设置记录之UID
     private String printerId = "";
     // 要打印的模版编号
@@ -39,7 +41,7 @@ public class PrintQueue {
             throw new RuntimeException("ReportParams is null");
         }
         if (userCode == null || "".equals(userCode)) {
-            throw new RuntimeException("用户代码不允许为空");
+            throw new RuntimeException("userCode is empty");
         }
 
         String queueCode = buildQueue();

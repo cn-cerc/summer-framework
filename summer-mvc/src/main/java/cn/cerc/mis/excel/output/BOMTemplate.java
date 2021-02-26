@@ -1,5 +1,6 @@
 package cn.cerc.mis.excel.output;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import jxl.write.Label;
@@ -14,6 +15,8 @@ import java.util.List;
  * @author weish
  */
 public class BOMTemplate extends ExcelTemplate {
+    private static final ClassResource res = new ClassResource("summer-mvc", BOMTemplate.class);
+
     private List<Column> heads;
     private List<Column> materials;
     private List<Column> makes;
@@ -48,7 +51,7 @@ public class BOMTemplate extends ExcelTemplate {
         super.output(sheet);
 
         this.setRow(this.getHeads().size() + this.getDataSet().size() + 2);
-        sheet.addCell(new Label(0, this.getRow(), "材料清单："));
+        sheet.addCell(new Label(0, this.getRow(), res.getString(1, "材料清单：")));
         this.setRow(this.getRow() + 1);
         this.getColumns().clear();
         this.getColumns().addAll(materials);
@@ -57,7 +60,7 @@ public class BOMTemplate extends ExcelTemplate {
         super.output(sheet);
 
         this.setRow(this.getRow() + materialDataSet.size() + 2);
-        sheet.addCell(new Label(0, this.getRow(), "制成清单："));
+        sheet.addCell(new Label(0, this.getRow(), res.getString(2,"制成清单：")));
         this.setRow(this.getRow() + 1);
         this.getColumns().clear();
         this.getColumns().addAll(makes);

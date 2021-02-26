@@ -1,5 +1,6 @@
 package cn.cerc.mis.tools;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.book.BookDataList;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Slf4j
 public class SearchManager implements IBookManage {
+    private static final ClassResource res = new ClassResource("summer-mvc", SearchManager.class);
 
     private IHandle handle;
     private String initMonth;
@@ -33,11 +35,11 @@ public class SearchManager implements IBookManage {
     @Override
     public void setDateRange(TDateTime beginDate, TDateTime endDate, boolean forceExecute) {
         if (initMonth.compareTo(beginDate.getYearMonth()) > 0) {
-            throw new RuntimeException(String.format("起始日期(%s)小于开账年月(%s)", beginDate.getYearMonth(), initMonth));
+            throw new RuntimeException(String.format(res.getString(1, "起始日期(%s)小于开账年月(%s)"), beginDate.getYearMonth(), initMonth));
         }
 
         if (beginDate.compareTo(endDate) > 0) {
-            throw new RuntimeException(String.format("起始日期(%s)大于截止日期(%s)", beginDate, endDate));
+            throw new RuntimeException(String.format(res.getString(2, "起始日期(%s)大于截止日期(%s)"), beginDate, endDate));
         }
 
         duration = new DurationSplit(beginDate, endDate);
@@ -53,7 +55,7 @@ public class SearchManager implements IBookManage {
         }
 
         if (books.size() == 0) {
-            throw new RuntimeException("帐本对象不允许为空！");
+            throw new RuntimeException(res.getString(3, "帐本对象不允许为空！"));
         }
 
         timer.get("process total").start();
@@ -91,7 +93,7 @@ public class SearchManager implements IBookManage {
             }
         }
         pt1.stop();
-        log.info("完成");
+        log.info("finish");
     }
 
     @Override

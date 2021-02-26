@@ -1,9 +1,12 @@
 package cn.cerc.mis.book;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 
 public interface IBookManage {
+    ClassResource res = new ClassResource("summer-mvc", IBookManage.class);
+
     // 取得环境
     IHandle getHandle();
 
@@ -17,7 +20,7 @@ public interface IBookManage {
     default String getBookMonth() {
         TDateTime dateFrom = getDateFrom();
         if (dateFrom == null) {
-            throw new RuntimeException("帐本年月不允许为空！");
+            throw new RuntimeException(res.getString(1, "帐本年月不允许为空！"));
         }
         return dateFrom.getYearMonth();
     }

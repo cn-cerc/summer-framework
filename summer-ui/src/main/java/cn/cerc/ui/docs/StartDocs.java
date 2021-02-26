@@ -1,5 +1,6 @@
 package cn.cerc.ui.docs;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.ServerConfig;
 
 import javax.servlet.ServletException;
@@ -13,6 +14,8 @@ import java.io.PrintWriter;
 
 @Deprecated // 请改使用 StartDocDefault
 public class StartDocs extends HttpServlet {
+    private static final ClassResource res = new ClassResource("summer-ui", StartDocs.class);
+
     private static final long serialVersionUID = 1L;
 
     public StartDocs() {
@@ -27,7 +30,7 @@ public class StartDocs extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!ServerConfig.enableDocService()) {
-            throw new RuntimeException("该功能暂不开放");
+            throw new RuntimeException(res.getString(1, "该功能暂不开放"));
         }
         String uri = req.getRequestURI();
         if ("/docs".equals(uri)) {

@@ -1,5 +1,6 @@
 package cn.cerc.mis.print;
 
+import cn.cerc.core.ClassResource;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -17,6 +18,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 
 public class ReportHeaderFooter extends PdfPageEventHelper {
+    private static final ClassResource res = new ClassResource("summer-mvc", ReportHeaderFooter.class);
+
     /**
      * 页眉
      */
@@ -85,7 +88,7 @@ public class ReportHeaderFooter extends PdfPageEventHelper {
 
         // 2.写入前半部分的 第 X页/共
         int pageS = writer.getPageNumber();
-        String foot1 = "第 " + pageS + " 页 /共";
+        String foot1 = String.format(res.getString(1, "第 %s 页 /共"), pageS);
         Phrase footer = new Phrase(foot1, fontDetail);
 
         // 3.计算前半部分的foot1的长度，后面好定位最后一部分的'Y页'这俩字的x轴坐标，字体长度也要计算进去 = len
@@ -115,7 +118,7 @@ public class ReportHeaderFooter extends PdfPageEventHelper {
         // 7.最后一步了，就是关闭文档的时候，将模板替换成实际的 Y 值,至此，page x of y 制作完毕，完美兼容各种文档size。
         total.beginText();
         total.setFontAndSize(bf, presentFontSize);// 生成的模版的字体、颜色
-        String foot2 = " " + (writer.getPageNumber() - 1) + " 页";
+        String foot2 = String.format(res.getString(2, " %s 页"), (writer.getPageNumber() - 1));
         total.showText(foot2);// 模版显示的内容
         total.endText();
         total.closePath();

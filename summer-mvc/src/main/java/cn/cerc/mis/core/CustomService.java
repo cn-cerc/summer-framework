@@ -1,5 +1,6 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import java.lang.reflect.Method;
 
 @Slf4j
 public class CustomService extends AbstractHandle implements IService, IRestful {
+    private static final ClassResource res = new ClassResource("summer-mvc", CustomService.class);
 
     @Autowired
     public ISystemTable systemTable;
@@ -56,7 +58,7 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
             }
         }
         if (mt == null) {
-            this.setMessage(String.format("没有找到服务：%s.%s ！", this.getClass().getName(), this.funcCode));
+            this.setMessage(String.format(res.getString(1, "没有找到服务：%s.%s ！"), this.getClass().getName(), this.funcCode));
             ss.setMessage(this.getMessage());
             ss.setResult(false);
             return ss;

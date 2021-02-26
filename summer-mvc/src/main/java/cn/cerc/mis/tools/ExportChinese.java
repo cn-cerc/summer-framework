@@ -70,7 +70,7 @@ public class ExportChinese {
         List<File> list = new ArrayList<>();
         File[] files = path.listFiles();
         if (files == null) {
-            log.info("{} 没有可读取文件了", path);
+            log.info("{} no any files", path);
             return list;
         }
         for (File item : files) {

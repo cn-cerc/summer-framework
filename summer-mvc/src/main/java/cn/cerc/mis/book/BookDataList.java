@@ -1,5 +1,6 @@
 package cn.cerc.mis.book;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.tools.DurationSection;
 import com.google.gson.Gson;
@@ -10,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
+    private static final ClassResource res = new ClassResource("summer-mvc", BookDataList.class);
+
     private List<IBookData> items = new ArrayList<>();
     private DurationSection section;
     private int itemNo = -1;
@@ -39,13 +42,13 @@ public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
         String s2 = dateTo.getDate();
         String s3 = data.getDate().getDate();
         if (s1.compareTo(s3) > 0) {
-            throw new RuntimeException(String.format("日期错误：对象日期 %s 不能小于起始日期 %s", data.getDate(), dateFrom));
+            throw new RuntimeException(String.format(res.getString(1, "日期错误：对象日期 %s 不能小于起始日期 %s"), data.getDate(), dateFrom));
         }
         if (s2.compareTo(s3) < 0) {
-            throw new RuntimeException(String.format("日期错误：对象日期 %s 不能大于结束日期 %s", data.getDate(), dateTo));
+            throw new RuntimeException(String.format(res.getString(2, "日期错误：对象日期 %s 不能大于结束日期 %s"), data.getDate(), dateTo));
         }
         if (!data.check()) {
-            throw new RuntimeException("对象记录有误，无法作业：" + new Gson().toJson(data));
+            throw new RuntimeException(String.format(res.getString(3, "对象记录有误，无法作业：%s"), new Gson().toJson(data)));
         }
     }
 

@@ -1,5 +1,6 @@
 package cn.cerc.mis.message;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.queue.QueueDB;
@@ -12,6 +13,8 @@ import cn.cerc.db.queue.QueueQuery;
  * 注意：公司别和用户代码必须配套
  */
 public class MessageQueue {
+    private static final ClassResource res = new ClassResource("summer-mvc", MessageQueue.class);
+
     private String corpNo;
     private String userCode;
     private String subject;
@@ -41,16 +44,16 @@ public class MessageQueue {
 
     public void send(IHandle handle) {
         if (subject == null || "".equals(subject)) {
-            throw new RuntimeException("消息标题不允许为空");
+            throw new RuntimeException(res.getString(1, "消息标题不允许为空"));
         }
 
         if (userCode == null || "".equals(userCode)) {
-            throw new RuntimeException("用户代码不允许为空");
+            throw new RuntimeException(res.getString(2, "用户代码不允许为空"));
         }
 
         String sendCorpNo = corpNo != null ? corpNo : handle.getCorpNo();
         if ("".equals(sendCorpNo)) {
-            throw new RuntimeException("公司别不允许为空");
+            throw new RuntimeException(res.getString(3, "公司别不允许为空"));
         }
 
         // 将消息发送至阿里云MNS

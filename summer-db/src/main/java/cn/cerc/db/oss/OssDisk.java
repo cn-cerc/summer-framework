@@ -1,5 +1,6 @@
 package cn.cerc.db.oss;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSException;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 
 @Slf4j
 public class OssDisk {
+    private static final ClassResource res = new ClassResource("summer-db", OssDisk.class);
 
     private OssConnection connection;
     private OSS client;
@@ -38,16 +40,16 @@ public class OssDisk {
         // 例：upload("D:\\oss\\temp.png", "131001/Default/131001/temp.png")
         File file = new File(localFile);
         if (!file.exists()) {
-            throw new RuntimeException("文件不存在：" + localFile);
+            throw new RuntimeException(String.format(res.getString(1, "文件不存在：%s"), localFile));
         }
         try {
             ObjectMetadata summary = client.getObjectMetadata(connection.getBucket(), remoteFile);
             if (summary != null && summary.getContentLength() == file.length()) {
-                log.info("本地文件与云端文件大小一致，忽略上传请求");
+                log.info("ignore upload, because the local file has the same size as cloud file");
                 return true;
             }
         } catch (OSSException e) {
-            log.info("服务器上无此文件，开始上传");
+            log.info("there is no such file on the server, start uploading ...");
         }
 
         client.putObject(connection.getBucket(), remoteFile, file);
@@ -58,7 +60,7 @@ public class OssDisk {
     // 下载文件
     public boolean download(String fileName) {
         if (localPath == null || "".equals(localPath)) {
-            throw new RuntimeException("localPath 必须先进行设置！");
+            throw new RuntimeException(res.getString(2, "localPath 必须先进行设置！"));
         }
 
         // 创建本地目录
@@ -87,7 +89,7 @@ public class OssDisk {
         CopyObjectResult result = client.copyObject(srcBucketName, srcKey, destBucketName, destKey);
 
         // 打印结果
-        log.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
+        log.info("ETag: {}, LastModified: {}", result.getETag(), result.getLastModified());
     }
 
     public OSS getClient() {

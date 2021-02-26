@@ -29,7 +29,7 @@ public class JedisFactory {
     private static final boolean TEST_ON_BORROW = true;
 
     // redis pool
-    private static JedisPool jedisPool;
+    private static final JedisPool jedisPool;
 
     static {
         JedisPoolConfig pool = new JedisPoolConfig();
@@ -63,7 +63,7 @@ public class JedisFactory {
         }
 
         int timeout = Integer.parseInt(config.getProperty(redis_timeout, "10000")); // 超时
-        log.info(String.format("redis server %s:%s", host, port));
+        log.info("redis server {}:{}", host, port);
 
         // 建立连接池
         jedisPool = new JedisPool(pool, host, port, timeout, password);

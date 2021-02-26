@@ -1,5 +1,6 @@
 package cn.cerc.ui.parts;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIFormHorizontal extends UIComponent implements DataSource {
+    private static final ClassResource res = new ClassResource("summer-ui", UIFormHorizontal.class);
+
     protected String cssClass = "search";
     protected String method = "post";
     protected HttpServletRequest request;
@@ -46,7 +49,7 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         this.dataSet = new DataSet();
         dataSet.append();
         this.title = new UILabel();
-        this.setSearchTitle("搜索查询");
+        this.setSearchTitle(res.getString(1, "搜索查询"));
     }
 
     @Override
@@ -77,7 +80,7 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         if (field instanceof AbstractField) {
             fields.add((AbstractField) field);
         } else {
-            throw new RuntimeException("不支持的数据类型：" + field.getClass().getName());
+            throw new RuntimeException(String.format(res.getString(2, "不支持的数据类型：%s"), field.getClass().getName()));
         }
     }
 
@@ -306,7 +309,7 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
             if (field instanceof AbstractField) {
                 fields.add((AbstractField) field);
             } else {
-                throw new RuntimeException("不支持的数据类型：" + field.getClass().getName());
+                throw new RuntimeException(String.format(res.getString(2, "不支持的数据类型：%s"), field.getClass().getName()));
             }
         }
 

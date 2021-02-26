@@ -1,5 +1,6 @@
 package cn.cerc.ui.parts;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class UISheetUrl extends UISheet {
+    private static final ClassResource res = new ClassResource("summer-ui", UISheetUrl.class);
+
     private List<UrlRecord> urls = new ArrayList<>();
     // 使用于page-link.xml中
     private Map<String, String> items = new LinkedHashMap<>();
@@ -19,12 +22,12 @@ public class UISheetUrl extends UISheet {
      */
     private UISheetUrl() {
         super();
-        this.setCaption("相关操作");
+        this.setCaption(res.getString(1, "相关操作"));
     }
 
     public UISheetUrl(UIToolbar owner) {
         super(owner);
-        this.setCaption("相关操作");
+        this.setCaption(res.getString(1, "相关操作"));
     }
 
     @Override

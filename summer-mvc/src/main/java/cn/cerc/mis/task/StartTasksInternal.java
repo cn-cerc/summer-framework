@@ -21,7 +21,7 @@ public class StartTasksInternal implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         if (ServerConfig.enableTaskService()) {
             timer = new Timer(true);
-            log.info("定时器已启动");
+            log.info("Timer started ...");
 
             Application.get(event.getServletContext());
             ProcessTimerTask task = new ProcessTimerTask();
@@ -32,7 +32,7 @@ public class StartTasksInternal implements ServletContextListener {
              * 2、每次执行完成一个，500毫秒以后开始执行下一个
              */
             timer.schedule(task, delay, period);
-            log.info("已经添加任务");
+            log.info("Task has been added ...");
         }
     }
 
@@ -40,7 +40,7 @@ public class StartTasksInternal implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent event) {
         if (timer != null) {
             timer.cancel();
-            event.getServletContext().log("定时器销毁");
+            event.getServletContext().log("Timer is broken ...");
         }
     }
 }

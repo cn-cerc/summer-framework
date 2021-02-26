@@ -1,5 +1,6 @@
 package cn.cerc.ui.menu;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
@@ -22,6 +23,8 @@ import java.util.Map;
  */
 @Slf4j
 public class MenuList implements IDataCache {
+    private static final ClassResource res = new ClassResource("summer-ui", MenuList.class);
+
     private final IHandle handle;
     private final Map<String, MenuModel> buff = new LinkedHashMap<>();
     private final String buffKey;
@@ -50,7 +53,7 @@ public class MenuList implements IDataCache {
 
     public MenuModel get(String menu) {
         if (Utils.isEmpty(menu)) {
-            throw new RuntimeException("模组代码不允许为空！");
+            throw new RuntimeException(res.getString(1, "模组代码不允许为空！"));
         }
         // 初始化缓存
         this.init();

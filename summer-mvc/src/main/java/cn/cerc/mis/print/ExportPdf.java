@@ -1,5 +1,6 @@
 package cn.cerc.mis.print;
 
+import cn.cerc.core.ClassResource;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class ExportPdf {
+    private static final ClassResource res = new ClassResource("summer-mvc", ExportPdf.class);
+
     private static ApplicationContext app;
     private static String xmlFile = "classpath:export-pdf.xml";
     private HttpServletResponse response;
@@ -80,9 +83,10 @@ public class ExportPdf {
         }
         doc.open();
 
+        // FIXME 此处报表信息改为从外部传入
         // 第四步
-        doc.addAuthor("地藤系统");
-        doc.addSubject("地藤系统报表文件");
+        doc.addAuthor(res.getString(1, "地藤系统"));
+        doc.addSubject(res.getString(2, "地藤系统报表文件"));
         doc.addCreationDate();
         template.output(doc, writer);
 
@@ -120,8 +124,8 @@ public class ExportPdf {
         document.open();
 
         // 第四步
-        document.addAuthor("地藤系统");
-        document.addSubject("地藤系统报表文件");
+        document.addAuthor(res.getString(1, "地藤系统"));
+        document.addSubject(res.getString(2, "地藤系统报表文件"));
         document.addCreationDate();
         document.add(new Chunk(message));
 
