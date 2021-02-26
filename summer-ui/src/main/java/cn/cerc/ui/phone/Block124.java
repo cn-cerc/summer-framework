@@ -1,5 +1,6 @@
 package cn.cerc.ui.phone;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
@@ -10,11 +11,13 @@ import cn.cerc.ui.vcl.ext.UISpan;
  * @author 郭向军
  */
 public class Block124 extends UIComponent {
+    private static final ClassResource res = new ClassResource("summer-ui", Block124.class);
+
     private UISpan title = new UISpan();
 
     public Block124(UIComponent owner) {
         super(owner);
-        title.setText("提示:");
+        title.setText(res.getString(1, "提示:"));
     }
 
     @Override

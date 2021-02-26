@@ -1,5 +1,6 @@
 package cn.cerc.ui.page.service;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class SvrAutoLogin {
+    private static final ClassResource res = new ClassResource("summer-ui", SvrAutoLogin.class);
 
     private IHandle handle;
     private String message;
@@ -32,7 +34,7 @@ public class SvrAutoLogin {
     public boolean check(IForm form, HttpServletRequest request) {
         String userCode = request.getParameter("userCode");
         if (userCode == null || "".equals(userCode)) {
-            this.setMessage("用户代码不允许为空");
+            this.setMessage(res.getString(1, "用户代码不允许为空"));
             return false;
         }
         String deviceId = form.getClient().getId();
@@ -42,7 +44,7 @@ public class SvrAutoLogin {
         dsUser.add("select * from %s where Code_='%s'", systemTable.getUserInfo(), userCode);
         dsUser.open();
         if (dsUser.eof()) {
-            this.setMessage(String.format("该帐号(%s)并不存在，禁止登录！", userCode));
+            this.setMessage(String.format(res.getString(2, "该帐号(%s)并不存在，禁止登录！"), userCode));
             return false;
         }
 

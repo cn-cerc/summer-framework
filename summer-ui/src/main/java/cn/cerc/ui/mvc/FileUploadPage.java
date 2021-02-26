@@ -1,5 +1,6 @@
 package cn.cerc.ui.mvc;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ServerConfig;
@@ -42,6 +43,7 @@ import java.util.Map;
  * 文件上传实现Form
  */
 public class FileUploadPage extends FileUploadBasePage {
+    private static final ClassResource res = new ClassResource("summer-ui", FileUploadPage.class);
 
     @Override
     public IPage exec() {
@@ -62,12 +64,12 @@ public class FileUploadPage extends FileUploadBasePage {
 
         UIToolbar toolbar = jspPage.getToolBar();
         UISheetHelp section1 = new UISheetHelp(toolbar);
-        section1.setCaption(R.asString(this, "操作提示"));
-        section1.addLine(R.asString(this, "所支持上传的文件类型："), getSuportTypes());
+        section1.setCaption(res.getString(1, "操作提示"));
+        section1.addLine(res.getString(2, "所支持上传的文件类型："), getSuportTypes());
         section1.addLine(getSuportTypes());
-        section1.addLine(R.asString(this, "单文件上传最大为：%s B"), getMaxSize());
-        section1.addLine(R.asString(this, "文件名长度最大为：%s 个字"), getMaxNameLength());
-        section1.addLine(R.asString(this, "是否支持多文件上传：%s"), isMultiple() ? "Yes" : "No");
+        section1.addLine(res.getString(3, "单文件上传最大为：%s B"), getMaxSize());
+        section1.addLine(res.getString(4, "文件名长度最大为：%s 个字"), getMaxNameLength());
+        section1.addLine(res.getString(5, "是否支持多文件上传：%s"), isMultiple() ? "Yes" : "No");
 
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserForm, getUserCode(), getAction())) {
             String tb = getTb();
@@ -76,20 +78,20 @@ public class FileUploadPage extends FileUploadBasePage {
             buff.setField("tb", tb);
 
             UIFormHorizontal upload = jspPage.createSearch(buff);
-            upload.setSearchTitle(R.asString(this, "上传文件"));
+            upload.setSearchTitle(res.getString(6, "上传文件"));
             upload.setAction(getAction() + "?page=1");
             upload.setCssClass("search sales-search");
             upload.setEnctype("multipart/form-data");
-            UploadField uploadField = new UploadField(upload, R.asString(this, "请选择文件"), "file");
+            UploadField uploadField = new UploadField(upload, res.getString(7, "请选择文件"), "file");
             uploadField.setMultiple(isMultiple());
 
-            new ButtonField(upload.getButtons(), R.asString(this, "确认上传"), "submit", "upload");
+            new ButtonField(upload.getButtons(), res.getString(8, "确认上传"), "submit", "upload");
             upload.readAll();
 
             LocalService svr = new LocalService(this, "SvrFileUpload.search");
             svr.getDataIn().getHead().setField("tbNo", tbNo);
             if (!svr.exec()) {
-                jspPage.setMessage(R.asString(this, svr.getMessage()));
+                jspPage.setMessage(svr.getMessage());
                 return jspPage;
             }
 
@@ -99,32 +101,31 @@ public class FileUploadPage extends FileUploadBasePage {
             AbstractGrid gird = jspPage.createGrid(jspPage.getContent(), svr.getDataOut());
             ItField it = new ItField(gird);
             it.setWidth(1);
-            StringField fileFld = new StringField(gird, R.asString(this, "文件名"), "Name_", 3);
+            StringField fileFld = new StringField(gird, res.getString(9, "文件名"), "Name_", 3);
             fileFld.createText((record, html) -> {
                 String name = record.getString("Name_");
                 // 手机端不预览图片
                 if (!getClient().isPhone() && (name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg")
                         || name.endsWith(".gif") || name.endsWith(".bmp"))) {
-                    html.print("<a href='javascript:showImages(\"%s\")'>%s</a>", ossSite + record.getString("Path_"),
-                            R.asString(this, name));
+                    html.print("<a href='javascript:showImages(\"%s\")'>%s</a>", ossSite + record.getString("Path_"), name);
                 } else {
                     html.print(name);
                 }
             });
-            StringField sizeFld = new StringField(gird, R.asString(this, "文件大小"), "Size_", 2);
+            StringField sizeFld = new StringField(gird, res.getString(10, "文件大小"), "Size_", 2);
             sizeFld.createText((record, html) -> {
                 html.print(record.getString("Size_") + " B");
             });
-            DateTimeField dateFld = new DateTimeField(gird, R.asString(this, "上传时间"), "AppDate_", 4);
+            DateTimeField dateFld = new DateTimeField(gird, res.getString(11, "上传时间"), "AppDate_", 4);
 
-            StringField opearFld = new StringField(gird, R.asString(this, "操作"), "Path_", 4);
+            StringField opearFld = new StringField(gird, res.getString(12, "操作"), "Path_", 4);
             opearFld.createText((record, html) -> {
                 html.print("<a href='%s?name=%s&link=%s&page=3'>%s</a>", getAction(), record.getString("Name_"),
-                        ossSite + record.getString("Path_"), R.asString(this, "下载"));
+                        ossSite + record.getString("Path_"), res.getString(13, "下载"));
                 html.print(" | ");
                 html.print(
                         "<a href='%s?tbNo=%s&name=%s&page=2' onclick=\"if(confirm('%s？')==false)return false;\">%s</a>",
-                        getAction(), tbNo, record.getString("Name_"), R.asString(this, "确认删除"), R.asString(this, "删除"));
+                        getAction(), tbNo, record.getString("Name_"), res.getString(14, "确认删除"), res.getString(15, "删除"));
             });
 
             // 手机版
@@ -161,7 +162,7 @@ public class FileUploadPage extends FileUploadBasePage {
             ServletFileUpload upload = new ServletFileUpload(factory);
 
             if (typeStr == null || "".equals(typeStr)) {
-                buff.setField("msg", String.format(R.asString(this, "请限定所支持的文件类型"), maxNameLength));
+                buff.setField("msg", res.getString(16, "请限定所支持的文件类型"));
                 return jspPage;
             }
 
@@ -178,13 +179,13 @@ public class FileUploadPage extends FileUploadBasePage {
                 if (item != null && !item.isFormField() && item.getSize() > 0 && isSurpots(item.getName())) {
                     // 以字节为单位
                     if (item.getSize() > singleMaxSize) {
-                        buff.setField("msg", String.format(R.asString(this, "文件过大！单个文件最大不能超过%s"), singleMaxSize));
+                        buff.setField("msg", String.format(res.getString(17, "文件过大！单个文件最大不能超过%s"), singleMaxSize));
                         return jspPage;
                     }
 
                     int pointIndex = item.getName().lastIndexOf(".");
                     if (pointIndex > maxNameLength) {
-                        buff.setField("msg", String.format(R.asString(this, "文件名过长！单个文件最大不能超过%s个字"), maxNameLength));
+                        buff.setField("msg", String.format(res.getString(18, "文件名过长！单个文件最大不能超过%s个字"), maxNameLength));
                         return jspPage;
                     }
 
@@ -200,19 +201,17 @@ public class FileUploadPage extends FileUploadBasePage {
             }
 
             if (dsIn.eof()) {
-                buff.setField("msg", R.asString(this, "请选择文件！"));
+                buff.setField("msg", res.getString(19, "请选择文件！"));
                 return jspPage;
             }
 
             if (!svr.exec()) {
-                buff.setField("msg", R.asString(this, svr.getMessage()));
+                buff.setField("msg", svr.getMessage());
                 return jspPage;
             }
-            buff.setField("msg", R.asString(this, "上传成功！"));
+            buff.setField("msg", res.getString(20, "上传成功！"));
             return jspPage;
-        } catch (FileUploadException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (FileUploadException | IOException e) {
             e.printStackTrace();
         }
         return jspPage;
@@ -227,9 +226,9 @@ public class FileUploadPage extends FileUploadBasePage {
             LocalService svr = new LocalService(this, "SvrFileUpload.delete");
             svr.getDataIn().getHead().setField("tbNo", tbNo).setField("name", name);
             if (!svr.exec()) {
-                buff.setField("msg", R.asString(this, svr.getMessage()));
+                buff.setField("msg", svr.getMessage());
             } else {
-                buff.setField("msg", R.asString(this, "删除成功！"));
+                buff.setField("msg", res.getString(21, "删除成功！"));
             }
             return jspPage;
         }
@@ -245,8 +244,7 @@ public class FileUploadPage extends FileUploadBasePage {
         HttpServletResponse response = getResponse();
         response.setContentType("multipart/form-data");
         try {
-            response.setHeader("Content-Disposition",
-                    "attachment;fileName=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8.name()));
+            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8.name()));
         } catch (UnsupportedEncodingException e1) {
             e1.printStackTrace();
         }

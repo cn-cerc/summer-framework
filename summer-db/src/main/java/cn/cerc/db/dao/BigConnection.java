@@ -117,7 +117,7 @@ public class BigConnection implements Closeable {
     public static void beginTransaction() throws SQLException {
         Connection con = connections.get();// 获取当前线程的事务连接
         if (con != null) {
-            throw new SQLException("已经开启了事务，不能重复开启！");
+            throw new SQLException("sql transaction is already open, you can't open it again.");
         }
         con = getDataSource().getConnection();// 给con赋值，表示开启了事务
         con.setAutoCommit(false);// 设置为手动提交
@@ -132,7 +132,7 @@ public class BigConnection implements Closeable {
     public static void commitTransaction() throws SQLException {
         Connection con = connections.get();// 获取当前线程的事务连接
         if (con == null) {
-            throw new SQLException("没有事务不能提交！");
+            throw new SQLException("no transaction can't commit");
         }
         con.commit();// 提交事务
         con.close();// 关闭连接
@@ -148,7 +148,7 @@ public class BigConnection implements Closeable {
     public static void rollbackTransaction() throws SQLException {
         Connection con = connections.get();// 获取当前线程的事务连接
         if (con == null) {
-            throw new SQLException("没有事务不能回滚！");
+            throw new SQLException("no transaction can't rollback");
         }
         con.rollback();
         con.close();
@@ -182,9 +182,9 @@ public class BigConnection implements Closeable {
                 String pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 if (host == null || user == null || pwd == null || database == null) {
-                    throw new RuntimeException("RDS配置为空，无法连接主机！");
+                    throw new RuntimeException("mysql connection error");
                 }
-                log.debug("create connection for mysql: " + host);
+                log.debug("create connection for mysql: {}" , host);
                 return DriverManager.getConnection(url, user, pwd);
             } catch (ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);

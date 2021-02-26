@@ -1,5 +1,6 @@
 package cn.cerc.mis.queue;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ProcessService extends AbstractTask {
+    private static final ClassResource res = new ClassResource("summer-mvc", ProcessService.class);
 
     // 手动执行所有的预约服务
     public static void main(String[] args) {
@@ -88,7 +90,7 @@ public class ProcessService extends AbstractTask {
         async.setProcessTime(TDateTime.now().toString());
         LocalService svr = new LocalService(this, "SvrUserMessages.updateAsyncService");
         if (!svr.exec("msgId", taskId, "content", async.toString(), "process", async.getProcess())) {
-            throw new RuntimeException("更新任务队列进度异常：" + svr.getMessage());
+            throw new RuntimeException(String.format(res.getString(1, "更新任务队列进度异常：%s"), svr.getMessage()));
         }
         log.debug(async.getService() + ":" + subject + ":" + AsyncService.getProcessTitle(async.getProcess()));
     }

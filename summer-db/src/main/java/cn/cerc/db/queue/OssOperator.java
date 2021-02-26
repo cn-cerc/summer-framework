@@ -1,9 +1,12 @@
 package cn.cerc.db.queue;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.Record;
 
 public class OssOperator implements IDataOperator {
+    private static final ClassResource res = new ClassResource("summer-db", OssOperator.class);
+
     // 根据 sql 获取数据库表名
     public String findTableName(String sql) {
         String result = null;
@@ -21,7 +24,7 @@ public class OssOperator implements IDataOperator {
         }
 
         if (result == null) {
-            throw new RuntimeException("SQL语句异常");
+            throw new RuntimeException("sql command error");
         }
 
         return result;
@@ -29,16 +32,16 @@ public class OssOperator implements IDataOperator {
 
     @Override
     public boolean insert(Record record) {
-        throw new RuntimeException("阿里云OSS服务，不支持插入操作");
+        throw new RuntimeException(res.getString(1, "阿里云OSS服务，不支持插入操作"));
     }
 
     @Override
     public boolean update(Record record) {
-        throw new RuntimeException("阿里云OSS服务，不支持修改操作");
+        throw new RuntimeException(res.getString(2, "阿里云OSS服务，不支持修改操作"));
     }
 
     @Override
     public boolean delete(Record record) {
-        throw new RuntimeException("阿里云OSS服务，不支持删除操作");
+        throw new RuntimeException(res.getString(3, "阿里云OSS服务，不支持删除操作"));
     }
 }

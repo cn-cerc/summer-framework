@@ -1,11 +1,14 @@
 package cn.cerc.ui.fields;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
 public class ExpendField extends AbstractField implements SearchItem {
+    private static final ClassResource res = new ClassResource("summer-ui", ExpendField.class);
+
     private boolean search;
     private String hiddenId = "hidden";
 
@@ -37,7 +40,7 @@ public class ExpendField extends AbstractField implements SearchItem {
             buildText.outputText(record, html);
             return html.toString();
         }
-        return String.format("<a href=\"javascript:displaySwitch('%d')\">展开</a>", dataSource.getDataSet().getRecNo());
+        return String.format("<a href=\"javascript:displaySwitch('%d')\">%s</a>", dataSource.getDataSet().getRecNo(), res.getString(1, "展开"));
     }
 
     @Override

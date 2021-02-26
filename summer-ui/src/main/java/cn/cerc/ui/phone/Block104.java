@@ -1,11 +1,14 @@
 package cn.cerc.ui.phone;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UITextBox;
 
 public class Block104 extends UIComponent {
+    private static final ClassResource res = new ClassResource("summer-ui", Block104.class);
+
     private UITextBox input;
     private UIButton submit;
 
@@ -17,9 +20,9 @@ public class Block104 extends UIComponent {
     public Block104(UIComponent owner) {
         super(owner);
         input = new UITextBox(this);
-        input.setPlaceholder("请输入搜索条件");
+        input.setPlaceholder(res.getString(1, "请输入搜索条件"));
         submit = new UIButton(this);
-        submit.setText("搜索");
+        submit.setText(res.getString(2, "搜索"));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cn.cerc.db.mongo;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetState;
@@ -22,6 +23,8 @@ import java.util.regex.Pattern;
 
 public class MongoQuery extends DataQuery {
     private static final long serialVersionUID = -1262005194419604476L;
+    private static final ClassResource res = new ClassResource("summer-db", MongoQuery.class);
+
     private MongoConnection connection = null;
     // 数据库保存操作执行对象
     private IDataOperator operator;
@@ -101,7 +104,7 @@ public class MongoQuery extends DataQuery {
                                 Pattern.CASE_INSENSITIVE);
                         filter.append(field, queryPattern);
                     } else {
-                        throw new RuntimeException(String.format("模糊查询条件：%s 必须为字符串", item));
+                        throw new RuntimeException(String.format(res.getString(1, "模糊查询条件：%s 必须为字符串"), item));
                     }
                 } else if (item.split("in").length == 2) {
                     String[] tmp = item.split("in");
@@ -118,10 +121,10 @@ public class MongoQuery extends DataQuery {
                         }
                         filter.put(field, new BasicDBObject("$in", values));
                     } else {
-                        throw new RuntimeException(String.format("in查询条件：%s 必须有带有()", item));
+                        throw new RuntimeException(String.format(res.getString(2, "in查询条件：%s 必须有带有()"), item));
                     }
                 } else {
-                    throw new RuntimeException("暂不支持的查询条件：" + item);
+                    throw new RuntimeException(String.format(res.getString(3, "暂不支持的查询条件：%s"), item));
                 }
             }
         }

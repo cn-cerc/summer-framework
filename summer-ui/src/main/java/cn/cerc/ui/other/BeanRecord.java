@@ -1,5 +1,6 @@
 package cn.cerc.ui.other;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 
 import java.lang.reflect.Field;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BeanRecord<T> implements AutoCloseable, BuildRecord {
+    private static final ClassResource res = new ClassResource("summer-ui", BeanRecord.class);
 
     private Map<Field, Method> gets = new HashMap<>();
     private Map<Field, Method> sets = new HashMap<>();
@@ -105,7 +107,7 @@ public class BeanRecord<T> implements AutoCloseable, BuildRecord {
                         double val = (Double) value;
                         mt.invoke(owner, val);
                     } else {
-                        String str = String.format("数据字段(%s)的数据类型(%s)与要赋值的对象属性类型(%s)不一致！", field,
+                        String str = String.format(res.getString(1, "数据字段(%s)的数据类型(%s)与要赋值的对象属性类型(%s)不一致！"), field,
                                 value.getClass().getName(), p1.getName());
                         throw new RuntimeException(str);
                     }
@@ -121,4 +123,5 @@ public class BeanRecord<T> implements AutoCloseable, BuildRecord {
         gets.clear();
         sets.clear();
     }
+
 }

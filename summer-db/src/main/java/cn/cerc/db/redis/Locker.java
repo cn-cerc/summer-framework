@@ -1,5 +1,6 @@
 package cn.cerc.db.redis;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.TDateTime;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 @Slf4j
 public class Locker implements Closeable {
+    private static final ClassResource res = new ClassResource("summer-db", Locker.class);
 
     private String group;
     private String message;
@@ -63,7 +65,7 @@ public class Locker implements Closeable {
             i++;
             long curTime = System.currentTimeMillis() + timeout;
             if (jedis.setnx(key, curTime + "," + flag) == 1) {
-                this.message = String.format("[%s]%s锁定成功", key, flag);
+                this.message = String.format(res.getString(1, "[%s]%s锁定成功"), key, flag);
                 result = true;
                 break;
             } else {
@@ -76,16 +78,16 @@ public class Locker implements Closeable {
                         if (oldValue != null && oldValue.equals(currentValue)) {
                             // System.out.println("lastTime: " + lastTime);
                             // System.out.println(" curTime: " + curTime);
-                            this.message = String.format("[%s]%s强制锁定成功", key, flag);
+                            this.message = String.format(res.getString(2, "[%s]%s强制锁定成功"), key, flag);
                             // System.out.println(this.message);
                             result = true;
                             break;
                         }
                     }
                     TDateTime tmp = new TDateTime(new Date(lastTime));
-                    this.message = String.format("[%s]%s锁定失败， %s完成后(%s)再试", key, flag, args[1], tmp.getTime());
+                    this.message = String.format(res.getString(3, "[%s]%s锁定失败， %s完成后(%s)再试"), key, flag, args[1], tmp.getTime());
                 } else {
-                    this.message = String.format("[%s]%s锁定失败， %s完成后再试", key, flag, currentValue);
+                    this.message = String.format(res.getString(4, "[%s]%s锁定失败， %s完成后再试"), key, flag, currentValue);
                 }
             }
             if (i < num) {

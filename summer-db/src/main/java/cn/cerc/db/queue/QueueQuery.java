@@ -1,5 +1,6 @@
 package cn.cerc.db.queue;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.IHandle;
 import com.aliyun.mns.client.CloudQueue;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class QueueQuery extends DataQuery {
+    private static final ClassResource res = new ClassResource("summer-db", QueueQuery.class);
 
     private static final long serialVersionUID = 7781788221337787366L;
     private QueueOperator operator;
@@ -56,10 +58,10 @@ public class QueueQuery extends DataQuery {
     @Override
     public void save() {
         if (this.queueMode != QueueMode.append) {
-            throw new RuntimeException("当前作业模式下，不允许保存");
+            throw new RuntimeException(res.getString(1, "当前作业模式下，不允许保存"));
         }
         connection.append(queue, getJSON());
-        log.info("消息保存成功");
+        log.info("message save success");
     }
 
     /**
@@ -101,7 +103,7 @@ public class QueueQuery extends DataQuery {
     public final void setBatchSave(boolean batchSave) {
         super.setBatchSave(batchSave);
         if (!batchSave) {
-            throw new RuntimeException("QueueQuery.batchSave 不允许为 false");
+            throw new RuntimeException("QueueQuery.batchSave can not be false");
         }
     }
 

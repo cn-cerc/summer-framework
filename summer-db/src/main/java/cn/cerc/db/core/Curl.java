@@ -166,7 +166,7 @@ public class Curl {
             rd.close();
             in.close();
         } catch (IOException e) {
-            log.error("网络故障", e);
+            log.error("network error", e);
         } finally {
             if (url_con != null) {
                 url_con.disconnect();
@@ -228,7 +228,7 @@ public class Curl {
             rd.close();
             in.close();
         } catch (IOException e) {
-            log.error("网络故障", e);
+            log.error("network error", e);
         } finally {
             if (url_con != null) {
                 url_con.disconnect();

@@ -1,5 +1,6 @@
 package cn.cerc.mis.client;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -29,6 +30,7 @@ import java.util.Map;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/services")
 public class StartServiceDefault {
+    private static final ClassResource res = new ClassResource("summer-mvc", StartServiceDefault.class);
 
     private static final String sessionId = "sessionId";
     private static Map<String, String> services;
@@ -129,7 +131,7 @@ public class StartServiceDefault {
                 return;
             }
             if (!bean.checkSecurity(handle)) {
-                respData.setMessage("请您先登入系统");
+                respData.setMessage(res.getString(1, "请您先登入系统"));
                 resp.getWriter().write(respData.toString());
                 return;
             }

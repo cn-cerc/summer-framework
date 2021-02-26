@@ -1,5 +1,6 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.mis.language.R;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/forms")
 public class StartFormDefault implements ApplicationContextAware {
+    private static final ClassResource res = new ClassResource("summer-mvc", StartFormDefault.class);
 
     private ApplicationContext context;
 
@@ -77,7 +79,7 @@ public class StartFormDefault implements ApplicationContextAware {
             appLogin.init(form);
             String jspFile = appLogin.checkToken(appClient.getToken());
             if (jspFile != null) {
-                log.info("需要登录： {}", request.getRequestURL());
+                log.info("url need login ： {}", request.getRequestURL());
                 return jspFile;
             }
 
@@ -85,8 +87,8 @@ public class StartFormDefault implements ApplicationContextAware {
             passport.setHandle(handle);
             // 是否拥有此菜单调用权限
             if (!passport.passForm(form)) {
-                log.warn(String.format("无权限执行 %s", request.getRequestURL()));
-                throw new RuntimeException(R.asString(form.getHandle(), "对不起，您没有权限执行此功能！"));
+                log.warn(String.format("no permission to execute %s", request.getRequestURL()));
+                throw new RuntimeException(R.asString(form.getHandle(), res.getString(1, "对不起，您没有权限执行此功能！")));
             }
 
             IPage page = form.execute();

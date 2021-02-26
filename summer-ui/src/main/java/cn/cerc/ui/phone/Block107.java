@@ -1,5 +1,6 @@
 package cn.cerc.ui.phone;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
@@ -13,6 +14,8 @@ import java.util.List;
  * @author 张弓
  */
 public class Block107 extends UIComponent {
+    private static final ClassResource res = new ClassResource("summer-ui", Block107.class);
+
     private UITextBox input = new UITextBox();
     private UIImage image = new UIImage();
     private List<String> items = new ArrayList<>();
@@ -26,7 +29,7 @@ public class Block107 extends UIComponent {
      */
     public Block107(UIComponent owner) {
         super(owner);
-        input.setPlaceholder("当前条件：");
+        input.setPlaceholder(res.getString(1, "当前条件："));
         input.setReadonly(true);
         image.setSrc("jui/phone/block107-expand.png");
     }

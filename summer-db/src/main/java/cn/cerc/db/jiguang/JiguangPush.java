@@ -76,7 +76,7 @@ public class JiguangPush {
         }
 
         if (clientType != ClientType.Android && clientType != ClientType.IOS) {
-            throw new RuntimeException("暂不支持的设备类别：" + clientType.ordinal());
+            throw new RuntimeException("unsupport device type ：" + clientType.ordinal());
         }
 
         builder.setNotification(Notification.newBuilder().setAlert(message)

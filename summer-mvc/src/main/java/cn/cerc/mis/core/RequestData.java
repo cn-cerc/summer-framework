@@ -1,5 +1,6 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.ClassResource;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 
 @Slf4j
 public class RequestData {
+    private static final ClassResource res = new ClassResource("summer-mvc", RequestData.class);
 
     // FIXME: 2019/12/7 sid 应该改为 token
     public static final String TOKEN = "sid";
@@ -26,7 +28,7 @@ public class RequestData {
                 this.serviceCode = request.getPathInfo().substring(1);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
-                throw new RuntimeException("服务名不能为空！");
+                throw new RuntimeException(res.getString(1, "服务名不能为空！"));
             }
         }
         BufferedReader reader;

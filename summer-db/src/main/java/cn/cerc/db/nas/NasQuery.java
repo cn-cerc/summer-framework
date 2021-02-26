@@ -38,11 +38,11 @@ public class NasQuery extends DataQuery {
                     this.getSqlText().getText().indexOf("from")).trim();
             this.filePath = getOperator().findTableName(this.getSqlText().getText());
         } catch (Exception e) {
-            throw new RuntimeException("语法为: select fileName from filePath");
+            throw new RuntimeException("command suggest: select fileName from filePath");
         }
         // 校验数据
         if (Utils.isEmpty(this.filePath)) {
-            throw new RuntimeException("请输入文件路径");
+            throw new RuntimeException("please enter the file path");
         }
         if (nasMode == NasModel.readWrite) {
             File file = FileUtils.getFile(this.filePath, this.fileName);

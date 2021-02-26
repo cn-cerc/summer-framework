@@ -1,5 +1,6 @@
 package cn.cerc.ui.parts;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIHeader extends UIComponent {
+    private static final ClassResource res = new ClassResource("summer-ui", UIHeader.class);
+
     private static final int MAX_MENUS = 4;
     private UIAdvertisement advertisement; // 可选
     // 页面标题
@@ -85,14 +88,14 @@ public class UIHeader extends UIComponent {
         leftMenus.add(homePage);
 
         IHandle handle = page.getForm().getHandle();
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), R.asString(handle, "开始"));
+        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), res.getString(1, "开始"));
 
         IClient client = page.getForm().getClient();
         boolean isShowBar = "true".equals(config.getProperty("app.ui.head.show", "true"));
         if (!client.isPhone() && isShowBar) {
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
-            currentUser = R.asString(handle, "用户");
+            currentUser = res.getString(2, "用户");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {
@@ -100,7 +103,7 @@ public class UIHeader extends UIComponent {
                 this.corpNoName = item.getShortName();
             }
             logoSrc = getLogo();
-            welcome = config.getProperty("app.welcome.language", "欢迎使用系统");
+            welcome = config.getProperty("app.welcome.language", res.getString(3, "欢迎使用系统"));
 
             String exitName = config.getProperty("app.exit.name", "#");
             String exitUrl = config.getProperty("app.exit.url");
@@ -118,8 +121,7 @@ public class UIHeader extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         if (this.leftBottom.size() > MAX_MENUS) {
-            throw new RuntimeException(
-                    String.format(R.asString(this.getForm().getHandle(), "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
+            throw new RuntimeException(String.format(res.getString(4, "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
         }
 
         html.print("<header role='header'");
@@ -215,8 +217,8 @@ public class UIHeader extends UIComponent {
             }
         }
         if (leftMenus.size() == 0) {
-            leftMenus.add(new UrlRecord("/", R.asString(this.getForm().getHandle(), "首页")));
-            leftMenus.add(new UrlRecord("javascript:history.go(-1);", R.asString(this.getForm().getHandle(), "刷新")));
+            leftMenus.add(new UrlRecord("/", res.getString(5, "首页")));
+            leftMenus.add(new UrlRecord("javascript:history.go(-1);", res.getString(6, "刷新")));
         }
         // 兼容老的jsp文件使用
         form.getRequest().setAttribute("barMenus", leftMenus);

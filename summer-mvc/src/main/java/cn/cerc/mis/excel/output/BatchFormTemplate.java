@@ -1,5 +1,6 @@
 package cn.cerc.mis.excel.output;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
@@ -13,6 +14,8 @@ import java.util.List;
  * 批次导出单据明细
  */
 public class BatchFormTemplate extends FormTemplate {
+    private static final ClassResource res = new ClassResource("summer-mvc", BatchFormTemplate.class);
+
     List<DataSet> items;
 
     @Override
@@ -23,8 +26,8 @@ public class BatchFormTemplate extends FormTemplate {
             this.setFooter((template, sheet1) -> {
                 Record footer = new Record();
                 for (Record item : dataSet) {
-                    footer.setField("合计数量", footer.getDouble("合计数量") + item.getDouble("Num_"));
-                    footer.setField("合计金额", footer.getDouble("合计金额") + item.getDouble("OriAmount_"));
+                    footer.setField(res.getString(1, "合计数量"), footer.getDouble(res.getString(1, "合计数量")) + item.getDouble("Num_"));
+                    footer.setField(res.getString(2, "合计金额"), footer.getDouble(res.getString(2, "合计金额")) + item.getDouble("OriAmount_"));
                 }
                 int row = template.getRow();
                 for (String field : footer.getItems().keySet()) {

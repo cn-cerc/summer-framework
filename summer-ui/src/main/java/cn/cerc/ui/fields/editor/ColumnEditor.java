@@ -1,5 +1,6 @@
 package cn.cerc.ui.fields.editor;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColumnEditor {
+    private static final ClassResource res = new ClassResource("summer-ui", ColumnEditor.class);
+
     private AbstractField owner;
     private boolean init = false;
     private DataSet dataSet;
@@ -26,7 +29,7 @@ public class ColumnEditor {
     public ColumnEditor(AbstractField owner) {
         this.owner = owner;
         if (!(owner.getOwner() instanceof AbstractGridLine)) {
-            throw new RuntimeException("不支持的数据类型：" + owner.getOwner().getClass().getName());
+            throw new RuntimeException(String.format(res.getString(1, "不支持的数据类型：%s"), owner.getOwner().getClass().getName()));
         }
         gridLine = (AbstractGridLine) (owner.getOwner());
     }

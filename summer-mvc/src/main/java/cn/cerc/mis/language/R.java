@@ -50,12 +50,12 @@ public class R {
         }
 
         if (text == null || "".equals(text.trim())) {
-            log.error("字符串为空");
+            log.error("text is empty");
             return "file error";
         }
 
         if (text.length() > 150) {
-            log.error("字符串长度超过150，key:" + text);
+            log.error("The key length exceeds 150: {}", text);
             return text;
         }
         // 校验key

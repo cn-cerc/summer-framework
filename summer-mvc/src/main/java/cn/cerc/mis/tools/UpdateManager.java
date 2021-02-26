@@ -1,5 +1,6 @@
 package cn.cerc.mis.tools;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.book.BookDataList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Slf4j
 public class UpdateManager implements IBookManage {
+    private static final ClassResource res = new ClassResource("summer-mvc", UpdateManager.class);
 
     private IHandle handle;
     private String initMonth;
@@ -40,7 +42,7 @@ public class UpdateManager implements IBookManage {
         }
 
         if (beginDate.compareTo(endDate) > 0) {
-            throw new RuntimeException(String.format("起始日期(%s)大于截止日期(%s)", beginDate, endDate));
+            throw new RuntimeException(String.format(res.getString(1, "起始日期(%s)大于截止日期(%s)"), beginDate, endDate));
         }
 
         duration = new DurationSplit(beginDate, endDate);
@@ -59,7 +61,7 @@ public class UpdateManager implements IBookManage {
         }
 
         if (books.size() == 0) {
-            throw new RuntimeException("帐本对象不允许为空！");
+            throw new RuntimeException(res.getString(2, "帐本对象不允许为空！"));
         }
 
         if (dataList.size() == 0) {
@@ -99,11 +101,11 @@ public class UpdateManager implements IBookManage {
                 }
             }
 
-            log.info(String.format("更新帐本数据"));
+            log.info("更新帐本数据");
             for (UpdateBook book : books) {
                 book.update();
             }
-            log.info(String.format("保存帐本变动"));
+            log.info("保存帐本变动");
             for (IBook book : books) {
                 book.save();
             }

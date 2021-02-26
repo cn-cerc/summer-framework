@@ -1,5 +1,6 @@
 package cn.cerc.ui.grid;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.IForm;
@@ -11,6 +12,8 @@ import cn.cerc.ui.grid.lines.ExpenderGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DataGrid extends AbstractGrid {
+    private static final ClassResource res = new ClassResource("summer-ui", DataGrid.class);
+
     private final double MaxWidth = 600;
     // 当前样式选择
     private String CSSClass = "dbgrid";
@@ -48,10 +51,10 @@ public class DataGrid extends AbstractGrid {
         }
 
         if (sumFieldWidth < 0) {
-            throw new RuntimeException("总列宽不允许小于1");
+            throw new RuntimeException(res.getString(1, "总列宽不允许小于1"));
         }
         if (sumFieldWidth > MaxWidth) {
-            throw new RuntimeException("总列宽不允许大于600");
+            throw new RuntimeException(String.format(res.getString(2, "总列宽不允许大于%s"), MaxWidth));
         }
 
         html.print("<table class=\"%s\"", this.getCSSClass());

@@ -1,5 +1,6 @@
 package cn.cerc.mis.tools;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class ExportService extends ExportExcel {
+    private static final ClassResource res = new ClassResource("summer-mvc", ExportService.class);
+
     private String service;
     private String exportKey;
     private String corpNo;
@@ -39,10 +42,10 @@ public class ExportService extends ExportExcel {
     @Override
     public void export() throws WriteException, IOException, AccreditException {
         if (service == null || "".equals(service)) {
-            throw new RuntimeException("错误的调用：service is null");
+            throw new RuntimeException(String.format(res.getString(1, "错误的调用：%s"), "service is null"));
         }
         if (exportKey == null || "".equals(exportKey)) {
-            throw new RuntimeException("错误的调用：exportKey is null");
+            throw new RuntimeException(String.format(res.getString(1, "错误的调用：%s"), "exportKey is null"));
         }
 
         IHandle handle = (IHandle) this.getHandle();

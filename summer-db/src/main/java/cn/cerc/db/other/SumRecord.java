@@ -68,4 +68,5 @@ public class SumRecord extends Record {
             System.out.println(String.format("%s: %s", field, "" + fields.get(field)));
         }
     }
+
 }

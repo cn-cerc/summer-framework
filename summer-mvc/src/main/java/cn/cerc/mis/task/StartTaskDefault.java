@@ -55,7 +55,7 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
             }
             isRunning = false;
         } else {
-            log.info("上一次任务执行还未结束");
+            log.info("last task has not ended");
         }
     }
 
