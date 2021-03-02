@@ -165,6 +165,10 @@ public class UIPageSearch extends AbstractJspPage {
         pages = grid.getPages();
     }
 
+    public void setPages(MutiPage pages) {
+        this.pages = pages;
+    }
+
     public void add(String id, UIFormHorizontal value) {
         put(id, value);
     }
