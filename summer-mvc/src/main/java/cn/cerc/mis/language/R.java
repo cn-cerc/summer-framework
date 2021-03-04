@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 public class R {
 
     public static String getLanguage(IHandle handle) {
+        if (handle == null) {
+            return null;
+        }
         Object temp = handle.getProperty(Application.deviceLanguage);
         if (temp == null || "".equals(temp)) {
             log.debug("handle language is null");
@@ -27,6 +30,7 @@ public class R {
                 }
             }
         }
+
         String language = temp == null ? Application.getLanguage() : (String) temp;
         // FIXME: 2019/11/21 用户配置表需要改为动态获取
         try {
