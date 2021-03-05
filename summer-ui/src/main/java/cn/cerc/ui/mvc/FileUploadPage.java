@@ -44,7 +44,7 @@ import java.util.Map;
  * 文件上传实现Form
  */
 public class FileUploadPage extends FileUploadBasePage implements IUserLanguage {
-    private final ClassResource res = new ClassResource("summer-ui", this);
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     @Override
     public IPage exec() {

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class OperaPages extends UISheet implements IUserLanguage {
-    private final ClassResource res = new ClassResource("summer-ui", this);
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private IForm form;
     private MutiPage pages;

@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Slf4j
 public class MenuList implements IDataCache, IUserLanguage {
-    private final ClassResource res = new ClassResource("summer-ui", this);
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private final IHandle handle;
     private final Map<String, MenuModel> buff = new LinkedHashMap<>();

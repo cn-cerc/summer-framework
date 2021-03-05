@@ -41,7 +41,7 @@ import java.util.Map;
 
 @Slf4j
 public abstract class AbstractJspPage extends UIComponent implements IPage, IUserLanguage {
-    private final ClassResource res = new ClassResource("summer-ui", this);
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private String jspFile;
     private IForm form;

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class SvrAutoLogin implements IUserLanguage {
-    private final ClassResource res = new ClassResource("summer-ui", this);
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private IHandle handle;
     private String message;

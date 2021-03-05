@@ -28,7 +28,7 @@ import java.util.List;
 
 @Slf4j
 public class UIHeader extends UIComponent implements IUserLanguage {
-    private final ClassResource res = new ClassResource("summer-ui", this);
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private static final int MAX_MENUS = 4;
     private UIAdvertisement advertisement; // 可选

@@ -17,7 +17,7 @@ import cn.cerc.mis.language.R;
  * 文件上传服务
  */
 public class SvrFileUpload extends CustomService implements IUserLanguage {
-    private final ClassResource res = new ClassResource("summer-ui", this);
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     /**
      * 文件上传表
