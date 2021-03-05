@@ -2,6 +2,7 @@ package cn.cerc.ui.mvc;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
@@ -39,8 +40,8 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public abstract class AbstractJspPage extends UIComponent implements IPage {
-    private static final ClassResource res = new ClassResource("summer-ui", AbstractJspPage.class);
+public abstract class AbstractJspPage extends UIComponent implements IPage, IUserLanguage {
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private String jspFile;
     private IForm form;
@@ -130,7 +131,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         String newFile = String.format("%s-%s.%s", fileName, "pc", extName);
         if (!this.getForm().getClient().isPhone() && fileExists(rootPath + newFile)) {
             // 检查是否存在相对应的语言版本
-            String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
+            String langCode = form == null ? Application.App_Language : R.getLanguageId(form.getHandle());
             String langFile = String.format("%s-%s-%s.%s", fileName, "pc", langCode, extName);
             if (fileExists(rootPath + langFile)) {
                 return langFile;
@@ -139,7 +140,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         }
 
         // 检查是否存在相对应的语言版本
-        String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
+        String langCode = form == null ? Application.App_Language : R.getLanguageId(form.getHandle());
         String langFile = String.format("%s-%s.%s", fileName, langCode, extName);
         if (fileExists(rootPath + langFile)) {
             return langFile;
@@ -406,6 +407,11 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js"));
         this.addScriptFile(config.getProperty("summer.js", "js/summer.js"));
         this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js"));
+    }
+
+    @Override
+    public String getLanguageId() {
+        return R.getLanguageId(form.getHandle());
     }
 
 }

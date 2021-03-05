@@ -1,16 +1,20 @@
 package cn.cerc.ui.other;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UISheet;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class OperaPages extends UISheet {
-    private static final ClassResource res = new ClassResource("summer-ui", OperaPages.class);
+@Slf4j
+public class OperaPages extends UISheet implements IUserLanguage {
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private IForm form;
     private MutiPage pages;
@@ -63,6 +67,11 @@ public class OperaPages extends UISheet {
             html.println("</div>");
             html.println("</section>");
         }
+    }
+
+    @Override
+    public String getLanguageId() {
+        return R.getLanguageId(form.getHandle());
     }
 
 }

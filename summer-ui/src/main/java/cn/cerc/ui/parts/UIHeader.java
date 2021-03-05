@@ -2,6 +2,7 @@ package cn.cerc.ui.parts;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
@@ -18,12 +19,14 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.ui.phone.Block104;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UIHeader extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", UIHeader.class);
+public class UIHeader extends UIComponent implements IUserLanguage {
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private static final int MAX_MENUS = 4;
     private UIAdvertisement advertisement; // 可选
@@ -56,6 +59,8 @@ public class UIHeader extends UIComponent {
     // 菜单模组
     private String moduleCode = null;
 
+    private IHandle handle;
+
     private final ServerConfig config = ServerConfig.getInstance();
 
     public void setHeadInfo(String logoSrc, String welcome) {
@@ -84,10 +89,10 @@ public class UIHeader extends UIComponent {
 
     public UIHeader(AbstractJspPage page) {
         super(page);
+        this.handle = page.getForm().getHandle();
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), getHomeImage(page));
         leftMenus.add(homePage);
 
-        IHandle handle = page.getForm().getHandle();
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), res.getString(1, "开始"));
 
         IClient client = page.getForm().getClient();
@@ -348,4 +353,10 @@ public class UIHeader extends UIComponent {
         }
         return menuSearchArea;
     }
+
+    @Override
+    public String getLanguageId() {
+        return R.getLanguageId(handle);
+    }
+
 }

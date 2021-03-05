@@ -2,6 +2,7 @@ package cn.cerc.ui.page.service;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
@@ -12,6 +13,7 @@ import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.RequestData;
+import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
@@ -20,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
-public class SvrAutoLogin {
-    private static final ClassResource res = new ClassResource("summer-ui", SvrAutoLogin.class);
+public class SvrAutoLogin implements IUserLanguage {
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private IHandle handle;
     private String message;
@@ -108,4 +110,8 @@ public class SvrAutoLogin {
         this.message = message;
     }
 
+    @Override
+    public String getLanguageId() {
+        return R.getLanguageId(this.handle);
+    }
 }
