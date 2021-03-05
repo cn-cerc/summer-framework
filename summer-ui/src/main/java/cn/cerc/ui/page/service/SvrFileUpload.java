@@ -2,6 +2,7 @@ package cn.cerc.ui.page.service;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.mysql.BuildQuery;
@@ -15,8 +16,8 @@ import cn.cerc.mis.language.R;
 /**
  * 文件上传服务
  */
-public class SvrFileUpload extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-ui", SvrFileUpload.class);
+public class SvrFileUpload extends CustomService implements IUserLanguage {
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     /**
      * 文件上传表
@@ -108,4 +109,8 @@ public class SvrFileUpload extends CustomService {
         }
     }
 
+    @Override
+    public String getLanguageId() {
+        return R.getLanguageId(getHandle());
+    }
 }

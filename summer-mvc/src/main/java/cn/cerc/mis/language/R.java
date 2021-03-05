@@ -13,7 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class R {
 
-    public static String getLanguage(IHandle handle) {
+    public static String getLanguageId(IHandle handle) {
+        if (handle == null) {
+            log.warn("handle is null.");
+            return null;
+        }
         Object temp = handle.getProperty(Application.deviceLanguage);
         if (temp == null || "".equals(temp)) {
             log.debug("handle language is null");
@@ -27,6 +31,7 @@ public class R {
                 }
             }
         }
+
         String language = temp == null ? Application.getLanguage() : (String) temp;
         // FIXME: 2019/11/21 用户配置表需要改为动态获取
         try {
@@ -44,7 +49,7 @@ public class R {
     }
 
     public static String asString(IHandle handle, String text) {
-        String language = getLanguage(handle);
+        String language = getLanguageId(handle);
         if (Application.App_Language.equals(language)) {
             return text;
         }
@@ -105,7 +110,7 @@ public class R {
     }
 
     public static String get(IHandle handle, String text) {
-        String language = getLanguage(handle);
+        String language = getLanguageId(handle);
         if (Language.zh_CN.equals(language)) {
             return text;
         }
