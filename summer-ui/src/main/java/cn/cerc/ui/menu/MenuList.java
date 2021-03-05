@@ -3,10 +3,12 @@ package cn.cerc.ui.menu;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
+import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.IDataCache;
 import com.google.gson.Gson;
@@ -22,8 +24,8 @@ import java.util.Map;
  * 系统菜单缓存
  */
 @Slf4j
-public class MenuList implements IDataCache {
-    private static final ClassResource res = new ClassResource("summer-ui", MenuList.class);
+public class MenuList implements IDataCache, IUserLanguage {
+    private final ClassResource res = new ClassResource("summer-ui", this);
 
     private final IHandle handle;
     private final Map<String, MenuModel> buff = new LinkedHashMap<>();
@@ -134,4 +136,8 @@ public class MenuList implements IDataCache {
         Redis.delete(buffKey);
     }
 
+    @Override
+    public String getLanguageId() {
+        return R.getLanguage(this.handle);
+    }
 }

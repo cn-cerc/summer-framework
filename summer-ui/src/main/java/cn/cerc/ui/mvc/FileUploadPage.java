@@ -2,6 +2,7 @@ package cn.cerc.ui.mvc;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.oss.OssConnection;
@@ -42,8 +43,8 @@ import java.util.Map;
 /**
  * 文件上传实现Form
  */
-public class FileUploadPage extends FileUploadBasePage {
-    private static final ClassResource res = new ClassResource("summer-ui", FileUploadPage.class);
+public class FileUploadPage extends FileUploadBasePage implements IUserLanguage {
+    private final ClassResource res = new ClassResource("summer-ui", this);
 
     @Override
     public IPage exec() {
@@ -260,5 +261,10 @@ public class FileUploadPage extends FileUploadBasePage {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public String getLanguageId() {
+        return R.getLanguage(getHandle());
     }
 }
