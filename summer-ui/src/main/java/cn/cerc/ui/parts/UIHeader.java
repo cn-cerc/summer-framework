@@ -59,8 +59,6 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     // 菜单模组
     private String moduleCode = null;
 
-    @Getter
-    @Setter
     private IHandle handle;
 
     private final ServerConfig config = ServerConfig.getInstance();
