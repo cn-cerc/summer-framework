@@ -21,12 +21,10 @@ import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.ui.phone.Block104;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 public class UIHeader extends UIComponent implements IUserLanguage {
     private final ClassResource res = new ClassResource(this, "summer-ui");
 
@@ -94,7 +92,6 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     public UIHeader(AbstractJspPage page) {
         super(page);
         this.handle = page.getForm().getHandle();
-        log.info(getLanguageId());
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), getHomeImage(page));
         leftMenus.add(homePage);
 
@@ -361,9 +358,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
 
     @Override
     public String getLanguageId() {
-        String language = R.getLanguage(handle);
-        log.info("hash {}, language {}", this.hashCode(), language);
-        return language;
+        return R.getLanguage(handle);
     }
 
 }
