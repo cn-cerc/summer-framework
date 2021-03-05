@@ -111,6 +111,6 @@ public class SvrFileUpload extends CustomService implements IUserLanguage {
 
     @Override
     public String getLanguageId() {
-        return R.getLanguage(getHandle());
+        return R.getLanguageId(getHandle());
     }
 }

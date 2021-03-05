@@ -358,7 +358,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
 
     @Override
     public String getLanguageId() {
-        return R.getLanguage(handle);
+        return R.getLanguageId(handle);
     }
 
 }

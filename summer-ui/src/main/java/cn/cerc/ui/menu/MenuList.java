@@ -138,6 +138,6 @@ public class MenuList implements IDataCache, IUserLanguage {
 
     @Override
     public String getLanguageId() {
-        return R.getLanguage(this.handle);
+        return R.getLanguageId(this.handle);
     }
 }

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class R {
 
-    public static String getLanguage(IHandle handle) {
+    public static String getLanguageId(IHandle handle) {
         if (handle == null) {
             log.warn("handle is null.");
             return null;
@@ -49,7 +49,7 @@ public class R {
     }
 
     public static String asString(IHandle handle, String text) {
-        String language = getLanguage(handle);
+        String language = getLanguageId(handle);
         if (Application.App_Language.equals(language)) {
             return text;
         }
@@ -110,7 +110,7 @@ public class R {
     }
 
     public static String get(IHandle handle, String text) {
-        String language = getLanguage(handle);
+        String language = getLanguageId(handle);
         if (Language.zh_CN.equals(language)) {
             return text;
         }

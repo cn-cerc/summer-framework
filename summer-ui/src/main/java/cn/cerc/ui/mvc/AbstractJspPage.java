@@ -131,7 +131,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage, IUse
         String newFile = String.format("%s-%s.%s", fileName, "pc", extName);
         if (!this.getForm().getClient().isPhone() && fileExists(rootPath + newFile)) {
             // 检查是否存在相对应的语言版本
-            String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
+            String langCode = form == null ? Application.App_Language : R.getLanguageId(form.getHandle());
             String langFile = String.format("%s-%s-%s.%s", fileName, "pc", langCode, extName);
             if (fileExists(rootPath + langFile)) {
                 return langFile;
@@ -140,7 +140,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage, IUse
         }
 
         // 检查是否存在相对应的语言版本
-        String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
+        String langCode = form == null ? Application.App_Language : R.getLanguageId(form.getHandle());
         String langFile = String.format("%s-%s.%s", fileName, langCode, extName);
         if (fileExists(rootPath + langFile)) {
             return langFile;
@@ -411,7 +411,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage, IUse
 
     @Override
     public String getLanguageId() {
-        return R.getLanguage(form.getHandle());
+        return R.getLanguageId(form.getHandle());
     }
 
 }
