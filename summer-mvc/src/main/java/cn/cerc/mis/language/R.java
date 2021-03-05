@@ -15,6 +15,7 @@ public class R {
 
     public static String getLanguage(IHandle handle) {
         if (handle == null) {
+            log.warn("handle is null.");
             return null;
         }
         Object temp = handle.getProperty(Application.deviceLanguage);
