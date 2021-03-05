@@ -6,6 +6,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class ItField extends AbstractField {
+
     private static final ClassResource res = new ClassResource("summer-ui", ItField.class);
 
     public ItField(UIComponent owner) {
@@ -45,4 +46,5 @@ public class ItField extends AbstractField {
         super.setReadonly(true);
         return this;
     }
+
 }
