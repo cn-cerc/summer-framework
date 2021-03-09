@@ -17,7 +17,7 @@ import cn.cerc.ui.grid.AbstractGrid;
 import cn.cerc.ui.grid.GridFactory;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.menu.MenuList;
-import cn.cerc.ui.mvc.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.other.OperaPages;
@@ -37,7 +37,7 @@ import java.util.List;
  *
  * @author 张弓
  */
-public class UIPageSearch extends AbstractJspPage {
+public class UIPageSearch extends AbstractPage {
     private MutiPage pages;
     private String searchWaitingId = "";
 

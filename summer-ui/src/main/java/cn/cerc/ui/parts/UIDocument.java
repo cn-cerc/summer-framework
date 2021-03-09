@@ -2,14 +2,14 @@ package cn.cerc.ui.parts;
 
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.mvc.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractPage;
 
 public class UIDocument extends UIComponent {
     private UIControl control; // 可选存在
     private UIContent content; // 必须存在
     private UIMessage message; // 必须存在
 
-    public UIDocument(AbstractJspPage owner) {
+    public UIDocument(AbstractPage owner) {
         super(owner);
         content = new UIContent(this);
         content.setRequest(owner.getRequest());

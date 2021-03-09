@@ -2,7 +2,7 @@ package cn.cerc.ui.page;
 
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
-import cn.cerc.ui.mvc.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.HandleDefault;
@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author 张弓
  */
-public class UIPageBill extends AbstractJspPage {
+public class UIPageBill extends AbstractPage {
     private String searchWaitingId = "";
 
     public UIPageBill(IForm form) {

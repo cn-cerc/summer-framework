@@ -1,5 +1,12 @@
 package cn.cerc.ui.mvc;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IUserLanguage;
@@ -11,7 +18,6 @@ import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.core.AbstractForm;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HTMLResource;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
@@ -28,22 +34,10 @@ import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolbar;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.ServletException;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-@Slf4j
-public abstract class AbstractJspPage extends UIComponent implements IPage, IUserLanguage {
+public abstract class AbstractPage extends UIComponent implements IPage, IUserLanguage {
     private final ClassResource res = new ClassResource(this, "summer-ui");
 
-    private String jspFile;
     private IForm form;
     private List<String> cssFiles = new ArrayList<>();
     private List<String> jsFiles = new ArrayList<>();
@@ -58,7 +52,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage, IUse
     // 状态栏：快捷操作+按钮组
     private UIFooter footer;
 
-    public AbstractJspPage() {
+    public AbstractPage() {
         super();
     }
 
@@ -89,19 +83,6 @@ public abstract class AbstractJspPage extends UIComponent implements IPage, IUse
         super.addComponent(component);
     }
 
-    @Override
-    public String execute() throws ServletException, IOException {
-        return this.getViewFile();
-    }
-
-    public final String getJspFile() {
-        return jspFile;
-    }
-
-    public final void setJspFile(String jspFile) {
-        this.jspFile = jspFile;
-    }
-
     protected void put(String id, Object value) {
         getRequest().setAttribute(id, value);
     }
@@ -114,47 +95,8 @@ public abstract class AbstractJspPage extends UIComponent implements IPage, IUse
         form.setParam("message", message);
     }
 
-    public final String getViewFile() {
-        String jspFile = this.getJspFile();
-        if (getRequest() == null || jspFile == null) {
-            return jspFile;
-        }
-        if (!jspFile.contains(".jsp")) {
-            return jspFile;
-        }
-
-        String rootPath = String.format("/WEB-INF/%s/", Application.getAppConfig().getPathForms());
-        String fileName = jspFile.substring(0, jspFile.indexOf(".jsp"));
-        String extName = jspFile.substring(jspFile.indexOf(".jsp") + 1);
-
-        // 检查是否存在 PC 专用版本的jsp文件
-        String newFile = String.format("%s-%s.%s", fileName, "pc", extName);
-        if (!this.getForm().getClient().isPhone() && fileExists(rootPath + newFile)) {
-            // 检查是否存在相对应的语言版本
-            String langCode = form == null ? Application.App_Language : R.getLanguageId(form.getHandle());
-            String langFile = String.format("%s-%s-%s.%s", fileName, "pc", langCode, extName);
-            if (fileExists(rootPath + langFile)) {
-                return langFile;
-            }
-            return newFile;
-        }
-
-        // 检查是否存在相对应的语言版本
-        String langCode = form == null ? Application.App_Language : R.getLanguageId(form.getHandle());
-        String langFile = String.format("%s-%s.%s", fileName, langCode, extName);
-        if (fileExists(rootPath + langFile)) {
-            return langFile;
-        }
-
-        // 发送消息
-        String msg = form.getParam("message", "");
-        getRequest().setAttribute("message", msg == null ? "" : msg.replaceAll("\r\n", "<br/>"));
-
-        return jspFile;
-    }
-
     protected boolean fileExists(String fileName) {
-        URL url = AbstractJspPage.class.getClassLoader().getResource("");
+        URL url = AbstractPage.class.getClassLoader().getResource("");
         if (url == null) {
             return false;
         }

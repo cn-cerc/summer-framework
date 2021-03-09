@@ -1,5 +1,14 @@
 package cn.cerc.ui.mvc;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
@@ -12,19 +21,13 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
+import cn.cerc.ui.page.JspPage;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
+public class AppLoginDefault extends JspPage implements IAppLogin {
     private static final ClassResource res = new ClassResource("summer-ui", AppLoginDefault.class);
 
     // 配置在服务器的用户名下面 summer-application.properties

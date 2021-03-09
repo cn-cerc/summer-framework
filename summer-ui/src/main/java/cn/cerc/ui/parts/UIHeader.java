@@ -17,7 +17,7 @@ import cn.cerc.ui.UIConfig;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
-import cn.cerc.ui.mvc.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.phone.Block104;
 import lombok.Getter;
 import lombok.Setter;
@@ -68,7 +68,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
         this.welcome = welcome;
     }
 
-    private String getHomeImage(AbstractJspPage owner) {
+    private String getHomeImage(AbstractPage owner) {
         String homeImg = UIConfig.home_index;
         if (owner.getForm().getClient().isPhone()) {
             String phoneIndex = config.getProperty("app.phone.home.image");
@@ -87,7 +87,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
         return UIConfig.app_logo;
     }
 
-    public UIHeader(AbstractJspPage page) {
+    public UIHeader(AbstractPage page) {
         super(page);
         this.handle = page.getForm().getHandle();
         homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), getHomeImage(page));
@@ -207,7 +207,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     }
 
     public void initHeader() {
-        IForm form = ((AbstractJspPage) this.getOwner()).getForm();
+        IForm form = ((AbstractPage) this.getOwner()).getForm();
         // 刷新
         if (this.pageTitle != null) {
             leftMenus.add(new UrlRecord("javascript:location.reload()", this.pageTitle));
@@ -324,7 +324,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     }
 
     public IForm getForm() {
-        return ((AbstractJspPage) this.getOwner()).getForm();
+        return ((AbstractPage) this.getOwner()).getForm();
     }
 
     public String getUserName() {

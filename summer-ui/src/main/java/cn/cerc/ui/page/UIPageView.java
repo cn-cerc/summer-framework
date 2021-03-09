@@ -9,7 +9,7 @@ import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.menu.MenuList;
-import cn.cerc.ui.mvc.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.parts.RightMenus;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class UIPageView extends AbstractJspPage {
+public class UIPageView extends AbstractPage {
 
     public UIPageView(IForm form) {
         super();
