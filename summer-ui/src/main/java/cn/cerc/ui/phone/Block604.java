@@ -26,7 +26,7 @@ public class Block604 extends UIComponent {
     public Block604(UIComponent owner) {
         super(owner);
         title = new UILabel();
-        title.setCaption("(title)");
+        title.setText("(title)");
     }
 
     @Override

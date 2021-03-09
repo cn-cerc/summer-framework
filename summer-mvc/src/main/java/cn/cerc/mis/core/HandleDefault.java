@@ -1,5 +1,12 @@
 package cn.cerc.mis.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import cn.cerc.core.IConnection;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
@@ -18,13 +25,7 @@ import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -53,7 +54,10 @@ public class HandleDefault implements IHandle {
     @Override
     public boolean init(String token) {
         this.setProperty(Application.token, token);
-        log.info("initialize session by token {}", token);
+        if (token == null)
+            log.warn("initialize session, token is null");
+        else
+            log.info("initialize session by token {}", token);
         if (token == null) {
             return false;
         }
@@ -62,7 +66,7 @@ public class HandleDefault implements IHandle {
         }
 
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token);
-             Jedis redis = JedisFactory.getJedis()) {
+                Jedis redis = JedisFactory.getJedis()) {
             if (buff.isNull()) {
                 buff.setField("exists", false);
                 IServiceProxy svr = ServiceFactory.get(this);

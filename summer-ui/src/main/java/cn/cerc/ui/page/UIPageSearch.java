@@ -1,5 +1,10 @@
 package cn.cerc.ui.page;
 
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
@@ -17,7 +22,6 @@ import cn.cerc.ui.grid.AbstractGrid;
 import cn.cerc.ui.grid.GridFactory;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.menu.MenuList;
-import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.other.OperaPages;
@@ -26,18 +30,12 @@ import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIFormVertical;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
 /**
  * 主体子页面
  *
  * @author 张弓
  */
-public class UIPageSearch extends AbstractJspPage {
+public class UIPageSearch extends UIPage {
     private MutiPage pages;
     private String searchWaitingId = "";
 
@@ -56,7 +54,7 @@ public class UIPageSearch extends AbstractJspPage {
     }
 
     @Override
-    public String execute() throws ServletException, IOException {
+    protected void writeHtml(PrintWriter out) {
         HttpServletRequest request = getRequest();
 
         // 添加分页控制
@@ -90,7 +88,6 @@ public class UIPageSearch extends AbstractJspPage {
         }
 
         // 开始输出
-        PrintWriter out = getResponse().getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
@@ -129,9 +126,10 @@ public class UIPageSearch extends AbstractJspPage {
         out.println("});");
         out.println("</script>");
         out.println("</head>");
-        outBody(out);
+        out.println("<body>");
+        writeBody(out);
+        out.println("</body>");
         out.println("</html>");
-        return null;
     }
 
     public void appendContent(HtmlContent content) {

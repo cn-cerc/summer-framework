@@ -1,7 +1,7 @@
 package cn.cerc.ui.parts;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.ui.mvc.AbstractJspPage;
+import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
@@ -80,7 +80,7 @@ public class UIFooter extends UIComponent {
     }
 
     public IForm getForm() {
-        return ((AbstractJspPage) this.getOwner()).getForm();
+        return ((AbstractPage) this.getOwner()).getForm();
     }
 
     public boolean isFlag() {

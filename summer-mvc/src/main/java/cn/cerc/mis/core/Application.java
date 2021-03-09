@@ -1,14 +1,5 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.core.SupportHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.language.Language;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
@@ -17,8 +8,21 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import cn.cerc.core.ClassResource;
+import cn.cerc.core.IHandle;
+import cn.cerc.core.SupportHandle;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.config.ApplicationConfig;
+import cn.cerc.mis.language.Language;
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 public class Application {
+    private static final ClassResource res = new ClassResource("summer-ui", Application.class);
     // Tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
     // token id
@@ -216,14 +220,26 @@ public class Application {
 
             IAppLogin appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginDefault");
             appLogin.init(form);
-            String loginPage = appLogin.checkToken(client.getToken());
-            if (loginPage != null) {
-                // 显示相应的登录页面
-                return loginPage;
-            }
 
-            // 已授权通过
-            return form.getView(funcCode);
+            String loginJspFile = null;
+            // 若页面有传递用户帐号，则强制重新校验
+            if (form.getRequest().getParameter("login_usr") != null) {
+                // 检查服务器的角色状态
+                if (ApplicationConfig.isReplica())
+                    throw new RuntimeException(res.getString(1, "当前服务不支持登录，请返回首页重新登录"));
+
+                String login_usr = req.getParameter("login_usr");
+                String login_pwd = req.getParameter("login_pwd");
+                loginJspFile = appLogin.checkLogin(login_usr, login_pwd);
+            } else {
+                // 检查session或url中是否存在sid
+                loginJspFile = appLogin.checkToken(client.getToken());
+            }
+            if (loginJspFile != null) {
+                return loginJspFile;
+            } else {
+                return form.getView(funcCode);
+            }
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
             return null;

@@ -1,31 +1,31 @@
 package cn.cerc.ui.mvc;
 
-import cn.cerc.core.ClassResource;
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
+import cn.cerc.ui.page.JspPage;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
-    private static final ClassResource res = new ClassResource("summer-ui", AppLoginDefault.class);
+public class AppLoginDefault extends JspPage implements IAppLogin {
 
     // 配置在服务器的用户名下面 summer-application.properties
     @Deprecated
@@ -56,21 +56,7 @@ public class AppLoginDefault extends AbstractJspPage implements IAppLogin {
     @Override
     public String checkToken(String token) throws IOException, ServletException {
         IForm form = this.getForm();
-        String password;
-        String userCode;
         try {
-            // TODO 需要统一 login_user login_pwd 与 userCode password 的名称
-            if (form.getRequest().getParameter("login_usr") != null) {
-                // 检查服务器的角色状态
-                if (ApplicationConfig.isReplica()) {
-                    throw new RuntimeException(res.getString(1, "当前服务不支持登录，请返回首页重新登录"));
-                }
-
-                userCode = getRequest().getParameter("login_usr");
-                password = getRequest().getParameter("login_pwd");
-                return checkLogin(userCode, password);
-            }
-
             log.debug("create session by token {}", token);
 
             IHandle sess = (IHandle) form.getHandle().getProperty(null);

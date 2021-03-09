@@ -97,7 +97,7 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         span.setCssClass("ui-title-operate");
         span.setText("");
         this.title.setCssClass("ui-title");
-        this.title.setCaption(String.format("%s%s", title, span.toString()));
+        this.title.setText(String.format("%s%s", title, span.toString()));
     }
 
     @Override

@@ -1,33 +1,31 @@
 package cn.cerc.ui.page;
 
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
-import cn.cerc.ui.mvc.AbstractJspPage;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.AppClient;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
-import cn.cerc.ui.mvc.IMenuBar;
-import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.menu.MenuList;
+import cn.cerc.ui.mvc.IMenuBar;
+import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFormVertical;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 /**
  * 主体子页面(公用)
  *
  * @author 张弓
  */
-public class UIPageModify extends AbstractJspPage {
+public class UIPageModify extends UIPage {
     private String searchWaitingId = "";
     private Component body;
 
@@ -46,7 +44,7 @@ public class UIPageModify extends AbstractJspPage {
     }
 
     @Override
-    public String execute() throws ServletException, IOException {
+    protected void writeHtml(PrintWriter out) {
         HttpServletRequest request = getRequest();
 
         IForm form = this.getForm();
@@ -73,7 +71,6 @@ public class UIPageModify extends AbstractJspPage {
         }
 
         // 开始输出
-        PrintWriter out = getResponse().getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
@@ -109,9 +106,10 @@ public class UIPageModify extends AbstractJspPage {
         out.println("});");
         out.println("</script>");
         out.println("</head>");
-        outBody(out);
+        out.println("<body>");
+        writeBody(out);
+        out.println("</body>");
         out.println("</html>");
-        return null;
     }
 
     public UIFormVertical createForm() {

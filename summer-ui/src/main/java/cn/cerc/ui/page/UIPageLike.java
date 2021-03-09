@@ -2,6 +2,7 @@ package cn.cerc.ui.page;
 
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.RequestData;
+import cn.cerc.ui.parts.UIDocument;
 import cn.cerc.ui.parts.UIMenuList;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,9 @@ import java.io.IOException;
 @Deprecated
 public class UIPageLike extends UIPageDialog {
     private UIMenuList menus;
-
+    // 主体: 控制区(可选)+内容+消息区
+    private UIDocument document;
+    
     public UIPageLike(IForm form) {
         super(form);
     }
@@ -31,6 +34,13 @@ public class UIPageLike extends UIPageDialog {
             menus = new UIMenuList(this.getDocument().getContent());
         }
         return menus;
+    }
+
+    public UIDocument getDocument() {
+        if (document == null) {
+            document = new UIDocument(this);
+        }
+        return document;
     }
 
     public void setMenus(Object value) {
