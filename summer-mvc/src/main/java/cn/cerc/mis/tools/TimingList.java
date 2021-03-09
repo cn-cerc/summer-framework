@@ -23,7 +23,7 @@ public class TimingList {
     public void print() {
         // 显示执行时间
         for (Timing timing : this.items) {
-            System.out.println(String.format("%s, total: %d", timing.getName(), timing.getTotal()));
+            System.out.printf("%s, total: %d%n", timing.getName(), timing.getTotal());
         }
     }
 

@@ -1,5 +1,6 @@
 package cn.cerc.ui.parts;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.mvc.AbstractJspPage;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIFooter extends UIComponent {
+    private static final ClassResource res = new ClassResource("summer-ui", UIFooter.class);
+
     private static final int MAX_MENUS = 7;
     // protected UrlRecord checkAll;
     private boolean flag = false;
@@ -35,11 +38,11 @@ public class UIFooter extends UIComponent {
     @Override
     public void output(HtmlWriter html) {
         if (this.getComponents().size() > MAX_MENUS) {
-            throw new RuntimeException(String.format("底部菜单区最多只支持 %d 个菜单项", MAX_MENUS));
+            throw new RuntimeException(String.format(res.getString(1, "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
         }
 
         if (this.buttons.size() > MAX_MENUS) {
-            throw new RuntimeException(String.format("底部菜单区最多只支持 %d 个菜单项", MAX_MENUS));
+            throw new RuntimeException(String.format(res.getString(1, "底部菜单区最多只支持 %d 个菜单项"), MAX_MENUS));
         }
 
         html.print("<footer role='footer'");

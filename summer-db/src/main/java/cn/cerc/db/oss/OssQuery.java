@@ -32,7 +32,7 @@ public class OssQuery extends DataQuery {
             }
             return this;
         } catch (Exception e) {
-            throw new RuntimeException("语法为: select * from objectId");
+            throw new RuntimeException("command suggest: select * from objectId");
         }
     }
 

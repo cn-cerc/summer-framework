@@ -1,8 +1,12 @@
 package cn.cerc.ui.parts;
 
+import cn.cerc.core.ClassResource;
+
 public class UISheet extends UIComponent {
-    private String caption = "(无标题)";
-    private String group = "工具面板";
+    private static final ClassResource res = new ClassResource("summer-ui", UISheet.class);
+
+    private String caption = res.getString(1, "(无标题)");
+    private String group = res.getString(2, "工具面板");
 
     @Deprecated
     public UISheet() {

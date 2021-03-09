@@ -1,5 +1,6 @@
 package cn.cerc.ui.grid.lines;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
@@ -9,6 +10,7 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.RowCell;
 
 public class ExpenderGridLine extends AbstractGridLine {
+    private static final ClassResource res = new ClassResource("summer-ui", ExpenderGridLine.class);
 
     public ExpenderGridLine(DataSource dataSource) {
         super(dataSource);
@@ -71,7 +73,7 @@ public class ExpenderGridLine extends AbstractGridLine {
                     } else if (field instanceof AbstractField) {
                         outputField(html, field);
                     } else {
-                        throw new RuntimeException("暂不支持的数据类型：" + field.getClass().getName());
+                        throw new RuntimeException(String.format(res.getString(1, "暂不支持的数据类型：%s"), field.getClass().getName()));
                     }
                     html.println("</span>");
                 }

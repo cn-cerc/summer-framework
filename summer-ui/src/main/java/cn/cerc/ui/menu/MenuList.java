@@ -1,11 +1,14 @@
 package cn.cerc.ui.menu;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
+import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.IDataCache;
 import com.google.gson.Gson;
@@ -21,7 +24,9 @@ import java.util.Map;
  * 系统菜单缓存
  */
 @Slf4j
-public class MenuList implements IDataCache {
+public class MenuList implements IDataCache, IUserLanguage {
+    private final ClassResource res = new ClassResource(this, "summer-ui");
+
     private final IHandle handle;
     private final Map<String, MenuModel> buff = new LinkedHashMap<>();
     private final String buffKey;
@@ -50,7 +55,7 @@ public class MenuList implements IDataCache {
 
     public MenuModel get(String menu) {
         if (Utils.isEmpty(menu)) {
-            throw new RuntimeException("模组代码不允许为空！");
+            throw new RuntimeException(res.getString(1, "模组代码不允许为空！"));
         }
         // 初始化缓存
         this.init();
@@ -131,4 +136,8 @@ public class MenuList implements IDataCache {
         Redis.delete(buffKey);
     }
 
+    @Override
+    public String getLanguageId() {
+        return R.getLanguageId(this.handle);
+    }
 }

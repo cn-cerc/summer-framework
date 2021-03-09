@@ -1,5 +1,6 @@
 package cn.cerc.ui.parts;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.UrlMenu;
 
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UISheetHelp extends UISheet {
+    private static final ClassResource res = new ClassResource("summer-ui", UISheetHelp.class);
+
     private String content;
     private UrlMenu operaUrl;
     private List<String> lines = new ArrayList<>();
@@ -14,12 +17,12 @@ public class UISheetHelp extends UISheet {
     @Deprecated
     public UISheetHelp() {
         super();
-        this.setCaption("操作提示");
+        this.setCaption(res.getString(1, "操作提示"));
     }
 
     public UISheetHelp(UIToolbar owner) {
         super(owner);
-        this.setCaption("操作提示");
+        this.setCaption(res.getString(1, "操作提示"));
     }
 
     public String getContent() {

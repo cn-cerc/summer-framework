@@ -1,5 +1,6 @@
 package cn.cerc.ui.docs;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.ServerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,8 @@ import java.io.PrintWriter;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/docs")
 public class StartDocDefault {
+    private static final ClassResource res = new ClassResource("summer-ui", StartDocDefault.class);
+
     @Autowired
     private HttpServletRequest req;
     @Autowired
@@ -36,7 +39,7 @@ public class StartDocDefault {
 
     private String execute(String uri) {
         if (!ServerConfig.enableDocService()) {
-            outputHtml("sorry", "该功能暂不开放");
+            outputHtml("sorry", res.getString(1, "该功能暂不开放"));
             return null;
         }
         if (uri.endsWith(".html")) {

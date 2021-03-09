@@ -53,7 +53,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             }
             isRunning = false;
         } else {
-            log.info("上一次任务执行还未结束");
+            log.info("last task has not ended");
         }
     }
 
@@ -88,7 +88,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 Redis.set(buffKey, "ok", timeOut);
 
                 if (task.getInterval() > 1) {
-                    log.debug("执行任务 {}", task.getClass().getName());
+                    log.debug("execute task: {}", task.getClass().getName());
                 }
 
                 task.execute();
@@ -118,7 +118,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 handle.close();
                 handle = null;
             }
-            log.warn("{} 队列重新初始化句柄", TDateTime.now());
+            log.warn("{} queue reinitialization handle", TDateTime.now());// 队列重新初始化句柄
             handle = new StubHandle();
             // 60s内不重复初始化Handle
             Redis.set(now, "true", 60);

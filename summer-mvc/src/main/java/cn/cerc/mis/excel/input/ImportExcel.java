@@ -1,5 +1,6 @@
 package cn.cerc.mis.excel.input;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
@@ -24,6 +25,8 @@ import java.net.URLEncoder;
 import java.util.List;
 
 public class ImportExcel extends ImportExcelFile {
+    private static final ClassResource res = new ClassResource("summer-mvc", ImportExcel.class);
+
     private static ApplicationContext app;
     private static String xmlFile = "classpath:import-excel.xml";
     private HttpServletResponse response;
@@ -136,7 +139,7 @@ public class ImportExcel extends ImportExcelFile {
 
         ImportExcelTemplate template = this.getTemplate();
         if (template.getColumns().size() != sheet.getColumns()) {
-            throw new RuntimeException(String.format("导入的文件：<b>%s</b>, 其总列数为 %d，而模版总列数为  %d 二者不一致，无法导入！",
+            throw new RuntimeException(String.format(res.getString(1, "导入的文件：<b>%s</b>, 其总列数为 %d，而模版总列数为  %d 二者不一致，无法导入！"),
                     file.getName(), sheet.getColumns(), template.getColumns().size()));
         }
 
@@ -149,7 +152,7 @@ public class ImportExcel extends ImportExcelFile {
                     String title = template.getColumns().get(col).getName();
                     if (!title.equals(value)) {
                         throw new RuntimeException(
-                                String.format("导入的文件：<b>%s</b>，其标题第 %d 列为【 %s】, 模版中为【%s】，二者不一致，无法导入！", file.getName(),
+                                String.format(res.getString(2, "导入的文件：<b>%s</b>，其标题第 %d 列为【 %s】, 模版中为【%s】，二者不一致，无法导入！"), file.getName(),
                                         col + 1, value, title));
                     }
                 }
@@ -165,7 +168,7 @@ public class ImportExcel extends ImportExcelFile {
                     }
                     ImportColumn column = template.getColumns().get(col);
                     if (!column.validate(row, col, value)) {
-                        ColumnValidateException err = new ColumnValidateException("其数据不符合模版要求，当前值为：" + value);
+                        ColumnValidateException err = new ColumnValidateException(String.format(res.getString(3, "其数据不符合模版要求，当前值为：%s"), value));
                         err.setTitle(column.getName());
                         err.setValue(value);
                         err.setCol(col);

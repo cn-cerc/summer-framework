@@ -1,5 +1,6 @@
 package cn.cerc.db.sms;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IConfig;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Aliyundysms {
+    private static final ClassResource res = new ClassResource("summer-db", Aliyundysms.class);
+
     public static final String SingName = "dayu.singName";
     public static final String aliyun_accessKeyId = "oss.accessKeyId";
     public static final String aliyun_accessSecret = "oss.accessKeySecret";
@@ -47,27 +50,27 @@ public class Aliyundysms {
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
 
         if (accessKeyId == null) {
-            this.message = "无法读取短信发送配置：accessKeyId！";
+            this.message = res.getString(1, "无法读取短信发送配置：accessKeyId！");
             return false;
         }
 
         if (accessSecret == null) {
-            this.message = "无法读取短信发送配置：appSercret！";
+            this.message = res.getString(2, "无法读取短信发送配置：appSercret！");
             return false;
         }
 
         if (signName == null) {
-            this.message = "签名模版不允许为空";
+            this.message = res.getString(3, "签名模版不允许为空");
             return false;
         }
 
         if (phoneNumbers == null) {
-            this.message = "电话号码不允许为空";
+            this.message = res.getString(4, "电话号码不允许为空");
             return false;
         }
 
         if (templateCode == null) {
-            this.message = "短信模版不允许为空";
+            this.message = res.getString(5, "短信模版不允许为空");
             return false;
         }
 

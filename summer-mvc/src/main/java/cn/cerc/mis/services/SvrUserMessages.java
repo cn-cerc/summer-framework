@@ -1,5 +1,6 @@
 package cn.cerc.mis.services;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -19,6 +20,7 @@ import java.math.BigInteger;
  * 异步消息操作
  */
 public class SvrUserMessages extends CustomService {
+    private static final ClassResource res = new ClassResource("summer-mvc", SvrUserMessages.class);
 
     /*
      * 取出所有的等待处理的消息列表
@@ -133,7 +135,7 @@ public class SvrUserMessages extends CustomService {
         cdsMsg.open();
         if (cdsMsg.eof()) {
             // 此任务可能被其它主机抢占
-            this.setMessage(String.format("消息号UID_ %s 不存在", msgId));
+            this.setMessage(String.format(res.getString(1, "消息号UID_ %s 不存在"), msgId));
             return false;
         }
         cdsMsg.edit();
@@ -150,7 +152,7 @@ public class SvrUserMessages extends CustomService {
                     cdsMsg.getString("CorpNo_"), cdsMsg.getString("UserCode_"));
             Redis.delete(buffKey);
         }
-        if (!cdsMsg.getString("Subject_").contains("月账单明细回算")) {
+        if (!cdsMsg.getString("Subject_").contains(res.getString(2, "月账单明细回算"))) {
             // 极光推送
             pushToJiGuang(cdsMsg);
         }

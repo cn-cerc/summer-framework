@@ -21,9 +21,9 @@ public class Queue {
     public String read() {
         message = client.popMessage();
         if (message != null) {
-            log.debug("消息内容：" + message.getMessageBodyAsString());
-            log.debug("消息编号：" + message.getMessageId());
-            log.debug("访问代码：" + message.getReceiptHandle());
+            log.debug("messageBody：{}" , message.getMessageBodyAsString());
+            log.debug("messageId：{}" , message.getMessageId());
+            log.debug("receiptHandle：{}" , message.getReceiptHandle());
             log.debug(message.getMessageBody());
             receiptHandle = message.getReceiptHandle();
             return message.getMessageBody();

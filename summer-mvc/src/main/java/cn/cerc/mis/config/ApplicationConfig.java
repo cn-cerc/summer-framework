@@ -1,5 +1,6 @@
 package cn.cerc.mis.config;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 @Slf4j
 public class ApplicationConfig {
+    private static final ClassResource res = new ClassResource("summer-mvc", ApplicationConfig.class);
 
     /**
      * 本地主机
@@ -65,19 +67,19 @@ public class ApplicationConfig {
      */
     public static String getAuthToken(String userCode, String password, String machineCode) {
         if (Utils.isEmpty(userCode)) {
-            throw new RuntimeException("userCode 不允许为空");
+            throw new RuntimeException(String.format(res.getString(1, "%s 不允许为空"), "userCode"));
         }
         if (Utils.isEmpty(password)) {
-            throw new RuntimeException("password 不允许为空");
+            throw new RuntimeException(String.format(res.getString(1, "%s 不允许为空"), "password"));
         }
         if (Utils.isEmpty(machineCode)) {
-            throw new RuntimeException("machineCode 不允许为空");
+            throw new RuntimeException(String.format(res.getString(1, "%s 不允许为空"), "machineCode"));
         }
 
         // 构建public地址
         String host = RemoteService.getApiHost(ServiceFactory.Public);
         String url = host + ApplicationConfig.App_Path + "Login.getToken";
-        log.info("请求地址 {}", url);
+        log.info("request url {}", url);
         // 构建登录请求参数
         DataSet dataIn = new DataSet();
         dataIn.getHead().setField("userCode", userCode);
@@ -87,14 +89,14 @@ public class ApplicationConfig {
         dataIn.getHead().setField("languageId", Language.zh_CN);
         dataIn.getHead().setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
         String json = dataIn.getJSON();
-        log.info("请求参数 {}", json);
+        log.info("request params {}", json);
 
         String token;
         try {
             String content = HttpClientUtil.post(url, json);
-            log.info("返回数据 {}", content);
+            log.info("response content {}", content);
             if (Utils.isEmpty(content)) {
-                throw new RuntimeException("请求 public 服务器获取 token 失败");
+                throw new RuntimeException(res.getString(2, "服务器返回内容为空"));
             }
 
             // 解析post结果
@@ -103,7 +105,7 @@ public class ApplicationConfig {
             boolean result = object.get("result").asBoolean();
             String message = object.get("message").asText();
             if (!result) {
-                log.error("用户 {} 初始化token失败", userCode);
+                log.error("userCode {} init token failure", userCode);
                 throw new RuntimeException(message);
             }
 
@@ -115,9 +117,9 @@ public class ApplicationConfig {
             dataSet.setJSON(data);
 
             token = dataSet.getHead().getString("token");
-            log.info("用户 {} 取到token {}", userCode, token);
+            log.info("userCode {} token {}", userCode, token);
             if (Utils.isEmpty(token)) {
-                throw new RuntimeException("token 获取失败");
+                throw new RuntimeException(res.getString(3, "服务器没有返回token"));
             }
         } catch (IOException e) {
             log.error(e.getMessage());

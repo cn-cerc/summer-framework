@@ -1,6 +1,8 @@
 package cn.cerc.ui.mvc;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
@@ -38,7 +40,9 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public abstract class AbstractJspPage extends UIComponent implements IPage {
+public abstract class AbstractJspPage extends UIComponent implements IPage, IUserLanguage {
+    private final ClassResource res = new ClassResource(this, "summer-ui");
+
     private String jspFile;
     private IForm form;
     private List<String> cssFiles = new ArrayList<>();
@@ -127,7 +131,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         String newFile = String.format("%s-%s.%s", fileName, "pc", extName);
         if (!this.getForm().getClient().isPhone() && fileExists(rootPath + newFile)) {
             // 检查是否存在相对应的语言版本
-            String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
+            String langCode = form == null ? Application.App_Language : R.getLanguageId(form.getHandle());
             String langFile = String.format("%s-%s-%s.%s", fileName, "pc", langCode, extName);
             if (fileExists(rootPath + langFile)) {
                 return langFile;
@@ -136,7 +140,7 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         }
 
         // 检查是否存在相对应的语言版本
-        String langCode = form == null ? Application.App_Language : R.getLanguage(form.getHandle());
+        String langCode = form == null ? Application.App_Language : R.getLanguageId(form.getHandle());
         String langFile = String.format("%s-%s.%s", fileName, langCode, extName);
         if (fileExists(rootPath + langFile)) {
             return langFile;
@@ -347,12 +351,12 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         }
         if (Utils.isNotEmpty(item.getRemark())) {
             UISheetHelp section = new UISheetHelp(toolBar);
-            section.setCaption("菜单描述");
+            section.setCaption(res.getString(1, "菜单描述"));
             section.addLine("%s", item.getRemark());
         }
         if (Utils.isNotEmpty(item.getDeadline())) {
             UISheetHelp section = new UISheetHelp(toolBar);
-            section.setCaption("停用时间");
+            section.setCaption(res.getString(2, "停用时间"));
             section.addLine("<font color='red'>%s</font>", item.getDeadline());
         }
         return toolBar;
@@ -365,8 +369,8 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         out.println(this.getDocument());
         out.println(this.getFooter());
         if (getForm().getClient().isPhone()) {
-            out.println("<span id='back-top' style='display: none'>顶部</span>");
-            out.println("<span id='back-bottom' style='display: none'>底部</span>");
+            out.println(String.format("<span id='back-top' style='display: none'>%s</span>", res.getString(3, "顶部")));
+            out.println(String.format("<span id='back-bottom' style='display: none'>%s</span>", res.getString(4, "底部")));
         }
         out.println("</body>");
     }
@@ -379,8 +383,8 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         builder.append(this.getToolBar());
         builder.append(this.getFooter());
         if (getForm().getClient().isPhone()) {
-            builder.append("<span id='back-top' style='display: none'>顶部</span>");
-            builder.append("<span id='back-bottom' style='display: none'>底部</span>");
+            builder.append(String.format("<span id='back-top' style='display: none'>%s</span>", res.getString(3, "顶部")));
+            builder.append(String.format("<span id='back-bottom' style='display: none'>%s</span>", res.getString(4, "底部")));
         }
         builder.append("</body>");
         return builder.toString();
@@ -403,6 +407,11 @@ public abstract class AbstractJspPage extends UIComponent implements IPage {
         this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js"));
         this.addScriptFile(config.getProperty("summer.js", "js/summer.js"));
         this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js"));
+    }
+
+    @Override
+    public String getLanguageId() {
+        return R.getLanguageId(form.getHandle());
     }
 
 }

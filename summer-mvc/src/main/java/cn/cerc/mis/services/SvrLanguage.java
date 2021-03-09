@@ -1,5 +1,6 @@
 package cn.cerc.mis.services;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.mysql.SqlQuery;
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrLanguage extends CustomService {
+    private static final ClassResource res = new ClassResource("summer-mvc", SvrLanguage.class);
 
     public boolean downloadAll() throws DataValidateException {
         Record headIn = getDataIn().getHead();
-        DataValidateException.stopRun("语言类型不允许为空", !headIn.hasValue("lang_"));
+        DataValidateException.stopRun(res.getString(1, "语言类型不允许为空"), !headIn.hasValue("lang_"));
 
         SqlQuery dslang = new SqlQuery(this);
         dslang.add("select * from %s", systemTable.getLanguage());
@@ -27,8 +29,8 @@ public class SvrLanguage extends CustomService {
 
     public boolean download() throws DataValidateException {
         Record headIn = getDataIn().getHead();
-        DataValidateException.stopRun("语言类型不允许为空", !headIn.hasValue("lang_"));
-        DataValidateException.stopRun("翻译文字不允许为空", !headIn.hasValue("key_"));
+        DataValidateException.stopRun(res.getString(1, "语言类型不允许为空"), !headIn.hasValue("lang_"));
+        DataValidateException.stopRun(res.getString(2, "翻译文字不允许为空"), !headIn.hasValue("key_"));
 
         String lang = headIn.getString("lang_");
         String key = headIn.getString("key_");

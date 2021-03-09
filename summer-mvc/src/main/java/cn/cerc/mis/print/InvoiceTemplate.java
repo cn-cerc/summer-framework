@@ -1,5 +1,6 @@
 package cn.cerc.mis.print;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.mis.excel.output.Column;
 import com.itextpdf.text.BaseColor;
@@ -17,6 +18,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 
 public class InvoiceTemplate extends PrintTemplate {
+    private static final ClassResource res = new ClassResource("summer-mvc", InvoiceTemplate.class);
+
     public InvoiceTemplate() {
         this.setPageWidth(58);
         this.setMarginTop(12);
@@ -59,9 +62,9 @@ public class InvoiceTemplate extends PrintTemplate {
         pdfTableHeaderCell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
 
         // 设置表头栏位
-        pdfTableHeaderCell.setPhrase(new Paragraph("名称", f8));
+        pdfTableHeaderCell.setPhrase(new Paragraph(res.getString(1, "名称"), f8));
         pdfTable.addCell(pdfTableHeaderCell);
-        pdfTableHeaderCell.setPhrase(new Paragraph("信息", f8));
+        pdfTableHeaderCell.setPhrase(new Paragraph(res.getString(2, "信息"), f8));
         pdfTable.addCell(pdfTableHeaderCell);
 
         // 创建一个表格的正文内容单元格

@@ -1,5 +1,6 @@
 package cn.cerc.ui.phone;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIActionForm;
 import cn.cerc.ui.parts.UIComponent;
@@ -13,6 +14,8 @@ import cn.cerc.ui.vcl.ext.UISpan;
  * @author 郭向军
  */
 public class Block123 extends UIComponent {
+    private static final ClassResource res = new ClassResource("summer-ui", Block123.class);
+
     private UISpan title = new UISpan();
     private UITextBox textBox = new UITextBox();
     private UIButton button = new UIButton();
@@ -21,7 +24,7 @@ public class Block123 extends UIComponent {
     public Block123(UIComponent owner) {
         super(owner);
         this.textBox.setMaxlength("20");
-        this.textBox.setPlaceholder("请输入");
+        this.textBox.setPlaceholder(res.getString(1, "请输入"));
         this.textBox.setType("text");
     }
 
