@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Controller
 @Scope(WebApplicationContext.SCOPE_REQUEST)
 @RequestMapping("/springmvc")
@@ -31,8 +28,6 @@ public class StartFormDefault implements ApplicationContextAware {
 
     @RequestMapping("/{formId}")
     public ModelAndView execute(@PathVariable String formId) {
-        log.info("uri: {}", request.getRequestURI());
-        
         String funcId = "execute";
         String[] args = request.getRequestURI().split("/");
         for(int i =0; i< args.length; i++) {
