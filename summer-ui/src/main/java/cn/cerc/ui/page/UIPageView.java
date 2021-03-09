@@ -1,10 +1,8 @@
 package cn.cerc.ui.page;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.cerc.core.Utils;
@@ -30,7 +28,7 @@ public class UIPageView extends UIPage {
     }
 
     @Override
-    public String execute() throws ServletException, IOException {
+    protected void writeHtml(PrintWriter out) {
         HttpServletRequest request = getRequest();
         IForm form = this.getForm();
         HandleDefault sess = (HandleDefault) form.getHandle().getProperty(null);
@@ -56,7 +54,6 @@ public class UIPageView extends UIPage {
         }
 
         // 开始输出
-        PrintWriter out = getResponse().getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
@@ -96,6 +93,5 @@ public class UIPageView extends UIPage {
         writeBody(out);
         out.println("</body>");
         out.println("</html>");
-        return null;
     }
 }

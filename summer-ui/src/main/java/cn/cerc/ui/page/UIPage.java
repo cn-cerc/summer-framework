@@ -1,8 +1,11 @@
 package cn.cerc.ui.page;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.ServletException;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Utils;
@@ -39,6 +42,18 @@ public abstract class UIPage extends AbstractPage {
     private UIToolbar toolBar;
     // 状态栏：快捷操作+按钮组
     private UIFooter footer;
+
+    @Override
+    public final String execute() throws ServletException, IOException {
+        writeHtml(getResponse().getWriter());
+        return null;
+    }
+    
+    /**
+     * 输出html代码
+     * @param out
+     */
+    protected abstract void writeHtml(PrintWriter out);
 
     public final List<String> getCssFiles() {
         return cssFiles;

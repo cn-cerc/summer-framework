@@ -1,10 +1,8 @@
 package cn.cerc.ui.page;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.cerc.core.DataSet;
@@ -56,7 +54,7 @@ public class UIPageSearch extends UIPage {
     }
 
     @Override
-    public String execute() throws ServletException, IOException {
+    protected void writeHtml(PrintWriter out) {
         HttpServletRequest request = getRequest();
 
         // 添加分页控制
@@ -90,7 +88,6 @@ public class UIPageSearch extends UIPage {
         }
 
         // 开始输出
-        PrintWriter out = getResponse().getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
@@ -133,7 +130,6 @@ public class UIPageSearch extends UIPage {
         writeBody(out);
         out.println("</body>");
         out.println("</html>");
-        return null;
     }
 
     public void appendContent(HtmlContent content) {
