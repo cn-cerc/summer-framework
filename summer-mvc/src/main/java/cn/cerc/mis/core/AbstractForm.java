@@ -37,6 +37,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
     private String parent;
     private String permission;
     private String module;
+    private String[] pathVariables;
 
     public Map<String, String> getParams() {
         return params;
@@ -228,16 +229,61 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
         Method method = null;
         long startTime = System.currentTimeMillis();
         try {
-            if (this.getClient().isPhone()) {
-                try {
-                    method = this.getClass().getMethod(funcCode + "_phone");
-                } catch (NoSuchMethodException e) {
+            // 支持路径参数调用，最多3个字符串参数
+            switch (this.pathVariables.length) {
+            case 1: {
+                if (this.getClient().isPhone()) {
+                    try {
+                        method = this.getClass().getMethod(funcCode + "_phone", String.class);
+                    } catch (NoSuchMethodException e) {
+                        method = this.getClass().getMethod(funcCode, String.class);
+                    }
+                } else {
+                    method = this.getClass().getMethod(funcCode, String.class);
+                }
+                result = method.invoke(this, this.pathVariables[0]);
+                break;
+            }
+            case 2: {
+                if (this.getClient().isPhone()) {
+                    try {
+                        method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class);
+                    } catch (NoSuchMethodException e) {
+                        method = this.getClass().getMethod(funcCode, String.class, String.class);
+                    }
+                } else {
+                    method = this.getClass().getMethod(funcCode, String.class, String.class);
+                }
+                result = method.invoke(this, this.pathVariables[0], this.pathVariables[1]);
+                break;
+            }
+            case 3: {
+                if (this.getClient().isPhone()) {
+                    try {
+                        method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class, String.class);
+                    } catch (NoSuchMethodException e) {
+                        method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
+                    }
+                } else {
+                    method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
+                }
+                result = method.invoke(this, this.pathVariables[0], this.pathVariables[1], this.pathVariables[2]);
+                break;
+            }
+            default: {
+                if (this.getClient().isPhone()) {
+                    try {
+                        method = this.getClass().getMethod(funcCode + "_phone");
+                    } catch (NoSuchMethodException e) {
+                        method = this.getClass().getMethod(funcCode);
+                    }
+                } else {
                     method = this.getClass().getMethod(funcCode);
                 }
-            } else {
-                method = this.getClass().getMethod(funcCode);
+                result = method.invoke(this);
             }
-            result = method.invoke(this);
+            }
+
             if (result == null)
                 return null;
 
@@ -324,5 +370,14 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
             }
             log.warn("pageCode: {}, tickCount: {}, dataIn: {}", pageCode, totalTime, dataIn);
         }
+    }
+
+    @Override
+    public void setPathVariables(String[] pathVariables) {
+        this.pathVariables = pathVariables;
+    }
+
+    public String[] getPathVariables() {
+        return this.pathVariables;
     }
 }

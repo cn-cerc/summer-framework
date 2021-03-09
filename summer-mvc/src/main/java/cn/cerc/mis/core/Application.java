@@ -167,10 +167,11 @@ public class Application {
         }
     }
 
-    public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode) {
-        //设置登录开关
+    public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode,
+            String... pathVariables) {
+        // 设置登录开关
         req.setAttribute("logon", false);
-        
+
         // 验证菜单是否启停
         IFormFilter formFilter = Application.getBean(IFormFilter.class, "AppFormFilter");
         if (formFilter != null) {
@@ -189,7 +190,7 @@ public class Application {
             IForm form = Application.getForm(req, resp, formId);
             if (form == null) {
                 outputErrorPage(req, resp, new RuntimeException("error servlet:" + req.getServletPath()));
-                return  null;
+                return null;
             }
 
             // 设备讯息
@@ -205,9 +206,12 @@ public class Application {
             req.setAttribute("myappHandle", handle);
             form.setHandle(handle);
 
+            // 传递路径变量
+            form.setPathVariables(pathVariables);
+
             // 进行安全检查，若未登录则显示登录对话框
             if (form.logon()) {
-                return  form.getView(funcCode);
+                return form.getView(funcCode);
             }
 
             IAppLogin appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginDefault");
@@ -219,7 +223,7 @@ public class Application {
             }
 
             // 已授权通过
-           return form.getView(funcCode);
+            return form.getView(funcCode);
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
             return null;
@@ -247,7 +251,7 @@ public class Application {
         request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
 
-    public static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e){
+    public static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e) {
         Throwable err = e.getCause();
         if (err == null) {
             err = e;
