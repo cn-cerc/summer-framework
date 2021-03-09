@@ -4,7 +4,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class UILabel extends UIComponent {
-    private String caption;
+    private String text;
     private String url;
     private String focusTarget;
 
@@ -15,16 +15,16 @@ public class UILabel extends UIComponent {
     public UILabel() {
         super();
     }
-
-    public UILabel(String caption, String url) {
+    
+    public UILabel(String text) {
         super();
-        this.caption = caption;
-        this.url = url;
+        this.text = text;
     }
 
-    public UILabel(String caption) {
+    public UILabel(String text, String url) {
         super();
-        this.caption = caption;
+        this.text = text;
+        this.url = url;
     }
 
     public String getFocusTarget() {
@@ -43,18 +43,36 @@ public class UILabel extends UIComponent {
                 html.print(" for='%s'", focusTarget);
             }
             super.outputCss(html);
-            html.print(">%s</label>", this.caption);
+            html.print(">%s</label>", this.text);
         } else {
-            html.print("<a href='%s'>%s</a>", this.url, this.caption);
+            html.print("<a href='%s'>%s</a>", this.url, this.text);
         }
     }
 
+    /**
+     * 请改使用 getText
+     * @return
+     */
+    @Deprecated
     public String getCaption() {
-        return caption;
+        return text;
     }
 
+    /**
+     * 请改使用 setText
+     * @param caption
+     */
+    @Deprecated 
     public void setCaption(String caption) {
-        this.caption = caption;
+        this.text = caption;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getUrl() {
