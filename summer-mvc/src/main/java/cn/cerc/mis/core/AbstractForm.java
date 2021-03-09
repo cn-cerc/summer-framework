@@ -26,7 +26,7 @@ import java.util.Map;
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
-public abstract class AbstractForm extends AbstractHandle implements IForm {
+public class AbstractForm extends AbstractHandle implements IForm {
     private static final ClassResource res = new ClassResource("summer-mvc", AbstractForm.class);
 
     @Autowired
@@ -381,5 +381,13 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
     public String[] getPathVariables() {
         return this.pathVariables;
+    }
+    
+    @Override
+    public IPage execute() throws Exception {
+        JsonPage page = new JsonPage(this);
+        page.put("class", this.getClass().getName());
+        page.setResultMessage(false, "page is not defined.");
+        return page;
     }
 }
