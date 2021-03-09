@@ -2,6 +2,9 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.IHandle;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,4 +51,8 @@ public interface IForm {
         return false;
     }
 
+    // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
+    String getView(String funcId) throws ServletException, IOException;
+
+    void setPathVariables(String[] pathVariables);
 }

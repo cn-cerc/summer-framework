@@ -9,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import java.io.IOException;
+
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -161,6 +164,114 @@ public class Application {
             return lang;
         } else {
             throw new RuntimeException("not support language: " + lang);
+        }
+    }
+
+    public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode,
+            String... pathVariables) {
+        // 设置登录开关
+        req.setAttribute("logon", false);
+
+        // 验证菜单是否启停
+        IFormFilter formFilter = Application.getBean(IFormFilter.class, "AppFormFilter");
+        if (formFilter != null) {
+            try {
+                if (formFilter.doFilter(resp, formId, funcCode)) {
+                    return null;
+                }
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        IHandle handle = null;
+        try {
+            IForm form = Application.getForm(req, resp, formId);
+            if (form == null) {
+                outputErrorPage(req, resp, new RuntimeException("error servlet:" + req.getServletPath()));
+                return null;
+            }
+
+            // 设备讯息
+            AppClient client = new AppClient();
+            client.setRequest(req);
+            req.setAttribute("_showMenu_", !AppClient.ee.equals(client.getDevice()));
+            form.setClient(client);
+
+            // 建立数据库资源
+            handle = Application.getHandle();
+            handle.setProperty(Application.sessionId, req.getSession().getId());
+            handle.setProperty(Application.deviceLanguage, client.getLanguage());
+            req.setAttribute("myappHandle", handle);
+            form.setHandle(handle);
+
+            // 传递路径变量
+            form.setPathVariables(pathVariables);
+
+            // 进行安全检查，若未登录则显示登录对话框
+            if (form.logon()) {
+                return form.getView(funcCode);
+            }
+
+            IAppLogin appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginDefault");
+            appLogin.init(form);
+            String loginPage = appLogin.checkToken(client.getToken());
+            if (loginPage != null) {
+                // 显示相应的登录页面
+                return loginPage;
+            }
+
+            // 已授权通过
+            return form.getView(funcCode);
+        } catch (Exception e) {
+            outputErrorPage(req, resp, e);
+            return null;
+        } finally {
+            if (handle != null) {
+                handle.close();
+            }
+        }
+    }
+
+    public static void outputView(HttpServletRequest request, HttpServletResponse response, String url)
+            throws IOException, ServletException {
+        if (url == null)
+            return;
+
+        if (url.startsWith("redirect:")) {
+            String redirect = url.substring(9);
+            redirect = response.encodeRedirectURL(redirect);
+            response.sendRedirect(redirect);
+            return;
+        }
+
+        // 输出jsp文件
+        String jspFile = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), url);
+        request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
+    }
+
+    public static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e) {
+        Throwable err = e.getCause();
+        if (err == null) {
+            err = e;
+        }
+        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
+        if (errorPage != null) {
+            String result = errorPage.getErrorPage(request, response, err);
+            if (result != null) {
+                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
+                try {
+                    request.getServletContext().getRequestDispatcher(url).forward(request, response);
+                } catch (ServletException | IOException e1) {
+                    log.error(e1.getMessage());
+                    e1.printStackTrace();
+                }
+            }
+        } else {
+            log.warn("not define bean: errorPage");
+            log.error(err.getMessage());
+            err.printStackTrace();
         }
     }
 
