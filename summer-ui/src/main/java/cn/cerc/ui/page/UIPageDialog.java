@@ -20,11 +20,14 @@ import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
+import cn.cerc.ui.parts.UIToolbar;
 
 public class UIPageDialog extends JspPage {
     private boolean showMenus = true; // 是否显示主菜单
     private MutiPage pages;
-
+    // 工具面板：多页形式
+    private UIToolbar toolBar;
+    
     public UIPageDialog(IForm form) {
         super();
         setForm(form);
@@ -89,6 +92,13 @@ public class UIPageDialog extends JspPage {
 
         // 输出jsp模版
         return this.getViewFile();
+    }
+
+    public UIToolbar getToolBar() {
+        if (toolBar == null) {
+            toolBar = new UIToolbar(this);
+        }
+        return toolBar;
     }
 
     public void installAdvertisement() {

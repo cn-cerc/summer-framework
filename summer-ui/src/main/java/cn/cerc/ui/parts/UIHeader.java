@@ -1,5 +1,8 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.IUserLanguage;
@@ -19,11 +22,6 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.phone.Block104;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UIHeader extends UIComponent implements IUserLanguage {
     private final ClassResource res = new ClassResource(this, "summer-ui");

@@ -129,7 +129,9 @@ public class UIPageSearch extends UIPage {
         out.println("});");
         out.println("</script>");
         out.println("</head>");
-        outBody(out);
+        out.println("<body>");
+        writeBody(out);
+        out.println("</body>");
         out.println("</html>");
         return null;
     }

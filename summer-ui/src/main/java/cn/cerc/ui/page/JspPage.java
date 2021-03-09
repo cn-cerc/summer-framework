@@ -1,8 +1,11 @@
 package cn.cerc.ui.page;
 
 import cn.cerc.ui.mvc.AbstractPage;
+import cn.cerc.ui.parts.UIHeader;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.servlet.ServletException;
 
@@ -12,7 +15,9 @@ import cn.cerc.mis.language.R;
 
 public class JspPage extends AbstractPage {
     private String jspFile;
-
+    // 头部：广告+菜单
+    private UIHeader header;
+    
     public JspPage() {
         super();
     }
@@ -26,6 +31,13 @@ public class JspPage extends AbstractPage {
         super();
         setForm(form);
         this.setJspFile(jspFile);
+    }
+
+    public UIHeader getHeader() {
+        if (header == null) {
+            header = new UIHeader(this);
+        }
+        return header;
     }
 
     public void add(String id, Object value) {
@@ -85,4 +97,17 @@ public class JspPage extends AbstractPage {
 
         return jspFile;
     }
+    
+    private boolean fileExists(String fileName) {
+        URL url = AbstractPage.class.getClassLoader().getResource("");
+        if (url == null) {
+            return false;
+        }
+        String filepath = url.getPath();
+        String appPath = filepath.substring(0, filepath.indexOf("/WEB-INF"));
+        String file = appPath + fileName;
+        File f = new File(file);
+        return f.exists();
+    }
+
 }
