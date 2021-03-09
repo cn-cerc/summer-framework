@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author 张弓
  */
-public class UIPagePhone extends AbstractPage {
+public class UIPagePhone extends UIPage {
     private String searchWaitingId = "";
     private Component body;
 

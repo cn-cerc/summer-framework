@@ -1,35 +1,35 @@
 package cn.cerc.ui.page;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
-import cn.cerc.ui.mvc.AbstractPage;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.AppClient;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
-import cn.cerc.ui.mvc.IMenuBar;
-import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.mis.rds.PassportRecord;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.menu.MenuList;
+import cn.cerc.ui.mvc.IMenuBar;
+import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIFormVertical;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 /**
  * 主体子页面
  *
  * @author 张弓
  */
-public class UIPageBill extends AbstractPage {
+public class UIPageBill extends UIPage {
     private String searchWaitingId = "";
 
     public UIPageBill(IForm form) {

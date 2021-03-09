@@ -1,5 +1,12 @@
 package cn.cerc.ui.page;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
@@ -17,7 +24,6 @@ import cn.cerc.ui.grid.AbstractGrid;
 import cn.cerc.ui.grid.GridFactory;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.menu.MenuList;
-import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.other.OperaPages;
@@ -26,18 +32,12 @@ import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIFormVertical;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
 /**
  * 主体子页面
  *
  * @author 张弓
  */
-public class UIPageSearch extends AbstractPage {
+public class UIPageSearch extends UIPage {
     private MutiPage pages;
     private String searchWaitingId = "";
 
