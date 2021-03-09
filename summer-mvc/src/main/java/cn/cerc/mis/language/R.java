@@ -50,10 +50,9 @@ public class R {
 
     public static String asString(IHandle handle, String text) {
         String language = getLanguageId(handle);
-        if (Application.App_Language.equals(language)) {
+        if (Application.App_Language.equals(Language.zh_CN)) {
             return text;
         }
-
         if (text == null || "".equals(text.trim())) {
             log.error("text is empty");
             return "file error";
@@ -97,12 +96,13 @@ public class R {
         SqlQuery dsLang = new SqlQuery(handle);
         dsLang.add("select Key_,max(Value_) as Value_ from %s", systemTable.getLanguage());
         dsLang.add("where Key_='%s'", Utils.safeString(text));
+        dsLang.add("and (Lang_='%s')", language);
         // FIXME: 2019/12/7 此处应该取反了，未来得及翻译的语言应该直接显示中文
-        if (Language.en_US.equals(language)) {
-            dsLang.add("and (Lang_='%s')", language);
-        } else {
-            dsLang.add("and (Lang_='%s' or Lang_='en')", language);
-        }
+        // if (Language.en_US.equals(language)) {
+        //     dsLang.add("and (Lang_='%s')", language);
+        // } else {
+        //     dsLang.add("and (Lang_='%s' or Lang_='en')", language);
+        // }
         dsLang.add("group by Key_");
         dsLang.open();
         String result = dsLang.getString("Value_");

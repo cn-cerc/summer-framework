@@ -86,7 +86,7 @@ public class ApplicationConfig {
         dataIn.getHead().setField("password", password);
         dataIn.getHead().setField("clientId", machineCode);
         dataIn.getHead().setField("device", AppClient.pc);
-        dataIn.getHead().setField("languageId", Language.zh_CN);
+        dataIn.getHead().setField("languageId", Application.App_Language);
         dataIn.getHead().setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
         String json = dataIn.getJSON();
         log.info("request params {}", json);
