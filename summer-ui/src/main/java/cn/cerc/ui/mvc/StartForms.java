@@ -13,16 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
-import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.IAppErrorPage;
-import cn.cerc.mis.core.IAppLogin;
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IFormFilter;
 import cn.cerc.mis.core.RequestData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -93,7 +87,7 @@ public class StartForms implements Filter {
         // 2、处理Url请求
         String childCode = getRequestCode(req);
         if (childCode == null) {
-            outputErrorPage(req, resp, new RuntimeException("无效的请求：" + req.getServletPath()));
+            Application.outputErrorPage(req, resp, new RuntimeException("无效的请求：" + req.getServletPath()));
             return;
         }
 
@@ -101,85 +95,7 @@ public class StartForms implements Filter {
         String formId = params[0];
         String funcCode = params.length == 1 ? "execute" : params[1];
 
-        // TODO ???
-        req.setAttribute("logon", false);
-
-        // 验证菜单是否启停
-        // TODO ???
-        IFormFilter formFilter = Application.getBean(IFormFilter.class, "AppFormFilter");
-        if (formFilter != null) {
-            if (formFilter.doFilter(resp, formId, funcCode)) {
-                return;
-            }
-        }
-
-        IHandle handle = null;
-        try {
-            IForm form = Application.getForm(req, resp, formId);
-            if (form == null) {
-                outputErrorPage(req, resp, new RuntimeException("error servlet:" + req.getServletPath()));
-                return;
-            }
-
-            // 设备讯息
-            AppClient client = new AppClient();
-            client.setRequest(req);
-            req.setAttribute("_showMenu_", !AppClient.ee.equals(client.getDevice()));
-            form.setClient(client);
-
-            // 建立数据库资源
-            handle = Application.getHandle();
-            handle.setProperty(Application.sessionId, req.getSession().getId());
-            handle.setProperty(Application.deviceLanguage, client.getLanguage());
-            req.setAttribute("myappHandle", handle);
-            form.setHandle(handle);
-
-            // 进行安全检查，若未登录则显示登录对话框
-            if (form.logon()) {
-                String url = form.getView(funcCode);
-                Application.outputView(req, resp, url);
-                return;
-            }
-
-            IAppLogin appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginDefault");
-            appLogin.init(form);
-            String loginPage = appLogin.checkToken(client.getToken());
-            if (loginPage != null) {
-                // 显示相应的登录页面
-                Application.outputView(req, resp, loginPage);
-                return;
-            }
-
-            // 已授权通过
-            String url = form.getView(funcCode);
-            Application.outputView(req, resp, url);
-        } catch (Exception e) {
-            outputErrorPage(req, resp, e);
-        } finally {
-            if (handle != null) {
-                handle.close();
-            }
-        }
-    }
-
-    private void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e)
-            throws ServletException, IOException {
-        Throwable err = e.getCause();
-        if (err == null) {
-            err = e;
-        }
-        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
-        if (errorPage != null) {
-            String result = errorPage.getErrorPage(request, response, err);
-            if (result != null) {
-                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
-                request.getServletContext().getRequestDispatcher(url).forward(request, response);
-            }
-        } else {
-            log.warn("not define bean: errorPage");
-            log.error(err.getMessage());
-            err.printStackTrace();
-        }
+        Application.startForm(req, resp, formId, funcCode);
     }
 
     public static String getRequestCode(HttpServletRequest req) {
