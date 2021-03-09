@@ -95,8 +95,9 @@ public class StartForms implements Filter {
         String formId = params[0];
         String funcCode = params.length == 1 ? "execute" : params[1];
 
-        Application.startForm(req, resp, formId, funcCode);
-    }
+        String viewId = Application.getFormView(req, resp, formId, funcCode);
+        Application.outputView(req, resp, viewId);
+        }
 
     public static String getRequestCode(HttpServletRequest req) {
         String url = null;

@@ -167,24 +167,7 @@ public class Application {
         }
     }
 
-    public static void outputView(HttpServletRequest request, HttpServletResponse response, String url)
-            throws IOException, ServletException {
-        if (url == null)
-            return;
-
-        if (url.startsWith("redirect:")) {
-            String redirect = url.substring(9);
-            redirect = response.encodeRedirectURL(redirect);
-            response.sendRedirect(redirect);
-            return;
-        }
-
-        // 输出jsp文件
-        String jspFile = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), url);
-        request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
-    }
-
-    public static void startForm(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode) {
+    public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode) {
         //设置登录开关
         req.setAttribute("logon", false);
         
@@ -193,7 +176,7 @@ public class Application {
         if (formFilter != null) {
             try {
                 if (formFilter.doFilter(resp, formId, funcCode)) {
-                    return;
+                    return null;
                 }
             } catch (IOException e) {
                 log.error(e.getMessage());
@@ -206,7 +189,7 @@ public class Application {
             IForm form = Application.getForm(req, resp, formId);
             if (form == null) {
                 outputErrorPage(req, resp, new RuntimeException("error servlet:" + req.getServletPath()));
-                return;
+                return  null;
             }
 
             // 设备讯息
@@ -224,9 +207,7 @@ public class Application {
 
             // 进行安全检查，若未登录则显示登录对话框
             if (form.logon()) {
-                String url = form.getView(funcCode);
-                Application.outputView(req, resp, url);
-                return;
+                return  form.getView(funcCode);
             }
 
             IAppLogin appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginDefault");
@@ -234,20 +215,36 @@ public class Application {
             String loginPage = appLogin.checkToken(client.getToken());
             if (loginPage != null) {
                 // 显示相应的登录页面
-                Application.outputView(req, resp, loginPage);
-                return;
+                return loginPage;
             }
 
             // 已授权通过
-            String url = form.getView(funcCode);
-            Application.outputView(req, resp, url);
+           return form.getView(funcCode);
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
+            return null;
         } finally {
             if (handle != null) {
                 handle.close();
             }
         }
+    }
+
+    public static void outputView(HttpServletRequest request, HttpServletResponse response, String url)
+            throws IOException, ServletException {
+        if (url == null)
+            return;
+
+        if (url.startsWith("redirect:")) {
+            String redirect = url.substring(9);
+            redirect = response.encodeRedirectURL(redirect);
+            response.sendRedirect(redirect);
+            return;
+        }
+
+        // 输出jsp文件
+        String jspFile = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), url);
+        request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
 
     public static void outputErrorPage(HttpServletRequest request, HttpServletResponse response, Throwable e){
