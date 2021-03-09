@@ -1,10 +1,10 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
-import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +27,8 @@ import java.util.Map;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
 public abstract class AbstractForm extends AbstractHandle implements IForm {
+    private static final ClassResource res = new ClassResource("summer-mvc", AbstractForm.class);
+
     @Autowired
     public ISystemTable systemTable;
     private HttpServletRequest request;
@@ -174,7 +176,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
             if (!Application.getPassport(this.getHandle()).passForm(this)) {
                 log.warn(String.format("无权限执行 %s", request.getRequestURL()));
                 JsonPage output = new JsonPage(this);
-                output.setResultMessage(false, R.asString(this.getHandle(), "对不起，您没有权限执行此功能！"));
+                output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
                 output.execute();
                 return null;
             }
@@ -200,7 +202,7 @@ public abstract class AbstractForm extends AbstractHandle implements IForm {
 
             if (this instanceof IJSONForm) {
                 JsonPage output = new JsonPage(this);
-                output.setResultMessage(false, "您的设备没有经过安全校验，无法继续作业");
+                output.setResultMessage(false, res.getString(2, "您的设备没有经过安全校验，无法继续作业"));
                 output.execute();
                 return null;
             }

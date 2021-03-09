@@ -33,8 +33,15 @@ public class StartForms implements Filter {
         log.debug("uri {}", uri);
 
         /*
-         * http://127.0.0.1:8103/ http://127.0.0.1:8103 http://127.0.0.1:8103/public
-         * http://127.0.0.1:8103/public/ http://127.0.0.1:8103/favicon.ico
+         * http://127.0.0.1:8103/
+         * 
+         * http://127.0.0.1:8103
+         * 
+         * http://127.0.0.1:8103/public
+         * 
+         * http://127.0.0.1:8103/public/
+         * 
+         * http://127.0.0.1:8103/favicon.ico
          */
         if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
             IAppConfig conf = Application.getAppConfig();
@@ -97,7 +104,7 @@ public class StartForms implements Filter {
 
         String viewId = Application.getFormView(req, resp, formId, funcCode);
         Application.outputView(req, resp, viewId);
-        }
+    }
 
     public static String getRequestCode(HttpServletRequest req) {
         String url = null;
