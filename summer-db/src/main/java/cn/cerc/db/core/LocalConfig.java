@@ -13,6 +13,9 @@ import cn.cerc.core.IConfig;
 public enum LocalConfig implements IConfig {
 
     INSTANCE;
+    
+    @Deprecated
+    public static final String path = System.getProperty("user.home") + System.getProperty("file.separator");
 
     private static final ClassConfig properties = new ClassConfig();
 
