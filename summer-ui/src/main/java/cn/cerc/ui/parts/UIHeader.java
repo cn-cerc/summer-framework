@@ -24,8 +24,8 @@ import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.phone.Block104;
 
 public class UIHeader extends UIComponent implements IUserLanguage {
-    private final ClassResource res = new ClassResource(this, "summer-ui");
     private static final ClassConfig config = new ClassConfig(UIHeader.class, "summer-ui");
+    private final ClassResource res = new ClassResource(this, "summer-ui");
 
     private static final int MAX_MENUS = 4;
     private UIAdvertisement advertisement; // 可选
