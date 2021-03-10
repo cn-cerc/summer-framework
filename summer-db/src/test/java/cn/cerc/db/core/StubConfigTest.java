@@ -39,8 +39,4 @@ public class StubConfigTest implements IConfig {
         return result;
     }
 
-    @Override
-    public String getProperty(String key) {
-        return this.getProperty(key, null);
-    }
 }
