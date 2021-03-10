@@ -3,6 +3,7 @@ package cn.cerc.ui.mvc;
 import java.util.List;
 import java.util.Map;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Record;
@@ -16,10 +17,13 @@ import cn.cerc.mis.core.HTMLResource;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mis.language.R;
+import cn.cerc.mvc.SummerMVC;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.parts.UIComponent;
 
 public abstract class AbstractPage extends UIComponent implements IPage, IUserLanguage {
+    // 此处使用SummerMVC.ID是为了与CDN中一致，请勿改动！！！
+    private static final ClassConfig config = new ClassConfig(AbstractPage.class, SummerMVC.ID);
 
     private IForm form;
 
@@ -36,7 +40,7 @@ public abstract class AbstractPage extends UIComponent implements IPage, IUserLa
     public final void setForm(IForm form) {
         this.form = form;
         this.add("cdn", CDN.getSite());
-        this.add("version", HTMLResource.getVersion());
+        this.add("version", config.getString("browser.cache.version", "1.0.0.0"));
         if (form != null) {
             this.put("jspPage", this);
             // 为兼容而设计
