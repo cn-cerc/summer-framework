@@ -11,6 +11,8 @@ import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.language.Language;
+import cn.cerc.mvc.SummerMVC;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @Slf4j
+@Deprecated
 public class ApplicationConfig {
-    private static final ClassResource res = new ClassResource("summer-mvc", ApplicationConfig.class);
+    private static final ClassResource res = new ClassResource(ApplicationConfig.class, SummerMVC.ID);
 
     /**
      * 本地主机
@@ -48,11 +51,13 @@ public class ApplicationConfig {
         return (String) handle.getProperty(Application.token);
     }
 
+    @Deprecated
     public static boolean isMaster() {
         String appRole = ServerConfig.getInstance().getProperty(ApplicationConfig.App_Role_Key, ApplicationConfig.App_Role_Master);
         return ApplicationConfig.App_Role_Master.equals(appRole);
     }
 
+    @Deprecated
     public static boolean isReplica() {
         return !ApplicationConfig.isMaster();
     }

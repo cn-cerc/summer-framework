@@ -46,7 +46,7 @@ public class StartForms implements Filter {
          */
         if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
             String redirect = String.format("%s%s", ApplicationConfig.App_Path,
-                    config.getProperty(Application.FORM_WELCOME, "welcome"));
+                    config.getString(Application.FORM_WELCOME, "welcome"));
             redirect = resp.encodeRedirectURL(redirect);
             resp.sendRedirect(redirect);
             return;

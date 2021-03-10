@@ -1,5 +1,6 @@
 package cn.cerc.ui.mvc;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.config.ApplicationConfig;
@@ -7,6 +8,7 @@ import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
+import cn.cerc.mvc.SummerMVC;
 import cn.cerc.ui.core.UrlRecord;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 @Slf4j
 @Deprecated // 请改使用 StartAppDefault
 public class StartApp implements Filter {
+    private static final ClassConfig config = new ClassConfig(StartApp.class, SummerMVC.ID);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -54,12 +57,11 @@ public class StartApp implements Filter {
                 req.getSession().setAttribute(AppClient.CLIENT_ID, req.getParameter(AppClient.CLIENT_ID));
             }
             if (req.getParameter(AppClient.DEVICE) != null) {
-                req.getSession().setAttribute(AppClient.DEVICE,
-                        req.getParameter(AppClient.DEVICE));
+                req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
             }
 
-            IAppConfig conf = Application.getAppConfig();
-            String redirect = String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome());
+            String redirect = String.format("/%s/%s", config.getString(Application.PATH_FORMS, "forms"),
+                    config.getString(Application.FORM_WELCOME, "welcome"));
             redirect = resp.encodeRedirectURL(redirect);
             resp.sendRedirect(redirect);
             return;
@@ -68,8 +70,7 @@ public class StartApp implements Filter {
                 req.getSession().setAttribute(AppClient.CLIENT_ID, req.getParameter(AppClient.CLIENT_ID));
             }
             if (req.getParameter(AppClient.DEVICE) != null) {
-                req.getSession().setAttribute(AppClient.DEVICE,
-                        req.getParameter(AppClient.DEVICE));
+                req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
             }
             try {
                 IForm form;

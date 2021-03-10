@@ -25,7 +25,7 @@ import cn.cerc.ui.phone.Block104;
 
 public class UIHeader extends UIComponent implements IUserLanguage {
     private static final ClassConfig config = new ClassConfig(UIHeader.class, SummerUI.ID);
-    private final ClassResource res = new ClassResource(this,  SummerUI.ID);
+    private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
     private static final int MAX_MENUS = 4;
     private UIAdvertisement advertisement; // 可选
@@ -60,7 +60,6 @@ public class UIHeader extends UIComponent implements IUserLanguage {
 
     private IHandle handle;
 
-
     public void setHeadInfo(String logoSrc, String welcome) {
         this.logoSrc = logoSrc;
         this.welcome = welcome;
@@ -88,7 +87,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     public UIHeader(AbstractPage page) {
         super(page);
         this.handle = page.getForm().getHandle();
-        
+
         String defaultPage = config.getString(Application.FORM_DEFAULT, "default");
         homePage = new UrlRecord(defaultPage, getHomeImage(page));
         leftMenus.add(homePage);
@@ -96,7 +95,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
         homePage = new UrlRecord(defaultPage, res.getString(1, "开始"));
 
         IClient client = page.getForm().getClient();
-        boolean isShowBar = config.getBoolean("app.ui.head.show", true); 
+        boolean isShowBar = config.getBoolean("app.ui.head.show", true);
         if (!client.isPhone() && isShowBar) {
             String token = (String) handle.getProperty(Application.token);
             handle.init(token);
@@ -139,7 +138,9 @@ public class UIHeader extends UIComponent implements IUserLanguage {
             html.print("</div>");
             html.print("<span>%s</span>", welcome);
             html.print("<div class='user_right'>");
-            html.print("<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>", currentUser, ApplicationConfig.App_Path, corpNoName, userName);
+            html.print(
+                    "<span>%s：<i><a href='%sTFrmChooseAccount' style='margin-left:0.5em;'>%s</a></i><i>/</i><i>%s</i></span>",
+                    currentUser, ApplicationConfig.App_Path, corpNoName, userName);
             html.print("<a href='%s'>%s</a>", exitSystem.getUrl(), exitSystem.getName());
             html.print("</div>");
             html.print("</div>");

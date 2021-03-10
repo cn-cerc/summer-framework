@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.LanguageResource;
@@ -19,12 +20,14 @@ import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.Language;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Application {
-    private static final ClassResource res = new ClassResource("summer-ui", Application.class);
-    // Tomcat JSESSION.ID
+    private static final ClassResource res = new ClassResource(Application.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(Application.class, SummerMVC.ID);
+    // tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
     // token id
     public static final String token = "ID";
@@ -283,7 +286,7 @@ public class Application {
         }
 
         // 输出jsp文件
-        String jspFile = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), url);
+        String jspFile = String.format("/WEB-INF/%s/%s", config.getString(Application.PATH_FORMS, "forms"), url);
         request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
 
@@ -296,7 +299,7 @@ public class Application {
         if (errorPage != null) {
             String result = errorPage.getErrorPage(request, response, err);
             if (result != null) {
-                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
+                String url = String.format("/WEB-INF/%s/%s", config.getString(Application.PATH_FORMS, "forms"), result);
                 try {
                     request.getServletContext().getRequestDispatcher(url).forward(request, response);
                 } catch (ServletException | IOException e1) {
