@@ -4,7 +4,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.ui.core.HtmlWriter;
 
 public class UICheckAll extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", UICheckAll.class);
+    private static final ClassResource res = new ClassResource(UICheckAll.class, "summer-ui");
 
     private String targetId;
     private String caption = res.getString(1, "全选");

@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 @Slf4j
 public class OssDisk {
-    private static final ClassResource res = new ClassResource("summer-db", OssDisk.class);
+    private static final ClassResource res = new ClassResource(OssDisk.class, "summer-db");
 
     private OssConnection connection;
     private OSS client;

@@ -13,7 +13,7 @@ import cn.cerc.ui.grid.RowCell;
 import java.util.List;
 
 public class MasterGridLine extends AbstractGridLine {
-    private static final ClassResource res = new ClassResource("summer-ui", MasterGridLine.class);
+    private static final ClassResource res = new ClassResource(MasterGridLine.class, "summer-ui");
 
     private String primaryKey;
     // 列管理器，用于支持自定义栏位

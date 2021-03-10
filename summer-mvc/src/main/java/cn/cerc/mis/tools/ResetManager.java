@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 public class ResetManager implements IBookManage {
-    private static final ClassResource res = new ClassResource("summer-mvc", ResetManager.class);
+    private static final ClassResource res = new ClassResource(ResetManager.class, "summer-mvc");
 
     private IHandle handle;
     private String initMonth;

@@ -18,7 +18,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 
 public class ReportHeaderFooter extends PdfPageEventHelper {
-    private static final ClassResource res = new ClassResource("summer-mvc", ReportHeaderFooter.class);
+    private static final ClassResource res = new ClassResource(ReportHeaderFooter.class,"summer-mvc");
 
     /**
      * 页眉

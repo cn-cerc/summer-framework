@@ -10,7 +10,7 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.parts.UIComponent;
 
 public class RangeField extends AbstractField implements DataSource {
-    private static final ClassResource res = new ClassResource("summer-ui", RangeField.class);
+    private static final ClassResource res = new ClassResource(RangeField.class, "summer-ui");
 
     public RangeField(UIComponent dataView, String name) {
         super(dataView, name, 0);

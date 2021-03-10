@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIFormHorizontal extends UIComponent implements DataSource {
-    private static final ClassResource res = new ClassResource("summer-ui", UIFormHorizontal.class);
+    private static final ClassResource res = new ClassResource(UIFormHorizontal.class, "summer-ui");
 
     protected String cssClass = "search";
     protected String method = "post";

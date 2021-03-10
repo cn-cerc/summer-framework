@@ -7,7 +7,7 @@ import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
 
 public class QueueFactory {
-    private static final ClassResource res = new ClassResource("summer-db", QueueFactory.class);
+    private static final ClassResource res = new ClassResource(QueueFactory.class, "summer-db");
 
     private static MNSClient client;
     private static CloudAccount account;

@@ -6,7 +6,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 
 public class AbstractHandle implements IHandle {
 
-    private static final ClassResource res = new ClassResource("summer-mvc", AbstractHandle.class);
+    private static final ClassResource res = new ClassResource(AbstractHandle.class, "summer-mvc");
 
     protected IHandle handle;
 

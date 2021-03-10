@@ -17,7 +17,7 @@ import java.util.Map;
  * @author HuangRongjun
  */
 public class Block303 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block303.class);
+    private static final ClassResource res = new ClassResource(Block303.class, "summer-ui");
 
     private Map<UrlRecord, UIImage> items = new LinkedHashMap<>();
 

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AliyunQueueConnection implements IConnection {
-    private static final ClassResource res = new ClassResource("summer-db", AliyunQueueConnection.class);
+    private static final ClassResource res = new ClassResource(AliyunQueueConnection.class, "summer-db");
 
     public static final String AccountEndpoint = "mns.accountendpoint";
     public static final String AccessKeyId = "mns.accesskeyid";

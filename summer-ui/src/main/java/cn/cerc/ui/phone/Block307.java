@@ -18,7 +18,7 @@ import java.util.List;
  * @author HuangRongjun
  */
 public class Block307 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block307.class);
+    private static final ClassResource res = new ClassResource(Block307.class, "summer-ui");
 
     private UISpan title;
     private UrlRecord url;

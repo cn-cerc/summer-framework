@@ -15,7 +15,7 @@ import java.util.List;
  * @author weish
  */
 public class BOMTemplate extends ExcelTemplate {
-    private static final ClassResource res = new ClassResource("summer-mvc", BOMTemplate.class);
+    private static final ClassResource res = new ClassResource(BOMTemplate.class, "summer-mvc");
 
     private List<Column> heads;
     private List<Column> materials;

@@ -5,7 +5,7 @@ import cn.cerc.core.IDataOperator;
 import cn.cerc.core.Record;
 
 public class OssOperator implements IDataOperator {
-    private static final ClassResource res = new ClassResource("summer-db", OssOperator.class);
+    private static final ClassResource res = new ClassResource(OssOperator.class, "summer-db");
 
     // 根据 sql 获取数据库表名
     public String findTableName(String sql) {

@@ -7,7 +7,7 @@ import cn.cerc.db.core.ServerConfig;
  * 阿里云消息队列
  */
 public class QueueDB {
-    private static final ClassResource res = new ClassResource("summer-db", QueueDB.class);
+    private static final ClassResource res = new ClassResource(QueueDB.class, "summer-db");
 
     /**
      * 系统消息

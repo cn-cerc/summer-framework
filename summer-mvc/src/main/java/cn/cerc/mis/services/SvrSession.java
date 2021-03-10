@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SvrSession extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-mvc", SvrSession.class);
+    private static final ClassResource res = new ClassResource(SvrSession.class, "summer-mvc");
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();

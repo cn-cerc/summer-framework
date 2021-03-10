@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BeanRecord<T> implements AutoCloseable, BuildRecord {
-    private static final ClassResource res = new ClassResource("summer-ui", BeanRecord.class);
+    private static final ClassResource res = new ClassResource(BeanRecord.class, "summer-ui");
 
     private Map<Field, Method> gets = new HashMap<>();
     private Map<Field, Method> sets = new HashMap<>();

@@ -23,7 +23,7 @@ import java.util.List;
 
 @Slf4j
 public class AsyncService implements IServiceProxy {
-    private static final ClassResource res = new ClassResource("summer-mvc", AsyncService.class);
+    private static final ClassResource res = new ClassResource(AsyncService.class, "summer-mvc");
 
     // 状态列表
     private static List<String> processTiles = new ArrayList<>();

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MemoryBookInfo {
-    private static final ClassResource res = new ClassResource("summer-mvc", MemoryBookInfo.class);
+    private static final ClassResource res = new ClassResource(MemoryBookInfo.class, "summer-mvc");
 
     private static final String buffVersion = "5";
 

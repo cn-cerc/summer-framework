@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
-    private static final ClassResource res = new ClassResource("summer-mvc", BookDataList.class);
+    private static final ClassResource res = new ClassResource(BookDataList.class, "summer-mvc");
 
     private List<IBookData> items = new ArrayList<>();
     private DurationSection section;

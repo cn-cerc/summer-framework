@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 
 @Deprecated // 请改使用 StartDocDefault
 public class StartDocs extends HttpServlet {
-    private static final ClassResource res = new ClassResource("summer-ui", StartDocs.class);
+    private static final ClassResource res = new ClassResource(StartDocs.class, "summer-ui");
 
     private static final long serialVersionUID = 1L;
 

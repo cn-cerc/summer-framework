@@ -30,7 +30,7 @@ import java.util.Map;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/services")
 public class StartServiceDefault {
-    private static final ClassResource res = new ClassResource("summer-mvc", StartServiceDefault.class);
+    private static final ClassResource res = new ClassResource(StartServiceDefault.class, "summer-mvc");
 
     private static final String sessionId = "sessionId";
     private static Map<String, String> services;

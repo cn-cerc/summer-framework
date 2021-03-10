@@ -8,7 +8,7 @@ import cn.cerc.mis.other.HistoryLevel;
 import cn.cerc.mis.other.HistoryRecord;
 
 public class ExportHistoryWriter implements HistoryWriter {
-    private static final ClassResource res = new ClassResource("summer-mvc", ExportHistoryWriter.class);
+    private static final ClassResource res = new ClassResource(ExportHistoryWriter.class, "summer-mvc");
 
     @Override
     public void start(Object handle, ExcelTemplate template) {

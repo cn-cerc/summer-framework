@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/docs")
 public class StartDocDefault {
-    private static final ClassResource res = new ClassResource("summer-ui", StartDocDefault.class);
+    private static final ClassResource res = new ClassResource(StartDocDefault.class, "summer-ui");
 
     @Autowired
     private HttpServletRequest req;

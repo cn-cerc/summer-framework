@@ -5,7 +5,7 @@ import cn.cerc.db.cache.Buffer;
 
 public class MemoryBuffer extends Buffer implements AutoCloseable {
 
-    private static final ClassResource res = new ClassResource("summer-mvc", MemoryBuffer.class);
+    private static final ClassResource res = new ClassResource(MemoryBuffer.class, "summer-mvc");
 
     public MemoryBuffer(BufferType bt, String... keys) {
         super();

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UISheetHelp extends UISheet {
-    private static final ClassResource res = new ClassResource("summer-ui", UISheetHelp.class);
+    private static final ClassResource res = new ClassResource(UISheetHelp.class, "summer-ui");
 
     private String content;
     private UrlMenu operaUrl;

@@ -5,7 +5,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
 
 public interface IBookManage {
-    ClassResource res = new ClassResource("summer-mvc", IBookManage.class);
+    ClassResource res = new ClassResource(IBookManage.class, "summer-mvc");
 
     // 取得环境
     IHandle getHandle();

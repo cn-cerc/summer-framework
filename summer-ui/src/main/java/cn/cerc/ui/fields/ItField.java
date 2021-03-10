@@ -7,7 +7,7 @@ import cn.cerc.ui.parts.UIComponent;
 
 public class ItField extends AbstractField {
 
-    private static final ClassResource res = new ClassResource("summer-ui", ItField.class);
+    private static final ClassResource res = new ClassResource(ItField.class, "summer-ui");
 
     public ItField(UIComponent owner) {
         super(owner, res.getString(1, "序"), 2);

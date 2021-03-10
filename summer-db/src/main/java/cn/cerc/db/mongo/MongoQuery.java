@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class MongoQuery extends DataQuery {
     private static final long serialVersionUID = -1262005194419604476L;
-    private static final ClassResource res = new ClassResource("summer-db", MongoQuery.class);
+    private static final ClassResource res = new ClassResource(MongoQuery.class, "summer-db");
 
     private MongoConnection connection = null;
     // 数据库保存操作执行对象

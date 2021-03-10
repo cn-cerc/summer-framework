@@ -10,7 +10,6 @@ import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.language.Language;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,7 @@ import java.io.IOException;
 
 @Slf4j
 public class ApplicationConfig {
-    private static final ClassResource res = new ClassResource("summer-mvc", ApplicationConfig.class);
+    private static final ClassResource res = new ClassResource(ApplicationConfig.class, "summer-mvc");
 
     /**
      * 本地主机

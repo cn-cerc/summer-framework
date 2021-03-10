@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class PrintTemplate {
-    private static final ClassResource res = new ClassResource("summer-mvc", PrintTemplate.class);
+    private static final ClassResource res = new ClassResource(PrintTemplate.class,"summer-mvc");
 
     protected DataSet dataSet;
     protected Document document;

@@ -15,7 +15,7 @@ import java.util.List;
  * @author HuangRongjun
  */
 public class Block201 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block201.class);
+    private static final ClassResource res = new ClassResource(Block201.class, "summer-ui");
 
     private List<String> items = new ArrayList<>();
     private UIImage icon = new UIImage();

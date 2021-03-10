@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 
 @Slf4j
 public class CustomService extends AbstractHandle implements IService, IRestful {
-    private static final ClassResource res = new ClassResource("summer-mvc", CustomService.class);
+    private static final ClassResource res = new ClassResource(CustomService.class, "summer-mvc");
 
     @Autowired
     public ISystemTable systemTable;

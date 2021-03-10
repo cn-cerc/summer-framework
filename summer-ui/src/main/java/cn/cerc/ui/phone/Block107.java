@@ -14,7 +14,7 @@ import java.util.List;
  * @author 张弓
  */
 public class Block107 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block107.class);
+    private static final ClassResource res = new ClassResource(Block107.class, "summer-ui");
 
     private UITextBox input = new UITextBox();
     private UIImage image = new UIImage();

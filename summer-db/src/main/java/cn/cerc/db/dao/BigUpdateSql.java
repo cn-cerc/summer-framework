@@ -17,10 +17,10 @@ import java.util.Map;
 
 @Slf4j
 public class BigUpdateSql {
-    private static final ClassResource res = new ClassResource("summer-db", BigUpdateSql.class);
+    private static final ClassResource res = new ClassResource(BigUpdateSql.class, "summer-db");
 
     public static boolean exec(Connection conn, Object oldRecord, Object curRecord, UpdateMode updateMode,
-            boolean preview) throws Exception {
+                               boolean preview) throws Exception {
         String lastCommand = null;
         ClassData classData = ClassFactory.get(curRecord.getClass());
         String updateKey = classData.getUpdateKey();

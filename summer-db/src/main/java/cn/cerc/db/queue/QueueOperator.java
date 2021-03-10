@@ -5,7 +5,7 @@ import cn.cerc.core.IDataOperator;
 import cn.cerc.core.Record;
 
 public class QueueOperator implements IDataOperator {
-    private static final ClassResource res = new ClassResource("summer-db", QueueOperator.class);
+    private static final ClassResource res = new ClassResource(QueueOperator.class, "summer-db");
 
     // 根据 sql 获取数据库表名
     public String findTableName(String sql) {
@@ -37,11 +37,11 @@ public class QueueOperator implements IDataOperator {
 
     @Override
     public boolean update(Record record) {
-        throw new RuntimeException(res.getString(2,"消息队列服务，不支持修改操作"));
+        throw new RuntimeException(res.getString(2, "消息队列服务，不支持修改操作"));
     }
 
     @Override
     public boolean delete(Record record) {
-        throw new RuntimeException(res.getString(3,"消息队列服务，不支持删除操作"));
+        throw new RuntimeException(res.getString(3, "消息队列服务，不支持删除操作"));
     }
 }

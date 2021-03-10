@@ -8,7 +8,7 @@ import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 
 public class ApiBookOption extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-mvc", ApiBookOption.class);
+    private static final ClassResource res = new ClassResource(ApiBookOption.class, "summer-mvc");
 
     /**
      * @return 根据帐套代码、参数代码获取参数值

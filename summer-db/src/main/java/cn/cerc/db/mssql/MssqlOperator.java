@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Slf4j
 public class MssqlOperator implements IDataOperator {
-    private static final ClassResource res = new ClassResource("summer-db", MssqlOperator.class);
+    private static final ClassResource res = new ClassResource(MssqlOperator.class, "summer-db");
 
     private String updateKey = "UID_";
     private String tableName;

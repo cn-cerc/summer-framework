@@ -20,7 +20,7 @@ import java.math.BigInteger;
  * 异步消息操作
  */
 public class SvrUserMessages extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-mvc", SvrUserMessages.class);
+    private static final ClassResource res = new ClassResource(SvrUserMessages.class, "summer-mvc");
 
     /*
      * 取出所有的等待处理的消息列表

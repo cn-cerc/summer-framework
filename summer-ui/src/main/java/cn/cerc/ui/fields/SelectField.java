@@ -13,7 +13,7 @@ import java.util.Map;
  * 列表下拉框组件（不适用搜索查询表单）
  */
 public class SelectField extends AbstractField implements IColumn {
-    private static final ClassResource res = new ClassResource("summer-ui", SelectField.class);
+    private static final ClassResource res = new ClassResource(SelectField.class, "summer-ui");
 
     private String trueText = res.getString(1, "是");
     private String falseText = res.getString(2, "否");

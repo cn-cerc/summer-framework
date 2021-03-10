@@ -6,7 +6,7 @@ import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolbar;
 
 public class MarkdownHelp extends UISheetHelp {
-    private static final ClassResource res = new ClassResource("summer-ui", MarkdownHelp.class);
+    private static final ClassResource res = new ClassResource(MarkdownHelp.class, "summer-ui");
 
     public MarkdownHelp(UIToolbar owner) {
         super(owner);

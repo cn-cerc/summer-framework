@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIFormVertical extends UIComponent implements DataSource {
-    private static final ClassResource res = new ClassResource("summer-ui", UIFormVertical.class);
+    private static final ClassResource res = new ClassResource(UIFormVertical.class, "summer-ui");
 
     protected String CSSClass = "info";
     protected String method = "post";

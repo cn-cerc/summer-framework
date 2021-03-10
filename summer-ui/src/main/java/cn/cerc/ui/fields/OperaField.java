@@ -6,7 +6,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class OperaField extends AbstractField {
-    private static final ClassResource res = new ClassResource("summer-ui", OperaField.class);
+    private static final ClassResource res = new ClassResource(OperaField.class, "summer-ui");
 
     private String value = res.getString(1, "内容");
 

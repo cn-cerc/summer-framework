@@ -13,7 +13,7 @@ import cn.cerc.db.queue.QueueQuery;
  * 注意：公司别和用户代码必须配套
  */
 public class MessageQueue {
-    private static final ClassResource res = new ClassResource("summer-mvc", MessageQueue.class);
+    private static final ClassResource res = new ClassResource(MessageQueue.class, "summer-mvc");
 
     private String corpNo;
     private String userCode;

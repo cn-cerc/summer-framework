@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ProxyService extends AbstractForm {
-    private static final ClassResource res = new ClassResource("summer-ui", ProxyService.class);
+    private static final ClassResource res = new ClassResource(ProxyService.class, "summer-ui");
 
     @Override
     public IPage execute() throws Exception {

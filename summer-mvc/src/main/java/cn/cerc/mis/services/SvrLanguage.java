@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrLanguage extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-mvc", SvrLanguage.class);
+    private static final ClassResource res = new ClassResource(SvrLanguage.class, "summer-mvc");
 
     public boolean downloadAll() throws DataValidateException {
         Record headIn = getDataIn().getHead();

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
-    private static final ClassResource res = new ClassResource("summer-mvc", RemoteService.class);
+    private static final ClassResource res = new ClassResource(RemoteService.class, "summer-mvc");
 
     private final IHandle handle;
 

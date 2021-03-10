@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UISheetUrl extends UISheet {
-    private static final ClassResource res = new ClassResource("summer-ui", UISheetUrl.class);
+    private static final ClassResource res = new ClassResource(UISheetUrl.class, "summer-ui");
 
     private List<UrlRecord> urls = new ArrayList<>();
     // 使用于page-link.xml中

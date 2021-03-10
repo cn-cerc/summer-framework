@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Aliyundysms {
-    private static final ClassResource res = new ClassResource("summer-db", Aliyundysms.class);
+    private static final ClassResource res = new ClassResource(Aliyundysms.class, "summer-db");
 
     public static final String SingName = "dayu.singName";
     public static final String aliyun_accessKeyId = "oss.accessKeyId";

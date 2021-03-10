@@ -14,7 +14,7 @@ import java.util.List;
  * 批次导出单据明细
  */
 public class BatchFormTemplate extends FormTemplate {
-    private static final ClassResource res = new ClassResource("summer-mvc", BatchFormTemplate.class);
+    private static final ClassResource res = new ClassResource(BatchFormTemplate.class, "summer-mvc");
 
     List<DataSet> items;
 

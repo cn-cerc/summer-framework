@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Slf4j
 public class RequestData {
-    private static final ClassResource res = new ClassResource("summer-mvc", RequestData.class);
+    private static final ClassResource res = new ClassResource(RequestData.class, "summer-mvc");
 
     // FIXME: 2019/12/7 sid 应该改为 token
     public static final String TOKEN = "sid";

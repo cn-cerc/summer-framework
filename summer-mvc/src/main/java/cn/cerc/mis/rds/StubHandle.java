@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StubHandle implements IHandle, AutoCloseable {
-    private static final ClassResource res = new ClassResource("summer-mvc", StubHandle.class);
+    private static final ClassResource res = new ClassResource(StubHandle.class, "summer-mvc");
 
     public static final String DefaultBook = "999001";
     public static final String DefaultUser = DefaultBook + "01";

@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Slf4j
 public class Locker implements Closeable {
-    private static final ClassResource res = new ClassResource("summer-db", Locker.class);
+    private static final ClassResource res = new ClassResource(Locker.class, "summer-db");
 
     private String group;
     private String message;

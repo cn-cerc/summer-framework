@@ -17,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 public class UpdateManager implements IBookManage {
-    private static final ClassResource res = new ClassResource("summer-mvc", UpdateManager.class);
+    private static final ClassResource res = new ClassResource(UpdateManager.class, "summer-mvc");
 
     private IHandle handle;
     private String initMonth;

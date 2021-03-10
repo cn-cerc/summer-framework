@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class ExportService extends ExportExcel {
-    private static final ClassResource res = new ClassResource("summer-mvc", ExportService.class);
+    private static final ClassResource res = new ClassResource(ExportService.class, "summer-mvc");
 
     private String service;
     private String exportKey;

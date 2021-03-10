@@ -10,7 +10,7 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.RowCell;
 
 public class ExpenderGridLine extends AbstractGridLine {
-    private static final ClassResource res = new ClassResource("summer-ui", ExpenderGridLine.class);
+    private static final ClassResource res = new ClassResource(ExpenderGridLine.class, "summer-ui");
 
     public ExpenderGridLine(DataSource dataSource) {
         super(dataSource);

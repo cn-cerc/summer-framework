@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIFooter extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", UIFooter.class);
+    private static final ClassResource res = new ClassResource(UIFooter.class, "summer-ui");
 
     private static final int MAX_MENUS = 7;
     // protected UrlRecord checkAll;

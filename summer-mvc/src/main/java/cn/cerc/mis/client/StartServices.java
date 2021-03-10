@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
-    private static final ClassResource res = new ClassResource("summer-mvc", StartServices.class);
+    private static final ClassResource res = new ClassResource(StartServices.class, "summer-mvc");
 
     private static final long serialVersionUID = 1L;
     private static final String sessionId = "sessionId";

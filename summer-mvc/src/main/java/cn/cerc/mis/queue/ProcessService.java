@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ProcessService extends AbstractTask {
-    private static final ClassResource res = new ClassResource("summer-mvc", ProcessService.class);
+    private static final ClassResource res = new ClassResource(ProcessService.class, "summer-mvc");
 
     // 手动执行所有的预约服务
     public static void main(String[] args) {

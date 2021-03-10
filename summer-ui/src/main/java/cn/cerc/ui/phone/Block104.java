@@ -7,7 +7,7 @@ import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UITextBox;
 
 public class Block104 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block104.class);
+    private static final ClassResource res = new ClassResource(Block104.class, "summer-ui");
 
     private UITextBox input;
     private UIButton submit;

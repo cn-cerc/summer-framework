@@ -14,7 +14,7 @@ import cn.cerc.ui.vcl.ext.UISpan;
  * @author 郭向军
  */
 public class Block123 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block123.class);
+    private static final ClassResource res = new ClassResource(Block123.class, "summer-ui");
 
     private UISpan title = new UISpan();
     private UITextBox textBox = new UITextBox();

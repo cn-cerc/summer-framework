@@ -16,7 +16,7 @@ import java.util.List;
  * @author HuangRongjun
  */
 public class Block306 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block306.class);
+    private static final ClassResource res = new ClassResource(Block306.class, "summer-ui");
 
     private UISpan title;
     private List<String> items = new ArrayList<>();

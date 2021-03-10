@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class ExportPdf {
-    private static final ClassResource res = new ClassResource("summer-mvc", ExportPdf.class);
+    private static final ClassResource res = new ClassResource(ExportPdf.class, "summer-mvc");
 
     private static ApplicationContext app;
     private static String xmlFile = "classpath:export-pdf.xml";

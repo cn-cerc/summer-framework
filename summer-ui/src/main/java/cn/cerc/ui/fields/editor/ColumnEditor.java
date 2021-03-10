@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColumnEditor {
-    private static final ClassResource res = new ClassResource("summer-ui", ColumnEditor.class);
+    private static final ClassResource res = new ClassResource(ColumnEditor.class, "summer-ui");
 
     private AbstractField owner;
     private boolean init = false;

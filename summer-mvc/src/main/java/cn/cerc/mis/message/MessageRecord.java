@@ -11,7 +11,7 @@ import cn.cerc.mis.core.LocalService;
  * 注意：公司别和用户代码必须配套
  */
 public class MessageRecord {
-    private static final ClassResource res = new ClassResource("summer-mvc", MessageRecord.class);
+    private static final ClassResource res = new ClassResource(MessageRecord.class, "summer-mvc");
 
     private String corpNo;
     private String userCode;

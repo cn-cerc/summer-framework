@@ -1,12 +1,6 @@
 package cn.cerc.mis.services;
 
-import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.MD5;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
+import cn.cerc.core.*;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.ClientType;
 import cn.cerc.db.mysql.BuildQuery;
@@ -14,13 +8,7 @@ import cn.cerc.db.mysql.SqlOperator;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.db.oss.OssConnection;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.CustomService;
-import cn.cerc.mis.core.DataValidateException;
-import cn.cerc.mis.core.HandleDefault;
-import cn.cerc.mis.core.LocalService;
-import cn.cerc.mis.core.Webfunc;
-import cn.cerc.mis.language.R;
+import cn.cerc.mis.core.*;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -36,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrUserLogin extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-mvc", SvrUserLogin.class);
+    private static final ClassResource res = new ClassResource(SvrUserLogin.class, "summer-mvc");
 
     public static int TimeOut = 5; // 效验代码超时时间（分钟）
     private static String GuidNull = "";

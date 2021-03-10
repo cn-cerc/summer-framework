@@ -18,7 +18,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 
 public class InvoiceTemplate extends PrintTemplate {
-    private static final ClassResource res = new ClassResource("summer-mvc", InvoiceTemplate.class);
+    private static final ClassResource res = new ClassResource(InvoiceTemplate.class, "summer-mvc");
 
     public InvoiceTemplate() {
         this.setPageWidth(58);

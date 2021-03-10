@@ -25,7 +25,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 public class ImportExcel extends ImportExcelFile {
-    private static final ClassResource res = new ClassResource("summer-mvc", ImportExcel.class);
+    private static final ClassResource res = new ClassResource(ImportExcel.class, "summer-mvc");
 
     private static ApplicationContext app;
     private static String xmlFile = "classpath:import-excel.xml";

@@ -5,7 +5,7 @@ import cn.cerc.core.IHandle;
 import cn.cerc.db.mysql.MysqlConnection;
 
 public class BookHandle implements IHandle {
-    private static final ClassResource res = new ClassResource("summer-mvc", BookHandle.class);
+    private static final ClassResource res = new ClassResource(BookHandle.class, "summer-mvc");
 
     private IHandle handle;
     private String corpNo;

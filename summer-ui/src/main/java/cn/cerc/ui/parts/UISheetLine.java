@@ -6,7 +6,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.UrlMenu;
 
 public class UISheetLine extends UISheet {
-    private static final ClassResource res = new ClassResource("summer-ui", UISheetLine.class);
+    private static final ClassResource res = new ClassResource(UISheetLine.class, "summer-ui");
 
     private UrlMenu operaUrl;
 

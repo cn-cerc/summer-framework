@@ -27,7 +27,7 @@ import java.util.Map;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
 public class AbstractForm extends AbstractHandle implements IForm {
-    private static final ClassResource res = new ClassResource("summer-mvc", AbstractForm.class);
+    private static final ClassResource res = new ClassResource(AbstractForm.class, "summer-mvc");
 
     @Autowired
     public ISystemTable systemTable;
@@ -233,57 +233,57 @@ public class AbstractForm extends AbstractHandle implements IForm {
         try {
             // 支持路径参数调用，最多3个字符串参数
             switch (this.pathVariables.length) {
-            case 1: {
-                if (this.getClient().isPhone()) {
-                    try {
-                        method = this.getClass().getMethod(funcCode + "_phone", String.class);
-                    } catch (NoSuchMethodException e) {
+                case 1: {
+                    if (this.getClient().isPhone()) {
+                        try {
+                            method = this.getClass().getMethod(funcCode + "_phone", String.class);
+                        } catch (NoSuchMethodException e) {
+                            method = this.getClass().getMethod(funcCode, String.class);
+                        }
+                    } else {
                         method = this.getClass().getMethod(funcCode, String.class);
                     }
-                } else {
-                    method = this.getClass().getMethod(funcCode, String.class);
+                    result = method.invoke(this, this.pathVariables[0]);
+                    break;
                 }
-                result = method.invoke(this, this.pathVariables[0]);
-                break;
-            }
-            case 2: {
-                if (this.getClient().isPhone()) {
-                    try {
-                        method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class);
-                    } catch (NoSuchMethodException e) {
+                case 2: {
+                    if (this.getClient().isPhone()) {
+                        try {
+                            method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class);
+                        } catch (NoSuchMethodException e) {
+                            method = this.getClass().getMethod(funcCode, String.class, String.class);
+                        }
+                    } else {
                         method = this.getClass().getMethod(funcCode, String.class, String.class);
                     }
-                } else {
-                    method = this.getClass().getMethod(funcCode, String.class, String.class);
+                    result = method.invoke(this, this.pathVariables[0], this.pathVariables[1]);
+                    break;
                 }
-                result = method.invoke(this, this.pathVariables[0], this.pathVariables[1]);
-                break;
-            }
-            case 3: {
-                if (this.getClient().isPhone()) {
-                    try {
-                        method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class, String.class);
-                    } catch (NoSuchMethodException e) {
+                case 3: {
+                    if (this.getClient().isPhone()) {
+                        try {
+                            method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class, String.class);
+                        } catch (NoSuchMethodException e) {
+                            method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
+                        }
+                    } else {
                         method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
                     }
-                } else {
-                    method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
+                    result = method.invoke(this, this.pathVariables[0], this.pathVariables[1], this.pathVariables[2]);
+                    break;
                 }
-                result = method.invoke(this, this.pathVariables[0], this.pathVariables[1], this.pathVariables[2]);
-                break;
-            }
-            default: {
-                if (this.getClient().isPhone()) {
-                    try {
-                        method = this.getClass().getMethod(funcCode + "_phone");
-                    } catch (NoSuchMethodException e) {
+                default: {
+                    if (this.getClient().isPhone()) {
+                        try {
+                            method = this.getClass().getMethod(funcCode + "_phone");
+                        } catch (NoSuchMethodException e) {
+                            method = this.getClass().getMethod(funcCode);
+                        }
+                    } else {
                         method = this.getClass().getMethod(funcCode);
                     }
-                } else {
-                    method = this.getClass().getMethod(funcCode);
+                    result = method.invoke(this);
                 }
-                result = method.invoke(this);
-            }
             }
 
             if (result == null)
@@ -382,7 +382,7 @@ public class AbstractForm extends AbstractHandle implements IForm {
     public String[] getPathVariables() {
         return this.pathVariables;
     }
-    
+
     @Override
     public IPage execute() throws Exception {
         JsonPage page = new JsonPage(this);

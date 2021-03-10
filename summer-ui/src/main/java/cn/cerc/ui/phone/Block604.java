@@ -17,7 +17,7 @@ import java.util.Map;
  * 文字信息（最多6行）
  */
 public class Block604 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block604.class);
+    private static final ClassResource res = new ClassResource(Block604.class, "summer-ui");
 
     private UILabel title;
     private UrlRecord url;

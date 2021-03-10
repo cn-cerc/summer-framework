@@ -12,7 +12,7 @@ import cn.cerc.ui.grid.lines.ExpenderGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DataGrid extends AbstractGrid {
-    private static final ClassResource res = new ClassResource("summer-ui", DataGrid.class);
+    private static final ClassResource res = new ClassResource(DataGrid.class, "summer-ui");
 
     private final double MaxWidth = 600;
     // 当前样式选择
