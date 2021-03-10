@@ -1,31 +1,30 @@
 package cn.cerc.mis.cdn;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.mis.core.HTMLResource;
+import cn.cerc.mvc.SummerMVC;
 
 public class CDN {
+    private static final ClassConfig config = new ClassConfig(CDN.class, SummerMVC.ID);
 
     public static String getSite() {
-        String site = "";
         // 判断cdn是否启用
-        boolean enable = "true".equals(ServerConfig.getInstance().getProperty(OssConnection.oss_cdn_enable));
-        if (!enable) {
-            return site;
+        if (!config.getBoolean(OssConnection.oss_cdn_enable, false)) {
+            return "";
         }
+
         // 获取cdn的地址
-        site = ServerConfig.getInstance().getProperty(OssConnection.oss_site);
+        String site = config.getString(OssConnection.oss_site, null);
         if (Utils.isEmpty(site)) {
-            site = "";
-        } else {
-            site += "/resources/";
+            return "";
         }
-        return site;
+
+        return site + "/resources/";
     }
 
     public static String get(String file) {
         return getSite() + file + "?v=" + HTMLResource.getVersion();
     }
-
 }
