@@ -7,23 +7,24 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mvc.SummerMVC;
 
 @Component
 @Deprecated
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppConfigDefault implements IAppConfig {
-    private static final ClassConfig config = new ClassConfig(AppConfigDefault.class, "summer-mvc");
+    private static final ClassConfig config = new ClassConfig(AppConfigDefault.class, SummerMVC.ID);
 
     @Deprecated
     @Override
     public String getPathForms() {
-        return config.getProperty(Application.PATH_FORMS, "forms");
+        return config.getString(Application.PATH_FORMS, "forms");
     }
 
     @Deprecated
     @Override
     public String getPathServices() {
-        return config.getProperty(Application.PATH_SERVICES, "services");
+        return config.getString(Application.PATH_SERVICES, "services");
     }
 
     /**
@@ -32,7 +33,7 @@ public class AppConfigDefault implements IAppConfig {
     @Deprecated
     @Override
     public String getFormWelcome() {
-        return config.getProperty(Application.FORM_WELCOME, "welcome");
+        return config.getString(Application.FORM_WELCOME, "welcome");
     }
 
     /**
@@ -41,7 +42,7 @@ public class AppConfigDefault implements IAppConfig {
     @Deprecated
     @Override
     public String getFormDefault() {
-        return config.getProperty(Application.FORM_DEFAULT, "default");
+        return config.getString(Application.FORM_DEFAULT, "default");
     }
 
     /**
@@ -50,7 +51,7 @@ public class AppConfigDefault implements IAppConfig {
     @Deprecated
     @Override
     public String getFormLogout() {
-        return config.getProperty(Application.FORM_LOGOUT, "logout");
+        return config.getString(Application.FORM_LOGOUT, "logout");
     }
 
     /**
@@ -59,7 +60,7 @@ public class AppConfigDefault implements IAppConfig {
     @Deprecated
     @Override
     public String getFormVerifyDevice() {
-        return config.getProperty(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+        return config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
     }
 
     /**
@@ -68,13 +69,13 @@ public class AppConfigDefault implements IAppConfig {
     @Deprecated
     @Override
     public String getJspLoginFile() {
-        return config.getProperty(Application.JSPFILE_LOGIN, "common/FrmLogin.jsp");
+        return config.getString(Application.JSPFILE_LOGIN, "common/FrmLogin.jsp");
     }
 
     @Deprecated
     @Override
     public String getProperty(String key, String def) {
-        return config.getProperty(key, def);
+        return config.getString(key, def);
     }
 
 }

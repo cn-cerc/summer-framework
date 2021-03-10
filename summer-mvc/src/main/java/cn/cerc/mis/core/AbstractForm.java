@@ -1,5 +1,6 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
@@ -7,6 +8,7 @@ import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,8 @@ import java.util.Map;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
 public class AbstractForm extends AbstractHandle implements IForm {
-    private static final ClassResource res = new ClassResource("summer-mvc", AbstractForm.class);
+    private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMVC.ID);
 
     @Autowired
     public ISystemTable systemTable;
@@ -193,8 +196,7 @@ public class AbstractForm extends AbstractHandle implements IForm {
 
             log.debug("没有进行认证过，跳转到设备认证页面");
             // 若是专用APP登录并且是iPhone，则不跳转设备登录页，由iPhone原生客户端处理
-            ServerConfig config = ServerConfig.getInstance();
-            String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
+            String supCorpNo = config.getString("vine.mall.supCorpNo", "");
             if (!"".equals(supCorpNo) && this.getClient().getDevice().equals(AppClient.iphone)) {
                 this.getRequest().setAttribute("needVerify", "true");
                 return this.getPage(funcCode);
@@ -208,7 +210,7 @@ public class AbstractForm extends AbstractHandle implements IForm {
             }
 
             // 跳转到校验设备画面
-            return "redirect:" + Application.getAppConfig().getFormVerifyDevice();
+            return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
         } catch (Exception e) {
             Throwable err = e.getCause();
             if (err == null) {
