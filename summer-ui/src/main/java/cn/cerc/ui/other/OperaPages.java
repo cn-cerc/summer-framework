@@ -1,5 +1,7 @@
 package cn.cerc.ui.other;
 
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.mis.core.IForm;
@@ -8,11 +10,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UISheet;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
-
-@Slf4j
 public class OperaPages extends UISheet implements IUserLanguage {
     private final ClassResource res = new ClassResource(this, "summer-ui");
 

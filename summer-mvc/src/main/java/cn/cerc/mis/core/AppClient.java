@@ -114,7 +114,7 @@ public class AppClient implements IClient, Serializable {
 
     @Override
     public String getLanguage() {
-        return languageId == null ? Language.zh_CN : languageId;
+        return languageId == null ? Application.App_Language: languageId;
     }
 
     public String getToken() {
