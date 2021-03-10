@@ -1,31 +1,33 @@
 package cn.cerc.mis.cdn;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.oss.OssConnection;
-import cn.cerc.mis.core.HTMLResource;
+import cn.cerc.mvc.SummerMVC;
 
 public class CDN {
+    private static final ClassConfig config = new ClassConfig(CDN.class, SummerMVC.ID);
+    // 启用内容网络分发
+    public static final String OSS_CDN_ENABLE = "oss.cdn.enable";
+    //浏览器缓存版本号
+    public static final String BROWSER_CACHE_VERSION = "browser.cache.version";
 
+    @Deprecated
     public static String getSite() {
-        String site = "";
-        // 判断cdn是否启用
-        boolean enable = "true".equals(ServerConfig.getInstance().getProperty(OssConnection.oss_cdn_enable));
-        if (!enable) {
-            return site;
-        }
         // 获取cdn的地址
-        site = ServerConfig.getInstance().getProperty(OssConnection.oss_site);
-        if (Utils.isEmpty(site)) {
-            site = "";
-        } else {
+        String site = config.getString(OssConnection.oss_site, "");
+        // 判断cdn是否启用
+        if (!Utils.isEmpty(site) && config.getBoolean(OSS_CDN_ENABLE, false))
             site += "/resources/";
-        }
         return site;
     }
 
     public static String get(String file) {
-        return getSite() + file + "?v=" + HTMLResource.getVersion();
+        // 获取cdn的地址
+        String site = config.getString(OssConnection.oss_site, "");
+        // 判断cdn是否启用
+        if (!Utils.isEmpty(site) && config.getBoolean(OSS_CDN_ENABLE, false))
+            site += "/resources/";
+        return site + file + "?v=" + config.getString(BROWSER_CACHE_VERSION, "1.0.0.0");
     }
-
 }

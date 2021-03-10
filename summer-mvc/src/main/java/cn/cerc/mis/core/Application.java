@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.LanguageResource;
@@ -19,15 +20,17 @@ import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.Language;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Application {
-    private static final ClassResource res = new ClassResource("summer-ui", Application.class);
-    // Tomcat JSESSION.ID
+    private static final ClassResource res = new ClassResource(Application.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(Application.class, SummerMVC.ID);
+    // tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
     // token id
-    public static final String token = "ID";
+    public static final String TOKEN = "ID";
     // user id
     public static final String userId = "UserID";
     public static final String userCode = "UserCode";
@@ -47,6 +50,15 @@ public class Application {
     // 默认界面语言版本
     // FIXME: 2019/12/7 此处应改为从函数，并从配置文件中读取默认的语言类型
     public static final String App_Language = getAppLanguage(); // 可选：cn/en
+
+    // 各类应用配置代码
+    public static final String PATH_FORMS = "application.pathForms";
+    public static final String PATH_SERVICES = "application.pathServices";
+    public static final String FORM_WELCOME = "application.formWelcome";
+    public static final String FORM_DEFAULT = "application.formDefault";
+    public static final String FORM_LOGOUT = "application.formLogout";
+    public static final String FORM_VERIFY_DEVICE = "application.formVerifyDevice";
+    public static final String JSPFILE_LOGIN = "application.jspLoginFile";
 
     private static ApplicationContext context;
 
@@ -110,6 +122,12 @@ public class Application {
         return getBean(IHandle.class, "AppHandle", "handle", "handleDefault");
     }
 
+    /**
+     * 请改为直接使用ClassResource，参考AppConfigDefault
+     * 
+     * @return
+     */
+    @Deprecated
     public static IAppConfig getAppConfig() {
         return getBean(IAppConfig.class, "AppConfig", "appConfig", "appConfigDefault");
     }
@@ -229,7 +247,7 @@ public class Application {
             String loginJspFile = null;
             // 若页面有传递用户帐号，则强制重新校验
             if (form.getRequest().getParameter("login_usr") != null) {
-                // 检查服务器的角色状态
+                // 检查服务器的角色状态，如果是从服务器，则允许登录
                 if (ApplicationConfig.isReplica())
                     throw new RuntimeException(res.getString(1, "当前服务不支持登录，请返回首页重新登录"));
 
@@ -268,7 +286,7 @@ public class Application {
         }
 
         // 输出jsp文件
-        String jspFile = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), url);
+        String jspFile = String.format("/WEB-INF/%s/%s", config.getString(Application.PATH_FORMS, "forms"), url);
         request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
 
@@ -281,7 +299,7 @@ public class Application {
         if (errorPage != null) {
             String result = errorPage.getErrorPage(request, response, err);
             if (result != null) {
-                String url = String.format("/WEB-INF/%s/%s", Application.getAppConfig().getPathForms(), result);
+                String url = String.format("/WEB-INF/%s/%s", config.getString(Application.PATH_FORMS, "forms"), result);
                 try {
                     request.getServletContext().getRequestDispatcher(url).forward(request, response);
                 } catch (ServletException | IOException e1) {
@@ -294,6 +312,16 @@ public class Application {
             log.error(err.getMessage());
             err.printStackTrace();
         }
+    }
+
+    /**
+     * 获得 token 的值
+     * 
+     * @param handle
+     * @return
+     */
+    public static String getToken(IHandle handle) {
+        return (String) handle.getProperty(Application.TOKEN);
     }
 
 }

@@ -1,14 +1,17 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.ServerConfig;
+import cn.cerc.core.ClassConfig;
+import cn.cerc.mvc.SummerMVC;
 
+@Deprecated
 public enum HTMLResource {
-
+    
     INSTANCE;
-
+    
+    private static final ClassConfig config = new ClassConfig(HTMLResource.class, SummerMVC.ID);
+    
     public static String getVersion() {
-        ServerConfig config = ServerConfig.getInstance();
-        return config.getProperty("browser.cache.version", "1.0.0.0");
+        return config.getString("browser.cache.version", "1.0.0.0");
     }
 
 }

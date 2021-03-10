@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cn.cerc.db.core.IAppConfig;
+import cn.cerc.core.ClassConfig;
 import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StartForms implements Filter {
+    private static final ClassConfig config = new ClassConfig();
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -44,8 +45,8 @@ public class StartForms implements Filter {
          * http://127.0.0.1:8103/favicon.ico
          */
         if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
-            IAppConfig conf = Application.getAppConfig();
-            String redirect = String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome());
+            String redirect = String.format("%s%s", ApplicationConfig.App_Path,
+                    config.getString(Application.FORM_WELCOME, "welcome"));
             redirect = resp.encodeRedirectURL(redirect);
             resp.sendRedirect(redirect);
             return;
@@ -66,13 +67,12 @@ public class StartForms implements Filter {
              * /forms/images/systeminstall-pc.png
              */
             log.debug("before {}", uri);
-            IAppConfig conf = Application.getAppConfig();
 
             int index = uri.indexOf("/", 2);
             if (index < 0) {
                 request.getServletContext().getRequestDispatcher(uri).forward(request, response);
             } else {
-                String source = "/" + conf.getPathForms() + uri.substring(index);
+                String source = "/" + config.getProperty(Application.PATH_FORMS, "forms") + uri.substring(index);
                 request.getServletContext().getRequestDispatcher(source).forward(request, response);
                 log.debug("after  {}", source);
             }
@@ -116,11 +116,10 @@ public class StartForms implements Filter {
                     url = args[2];
                 } else {
                     String token = (String) req.getAttribute(RequestData.TOKEN);
-                    IAppConfig conf = Application.getAppConfig();
                     if (token != null && !"".equals(token)) {
-                        url = conf.getFormDefault();
+                        url = config.getProperty(Application.FORM_DEFAULT, "default");
                     } else {
-                        url = conf.getFormWelcome();
+                        url = config.getProperty(Application.FORM_WELCOME, "welcome");
                     }
                 }
             }

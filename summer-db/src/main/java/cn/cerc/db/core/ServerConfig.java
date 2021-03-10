@@ -1,14 +1,8 @@
 package cn.cerc.db.core;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.IConfig;
-import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-@Slf4j
 public enum ServerConfig implements IConfig {
 
     INSTANCE;
@@ -18,8 +12,7 @@ public enum ServerConfig implements IConfig {
     public static final String config_version = "version";
     public static final String config_debug = "debug";
     public static final String CONFIG_APP_NAME = "appName";
-    private static final String confFile = "/application.properties";
-    private static final Properties properties = new Properties();
+    private static final ClassConfig config = new ClassConfig();
 
     public static ServerConfig getInstance() {
         return INSTANCE;
@@ -28,37 +21,21 @@ public enum ServerConfig implements IConfig {
     // 是否为debug状态
     private int debug = -1;
 
-    static {
-        try {
-            InputStream file = ServerConfig.class.getResourceAsStream(confFile);
-            if (file != null) {
-                properties.load(file);
-                log.info("read from file: " + confFile);
-            } else {
-                log.warn("suggested use file: " + confFile);
-            }
-        } catch (FileNotFoundException e) {
-            log.error("The settings file '" + confFile + "' does not exist.");
-        } catch (IOException e) {
-            log.error("Failed to load the settings from the file: " + confFile);
-        }
-    }
-
     public static boolean enableTaskService() {
-        return "1".equals(getInstance().getProperty(TaskServiceEnabled, null));
+        return "1".equals(config.getProperty(TaskServiceEnabled, null));
     }
 
     public static String getAppName() {
-        return getInstance().getProperty(CONFIG_APP_NAME, "localhost");
+        return config.getProperty(CONFIG_APP_NAME, "localhost");
     }
 
     public static boolean enableDocService() {
-        return "1".equals(getInstance().getProperty("docs.service", "0"));
+        return "1".equals(config.getProperty("docs.service", "0"));
     }
 
     // 正式环境
     public static boolean isServerMaster() {
-        String tmp = getInstance().getProperty("version", "beta");
+        String tmp = config.getProperty("version", "beta");
         if ("release".equals(tmp)) {
             return true;
         }
@@ -67,7 +44,7 @@ public enum ServerConfig implements IConfig {
 
     // 测试环境
     public static boolean isServerBeta() {
-        String tmp = getInstance().getProperty("version", "beta");
+        String tmp = config.getProperty("version", "beta");
         return "beta".equals(tmp);
     }
 
@@ -82,19 +59,13 @@ public enum ServerConfig implements IConfig {
         return true;
     }
 
+    /**
+     * 读取配置，请改为使用 ClassConfig
+     */
     @Override
+    @Deprecated
     public String getProperty(String key, String def) {
-        LocalConfig config = LocalConfig.getInstance();
-        String result = config.getProperty(key, null);
-        if (result == null) {
-            result = properties.getProperty(key);
-        }
-        return result != null ? result : def;
-    }
-
-    @Override
-    public String getProperty(String key) {
-        return getProperty(key, null);
+        return config.getProperty(key, def);
     }
 
     /**
@@ -102,7 +73,7 @@ public enum ServerConfig implements IConfig {
      */
     public boolean isDebug() {
         if (debug == -1) {
-            debug = "1".equals(this.getProperty(config_debug, "0")) ? 1 : 0;
+            debug = "1".equals(config.getProperty(config_debug, "0")) ? 1 : 0;
         }
         return debug == 1;
     }

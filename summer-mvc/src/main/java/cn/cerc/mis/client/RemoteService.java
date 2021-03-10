@@ -1,23 +1,26 @@
 package cn.cerc.mis.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
-import cn.cerc.db.core.LocalConfig;
-import cn.cerc.mis.config.ApplicationConfig;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
-    private static final ClassResource res = new ClassResource("summer-mvc", RemoteService.class);
+    private static final ClassResource res = new ClassResource(RemoteService.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(RemoteService.class, SummerMVC.ID);
 
     private final IHandle handle;
 
@@ -38,19 +41,17 @@ public class RemoteService implements IServiceProxy {
 
     private RemoteService(IHandle handle, String bookNo) {
         this.handle = handle;
-        this.token = ApplicationConfig.getToken(handle);
+        this.token = Application.getToken(handle);
 
         this.host = getApiHost(bookNo);
         this.path = bookNo;
     }
 
     public static String getApiHost(String bookNo) {
-        LocalConfig localConfig = LocalConfig.getInstance();
-        String key = ApplicationConfig.Rempte_Host_Key + "." + bookNo;
-        if (localConfig.getProperty(key) == null) {
-            key = ApplicationConfig.Rempte_Host_Key + "." + ServiceFactory.Public;
-        }
-        return localConfig.getProperty(key);
+        String result = config.getString(String.format("remote.host.%s", bookNo), "");
+        if (!"".equals(result))
+            return result;
+        return config.getString(String.format("remote.host.%s", ServiceFactory.BOOK_PUBLIC), "");
     }
 
     @Override

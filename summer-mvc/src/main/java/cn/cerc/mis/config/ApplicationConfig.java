@@ -1,25 +1,27 @@
 package cn.cerc.mis.config;
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.HttpClientUtil;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.language.Language;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
 
 @Slf4j
 public class ApplicationConfig {
-    private static final ClassResource res = new ClassResource("summer-mvc", ApplicationConfig.class);
+    private static final ClassResource res = new ClassResource(ApplicationConfig.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(ApplicationConfig.class, SummerMVC.ID);
 
     /**
      * 本地主机
@@ -42,17 +44,27 @@ public class ApplicationConfig {
     /**
      * 远程服务地址
      */
+    @Deprecated
     public static final String Rempte_Host_Key = "remote.host";
 
+    /**
+     * 请改使用Application.getToken函数
+     * 
+     * @param handle
+     * @return
+     */
+    @Deprecated
     public static String getToken(IHandle handle) {
-        return (String) handle.getProperty(Application.token);
+        return (String) handle.getProperty(Application.TOKEN);
     }
 
+    @Deprecated
     public static boolean isMaster() {
-        String appRole = ServerConfig.getInstance().getProperty(ApplicationConfig.App_Role_Key, ApplicationConfig.App_Role_Master);
+        String appRole = config.getString(ApplicationConfig.App_Role_Key, ApplicationConfig.App_Role_Master);
         return ApplicationConfig.App_Role_Master.equals(appRole);
     }
 
+    @Deprecated
     public static boolean isReplica() {
         return !ApplicationConfig.isMaster();
     }
@@ -77,7 +89,7 @@ public class ApplicationConfig {
         }
 
         // 构建public地址
-        String host = RemoteService.getApiHost(ServiceFactory.Public);
+        String host = RemoteService.getApiHost(ServiceFactory.BOOK_PUBLIC);
         String url = host + ApplicationConfig.App_Path + "Login.getToken";
         log.info("request url {}", url);
         // 构建登录请求参数

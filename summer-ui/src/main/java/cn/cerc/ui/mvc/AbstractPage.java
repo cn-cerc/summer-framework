@@ -3,6 +3,7 @@ package cn.cerc.ui.mvc;
 import java.util.List;
 import java.util.Map;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Record;
@@ -10,16 +11,18 @@ import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Buffer;
-import cn.cerc.db.core.ServerConfig;
+import cn.cerc.db.oss.OssConnection;
 import cn.cerc.mis.cdn.CDN;
-import cn.cerc.mis.core.HTMLResource;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mis.language.R;
+import cn.cerc.mvc.SummerMVC;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.parts.UIComponent;
 
 public abstract class AbstractPage extends UIComponent implements IPage, IUserLanguage {
+    // 此处使用SummerMVC.ID是为了与CDN中一致，请勿改动！！！
+    protected static final ClassConfig config = new ClassConfig(AbstractPage.class, SummerMVC.ID);
 
     private IForm form;
 
@@ -35,14 +38,20 @@ public abstract class AbstractPage extends UIComponent implements IPage, IUserLa
     @Override
     public final void setForm(IForm form) {
         this.form = form;
-        this.add("cdn", CDN.getSite());
-        this.add("version", HTMLResource.getVersion());
+
+        // 获取cdn的地址
+        String site = config.getString(OssConnection.oss_site, "");
+        // 判断cdn是否启用
+        if (!Utils.isEmpty(site) && config.getBoolean(CDN.OSS_CDN_ENABLE, false))
+            site += "/resources/";
+
+        this.add("cdn", site);
+        this.add("version", config.getString(CDN.BROWSER_CACHE_VERSION, "1.0.0.0"));
         if (form != null) {
             this.put("jspPage", this);
             // 为兼容而设计
-            ServerConfig config = ServerConfig.getInstance();
-            this.add("summer_js", CDN.get(config.getProperty("summer.js", "js/summer.js")));
-            this.add("myapp_js", CDN.get(config.getProperty("myapp.js", "js/myapp.js")));
+            this.add("summer_js", CDN.get(config.getString("summer.js", "js/summer.js")));
+            this.add("myapp_js", CDN.get(config.getString("myapp.js", "js/myapp.js")));
         }
     }
 
