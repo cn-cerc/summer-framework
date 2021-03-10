@@ -11,10 +11,8 @@ import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Buffer;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.mis.cdn.CDN;
-import cn.cerc.mis.core.HTMLResource;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mis.language.R;
@@ -24,7 +22,7 @@ import cn.cerc.ui.parts.UIComponent;
 
 public abstract class AbstractPage extends UIComponent implements IPage, IUserLanguage {
     // 此处使用SummerMVC.ID是为了与CDN中一致，请勿改动！！！
-    private static final ClassConfig config = new ClassConfig(AbstractPage.class, SummerMVC.ID);
+    protected static final ClassConfig config = new ClassConfig(AbstractPage.class, SummerMVC.ID);
 
     private IForm form;
 

@@ -2,6 +2,7 @@ package cn.cerc.ui;
 
 import cn.cerc.mis.cdn.CDN;
 
+@Deprecated
 public class UIConfig {
 
     // 开始图标
@@ -17,5 +18,6 @@ public class UIConfig {
     public static final String GUIDE = CDN.get("images/guide.png");
 
     public static final String searchIocn = CDN.get("images/searchIocn.png");
+    
     public static final String dateIcon = CDN.get("images/dateIocn.png");
 }

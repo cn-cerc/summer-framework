@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.IForm;
@@ -267,18 +266,16 @@ public abstract class UIPage extends AbstractPage {
     }
 
     protected void initCssFile() {
-        ServerConfig config = ServerConfig.getInstance();
-        this.addCssFile(config.getProperty("summer.css", "css/summer.css"));
+        this.addCssFile(config.getString("summer.css", "css/summer.css"));
         if (!getForm().getClient().isPhone()) {
-            this.addCssFile(config.getProperty("summer-pc.css", "css/summer-pc.css"));
+            this.addCssFile(config.getString("summer-pc.css", "css/summer-pc.css"));
         }
     }
 
     protected void initJsFile() {
-        ServerConfig config = ServerConfig.getInstance();
-        this.addScriptFile(config.getProperty("jquery.js", "js/jquery.js"));
-        this.addScriptFile(config.getProperty("summer.js", "js/summer.js"));
-        this.addScriptFile(config.getProperty("myapp.js", "js/myapp.js"));
+        this.addScriptFile(config.getString("jquery.js", "js/jquery.js"));
+        this.addScriptFile(config.getString("summer.js", "js/summer.js"));
+        this.addScriptFile(config.getString("myapp.js", "js/myapp.js"));
     }
 
 }
