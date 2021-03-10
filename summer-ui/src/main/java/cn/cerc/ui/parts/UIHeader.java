@@ -3,11 +3,11 @@ package cn.cerc.ui.parts;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
@@ -25,6 +25,7 @@ import cn.cerc.ui.phone.Block104;
 
 public class UIHeader extends UIComponent implements IUserLanguage {
     private final ClassResource res = new ClassResource(this, "summer-ui");
+    private static final ClassConfig config = new ClassConfig(UIHeader.class, "summer-ui");
 
     private static final int MAX_MENUS = 4;
     private UIAdvertisement advertisement; // 可选
@@ -59,7 +60,6 @@ public class UIHeader extends UIComponent implements IUserLanguage {
 
     private IHandle handle;
 
-    private final ServerConfig config = ServerConfig.getInstance();
 
     public void setHeadInfo(String logoSrc, String welcome) {
         this.logoSrc = logoSrc;
@@ -69,7 +69,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     private String getHomeImage(AbstractPage owner) {
         String homeImg = UIConfig.home_index;
         if (owner.getForm().getClient().isPhone()) {
-            String phoneIndex = config.getProperty("app.phone.home.image");
+            String phoneIndex = config.getProperty("app.phone.home.image", null);
             if (Utils.isNotEmpty(homeImg)) {
                 homeImg = CDN.get(phoneIndex);
             }
@@ -78,7 +78,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     }
 
     private String getLogo() {
-        String logo = config.getProperty("app.logo.src");
+        String logo = config.getProperty("app.logo.src", null);
         if (Utils.isNotEmpty(logo)) {
             return CDN.get(logo);
         }
@@ -109,7 +109,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
             welcome = config.getProperty("app.welcome.language", res.getString(3, "欢迎使用系统"));
 
             String exitName = config.getProperty("app.exit.name", "#");
-            String exitUrl = config.getProperty("app.exit.url");
+            String exitUrl = config.getProperty("app.exit.url", null);
             exitSystem = new UrlRecord();
             exitSystem.setName(exitName).setSite(exitUrl);
         }
