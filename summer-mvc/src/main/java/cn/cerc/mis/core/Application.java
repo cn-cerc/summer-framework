@@ -1,6 +1,7 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.IHandle;
+import cn.cerc.core.LanguageResource;
 import cn.cerc.core.SupportHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
@@ -38,12 +39,16 @@ public class Application {
 
     // 默认界面语言版本
     // FIXME: 2019/12/7 此处应改为从函数，并从配置文件中读取默认的语言类型
-    public static final String App_Language = Language.zh_CN; // 可选：cn/en
+    public static final String App_Language = getAppLanguage(); // 可选：cn/en
 
     private static ApplicationContext context;
 
     public static ApplicationContext getContext() {
         return context;
+    }
+
+    private static String getAppLanguage() {
+        return LanguageResource.appLanguage;
     }
 
     public static void setContext(ApplicationContext applicationContext) {

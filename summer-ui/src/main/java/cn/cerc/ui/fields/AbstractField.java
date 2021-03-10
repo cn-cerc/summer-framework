@@ -13,9 +13,7 @@ import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIText;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public abstract class AbstractField extends UIComponent implements IField {
     // 数据库相关
     protected String field;
