@@ -9,6 +9,7 @@ import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.config.ApplicationConfig;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.message.MessageLevel;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
@@ -111,7 +112,7 @@ public class AsyncService implements IServiceProxy {
                 headIn.setField(args[i].toString(), args[i + 1]);
             }
         }
-        headIn.setField("token", ApplicationConfig.getToken(handle));
+        headIn.setField("token", Application.getToken(handle));
 
         String subject = this.getSubject();
         if ("".equals(subject)) {

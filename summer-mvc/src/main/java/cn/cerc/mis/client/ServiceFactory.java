@@ -9,10 +9,10 @@ import cn.cerc.mis.core.LocalService;
 
 public class ServiceFactory {
 
-    public static final String Public = "public"; // 数据库中心
+    public static final String BOOK_PUBLIC = "public"; // 数据库中心
 
     public static IServiceProxy get(IHandle handle) {
-        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.Public);
+        IServiceProxy svr = ServiceFactory.get(handle, ServiceFactory.BOOK_PUBLIC);
         return svr;
     }
 
@@ -34,7 +34,7 @@ public class ServiceFactory {
             Buffer buff = new Buffer(ServiceFactory.class.getName(), corpNo);
             String tarDB = buff.getString("database");
             if (tarDB == null || "".equals(tarDB)) {
-                RemoteService svr = RemoteService.create(handle, ServiceFactory.Public);
+                RemoteService svr = RemoteService.create(handle, ServiceFactory.BOOK_PUBLIC);
                 svr.setService("ApiDB.getDatabase");
                 if (!svr.exec("bookNo", corpNo)) {
                     throw new RuntimeException(svr.getMessage());

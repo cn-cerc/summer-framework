@@ -97,7 +97,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
         IClient client = page.getForm().getClient();
         boolean isShowBar = config.getBoolean("app.ui.head.show", true);
         if (!client.isPhone() && isShowBar) {
-            String token = (String) handle.getProperty(Application.token);
+            String token = (String) handle.getProperty(Application.TOKEN);
             handle.init(token);
             currentUser = res.getString(2, "用户");
             leftMenus.add(homePage);

@@ -58,7 +58,7 @@ public class SvrAutoLogin implements IUserLanguage {
             sess.getConnection().execute(sql);
 
             String token = Utils.generateToken();
-            sess.setProperty(Application.token, token);
+            sess.setProperty(Application.TOKEN, token);
             sess.setProperty("deviceId", deviceId);
             sess.setProperty(RequestData.TOKEN, token);
             log.info("扫码登录 sid {}", token);

@@ -30,7 +30,7 @@ public class Application {
     // tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
     // token id
-    public static final String token = "ID";
+    public static final String TOKEN = "ID";
     // user id
     public static final String userId = "UserID";
     public static final String userCode = "UserCode";
@@ -247,7 +247,7 @@ public class Application {
             String loginJspFile = null;
             // 若页面有传递用户帐号，则强制重新校验
             if (form.getRequest().getParameter("login_usr") != null) {
-                // 检查服务器的角色状态
+                // 检查服务器的角色状态，如果是从服务器，则允许登录
                 if (ApplicationConfig.isReplica())
                     throw new RuntimeException(res.getString(1, "当前服务不支持登录，请返回首页重新登录"));
 
@@ -312,6 +312,16 @@ public class Application {
             log.error(err.getMessage());
             err.printStackTrace();
         }
+    }
+
+    /**
+     * 获得 token 的值
+     * 
+     * @param handle
+     * @return
+     */
+    public static String getToken(IHandle handle) {
+        return (String) handle.getProperty(Application.TOKEN);
     }
 
 }
