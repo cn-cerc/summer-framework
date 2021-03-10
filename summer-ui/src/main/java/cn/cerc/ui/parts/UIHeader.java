@@ -130,7 +130,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
         html.print("<header role='header'");
         super.outputCss(html);
         html.println(">");
-        if (userName != null) {
+        if (!"".equals(this.userName) && this.userName != null) {
             html.print("<div class='titel_top'>");
             html.print("<div class='logo_box'>");
             html.print("<img src='%s'/>", logoSrc);
