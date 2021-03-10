@@ -1,89 +1,80 @@
 package cn.cerc.mis.config;
 
-import cn.cerc.db.core.IAppConfig;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+import cn.cerc.core.ClassConfig;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.mis.core.Application;
 
 @Component
+@Deprecated
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppConfigDefault implements IAppConfig {
-    private Map<String, String> params = new HashMap<>();
+    private static final ClassConfig config = new ClassConfig(AppConfigDefault.class, "summer-mvc");
 
-    public Map<String, String> getParams() {
-        return params;
-    }
-
-    public void setParams(Map<String, String> params) {
-        this.params = params;
-    }
-
+    @Deprecated
     @Override
     public String getPathForms() {
-        return getParam("pathForms", "forms");
+        return config.getProperty(Application.PATH_FORMS, "forms");
     }
 
+    @Deprecated
     @Override
     public String getPathServices() {
-        return getParam("pathServices", "services");
+        return config.getProperty(Application.PATH_SERVICES, "services");
     }
 
     /**
      * @return 返回默认的欢迎页
      */
+    @Deprecated
     @Override
     public String getFormWelcome() {
-        return getParam("formWelcome", "welcome");
+        return config.getProperty(Application.FORM_WELCOME, "welcome");
     }
 
     /**
      * @return 返回默认的主菜单
      */
+    @Deprecated
     @Override
     public String getFormDefault() {
-        return getParam("formDefault", "default");
+        return config.getProperty(Application.FORM_DEFAULT, "default");
     }
 
     /**
      * @return 退出系统确认画面
      */
+    @Deprecated
     @Override
     public String getFormLogout() {
-        return getParam("formLogout", "logout");
+        return config.getProperty(Application.FORM_LOGOUT, "logout");
     }
 
     /**
      * @return 当前设备第一次登录时需要验证设备
      */
+    @Deprecated
     @Override
     public String getFormVerifyDevice() {
-        return getParam("formVerifyDevice", "VerifyDevice");
+        return config.getProperty(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
     }
 
     /**
      * @return 在需要用户输入帐号、密码进行登录时的显示
      */
+    @Deprecated
     @Override
     public String getJspLoginFile() {
-        return getParam("jspLoginFile", "common/FrmLogin.jsp");
+        return config.getProperty(Application.JSPFILE_LOGIN, "common/FrmLogin.jsp");
     }
 
-    public String getParam(String key, String def) {
-        String val = params.get(key);
-        return val != null ? val : def;
-    }
-
+    @Deprecated
     @Override
     public String getProperty(String key, String def) {
-        String val = params.get(key);
-        return val != null ? val : def;
+        return config.getProperty(key, def);
     }
 
-    @Override
-    public String getProperty(String key) {
-        return params.get(key);
-    }
 }

@@ -48,6 +48,15 @@ public class Application {
     // FIXME: 2019/12/7 此处应改为从函数，并从配置文件中读取默认的语言类型
     public static final String App_Language = getAppLanguage(); // 可选：cn/en
 
+    // 各类应用配置代码
+    public static final String PATH_FORMS = "application.pathForms";
+    public static final String PATH_SERVICES = "application.pathServices";
+    public static final String FORM_WELCOME = "application.formWelcome";
+    public static final String FORM_DEFAULT = "application.formDefault";
+    public static final String FORM_LOGOUT = "application.formLogout";
+    public static final String FORM_VERIFY_DEVICE = "application.formVerifyDevice";
+    public static final String JSPFILE_LOGIN = "application.jspLoginFile";
+
     private static ApplicationContext context;
 
     public static ApplicationContext getContext() {
@@ -110,6 +119,12 @@ public class Application {
         return getBean(IHandle.class, "AppHandle", "handle", "handleDefault");
     }
 
+    /**
+     * 请改为直接使用ClassResource，参考AppConfigDefault
+     * 
+     * @return
+     */
+    @Deprecated
     public static IAppConfig getAppConfig() {
         return getBean(IAppConfig.class, "AppConfig", "appConfig", "appConfigDefault");
     }
