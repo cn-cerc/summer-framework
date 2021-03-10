@@ -88,10 +88,12 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     public UIHeader(AbstractPage page) {
         super(page);
         this.handle = page.getForm().getHandle();
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), getHomeImage(page));
+        
+        String defaultPage = config.getProperty(Application.FORM_DEFAULT, "default");
+        homePage = new UrlRecord(defaultPage, getHomeImage(page));
         leftMenus.add(homePage);
 
-        homePage = new UrlRecord(Application.getAppConfig().getFormDefault(), res.getString(1, "开始"));
+        homePage = new UrlRecord(defaultPage, res.getString(1, "开始"));
 
         IClient client = page.getForm().getClient();
         boolean isShowBar = "true".equals(config.getProperty("app.ui.head.show", "true"));
