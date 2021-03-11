@@ -9,23 +9,26 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.SupportHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
+import cn.cerc.mvc.SummerMVC;
 import cn.cerc.ui.page.JspPage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+//TODO: 此CLASS应该移到summer-mvc包中
 public class AppLoginDefault extends JspPage implements IAppLogin {
+    // 注意：此处应该使用SummerMVC.ID，别改为SummerUI.ID
+    private static final ClassConfig config = new ClassConfig(AppLoginDefault.class, SummerMVC.ID);
 
     // 配置在服务器的用户名下面 summer-application.properties
     @Deprecated
@@ -38,16 +41,14 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
     @Override
     public void init(IForm form) {
         this.setForm(form);
-        IAppConfig conf = Application.getAppConfig();
-        this.setJspFile(conf.getJspLoginFile());
-        this.add("homePage", conf.getFormWelcome());
+        this.setJspFile(config.getString(Application.JSPFILE_LOGIN, "common/FrmLogin.jsp"));
+        this.add("homePage", config.getString(Application.FORM_WELCOME, "welcome"));
         this.add("needVerify", "false");
-        ServerConfig config = ServerConfig.getInstance();
-        String logoUrl = config.getProperty("vine.mall.logoUrl", "");
+        String logoUrl = config.getString("vine.mall.logoUrl", "");
         if (!"".equals(logoUrl)) {
             this.add("logoUrl", logoUrl);
         }
-        String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
+        String supCorpNo = config.getString("vine.mall.supCorpNo", "");
         if (!"".equals(supCorpNo)) {
             this.add("supCorpNo", supCorpNo);
         }

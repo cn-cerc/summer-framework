@@ -7,6 +7,7 @@ import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mis.core.JsonPage;
 import cn.cerc.mis.core.LocalService;
+import cn.cerc.ui.SummerUI;
 
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ProxyService extends AbstractForm {
-    private static final ClassResource res = new ClassResource("summer-ui", ProxyService.class);
+    private static final ClassResource res = new ClassResource(ProxyService.class, SummerUI.ID);
 
     @Override
     public IPage execute() throws Exception {

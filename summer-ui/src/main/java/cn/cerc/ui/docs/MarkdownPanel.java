@@ -2,11 +2,12 @@ package cn.cerc.ui.docs;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.mis.core.IPage;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.other.OperaPanel;
 import cn.cerc.ui.parts.UIComponent;
 
 public class MarkdownPanel extends OperaPanel {
-    private static final ClassResource res = new ClassResource("summer-ui", MarkdownPanel.class);
+    private static final ClassResource res = new ClassResource(MarkdownPanel.class, SummerUI.ID);
 
     private String fileName;
 
