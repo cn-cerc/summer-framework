@@ -19,7 +19,7 @@ public class UIPageWelcome extends UIPage {
         writeHead(out);
         out.println("</head>");
         out.println("<body>");
-        out.println(this.getDocument());
+        writeBody(out);
         out.println("</body>");
         out.println("</html>");
     }
