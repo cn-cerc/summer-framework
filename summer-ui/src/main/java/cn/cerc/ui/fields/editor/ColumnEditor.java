@@ -3,6 +3,7 @@ package cn.cerc.ui.fields.editor;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.IField;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColumnEditor {
-    private static final ClassResource res = new ClassResource(ColumnEditor.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(ColumnEditor.class, SummerUI.ID);
 
     private AbstractField owner;
     private boolean init = false;

@@ -4,6 +4,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
@@ -12,7 +13,7 @@ import cn.cerc.ui.grid.lines.ExpenderGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DataGrid extends AbstractGrid {
-    private static final ClassResource res = new ClassResource(DataGrid.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(DataGrid.class, SummerUI.ID);
 
     private final double MaxWidth = 600;
     // 当前样式选择

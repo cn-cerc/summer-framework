@@ -2,6 +2,7 @@ package cn.cerc.ui.other;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
+import cn.cerc.ui.SummerUI;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BeanRecord<T> implements AutoCloseable, BuildRecord {
-    private static final ClassResource res = new ClassResource(BeanRecord.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(BeanRecord.class, SummerUI.ID);
 
     private Map<Field, Method> gets = new HashMap<>();
     private Map<Field, Method> sets = new HashMap<>();

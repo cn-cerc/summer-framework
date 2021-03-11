@@ -2,12 +2,13 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class ItField extends AbstractField {
 
-    private static final ClassResource res = new ClassResource(ItField.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(ItField.class, SummerUI.ID);
 
     public ItField(UIComponent owner) {
         super(owner, res.getString(1, "序"), 2);

@@ -34,17 +34,6 @@ public class StartForms implements Filter {
         String uri = req.getRequestURI();
         log.debug("uri {}", uri);
 
-        /*
-         * http://127.0.0.1:8103/
-         * 
-         * http://127.0.0.1:8103
-         * 
-         * http://127.0.0.1:8103/public
-         * 
-         * http://127.0.0.1:8103/public/
-         * 
-         * http://127.0.0.1:8103/favicon.ico
-         */
         if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
             String redirect = String.format("%s%s", ApplicationConfig.App_Path,
                     config.getString(Application.FORM_WELCOME, "welcome"));

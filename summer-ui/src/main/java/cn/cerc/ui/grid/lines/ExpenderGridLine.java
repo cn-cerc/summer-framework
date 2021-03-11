@@ -2,6 +2,7 @@ package cn.cerc.ui.grid.lines;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
@@ -10,7 +11,7 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.RowCell;
 
 public class ExpenderGridLine extends AbstractGridLine {
-    private static final ClassResource res = new ClassResource(ExpenderGridLine.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(ExpenderGridLine.class, SummerUI.ID);
 
     public ExpenderGridLine(DataSource dataSource) {
         super(dataSource);

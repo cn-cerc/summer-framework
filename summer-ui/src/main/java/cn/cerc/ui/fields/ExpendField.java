@@ -2,12 +2,13 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
 public class ExpendField extends AbstractField implements SearchItem {
-    private static final ClassResource res = new ClassResource(ExpendField.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(ExpendField.class, SummerUI.ID);
 
     private boolean search;
     private String hiddenId = "hidden";

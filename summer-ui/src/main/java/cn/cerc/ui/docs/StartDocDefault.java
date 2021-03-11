@@ -2,6 +2,8 @@ package cn.cerc.ui.docs;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.ui.SummerUI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ import java.io.PrintWriter;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/docs")
 public class StartDocDefault {
-    private static final ClassResource res = new ClassResource(StartDocDefault.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(StartDocDefault.class, SummerUI.ID);
 
     @Autowired
     private HttpServletRequest req;

@@ -1,5 +1,13 @@
 package cn.cerc.ui.menu;
 
+import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.IHandle;
@@ -11,19 +19,12 @@ import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.IDataCache;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import lombok.extern.slf4j.Slf4j;
-
-import java.lang.reflect.Type;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
- * 系统菜单缓存
+ * 系统菜单缓存 此对象不应该放在框架中
  */
-@Slf4j
+//TODO 此Class应该从框架中移出
+@Deprecated
 public class MenuList implements IDataCache, IUserLanguage {
     private final ClassResource res = new ClassResource(this, "summer-ui");
 
