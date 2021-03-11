@@ -31,6 +31,7 @@ public class ProcessService extends AbstractTask {
 
     @Override
     public void execute() throws JsonProcessingException {
+        //FIXME 此处应该做进一步抽象
         LocalService svr = new LocalService(this, "SvrUserMessages.getWaitList");
         if (!svr.exec()) {
             throw new RuntimeException(svr.getMessage());
@@ -47,6 +48,7 @@ public class ProcessService extends AbstractTask {
      */
     private void processService(String taskId) throws JsonProcessingException {
         // 此任务可能被其它主机抢占
+        //FIXME 此处应该做进一步抽象
         LocalService svrMsg = new LocalService(this, "SvrUserMessages.readAsyncService");
         if (!svrMsg.exec("msgId", taskId)) {
             return;
@@ -88,6 +90,7 @@ public class ProcessService extends AbstractTask {
      */
     private void updateTaskprocess(AsyncService async, String taskId, String subject) {
         async.setProcessTime(TDateTime.now().toString());
+        //FIXME 此处应该做进一步抽象
         LocalService svr = new LocalService(this, "SvrUserMessages.updateAsyncService");
         if (!svr.exec("msgId", taskId, "content", async.toString(), "process", async.getProcess())) {
             throw new RuntimeException(String.format(res.getString(1, "更新任务队列进度异常：%s"), svr.getMessage()));

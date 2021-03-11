@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class StubHandle implements IHandle, AutoCloseable {
     private static final ClassResource res = new ClassResource("summer-mvc", StubHandle.class);
 
+    //FIXME 此处应该使用ClassConfig
     public static final String DefaultBook = "999001";
     public static final String DefaultUser = DefaultBook + "01";
     public static final String DefaultProduct = "999001000001";

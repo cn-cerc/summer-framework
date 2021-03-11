@@ -8,6 +8,8 @@ import java.util.List;
 /**
  * 用户免登录验证白名单
  */
+@Deprecated
+//TODO: 此处应该改使用ClassConfig
 public enum LoginWhitelist {
 
     INSTANCE;

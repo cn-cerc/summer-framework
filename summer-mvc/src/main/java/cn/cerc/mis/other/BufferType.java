@@ -1,5 +1,6 @@
 package cn.cerc.mis.other;
 
+//FIXME: BufferType应从框架中移出
 public enum BufferType {
     // 0.测试专用
     test,

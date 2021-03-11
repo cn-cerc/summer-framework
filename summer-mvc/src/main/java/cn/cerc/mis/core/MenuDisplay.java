@@ -6,6 +6,8 @@ import lombok.Setter;
 /**
  * 用于构建右边菜单的显示
  */
+@Deprecated
+//TODO MenuDisplay 此对象不应该存在框架中
 @Setter
 @Getter
 public class MenuDisplay {

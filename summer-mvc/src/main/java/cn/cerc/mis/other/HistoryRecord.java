@@ -47,6 +47,7 @@ public class HistoryRecord {
     public void save(IHandle handle) {
         String corpNo = handle.getCorpNo();
         if (corpNo == null || "".equals(corpNo)) {
+            //FIXME 此处应该使用ClassResource
             throw new RuntimeException("生成日志时，公司编号不允许为空！");
         }
 
@@ -71,6 +72,7 @@ public class HistoryRecord {
                 mth = 0;
         }
 
+        //FIXME 此处应该做进一步抽象
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         BatchScript bs = new BatchScript(handle);
         bs.add("insert into %s (CorpNo_,Level_,Log_,AppUser_,UpdateKey_) values ('%s',%d,'%s','%s','%s')",

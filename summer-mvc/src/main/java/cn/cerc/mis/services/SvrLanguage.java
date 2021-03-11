@@ -10,6 +10,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+@Deprecated
+//FIXME: SvrLanguage 应该从框架移出
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrLanguage extends CustomService {
