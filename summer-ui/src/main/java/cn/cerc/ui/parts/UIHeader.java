@@ -73,7 +73,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
                 homeImg = CDN.get(phoneIndex);
             }
         }
-        return String.format("<img src=\"%s\"/>", homeImg);
+        return String.format("<img src=\"%s%s\"/>", Application.getStaticPath(), homeImg);
     }
 
     private String getLogo() {

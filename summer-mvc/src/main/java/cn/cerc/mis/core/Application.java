@@ -61,6 +61,11 @@ public class Application {
     public static final String JSPFILE_LOGIN = "application.jspLoginFile";
 
     private static ApplicationContext context;
+    private static String staticPath;
+
+    static {
+        staticPath = config.getString("app.static.path", "");
+    }
 
     public static ApplicationContext getContext() {
         return context;
@@ -322,6 +327,10 @@ public class Application {
      */
     public static String getToken(IHandle handle) {
         return (String) handle.getProperty(Application.TOKEN);
+    }
+
+    public static String getStaticPath() {
+        return staticPath;
     }
 
 }
