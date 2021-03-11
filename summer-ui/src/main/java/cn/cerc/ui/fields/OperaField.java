@@ -2,11 +2,12 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class OperaField extends AbstractField {
-    private static final ClassResource res = new ClassResource("summer-ui", OperaField.class);
+    private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
 
     private String value = res.getString(1, "内容");
 

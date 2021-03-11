@@ -3,6 +3,7 @@ package cn.cerc.ui.fields;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
@@ -10,7 +11,7 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.parts.UIComponent;
 
 public class RangeField extends AbstractField implements DataSource {
-    private static final ClassResource res = new ClassResource("summer-ui", RangeField.class);
+    private static final ClassResource res = new ClassResource(RangeField.class, SummerUI.ID);
 
     public RangeField(UIComponent dataView, String name) {
         super(dataView, name, 0);

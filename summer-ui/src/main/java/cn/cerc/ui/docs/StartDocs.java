@@ -2,6 +2,7 @@ package cn.cerc.ui.docs;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.ui.SummerUI;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +15,7 @@ import java.io.PrintWriter;
 
 @Deprecated // 请改使用 StartDocDefault
 public class StartDocs extends HttpServlet {
-    private static final ClassResource res = new ClassResource("summer-ui", StartDocs.class);
+    private static final ClassResource res = new ClassResource(StartDocs.class, SummerUI.ID);
 
     private static final long serialVersionUID = 1L;
 

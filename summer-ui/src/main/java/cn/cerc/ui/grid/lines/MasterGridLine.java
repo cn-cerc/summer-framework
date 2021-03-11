@@ -2,6 +2,7 @@ package cn.cerc.ui.grid.lines;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
@@ -13,7 +14,7 @@ import cn.cerc.ui.grid.RowCell;
 import java.util.List;
 
 public class MasterGridLine extends AbstractGridLine {
-    private static final ClassResource res = new ClassResource("summer-ui", MasterGridLine.class);
+    private static final ClassResource res = new ClassResource(MasterGridLine.class, SummerUI.ID);
 
     private String primaryKey;
     // 列管理器，用于支持自定义栏位
