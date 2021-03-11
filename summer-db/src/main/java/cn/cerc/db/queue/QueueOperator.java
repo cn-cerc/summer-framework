@@ -3,9 +3,10 @@ package cn.cerc.db.queue;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.Record;
+import cn.cerc.db.SummerDB;
 
 public class QueueOperator implements IDataOperator {
-    private static final ClassResource res = new ClassResource(QueueOperator.class, "summer-db");
+    private static final ClassResource res = new ClassResource(QueueOperator.class, SummerDB.ID);
 
     // 根据 sql 获取数据库表名
     public String findTableName(String sql) {

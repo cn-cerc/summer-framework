@@ -2,6 +2,7 @@ package cn.cerc.db.oss;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
+import cn.cerc.db.SummerDB;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.CopyObjectResult;
@@ -13,7 +14,7 @@ import java.io.InputStream;
 
 @Slf4j
 public class OssDisk {
-    private static final ClassResource res = new ClassResource(OssDisk.class, "summer-db");
+    private static final ClassResource res = new ClassResource(OssDisk.class, SummerDB.ID);
 
     private OssConnection connection;
     private OSS client;

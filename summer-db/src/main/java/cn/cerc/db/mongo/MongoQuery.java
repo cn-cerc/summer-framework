@@ -8,6 +8,7 @@ import cn.cerc.core.IDataOperator;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
+import cn.cerc.db.SummerDB;
 import cn.cerc.db.mysql.SqlOperator;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class MongoQuery extends DataQuery {
     private static final long serialVersionUID = -1262005194419604476L;
-    private static final ClassResource res = new ClassResource(MongoQuery.class, "summer-db");
+    private static final ClassResource res = new ClassResource(MongoQuery.class, SummerDB.ID);
 
     private MongoConnection connection = null;
     // 数据库保存操作执行对象

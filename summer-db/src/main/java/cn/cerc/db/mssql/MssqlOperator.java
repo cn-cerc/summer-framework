@@ -5,6 +5,7 @@ import cn.cerc.core.IDataOperator;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
+import cn.cerc.db.SummerDB;
 import cn.cerc.db.mysql.BuildStatement;
 import cn.cerc.db.mysql.UpdateMode;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 public class MssqlOperator implements IDataOperator {
-    private static final ClassResource res = new ClassResource(MssqlOperator.class, "summer-db");
+    private static final ClassResource res = new ClassResource(MssqlOperator.class, SummerDB.ID);
 
     private String updateKey = "UID_";
     private String tableName;

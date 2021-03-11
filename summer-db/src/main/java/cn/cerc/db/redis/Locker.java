@@ -2,6 +2,7 @@ package cn.cerc.db.redis;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.TDateTime;
+import cn.cerc.db.SummerDB;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 
 @Slf4j
 public class Locker implements Closeable {
-    private static final ClassResource res = new ClassResource(Locker.class, "summer-db");
+    private static final ClassResource res = new ClassResource(Locker.class, SummerDB.ID);
 
     private String group;
     private String message;

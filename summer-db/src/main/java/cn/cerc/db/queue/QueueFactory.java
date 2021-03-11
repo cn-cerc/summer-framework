@@ -1,13 +1,14 @@
 package cn.cerc.db.queue;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.ServerConfig;
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
 
 public class QueueFactory {
-    private static final ClassResource res = new ClassResource(QueueFactory.class, "summer-db");
+    private static final ClassResource res = new ClassResource(QueueFactory.class, SummerDB.ID);
 
     private static MNSClient client;
     private static CloudAccount account;
