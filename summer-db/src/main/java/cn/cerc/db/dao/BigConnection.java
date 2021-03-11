@@ -1,18 +1,22 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.db.mysql.MysqlConnection;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-import lombok.extern.slf4j.Slf4j;
-
 import java.beans.PropertyVetoException;
 import java.io.Closeable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+import cn.cerc.core.ClassConfig;
+import cn.cerc.core.Utils;
+import cn.cerc.db.SummerDB;
+import cn.cerc.db.mysql.MysqlConnection;
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 public class BigConnection implements Closeable {
+    private static final ClassConfig config = new ClassConfig(BigConnection.class, SummerDB.ID);
 
     // 饿汉式
     private static ComboPooledDataSource dataSource;
@@ -39,18 +43,13 @@ public class BigConnection implements Closeable {
 
     public synchronized static ComboPooledDataSource getDataSource() {
         if (dataSource == null) {
-            ServerConfig config = ServerConfig.getInstance();
-
-            String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
-            String database = config.getProperty(MysqlConnection.rds_database, "appdb");
-            String url = String.format("jdbc:mysql://%s/%s?useSSL=false&autoReconnect=true&autoCommit=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai", host, database);
-
-            String user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
-            String pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
-            int min_size = Integer.parseInt(config.getProperty("c3p0.min_size", "5"));
-            int max_size = Integer.parseInt(config.getProperty("c3p0.max_size", "100"));
-            int time_out = Integer.parseInt(config.getProperty("c3p0.time_out", "1800"));
-            int max_statement = Integer.parseInt(config.getProperty("c3p0.max_statement", "100"));
+            String user = MysqlConnection.getUser();
+            String pwd = MysqlConnection.getPassword();
+            String url = MysqlConnection.getConnectUrl(); 
+            int min_size = config.getInt("c3p0.min_size", 5);
+            int max_size = config.getInt("c3p0.max_size", 100);
+            int time_out = config.getInt("c3p0.time_out", 1800);
+            int max_statement = config.getInt("c3p0.max_statement", 100);
 
             dataSource = new ComboPooledDataSource();
             try {
@@ -69,10 +68,9 @@ public class BigConnection implements Closeable {
             dataSource.setMaxStatements(max_statement);
 
             // 防止断开连接，自动测试链接是否有效
-            boolean openAutoTestConn = Boolean.parseBoolean(config.getProperty("c3p0.open_auto_test_conn", "false"));
-            if (openAutoTestConn) {
+            if (config.getBoolean("c3p0.open_auto_test_conn", false)) {
                 // 每隔多少时间（时间请小于 数据库的 timeout）,测试一下链接，防止失效，会损失小部分性能
-                int test_conn_time = Integer.parseInt(config.getProperty("c3p0.idle_connection_test_period", "60"));
+                int test_conn_time = config.getInt("c3p0.idle_connection_test_period", 60);
                 dataSource.setTestConnectionOnCheckin(true);
                 dataSource.setTestConnectionOnCheckout(false);
                 dataSource.setIdleConnectionTestPeriod(test_conn_time);
@@ -87,16 +85,6 @@ public class BigConnection implements Closeable {
      * @return 返回数据库连接
      */
     public static Connection popConnection() {
-        // try {
-        // System.out.println("最大连接数 " + getDataSource().getMaxPoolSize());
-        // System.out.println("最小连接数 " + getDataSource().getMinPoolSize());
-        // System.out.println("正在使用连接数 " + getDataSource().getNumBusyConnections());
-        // System.out.println("空闲连接数 " + getDataSource().getNumIdleConnections());
-        // System.out.println("总连接数 " + getDataSource().getNumConnections());
-        // System.out.println("------------------");
-        // } catch (SQLException e1) {
-        // e1.printStackTrace();
-        // }
         Connection conn = connections.get();// 获取当前线程的事务连接
         if (conn != null) {
             return conn;
@@ -174,17 +162,14 @@ public class BigConnection implements Closeable {
     public Connection get() {
         if (debugConnection) {
             try {
-                ServerConfig config = ServerConfig.getInstance();
-                String host = config.getProperty(MysqlConnection.rds_site, "127.0.0.1:3306");
-                String database = config.getProperty(MysqlConnection.rds_database, "appdb");
-                String url = String.format("jdbc:mysql://%s/%s?useSSL=false&autoReconnect=true&autoCommit=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai", host, database);
-                String user = config.getProperty(MysqlConnection.rds_username, "appdb_user");
-                String pwd = config.getProperty(MysqlConnection.rds_password, "appdb_password");
+                String url = MysqlConnection.getConnectUrl();
+                String user = MysqlConnection.getUser();
+                String pwd = MysqlConnection.getPassword();
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                if (host == null || user == null || pwd == null || database == null) {
+                if (Utils.isEmpty(url) || Utils.isEmpty(user) || Utils.isEmpty(pwd)) {
                     throw new RuntimeException("mysql connection error");
                 }
-                log.debug("create connection for mysql: {}" , host);
+                log.debug("create connection for mysql: {}" , MysqlConnection.getSite());
                 return DriverManager.getConnection(url, user, pwd);
             } catch (ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);
