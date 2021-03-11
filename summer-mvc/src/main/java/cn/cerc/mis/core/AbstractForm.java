@@ -234,57 +234,58 @@ public class AbstractForm extends AbstractHandle implements IForm {
         try {
             // 支持路径参数调用，最多3个字符串参数
             switch (this.pathVariables.length) {
-                case 1: {
-                    if (this.getClient().isPhone()) {
-                        try {
-                            method = this.getClass().getMethod(funcCode + "_phone", String.class);
-                        } catch (NoSuchMethodException e) {
-                            method = this.getClass().getMethod(funcCode, String.class);
-                        }
-                    } else {
+            case 1: {
+                if (this.getClient().isPhone()) {
+                    try {
+                        method = this.getClass().getMethod(funcCode + "_phone", String.class);
+                    } catch (NoSuchMethodException e) {
                         method = this.getClass().getMethod(funcCode, String.class);
                     }
-                    result = method.invoke(this, this.pathVariables[0]);
-                    break;
+                } else {
+                    method = this.getClass().getMethod(funcCode, String.class);
                 }
-                case 2: {
-                    if (this.getClient().isPhone()) {
-                        try {
-                            method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class);
-                        } catch (NoSuchMethodException e) {
-                            method = this.getClass().getMethod(funcCode, String.class, String.class);
-                        }
-                    } else {
+                result = method.invoke(this, this.pathVariables[0]);
+                break;
+            }
+            case 2: {
+                if (this.getClient().isPhone()) {
+                    try {
+                        method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class);
+                    } catch (NoSuchMethodException e) {
                         method = this.getClass().getMethod(funcCode, String.class, String.class);
                     }
-                    result = method.invoke(this, this.pathVariables[0], this.pathVariables[1]);
-                    break;
+                } else {
+                    method = this.getClass().getMethod(funcCode, String.class, String.class);
                 }
-                case 3: {
-                    if (this.getClient().isPhone()) {
-                        try {
-                            method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class, String.class);
-                        } catch (NoSuchMethodException e) {
-                            method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
-                        }
-                    } else {
+                result = method.invoke(this, this.pathVariables[0], this.pathVariables[1]);
+                break;
+            }
+            case 3: {
+                if (this.getClient().isPhone()) {
+                    try {
+                        method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class,
+                                String.class);
+                    } catch (NoSuchMethodException e) {
                         method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
                     }
-                    result = method.invoke(this, this.pathVariables[0], this.pathVariables[1], this.pathVariables[2]);
-                    break;
+                } else {
+                    method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
                 }
-                default: {
-                    if (this.getClient().isPhone()) {
-                        try {
-                            method = this.getClass().getMethod(funcCode + "_phone");
-                        } catch (NoSuchMethodException e) {
-                            method = this.getClass().getMethod(funcCode);
-                        }
-                    } else {
+                result = method.invoke(this, this.pathVariables[0], this.pathVariables[1], this.pathVariables[2]);
+                break;
+            }
+            default: {
+                if (this.getClient().isPhone()) {
+                    try {
+                        method = this.getClass().getMethod(funcCode + "_phone");
+                    } catch (NoSuchMethodException e) {
                         method = this.getClass().getMethod(funcCode);
                     }
-                    result = method.invoke(this);
+                } else {
+                    method = this.getClass().getMethod(funcCode);
                 }
+                result = method.invoke(this);
+            }
             }
 
             if (result == null)
