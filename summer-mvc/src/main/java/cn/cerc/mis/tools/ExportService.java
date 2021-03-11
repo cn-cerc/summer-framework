@@ -11,13 +11,14 @@ import cn.cerc.mis.excel.output.AccreditException;
 import cn.cerc.mis.excel.output.ExportExcel;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mvc.SummerMVC;
 import jxl.write.WriteException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class ExportService extends ExportExcel {
-    private static final ClassResource res = new ClassResource(ExportService.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(ExportService.class, SummerMVC.ID);
 
     private String service;
     private String exportKey;

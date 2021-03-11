@@ -6,6 +6,7 @@ import cn.cerc.core.Record;
 import cn.cerc.db.queue.QueueDB;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
+import cn.cerc.mvc.SummerMVC;
 
 /**
  * 消息发送队列
@@ -13,7 +14,7 @@ import cn.cerc.db.queue.QueueQuery;
  * 注意：公司别和用户代码必须配套
  */
 public class MessageQueue {
-    private static final ClassResource res = new ClassResource(MessageQueue.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(MessageQueue.class, SummerMVC.ID);
 
     private String corpNo;
     private String userCode;

@@ -9,6 +9,7 @@ import cn.cerc.mis.book.IBookEnroll;
 import cn.cerc.mis.book.IBookManage;
 import cn.cerc.mis.book.IBookSource;
 import cn.cerc.mis.other.BookOptions;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 public class SearchManager implements IBookManage {
-    private static final ClassResource res = new ClassResource(SearchManager.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(SearchManager.class, SummerMVC.ID);
 
     private IHandle handle;
     private String initMonth;

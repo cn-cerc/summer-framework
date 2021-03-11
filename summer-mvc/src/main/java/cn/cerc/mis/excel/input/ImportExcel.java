@@ -4,6 +4,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
+import cn.cerc.mvc.SummerMVC;
 import jxl.Cell;
 import jxl.CellType;
 import jxl.NumberCell;
@@ -25,7 +26,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 public class ImportExcel extends ImportExcelFile {
-    private static final ClassResource res = new ClassResource(ImportExcel.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(ImportExcel.class, SummerMVC.ID);
 
     private static ApplicationContext app;
     private static String xmlFile = "classpath:import-excel.xml";

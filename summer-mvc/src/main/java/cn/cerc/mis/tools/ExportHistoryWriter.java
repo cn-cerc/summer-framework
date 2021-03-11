@@ -6,9 +6,10 @@ import cn.cerc.mis.excel.output.ExcelTemplate;
 import cn.cerc.mis.excel.output.HistoryWriter;
 import cn.cerc.mis.other.HistoryLevel;
 import cn.cerc.mis.other.HistoryRecord;
+import cn.cerc.mvc.SummerMVC;
 
 public class ExportHistoryWriter implements HistoryWriter {
-    private static final ClassResource res = new ClassResource(ExportHistoryWriter.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(ExportHistoryWriter.class, SummerMVC.ID);
 
     @Override
     public void start(Object handle, ExcelTemplate template) {

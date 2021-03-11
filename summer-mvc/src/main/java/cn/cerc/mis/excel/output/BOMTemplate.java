@@ -3,6 +3,7 @@ package cn.cerc.mis.excel.output;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
+import cn.cerc.mvc.SummerMVC;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author weish
  */
 public class BOMTemplate extends ExcelTemplate {
-    private static final ClassResource res = new ClassResource(BOMTemplate.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(BOMTemplate.class, SummerMVC.ID);
 
     private List<Column> heads;
     private List<Column> materials;

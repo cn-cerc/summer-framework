@@ -11,11 +11,12 @@ import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.UserNotFindException;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SvrSession extends CustomService {
-    private static final ClassResource res = new ClassResource(SvrSession.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(SvrSession.class, SummerMVC.ID);
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();

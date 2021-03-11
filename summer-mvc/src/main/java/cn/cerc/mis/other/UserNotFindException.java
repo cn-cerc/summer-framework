@@ -1,9 +1,10 @@
 package cn.cerc.mis.other;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.mvc.SummerMVC;
 
 public class UserNotFindException extends Exception {
-    private static final ClassResource res = new ClassResource(UserNotFindException.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(UserNotFindException.class, SummerMVC.ID);
 
     private static final long serialVersionUID = -356897945745530968L;
     private String userCode;
