@@ -383,7 +383,12 @@ public class Curl {
         return this;
     }
 
-    // 改使用 put 方法
+    /**
+     * 请改使用 put 方法
+     * @param key
+     * @param value
+     * @return
+     */
     @Deprecated
     public Curl putParameter(String key, Object value) {
         return this.put(key, value);
