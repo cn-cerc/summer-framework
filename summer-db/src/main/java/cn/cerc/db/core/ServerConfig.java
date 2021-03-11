@@ -2,17 +2,12 @@ package cn.cerc.db.core;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.IConfig;
+import cn.cerc.db.SummerDB;
 
 public enum ServerConfig implements IConfig {
 
     INSTANCE;
-
-    // 是否为任务主机
-    public static final String TaskServiceEnabled = "task.service";
-    public static final String config_version = "version";
-    public static final String config_debug = "debug";
-    public static final String CONFIG_APP_NAME = "appName";
-    private static final ClassConfig config = new ClassConfig();
+    private static final ClassConfig config = new ClassConfig(ServerConfig.class, SummerDB.ID);
 
     public static ServerConfig getInstance() {
         return INSTANCE;
@@ -22,20 +17,20 @@ public enum ServerConfig implements IConfig {
     private int debug = -1;
 
     public static boolean enableTaskService() {
-        return "1".equals(config.getProperty(TaskServiceEnabled, null));
+        return config.getBoolean("task.service", false);
     }
 
     public static String getAppName() {
-        return config.getProperty(CONFIG_APP_NAME, "localhost");
+        return config.getString("appName", "localhost");
     }
 
     public static boolean enableDocService() {
-        return "1".equals(config.getProperty("docs.service", "0"));
+        return config.getBoolean("docs.service", false);
     }
 
     // 正式环境
     public static boolean isServerMaster() {
-        String tmp = config.getProperty("version", "beta");
+        String tmp = config.getString("version", "beta");
         if ("release".equals(tmp)) {
             return true;
         }
@@ -44,7 +39,7 @@ public enum ServerConfig implements IConfig {
 
     // 测试环境
     public static boolean isServerBeta() {
-        String tmp = config.getProperty("version", "beta");
+        String tmp = config.getString("version", "beta");
         return "beta".equals(tmp);
     }
 
@@ -62,10 +57,10 @@ public enum ServerConfig implements IConfig {
     /**
      * 读取配置，请改为使用 ClassConfig
      */
-    @Override
     @Deprecated
+    @Override
     public String getProperty(String key, String def) {
-        return config.getProperty(key, def);
+        return config.getString(key, def);
     }
 
     /**
@@ -73,7 +68,7 @@ public enum ServerConfig implements IConfig {
      */
     public boolean isDebug() {
         if (debug == -1) {
-            debug = "1".equals(config.getProperty(config_debug, "0")) ? 1 : 0;
+            debug = config.getBoolean("debug", false) ? 1 : 0;
         }
         return debug == 1;
     }
