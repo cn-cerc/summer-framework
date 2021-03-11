@@ -18,11 +18,12 @@ import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.RequestData;
+import cn.cerc.ui.SummerUI;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StartForms implements Filter {
-    private static final ClassConfig config = new ClassConfig();
+    private static final ClassConfig config = new ClassConfig(StartForms.class, SummerUI.ID);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -46,7 +47,7 @@ public class StartForms implements Filter {
          */
         if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
             String redirect = String.format("%s%s", ApplicationConfig.App_Path,
-                    config.getProperty(Application.FORM_WELCOME, "welcome"));
+                    config.getString(Application.FORM_WELCOME, "welcome"));
             redirect = resp.encodeRedirectURL(redirect);
             resp.sendRedirect(redirect);
             return;
@@ -72,10 +73,14 @@ public class StartForms implements Filter {
             if (index < 0) {
                 request.getServletContext().getRequestDispatcher(uri).forward(request, response);
             } else {
-                String source = "/" + config.getProperty(Application.PATH_FORMS, "forms") + uri.substring(index);
+                String source = "/" + config.getString(Application.PATH_FORMS, "forms") + uri.substring(index);
                 request.getServletContext().getRequestDispatcher(source).forward(request, response);
                 log.debug("after  {}", source);
             }
+            return;
+        }
+        if (uri.contains("static/")) {
+            chain.doFilter(req, resp);
             return;
         }
         if (uri.contains("service/")) {
@@ -117,9 +122,9 @@ public class StartForms implements Filter {
                 } else {
                     String token = (String) req.getAttribute(RequestData.TOKEN);
                     if (token != null && !"".equals(token)) {
-                        url = config.getProperty(Application.FORM_DEFAULT, "default");
+                        url = config.getString(Application.FORM_DEFAULT, "default");
                     } else {
-                        url = config.getProperty(Application.FORM_WELCOME, "welcome");
+                        url = config.getString(Application.FORM_WELCOME, "welcome");
                     }
                 }
             }

@@ -1,9 +1,14 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
-import cn.cerc.ui.UIConfig;
+import cn.cerc.mis.cdn.CDN;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
@@ -12,11 +17,9 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIText;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UIFormVertical extends UIComponent implements DataSource {
-    private static final ClassResource res = new ClassResource(UIFormVertical.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(UIFormVertical.class, SummerUI.ID);
+    private static final ClassConfig config = new ClassConfig(UIFormVertical.class, SummerUI.ID);
 
     protected String CSSClass = "info";
     protected String method = "post";
@@ -119,7 +122,7 @@ public class UIFormVertical extends UIComponent implements DataSource {
                 UIText mark = field.getMark();
                 if (mark != null) {
                     html.println("<a href=\"javascript:displaySwitch('%s')\">", field.getId());
-                    html.println("<img src=\"%s\" />", UIConfig.GUIDE);
+                    html.println("<img src=\"%s\" />", CDN.get(config.getClassProperty("icon", "")));
                     html.println("</a>");
                     html.println("</li>");
                     html.println("<li role=\"%s\" style=\"display: none;\">", field.getId());

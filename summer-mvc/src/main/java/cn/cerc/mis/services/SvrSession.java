@@ -57,14 +57,14 @@ public class SvrSession extends CustomService {
         if (cdsToken.eof()) {
             log.warn("can not find token in database: {}", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
-            sess.setProperty(Application.token, null);
+            sess.setProperty(Application.TOKEN, null);
             return false;
         }
 
         if (cdsToken.getInt("Viability_") <= 0 && !"13100154".equals(cdsToken.getString("UserCode_"))) {
             log.warn("token expired，please login again {}", token);
             HandleDefault sess = (HandleDefault) this.getProperty(null);
-            sess.setProperty(Application.token, null);
+            sess.setProperty(Application.TOKEN, null);
             return false;
         }
 
@@ -77,7 +77,7 @@ public class SvrSession extends CustomService {
         if (cdsUser.eof()) {
             log.warn(String.format("userId %s 没有找到！", userId));
             HandleDefault sess = (HandleDefault) this.getProperty(null);
-            sess.setProperty(Application.token, null);
+            sess.setProperty(Application.TOKEN, null);
             return false;
         }
 

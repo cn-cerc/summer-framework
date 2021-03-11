@@ -7,23 +7,27 @@ import cn.cerc.mvc.SummerMVC;
 
 public class CDN {
     private static final ClassConfig config = new ClassConfig(CDN.class, SummerMVC.ID);
+    // 启用内容网络分发
+    public static final String OSS_CDN_ENABLE = "oss.cdn.enable";
+    //浏览器缓存版本号
+    public static final String BROWSER_CACHE_VERSION = "browser.cache.version";
 
+    @Deprecated
     public static String getSite() {
-        // 判断cdn是否启用
-        if (!config.getBoolean(OssConnection.oss_cdn_enable, false)) {
-            return "";
-        }
-
         // 获取cdn的地址
-        String site = config.getString(OssConnection.oss_site, null);
-        if (Utils.isEmpty(site)) {
-            return "";
-        }
-
-        return site + "/resources/";
+        String site = config.getString(OssConnection.oss_site, "");
+        // 判断cdn是否启用
+        if (!Utils.isEmpty(site) && config.getBoolean(OSS_CDN_ENABLE, false))
+            site += "/resources/";
+        return site;
     }
 
     public static String get(String file) {
-        return getSite() + file + "?v=" + config.getString("browser.cache.version", "1.0.0.0");
+        // 获取cdn的地址
+        String site = config.getString(OssConnection.oss_site, "");
+        // 判断cdn是否启用
+        if (!Utils.isEmpty(site) && config.getBoolean(OSS_CDN_ENABLE, false))
+            site += "/resources/";
+        return site + file + "?v=" + config.getString(BROWSER_CACHE_VERSION, "1.0.0.0");
     }
 }

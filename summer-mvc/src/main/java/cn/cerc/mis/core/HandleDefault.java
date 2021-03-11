@@ -53,7 +53,7 @@ public class HandleDefault implements IHandle {
      */
     @Override
     public boolean init(String token) {
-        this.setProperty(Application.token, token);
+        this.setProperty(Application.TOKEN, token);
         if (token == null)
             log.warn("initialize session, token is null");
         else
@@ -73,7 +73,7 @@ public class HandleDefault implements IHandle {
                 svr.setService("SvrSession.byToken");
                 if (!svr.exec("token", token)) {
                     log.error("token restore error，{}", svr.getMessage());
-                    this.setProperty(Application.token, null);
+                    this.setProperty(Application.TOKEN, null);
                     return false;
                 }
 
@@ -120,7 +120,7 @@ public class HandleDefault implements IHandle {
         if (Utils.isEmpty(token)) {
             return false;
         }
-        this.setProperty(Application.token, token);
+        this.setProperty(Application.TOKEN, token);
         this.setProperty(Application.bookNo, corpNo);
         this.setProperty(Application.userCode, userCode);
         this.setProperty(Application.clientIP, "0.0.0.0");
@@ -161,7 +161,7 @@ public class HandleDefault implements IHandle {
 
     @Override
     public boolean logon() {
-        if (this.getProperty(Application.token) == null) {
+        if (this.getProperty(Application.TOKEN) == null) {
             return false;
         }
         String corpNo = this.getCorpNo();
@@ -227,7 +227,7 @@ public class HandleDefault implements IHandle {
 
     @Override
     public void setProperty(String key, Object value) {
-        if (Application.token.equals(key)) {
+        if (Application.TOKEN.equals(key)) {
             if ("{}".equals(value)) {
                 params.put(key, null);
             } else {

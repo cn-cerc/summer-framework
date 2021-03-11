@@ -1,6 +1,8 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.mvc.SummerMVC;
+
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,7 +12,7 @@ import java.io.IOException;
 
 @Slf4j
 public class RequestData {
-    private static final ClassResource res = new ClassResource(RequestData.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(RequestData.class, SummerMVC.ID);
 
     // FIXME: 2019/12/7 sid 应该改为 token
     public static final String TOKEN = "sid";

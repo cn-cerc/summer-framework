@@ -1,21 +1,42 @@
 package cn.cerc.db.mysql;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import cn.cerc.core.ClassConfig;
+import cn.cerc.core.IConfig;
+import cn.cerc.core.Utils;
+import cn.cerc.db.SummerDB;
+import lombok.extern.slf4j.Slf4j;
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Slf4j
 public class SlaveMysqlConnection extends SqlConnection {
+    private static final ClassConfig config = new ClassConfig(SlaveMysqlConnection.class, SummerDB.ID);
     // IHandle中识别码
     public static final String sessionId = "slaveSqlSession";
-    // Propertys slave 中识别码
-    public static final String rds_slave_site = "rds.slave.site";
-    public static final String rds_slave_database = "rds.slave.database";
-    public static final String rds_slave_username = "rds.slave.username";
-    public static final String rds_slave_password = "rds.slave.password";
-
     public static String slaveDataSource = "slaveDataSource";
+
+    private static String mysql_site;
+    private static String mysql_database;
+    private static String mysql_user;
+    private static String mysql_pwd;
+
+    private String url;
+
+    static {
+        mysql_site = config.getString("rds.slave.site", "127.0.0.1:3306");
+        mysql_database = config.getString("rds.slave.database", "appdb");
+        mysql_user = config.getString("rds.slave.username", "appdb_user");
+        mysql_pwd = config.getString("rds.slave.password", "appdb_password");
+    }
 
     @Override
     public String getClientId() {
@@ -23,15 +44,49 @@ public class SlaveMysqlConnection extends SqlConnection {
     }
 
     @Override
-    protected String getConnectUrl() {
-        String host = config.getProperty(SlaveMysqlConnection.rds_slave_site, "127.0.0.1:3306");
-        String database = config.getProperty(SlaveMysqlConnection.rds_slave_database, "appdb");
-        user = config.getProperty(SlaveMysqlConnection.rds_slave_username, "appdb_user");
-        pwd = config.getProperty(SlaveMysqlConnection.rds_slave_password, "appdb_password");
-        if (host == null || user == null || pwd == null || database == null) {
-            throw new RuntimeException("mysql connection error");
+    public Connection getClient() {
+        if (connection != null) {
+            return connection;
         }
 
-        return String.format("jdbc:mysql://%s/%s?useSSL=false&autoReconnect=true&autoCommit=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai", host, database);
+        try {
+            if (url == null) {
+                url = getConnectUrl();
+            }
+            log.debug("create connection for mysql: " + url);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(url, mysql_user, mysql_pwd);
+            return connection;
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    @Override
+    public boolean execute(String sql) {
+        try {
+            log.debug(sql);
+            Statement st = getClient().createStatement();
+            st.execute(sql);
+            return true;
+        } catch (SQLException e) {
+            log.error("error sql: " + sql);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public static String getConnectUrl() {
+        if (Utils.isEmpty(mysql_site) || Utils.isEmpty(mysql_database)) {
+            throw new RuntimeException("mysql connection error");
+        }
+        return String.format(
+                "jdbc:mysql://%s/%s?useSSL=false&autoReconnect=true&autoCommit=false&useUnicode=true&characterEncoding=utf8&serverTimezone=%s",
+                mysql_site, mysql_database, MysqlConnection.getServerTimezone());
+    }
+
+    @Override
+    public void setConfig(IConfig config) {
+        
+    }
+
 }

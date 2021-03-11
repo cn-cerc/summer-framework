@@ -3,9 +3,10 @@ package cn.cerc.mis.core;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.mysql.MysqlConnection;
+import cn.cerc.mvc.SummerMVC;
 
 public class BookHandle implements IHandle {
-    private static final ClassResource res = new ClassResource(BookHandle.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(BookHandle.class, SummerMVC.ID);
 
     private IHandle handle;
     private String corpNo;

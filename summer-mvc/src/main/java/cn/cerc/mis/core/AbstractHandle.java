@@ -3,10 +3,11 @@ package cn.cerc.mis.core;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.db.mysql.MysqlConnection;
+import cn.cerc.mvc.SummerMVC;
 
 public class AbstractHandle implements IHandle {
 
-    private static final ClassResource res = new ClassResource(AbstractHandle.class, "summer-mvc");
+    private static final ClassResource res = new ClassResource(AbstractHandle.class, SummerMVC.ID);
 
     protected IHandle handle;
 

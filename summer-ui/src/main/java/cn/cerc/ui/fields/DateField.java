@@ -1,17 +1,20 @@
 package cn.cerc.ui.fields;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Record;
-import cn.cerc.ui.UIConfig;
+import cn.cerc.mis.cdn.CDN;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DateField extends AbstractField {
+    private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
 
     public DateField(UIComponent owner, String name, String field) {
         super(owner, name, 5);
         this.setField(field);
         this.setDialog("showDateDialog");
-        this.setIcon(UIConfig.dateIcon);
+        this.setIcon(CDN.get(config.getClassProperty("icon", "")));
         this.setAlign("center");
     }
 
@@ -19,7 +22,7 @@ public class DateField extends AbstractField {
         super(owner, name, width);
         this.setField(field);
         this.setDialog("showDateDialog");
-        this.setIcon(UIConfig.dateIcon);
+        this.setIcon(CDN.get(config.getClassProperty("icon", "")));
         this.setAlign("center");
     }
 

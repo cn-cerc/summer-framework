@@ -176,7 +176,7 @@ public class SvrUserLogin extends CustomService {
                 MemoryBookInfo.clear(corpNo);
             }
 
-            sess.setProperty(Application.token, Utils.generateToken());
+            sess.setProperty(Application.TOKEN, Utils.generateToken());
             sess.setProperty(Application.userId, dsUser.getString("ID_"));
             sess.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
             sess.setProperty(Application.userCode, dsUser.getString("Code_"));
@@ -199,7 +199,7 @@ public class SvrUserLogin extends CustomService {
                 Buff.setField("VerifyMachine", false);
             }
             // 返回值于前台
-            getDataOut().getHead().setField("SessionID_", getProperty(Application.token));
+            getDataOut().getHead().setField("SessionID_", getProperty(Application.TOKEN));
             getDataOut().getHead().setField("UserID_", getProperty(Application.userId));
             getDataOut().getHead().setField("UserCode_", getUserCode());
             getDataOut().getHead().setField("CorpNo_", handle.getCorpNo());
@@ -226,7 +226,7 @@ public class SvrUserLogin extends CustomService {
             MemoryBuffer.delete(BufferType.getSessionInfo, (String) getProperty(Application.userId), "webclient");
         }
 
-        String token = (String) getProperty(Application.token);
+        String token = (String) getProperty(Application.TOKEN);
         getConnection().execute(String.format("Update %s Set Viability_=-1,LogoutTime_=now() where LoginID_='%s'",
                 systemTable.getCurrentUser(), token));
         return true;
@@ -552,7 +552,7 @@ public class SvrUserLogin extends CustomService {
         rs.setField("UserID_", this.getProperty(Application.userId));
         rs.setField("CorpNo_", handle.getCorpNo());
         rs.setField("Account_", getUserCode());
-        rs.setField("LoginID_", this.getProperty(Application.token));
+        rs.setField("LoginID_", this.getProperty(Application.TOKEN));
         rs.setField("Computer_", computer);
         rs.setField("clientIP_", this.getProperty(Application.clientIP));
         rs.setField("LoginTime_", TDateTime.now());
