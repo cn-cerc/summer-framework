@@ -1,16 +1,12 @@
 package cn.cerc.mis.config;
 
-import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Utils;
+import cn.cerc.core.*;
 import cn.cerc.db.core.HttpClientUtil;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.language.Language;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +34,18 @@ public class ApplicationConfig {
     public static final String App_Role_Key = "app.role";
     public static final String App_Role_Master = "master";
     public static final String App_Role_Replica = "replica";
+
+    public static final String PATTERN_CN = "0.##";
+    public static final String PATTERN_TW = ",###.####";
+    public static final String NEGATIVE_PATTERN_TW = "#,###0;(#,###0)";
+
+    public static String getPattern() {
+        if (LanguageResource.isLanguageTW()) {
+            return ApplicationConfig.PATTERN_TW;
+        } else {
+            return ApplicationConfig.PATTERN_CN;
+        }
+    }
 
     /**
      * 远程服务地址
