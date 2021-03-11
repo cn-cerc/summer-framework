@@ -8,6 +8,8 @@ import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 
+@Deprecated
+//TODO IUserOption 此接口抽象不容易理解，应予改进
 public interface IUserOption extends IOption {
 
     default String getOption(IHandle handle) {

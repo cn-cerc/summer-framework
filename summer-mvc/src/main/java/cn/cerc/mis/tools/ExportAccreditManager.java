@@ -25,6 +25,7 @@ public class ExportAccreditManager implements IAccreditManager {
     private String userOptionEnabled(IHandle handle, String optCode) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), optCode)) {
             if (buff.isNull()) {
+                //FIXME 此处应该进一步抽象处理
                 IServiceProxy svr = ServiceFactory.get(handle);
                 svr.setService("ApiUserOption.getOptValue");
                 Record headIn = svr.getDataIn().getHead();

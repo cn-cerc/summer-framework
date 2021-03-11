@@ -1,5 +1,7 @@
 package cn.cerc.mis.language;
 
+@Deprecated
+//TODO 应统一使用 LanguageResource 对象
 public class Language {
 
     /**

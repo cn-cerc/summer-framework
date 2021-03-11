@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+//TODO 此对象需要做更进一步抽象处理
 public class ResourceBuffer {
 
     private static Map<String, String> items = new HashMap<>();

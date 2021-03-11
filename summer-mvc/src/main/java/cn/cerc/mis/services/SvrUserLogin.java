@@ -35,6 +35,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Deprecated
+//FIXME: SvrUserLogin 应该从框架移出
 public class SvrUserLogin extends CustomService {
     private static final ClassResource res = new ClassResource("summer-mvc", SvrUserLogin.class);
 

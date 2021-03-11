@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
+//TODO 此对象需要做更进一步抽象处理
 public class R {
 
     public static String getLanguageId(IHandle handle) {

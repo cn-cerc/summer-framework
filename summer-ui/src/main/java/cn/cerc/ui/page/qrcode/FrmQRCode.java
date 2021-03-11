@@ -21,6 +21,7 @@ public class FrmQRCode extends AbstractForm implements JayunEasyLogin {
             AppClient info = ((AppClient) this.getClient());
             message = new JayunMessage(true, "已确认");
             message.setToken(info.getToken());
+            //TODO 此处应使用 ClassConfig 写法
             message.setUrl("WebDefault");
         } else {
             message = new JayunMessage(false, svrLogin.getMessage());
@@ -30,6 +31,7 @@ public class FrmQRCode extends AbstractForm implements JayunEasyLogin {
 
     @Override
     public String getNotifyUrl() {
+        //TODO 此处应使用 ClassConfig 写法
         return "FrmSecurity";
     }
 

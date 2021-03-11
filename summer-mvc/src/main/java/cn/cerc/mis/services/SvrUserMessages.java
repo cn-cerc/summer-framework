@@ -19,6 +19,8 @@ import java.math.BigInteger;
 /**
  * 异步消息操作
  */
+@Deprecated
+//FIXME: SvrUserMessages 应该从框架移出
 public class SvrUserMessages extends CustomService {
     private static final ClassResource res = new ClassResource("summer-mvc", SvrUserMessages.class);
 

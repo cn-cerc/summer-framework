@@ -60,6 +60,7 @@ public class MessageRecord {
             throw new RuntimeException(res.getString(3, "公司别不允许为空"));
         }
 
+        //TODO 此处需要做进一步抽象
         LocalService svr = new LocalService(handle, "SvrUserMessages.appendRecord");
         Record headIn = svr.getDataIn().getHead();
         headIn.setField("corpNo", sendCorpNo);

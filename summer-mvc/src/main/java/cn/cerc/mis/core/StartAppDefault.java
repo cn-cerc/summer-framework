@@ -13,6 +13,8 @@ import java.io.IOException;
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/")
+@Deprecated
+//TODO StartAppDefault 此对象不应该存在框架中
 public class StartAppDefault {
     @Autowired
     private HttpServletRequest req;

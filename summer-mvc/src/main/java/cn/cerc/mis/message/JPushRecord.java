@@ -25,6 +25,7 @@ public class JPushRecord {
     }
 
     public void send(IHandle handle) {
+        //TODO: 此处需要做进一步抽象
         LocalService svr = new LocalService(handle, "SvrUserLogin.getMachInfo");
         if (!svr.exec("CorpNo_", corpNo, "UserCode_", userCode)) {
             throw new RuntimeException(svr.getMessage());

@@ -13,6 +13,8 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Deprecated
+//FIXME MemoryBookInfo 对象应该从框架中移出
 public class MemoryBookInfo {
     private static final ClassResource res = new ClassResource("summer-mvc", MemoryBookInfo.class);
 

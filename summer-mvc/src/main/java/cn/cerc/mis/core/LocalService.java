@@ -101,6 +101,7 @@ public class LocalService implements IServiceProxy {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
             if (args.length % 2 != 0) {
+                //TODO 此处应该使用ClassResource
                 throw new RuntimeException("传入的参数数量必须为偶数！");
             }
             for (int i = 0; i < args.length; i = i + 2) {
@@ -174,6 +175,7 @@ public class LocalService implements IServiceProxy {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
             if (args.length % 2 != 0) {
+                //TODO 此处应该使用ClassResource
                 return new ServiceStatus(false, "传入的参数数量必须为偶数！");
             }
             for (int i = 0; i < args.length; i = i + 2) {

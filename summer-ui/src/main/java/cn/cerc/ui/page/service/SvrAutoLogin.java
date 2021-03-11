@@ -22,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
+@Deprecated 
+//TODO SvrAutoLogin应该重构，具体逻辑应该从框架中移出
 public class SvrAutoLogin implements IUserLanguage {
     private final ClassResource res = new ClassResource(this, "summer-ui");
 
