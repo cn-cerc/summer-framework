@@ -6,6 +6,7 @@ import java.util.List;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IStorage;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.cdn.CDN;
@@ -98,7 +99,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
         boolean isShowBar = config.getBoolean("app.ui.head.show", true);
         if (!client.isPhone() && isShowBar) {
             String token = (String) handle.getProperty(Application.TOKEN);
-            handle.init(token);
+            ((IStorage)handle).init(token);
             currentUser = res.getString(2, "用户");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
