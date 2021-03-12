@@ -1,6 +1,9 @@
 package cn.cerc.db.mongo;
 
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISupportSession;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -13,9 +16,13 @@ public class MongoUtils {
     private MongoConnection connection;
     private MongoDatabase database;
 
-    public MongoUtils(IHandle handle) {
-        connection = (MongoConnection) handle.getProperty(MongoConnection.sessionId);
+    public MongoUtils(ISession session) {
+        connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
         database = connection.getClient();
+    }
+
+    public MongoUtils(ISupportSession owner) {
+        this(owner.getSession());
     }
 
     // 获取Collection by name

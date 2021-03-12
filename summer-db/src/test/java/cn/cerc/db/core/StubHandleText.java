@@ -9,7 +9,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 
-public class StubHandleText extends IHandle implements ISession {
+public class StubHandleText implements ISession {
     private MysqlConnection mysqlSession;
     private MssqlConnection mssqlConnection;
     private MongoConnection mgConn;
@@ -37,7 +37,6 @@ public class StubHandleText extends IHandle implements ISession {
 
         pushConn = new JiguangConnection();
         pushConn.setConfig(config);
-        this.setSession(this);
     }
 
     @Override

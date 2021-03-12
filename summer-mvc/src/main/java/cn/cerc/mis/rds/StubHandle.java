@@ -15,7 +15,7 @@ import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class StubHandle extends IHandle implements ISession, AutoCloseable {
+public class StubHandle implements ISession, AutoCloseable {
     private static final ClassResource res = new ClassResource(StubHandle.class, SummerMVC.ID);
 
     //FIXME 此处应该使用ClassConfig
@@ -34,16 +34,12 @@ public class StubHandle extends IHandle implements ISession, AutoCloseable {
         handle = Application.getHandle();
         log.info("StubHandle {}", handle.getClass());
         ((ITokenManage)handle).createToken(DefaultBook, DefaultUser, password, machineCode);
-        this.setHandle(handle);
-        this.setSession(this);
     }
 
     public StubHandle(String corpNo, String userCode) {
         handle = Application.getHandle();
         log.info("StubHandle {}", handle.getClass());
         ((ITokenManage)handle).createToken(corpNo, userCode, password, machineCode);
-        this.setHandle(handle);
-        this.setSession(this);
     }
 
     @Override

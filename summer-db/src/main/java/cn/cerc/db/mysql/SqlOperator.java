@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
-import cn.cerc.db.core.CustomHandle;
 import cn.cerc.db.core.ISupportSession;
 import lombok.extern.slf4j.Slf4j;
 

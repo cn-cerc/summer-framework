@@ -1,24 +1,24 @@
 package cn.cerc.db.nas;
 
-import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.core.Utils;
-import cn.cerc.db.queue.QueueOperator;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.codec.CharEncoding;
+import org.apache.commons.io.FileUtils;
+
+import cn.cerc.core.ISession;
+import cn.cerc.core.Utils;
+import cn.cerc.db.core.DataQuery;
+import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.queue.QueueOperator;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class NasQuery extends DataQuery {
 
     private static final long serialVersionUID = 1L;
 
-    @SuppressWarnings("unused")
-    private IHandle handle;
     // 文件目录
     private String filePath;
     // 文件名称
@@ -26,9 +26,12 @@ public class NasQuery extends DataQuery {
     private QueueOperator operator;
     private NasModel nasMode = NasModel.create;
 
-    public NasQuery(IHandle handle) {
-        super(handle);
-        this.handle = handle;
+    public NasQuery(ISession session) {
+        super(session);
+    }
+
+    public NasQuery(ISupportSession owner) {
+        this(owner.getSession());
     }
 
     @Override

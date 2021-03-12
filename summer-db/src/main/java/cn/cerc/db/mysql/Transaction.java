@@ -1,6 +1,8 @@
 package cn.cerc.db.mysql;
 
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISupportSession;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -17,9 +19,13 @@ public class Transaction implements AutoCloseable {
         setConn(connection);
     }
 
-    public Transaction(IHandle handle) {
-        MysqlConnection cn = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
+    public Transaction(ISession session) {
+        MysqlConnection cn = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
         setConn(cn.getClient());
+    }
+
+    public Transaction(ISupportSession owner) {
+        this(owner.getSession());
     }
     
     private void setConn(Connection conn) {
