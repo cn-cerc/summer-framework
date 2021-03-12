@@ -38,6 +38,7 @@ public class AbstractHandle {
         return (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
     }
 
+    @Deprecated
     public boolean logon() {
         return session.logon();
     }

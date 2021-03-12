@@ -1,7 +1,6 @@
 package cn.cerc.db.core;
 
 import cn.cerc.core.IConfig;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -9,7 +8,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 
-public class StubHandleText implements IHandle {
+public class StubHandleText extends AbstractHandle implements IStorage {
     private MysqlConnection mysqlSession;
     private MssqlConnection mssqlConnection;
     private MongoConnection mgConn;
@@ -38,6 +37,8 @@ public class StubHandleText implements IHandle {
 
         pushConn = new JiguangConnection();
         pushConn.setConfig(config);
+        
+        this.setSession(this);
     }
 
     @Override
