@@ -175,7 +175,7 @@ public class AbstractForm extends IHandle implements IForm {
                 request.getSession().setAttribute("CLIENTVER", CLIENTVER);
 
             // 是否拥有此菜单调用权限
-            if (!Application.getPassport(this.getHandle()).passForm(this)) {
+            if (!Application.getPassport(this.getSession()).passForm(this)) {
                 log.warn(String.format("无权限执行 %s", request.getRequestURL()));
                 JsonPage output = new JsonPage(this);
                 output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));

@@ -13,6 +13,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.LanguageResource;
@@ -170,10 +171,10 @@ public class Application {
         return bean;
     }
 
-    public static IPassport getPassport(IHandle handle) {
+    public static IPassport getPassport(ISession session) {
         IPassport bean = getBean(IPassport.class, "passport", "passportDefault");
-        if (bean != null && handle != null) {
-            bean.setHandle(handle);
+        if (bean != null) {
+            bean.setSession(session);;
         }
         return bean;
     }

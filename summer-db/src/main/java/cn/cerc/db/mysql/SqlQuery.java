@@ -1,16 +1,5 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.db.core.DataQuery;
-import cn.cerc.core.DataSetEvent;
-import cn.cerc.core.DataSetState;
-import cn.cerc.core.FieldDefs;
-import cn.cerc.core.IDataOperator;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.SqlText;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -19,11 +8,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import cn.cerc.core.DataSetEvent;
+import cn.cerc.core.DataSetState;
+import cn.cerc.core.FieldDefs;
+import cn.cerc.core.IDataOperator;
+import cn.cerc.core.ISession;
+import cn.cerc.core.Record;
+import cn.cerc.core.SqlText;
+import cn.cerc.db.core.DataQuery;
+import cn.cerc.db.core.ISupportSession;
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 public class SqlQuery extends DataQuery {
 
     private static final long serialVersionUID = 7316772894058168187L;
-    private SqlConnection session;
+    private SqlConnection connection;
     private SqlConnection slaveSession;
 
     private DataSource dataSource;
@@ -35,13 +37,17 @@ public class SqlQuery extends DataQuery {
     // 仅当batchSave为true时，delList才有记录存在
     private List<Record> delList = new ArrayList<>();
 
-    public SqlQuery(IHandle handle) {
-        super(handle);
-        this.session = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
-        this.slaveSession = (SlaveMysqlConnection) handle.getProperty(SlaveMysqlConnection.sessionId);
+    public SqlQuery(ISession session) {
+        super(session);
+        this.connection = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
+        this.slaveSession = (SlaveMysqlConnection) session.getProperty(SlaveMysqlConnection.sessionId);
 
-        this.dataSource = (DataSource) handle.getProperty(MysqlConnection.dataSource);
-        this.slaveDataSource = (DataSource) handle.getProperty(SlaveMysqlConnection.slaveDataSource);
+        this.dataSource = (DataSource) session.getProperty(MysqlConnection.dataSource);
+        this.slaveDataSource = (DataSource) session.getProperty(SlaveMysqlConnection.slaveDataSource);
+    }
+
+    public SqlQuery(ISupportSession owner) {
+        this(owner.getSession());
     }
 
     @Override
@@ -57,7 +63,7 @@ public class SqlQuery extends DataQuery {
                 if (this.slaveDataSource == null) {
                     if (this.dataSource == null) {
                         if (this.slaveSession == null) {
-                            return this.session.getClient().createStatement();
+                            return this.connection.getClient().createStatement();
                         } else {
                             return this.slaveSession.getClient().createStatement();
                         }
@@ -69,7 +75,7 @@ public class SqlQuery extends DataQuery {
                 }
             } else {
                 if (this.dataSource == null) {
-                    return this.session.getClient().createStatement();
+                    return this.connection.getClient().createStatement();
                 } else {
                     return this.dataSource.getConnection().createStatement();
                 }
@@ -81,7 +87,7 @@ public class SqlQuery extends DataQuery {
 
     @Override
     public DataQuery open() {
-        if (session == null) {
+        if (connection == null) {
             throw new RuntimeException("SqlConnection is null");
         }
         return this._open(false);
@@ -132,10 +138,10 @@ public class SqlQuery extends DataQuery {
             this.open();
             return this.size();
         }
-        if (session == null) {
+        if (connection == null) {
             throw new RuntimeException("SqlSession is null");
         }
-        Connection conn = session.getClient();
+        Connection conn = connection.getClient();
         if (conn == null) {
             throw new RuntimeException("Connection is null");
         }
@@ -271,7 +277,7 @@ public class SqlQuery extends DataQuery {
 
     public SqlOperator getDefaultOperator() {
         if (operator == null) {
-            SqlOperator def = new SqlOperator(this.handle);
+            SqlOperator def = new SqlOperator(this.session);
             String sql = this.getSqlText().getText();
             if (sql != null) {
                 def.setTableName(SqlOperator.findTableName(sql));

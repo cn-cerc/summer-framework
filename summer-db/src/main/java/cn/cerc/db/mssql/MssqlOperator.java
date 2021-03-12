@@ -2,7 +2,9 @@ package cn.cerc.db.mssql;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IDataOperator;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISupportSession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
@@ -35,19 +37,23 @@ public class MssqlOperator implements IDataOperator {
         this.conntion = conntion;
     }
 
-    public MssqlOperator(IHandle handle) {
+    public MssqlOperator(ISession session) {
         super();
-        MssqlConnection session = (MssqlConnection) handle.getProperty(MssqlConnection.sessionId);
-        DataSource dataSource = (DataSource) handle.getProperty(MssqlConnection.dataSource);
+        MssqlConnection conn = (MssqlConnection) session.getProperty(MssqlConnection.sessionId);
+        DataSource dataSource = (DataSource) session.getProperty(MssqlConnection.dataSource);
         try {
             if (dataSource == null) {
-                conntion = session.getClient();
+                conntion = conn.getClient();
             } else {
                 conntion = dataSource.getConnection();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public MssqlOperator(ISupportSession owner) {
+        this(owner.getSession());
     }
 
     // 根据 sql 获取数据库表名

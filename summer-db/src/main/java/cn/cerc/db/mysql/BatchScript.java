@@ -1,20 +1,26 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.db.core.IHandle;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.CustomHandle;
+import cn.cerc.db.core.ISupportSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class BatchScript {
 
     private StringBuffer items = new StringBuffer();
-    private IHandle handle;
+    private ISession session;
     private MysqlConnection connection;
     private boolean newLine = false;
 
-    public BatchScript(IHandle handle) {
-        this.handle = handle;
-        this.connection = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
+    public BatchScript(ISession session) {
+        this.session = session;
+        this.connection = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
+    }
+
+    public BatchScript(ISupportSession owner) {
+        this(owner.getSession());
     }
 
     public BatchScript addSemicolon() {
@@ -72,7 +78,7 @@ public class BatchScript {
         for (String item : tmp) {
             if (!"".equals(item.trim())) {
                 log.debug(item.trim() + ";");
-                SqlQuery ds = new SqlQuery(handle);
+                SqlQuery ds = new SqlQuery(session);
                 ds.add(item.trim());
                 ds.open();
                 if (ds.eof()) {

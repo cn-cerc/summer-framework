@@ -1,7 +1,6 @@
 package cn.cerc.db.core;
 
 import cn.cerc.core.ClassConfig;
-import cn.cerc.core.IConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
@@ -38,7 +37,6 @@ public class StubHandleText extends IHandle implements ISession {
 
         pushConn = new JiguangConnection();
         pushConn.setConfig(config);
-        
         this.setSession(this);
     }
 

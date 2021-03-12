@@ -3,17 +3,16 @@ package cn.cerc.db.core;
 import cn.cerc.core.ISession;
 import cn.cerc.db.mysql.MysqlConnection;
 
-public class CustomHandle implements AutoCloseable {
+public class CustomHandle implements ISupportSession, AutoCloseable {
 
     private ISession session;
 
-    @Deprecated
-    protected IHandle handle;
-
+    @Override
     public ISession getSession() {
         return session;
     }
 
+    @Override
     public void setSession(ISession session) {
         this.session = session;
     }
@@ -40,22 +39,6 @@ public class CustomHandle implements AutoCloseable {
 
     public MysqlConnection getConnection() {
         return (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
-    }
-
-    @Deprecated
-    public boolean logon() {
-        return session.logon();
-    }
-
-    @Deprecated
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
-        this.session = handle.getSession();
-    }
-
-    @Deprecated
-    public IHandle getHandle() {
-        return this.handle;
     }
 
     @Override

@@ -1,7 +1,9 @@
 package cn.cerc.db.mongo;
 
 import cn.cerc.core.IDataOperator;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISupportSession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import com.mongodb.client.MongoCollection;
@@ -17,8 +19,12 @@ public class MongoOperator implements IDataOperator {
     private String tableName;
     private MongoConnection connection;
 
-    public MongoOperator(IHandle handle) {
-        this.connection = (MongoConnection) handle.getProperty(MongoConnection.sessionId);
+    public MongoOperator(ISession session) {
+        this.connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
+    }
+
+    public MongoOperator(ISupportSession owner) {
+        this(owner.getSession());
     }
 
     @Override

@@ -35,6 +35,7 @@ public class StubHandle extends IHandle implements ISession, AutoCloseable {
         log.info("StubHandle {}", handle.getClass());
         ((ITokenManage)handle).createToken(DefaultBook, DefaultUser, password, machineCode);
         this.setHandle(handle);
+        this.setSession(this);
     }
 
     public StubHandle(String corpNo, String userCode) {
@@ -42,6 +43,7 @@ public class StubHandle extends IHandle implements ISession, AutoCloseable {
         log.info("StubHandle {}", handle.getClass());
         ((ITokenManage)handle).createToken(corpNo, userCode, password, machineCode);
         this.setHandle(handle);
+        this.setSession(this);
     }
 
     @Override

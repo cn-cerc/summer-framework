@@ -1,5 +1,6 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.rds.PassportRecord;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 //TODO PassportDefault 此对象不应该存在框架中
 public class PassportDefault implements IPassport {
     private IHandle handle;
+    private ISession session;
 
     @Override
     public boolean passProc(String versions, String procCode) {
@@ -40,8 +42,13 @@ public class PassportDefault implements IPassport {
     }
 
     @Override
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
+    @Override
+    public ISession getSession() {
+        return this.session;
     }
 
 }

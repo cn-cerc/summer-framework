@@ -1,13 +1,5 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDateTime;
-import cn.cerc.db.mysql.SqlQuery;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
@@ -15,6 +7,15 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import cn.cerc.core.ISession;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.mysql.SqlQuery;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DaoUtil {
@@ -152,14 +153,14 @@ public class DaoUtil {
     }
 
     // 根据数据表名，得到实体类
-    public static String buildEntity(IHandle handle, String tableName, String className) {
+    public static String buildEntity(ISession session, String tableName, String className) {
         StringBuffer sb = new StringBuffer();
         sb.append("import javax.persistence.Entity;\r\n");
         sb.append(String.format("@Entity(name = \"%s\")", tableName)).append("\r\n");
         sb.append("public class " + className + "{").append("\r\n");
         sb.append("\r\n");
 
-        SqlQuery ds = new SqlQuery(handle);
+        SqlQuery ds = new SqlQuery(session);
         ds.add("select * from " + tableName);
         ds.getSqlText().setMaximum(1);
         ds.open();

@@ -1,9 +1,9 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISupportSession;
 import cn.cerc.mis.rds.PassportRecord;
 
-public interface IPassport {
+public interface IPassport extends ISupportSession {
 
     // 是否有菜单的执行权限
     default boolean passForm(IForm form) {
@@ -27,6 +27,4 @@ public interface IPassport {
 
     // 返回指定程序的权限记录
     PassportRecord getRecord(String procCode);
-
-    void setHandle(IHandle handle);
 }

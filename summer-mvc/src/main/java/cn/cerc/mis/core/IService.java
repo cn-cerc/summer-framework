@@ -2,6 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISupportSession;
 import cn.cerc.db.core.SupportHandle;
 
 public interface IService extends SupportHandle {

@@ -11,14 +11,18 @@ import cn.cerc.core.Utils;
 public abstract class DataQuery extends DataSet {
     private static final long serialVersionUID = 7316772894058168187L;
     protected boolean active = false;
-    protected IHandle handle;
+    protected ISession session;
 
     // 批次保存模式，默认为post与delete立即保存
     private boolean batchSave = false;
     private SqlText sqlText = new SqlText();
 
-    public DataQuery(IHandle handle) {
-        this.handle = handle;
+    public DataQuery(ISession session) {
+        this.session = session;
+    }
+
+    public DataQuery(ISupportSession owner) {
+        this.session = owner.getSession();
     }
 
     // 打开数据集
