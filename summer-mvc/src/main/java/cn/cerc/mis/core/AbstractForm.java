@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
-public class AbstractForm extends AbstractHandle implements IForm {
+public class AbstractForm extends IHandle implements IForm {
     private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMVC.ID);
     private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMVC.ID);
 

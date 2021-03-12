@@ -8,7 +8,7 @@ public class AbstractHandle {
     private ISession session;
 
     @Deprecated
-    protected AbstractHandle handle;
+    protected IHandle handle;
 
     public ISession getSession() {
         return session;
@@ -44,7 +44,7 @@ public class AbstractHandle {
     }
 
     @Deprecated
-    public void setHandle(AbstractHandle handle) {
+    public void setHandle(IHandle handle) {
         this.handle = handle;
         this.session = handle.getSession();
     }
@@ -53,4 +53,5 @@ public class AbstractHandle {
     public AbstractHandle getHandle() {
         return this.handle;
     }
+
 }

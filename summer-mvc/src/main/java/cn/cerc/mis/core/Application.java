@@ -15,7 +15,7 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.core.LanguageResource;
-import cn.cerc.core.SupportHandle;
+import cn.cerc.db.core.SupportHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.config.ApplicationConfig;

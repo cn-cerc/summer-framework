@@ -1,11 +1,12 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.mvc.SummerMVC;
 
-public class BookHandle implements IHandle {
+public class BookHandle implements ISession {
     private static final ClassResource res = new ClassResource(BookHandle.class, SummerMVC.ID);
 
     private IHandle handle;
@@ -52,16 +53,6 @@ public class BookHandle implements IHandle {
 
     @Override
     public void setProperty(String key, Object value) {
-        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
-    }
-
-    @Override
-    public boolean init(String bookNo, String userCode, String password, String clientCode) {
-        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
-    }
-
-    @Override
-    public boolean init(String token) {
         throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 

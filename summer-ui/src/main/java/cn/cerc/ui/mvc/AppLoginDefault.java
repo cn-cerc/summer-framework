@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.core.SupportHandle;
+import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;

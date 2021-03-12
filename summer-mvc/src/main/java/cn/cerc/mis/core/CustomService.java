@@ -2,6 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.db.core.AbstractHandle;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Slf4j
-public class CustomService extends AbstractHandle implements IService, IRestful {
+public class CustomService extends IHandle implements IService, IRestful {
     private static final ClassResource res = new ClassResource(CustomService.class, SummerMVC.ID);
 
     @Autowired
@@ -23,9 +24,8 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
     private StringBuffer msg = null;
     private String restPath;
 
-    @Override
     public void init(IHandle handle) {
-        this.handle = handle;
+        this.setHandle(handle);
     }
 
     public CustomService init(CustomService owner, boolean refData) {
@@ -37,7 +37,6 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
         return this;
     }
 
-    @Override
     public IStatus execute(DataSet dataIn, DataSet dataOut) {
         if (this.funcCode == null) {
             throw new RuntimeException("funcCode is null");
@@ -153,13 +152,11 @@ public class CustomService extends AbstractHandle implements IService, IRestful 
         }
     }
 
-    @Override
     public String getJSON(DataSet dataOut) {
         return String.format("[%s]", this.getDataOut().getJSON());
     }
 
     // 设置是否需要授权才能登入
-    @Override
     public boolean checkSecurity(IHandle handle) {
         IHandle sess = (IHandle) handle.getProperty(null);
         return sess != null && sess.logon();
