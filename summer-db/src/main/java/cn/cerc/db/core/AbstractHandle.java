@@ -3,7 +3,7 @@ package cn.cerc.db.core;
 import cn.cerc.core.ISession;
 import cn.cerc.db.mysql.MysqlConnection;
 
-public class AbstractHandle {
+public class AbstractHandle implements AutoCloseable {
 
     private ISession session;
 
@@ -16,6 +16,10 @@ public class AbstractHandle {
 
     public void setSession(ISession session) {
         this.session = session;
+    }
+
+    public void setProperty(String key, Object value) {
+        session.setProperty(key, value);
     }
 
     public Object getProperty(String key) {
@@ -50,8 +54,15 @@ public class AbstractHandle {
     }
 
     @Deprecated
-    public AbstractHandle getHandle() {
+    public IHandle getHandle() {
         return this.handle;
+    }
+
+    @Override
+    public void close() {
+        if(session != null) {
+            session.close();
+        }
     }
 
 }

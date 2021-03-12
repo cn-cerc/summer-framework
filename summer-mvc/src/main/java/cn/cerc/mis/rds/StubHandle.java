@@ -1,7 +1,9 @@
 package cn.cerc.mis.rds;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IStorage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mysql.MysqlConnection;
@@ -13,7 +15,7 @@ import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class StubHandle implements IHandle, AutoCloseable {
+public class StubHandle extends IHandle implements IStorage, AutoCloseable {
     private static final ClassResource res = new ClassResource(StubHandle.class, SummerMVC.ID);
 
     //FIXME 此处应该使用ClassConfig
@@ -31,17 +33,15 @@ public class StubHandle implements IHandle, AutoCloseable {
     public StubHandle() {
         handle = Application.getHandle();
         log.info("StubHandle {}", handle.getClass());
-        handle.init(DefaultBook, DefaultUser, password, machineCode);
+        ((IStorage)handle).init(DefaultBook, DefaultUser, password, machineCode);
+        this.setHandle(handle);
     }
 
     public StubHandle(String corpNo, String userCode) {
         handle = Application.getHandle();
         log.info("StubHandle {}", handle.getClass());
-        handle.init(corpNo, userCode, password, machineCode);
-    }
-
-    public SqlConnection getConnection() {
-        return (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
+        ((IStorage)handle).init(corpNo, userCode, password, machineCode);
+        this.setHandle(handle);
     }
 
     @Override

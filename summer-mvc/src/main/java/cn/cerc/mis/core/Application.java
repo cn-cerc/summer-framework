@@ -14,6 +14,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IStorage;
 import cn.cerc.core.LanguageResource;
 import cn.cerc.db.core.SupportHandle;
 import cn.cerc.db.core.IAppConfig;
@@ -133,7 +134,7 @@ public class Application {
     }
 
     public static IHandle getHandle() {
-        return getBean(IHandle.class, "AppHandle", "handle", "handleDefault");
+        return (IHandle) getBean(IHandle.class, "AppHandle", "handle", "handleDefault");
     }
 
     /**

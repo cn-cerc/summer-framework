@@ -1,6 +1,7 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IStorage;
 import cn.cerc.db.core.IAppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
