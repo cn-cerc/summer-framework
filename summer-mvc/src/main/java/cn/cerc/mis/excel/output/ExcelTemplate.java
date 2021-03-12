@@ -1,14 +1,17 @@
 package cn.cerc.mis.excel.output;
 
 import cn.cerc.core.DataSet;
+import cn.cerc.core.LanguageResource;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.oss.OssConnection;
+import cn.cerc.mis.config.ApplicationConfig;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import jxl.write.DateFormat;
 import jxl.write.DateTime;
 import jxl.write.Label;
+import jxl.write.NumberFormat;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableImage;
 import jxl.write.WritableSheet;
@@ -16,6 +19,7 @@ import jxl.write.WriteException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +32,7 @@ public class ExcelTemplate {
     private final DateFormat df1 = new DateFormat("yyyy-MM-dd");
     private final DateFormat df2 = new DateFormat("yyyy-MM-dd HH:mm:ss");
     private int row = 0;
+    private DecimalFormat decimalformat = new DecimalFormat(ApplicationConfig.getPattern());
 
     public String getFileName() {
         return fileName;
@@ -87,6 +92,9 @@ public class ExcelTemplate {
         // 输出列数据
         if (dataSet != null) {
             dataSet.first();
+            // FIXME: 2021/3/11 目前仅台湾使用负数括号的千分位格式 -1502 显示为 (1,502)
+            NumberFormat nf = new NumberFormat(ApplicationConfig.NEGATIVE_PATTERN_TW);
+            WritableCellFormat wc = new WritableCellFormat(nf);
             while (dataSet.fetch()) {
                 row++;
                 for (int col = 0; col < columns.size(); col++) {
@@ -96,15 +104,28 @@ public class ExcelTemplate {
                     if (changeRowHeight) {
                         sheet.setRowView(row, 650, false);
                     }
-                    writeColumn(sheet, col, row, column, oss);
+                    writeColumn(sheet, col, row, column, oss, wc);
                 }
             }
         }
     }
 
-    protected void writeColumn(WritableSheet sheet, int col, int row, Column column, OssConnection oss) throws WriteException {
+    protected void writeColumn(WritableSheet sheet, int col, int row, Column column, OssConnection oss, WritableCellFormat wc) throws WriteException {
         if (column instanceof NumberColumn) {
-            jxl.write.Number item = new jxl.write.Number(col, row, (double) column.getValue());
+            if (LanguageResource.isLanguageTW()) {
+                Label item = new Label(col, row, decimalformat.format(column.getValue()));
+                sheet.addCell(item);
+            } else {
+                jxl.write.Number item = new jxl.write.Number(col, row, (double) column.getValue());
+                sheet.addCell(item);
+            }
+        } else if (column instanceof NumberFormatColumn) {
+            jxl.write.Number item;
+            if (wc != null) {
+                item = new jxl.write.Number(col, row, (double) column.getValue(), wc);
+            } else {
+                item = new jxl.write.Number(col, row, (double) column.getValue());
+            }
             sheet.addCell(item);
         } else if (column instanceof DateColumn) {
             Object value = column.getValue();

@@ -3,12 +3,13 @@ package cn.cerc.mis.excel.output;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
-import cn.cerc.core.Utils;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mvc.SummerMVC;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ import java.util.List;
  */
 public class BatchFormTemplate extends FormTemplate {
     private static final ClassResource res = new ClassResource(BatchFormTemplate.class, SummerMVC.ID);
+    DecimalFormat df = new DecimalFormat(ApplicationConfig.getPattern());
 
     List<DataSet> items;
 
@@ -35,7 +37,7 @@ public class BatchFormTemplate extends FormTemplate {
                     row++;
                     Object val = footer.getItems().get(field);
                     sheet1.addCell(new Label(0, row, field));
-                    sheet1.addCell(new Label(1, row, Double.toString(Utils.roundTo((Double) val, -2))));
+                    sheet1.addCell(new Label(1, row, df.format(val)));
                 }
             });
 

@@ -1,5 +1,6 @@
 package cn.cerc.ui.other;
 
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
@@ -43,7 +44,7 @@ public class StrongItem extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        DecimalFormat df = new DecimalFormat("0.##");
+        DecimalFormat df = new DecimalFormat(ApplicationConfig.getPattern());
         html.print("%s：", this.getName());
         html.print("<strong");
         if (this.getId() != null) {

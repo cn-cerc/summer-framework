@@ -9,6 +9,7 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.core.LanguageResource;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.HttpClientUtil;
 import cn.cerc.mis.client.RemoteService;
@@ -40,6 +41,19 @@ public class ApplicationConfig {
     public static final String App_Role_Key = "app.role";
     public static final String App_Role_Master = "master";
     public static final String App_Role_Replica = "replica";
+
+    // TODO: 2021/3/11 后需要改为使用配置文件的方式
+    public static final String PATTERN_CN = "0.##";
+    public static final String PATTERN_TW = ",###.####";
+    public static final String NEGATIVE_PATTERN_TW = "#,###0;(#,###0)";
+
+    public static String getPattern() {
+        if (LanguageResource.isLanguageTW()) {
+            return ApplicationConfig.PATTERN_TW;
+        } else {
+            return ApplicationConfig.PATTERN_CN;
+        }
+    }
 
     /**
      * 远程服务地址
