@@ -2,7 +2,7 @@ package cn.cerc.db.core;
 
 import cn.cerc.core.ISession;
 
-public interface SupportSession {
+public interface ISupportSession {
     
     void setSession(ISession session);
 }
