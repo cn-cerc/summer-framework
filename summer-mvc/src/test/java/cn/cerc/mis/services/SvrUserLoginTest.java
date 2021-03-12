@@ -74,7 +74,7 @@ public class SvrUserLoginTest {
         String corpNo = "911001";
         String userCode = "91100123";
         String deviceId = "TEST";
-        try (StubHandle handle = new StubHandle(corpNo, userCode)) {
+        StubHandle handle = new StubHandle(corpNo, userCode)) 
             // 清空缓存
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, handle.getUserCode(),
                     SvrUserLogin.class.getName(), "sendVerifyCode")) {
@@ -104,8 +104,5 @@ public class SvrUserLoginTest {
             }
             Thread.sleep(1000 * 60 * SvrUserLogin.TimeOut);
             assertThat(app.sendVerifyCode(), is(true));
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
     }
 }
