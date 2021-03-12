@@ -3,7 +3,7 @@ package cn.cerc.mis.excel.output;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
-import cn.cerc.core.Utils;
+import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mvc.SummerMVC;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
