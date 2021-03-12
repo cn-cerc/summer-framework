@@ -15,7 +15,7 @@ import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class StubHandle extends IHandle implements ITokenManage, AutoCloseable {
+public class StubHandle extends IHandle implements ISession, AutoCloseable {
     private static final ClassResource res = new ClassResource(StubHandle.class, SummerMVC.ID);
 
     //FIXME 此处应该使用ClassConfig
@@ -91,16 +91,6 @@ public class StubHandle extends IHandle implements ITokenManage, AutoCloseable {
 
     @Override
     public void setProperty(String key, Object value) {
-        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
-    }
-
-    @Override
-    public boolean createToken(String bookNo, String userCode, String password, String clientCode) {
-        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
-    }
-
-    @Override
-    public boolean resumeToken(String token) {
         throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 

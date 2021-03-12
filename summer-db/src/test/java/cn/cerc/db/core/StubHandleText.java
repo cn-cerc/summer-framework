@@ -2,6 +2,7 @@ package cn.cerc.db.core;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.IConfig;
+import cn.cerc.core.ISession;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -9,7 +10,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 
-public class StubHandleText extends IHandle implements ITokenManage {
+public class StubHandleText extends IHandle implements ISession {
     private MysqlConnection mysqlSession;
     private MssqlConnection mssqlConnection;
     private MongoConnection mgConn;
@@ -78,18 +79,6 @@ public class StubHandleText extends IHandle implements ITokenManage {
     // 设置自定义参数
     @Override
     public void setProperty(String key, Object value) {
-        throw new RuntimeException("调用了未被实现的接口");
-    }
-
-    // 直接设置成登录成功状态，用于定时服务时初始化等，会生成内存临时的token
-    @Override
-    public boolean createToken(String bookNo, String userCode, String password, String clientCode) {
-        throw new RuntimeException("调用了未被实现的接口");
-    }
-
-    // 在登录成功并生成token后，传递token值进行初始化
-    @Override
-    public boolean resumeToken(String token) {
         throw new RuntimeException("调用了未被实现的接口");
     }
 

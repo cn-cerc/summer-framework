@@ -33,7 +33,7 @@ import redis.clients.jedis.Jedis;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class HandleDefault extends IHandle implements ITokenManage {
+public class HandleDefault extends IHandle implements ISession, ITokenManage {
 
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();

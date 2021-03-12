@@ -134,7 +134,7 @@ public class Application {
     }
 
     public static IHandle getHandle() {
-        return (IHandle) getBean(IHandle.class, "AppHandle", "handle", "handleDefault");
+        return getBean(IHandle.class, "AppHandle", "handle", "handleDefault");
     }
 
     /**
