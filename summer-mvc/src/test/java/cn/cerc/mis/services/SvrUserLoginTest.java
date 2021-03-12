@@ -74,35 +74,35 @@ public class SvrUserLoginTest {
         String corpNo = "911001";
         String userCode = "91100123";
         String deviceId = "TEST";
-        StubHandle handle = new StubHandle(corpNo, userCode)) 
-            // 清空缓存
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, handle.getUserCode(),
-                    SvrUserLogin.class.getName(), "sendVerifyCode")) {
-                buff.clear();
-            }
-            // 检查验证码是否存在
-            SqlQuery ds = new SqlQuery(handle);
+        StubHandle handle = new StubHandle(corpNo, userCode);
+        // 清空缓存
+        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, handle.getUserCode(),
+                SvrUserLogin.class.getName(), "sendVerifyCode")) {
+            buff.clear();
+        }
+        // 检查验证码是否存在
+        SqlQuery ds = new SqlQuery(handle);
 
-            ds.add("select * from %s", systemTable.getDeviceVerify());
-            ds.add("where CorpNo_='%s'", corpNo);
-            ds.add("and UserCode_='%s'", userCode);
-            ds.add("and MachineCode_='%s'", deviceId);
-            ds.open();
-            String msg = String.format("帐号 %s 验证码 %s 不存在，无法完成测试", userCode, deviceId);
-            assertThat(msg, ds.eof(), is(false));
+        ds.add("select * from %s", systemTable.getDeviceVerify());
+        ds.add("where CorpNo_='%s'", corpNo);
+        ds.add("and UserCode_='%s'", userCode);
+        ds.add("and MachineCode_='%s'", deviceId);
+        ds.open();
+        String msg = String.format("帐号 %s 验证码 %s 不存在，无法完成测试", userCode, deviceId);
+        assertThat(msg, ds.eof(), is(false));
 
-            SvrUserLogin app = Application.getBean(handle, SvrUserLogin.class);
-            app.getDataIn().getHead().setField("deviceId", deviceId);
-            assertThat(app.sendVerifyCode(), is(true));
-            Thread.sleep(1000 * 30);
-            try {
-                app.sendVerifyCode();
-                assertThat("此处不应该执行到", false, is(true));
-            } catch (Exception e) {
-                e.printStackTrace();
-                assertThat(e.getMessage().indexOf("5 分钟") > 0, is(true));
-            }
-            Thread.sleep(1000 * 60 * SvrUserLogin.TimeOut);
-            assertThat(app.sendVerifyCode(), is(true));
+        SvrUserLogin app = Application.getBean(handle, SvrUserLogin.class);
+        app.getDataIn().getHead().setField("deviceId", deviceId);
+        assertThat(app.sendVerifyCode(), is(true));
+        Thread.sleep(1000 * 30);
+        try {
+            app.sendVerifyCode();
+            assertThat("此处不应该执行到", false, is(true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertThat(e.getMessage().indexOf("5 分钟") > 0, is(true));
+        }
+        Thread.sleep(1000 * 60 * SvrUserLogin.TimeOut);
+        assertThat(app.sendVerifyCode(), is(true));
     }
 }
