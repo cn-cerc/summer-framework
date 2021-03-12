@@ -1,18 +1,19 @@
 package cn.cerc.ui.other;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UISheet;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class OperaPages extends UISheet implements IUserLanguage {
-    private final ClassResource res = new ClassResource(this, "summer-ui");
+    private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
     private IForm form;
     private MutiPage pages;

@@ -4,6 +4,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIFormHorizontal extends UIComponent implements DataSource {
-    private static final ClassResource res = new ClassResource(UIFormHorizontal.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(UIFormHorizontal.class, SummerUI.ID);
 
     protected String cssClass = "search";
     protected String method = "post";

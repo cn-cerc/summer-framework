@@ -1,6 +1,7 @@
 package cn.cerc.ui.phone;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIImage;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author 张弓
  */
 public class Block107 extends UIComponent {
-    private static final ClassResource res = new ClassResource(Block107.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(Block107.class, SummerUI.ID);
 
     private UITextBox input = new UITextBox();
     private UIImage image = new UIImage();

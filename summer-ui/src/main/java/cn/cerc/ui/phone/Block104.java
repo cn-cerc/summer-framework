@@ -1,13 +1,14 @@
 package cn.cerc.ui.phone;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UITextBox;
 
 public class Block104 extends UIComponent {
-    private static final ClassResource res = new ClassResource(Block104.class, "summer-ui");
+    private static final ClassResource res = new ClassResource(Block104.class, SummerUI.ID);
 
     private UITextBox input;
     private UIButton submit;
