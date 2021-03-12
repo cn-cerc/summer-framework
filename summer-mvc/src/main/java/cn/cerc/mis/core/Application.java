@@ -22,6 +22,15 @@ import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.Language;
 import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Slf4j
 public class Application {
@@ -129,7 +138,7 @@ public class Application {
 
     /**
      * 请改为直接使用ClassResource，参考AppConfigDefault
-     * 
+     *
      * @return
      */
     @Deprecated
@@ -200,7 +209,7 @@ public class Application {
     }
 
     public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode,
-            String... pathVariables) {
+                                     String... pathVariables) {
         // 设置登录开关
         req.setAttribute("logon", false);
 

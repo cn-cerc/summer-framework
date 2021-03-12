@@ -7,8 +7,8 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.AppClient;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
@@ -17,6 +17,7 @@ import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
+import cn.cerc.ui.SummerUI;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @Deprecated 
 //TODO SvrAutoLogin应该重构，具体逻辑应该从框架中移出
 public class SvrAutoLogin implements IUserLanguage {
-    private final ClassResource res = new ClassResource(this, "summer-ui");
+    private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
     private IHandle handle;
     private String message;

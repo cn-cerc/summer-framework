@@ -3,9 +3,10 @@ package cn.cerc.mis.book;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.TDateTime;
+import cn.cerc.mvc.SummerMVC;
 
 public interface IBookManage {
-    ClassResource res = new ClassResource("summer-mvc", IBookManage.class);
+    ClassResource res = new ClassResource(IBookManage.class, SummerMVC.ID);
 
     // 取得环境
     IHandle getHandle();

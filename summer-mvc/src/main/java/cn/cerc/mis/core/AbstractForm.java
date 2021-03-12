@@ -263,7 +263,8 @@ public class AbstractForm extends AbstractHandle implements IForm {
             case 3: {
                 if (this.getClient().isPhone()) {
                     try {
-                        method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class, String.class);
+                        method = this.getClass().getMethod(funcCode + "_phone", String.class, String.class,
+                                String.class);
                     } catch (NoSuchMethodException e) {
                         method = this.getClass().getMethod(funcCode, String.class, String.class, String.class);
                     }
@@ -383,7 +384,7 @@ public class AbstractForm extends AbstractHandle implements IForm {
     public String[] getPathVariables() {
         return this.pathVariables;
     }
-    
+
     @Override
     public IPage execute() throws Exception {
         JsonPage page = new JsonPage(this);

@@ -9,11 +9,12 @@ import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StubHandle implements IHandle, AutoCloseable {
-    private static final ClassResource res = new ClassResource("summer-mvc", StubHandle.class);
+    private static final ClassResource res = new ClassResource(StubHandle.class, SummerMVC.ID);
 
     //FIXME 此处应该使用ClassConfig
     public static final String DefaultBook = "999001";

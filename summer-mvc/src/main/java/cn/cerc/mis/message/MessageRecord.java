@@ -4,6 +4,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.mis.core.LocalService;
+import cn.cerc.mvc.SummerMVC;
 
 /**
  * 专用于消息发送
@@ -11,7 +12,7 @@ import cn.cerc.mis.core.LocalService;
  * 注意：公司别和用户代码必须配套
  */
 public class MessageRecord {
-    private static final ClassResource res = new ClassResource("summer-mvc", MessageRecord.class);
+    private static final ClassResource res = new ClassResource(MessageRecord.class, SummerMVC.ID);
 
     private String corpNo;
     private String userCode;

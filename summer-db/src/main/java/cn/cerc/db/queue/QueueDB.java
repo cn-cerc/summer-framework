@@ -1,13 +1,14 @@
 package cn.cerc.db.queue;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.ServerConfig;
 
 /**
  * 阿里云消息队列
  */
 public class QueueDB {
-    private static final ClassResource res = new ClassResource("summer-db", QueueDB.class);
+    private static final ClassResource res = new ClassResource(QueueDB.class, SummerDB.ID);
 
     /**
      * 系统消息

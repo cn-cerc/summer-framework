@@ -9,6 +9,7 @@ import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
+import cn.cerc.mvc.SummerMVC;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Deprecated
 //FIXME MemoryBookInfo 对象应该从框架中移出
 public class MemoryBookInfo {
-    private static final ClassResource res = new ClassResource("summer-mvc", MemoryBookInfo.class);
+    private static final ClassResource res = new ClassResource(MemoryBookInfo.class, SummerMVC.ID);
 
     private static final String buffVersion = "5";
 

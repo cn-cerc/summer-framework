@@ -12,6 +12,7 @@ import cn.cerc.mis.core.RedirectPage;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.fields.ButtonField;
 import cn.cerc.ui.fields.DateTimeField;
 import cn.cerc.ui.fields.ItField;
@@ -44,7 +45,7 @@ import java.util.Map;
  * 文件上传实现Form
  */
 public class FileUploadPage extends FileUploadBasePage implements IUserLanguage {
-    private final ClassResource res = new ClassResource(this, "summer-ui");
+    private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
     @Override
     public IPage exec() {

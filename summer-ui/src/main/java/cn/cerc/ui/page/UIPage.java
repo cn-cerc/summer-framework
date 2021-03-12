@@ -1,18 +1,12 @@
 package cn.cerc.ui.page;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.ServletException;
-
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlContent;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.menu.MenuList;
@@ -26,8 +20,14 @@ import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolbar;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class UIPage extends AbstractPage {
-    private final ClassResource res = new ClassResource(this, "summer-ui");
+    private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
     private List<String> cssFiles = new ArrayList<>();
     private List<String> jsFiles = new ArrayList<>();

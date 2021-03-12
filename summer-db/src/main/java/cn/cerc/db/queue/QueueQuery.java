@@ -3,6 +3,7 @@ package cn.cerc.db.queue;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataQuery;
 import cn.cerc.core.IHandle;
+import cn.cerc.db.SummerDB;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
 import com.google.gson.JsonSyntaxException;
@@ -10,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class QueueQuery extends DataQuery {
-    private static final ClassResource res = new ClassResource("summer-db", QueueQuery.class);
+    private static final ClassResource res = new ClassResource(QueueQuery.class, SummerDB.ID);
 
     private static final long serialVersionUID = 7781788221337787366L;
     private QueueOperator operator;

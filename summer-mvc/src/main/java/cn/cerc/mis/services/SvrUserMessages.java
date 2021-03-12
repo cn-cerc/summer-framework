@@ -13,6 +13,7 @@ import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.queue.AsyncService;
+import cn.cerc.mvc.SummerMVC;
 
 import java.math.BigInteger;
 
@@ -22,7 +23,7 @@ import java.math.BigInteger;
 @Deprecated
 //FIXME: SvrUserMessages 应该从框架移出
 public class SvrUserMessages extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-mvc", SvrUserMessages.class);
+    private static final ClassResource res = new ClassResource(SvrUserMessages.class, SummerMVC.ID);
 
     /*
      * 取出所有的等待处理的消息列表

@@ -1,17 +1,18 @@
 package cn.cerc.ui.parts;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.mis.core.IForm;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.mvc.AbstractPage;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UIFooter extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", UIFooter.class);
+    private static final ClassResource res = new ClassResource(UIFooter.class, SummerUI.ID);
 
     private static final int MAX_MENUS = 7;
     // protected UrlRecord checkAll;

@@ -6,6 +6,7 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
+import cn.cerc.mvc.SummerMVC;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SvrLanguage extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-mvc", SvrLanguage.class);
+    private static final ClassResource res = new ClassResource(SvrLanguage.class, SummerMVC.ID);
 
     public boolean downloadAll() throws DataValidateException {
         Record headIn = getDataIn().getHead();

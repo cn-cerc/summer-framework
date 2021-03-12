@@ -1,6 +1,7 @@
 package cn.cerc.ui.parts;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.UrlMenu;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UISheetHelp extends UISheet {
-    private static final ClassResource res = new ClassResource("summer-ui", UISheetHelp.class);
+    private static final ClassResource res = new ClassResource(UISheetHelp.class, SummerUI.ID);
 
     private String content;
     private UrlMenu operaUrl;

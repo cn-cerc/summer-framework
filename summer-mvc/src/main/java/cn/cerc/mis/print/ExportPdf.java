@@ -1,6 +1,7 @@
 package cn.cerc.mis.print;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.mvc.SummerMVC;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class ExportPdf {
-    private static final ClassResource res = new ClassResource("summer-mvc", ExportPdf.class);
+    private static final ClassResource res = new ClassResource(ExportPdf.class, SummerMVC.ID);
 
     private static ApplicationContext app;
     private static String xmlFile = "classpath:export-pdf.xml";

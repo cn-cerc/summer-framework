@@ -2,6 +2,7 @@ package cn.cerc.db.sms;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IConfig;
+import cn.cerc.db.SummerDB;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Aliyundysms {
-    private static final ClassResource res = new ClassResource("summer-db", Aliyundysms.class);
+    private static final ClassResource res = new ClassResource(Aliyundysms.class, SummerDB.ID);
 
     public static final String SingName = "dayu.singName";
     public static final String aliyun_accessKeyId = "oss.accessKeyId";

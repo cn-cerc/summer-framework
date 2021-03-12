@@ -9,6 +9,7 @@ import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.rds.StubHandle;
 import cn.cerc.mis.task.AbstractTask;
+import cn.cerc.mvc.SummerMVC;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ProcessService extends AbstractTask {
-    private static final ClassResource res = new ClassResource("summer-mvc", ProcessService.class);
+    private static final ClassResource res = new ClassResource(ProcessService.class, SummerMVC.ID);
 
     // 手动执行所有的预约服务
     public static void main(String[] args) {

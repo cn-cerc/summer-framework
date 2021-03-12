@@ -12,6 +12,7 @@ import cn.cerc.db.oss.OssConnection;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.language.R;
+import cn.cerc.ui.SummerUI;
 
 /**
  * 文件上传服务
@@ -19,7 +20,7 @@ import cn.cerc.mis.language.R;
 @Deprecated 
 //TODO SvrAutoLogin应该重构，具体逻辑应该从框架中移出
 public class SvrFileUpload extends CustomService implements IUserLanguage {
-    private final ClassResource res = new ClassResource(this, "summer-ui");
+    private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
     /**
      * 文件上传表

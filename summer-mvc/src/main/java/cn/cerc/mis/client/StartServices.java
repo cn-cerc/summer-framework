@@ -10,6 +10,7 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServlet;
@@ -23,7 +24,7 @@ import java.util.Map;
 @Slf4j
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
-    private static final ClassResource res = new ClassResource("summer-mvc", StartServices.class);
+    private static final ClassResource res = new ClassResource(StartServices.class, SummerMVC.ID);
 
     private static final long serialVersionUID = 1L;
     private static final String sessionId = "sessionId";

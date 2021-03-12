@@ -8,11 +8,11 @@ import cn.cerc.db.queue.QueueDB;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
 import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.message.MessageLevel;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
+import cn.cerc.mvc.SummerMVC;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +24,7 @@ import java.util.List;
 
 @Slf4j
 public class AsyncService implements IServiceProxy {
-    private static final ClassResource res = new ClassResource("summer-mvc", AsyncService.class);
+    private static final ClassResource res = new ClassResource(AsyncService.class, SummerMVC.ID);
 
     // 状态列表
     private static List<String> processTiles = new ArrayList<>();

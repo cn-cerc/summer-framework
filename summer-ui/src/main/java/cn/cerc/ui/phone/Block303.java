@@ -1,6 +1,7 @@
 package cn.cerc.ui.phone;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author HuangRongjun
  */
 public class Block303 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block303.class);
+    private static final ClassResource res = new ClassResource(Block303.class, SummerUI.ID);
 
     private Map<UrlRecord, UIImage> items = new LinkedHashMap<>();
 

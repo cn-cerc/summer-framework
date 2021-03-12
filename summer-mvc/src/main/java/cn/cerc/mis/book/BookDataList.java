@@ -3,6 +3,7 @@ package cn.cerc.mis.book;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.tools.DurationSection;
+import cn.cerc.mvc.SummerMVC;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
-    private static final ClassResource res = new ClassResource("summer-mvc", BookDataList.class);
+    private static final ClassResource res = new ClassResource(BookDataList.class, SummerMVC.ID);
 
     private List<IBookData> items = new ArrayList<>();
     private DurationSection section;

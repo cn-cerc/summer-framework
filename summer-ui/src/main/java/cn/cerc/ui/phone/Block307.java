@@ -1,6 +1,7 @@
 package cn.cerc.ui.phone;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
@@ -18,7 +19,7 @@ import java.util.List;
  * @author HuangRongjun
  */
 public class Block307 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block307.class);
+    private static final ClassResource res = new ClassResource(Block307.class, SummerUI.ID);
 
     private UISpan title;
     private UrlRecord url;

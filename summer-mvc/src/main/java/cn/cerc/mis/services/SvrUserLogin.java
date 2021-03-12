@@ -20,10 +20,10 @@ import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.core.Webfunc;
-import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 @Deprecated
 //FIXME: SvrUserLogin 应该从框架移出
 public class SvrUserLogin extends CustomService {
-    private static final ClassResource res = new ClassResource("summer-mvc", SvrUserLogin.class);
+    private static final ClassResource res = new ClassResource(SvrUserLogin.class, SummerMVC.ID);
 
     public static int TimeOut = 5; // 效验代码超时时间（分钟）
     private static String GuidNull = "";
