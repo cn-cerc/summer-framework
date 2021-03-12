@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.IConnection;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IStorage;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.jiguang.JiguangConnection;
@@ -31,7 +33,7 @@ import redis.clients.jedis.Jedis;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class HandleDefault implements IHandle {
+public class HandleDefault extends IHandle implements IStorage {
 
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
@@ -46,6 +48,7 @@ public class HandleDefault implements IHandle {
         params.put(Application.bookNo, "");
         params.put(Application.deviceLanguage, Application.App_Language);
         log.debug("new CustomHandle");
+        this.setSession(this);
     }
 
     /**
