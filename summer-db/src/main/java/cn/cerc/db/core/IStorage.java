@@ -8,6 +8,4 @@ public interface IStorage extends ISession{
 
     // 在登录成功并生成token后，传递token值进行初始化
     boolean init(String token);
-
-    ISession getSession();
 }
