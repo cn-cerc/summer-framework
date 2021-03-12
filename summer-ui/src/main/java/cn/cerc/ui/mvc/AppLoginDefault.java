@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.IStorage;
+import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
@@ -60,8 +60,8 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         IForm form = this.getForm();
         try {
             log.debug("create session by token {}", token);
-            IStorage sess = (IStorage) form.getHandle().getSession().getProperty(null);
-            if (sess.init(token)) {
+            ITokenManage sess = (ITokenManage) form.getHandle().getSession().getProperty(null);
+            if (sess.resumeToken(token)) {
                 return null;
             }
             if (form.logon()) {

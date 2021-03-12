@@ -96,7 +96,7 @@ public class SvrAutoLogin implements IUserLanguage {
             AppClient client = new AppClient();
             client.setRequest(request);
             client.setToken(token);
-            sess.init(token);
+            sess.resumeToken(token);
 
             form.getRequest().setAttribute(RequestData.TOKEN, token);
             ((AppClient) form.getClient()).setToken(token);

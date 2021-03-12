@@ -9,7 +9,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 
-public class StubHandleText extends IHandle implements IStorage {
+public class StubHandleText extends IHandle implements ITokenManage {
     private MysqlConnection mysqlSession;
     private MssqlConnection mssqlConnection;
     private MongoConnection mgConn;
@@ -83,13 +83,13 @@ public class StubHandleText extends IHandle implements IStorage {
 
     // 直接设置成登录成功状态，用于定时服务时初始化等，会生成内存临时的token
     @Override
-    public boolean init(String bookNo, String userCode, String password, String clientCode) {
+    public boolean createToken(String bookNo, String userCode, String password, String clientCode) {
         throw new RuntimeException("调用了未被实现的接口");
     }
 
     // 在登录成功并生成token后，传递token值进行初始化
     @Override
-    public boolean init(String token) {
+    public boolean resumeToken(String token) {
         throw new RuntimeException("调用了未被实现的接口");
     }
 

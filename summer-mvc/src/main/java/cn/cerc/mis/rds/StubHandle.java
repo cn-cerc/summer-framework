@@ -3,7 +3,7 @@ package cn.cerc.mis.rds;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.IStorage;
+import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mysql.MysqlConnection;
@@ -15,7 +15,7 @@ import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class StubHandle extends IHandle implements IStorage, AutoCloseable {
+public class StubHandle extends IHandle implements ITokenManage, AutoCloseable {
     private static final ClassResource res = new ClassResource(StubHandle.class, SummerMVC.ID);
 
     //FIXME 此处应该使用ClassConfig
@@ -33,14 +33,14 @@ public class StubHandle extends IHandle implements IStorage, AutoCloseable {
     public StubHandle() {
         handle = Application.getHandle();
         log.info("StubHandle {}", handle.getClass());
-        ((IStorage)handle).init(DefaultBook, DefaultUser, password, machineCode);
+        ((ITokenManage)handle).createToken(DefaultBook, DefaultUser, password, machineCode);
         this.setHandle(handle);
     }
 
     public StubHandle(String corpNo, String userCode) {
         handle = Application.getHandle();
         log.info("StubHandle {}", handle.getClass());
-        ((IStorage)handle).init(corpNo, userCode, password, machineCode);
+        ((ITokenManage)handle).createToken(corpNo, userCode, password, machineCode);
         this.setHandle(handle);
     }
 
@@ -95,12 +95,12 @@ public class StubHandle extends IHandle implements IStorage, AutoCloseable {
     }
 
     @Override
-    public boolean init(String bookNo, String userCode, String password, String clientCode) {
+    public boolean createToken(String bookNo, String userCode, String password, String clientCode) {
         throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 
     @Override
-    public boolean init(String token) {
+    public boolean resumeToken(String token) {
         throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
     }
 
