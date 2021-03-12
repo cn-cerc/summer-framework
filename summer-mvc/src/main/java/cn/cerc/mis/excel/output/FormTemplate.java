@@ -30,7 +30,7 @@ public class FormTemplate extends ExcelTemplate {
                 Label item1 = new Label(0, row, column.getName());
                 sheet.addCell(item1);
                 column.setRecord(head);
-                writeColumn(sheet, 1, row, column, null);
+                writeColumn(sheet, 1, row, column, null, null);
             }
             // 设置新的起点行号
             this.setRow(this.getRow() + heads.size());
