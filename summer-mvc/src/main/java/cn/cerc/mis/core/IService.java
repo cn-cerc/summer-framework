@@ -1,8 +1,9 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.SupportHandle;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.SupportHandle;
 
 public interface IService extends SupportHandle {
     IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException;

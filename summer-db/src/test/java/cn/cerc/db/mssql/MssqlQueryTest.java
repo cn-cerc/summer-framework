@@ -1,22 +1,23 @@
 package cn.cerc.db.mssql;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.StubHandleText;
+
 public class MssqlQueryTest {
 
-    private IHandle handle;
+    private ISession session;
 
     @Before
     public void setUP() {
-        handle = new StubHandleText();
+        session = new StubHandleText();
     }
 
     @Test
     public void test_append() {
-        MssqlQuery query = new MssqlQuery(handle);
+        MssqlQuery query = new MssqlQuery(session);
         query.add("select * from Dept where Code_='%s'", "191220");
         query.open();
         if (!query.eof()) {

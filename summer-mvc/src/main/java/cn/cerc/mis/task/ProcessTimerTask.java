@@ -1,12 +1,14 @@
 package cn.cerc.mis.task;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.core.ISession;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
+import cn.cerc.mis.rds.StubSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -27,7 +29,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
     private static final String One_O_Clock = "01:00";
 
     private static String lock;
-    private IHandle handle;
+    private ISession session;
 
     // 运行环境
     private ApplicationContext context;
@@ -68,7 +70,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
         lock = str;
 
         for (String beanId : context.getBeanNamesForType(AbstractTask.class)) {
-            AbstractTask task = getTask(handle, beanId);
+            AbstractTask task = getTask(session, beanId);
             if (task == null) {
                 continue;
             }
@@ -103,8 +105,8 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
      * 初始化特殊用户的 handle
      */
     private void init() {
-        if (handle == null) {
-            handle = new StubHandle();
+        if (session == null) {
+            session = new StubSession();
             return;
         }
 
@@ -114,21 +116,21 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             if (Redis.get(now) != null) {
                 return;
             }
-            if (handle != null) {
-                handle.close();
-                handle = null;
+            if (session != null) {
+                session.close();
+                session = null;
             }
             log.warn("{} queue reinitialization handle", TDateTime.now());// 队列重新初始化句柄
-            handle = new StubHandle();
+            session = new StubSession();
             // 60s内不重复初始化Handle
             Redis.set(now, "true", 60);
         }
     }
 
-    public static AbstractTask getTask(IHandle handle, String beanId) {
+    public static AbstractTask getTask(ISession session, String beanId) {
         AbstractTask task = Application.getBean(beanId, AbstractTask.class);
         if (task != null) {
-            task.setHandle(handle);
+            task.setSession(session);
         }
         return task;
     }

@@ -8,14 +8,15 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
+import cn.cerc.db.mysql.SqlConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class StubHandle implements IHandle {
-    private static final ClassResource res = new ClassResource(StubHandle.class, SummerMVC.ID);
+public class StubSession implements ISession, AutoCloseable {
+    private static final ClassResource res = new ClassResource(StubSession.class, SummerMVC.ID);
 
     // FIXME 此处应该使用ClassConfig
     public static final String DefaultBook = "999001";
@@ -29,17 +30,31 @@ public class StubHandle implements IHandle {
 
     private IHandle handle;
 
-    public StubHandle() {
+    public StubSession() {
         handle = Application.getHandle();
         log.info("StubHandle {}", handle.getClass());
         ((ITokenManage) handle).createToken(DefaultBook, DefaultUser, password, machineCode);
-
     }
 
-    public StubHandle(String corpNo, String userCode) {
+    public StubSession(String corpNo, String userCode) {
         handle = Application.getHandle();
         log.info("StubHandle {}", handle.getClass());
         ((ITokenManage) handle).createToken(corpNo, userCode, password, machineCode);
+    }
+
+    @Override
+    public String getCorpNo() {
+        return handle.getCorpNo();
+    }
+
+    @Override
+    public String getUserCode() {
+        return handle.getUserCode();
+    }
+
+    @Override
+    public String getUserName() {
+        return handle.getUserName();
     }
 
     @Override
@@ -78,18 +93,13 @@ public class StubHandle implements IHandle {
     }
 
     @Override
-    public void setSession(ISession session) {
-        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
-    }
-
-    @Override
-    public ISession getSession() {
-        return handle.getSession();
+    public boolean logon() {
+        return false;
     }
 
     @Override
     public void close() {
-        this.handle.close();
+        handle.close();
     }
 
 }

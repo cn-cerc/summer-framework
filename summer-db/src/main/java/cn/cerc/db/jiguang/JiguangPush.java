@@ -1,6 +1,8 @@
 package cn.cerc.db.jiguang;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
@@ -33,8 +35,12 @@ public class JiguangPush {
     public JiguangPush() {
     }
 
-    public JiguangPush(IHandle handle) {
-        this.connection = (JiguangConnection) handle.getProperty(JiguangConnection.sessionId);
+    public JiguangPush(ISession session) {
+        this.connection = (JiguangConnection) session.getProperty(JiguangConnection.sessionId);
+    }
+
+    public JiguangPush(IHandle owner) {
+        this(owner.getSession());
     }
 
     /**

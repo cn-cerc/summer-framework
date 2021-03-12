@@ -1,7 +1,7 @@
 package cn.cerc.ui.mvc;
 
 import cn.cerc.core.ClassConfig;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AppClient;

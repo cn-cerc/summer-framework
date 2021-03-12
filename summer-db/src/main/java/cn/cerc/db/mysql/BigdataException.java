@@ -1,7 +1,7 @@
 package cn.cerc.db.mysql;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataQuery;
+import cn.cerc.db.core.DataQuery;
 import cn.cerc.db.SummerDB;
 
 import java.io.Serializable;

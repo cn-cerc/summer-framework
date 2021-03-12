@@ -1,6 +1,6 @@
 package cn.cerc.mis.other;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;

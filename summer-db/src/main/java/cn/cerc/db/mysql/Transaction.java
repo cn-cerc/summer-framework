@@ -1,6 +1,8 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -9,26 +11,25 @@ import java.sql.SQLException;
 @Slf4j
 public class Transaction implements AutoCloseable {
 
-    private Connection conn;
+    private Connection connection;
     private boolean active = false;
     private boolean locked = false;
 
-    public Transaction(Connection conn) {
-        this.conn = conn;
-        try {
-            if (conn.getAutoCommit()) {
-                conn.setAutoCommit(false);
-                this.active = true;
-            }
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
+    public Transaction(Connection connection) {
+        setConn(connection);
     }
 
-    public Transaction(IHandle handle) {
-        MysqlConnection cn = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
-        this.conn = cn.getClient();
+    public Transaction(ISession session) {
+        MysqlConnection cn = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
+        setConn(cn.getClient());
+    }
+
+    public Transaction(IHandle owner) {
+        this(owner.getSession());
+    }
+    
+    private void setConn(Connection conn) {
+        this.connection = conn;
         try {
             if (conn.getAutoCommit()) {
                 conn.setAutoCommit(false);
@@ -48,7 +49,7 @@ public class Transaction implements AutoCloseable {
             throw new RuntimeException("Transaction locked is true");
         }
         try {
-            conn.commit();
+            connection.commit();
             locked = true;
             return true;
         } catch (SQLException e) {
@@ -64,9 +65,9 @@ public class Transaction implements AutoCloseable {
         }
         try {
             try {
-                conn.rollback();
+                connection.rollback();
             } finally {
-                conn.setAutoCommit(true);
+                connection.setAutoCommit(true);
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);

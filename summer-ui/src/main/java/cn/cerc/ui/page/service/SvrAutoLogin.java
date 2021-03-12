@@ -1,7 +1,7 @@
 package cn.cerc.ui.page.service;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -96,7 +96,7 @@ public class SvrAutoLogin implements IUserLanguage {
             AppClient client = new AppClient();
             client.setRequest(request);
             client.setToken(token);
-            sess.init(token);
+            sess.resumeToken(token);
 
             form.getRequest().setAttribute(RequestData.TOKEN, token);
             ((AppClient) form.getClient()).setToken(token);

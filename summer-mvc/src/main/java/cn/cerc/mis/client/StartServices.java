@@ -2,7 +2,8 @@ package cn.cerc.mis.client;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
@@ -94,7 +95,7 @@ public class StartServices extends HttpServlet {
 
         IHandle handle = Application.getHandle();
         try { // 执行指定函数
-            handle.init(req.getParameter("token"));
+            ((ITokenManage)handle).resumeToken(req.getParameter("token"));
             handle.setProperty(sessionId, req.getSession().getId());
             IService bean = Application.getService(handle, serviceCode);
             if (bean == null) {

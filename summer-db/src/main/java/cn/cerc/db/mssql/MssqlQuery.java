@@ -1,11 +1,13 @@
 package cn.cerc.db.mssql;
 
-import cn.cerc.core.DataQuery;
+import cn.cerc.db.core.DataQuery;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.mysql.BigdataException;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,7 @@ public class MssqlQuery extends DataQuery {
 
     private static final long serialVersionUID = 889285738942368226L;
 
-    private MssqlConnection session;
+    private MssqlConnection connection;
 
     private DataSource dataSource;
 
@@ -37,11 +39,15 @@ public class MssqlQuery extends DataQuery {
     // 仅当batchSave为true时，delList才有记录存在
     private List<Record> delList = new ArrayList<>();
 
-    public MssqlQuery(IHandle handle) {
-        super(handle);
-        this.session = (MssqlConnection) handle.getProperty(MssqlConnection.sessionId);
-        this.dataSource = (DataSource) handle.getProperty(MssqlConnection.dataSource);
+    public MssqlQuery(ISession session) {
+        super(session);
+        this.connection = (MssqlConnection) session.getProperty(MssqlConnection.sessionId);
+        this.dataSource = (DataSource) session.getProperty(MssqlConnection.dataSource);
         this.getSqlText().setSupportMssql(true);
+    }
+
+    public MssqlQuery(IHandle session) {
+        this(session.getSession());
     }
 
     @Override
@@ -53,7 +59,7 @@ public class MssqlQuery extends DataQuery {
 
     @Override
     public DataQuery open() {
-        if (session == null) {
+        if (connection == null) {
             throw new RuntimeException("MssqlConnection is null");
         }
 
@@ -130,7 +136,7 @@ public class MssqlQuery extends DataQuery {
     private Statement getStatement() throws SQLException {
         try {
             if (this.dataSource == null) {
-                return this.session.getClient().createStatement();
+                return this.connection.getClient().createStatement();
             } else {
                 return this.dataSource.getConnection().createStatement();
             }
@@ -225,7 +231,7 @@ public class MssqlQuery extends DataQuery {
 
     public MssqlOperator getDefaultOperator() {
         if (operator == null) {
-            MssqlOperator def = new MssqlOperator(this.handle);
+            MssqlOperator def = new MssqlOperator(this.session);
             String sql = this.getSqlText().getText();
             if (sql != null) {
                 def.setTableName(MssqlOperator.findTableName(sql));
@@ -253,10 +259,10 @@ public class MssqlQuery extends DataQuery {
             this.open();
             return this.size();
         }
-        if (session == null) {
+        if (connection == null) {
             throw new RuntimeException("SqlSession is null");
         }
-        Connection conn = session.getClient();
+        Connection conn = connection.getClient();
         if (conn == null) {
             throw new RuntimeException("Connection is null");
         }

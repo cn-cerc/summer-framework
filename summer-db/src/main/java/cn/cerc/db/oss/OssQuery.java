@@ -1,10 +1,11 @@
 package cn.cerc.db.oss;
 
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
-import cn.cerc.db.queue.OssOperator;
-
 import java.io.ByteArrayInputStream;
+
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.DataQuery;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.queue.OssOperator;
 
 public class OssQuery extends DataQuery {
     private static final long serialVersionUID = 1L;
@@ -14,9 +15,13 @@ public class OssQuery extends DataQuery {
     private String fileName;
     private OssMode ossMode = OssMode.create;
 
-    public OssQuery(IHandle handle) {
-        super(handle);
-        connection = (OssConnection) this.handle.getProperty(OssConnection.sessionId);
+    public OssQuery(ISession session) {
+        super(session);
+        connection = (OssConnection) this.session.getProperty(OssConnection.sessionId);
+    }
+
+    public OssQuery(IHandle owner) {
+        this(owner.getSession());
     }
 
     @Override

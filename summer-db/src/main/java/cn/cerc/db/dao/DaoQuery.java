@@ -1,11 +1,13 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.DataQuery;
+import cn.cerc.db.core.DataQuery;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.mysql.BigdataException;
@@ -29,7 +31,7 @@ import java.util.List;
 public abstract class DaoQuery<T extends Serializable> extends DataQuery {
 
     private static final long serialVersionUID = -7323397340337332570L;
-    private MysqlConnection session;
+    private MysqlConnection connection;
     private SlaveMysqlConnection slaveSession;
 
     private DataSource dataSource;
@@ -43,14 +45,18 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
     private Class<T> clazz;
 
     @SuppressWarnings("unchecked")
-    public DaoQuery(IHandle handle) {
-        super(handle);
+    public DaoQuery(ISession session) {
+        super(session);
         this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         this.setSqlText(new SqlText(this.clazz));
-        this.session = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
-        this.slaveSession = (SlaveMysqlConnection) handle.getProperty(SlaveMysqlConnection.sessionId);
-        this.dataSource = (DataSource) handle.getProperty(MysqlConnection.dataSource);
-        this.slaveDataSource = (DataSource) handle.getProperty(SlaveMysqlConnection.slaveDataSource);
+        this.connection = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
+        this.slaveSession = (SlaveMysqlConnection) session.getProperty(SlaveMysqlConnection.sessionId);
+        this.dataSource = (DataSource) session.getProperty(MysqlConnection.dataSource);
+        this.slaveDataSource = (DataSource) session.getProperty(SlaveMysqlConnection.slaveDataSource);
+    }
+    
+    public DaoQuery(IHandle owner) {
+        this(owner.getSession());
     }
 
     @Override
@@ -66,7 +72,7 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
                 if (this.slaveDataSource == null) {
                     if (this.dataSource == null) {
                         if (this.slaveSession == null) {
-                            return this.session.getClient().createStatement();
+                            return this.connection.getClient().createStatement();
                         } else {
                             return this.slaveSession.getClient().createStatement();
                         }
@@ -78,7 +84,7 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
                 }
             } else {
                 if (this.dataSource == null) {
-                    return this.session.getClient().createStatement();
+                    return this.connection.getClient().createStatement();
                 } else {
                     return this.dataSource.getConnection().createStatement();
                 }
@@ -102,14 +108,14 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
 
     @Override
     public DataQuery open() {
-        if (session == null) {
+        if (connection == null) {
             throw new RuntimeException("SqlConnection is null");
         }
         return this._open(false);
     }
 
     public int open(SqlText sqlText) {
-        if (session == null) {
+        if (connection == null) {
             throw new RuntimeException("SqlConnection is null");
         }
         this.close();
@@ -156,10 +162,10 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
             this.open();
             return this.size();
         }
-        if (session == null) {
+        if (connection == null) {
             throw new RuntimeException("SqlSession is null");
         }
-        Connection conn = session.getClient();
+        Connection conn = connection.getClient();
         if (conn == null) {
             throw new RuntimeException("Connection is null");
         }
@@ -295,7 +301,7 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
 
     public SqlOperator getDefaultOperator() {
         if (operator == null) {
-            SqlOperator def = new SqlOperator(this.handle);
+            SqlOperator def = new SqlOperator(this.session);
             String sql = this.getSqlText().getText();
             if (sql != null) {
                 def.setTableName(SqlOperator.findTableName(sql));

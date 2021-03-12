@@ -1,7 +1,7 @@
 package cn.cerc.mis.tools;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.book.BookDataList;
 import cn.cerc.mis.book.IBook;

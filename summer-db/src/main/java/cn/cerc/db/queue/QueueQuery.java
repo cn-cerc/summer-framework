@@ -1,8 +1,10 @@
 package cn.cerc.db.queue;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.DataQuery;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.SummerDB;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
@@ -21,10 +23,14 @@ public class QueueQuery extends DataQuery {
     private String receiptHandle;
     private QueueMode queueMode = QueueMode.append;
 
-    public QueueQuery(IHandle handle) {
-        super(handle);
+    public QueueQuery(ISession session) {
+        super(session);
         this.setBatchSave(true);
-        this.connection = (AliyunQueueConnection) handle.getProperty(AliyunQueueConnection.sessionId);
+        this.connection = (AliyunQueueConnection) session.getProperty(AliyunQueueConnection.sessionId);
+    }
+
+    public QueueQuery(IHandle owner) {
+        this(owner.getSession());
     }
 
     @Override

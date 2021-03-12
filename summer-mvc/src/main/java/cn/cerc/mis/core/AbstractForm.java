@@ -16,7 +16,8 @@ import com.google.gson.Gson;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.CustomBean;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BufferType;
@@ -27,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
-public class AbstractForm extends AbstractHandle implements IForm {
+public class AbstractForm extends CustomBean implements IForm {
     private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMVC.ID);
     private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMVC.ID);
 
@@ -175,7 +176,7 @@ public class AbstractForm extends AbstractHandle implements IForm {
                 request.getSession().setAttribute("CLIENTVER", CLIENTVER);
 
             // 是否拥有此菜单调用权限
-            if (!Application.getPassport(this.getHandle()).passForm(this)) {
+            if (!Application.getPassport(this.getSession()).passForm(this)) {
                 log.warn(String.format("无权限执行 %s", request.getRequestURL()));
                 JsonPage output = new JsonPage(this);
                 output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));

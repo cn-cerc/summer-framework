@@ -1,11 +1,5 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +9,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.sql.DataSource;
+
+import cn.cerc.core.IDataOperator;
+import cn.cerc.core.ISession;
+import cn.cerc.core.Record;
+import cn.cerc.db.core.IHandle;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SqlOperator implements IDataOperator {
@@ -32,13 +34,13 @@ public class SqlOperator implements IDataOperator {
         this.conntion = conntion;
     }
 
-    public SqlOperator(IHandle handle) {
+    public SqlOperator(ISession session) {
         super();
-        MysqlConnection session = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
-        DataSource dataSource = (DataSource) handle.getProperty(MysqlConnection.dataSource);
+        DataSource dataSource = (DataSource) session.getProperty(MysqlConnection.dataSource);
         try {
             if (dataSource == null) {
-                conntion = session.getClient();
+                MysqlConnection conn = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
+                conntion = conn.getClient();
             } else {
                 conntion = dataSource.getConnection();
             }
@@ -47,6 +49,10 @@ public class SqlOperator implements IDataOperator {
         }
     }
 
+    public SqlOperator(IHandle owner){
+        this(owner.getSession());
+    }
+    
     // 根据 sql 获取数据库表名
     public static String findTableName(String sql) {
         String result = null;

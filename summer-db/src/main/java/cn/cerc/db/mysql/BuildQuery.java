@@ -1,9 +1,11 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.CustomBean;
+import cn.cerc.db.core.IHandle;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,11 +26,15 @@ public class BuildQuery {
     private List<String> sqlText = new ArrayList<>();
     private String orderText;
     private String sql;
-    private IHandle handle;
+    private ISession session;
 
-    public BuildQuery(IHandle handle) {
+    public BuildQuery(ISession session) {
         super();
-        this.handle = handle;
+        this.session = session;
+    }
+
+    public BuildQuery(IHandle owner) {
+        this(owner.getSession());
     }
 
     /**
@@ -51,14 +57,9 @@ public class BuildQuery {
      * <p>
      * 生成 SQL 的指令如下：
      * <p>
-     * and (
-     * CusCode_ like '%05559255%'
-     * or SalesCode_ like '%05559255%'
-     * or AppUser_ like '%05559255%'
-     * or UpdateUser_ like '%05559255%'
-     * or Address_ like '%05559255%'
-     * or Mobile_ like '%$i8OknluCnFsW$%'
-     * )
+     * and ( CusCode_ like '%05559255%' or SalesCode_ like '%05559255%' or AppUser_
+     * like '%05559255%' or UpdateUser_ like '%05559255%' or Address_ like
+     * '%05559255%' or Mobile_ like '%$i8OknluCnFsW$%' )
      *
      * @param items
      * @return
@@ -243,7 +244,7 @@ public class BuildQuery {
 
     public SqlQuery getDataSet() {
         if (this.dataSet == null) {
-            this.dataSet = new SqlQuery(handle);
+            this.dataSet = new SqlQuery(session);
         }
         return this.dataSet;
     }

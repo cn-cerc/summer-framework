@@ -1,26 +1,31 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.DataSet;
-import cn.cerc.core.DataSetState;
-import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.Utils;
-import cn.cerc.db.SummerDB;
-import cn.cerc.db.mysql.SqlOperator;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import org.bson.Document;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+
+import cn.cerc.core.ClassResource;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.DataSetState;
+import cn.cerc.core.IDataOperator;
+import cn.cerc.core.ISession;
+import cn.cerc.core.Record;
+import cn.cerc.core.Utils;
+import cn.cerc.db.SummerDB;
+import cn.cerc.db.core.CustomBean;
+import cn.cerc.db.core.DataQuery;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.mysql.SqlOperator;
 
 public class MongoQuery extends DataQuery {
     private static final long serialVersionUID = -1262005194419604476L;
@@ -32,9 +37,13 @@ public class MongoQuery extends DataQuery {
     // 仅当batchSave为true时，delList才有记录存在
     private List<Record> delList = new ArrayList<>();
 
-    public MongoQuery(IHandle handle) {
-        super(handle);
-        connection = (MongoConnection) this.handle.getProperty(MongoConnection.sessionId);
+    public MongoQuery(ISession session) {
+        super(session);
+        connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
+    }
+
+    public MongoQuery(IHandle owner) {
+        this(owner.getSession());
     }
 
     @Override
@@ -207,7 +216,7 @@ public class MongoQuery extends DataQuery {
 
     private IDataOperator getDefaultOperator() {
         if (operator == null) {
-            MongoOperator obj = new MongoOperator(this.handle);
+            MongoOperator obj = new MongoOperator(this.session);
             obj.setTableName(SqlOperator.findTableName(this.getSqlText().getText()));
             operator = obj;
         }

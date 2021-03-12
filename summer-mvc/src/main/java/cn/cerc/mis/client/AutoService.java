@@ -1,7 +1,7 @@
 package cn.cerc.mis.client;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.IService;

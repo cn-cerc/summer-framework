@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.IConnection;
-import cn.cerc.core.IHandle;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.CustomBean;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.jiguang.JiguangConnection;
@@ -31,7 +34,7 @@ import redis.clients.jedis.Jedis;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class HandleDefault implements IHandle {
+public class HandleDefault extends CustomBean implements ISession, ITokenManage {
 
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
@@ -45,14 +48,15 @@ public class HandleDefault implements IHandle {
         params.put(Application.roleCode, "");
         params.put(Application.bookNo, "");
         params.put(Application.deviceLanguage, Application.App_Language);
-        log.debug("new CustomHandle");
+        log.debug("new CustomBean");
+        this.setSession(this);
     }
 
     /**
      * 根据token恢复用户session
      */
     @Override
-    public boolean init(String token) {
+    public boolean resumeToken(String token) {
         this.setProperty(Application.TOKEN, token);
         if (token == null)
             log.warn("initialize session, token is null");
@@ -115,7 +119,7 @@ public class HandleDefault implements IHandle {
      * 主要为 task 任务使用
      */
     @Override
-    public boolean init(String corpNo, String userCode, String password, String machineCode) {
+    public boolean createToken(String corpNo, String userCode, String password, String machineCode) {
         String token = ApplicationConfig.getAuthToken(userCode, password, machineCode);
         if (Utils.isEmpty(token)) {
             return false;

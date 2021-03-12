@@ -1,7 +1,7 @@
 package cn.cerc.mis.message;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.jiguang.ClientType;
 import cn.cerc.db.jiguang.JiguangPush;
 import cn.cerc.mis.core.LocalService;

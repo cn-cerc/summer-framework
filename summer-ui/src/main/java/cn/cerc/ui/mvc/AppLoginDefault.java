@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.SupportHandle;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ITokenManage;
+import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
@@ -59,9 +60,8 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         IForm form = this.getForm();
         try {
             log.debug("create session by token {}", token);
-
-            IHandle sess = (IHandle) form.getHandle().getProperty(null);
-            if (sess.init(token)) {
+            ITokenManage sess = (ITokenManage) form.getHandle().getSession().getProperty(null);
+            if (sess.resumeToken(token)) {
                 return null;
             }
             if (form.logon()) {

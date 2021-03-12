@@ -1,9 +1,10 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.CustomBean;
+import cn.cerc.db.core.IHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractService extends AbstractHandle implements IService, IRestful {
+public abstract class AbstractService extends CustomBean implements IService, IRestful {
     @Autowired
     public ISystemTable systemTable;
     private String restPath;
@@ -18,8 +19,7 @@ public abstract class AbstractService extends AbstractHandle implements IService
         this.restPath = restPath;
     }
 
-    @Override
     public void init(IHandle handle) {
-        this.handle = handle;
+        this.setHandle(handle);
     }
 }
