@@ -2,7 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.AbstractHandle;
+import cn.cerc.db.core.CustomHandle;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;

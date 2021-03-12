@@ -3,7 +3,7 @@ package cn.cerc.db.core;
 import cn.cerc.core.ISession;
 import cn.cerc.db.mysql.MysqlConnection;
 
-public class AbstractHandle implements AutoCloseable {
+public class CustomHandle implements AutoCloseable {
 
     private ISession session;
 
