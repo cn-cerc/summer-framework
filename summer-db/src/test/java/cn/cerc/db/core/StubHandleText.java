@@ -1,5 +1,6 @@
 package cn.cerc.db.core;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.IConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
@@ -8,7 +9,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 
-public class StubHandleText extends AbstractHandle implements IStorage {
+public class StubHandleText extends IHandle implements IStorage {
     private MysqlConnection mysqlSession;
     private MssqlConnection mssqlConnection;
     private MongoConnection mgConn;
@@ -17,8 +18,7 @@ public class StubHandleText extends AbstractHandle implements IStorage {
     private JiguangConnection pushConn;
 
     public StubHandleText() {
-        super();
-        IConfig config = new StubConfigTest();
+        ClassConfig config = new ClassConfig();
 
         mysqlSession = new MysqlConnection();
         mysqlSession.setConfig(config);
