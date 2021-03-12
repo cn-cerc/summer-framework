@@ -1,12 +1,13 @@
 package cn.cerc.mis.tools;
 
+import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.BuildQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldUseCheck extends IHandle {
+public class FieldUseCheck extends CustomBean {
     private List<String> items = new ArrayList<>();
 
     public FieldUseCheck(IHandle handle) {

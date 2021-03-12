@@ -8,6 +8,7 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
+import cn.cerc.mis.rds.StubSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -105,7 +106,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
      */
     private void init() {
         if (session == null) {
-            session = new StubHandle();
+            session = new StubSession();
             return;
         }
 
@@ -120,7 +121,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 session = null;
             }
             log.warn("{} queue reinitialization handle", TDateTime.now());// 队列重新初始化句柄
-            session = new StubHandle();
+            session = new StubSession();
             // 60s内不重复初始化Handle
             Redis.set(now, "true", 60);
         }

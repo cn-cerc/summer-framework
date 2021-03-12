@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.queue.OssOperator;
 
 public class OssQuery extends DataQuery {
@@ -20,7 +20,7 @@ public class OssQuery extends DataQuery {
         connection = (OssConnection) this.session.getProperty(OssConnection.sessionId);
     }
 
-    public OssQuery(ISupportSession owner) {
+    public OssQuery(IHandle owner) {
         this(owner.getSession());
     }
 

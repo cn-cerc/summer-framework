@@ -3,7 +3,7 @@ package cn.cerc.db.mongo;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import com.mongodb.client.MongoCollection;
@@ -23,7 +23,7 @@ public class MongoOperator implements IDataOperator {
         this.connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
     }
 
-    public MongoOperator(ISupportSession owner) {
+    public MongoOperator(IHandle owner) {
         this(owner.getSession());
     }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.IConnection;
 import cn.cerc.core.ISession;
+import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.Record;
@@ -33,7 +34,7 @@ import redis.clients.jedis.Jedis;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class HandleDefault extends IHandle implements ISession, ITokenManage {
+public class HandleDefault extends CustomBean implements ISession, ITokenManage {
 
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
@@ -47,7 +48,7 @@ public class HandleDefault extends IHandle implements ISession, ITokenManage {
         params.put(Application.roleCode, "");
         params.put(Application.bookNo, "");
         params.put(Application.deviceLanguage, Application.App_Language);
-        log.debug("new CustomHandle");
+        log.debug("new CustomBean");
         this.setSession(this);
     }
 

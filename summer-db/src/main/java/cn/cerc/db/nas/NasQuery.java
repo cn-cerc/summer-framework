@@ -10,7 +10,7 @@ import org.apache.commons.io.FileUtils;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.queue.QueueOperator;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,7 @@ public class NasQuery extends DataQuery {
         super(session);
     }
 
-    public NasQuery(ISupportSession owner) {
+    public NasQuery(IHandle owner) {
         this(owner.getSession());
     }
 

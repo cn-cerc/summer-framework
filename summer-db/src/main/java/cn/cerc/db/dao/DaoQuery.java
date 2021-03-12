@@ -7,7 +7,7 @@ import cn.cerc.core.FieldDefs;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.mysql.BigdataException;
@@ -55,7 +55,7 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
         this.slaveDataSource = (DataSource) session.getProperty(SlaveMysqlConnection.slaveDataSource);
     }
     
-    public DaoQuery(ISupportSession owner) {
+    public DaoQuery(IHandle owner) {
         this(owner.getSession());
     }
 

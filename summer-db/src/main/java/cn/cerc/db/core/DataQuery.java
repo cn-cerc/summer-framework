@@ -21,7 +21,7 @@ public abstract class DataQuery extends DataSet {
         this.session = session;
     }
 
-    public DataQuery(ISupportSession owner) {
+    public DataQuery(IHandle owner) {
         this.session = owner.getSession();
     }
 

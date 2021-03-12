@@ -2,7 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.CustomHandle;
+import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Slf4j
-public class CustomService extends IHandle implements IService, IRestful {
+public class CustomService extends CustomBean implements IService, IRestful {
     private static final ClassResource res = new ClassResource(CustomService.class, SummerMVC.ID);
 
     @Autowired

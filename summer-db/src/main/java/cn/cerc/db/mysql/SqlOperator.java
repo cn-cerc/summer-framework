@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -49,7 +49,7 @@ public class SqlOperator implements IDataOperator {
         }
     }
 
-    public SqlOperator(ISupportSession owner){
+    public SqlOperator(IHandle owner){
         this(owner.getSession());
     }
     

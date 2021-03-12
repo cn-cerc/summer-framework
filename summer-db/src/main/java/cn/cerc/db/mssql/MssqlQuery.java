@@ -7,7 +7,7 @@ import cn.cerc.core.FieldDefs;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.mysql.BigdataException;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class MssqlQuery extends DataQuery {
         this.getSqlText().setSupportMssql(true);
     }
 
-    public MssqlQuery(ISupportSession session) {
+    public MssqlQuery(IHandle session) {
         this(session.getSession());
     }
 

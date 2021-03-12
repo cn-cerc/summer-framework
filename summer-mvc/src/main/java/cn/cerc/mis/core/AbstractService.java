@@ -1,9 +1,10 @@
 package cn.cerc.mis.core;
 
+import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractService extends IHandle implements IService, IRestful {
+public abstract class AbstractService extends CustomBean implements IService, IRestful {
     @Autowired
     public ISystemTable systemTable;
     private String restPath;

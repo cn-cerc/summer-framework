@@ -2,8 +2,8 @@ package cn.cerc.db.mysql;
 
 import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.CustomHandle;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.CustomBean;
+import cn.cerc.db.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,7 +19,7 @@ public class BatchScript {
         this.connection = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
     }
 
-    public BatchScript(ISupportSession owner) {
+    public BatchScript(IHandle owner) {
         this(owner.getSession());
     }
 

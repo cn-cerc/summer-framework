@@ -18,7 +18,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -46,7 +46,7 @@ public class SqlQuery extends DataQuery {
         this.slaveDataSource = (DataSource) session.getProperty(SlaveMysqlConnection.slaveDataSource);
     }
 
-    public SqlQuery(ISupportSession owner) {
+    public SqlQuery(IHandle owner) {
         this(owner.getSession());
     }
 

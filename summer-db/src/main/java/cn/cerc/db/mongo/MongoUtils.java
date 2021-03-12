@@ -2,7 +2,7 @@ package cn.cerc.db.mongo;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ISupportSession;
+import cn.cerc.db.core.IHandle;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
@@ -21,7 +21,7 @@ public class MongoUtils {
         database = connection.getClient();
     }
 
-    public MongoUtils(ISupportSession owner) {
+    public MongoUtils(IHandle owner) {
         this(owner.getSession());
     }
 
