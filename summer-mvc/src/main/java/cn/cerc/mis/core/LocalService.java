@@ -1,7 +1,7 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.MD5;
 import cn.cerc.core.Record;
 import cn.cerc.db.cache.Redis;

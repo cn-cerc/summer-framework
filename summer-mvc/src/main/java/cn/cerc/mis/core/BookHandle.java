@@ -1,7 +1,7 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.mvc.SummerMVC;
 

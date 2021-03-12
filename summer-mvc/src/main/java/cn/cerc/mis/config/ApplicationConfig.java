@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.HttpClientUtil;
 import cn.cerc.mis.client.RemoteService;

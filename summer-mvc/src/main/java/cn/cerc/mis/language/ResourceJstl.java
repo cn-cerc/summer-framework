@@ -1,6 +1,6 @@
 package cn.cerc.mis.language;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
 import lombok.extern.slf4j.Slf4j;

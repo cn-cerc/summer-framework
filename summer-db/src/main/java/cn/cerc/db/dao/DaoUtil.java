@@ -1,6 +1,6 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.mysql.SqlQuery;

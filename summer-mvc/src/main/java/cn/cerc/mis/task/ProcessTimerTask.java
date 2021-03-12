@@ -1,6 +1,6 @@
 package cn.cerc.mis.task;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;

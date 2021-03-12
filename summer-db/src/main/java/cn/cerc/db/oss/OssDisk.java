@@ -1,7 +1,7 @@
 package cn.cerc.db.oss;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.SummerDB;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSException;

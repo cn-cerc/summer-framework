@@ -5,7 +5,7 @@ import java.util.List;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.cdn.CDN;

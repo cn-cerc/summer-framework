@@ -1,6 +1,6 @@
 package cn.cerc.db.jiguang;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;

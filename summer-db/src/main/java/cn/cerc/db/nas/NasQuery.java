@@ -1,7 +1,7 @@
 package cn.cerc.db.nas;
 
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.DataQuery;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.queue.QueueOperator;
 import lombok.extern.slf4j.Slf4j;

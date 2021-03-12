@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SqlQuery;

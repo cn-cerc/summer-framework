@@ -1,6 +1,6 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Utils;
 import lombok.extern.slf4j.Slf4j;
 

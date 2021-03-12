@@ -1,7 +1,7 @@
 package cn.cerc.db.mysql;
 
 import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import lombok.extern.slf4j.Slf4j;
 

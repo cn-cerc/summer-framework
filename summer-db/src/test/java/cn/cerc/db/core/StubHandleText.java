@@ -1,7 +1,7 @@
 package cn.cerc.db.core;
 
 import cn.cerc.core.IConfig;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;

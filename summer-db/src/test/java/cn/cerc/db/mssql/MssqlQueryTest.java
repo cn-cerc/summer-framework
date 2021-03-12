@@ -1,6 +1,6 @@
 package cn.cerc.db.mssql;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package cn.cerc.ui.page.service;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;

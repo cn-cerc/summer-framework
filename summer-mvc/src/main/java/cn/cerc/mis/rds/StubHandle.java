@@ -1,7 +1,7 @@
 package cn.cerc.mis.rds;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mysql.MysqlConnection;

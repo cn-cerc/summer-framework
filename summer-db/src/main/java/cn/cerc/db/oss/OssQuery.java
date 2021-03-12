@@ -1,7 +1,7 @@
 package cn.cerc.db.oss;
 
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.DataQuery;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.queue.OssOperator;
 
 import java.io.ByteArrayInputStream;

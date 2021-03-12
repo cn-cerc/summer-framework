@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BufferType;

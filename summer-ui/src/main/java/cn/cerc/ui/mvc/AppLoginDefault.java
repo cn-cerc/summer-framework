@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.SupportHandle;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;

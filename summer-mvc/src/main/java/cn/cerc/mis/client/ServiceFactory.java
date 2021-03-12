@@ -1,6 +1,6 @@
 package cn.cerc.mis.client;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.cache.Buffer;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.mis.config.ApplicationConfig;

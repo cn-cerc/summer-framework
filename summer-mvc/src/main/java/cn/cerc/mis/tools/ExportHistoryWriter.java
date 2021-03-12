@@ -1,7 +1,7 @@
 package cn.cerc.mis.tools;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.excel.output.ExcelTemplate;
 import cn.cerc.mis.excel.output.HistoryWriter;
 import cn.cerc.mis.other.HistoryLevel;

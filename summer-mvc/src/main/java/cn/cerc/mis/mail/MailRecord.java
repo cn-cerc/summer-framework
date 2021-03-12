@@ -1,6 +1,6 @@
 package cn.cerc.mis.mail;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import com.aliyun.mns.client.CloudQueue;
 import com.google.gson.Gson;

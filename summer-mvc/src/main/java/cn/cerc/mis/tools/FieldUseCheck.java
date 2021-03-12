@@ -1,6 +1,6 @@
 package cn.cerc.mis.tools;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.mis.core.AbstractHandle;
 

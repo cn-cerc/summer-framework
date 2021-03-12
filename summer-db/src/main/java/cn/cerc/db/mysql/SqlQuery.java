@@ -1,11 +1,11 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.DataQuery;
+import cn.cerc.db.core.DataQuery;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import lombok.extern.slf4j.Slf4j;

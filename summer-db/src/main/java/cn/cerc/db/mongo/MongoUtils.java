@@ -1,6 +1,6 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;

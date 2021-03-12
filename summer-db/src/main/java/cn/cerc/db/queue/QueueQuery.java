@@ -1,8 +1,8 @@
 package cn.cerc.db.queue;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataQuery;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.DataQuery;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.SummerDB;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;

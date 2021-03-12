@@ -1,7 +1,7 @@
 package cn.cerc.mis.message;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mvc.SummerMVC;

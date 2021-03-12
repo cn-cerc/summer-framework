@@ -1,7 +1,7 @@
 package cn.cerc.mis.other;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.db.mysql.BuildQuery;

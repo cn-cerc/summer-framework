@@ -2,7 +2,7 @@ package cn.cerc.mis.queue;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.db.queue.QueueDB;
 import cn.cerc.db.queue.QueueMode;

@@ -1,7 +1,7 @@
 package cn.cerc.db.mongo;
 
 import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import com.mongodb.client.MongoCollection;
