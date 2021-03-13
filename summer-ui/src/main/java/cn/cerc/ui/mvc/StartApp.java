@@ -1,11 +1,13 @@
 package cn.cerc.ui.mvc;
 
 import cn.cerc.core.ClassConfig;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.DefaultHandle;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mvc.SummerMVC;
@@ -82,9 +84,9 @@ public class StartApp implements Filter {
                 form.setRequest((HttpServletRequest) request);
                 form.setResponse((HttpServletResponse) response);
 
-                IHandle handle = Application.getHandle();
-                handle.setProperty(Application.sessionId, req.getSession().getId());
-                form.setHandle(handle);
+                ISession session = Application.getSession();
+                session.setProperty(Application.sessionId, req.getSession().getId());
+                form.setHandle(new DefaultHandle(session));
                 IPage page = form.execute();
                 page.execute();
             } catch (Exception e) {
