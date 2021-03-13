@@ -74,7 +74,7 @@ public class UIPageSearch extends UIPage {
                 item.enrollMenu(form, rightMenus);
             }
         } else {
-            getHeader().getHomePage().setSite(Application.getAppConfig().getFormWelcome());
+            getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
         }
 
         // 系统通知消息

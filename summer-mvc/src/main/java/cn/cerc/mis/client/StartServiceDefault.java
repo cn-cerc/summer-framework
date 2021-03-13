@@ -1,5 +1,6 @@
 package cn.cerc.mis.client;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
@@ -35,6 +36,7 @@ import java.util.Map;
 //@RequestMapping("/services")
 public class StartServiceDefault {
     private static final ClassResource res = new ClassResource(StartServiceDefault.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(StartServiceDefault.class, SummerMVC.ID);
 
     private static final String sessionId = "sessionId";
     private static Map<String, String> services;
@@ -92,8 +94,7 @@ public class StartServiceDefault {
     }
 
     private void doProcess(String method, String uri) {
-        IAppConfig conf = Application.getAppConfig();
-        if (!uri.startsWith("/" + conf.getPathServices())) {
+        if (!uri.startsWith("/" + config.getString(Application.PATH_SERVICES, "services"))) {
             return;
         }
 

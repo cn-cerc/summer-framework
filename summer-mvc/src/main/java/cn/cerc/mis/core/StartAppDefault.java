@@ -1,16 +1,18 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ITokenManage;
-import cn.cerc.core.ISession;
-import cn.cerc.db.core.IAppConfig;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import cn.cerc.core.ClassConfig;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IAppConfig;
+import cn.cerc.mvc.SummerMVC;
 
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
@@ -18,6 +20,7 @@ import java.io.IOException;
 @Deprecated
 //TODO StartAppDefault 此对象不应该存在框架中
 public class StartAppDefault {
+    private static final ClassConfig config = new ClassConfig(StartAppDefault.class, SummerMVC.ID);
     @Autowired
     private HttpServletRequest req;
     @Autowired
@@ -35,7 +38,8 @@ public class StartAppDefault {
             req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
         }
 
-        return String.format("redirect:/%s/%s", appConfig.getPathForms(), appConfig.getFormWelcome());
+        return String.format("redirect:/%s/%s", config.getString(Application.PATH_FORMS, "forms"),
+                config.getString(Application.FORM_WELCOME, "welcome"));
     }
 
     @RequestMapping("/MobileConfig")

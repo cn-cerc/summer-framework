@@ -1,5 +1,6 @@
 package cn.cerc.mis.client;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
@@ -28,6 +29,7 @@ import java.util.Map;
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
     private static final ClassResource res = new ClassResource(StartServices.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(StartServices.class, SummerMVC.ID);
 
     private static final long serialVersionUID = 1L;
     private static final String sessionId = "sessionId";
@@ -71,8 +73,7 @@ public class StartServices extends HttpServlet {
 
     private void doProcess(String method, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String uri = req.getRequestURI();
-        IAppConfig conf = Application.getAppConfig();
-        if (!uri.startsWith("/" + conf.getPathServices())) {
+        if (!uri.startsWith("/" + config.getString(Application.PATH_SERVICES, "services"))) {
             return;
         }
 
