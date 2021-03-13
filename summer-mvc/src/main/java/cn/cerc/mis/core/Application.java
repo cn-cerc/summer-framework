@@ -154,10 +154,10 @@ public class Application {
 
     @Deprecated
     public static IHandle getHandle() {
-        return new HandleDefault(getSession());
+        return new HandleDefault(createSession());
     }
 
-    public static ISession getSession() {
+    public static ISession createSession() {
         return getBeanDefault(ISession.class, null);
     }
 
@@ -266,7 +266,7 @@ public class Application {
             form.setClient(client);
 
             // 建立数据库资源
-            session = Application.getSession();
+            session = Application.createSession();
             session.setProperty(Application.sessionId, req.getSession().getId());
             session.setProperty(Application.deviceLanguage, client.getLanguage());
             IHandle handle = new HandleDefault(session);

@@ -2,6 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IAppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,14 +57,14 @@ public class StartAppDefault {
             form.setRequest(req);
             form.setResponse(resp);
 
-            IHandle handle = Application.getHandle();
+            ISession session = Application.createSession();
             try {
-                handle.setProperty(Application.sessionId, req.getSession().getId());
-                form.setHandle(handle);
+                session.setProperty(Application.sessionId, req.getSession().getId());
+                form.setHandle(new HandleDefault(session));
                 IPage page = form.execute();
                 return page.execute();
             } finally {
-                handle.close();
+                session.close();
             }
         } catch (Exception e) {
             try {

@@ -84,7 +84,7 @@ public class StartApp implements Filter {
                 form.setRequest((HttpServletRequest) request);
                 form.setResponse((HttpServletResponse) response);
 
-                ISession session = Application.getSession();
+                ISession session = Application.createSession();
                 session.setProperty(Application.sessionId, req.getSession().getId());
                 form.setHandle(new HandleDefault(session));
                 IPage page = form.execute();

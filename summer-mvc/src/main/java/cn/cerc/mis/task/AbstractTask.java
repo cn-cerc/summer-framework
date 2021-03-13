@@ -52,7 +52,7 @@ public abstract class AbstractTask extends CustomBean implements Runnable {
      */
     @Override
     public void run() {
-        ISession session = Application.getSession();
+        ISession session = Application.createSession();
         try {
             this.setHandle(new HandleDefault(session));
             session.setProperty(Application.userCode, "admin");

@@ -30,7 +30,7 @@ public class StubHandle implements IHandle {
     private ISession session;
 
     public StubHandle() {
-        session = Application.getSession();
+        session = Application.createSession();
         log.info("StubHandle {}", session.getClass());
         ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
         manage.createToken(DefaultBook, DefaultUser, password, machineCode);
@@ -38,7 +38,7 @@ public class StubHandle implements IHandle {
     }
 
     public StubHandle(String corpNo, String userCode) {
-        session = Application.getSession();
+        session = Application.createSession();
         log.info("StubHandle {}", session.getClass());
         ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
         manage.createToken(corpNo, userCode, password, machineCode);
