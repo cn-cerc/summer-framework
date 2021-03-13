@@ -1,9 +1,14 @@
 package cn.cerc.mis.rds;
 
-import lombok.extern.slf4j.Slf4j;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.Handle;
 
-@Slf4j
-public class StubHandle {
+public class StubHandle extends Handle {
+
+    public StubHandle() {
+        Application.init(null);
+        this.setSession(Application.createSession());
+    }
 
     // FIXME 此处应该使用ClassConfig
     public static final String DefaultBook = "999001";
