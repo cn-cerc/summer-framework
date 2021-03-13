@@ -242,7 +242,7 @@ public class BookOptions {
 
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
             if (buff.isNull()) {
-                ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+                ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
                 BuildQuery f = new BuildQuery(handle);
                 f.add("select Value_ from %s ", systemTable.getBookOptions());
                 f.byField("CorpNo_", handle.getCorpNo());
