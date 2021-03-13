@@ -1,12 +1,17 @@
 package cn.cerc.mis.services;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.IHandle;
+import cn.cerc.core.ISession;
 import cn.cerc.core.MD5;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.ClientType;
 import cn.cerc.db.mysql.BuildQuery;
@@ -17,7 +22,6 @@ import cn.cerc.db.oss.OssConnection;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
-import cn.cerc.mis.core.SessionDefault;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.core.Webfunc;
 import cn.cerc.mis.other.BookVersion;
@@ -25,9 +29,6 @@ import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 /**
  * 用于用户登录
@@ -59,11 +60,11 @@ public class SvrUserLogin extends CustomService {
             device_name = "unknow";
         }
 
-        SessionDefault sess = (SessionDefault) this.getProperty(null);
+        ISession session = getSession();
         if (headIn.exists("ClientIP_")) {
-            sess.setProperty(Application.clientIP, headIn.getString("ClientIP_"));
+            session.setProperty(Application.clientIP, headIn.getString("ClientIP_"));
         } else {
-            sess.setProperty(Application.clientIP, "0.0.0.0");
+            session.setProperty(Application.clientIP, "0.0.0.0");
         }
 
         // 开始进行用户验证
@@ -190,14 +191,14 @@ public class SvrUserLogin extends CustomService {
                 MemoryBookInfo.clear(corpNo);
             }
 
-            sess.setProperty(Application.TOKEN, Utils.generateToken());
-            sess.setProperty(Application.userId, dsUser.getString("ID_"));
-            sess.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
-            sess.setProperty(Application.userCode, dsUser.getString("Code_"));
+            session.setProperty(Application.TOKEN, Utils.generateToken());
+            session.setProperty(Application.userId, dsUser.getString("ID_"));
+            session.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
+            session.setProperty(Application.userCode, dsUser.getString("Code_"));
             if (dsUser.getBoolean("DiyRole_")) {
-                sess.setProperty(Application.roleCode, dsUser.getString("Code_"));
+                session.setProperty(Application.roleCode, dsUser.getString("Code_"));
             } else {
-                sess.setProperty(Application.roleCode, dsUser.getString("RoleCode_"));
+                session.setProperty(Application.roleCode, dsUser.getString("RoleCode_"));
             }
 
             // 更新当前用户总数
@@ -208,7 +209,7 @@ public class SvrUserLogin extends CustomService {
                 Buff.setField("UserID_", getProperty(Application.userId));
                 Buff.setField("UserCode_", getUserCode());
                 Buff.setField("UserName_", getUserName());
-                Buff.setField("LoginTime_", sess.getProperty(Application.loginTime));
+                Buff.setField("LoginTime_", session.getProperty(Application.loginTime));
                 Buff.setField("YGUser", YGLogin);
                 Buff.setField("VerifyMachine", false);
             }

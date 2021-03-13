@@ -6,11 +6,11 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.SessionDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.MutiGrid;
@@ -44,10 +44,10 @@ public class UIPageDialog extends JspPage {
     public String execute() throws ServletException, IOException {
         IForm form = this.getForm();
         HttpServletRequest request = form.getRequest();
-        SessionDefault sess = (SessionDefault) form.getHandle().getProperty(null);
-        request.setAttribute("passport", sess.logon());
-        request.setAttribute("logon", sess.logon());
-        if (sess.logon()) {
+        ISession session = form.getHandle().getSession();
+        request.setAttribute("passport", session.logon());
+        request.setAttribute("logon", session.logon());
+        if (session.logon()) {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
             menus.setHandle(form.getHandle());

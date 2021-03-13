@@ -1,12 +1,13 @@
 package cn.cerc.mis.task;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.CustomBean;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.SessionDefault;
+import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ISystemTable;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 public abstract class AbstractTask extends CustomBean implements Runnable {
@@ -51,9 +52,9 @@ public abstract class AbstractTask extends CustomBean implements Runnable {
      */
     @Override
     public void run() {
-        SessionDefault session = new SessionDefault();
+        ISession session = Application.getSession();
         try {
-            this.setHandle(session);
+            this.setHandle(new HandleDefault(session));
             session.setProperty(Application.userCode, "admin");
             this.execute();
         } catch (Exception e) {

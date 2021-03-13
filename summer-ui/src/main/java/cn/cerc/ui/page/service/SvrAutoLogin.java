@@ -1,6 +1,7 @@
 package cn.cerc.ui.page.service;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.IUserLanguage;
@@ -10,7 +11,7 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.SessionDefault;
+import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.RequestData;
@@ -55,11 +56,11 @@ public class SvrAutoLogin implements IUserLanguage {
         }
 
         try (Transaction tx = new Transaction(handle)) {
-            SessionDefault session = (SessionDefault) handle.getProperty(null);
+            ISession session = handle.getSession();
             String sql = String.format(
                     "update %s set LastTime_=now(),Used_=1 where UserCode_='%s' and MachineCode_='%s'",
                     systemTable.getDeviceVerify(), userCode, deviceId);
-            session.getConnection().execute(sql);
+            handle.getConnection().execute(sql);
 
             String token = Utils.generateToken();
             session.setProperty(Application.TOKEN, token);
@@ -78,7 +79,7 @@ public class SvrAutoLogin implements IUserLanguage {
             }
 
             // 更新当前用户总数
-            SvrUserLogin svrUserLogin = Application.getBean(session, SvrUserLogin.class);
+            SvrUserLogin svrUserLogin = Application.getBean(new HandleDefault(session), SvrUserLogin.class);
             svrUserLogin.updateCurrentUser("unknow", "", form.getClient().getLanguage());
 
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionInfo, userId, deviceId)) {
@@ -98,7 +99,7 @@ public class SvrAutoLogin implements IUserLanguage {
             client.setRequest(request);
             client.setToken(token);
             
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session.getSession());
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
             manage.resumeToken(token);
 
             form.getRequest().setAttribute(RequestData.TOKEN, token);

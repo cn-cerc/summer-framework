@@ -5,10 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.SessionDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
@@ -31,8 +31,8 @@ public class UIPageView extends UIPage {
     protected void writeHtml(PrintWriter out) {
         HttpServletRequest request = getRequest();
         IForm form = this.getForm();
-        SessionDefault sess = (SessionDefault) form.getHandle().getProperty(null);
-        if (sess.logon()) {
+        ISession session = form.getHandle().getSession();
+        if (session.logon()) {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
             menus.setHandle(form.getHandle());

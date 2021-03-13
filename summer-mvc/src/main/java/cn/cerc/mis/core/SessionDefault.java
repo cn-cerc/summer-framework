@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component("sessionDefault")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class SessionDefault extends CustomBean implements ISession {
+public class SessionDefault implements ISession {
 
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
@@ -38,7 +38,6 @@ public class SessionDefault extends CustomBean implements ISession {
         params.put(Application.bookNo, "");
         params.put(Application.deviceLanguage, Application.App_Language);
         log.debug("new CustomBean");
-        this.setSession(this);
     }
 
     @Override
