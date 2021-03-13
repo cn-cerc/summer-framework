@@ -279,7 +279,7 @@ public class Application {
             session.setProperty(Application.sessionId, req.getSession().getId());
             session.setProperty(Application.deviceLanguage, client.getLanguage());
             IHandle handle = new Handle(session);
-            req.setAttribute("myappHandle", session);
+            req.setAttribute("myappHandle", handle);
             form.setHandle(handle);
 
             // 传递路径变量
