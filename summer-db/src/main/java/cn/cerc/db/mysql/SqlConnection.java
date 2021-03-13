@@ -3,10 +3,11 @@ package cn.cerc.db.mysql;
 import cn.cerc.core.IConfig;
 import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -25,7 +26,7 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         try {
             if (connection != null) {
                 log.debug("close connection.");
@@ -43,16 +44,27 @@ public abstract class SqlConnection implements IConnection, AutoCloseable {
             return connection;
         }
 
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(url);
+        config.setUsername(user);
+        config.setPassword(pwd);
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        // 连接池大小默认25，官方推荐250-500
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        // 最大连接数
+        config.addDataSourceProperty("maximumPoolSize", "25");
+        HikariDataSource dataSource = new HikariDataSource(config);
+
         try {
             if (url == null) {
                 url = getConnectUrl();
             }
             log.debug("create connection for mysql: " + url);
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url, user, pwd);
+            connection = dataSource.getConnection();
             return connection;
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
