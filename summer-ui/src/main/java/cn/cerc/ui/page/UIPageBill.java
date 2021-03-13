@@ -9,7 +9,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.SessionDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.rds.PassportRecord;
@@ -48,7 +48,7 @@ public class UIPageBill extends UIPage {
     protected void writeHtml(PrintWriter out) {
         HttpServletRequest request = getRequest();
         IForm form = this.getForm();
-        HandleDefault sess = (HandleDefault) form.getHandle().getProperty(null);
+        SessionDefault sess = (SessionDefault) form.getHandle().getProperty(null);
         if (sess.logon()) {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");

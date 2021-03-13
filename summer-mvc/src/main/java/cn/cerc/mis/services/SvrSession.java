@@ -8,7 +8,7 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.SessionDefault;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.UserNotFindException;
 import cn.cerc.mvc.SummerMVC;
@@ -59,14 +59,14 @@ public class SvrSession extends CustomService {
         cdsToken.open();
         if (cdsToken.eof()) {
             log.warn("can not find token in database: {}", token);
-            HandleDefault sess = (HandleDefault) this.getProperty(null);
+            SessionDefault sess = (SessionDefault) this.getProperty(null);
             sess.setProperty(Application.TOKEN, null);
             return false;
         }
 
         if (cdsToken.getInt("Viability_") <= 0 && !"13100154".equals(cdsToken.getString("UserCode_"))) {
             log.warn("token expired，please login again {}", token);
-            HandleDefault sess = (HandleDefault) this.getProperty(null);
+            SessionDefault sess = (SessionDefault) this.getProperty(null);
             sess.setProperty(Application.TOKEN, null);
             return false;
         }
@@ -79,7 +79,7 @@ public class SvrSession extends CustomService {
         cdsUser.open();
         if (cdsUser.eof()) {
             log.warn(String.format("userId %s 没有找到！", userId));
-            HandleDefault sess = (HandleDefault) this.getProperty(null);
+            SessionDefault sess = (SessionDefault) this.getProperty(null);
             sess.setProperty(Application.TOKEN, null);
             return false;
         }

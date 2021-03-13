@@ -17,7 +17,7 @@ import cn.cerc.db.oss.OssConnection;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.SessionDefault;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.core.Webfunc;
 import cn.cerc.mis.other.BookVersion;
@@ -59,7 +59,7 @@ public class SvrUserLogin extends CustomService {
             device_name = "unknow";
         }
 
-        HandleDefault sess = (HandleDefault) this.getProperty(null);
+        SessionDefault sess = (SessionDefault) this.getProperty(null);
         if (headIn.exists("ClientIP_")) {
             sess.setProperty(Application.clientIP, headIn.getString("ClientIP_"));
         } else {

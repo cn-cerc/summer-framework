@@ -23,12 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 @Component("sessionDefault")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class HandleDefault extends CustomBean implements ISession {
+public class SessionDefault extends CustomBean implements ISession {
 
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
 
-    public HandleDefault() {
+    public SessionDefault() {
         params.put(Application.sessionId, "");
         params.put(Application.ProxyUsers, "");
         params.put(Application.clientIP, "0.0.0.0");

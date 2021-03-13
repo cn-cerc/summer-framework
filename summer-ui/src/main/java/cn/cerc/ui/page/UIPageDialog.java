@@ -10,7 +10,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.SessionDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.MutiGrid;
@@ -44,7 +44,7 @@ public class UIPageDialog extends JspPage {
     public String execute() throws ServletException, IOException {
         IForm form = this.getForm();
         HttpServletRequest request = form.getRequest();
-        HandleDefault sess = (HandleDefault) form.getHandle().getProperty(null);
+        SessionDefault sess = (SessionDefault) form.getHandle().getProperty(null);
         request.setAttribute("passport", sess.logon());
         request.setAttribute("logon", sess.logon());
         if (sess.logon()) {

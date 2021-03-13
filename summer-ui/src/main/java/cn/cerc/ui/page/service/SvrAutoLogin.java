@@ -10,7 +10,7 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.SessionDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.RequestData;
@@ -55,30 +55,30 @@ public class SvrAutoLogin implements IUserLanguage {
         }
 
         try (Transaction tx = new Transaction(handle)) {
-            HandleDefault sess = (HandleDefault) handle.getProperty(null);
+            SessionDefault session = (SessionDefault) handle.getProperty(null);
             String sql = String.format(
                     "update %s set LastTime_=now(),Used_=1 where UserCode_='%s' and MachineCode_='%s'",
                     systemTable.getDeviceVerify(), userCode, deviceId);
-            sess.getConnection().execute(sql);
+            session.getConnection().execute(sql);
 
             String token = Utils.generateToken();
-            sess.setProperty(Application.TOKEN, token);
-            sess.setProperty("deviceId", deviceId);
-            sess.setProperty(RequestData.TOKEN, token);
+            session.setProperty(Application.TOKEN, token);
+            session.setProperty("deviceId", deviceId);
+            session.setProperty(RequestData.TOKEN, token);
             log.info("扫码登录 sid {}", token);
 
             String userId = dsUser.getString("ID_");
-            sess.setProperty(Application.userId, userId);
-            sess.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
-            sess.setProperty(Application.userCode, dsUser.getString("Code_"));
+            session.setProperty(Application.userId, userId);
+            session.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
+            session.setProperty(Application.userCode, dsUser.getString("Code_"));
             if (dsUser.getBoolean("DiyRole_")) {
-                sess.setProperty(Application.roleCode, dsUser.getString("Code_"));
+                session.setProperty(Application.roleCode, dsUser.getString("Code_"));
             } else {
-                sess.setProperty(Application.roleCode, dsUser.getString("RoleCode_"));
+                session.setProperty(Application.roleCode, dsUser.getString("RoleCode_"));
             }
 
             // 更新当前用户总数
-            SvrUserLogin svrUserLogin = Application.getBean(sess, SvrUserLogin.class);
+            SvrUserLogin svrUserLogin = Application.getBean(session, SvrUserLogin.class);
             svrUserLogin.updateCurrentUser("unknow", "", form.getClient().getLanguage());
 
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionInfo, userId, deviceId)) {
@@ -98,7 +98,7 @@ public class SvrAutoLogin implements IUserLanguage {
             client.setRequest(request);
             client.setToken(token);
             
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, sess.getSession());
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session.getSession());
             manage.resumeToken(token);
 
             form.getRequest().setAttribute(RequestData.TOKEN, token);
