@@ -1,11 +1,13 @@
-package cn.cerc.mis.core;
+package cn.cerc.mis.custom;
 
-import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.rds.PassportRecord;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.mis.core.IPassport;
+import cn.cerc.mis.rds.PassportRecord;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
