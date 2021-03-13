@@ -24,8 +24,6 @@ import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.Language;
-import cn.cerc.vine.accounting.forms.ac.TFrmAccBook;
-import cn.cerc.vine.core.Passport;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
