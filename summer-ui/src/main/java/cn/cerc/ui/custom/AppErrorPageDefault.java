@@ -1,12 +1,14 @@
-package cn.cerc.ui.page;
+package cn.cerc.ui.custom;
 
-import cn.cerc.mis.core.IAppErrorPage;
-import org.springframework.stereotype.Component;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import org.springframework.stereotype.Component;
+
+import cn.cerc.mis.core.IAppErrorPage;
 
 @Component
 public class AppErrorPageDefault implements IAppErrorPage {

@@ -176,7 +176,8 @@ public class AbstractForm extends CustomBean implements IForm {
                 request.getSession().setAttribute("CLIENTVER", CLIENTVER);
 
             // 是否拥有此菜单调用权限
-            if (!Application.getPassport(this.getSession()).passForm(this)) {
+            IPassport passport = Application.getBeanDefault(IPassport.class, this.getSession()); 
+            if (!passport.passForm(this)) {
                 log.warn(String.format("无权限执行 %s", request.getRequestURL()));
                 JsonPage output = new JsonPage(this);
                 output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
@@ -216,7 +217,7 @@ public class AbstractForm extends CustomBean implements IForm {
             if (err == null) {
                 err = e;
             }
-            IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
+            IAppErrorPage errorPage = Application.getBeanDefault(IAppErrorPage.class, null);
             if (errorPage == null) {
                 log.warn("not define bean: errorPage");
                 log.error(err.getMessage());

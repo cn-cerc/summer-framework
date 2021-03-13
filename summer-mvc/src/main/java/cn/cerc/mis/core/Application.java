@@ -197,6 +197,12 @@ public class Application {
         return bean;
     }
 
+    /**
+     * 请改使用getBeanDefault
+     * @param session
+     * @return
+     */
+    @Deprecated
     public static IPassport getPassport(ISession session) {
         IPassport bean = getBean(IPassport.class, "passport", "passportDefault");
         if (bean != null) {
@@ -338,7 +344,7 @@ public class Application {
         if (err == null) {
             err = e;
         }
-        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class, "appErrorPage", "appErrorPageDefault");
+        IAppErrorPage errorPage = Application.getBeanDefault(IAppErrorPage.class, null);
         if (errorPage != null) {
             String result = errorPage.getErrorPage(request, response, err);
             if (result != null) {
