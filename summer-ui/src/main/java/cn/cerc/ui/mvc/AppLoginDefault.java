@@ -91,15 +91,6 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         req.setAttribute("needVerify", "false");
 
         IUserLoginCheck obj = Application.getBeanDefault(IUserLoginCheck.class, form.getHandle().getSession());
-        if (obj != null) {
-            if (obj instanceof SupportHandle) {
-                if (form instanceof AbstractForm) {
-                    ((SupportHandle) obj).init((AbstractForm) form);
-                } else {
-                    ((SupportHandle) obj).init(form.getHandle());
-                }
-            }
-        }
 
         // 如长度大于10表示用手机号码登入
         if (userCode.length() > 10) {
