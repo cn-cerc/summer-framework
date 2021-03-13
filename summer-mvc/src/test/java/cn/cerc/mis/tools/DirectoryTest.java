@@ -1,10 +1,12 @@
 package cn.cerc.mis.tools;
 
 import cn.cerc.db.core.IHandle;
+import cn.cerc.core.ISession;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.language.Language;
 import org.junit.Before;
@@ -16,7 +18,8 @@ public class DirectoryTest {
 
     @Before
     public void setUp() throws Exception {
-        handle = Application.getHandle();
+        ISession session = Application.createSession();
+        handle = new Handle(session);
     }
 
     @Test

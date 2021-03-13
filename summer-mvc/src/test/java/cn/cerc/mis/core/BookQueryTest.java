@@ -16,7 +16,7 @@ public class BookQueryTest {
         ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
         Application.init(SummerMVC.ID);
         ISession session = Application.createSession();
-        BookQuery ds = new BookQuery(new HandleDefault(session));
+        BookQuery ds = new BookQuery(new Handle(session));
         ds.add("select * from %s where CorpNo_='144001'", systemTable.getBookInfo());
         ds.open();
         ds.edit();

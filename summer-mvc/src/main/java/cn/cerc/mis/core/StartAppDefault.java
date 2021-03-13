@@ -64,7 +64,7 @@ public class StartAppDefault {
             ISession session = Application.createSession();
             try {
                 session.setProperty(Application.sessionId, req.getSession().getId());
-                form.setHandle(new HandleDefault(session));
+                form.setHandle(new Handle(session));
                 IPage page = form.execute();
                 return page.execute();
             } finally {

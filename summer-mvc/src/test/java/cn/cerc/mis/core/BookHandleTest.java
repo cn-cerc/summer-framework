@@ -16,7 +16,7 @@ public class BookHandleTest {
     public void test() {
         Application.init(SummerMVC.ID);
         ISession session = Application.createSession();
-        IHandle app = new BookHandle(new HandleDefault(session), "144001");
+        IHandle app = new BookHandle(new Handle(session), "144001");
         assertEquals(app.getCorpNo(), "144001");
     }
 

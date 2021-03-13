@@ -1,6 +1,9 @@
 package cn.cerc.sms;
 
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.language.R;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -94,7 +97,9 @@ public class YunpianSMS {
                     return false;
                 }
             } else {
-                this.setMessage(R.asString(Application.getHandle(), "网络故障，简讯发送请求失败！"));
+                ISession session = Application.createSession();
+                IHandle handle = new Handle(session);
+                this.setMessage(R.asString(handle, "网络故障，简讯发送请求失败！"));
                 return false;
             }
         } catch (Exception e) {

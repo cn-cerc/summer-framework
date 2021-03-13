@@ -6,7 +6,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.rds.StubHandle;
 import cn.cerc.mvc.SummerMVC;
@@ -64,7 +64,7 @@ public abstract class AbstractTask extends CustomBean implements Runnable {
             manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
                     StubHandle.machineCode);
             // 开始执行
-            this.setHandle(new HandleDefault(session));
+            this.setHandle(new Handle(session));
             this.execute();
         } catch (Exception e) {
             log.error(e.getMessage(), e);

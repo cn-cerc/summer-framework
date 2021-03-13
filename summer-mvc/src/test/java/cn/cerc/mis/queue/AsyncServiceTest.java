@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import cn.cerc.core.ISession;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mvc.SummerMVC;
 
 public class AsyncServiceTest {
@@ -17,7 +17,7 @@ public class AsyncServiceTest {
     public void test_send_get() {
         Application.init(SummerMVC.ID);
         ISession session = Application.createSession();
-        AsyncService app = new AsyncService(new HandleDefault(session));
+        AsyncService app = new AsyncService(new Handle(session));
         app.setService("TAppCreditLine.calCusCreditLimit");
         // app.setTimer(TDateTime.now().getTime());
         app.getDataIn().getHead().setField("UserCode_", session.getUserCode());

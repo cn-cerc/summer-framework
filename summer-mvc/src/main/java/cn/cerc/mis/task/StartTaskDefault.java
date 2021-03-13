@@ -12,7 +12,7 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
 import cn.cerc.mvc.SummerMVC;

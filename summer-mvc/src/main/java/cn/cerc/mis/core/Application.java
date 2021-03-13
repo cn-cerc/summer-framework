@@ -157,7 +157,7 @@ public class Application {
 
     @Deprecated
     public static IHandle getHandle() {
-        return new HandleDefault(createSession());
+        return new Handle(createSession());
     }
 
     public static ISession createSession() {
@@ -272,7 +272,7 @@ public class Application {
             session = Application.createSession();
             session.setProperty(Application.sessionId, req.getSession().getId());
             session.setProperty(Application.deviceLanguage, client.getLanguage());
-            IHandle handle = new HandleDefault(session);
+            IHandle handle = new Handle(session);
             req.setAttribute("myappHandle", session);
             form.setHandle(handle);
 

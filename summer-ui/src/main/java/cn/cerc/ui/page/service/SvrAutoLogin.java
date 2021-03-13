@@ -11,7 +11,7 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.RequestData;
@@ -79,7 +79,7 @@ public class SvrAutoLogin implements IUserLanguage {
             }
 
             // 更新当前用户总数
-            SvrUserLogin svrUserLogin = Application.getBean(new HandleDefault(session), SvrUserLogin.class);
+            SvrUserLogin svrUserLogin = Application.getBean(new Handle(session), SvrUserLogin.class);
             svrUserLogin.updateCurrentUser("unknow", "", form.getClient().getLanguage());
 
             try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionInfo, userId, deviceId)) {

@@ -6,7 +6,7 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.DataValidateException;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.BufferType;
@@ -36,7 +36,7 @@ public class SvrUserLoginTest {
         ISession session = Application.createSession();
         session.setProperty(Application.bookNo, corpNo);
         session.setProperty(Application.userCode, userCode);
-        IHandle handle = new HandleDefault(session);
+        IHandle handle = new Handle(session);
         
         SvrUserLogin app = new SvrUserLogin();
         app.init(handle);
@@ -50,7 +50,7 @@ public class SvrUserLoginTest {
     public void testCheck2() throws SecurityCheckException {
         Application.init(SummerMVC.ID);
         ISession session = Application.createSession();
-        IHandle handle = new HandleDefault(session);
+        IHandle handle = new Handle(session);
         
         String userCode = handle.getUserCode();
         SvrUserLogin app = new SvrUserLogin();
@@ -75,7 +75,7 @@ public class SvrUserLoginTest {
         ISession session = Application.createSession();
         session.setProperty(Application.bookNo, corpNo);
         session.setProperty(Application.userCode, userCode);
-        IHandle handle = new HandleDefault(session);
+        IHandle handle = new Handle(session);
         
         SvrUserLogin app = new SvrUserLogin();
         app.init(handle);
@@ -99,7 +99,7 @@ public class SvrUserLoginTest {
         ISession session = Application.createSession();
         session.setProperty(Application.bookNo, corpNo);
         session.setProperty(Application.userCode, userCode);
-        IHandle handle = new HandleDefault(session);
+        IHandle handle = new Handle(session);
 
         // 清空缓存
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, handle.getUserCode(),

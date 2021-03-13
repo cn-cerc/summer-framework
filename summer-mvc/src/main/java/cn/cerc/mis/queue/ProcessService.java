@@ -8,7 +8,7 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.client.AutoService;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.rds.StubHandle;
@@ -30,7 +30,7 @@ public class ProcessService extends AbstractTask {
     public static void main(String[] args) {
         Application.init(SummerMVC.ID);
         ISession session = Application.createSession();
-        IHandle handle = new HandleDefault(session);
+        IHandle handle = new Handle(session);
 
         ProcessService ps = new ProcessService();
         ps.setHandle(handle);
