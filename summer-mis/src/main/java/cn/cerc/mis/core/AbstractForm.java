@@ -32,8 +32,6 @@ public class AbstractForm extends CustomBean implements IForm {
     private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
 
-    @Autowired
-    public ISystemTable systemTable;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private IClient client;
