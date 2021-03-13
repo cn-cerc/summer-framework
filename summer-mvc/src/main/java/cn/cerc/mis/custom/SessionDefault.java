@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.IConnection;
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
