@@ -4,7 +4,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.mvc.SummerMVC;
+import cn.cerc.mis.SummerMIS;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 @Slf4j
 public class CustomService extends CustomBean implements IService, IRestful {
-    private static final ClassResource res = new ClassResource(CustomService.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(CustomService.class, SummerMIS.ID);
 
     @Autowired
     public ISystemTable systemTable;

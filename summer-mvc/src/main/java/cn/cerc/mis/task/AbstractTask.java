@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.ITokenManage;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.rds.StubHandle;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -54,7 +54,7 @@ public abstract class AbstractTask extends CustomBean implements Runnable {
      */
     @Override
     public void run() {
-        Application.init(SummerMVC.ID);
+        Application.init(SummerMIS.ID);
         ISession session = Application.createSession();
         try {
             session.setProperty(Application.bookNo, StubHandle.DefaultBook);

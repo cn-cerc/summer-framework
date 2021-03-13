@@ -3,8 +3,8 @@ package cn.cerc.mis.excel.output;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.config.ApplicationConfig;
-import cn.cerc.mvc.SummerMVC;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
@@ -16,7 +16,7 @@ import java.util.List;
  * 批次导出单据明细
  */
 public class BatchFormTemplate extends FormTemplate {
-    private static final ClassResource res = new ClassResource(BatchFormTemplate.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(BatchFormTemplate.class, SummerMIS.ID);
     DecimalFormat df = new DecimalFormat(ApplicationConfig.getPattern());
 
     List<DataSet> items;

@@ -12,17 +12,17 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.core.LanguageResource;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.HttpClientUtil;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.client.RemoteService;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ApplicationConfig {
-    private static final ClassResource res = new ClassResource(ApplicationConfig.class, SummerMVC.ID);
-    private static final ClassConfig config = new ClassConfig(ApplicationConfig.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(ApplicationConfig.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(ApplicationConfig.class, SummerMIS.ID);
 
     /**
      * 本地主机

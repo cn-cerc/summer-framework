@@ -2,11 +2,11 @@ package cn.cerc.mis.other;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.cache.Buffer;
-import cn.cerc.mvc.SummerMVC;
+import cn.cerc.mis.SummerMIS;
 
 public class MemoryBuffer extends Buffer implements AutoCloseable {
 
-    private static final ClassResource res = new ClassResource(MemoryBuffer.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(MemoryBuffer.class, SummerMIS.ID);
 
     public MemoryBuffer(BufferType bt, String... keys) {
         super();

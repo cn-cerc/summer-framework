@@ -10,17 +10,17 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RemoteService implements IServiceProxy {
-    private static final ClassResource res = new ClassResource(RemoteService.class, SummerMVC.ID);
-    private static final ClassConfig config = new ClassConfig(RemoteService.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(RemoteService.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(RemoteService.class, SummerMIS.ID);
 
     private final IHandle handle;
 

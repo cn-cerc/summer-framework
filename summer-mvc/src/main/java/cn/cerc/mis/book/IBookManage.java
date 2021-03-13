@@ -2,11 +2,11 @@ package cn.cerc.mis.book;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.core.TDateTime;
-import cn.cerc.mvc.SummerMVC;
 
 public interface IBookManage {
-    ClassResource res = new ClassResource(IBookManage.class, SummerMVC.ID);
+    ClassResource res = new ClassResource(IBookManage.class, SummerMIS.ID);
 
     // 取得环境
     IHandle getHandle();

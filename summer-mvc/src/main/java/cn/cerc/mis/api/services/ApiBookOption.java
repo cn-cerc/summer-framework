@@ -4,12 +4,12 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
-import cn.cerc.mvc.SummerMVC;
 
 public class ApiBookOption extends CustomService {
-    private static final ClassResource res = new ClassResource(ApiBookOption.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(ApiBookOption.class, SummerMIS.ID);
 
     /**
      * @return 根据帐套代码、参数代码获取参数值

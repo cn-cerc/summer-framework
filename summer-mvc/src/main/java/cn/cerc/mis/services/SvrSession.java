@@ -5,19 +5,19 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.UserNotFindException;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Deprecated
 //FIXME: SvrSession 应该从框架移出
 public class SvrSession extends CustomService {
-    private static final ClassResource res = new ClassResource(SvrSession.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(SvrSession.class, SummerMIS.ID);
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();

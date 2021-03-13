@@ -6,6 +6,7 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.message.JPushRecord;
 import cn.cerc.mis.message.MessageLevel;
@@ -13,7 +14,6 @@ import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.queue.AsyncService;
-import cn.cerc.mvc.SummerMVC;
 
 import java.math.BigInteger;
 
@@ -23,7 +23,7 @@ import java.math.BigInteger;
 @Deprecated
 //FIXME: SvrUserMessages 应该从框架移出
 public class SvrUserMessages extends CustomService {
-    private static final ClassResource res = new ClassResource(SvrUserMessages.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(SvrUserMessages.class, SummerMIS.ID);
 
     /*
      * 取出所有的等待处理的消息列表

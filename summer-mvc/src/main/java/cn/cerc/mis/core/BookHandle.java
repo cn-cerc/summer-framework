@@ -5,10 +5,10 @@ import cn.cerc.core.ISession;
 import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.MysqlConnection;
-import cn.cerc.mvc.SummerMVC;
+import cn.cerc.mis.SummerMIS;
 
 public class BookHandle extends CustomBean implements ISession {
-    private static final ClassResource res = new ClassResource(BookHandle.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(BookHandle.class, SummerMIS.ID);
 
     private String corpNo;
     private String userCode;

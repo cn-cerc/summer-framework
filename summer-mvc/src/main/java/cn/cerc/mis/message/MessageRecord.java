@@ -3,8 +3,8 @@ package cn.cerc.mis.message;
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.LocalService;
-import cn.cerc.mvc.SummerMVC;
 
 /**
  * 专用于消息发送
@@ -12,7 +12,7 @@ import cn.cerc.mvc.SummerMVC;
  * 注意：公司别和用户代码必须配套
  */
 public class MessageRecord {
-    private static final ClassResource res = new ClassResource(MessageRecord.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(MessageRecord.class, SummerMIS.ID);
 
     private String corpNo;
     private String userCode;

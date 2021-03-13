@@ -21,15 +21,15 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.core.SupportHandle;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.Language;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Application {
-    private static final ClassResource res = new ClassResource(Application.class, SummerMVC.ID);
-    private static final ClassConfig config = new ClassConfig(Application.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(Application.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(Application.class, SummerMIS.ID);
     // tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
     // token id

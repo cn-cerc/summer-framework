@@ -11,11 +11,11 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -50,7 +50,7 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
                 }
             } else if (ServerConfig.enableTaskService()) {
                 try {
-                    Application.init(SummerMVC.ID);
+                    Application.init(SummerMIS.ID);
                     ISession session = Application.createSession();
                     runTask(session);
                     session.close();

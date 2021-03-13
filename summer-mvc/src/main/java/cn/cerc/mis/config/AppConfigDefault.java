@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.db.core.IAppConfig;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mvc.SummerMVC;
 
 @Component
 @Deprecated
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppConfigDefault implements IAppConfig {
-    private static final ClassConfig config = new ClassConfig(AppConfigDefault.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(AppConfigDefault.class, SummerMIS.ID);
 
     @Deprecated
     @Override

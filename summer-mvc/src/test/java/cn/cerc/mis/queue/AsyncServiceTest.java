@@ -6,16 +6,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import cn.cerc.core.ISession;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
-import cn.cerc.mvc.SummerMVC;
 
 public class AsyncServiceTest {
 
     @Test
     @Ignore
     public void test_send_get() {
-        Application.init(SummerMVC.ID);
+        Application.init(SummerMIS.ID);
         ISession session = Application.createSession();
         AsyncService app = new AsyncService(new Handle(session));
         app.setService("TAppCreditLine.calCusCreditLimit");

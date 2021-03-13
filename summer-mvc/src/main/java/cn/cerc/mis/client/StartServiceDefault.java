@@ -9,12 +9,12 @@ import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +35,8 @@ import java.util.Map;
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 //@RequestMapping("/services")
 public class StartServiceDefault {
-    private static final ClassResource res = new ClassResource(StartServiceDefault.class, SummerMVC.ID);
-    private static final ClassConfig config = new ClassConfig(StartServiceDefault.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(StartServiceDefault.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(StartServiceDefault.class, SummerMIS.ID);
 
     private static final String sessionId = "sessionId";
     private static Map<String, String> services;

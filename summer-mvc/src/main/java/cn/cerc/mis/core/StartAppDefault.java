@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IAppConfig;
-import cn.cerc.mvc.SummerMVC;
+import cn.cerc.mis.SummerMIS;
 
 //@Controller
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
@@ -20,7 +20,7 @@ import cn.cerc.mvc.SummerMVC;
 @Deprecated
 //TODO StartAppDefault 此对象不应该存在框架中
 public class StartAppDefault {
-    private static final ClassConfig config = new ClassConfig(StartAppDefault.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(StartAppDefault.class, SummerMIS.ID);
     @Autowired
     private HttpServletRequest req;
     @Autowired

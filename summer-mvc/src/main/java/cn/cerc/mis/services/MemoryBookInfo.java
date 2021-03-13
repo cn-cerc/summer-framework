@@ -5,11 +5,12 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
-import cn.cerc.mvc.SummerMVC;
+
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Deprecated
 //FIXME MemoryBookInfo 对象应该从框架中移出
 public class MemoryBookInfo {
-    private static final ClassResource res = new ClassResource(MemoryBookInfo.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(MemoryBookInfo.class, SummerMIS.ID);
 
     private static final String buffVersion = "5";
 

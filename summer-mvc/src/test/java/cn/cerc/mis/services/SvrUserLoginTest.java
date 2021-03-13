@@ -4,6 +4,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.Handle;
@@ -12,7 +13,6 @@ import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.rds.StubHandle;
-import cn.cerc.mvc.SummerMVC;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class SvrUserLoginTest {
         String corpNo = "911001";
         String userCode = "91100101";
         
-        Application.init(SummerMVC.ID);
+        Application.init(SummerMIS.ID);
         ISession session = Application.createSession();
         session.setProperty(Application.bookNo, corpNo);
         session.setProperty(Application.userCode, userCode);
@@ -48,7 +48,7 @@ public class SvrUserLoginTest {
     @Test
     @Ignore
     public void testCheck2() throws SecurityCheckException {
-        Application.init(SummerMVC.ID);
+        Application.init(SummerMIS.ID);
         ISession session = Application.createSession();
         IHandle handle = new Handle(session);
         
@@ -71,7 +71,7 @@ public class SvrUserLoginTest {
         String corpNo = "911001";
         String userCode = "9110010001";
 
-        Application.init(SummerMVC.ID);
+        Application.init(SummerMIS.ID);
         ISession session = Application.createSession();
         session.setProperty(Application.bookNo, corpNo);
         session.setProperty(Application.userCode, userCode);
@@ -95,7 +95,7 @@ public class SvrUserLoginTest {
         String userCode = "91100123";
         String deviceId = "TEST";
         
-        Application.init(SummerMVC.ID);
+        Application.init(SummerMIS.ID);
         ISession session = Application.createSession();
         session.setProperty(Application.bookNo, corpNo);
         session.setProperty(Application.userCode, userCode);

@@ -13,13 +13,13 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.SupportHandle;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
-import cn.cerc.mvc.SummerMVC;
 import cn.cerc.ui.page.JspPage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 //TODO: 此CLASS应该移到summer-mvc包中
 public class AppLoginDefault extends JspPage implements IAppLogin {
     // 注意：此处应该使用SummerMVC.ID，别改为SummerUI.ID
-    private static final ClassConfig config = new ClassConfig(AppLoginDefault.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(AppLoginDefault.class, SummerMIS.ID);
 
     // 配置在服务器的用户名下面 summer-application.properties
     @Deprecated

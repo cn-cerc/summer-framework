@@ -5,14 +5,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import cn.cerc.core.ISession;
-import cn.cerc.mvc.SummerMVC;
+import cn.cerc.mis.SummerMIS;
 
 public class LocalServiceTest {
     private ISession session;
 
     @Before
     public void setUp() {
-        Application.init(SummerMVC.ID);
+        Application.init(SummerMIS.ID);
         session = Application.createSession();
     }
 

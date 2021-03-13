@@ -13,10 +13,10 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -107,7 +107,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
      */
     private void init() {
         if (session == null) {
-            Application.init(SummerMVC.ID);
+            Application.init(SummerMIS.ID);
             session = Application.createSession();
             // 创建token
             //FIXME 此处需要复查是否存在创建token的必要性
@@ -128,7 +128,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 session = null;
             }
             log.warn("{} queue reinitialization handle", TDateTime.now());// 队列重新初始化句柄
-            Application.init(SummerMVC.ID);
+            Application.init(SummerMIS.ID);
             session = Application.createSession();
             // 创建token
             //FIXME 此处需要复查是否存在创建token的必要性

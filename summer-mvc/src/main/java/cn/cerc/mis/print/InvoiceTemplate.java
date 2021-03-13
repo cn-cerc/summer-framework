@@ -2,8 +2,9 @@ package cn.cerc.mis.print;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.excel.output.Column;
-import cn.cerc.mvc.SummerMVC;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -19,7 +20,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 
 public class InvoiceTemplate extends PrintTemplate {
-    private static final ClassResource res = new ClassResource(InvoiceTemplate.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(InvoiceTemplate.class, SummerMIS.ID);
 
     public InvoiceTemplate() {
         this.setPageWidth(58);

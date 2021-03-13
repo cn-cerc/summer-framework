@@ -3,6 +3,7 @@ package cn.cerc.mis.tools;
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.core.TDateTime;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.book.BookDataList;
 import cn.cerc.mis.book.IBook;
 import cn.cerc.mis.book.IBookData;
@@ -10,7 +11,6 @@ import cn.cerc.mis.book.IBookManage;
 import cn.cerc.mis.book.UpdateBook;
 import cn.cerc.mis.book.VirtualData;
 import cn.cerc.mis.other.BookOptions;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 public class UpdateManager implements IBookManage {
-    private static final ClassResource res = new ClassResource(UpdateManager.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(UpdateManager.class, SummerMIS.ID);
 
     private IHandle handle;
     private String initMonth;

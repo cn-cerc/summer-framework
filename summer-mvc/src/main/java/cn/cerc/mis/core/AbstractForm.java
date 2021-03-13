@@ -18,19 +18,19 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
 public class AbstractForm extends CustomBean implements IForm {
-    private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMVC.ID);
-    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
 
     @Autowired
     public ISystemTable systemTable;

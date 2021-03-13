@@ -19,6 +19,7 @@ import cn.cerc.db.mysql.SqlOperator;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.db.oss.OssConnection;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
@@ -27,7 +28,6 @@ import cn.cerc.mis.core.Webfunc;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Deprecated
 //FIXME: SvrUserLogin 应该从框架移出
 public class SvrUserLogin extends CustomService {
-    private static final ClassResource res = new ClassResource(SvrUserLogin.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(SvrUserLogin.class, SummerMIS.ID);
 
     public static int TimeOut = 5; // 效验代码超时时间（分钟）
     private static String GuidNull = "";

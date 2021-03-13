@@ -9,12 +9,12 @@ import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServlet;
@@ -28,8 +28,8 @@ import java.util.Map;
 @Slf4j
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
-    private static final ClassResource res = new ClassResource(StartServices.class, SummerMVC.ID);
-    private static final ClassConfig config = new ClassConfig(StartServices.class, SummerMVC.ID);
+    private static final ClassResource res = new ClassResource(StartServices.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(StartServices.class, SummerMIS.ID);
 
     private static final long serialVersionUID = 1L;
     private static final String sessionId = "sessionId";

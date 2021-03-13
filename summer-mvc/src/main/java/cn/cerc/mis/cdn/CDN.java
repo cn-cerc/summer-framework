@@ -3,10 +3,10 @@ package cn.cerc.mis.cdn;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Utils;
 import cn.cerc.db.oss.OssConnection;
-import cn.cerc.mvc.SummerMVC;
+import cn.cerc.mis.SummerMIS;
 
 public class CDN {
-    private static final ClassConfig config = new ClassConfig(CDN.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(CDN.class, SummerMIS.ID);
     // 启用内容网络分发
     public static final String OSS_CDN_ENABLE = "oss.cdn.enable";
     //浏览器缓存版本号

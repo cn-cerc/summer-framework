@@ -5,14 +5,14 @@ import javax.servlet.http.HttpServletRequest;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.security.sapi.JayunAPI;
-import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
 @Slf4j
 public class JayunAPI {
-    private static final ClassConfig config = new ClassConfig(JayunAPI.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(JayunAPI.class, SummerMIS.ID);
     private static String jayunHost;
     private static boolean jayunStop = false;
     private static boolean isServerRegister = false;
