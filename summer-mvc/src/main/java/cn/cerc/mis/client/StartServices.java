@@ -95,7 +95,8 @@ public class StartServices extends HttpServlet {
 
         IHandle handle = Application.getHandle();
         try { // 执行指定函数
-            ((ITokenManage)handle).resumeToken(req.getParameter("token"));
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, handle.getSession());
+            manage.resumeToken(req.getParameter("token"));
             handle.setProperty(sessionId, req.getSession().getId());
             IService bean = Application.getService(handle, serviceCode);
             if (bean == null) {

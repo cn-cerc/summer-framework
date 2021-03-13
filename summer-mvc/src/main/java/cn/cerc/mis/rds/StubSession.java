@@ -28,33 +28,35 @@ public class StubSession implements ISession, AutoCloseable {
     // 生产部
     public static final String DefaultDept = "10050001";
 
-    private IHandle handle;
+    private ISession session;
 
     public StubSession() {
-        handle = Application.getHandle();
-        log.info("StubHandle {}", handle.getClass());
-        ((ITokenManage) handle).createToken(DefaultBook, DefaultUser, password, machineCode);
+        session = Application.getSession();
+        log.info("StubHandle {}", session.getClass());
+        ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+        manage.createToken(DefaultBook, DefaultUser, password, machineCode);
     }
 
     public StubSession(String corpNo, String userCode) {
-        handle = Application.getHandle();
-        log.info("StubHandle {}", handle.getClass());
-        ((ITokenManage) handle).createToken(corpNo, userCode, password, machineCode);
+        session = Application.getSession();
+        log.info("StubHandle {}", session.getClass());
+        ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+        manage.createToken(corpNo, userCode, password, machineCode);
     }
 
     @Override
     public String getCorpNo() {
-        return handle.getCorpNo();
+        return session.getCorpNo();
     }
 
     @Override
     public String getUserCode() {
-        return handle.getUserCode();
+        return session.getUserCode();
     }
 
     @Override
     public String getUserName() {
-        return handle.getUserName();
+        return session.getUserName();
     }
 
     @Override
@@ -62,27 +64,27 @@ public class StubSession implements ISession, AutoCloseable {
         if ("request".equals(key)) {
             return null;
         }
-        Object obj = handle.getProperty(key);
+        Object obj = session.getProperty(key);
         if (obj == null && MysqlConnection.sessionId.equals(key)) {
             MysqlConnection conn = new MysqlConnection();
             conn.setConfig(ServerConfig.getInstance());
-            handle.setProperty(key, conn);
+            session.setProperty(key, conn);
         }
         if (obj == null && SlaveMysqlConnection.sessionId.equals(key)) {
             SlaveMysqlConnection conn = new SlaveMysqlConnection();
             conn.setConfig(ServerConfig.getInstance());
-            handle.setProperty(key, conn);
+            session.setProperty(key, conn);
         }
 
         if (obj == null && AliyunQueueConnection.sessionId.equals(key)) {
             AliyunQueueConnection conn = new AliyunQueueConnection();
             conn.setConfig(ServerConfig.getInstance());
-            handle.setProperty(key, conn);
+            session.setProperty(key, conn);
         }
         if (obj == null && JiguangConnection.sessionId.equals(key)) {
             JiguangConnection conn = new JiguangConnection();
             conn.setConfig(ServerConfig.getInstance());
-            handle.setProperty(key, conn);
+            session.setProperty(key, conn);
         }
         return obj;
     }
@@ -99,7 +101,7 @@ public class StubSession implements ISession, AutoCloseable {
 
     @Override
     public void close() {
-        handle.close();
+        session.close();
     }
 
 }

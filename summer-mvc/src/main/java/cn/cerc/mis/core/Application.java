@@ -14,25 +14,16 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.LanguageResource;
-import cn.cerc.db.core.SupportHandle;
 import cn.cerc.db.core.IAppConfig;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.Language;
 import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Slf4j
 public class Application {
@@ -106,6 +97,7 @@ public class Application {
         return context;
     }
 
+    @Deprecated
     public static <T> T getBean(String beanId, Class<T> requiredType) {
         return context.getBean(beanId, requiredType);
     }
@@ -118,6 +110,32 @@ public class Application {
             return context.getBean(key, requiredType);
         }
         return null;
+    }
+
+    /**
+     * 创建指定的实例，若实例支持 ISessionOwner，就自动注入 session
+     * 
+     * @param <T>
+     * @param requiredType
+     * @param session
+     * @return
+     */
+    public static <T> T getBeanDefault(Class<T> requiredType, ISession session) {
+        String[] items = requiredType.getName().split("\\.");
+        String itemId = items[items.length - 1];
+        String classId = itemId;
+        // 遇到接口(前2个字母均是大写)，去掉第一个字母
+        if (itemId.substring(0, 2).toUpperCase().equals(itemId.substring(0, 2))) {
+            classId = itemId.substring(1);
+        }
+        String beanId = classId.substring(0, 1).toLowerCase() + classId.substring(1);
+        // 找不到自定义的，就再查找默认的类
+        T result = getBean(requiredType, beanId, beanId + "Default");
+        // 自动注入 session
+        if ((session != null) && (result instanceof ISessionOwner)) {
+            ((ISessionOwner) result).setSession(session);
+        }
+        return result;
     }
 
     public static <T> T getBean(Class<T> requiredType) {
@@ -134,8 +152,13 @@ public class Application {
         return context.getBean(beanId, requiredType);
     }
 
+    @Deprecated
     public static IHandle getHandle() {
-        return getBean(IHandle.class, "AppHandle", "handle", "handleDefault");
+        return new DefaultHandle(getSession());
+    }
+
+    public static ISession getSession() {
+        return getBeanDefault(ISession.class, null);
     }
 
     /**
@@ -174,7 +197,7 @@ public class Application {
     public static IPassport getPassport(ISession session) {
         IPassport bean = getBean(IPassport.class, "passport", "passportDefault");
         if (bean != null) {
-            bean.setSession(session);;
+            bean.setSession(session);
         }
         return bean;
     }
@@ -211,7 +234,7 @@ public class Application {
     }
 
     public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode,
-                                     String... pathVariables) {
+            String... pathVariables) {
         // 设置登录开关
         req.setAttribute("logon", false);
 
@@ -228,7 +251,7 @@ public class Application {
             }
         }
 
-        IHandle handle = null;
+        ISession session = null;
         try {
             IForm form = Application.getForm(req, resp, formId);
             if (form == null) {
@@ -243,10 +266,11 @@ public class Application {
             form.setClient(client);
 
             // 建立数据库资源
-            handle = Application.getHandle();
-            handle.setProperty(Application.sessionId, req.getSession().getId());
-            handle.setProperty(Application.deviceLanguage, client.getLanguage());
-            req.setAttribute("myappHandle", handle);
+            session = Application.getSession();
+            session.setProperty(Application.sessionId, req.getSession().getId());
+            session.setProperty(Application.deviceLanguage, client.getLanguage());
+            IHandle handle = new DefaultHandle(session);
+            req.setAttribute("myappHandle", session);
             form.setHandle(handle);
 
             // 传递路径变量
@@ -283,8 +307,8 @@ public class Application {
             outputErrorPage(req, resp, e);
             return null;
         } finally {
-            if (handle != null) {
-                handle.close();
+            if (session != null) {
+                session.close();
             }
         }
     }

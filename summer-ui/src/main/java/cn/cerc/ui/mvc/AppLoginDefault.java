@@ -60,8 +60,9 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         IForm form = this.getForm();
         try {
             log.debug("create session by token {}", token);
-            ITokenManage sess = (ITokenManage) form.getHandle().getSession().getProperty(null);
-            if (sess.resumeToken(token)) {
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class,
+                    this.getForm().getHandle().getSession());
+            if (manage.resumeToken(token)) {
                 return null;
             }
             if (form.logon()) {
@@ -87,7 +88,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         req.setAttribute("password", password);
         req.setAttribute("needVerify", "false");
 
-        IUserLoginCheck obj = Application.getBean("userLoginCheck", IUserLoginCheck.class);
+        IUserLoginCheck obj = Application.getBean(IUserLoginCheck.class, "userLoginCheck");
         if (obj != null) {
             if (obj instanceof SupportHandle) {
                 if (form instanceof AbstractForm) {
