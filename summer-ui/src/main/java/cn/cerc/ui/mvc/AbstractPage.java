@@ -21,7 +21,6 @@ import cn.cerc.ui.core.Component;
 import cn.cerc.ui.parts.UIComponent;
 
 public abstract class AbstractPage extends UIComponent implements IPage, IUserLanguage {
-    // 此处使用SummerMVC.ID是为了与CDN中一致，请勿改动！！！
     protected static final ClassConfig config = new ClassConfig(AbstractPage.class, SummerMIS.ID);
 
     private IForm form;
