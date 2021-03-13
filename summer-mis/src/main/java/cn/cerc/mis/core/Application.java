@@ -24,6 +24,8 @@ import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.Language;
+import cn.cerc.vine.accounting.forms.ac.TFrmAccBook;
+import cn.cerc.vine.core.Passport;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -197,18 +199,12 @@ public class Application {
         return bean;
     }
 
-    /**
-     * 请改使用getBeanDefault
-     * @param session
-     * @return
-     */
-    @Deprecated
     public static IPassport getPassport(ISession session) {
-        IPassport bean = getBean(IPassport.class, "passport", "passportDefault");
-        if (bean != null) {
-            bean.setSession(session);
-        }
-        return bean;
+        return getBeanDefault(IPassport.class, session);
+    }
+
+    public static IPassport getPassport(ISessionOwner owner) {
+        return getBeanDefault(IPassport.class, owner.getSession());
     }
 
     public static IForm getForm(HttpServletRequest req, HttpServletResponse resp, String formId) {
