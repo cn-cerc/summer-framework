@@ -1,9 +1,12 @@
 package cn.cerc.mis.core;
 
 import javax.servlet.ServletException;
+
+import cn.cerc.db.core.ISessionOwner;
+
 import java.io.IOException;
 
-public interface IAppLogin {
+public interface IAppLogin extends ISessionOwner{
 
     void init(IForm form);
 

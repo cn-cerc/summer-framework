@@ -171,7 +171,7 @@ public class Application {
      */
     @Deprecated
     public static IAppConfig getAppConfig() {
-        return getBean(IAppConfig.class, "AppConfig", "appConfig", "appConfigDefault");
+        return getBeanDefault(IAppConfig.class, null);
     }
 
     @Deprecated // 请改使用 getBean
@@ -290,7 +290,7 @@ public class Application {
                 return form.getView(funcCode);
             }
 
-            IAppLogin appLogin = Application.getBean(IAppLogin.class, "appLogin", "appLoginDefault");
+            IAppLogin appLogin = Application.getBeanDefault(IAppLogin.class, session);
             appLogin.init(form);
 
             String loginJspFile = null;

@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.SummerMIS;
@@ -88,7 +87,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         req.setAttribute("password", password);
         req.setAttribute("needVerify", "false");
 
-        IUserLoginCheck obj = Application.getBean(IUserLoginCheck.class, "userLoginCheck");
+        IUserLoginCheck obj = Application.getBeanDefault(IUserLoginCheck.class, form.getHandle().getSession());
         if (obj != null) {
             if (obj instanceof SupportHandle) {
                 if (form instanceof AbstractForm) {
