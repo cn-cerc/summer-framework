@@ -6,6 +6,7 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class BuildQuery {
         this.session = session;
     }
 
-    public BuildQuery(IHandle owner) {
+    public BuildQuery(ISessionOwner owner) {
         this(owner.getSession());
     }
 

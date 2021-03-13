@@ -7,6 +7,7 @@ import cn.cerc.core.FieldDefs;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
@@ -55,7 +56,7 @@ public abstract class DaoQuery<T extends Serializable> extends DataQuery {
         this.slaveDataSource = (DataSource) session.getProperty(SlaveMysqlConnection.slaveDataSource);
     }
     
-    public DaoQuery(IHandle owner) {
+    public DaoQuery(ISessionOwner owner) {
         this(owner.getSession());
     }
 

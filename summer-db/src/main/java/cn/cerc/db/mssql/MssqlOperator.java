@@ -4,6 +4,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
@@ -52,7 +53,7 @@ public class MssqlOperator implements IDataOperator {
         }
     }
 
-    public MssqlOperator(IHandle owner) {
+    public MssqlOperator(ISessionOwner owner) {
         this(owner.getSession());
     }
 

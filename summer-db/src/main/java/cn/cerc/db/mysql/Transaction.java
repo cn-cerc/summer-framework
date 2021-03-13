@@ -2,6 +2,7 @@ package cn.cerc.db.mysql;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.IHandle;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,7 @@ public class Transaction implements AutoCloseable {
         setConn(cn.getClient());
     }
 
-    public Transaction(IHandle owner) {
+    public Transaction(ISessionOwner owner) {
         this(owner.getSession());
     }
     
