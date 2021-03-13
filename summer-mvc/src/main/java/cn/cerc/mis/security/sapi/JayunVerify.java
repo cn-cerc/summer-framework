@@ -1,6 +1,8 @@
-package cn.cerc.security.sapi;
+package cn.cerc.mis.security.sapi;
 
 import javax.servlet.http.HttpServletRequest;
+
+import cn.cerc.mis.security.sapi.JayunAPI;
 
 public class JayunVerify {
 

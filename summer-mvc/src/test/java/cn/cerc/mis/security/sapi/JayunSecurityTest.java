@@ -1,9 +1,11 @@
-package cn.cerc.security.sapi;
+package cn.cerc.mis.security.sapi;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import cn.cerc.mis.security.sapi.JayunSecurity;
 
 public class JayunSecurityTest {
     private JayunSecurity api = new JayunSecurity(null);

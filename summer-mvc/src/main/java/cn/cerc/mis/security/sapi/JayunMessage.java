@@ -1,6 +1,9 @@
-package cn.cerc.security.sapi;
+package cn.cerc.mis.security.sapi;
 
 import javax.servlet.http.HttpServletRequest;
+
+import cn.cerc.mis.security.sapi.JayunAPI;
+import cn.cerc.mis.security.sapi.SendMode;
 
 public class JayunMessage {
     /**
