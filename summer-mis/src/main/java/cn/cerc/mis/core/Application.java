@@ -205,6 +205,10 @@ public class Application {
         return getBeanDefault(IPassport.class, owner.getSession());
     }
 
+    public static ISystemTable getSystemTable() {
+        return getBeanDefault(ISystemTable.class, null);
+    }
+    
     public static IForm getForm(HttpServletRequest req, HttpServletResponse resp, String formId) {
         if (formId == null || "".equals(formId) || "service".equals(formId)) {
             return null;
