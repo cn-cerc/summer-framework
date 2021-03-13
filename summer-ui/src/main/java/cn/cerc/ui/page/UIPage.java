@@ -47,9 +47,10 @@ public abstract class UIPage extends AbstractPage {
         writeHtml(getResponse().getWriter());
         return null;
     }
-    
+
     /**
      * 输出html代码
+     * 
      * @param out
      */
     protected abstract void writeHtml(PrintWriter out);
@@ -278,4 +279,9 @@ public abstract class UIPage extends AbstractPage {
         this.addScriptFile(config.getString("myapp.js", "js/myapp.js"));
     }
 
+    @Deprecated
+    public String getViewFile() {
+        // FIXME 不应该出现此处的调用！
+        throw new RuntimeException("不应该出现此处的调用！");
+    }
 }
