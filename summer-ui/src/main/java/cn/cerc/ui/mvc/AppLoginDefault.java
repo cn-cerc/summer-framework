@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//TODO: 此CLASS应该移到summer-mvc包中
 public class AppLoginDefault extends JspPage implements IAppLogin {
     private ISession session;
 
@@ -45,6 +44,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
     public void init(IForm form) {
         this.setForm(form);
         this.setJspFile(config.getString(Application.JSPFILE_LOGIN, "common/FrmLogin.jsp"));
+        this.setSession(form.getHandle().getSession());
         this.add("homePage", config.getString(Application.FORM_WELCOME, "welcome"));
         this.add("needVerify", "false");
         String logoUrl = config.getString("vine.mall.logoUrl", "");
