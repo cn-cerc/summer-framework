@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//TODO: 此CLASS应该移到summer-mvc包中
 public class AppLoginDefault extends JspPage implements IAppLogin {
     private ISession session;
 
@@ -45,6 +44,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
     public void init(IForm form) {
         this.setForm(form);
         this.setJspFile(config.getString(Application.JSPFILE_LOGIN, "common/FrmLogin.jsp"));
+        this.setSession(form.getHandle().getSession());
         this.add("homePage", config.getString(Application.FORM_WELCOME, "welcome"));
         this.add("needVerify", "false");
         String logoUrl = config.getString("vine.mall.logoUrl", "");
@@ -91,15 +91,6 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         req.setAttribute("needVerify", "false");
 
         IUserLoginCheck obj = Application.getBeanDefault(IUserLoginCheck.class, form.getHandle().getSession());
-        if (obj != null) {
-            if (obj instanceof SupportHandle) {
-                if (form instanceof AbstractForm) {
-                    ((SupportHandle) obj).init((AbstractForm) form);
-                } else {
-                    ((SupportHandle) obj).init(form.getHandle());
-                }
-            }
-        }
 
         // 如长度大于10表示用手机号码登入
         if (userCode.length() > 10) {
