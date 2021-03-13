@@ -1,13 +1,8 @@
 package cn.cerc.db.core;
 
-import cn.cerc.core.ISession;
 import cn.cerc.db.mysql.MysqlConnection;
 
-public interface IHandle {
-
-    ISession getSession();
-    
-    void setSession(ISession session);
+public interface IHandle extends ISessionOwner{
     
     default Object getProperty(String key) {
         return getSession().getProperty(key);

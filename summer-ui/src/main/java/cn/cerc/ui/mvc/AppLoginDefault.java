@@ -10,16 +10,16 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
-import cn.cerc.db.core.IHandle;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.SupportHandle;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
-import cn.cerc.mvc.SummerMVC;
 import cn.cerc.ui.page.JspPage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,8 +28,10 @@ import lombok.extern.slf4j.Slf4j;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 //TODO: 此CLASS应该移到summer-mvc包中
 public class AppLoginDefault extends JspPage implements IAppLogin {
+    private ISession session;
+
     // 注意：此处应该使用SummerMVC.ID，别改为SummerUI.ID
-    private static final ClassConfig config = new ClassConfig(AppLoginDefault.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(AppLoginDefault.class, SummerMIS.ID);
 
     // 配置在服务器的用户名下面 summer-application.properties
     @Deprecated
@@ -60,8 +62,9 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         IForm form = this.getForm();
         try {
             log.debug("create session by token {}", token);
-            ITokenManage sess = (ITokenManage) form.getHandle().getSession().getProperty(null);
-            if (sess.resumeToken(token)) {
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class,
+                    this.getForm().getHandle().getSession());
+            if (manage.resumeToken(token)) {
                 return null;
             }
             if (form.logon()) {
@@ -87,7 +90,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         req.setAttribute("password", password);
         req.setAttribute("needVerify", "false");
 
-        IUserLoginCheck obj = Application.getBean("userLoginCheck", IUserLoginCheck.class);
+        IUserLoginCheck obj = Application.getBeanDefault(IUserLoginCheck.class, form.getHandle().getSession());
         if (obj != null) {
             if (obj instanceof SupportHandle) {
                 if (form instanceof AbstractForm) {
@@ -123,6 +126,16 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
             return this.execute();
         }
         return null;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
 }

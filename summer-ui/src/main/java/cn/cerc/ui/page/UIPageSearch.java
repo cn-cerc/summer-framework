@@ -6,11 +6,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -65,8 +65,8 @@ public class UIPageSearch extends UIPage {
             this.put("_operaPages_", operaPages);
         }
         IForm form = this.getForm();
-        HandleDefault sess = (HandleDefault) form.getHandle().getProperty(null);
-        if (sess.logon()) {
+        ISession session = form.getHandle().getSession();
+        if (session.logon()) {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
             menus.setHandle(form.getHandle());
@@ -74,7 +74,7 @@ public class UIPageSearch extends UIPage {
                 item.enrollMenu(form, rightMenus);
             }
         } else {
-            getHeader().getHomePage().setSite(Application.getAppConfig().getFormWelcome());
+            getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
         }
 
         // 系统通知消息

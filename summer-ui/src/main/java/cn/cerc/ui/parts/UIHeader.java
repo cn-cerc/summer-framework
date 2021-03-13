@@ -99,7 +99,8 @@ public class UIHeader extends UIComponent implements IUserLanguage {
         boolean isShowBar = config.getBoolean("app.ui.head.show", true);
         if (!client.isPhone() && isShowBar) {
             String token = (String) handle.getProperty(Application.TOKEN);
-            ((ITokenManage)handle).resumeToken(token);
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, handle.getSession());
+            manage.resumeToken(token);
             currentUser = res.getString(2, "用户");
             leftMenus.add(homePage);
             this.userName = handle.getUserName();

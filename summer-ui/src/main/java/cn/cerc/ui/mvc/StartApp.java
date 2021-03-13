@@ -1,14 +1,16 @@
 package cn.cerc.ui.mvc;
 
 import cn.cerc.core.ClassConfig;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.IAppConfig;
+import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
-import cn.cerc.mvc.SummerMVC;
 import cn.cerc.ui.core.UrlRecord;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +28,7 @@ import java.util.Map;
 @Slf4j
 @Deprecated // 请改使用 StartAppDefault
 public class StartApp implements Filter {
-    private static final ClassConfig config = new ClassConfig(StartApp.class, SummerMVC.ID);
+    private static final ClassConfig config = new ClassConfig(StartApp.class, SummerMIS.ID);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -82,9 +84,9 @@ public class StartApp implements Filter {
                 form.setRequest((HttpServletRequest) request);
                 form.setResponse((HttpServletResponse) response);
 
-                IHandle handle = Application.getHandle();
-                handle.setProperty(Application.sessionId, req.getSession().getId());
-                form.setHandle(handle);
+                ISession session = Application.createSession();
+                session.setProperty(Application.sessionId, req.getSession().getId());
+                form.setHandle(new Handle(session));
                 IPage page = form.execute();
                 page.execute();
             } catch (Exception e) {

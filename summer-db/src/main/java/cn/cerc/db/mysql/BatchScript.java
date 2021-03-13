@@ -4,6 +4,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,7 +20,7 @@ public class BatchScript {
         this.connection = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
     }
 
-    public BatchScript(IHandle owner) {
+    public BatchScript(ISessionOwner owner) {
         this(owner.getSession());
     }
 

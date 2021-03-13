@@ -2,6 +2,7 @@ package cn.cerc.db.jiguang;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
@@ -39,7 +40,7 @@ public class JiguangPush {
         this.connection = (JiguangConnection) session.getProperty(JiguangConnection.sessionId);
     }
 
-    public JiguangPush(IHandle owner) {
+    public JiguangPush(ISessionOwner owner) {
         this(owner.getSession());
     }
 

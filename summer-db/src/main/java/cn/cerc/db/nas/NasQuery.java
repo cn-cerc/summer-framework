@@ -11,6 +11,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.DataQuery;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.queue.QueueOperator;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +31,7 @@ public class NasQuery extends DataQuery {
         super(session);
     }
 
-    public NasQuery(IHandle owner) {
+    public NasQuery(ISessionOwner owner) {
         this(owner.getSession());
     }
 

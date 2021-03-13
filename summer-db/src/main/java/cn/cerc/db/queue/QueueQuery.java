@@ -4,6 +4,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.DataQuery;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.SummerDB;
 import com.aliyun.mns.client.CloudQueue;
@@ -29,7 +30,7 @@ public class QueueQuery extends DataQuery {
         this.connection = (AliyunQueueConnection) session.getProperty(AliyunQueueConnection.sessionId);
     }
 
-    public QueueQuery(IHandle owner) {
+    public QueueQuery(ISessionOwner owner) {
         this(owner.getSession());
     }
 

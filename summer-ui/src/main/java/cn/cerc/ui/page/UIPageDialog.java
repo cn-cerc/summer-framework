@@ -6,11 +6,11 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.MutiGrid;
@@ -44,10 +44,10 @@ public class UIPageDialog extends JspPage {
     public String execute() throws ServletException, IOException {
         IForm form = this.getForm();
         HttpServletRequest request = form.getRequest();
-        HandleDefault sess = (HandleDefault) form.getHandle().getProperty(null);
-        request.setAttribute("passport", sess.logon());
-        request.setAttribute("logon", sess.logon());
-        if (sess.logon()) {
+        ISession session = form.getHandle().getSession();
+        request.setAttribute("passport", session.logon());
+        request.setAttribute("logon", session.logon());
+        if (session.logon()) {
             List<UrlRecord> rightMenus = getHeader().getRightMenus();
             RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
             menus.setHandle(form.getHandle());
@@ -55,7 +55,7 @@ public class UIPageDialog extends JspPage {
                 item.enrollMenu(form, rightMenus);
             }
         } else {
-            getHeader().getHomePage().setSite(Application.getAppConfig().getFormWelcome());
+            getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
         }
         // 设置首页
         request.setAttribute("_showMenu_", "true".equals(form.getParam("showMenus", "true")));
