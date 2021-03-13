@@ -7,6 +7,10 @@ public class Handle implements IHandle{
 
     private ISession session;
     
+    public Handle() {
+
+    }
+    
     public Handle(ISession session) {
         this.session = session;
     }
