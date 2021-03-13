@@ -7,7 +7,7 @@ import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.DefaultHandle;
+import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mvc.SummerMVC;
@@ -86,7 +86,7 @@ public class StartApp implements Filter {
 
                 ISession session = Application.getSession();
                 session.setProperty(Application.sessionId, req.getSession().getId());
-                form.setHandle(new DefaultHandle(session));
+                form.setHandle(new HandleDefault(session));
                 IPage page = form.execute();
                 page.execute();
             } catch (Exception e) {

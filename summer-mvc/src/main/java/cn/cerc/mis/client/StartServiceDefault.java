@@ -2,12 +2,14 @@ package cn.cerc.mis.client;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
@@ -122,11 +124,12 @@ public class StartServiceDefault {
         }
         log.debug(serviceCode);
 
-        IHandle handle = Application.getHandle();
+        ISession session = Application.getSession();
         try { // 执行指定函数
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, handle.getSession());
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
             manage.resumeToken(req.getParameter("token"));
-            handle.setProperty(sessionId, req.getSession().getId());
+            session.setProperty(sessionId, req.getSession().getId());
+            IHandle handle = new HandleDefault(session);
             IService bean = Application.getService(handle, serviceCode);
             if (bean == null) {
                 respData.setMessage(String.format("service(%s) is null.", serviceCode));
@@ -149,7 +152,7 @@ public class StartServiceDefault {
             respData.setResult(false);
             respData.setMessage(err.getMessage());
         } finally {
-            handle.close();
+            session.close();
         }
         try {
             resp.getWriter().write(respData.toString());

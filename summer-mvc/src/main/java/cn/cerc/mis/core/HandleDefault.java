@@ -3,11 +3,11 @@ package cn.cerc.mis.core;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 
-public class DefaultHandle implements IHandle{
+public class HandleDefault implements IHandle{
 
     private ISession session;
     
-    public DefaultHandle(ISession session) {
+    public HandleDefault(ISession session) {
         this.session = session;
     }
 

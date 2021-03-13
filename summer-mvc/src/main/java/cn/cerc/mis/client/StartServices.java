@@ -9,7 +9,7 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.DefaultHandle;
+import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
@@ -100,7 +100,7 @@ public class StartServices extends HttpServlet {
             ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
             manage.resumeToken(req.getParameter("token"));
             session.setProperty(sessionId, req.getSession().getId());
-            IHandle handle = new DefaultHandle(session);
+            IHandle handle = new HandleDefault(session);
             IService bean = Application.getService(handle, serviceCode);
             if (bean == null) {
                 respData.setMessage(String.format("service(%s) is null.", serviceCode));
