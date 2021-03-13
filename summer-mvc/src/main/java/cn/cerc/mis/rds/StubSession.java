@@ -2,13 +2,11 @@ package cn.cerc.mis.rds;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
-import cn.cerc.db.mysql.SqlConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mvc.SummerMVC;
