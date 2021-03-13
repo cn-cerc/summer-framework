@@ -1,4 +1,4 @@
-package cn.cerc.mis.config;
+package cn.cerc.mis.custom;
 
 import cn.cerc.mis.core.ISystemTable;
 
