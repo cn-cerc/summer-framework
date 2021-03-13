@@ -80,7 +80,7 @@ public class UserList implements IDataList {
             return;
         }
 
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         // 從數據庫中讀取
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select ID_,CorpNo_,Code_,Name_,QQ_,Mobile_,SuperUser_,");
@@ -128,7 +128,7 @@ public class UserList implements IDataList {
         value.put(ShowWholesaleUP, 0);
         value.put(ShowBottomUP, 0);
 
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select Code_,Value_ from %s ", systemTable.getUserOptions());
         ds.add("where UserCode_='%s' and (Code_='%s' or Code_='%s' or Code_='%s' or Code_='%s')", userCode, ShowInUP,
@@ -160,7 +160,7 @@ public class UserList implements IDataList {
                 Version);
         Redis.delete(buffKey);
 
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select ID_ from %s where Code_='%s'", systemTable.getUserInfo(), userCode);
         ds.open();

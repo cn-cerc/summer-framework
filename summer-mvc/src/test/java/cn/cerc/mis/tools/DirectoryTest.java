@@ -54,7 +54,7 @@ public class DirectoryTest {
             System.err.println(text);
             return 0;
         }
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         SqlQuery dsLang = new SqlQuery(handle);
         dsLang.add("select * from %s", systemTable.getLanguage());
         dsLang.add("where key_='%s' and lang_='en'", text);

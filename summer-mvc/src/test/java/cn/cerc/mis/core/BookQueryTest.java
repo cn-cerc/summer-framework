@@ -13,7 +13,7 @@ public class BookQueryTest {
     @Test(expected = RuntimeException.class)
     @Ignore
     public void test() {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         Application.init(SummerMVC.ID);
         ISession session = Application.createSession();
         BookQuery ds = new BookQuery(new Handle(session));

@@ -322,7 +322,7 @@ public class BookOptions {
         // String result = getOption(owner, paramKey, "201301";
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), paramKey)) {
             if (buff.isNull() || "".equals(buff.getString("Value_"))) {
-                ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+                ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
                 BuildQuery f = new BuildQuery(handle);
                 String corpNo = handle.getCorpNo();
                 f.add("select * from %s ", systemTable.getBookOptions());

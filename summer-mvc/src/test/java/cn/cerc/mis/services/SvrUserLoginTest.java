@@ -90,7 +90,7 @@ public class SvrUserLoginTest {
     @Test
     @Ignore(value = "此处用于测试在5分钟内不允许重复申请验证码，耗时很长")
     public void test_sendVerifyCode() throws InterruptedException, DataValidateException {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         String corpNo = "911001";
         String userCode = "91100123";
         String deviceId = "TEST";

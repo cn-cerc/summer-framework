@@ -70,7 +70,7 @@ public class R {
     }
 
     private static void validateKey(IHandle handle, String text, String language) {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         SqlQuery dsLang = new SqlQuery(handle);
         dsLang.add("select Value_ from %s", systemTable.getLanguage());
         dsLang.add("where Key_='%s'", Utils.safeString(text));
@@ -93,7 +93,7 @@ public class R {
     }
 
     private static String getValue(IHandle handle, String text, String language) {
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         SqlQuery dsLang = new SqlQuery(handle);
         dsLang.add("select Key_,max(Value_) as Value_ from %s", systemTable.getLanguage());
         dsLang.add("where Key_='%s'", Utils.safeString(text));
@@ -116,7 +116,7 @@ public class R {
             return text;
         }
 
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         // 处理英文界面
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select Value_ from %s", systemTable.getLanguage());

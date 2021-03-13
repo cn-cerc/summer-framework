@@ -46,7 +46,7 @@ public class SvrAutoLogin implements IUserLanguage {
         }
         String deviceId = form.getClient().getId();
 
-        ISystemTable systemTable = Application.getBean("systemTable", ISystemTable.class);
+        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         SqlQuery dsUser = new SqlQuery(handle);
         dsUser.add("select * from %s where Code_='%s'", systemTable.getUserInfo(), userCode);
         dsUser.open();
