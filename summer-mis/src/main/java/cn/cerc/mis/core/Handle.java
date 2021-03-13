@@ -11,6 +11,20 @@ public class Handle implements IHandle{
         this.session = session;
     }
 
+    public Handle(ISession session, String corpNo, String userCode) {
+        this(session);
+        setCorpNo(corpNo);
+        setUserCode(userCode);
+    }
+
+    private void setCorpNo(String corpNo) {
+        session.setProperty(Application.bookNo, corpNo);
+    }
+
+    private void setUserCode(String userCode) {
+        session.setProperty(Application.userCode, userCode);
+    }
+
     @Override
     public ISession getSession() {
         return session;
