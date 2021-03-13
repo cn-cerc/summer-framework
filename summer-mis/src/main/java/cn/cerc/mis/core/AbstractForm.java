@@ -62,8 +62,7 @@ public class AbstractForm extends CustomBean implements IForm {
         if (getHandle() == null) {
             return false;
         }
-        IHandle sess = (IHandle) getHandle().getProperty(null);
-        return sess.logon();
+        return getSession().logon();
     }
 
     @Override
