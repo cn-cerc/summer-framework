@@ -11,8 +11,6 @@ import cn.cerc.mis.rds.PassportRecord;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Deprecated
-//TODO PassportDefault 此对象不应该存在框架中
 public class PassportDefault implements IPassport {
     private IHandle handle;
     private ISession session;
