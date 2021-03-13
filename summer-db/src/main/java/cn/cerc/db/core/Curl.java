@@ -26,12 +26,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * HTTP请求代理类
- *
- * @author ZhangGong
- * @version 1.0, 2018-1-1
+ * HTTP请求工具类
  */
-//FIXME 需重构调用方式初始化直接创建url  new Curl(url);
 @Slf4j
 public class Curl {
 
