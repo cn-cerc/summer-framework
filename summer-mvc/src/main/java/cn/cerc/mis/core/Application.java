@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.cerc.core.ClassConfig;
@@ -115,6 +116,8 @@ public class Application {
     /**
      * 创建指定的实例，若实例支持 ISessionOwner，就自动注入 session
      * 
+     * 如创建ITokenManage，则自动查找 tokenManage, tokenManageDefault
+     * 
      * @param <T>
      * @param requiredType
      * @param session
@@ -130,7 +133,7 @@ public class Application {
         }
         String beanId = classId.substring(0, 1).toLowerCase() + classId.substring(1);
         // 找不到自定义的，就再查找默认的类
-        T result = getBean(requiredType, beanId, beanId + "Default");
+        T result = getBean(requiredType, beanId, beanId + "Default"); 
         // 自动注入 session
         if ((session != null) && (result instanceof ISessionOwner)) {
             ((ISessionOwner) result).setSession(session);
@@ -366,6 +369,16 @@ public class Application {
 
     public static String getStaticPath() {
         return staticPath;
+    }
+
+    public static void init(String packageId) {
+        if(context != null)
+            return;
+        String xmlFile = String.format("%s-spring.xml", packageId);
+        if(packageId == null)
+            xmlFile = "application.xml";
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(xmlFile);
+        context = ctx;
     }
 
 }

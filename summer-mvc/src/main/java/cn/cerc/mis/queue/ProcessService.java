@@ -2,9 +2,13 @@ package cn.cerc.mis.queue;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.client.AutoService;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.rds.StubHandle;
@@ -24,7 +28,10 @@ public class ProcessService extends AbstractTask {
 
     // 手动执行所有的预约服务
     public static void main(String[] args) {
-        StubHandle handle = new StubHandle();
+        Application.init(SummerMVC.ID);
+        ISession session = Application.createSession();
+        IHandle handle = new HandleDefault(session);
+
         ProcessService ps = new ProcessService();
         ps.setHandle(handle);
         ps.run();

@@ -1,14 +1,19 @@
 package cn.cerc.mis.services;
 
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.DataValidateException;
+import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.rds.StubHandle;
+import cn.cerc.mvc.SummerMVC;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -26,7 +31,13 @@ public class SvrUserLoginTest {
     public void testCheck1() throws Exception {
         String corpNo = "911001";
         String userCode = "91100101";
-        StubHandle handle = new StubHandle(corpNo, userCode);
+        
+        Application.init(SummerMVC.ID);
+        ISession session = Application.createSession();
+        session.setProperty(Application.bookNo, corpNo);
+        session.setProperty(Application.userCode, userCode);
+        IHandle handle = new HandleDefault(session);
+        
         SvrUserLogin app = new SvrUserLogin();
         app.init(handle);
         Record headIn = app.getDataIn().getHead();
@@ -37,7 +48,10 @@ public class SvrUserLoginTest {
     @Test
     @Ignore
     public void testCheck2() throws SecurityCheckException {
-        StubHandle handle = new StubHandle();
+        Application.init(SummerMVC.ID);
+        ISession session = Application.createSession();
+        IHandle handle = new HandleDefault(session);
+        
         String userCode = handle.getUserCode();
         SvrUserLogin app = new SvrUserLogin();
 
@@ -56,7 +70,13 @@ public class SvrUserLoginTest {
     public void testCheck3() throws Exception {
         String corpNo = "911001";
         String userCode = "9110010001";
-        StubHandle handle = new StubHandle(corpNo, userCode);
+
+        Application.init(SummerMVC.ID);
+        ISession session = Application.createSession();
+        session.setProperty(Application.bookNo, corpNo);
+        session.setProperty(Application.userCode, userCode);
+        IHandle handle = new HandleDefault(session);
+        
         SvrUserLogin app = new SvrUserLogin();
         app.init(handle);
         Record headIn = app.getDataIn().getHead();
@@ -74,7 +94,13 @@ public class SvrUserLoginTest {
         String corpNo = "911001";
         String userCode = "91100123";
         String deviceId = "TEST";
-        StubHandle handle = new StubHandle(corpNo, userCode);
+        
+        Application.init(SummerMVC.ID);
+        ISession session = Application.createSession();
+        session.setProperty(Application.bookNo, corpNo);
+        session.setProperty(Application.userCode, userCode);
+        IHandle handle = new HandleDefault(session);
+
         // 清空缓存
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, handle.getUserCode(),
                 SvrUserLogin.class.getName(), "sendVerifyCode")) {

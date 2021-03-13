@@ -1,19 +1,23 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.rds.StubHandle;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.mvc.SummerMVC;
 
 public class BookHandleTest {
-    private StubHandle handle = new StubHandle();
 
     @Test
     @Ignore
     public void test() {
-        IHandle app = new BookHandle(handle, "144001");
+        Application.init(SummerMVC.ID);
+        ISession session = Application.createSession();
+        IHandle app = new BookHandle(new HandleDefault(session), "144001");
         assertEquals(app.getCorpNo(), "144001");
     }
+
 }

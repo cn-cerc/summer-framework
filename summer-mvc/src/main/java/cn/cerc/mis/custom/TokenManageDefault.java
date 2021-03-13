@@ -18,8 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
 @Slf4j
-@Component("defaultTokenManage")
-public class DefaultTokenManage implements ITokenManage {
+@Component("tokenManageDefault")
+public class TokenManageDefault implements ITokenManage {
 
     private ISession session;
 

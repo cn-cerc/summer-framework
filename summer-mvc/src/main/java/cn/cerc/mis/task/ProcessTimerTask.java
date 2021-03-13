@@ -1,22 +1,23 @@
 package cn.cerc.mis.task;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.core.ISession;
-import cn.cerc.core.TDateTime;
-import cn.cerc.db.cache.Redis;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.rds.StubHandle;
-import cn.cerc.mis.rds.StubSession;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Calendar;
+import java.util.TimerTask;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
-import java.util.TimerTask;
+import cn.cerc.core.ISession;
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.cache.Redis;
+import cn.cerc.db.core.ITokenManage;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.rds.StubHandle;
+import cn.cerc.mvc.SummerMVC;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -106,7 +107,13 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
      */
     private void init() {
         if (session == null) {
-            session = new StubSession();
+            Application.init(SummerMVC.ID);
+            session = Application.createSession();
+            // 创建token
+            //FIXME 此处需要复查是否存在创建token的必要性
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+            manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
+                    StubHandle.machineCode);
             return;
         }
 
@@ -121,7 +128,13 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 session = null;
             }
             log.warn("{} queue reinitialization handle", TDateTime.now());// 队列重新初始化句柄
-            session = new StubSession();
+            Application.init(SummerMVC.ID);
+            session = Application.createSession();
+            // 创建token
+            //FIXME 此处需要复查是否存在创建token的必要性
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+            manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
+                    StubHandle.machineCode);
             // 60s内不重复初始化Handle
             Redis.set(now, "true", 60);
         }

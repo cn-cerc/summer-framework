@@ -12,9 +12,10 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
-import cn.cerc.mis.rds.StubSession;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -49,8 +50,10 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
                 }
             } else if (ServerConfig.enableTaskService()) {
                 try {
-                    StubSession handle = new StubSession();
-                    runTask(handle);
+                    Application.init(SummerMVC.ID);
+                    ISession session = Application.createSession();
+                    runTask(session);
+                    session.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

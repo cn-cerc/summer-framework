@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.CustomBean;
+import cn.cerc.db.core.ITokenManage;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.HandleDefault;
 import cn.cerc.mis.core.ISystemTable;
+import cn.cerc.mis.rds.StubHandle;
+import cn.cerc.mvc.SummerMVC;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,8 +20,7 @@ public abstract class AbstractTask extends CustomBean implements Runnable {
     private String describe;
 
     /**
-     * 缓存过期时间
-     * 单位：秒
+     * 缓存过期时间 单位：秒
      **/
     private int interval;
     private String time = "";
@@ -52,10 +54,17 @@ public abstract class AbstractTask extends CustomBean implements Runnable {
      */
     @Override
     public void run() {
+        Application.init(SummerMVC.ID);
         ISession session = Application.createSession();
         try {
-            this.setHandle(new HandleDefault(session));
+            session.setProperty(Application.bookNo, StubHandle.DefaultBook);
             session.setProperty(Application.userCode, "admin");
+            // 创建token
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+            manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
+                    StubHandle.machineCode);
+            // 开始执行
+            this.setHandle(new HandleDefault(session));
             this.execute();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
