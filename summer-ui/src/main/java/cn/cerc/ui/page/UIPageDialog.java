@@ -20,6 +20,7 @@ import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
+import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIToolbar;
 
 public class UIPageDialog extends JspPage {
@@ -27,6 +28,7 @@ public class UIPageDialog extends JspPage {
     private MutiPage pages;
     // 工具面板：多页形式
     private UIToolbar toolBar;
+    private UIFooter footer;
     
     public UIPageDialog(IForm form) {
         super();
@@ -101,6 +103,13 @@ public class UIPageDialog extends JspPage {
         return toolBar;
     }
 
+    public UIFooter getFooter() {
+        if (footer == null) {
+            footer = new UIFooter(this);
+        }
+        return footer;
+    }
+    
     public void installAdvertisement() {
         super.put("_showAd_", this.getHeader().getAdvertisement());
     }
@@ -110,7 +119,6 @@ public class UIPageDialog extends JspPage {
     }
 
     public void setShowMenus(boolean showMenus) {
-        // this.setParam("showMenus", "false");
         this.showMenus = showMenus;
     }
 
@@ -123,4 +131,5 @@ public class UIPageDialog extends JspPage {
         put(id, grid);
         pages = grid.getPages();
     }
+
 }
