@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@Deprecated // 请改使用 StartTaskDefault
 public class StartTasksExternal implements Filter {
 
     @Override
@@ -34,13 +33,13 @@ public class StartTasksExternal implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
+    public void init(FilterConfig filterConfig) {
+        log.info("{} init.", this.getClass().getName());
     }
 
     @Override
     public void destroy() {
-
+        log.info("{} destroy.", this.getClass().getName());
     }
 
 }
