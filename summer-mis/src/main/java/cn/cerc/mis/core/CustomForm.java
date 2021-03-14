@@ -28,9 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
-public class AbstractForm implements IForm {
+public class CustomForm implements IForm {
     private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
-    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(CustomForm.class, SummerMIS.ID);
     
     private ISession session;
     protected IHandle handle;
@@ -53,7 +53,7 @@ public class AbstractForm implements IForm {
         this.params = params;
     }
 
-    public void init(AbstractForm owner) {
+    public void init(CustomForm owner) {
         this.setHandle(owner.getHandle());
         this.setClient(owner.getClient());
         this.setRequest(owner.getRequest());
