@@ -49,7 +49,7 @@ public abstract class AbstractForm implements IForm {
         this.params = params;
     }
 
-    public void init(CustomForm owner) {
+    public void init(AbstractForm owner) {
         this.setHandle(owner.getHandle());
         this.setClient(owner.getClient());
         this.setRequest(owner.getRequest());
