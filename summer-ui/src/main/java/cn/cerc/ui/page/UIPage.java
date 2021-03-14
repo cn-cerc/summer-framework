@@ -41,6 +41,8 @@ public abstract class UIPage extends AbstractPage {
     private UIToolbar toolBar;
     // 状态栏：快捷操作+按钮组
     private UIFooter footer;
+    // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
+    private String jspFile;
 
     @Override
     public final String execute() throws ServletException, IOException {
@@ -55,16 +57,16 @@ public abstract class UIPage extends AbstractPage {
      */
     protected abstract void writeHtml(PrintWriter out);
 
-    public final List<String> getCssFiles() {
-        return cssFiles;
-    }
-
     public final List<String> getJsFiles() {
         return jsFiles;
     }
 
     public final List<HtmlContent> getScriptCodes() {
         return scriptCodes;
+    }
+
+    public final List<String> getCssFiles() {
+        return cssFiles;
     }
 
     public final void addCssFile(String file) {
@@ -284,4 +286,15 @@ public abstract class UIPage extends AbstractPage {
         // FIXME 不应该出现此处的调用！
         throw new RuntimeException("不应该出现此处的调用！");
     }
+    
+    @Deprecated
+    public final String getJspFile() {
+        return jspFile;
+    }
+
+    @Deprecated
+    public final void setJspFile(String jspFile) {
+        this.jspFile = jspFile;
+    }
+
 }

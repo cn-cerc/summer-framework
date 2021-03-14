@@ -1,6 +1,7 @@
 package cn.cerc.ui.page;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,11 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
+import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.HtmlContent;
 import cn.cerc.ui.core.MutiGrid;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.grid.AbstractGrid;
@@ -22,14 +25,23 @@ import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIToolbar;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JspPageDialog extends JspPage {
     private boolean showMenus = true; // 是否显示主菜单
     private MutiPage pages;
     // 工具面板：多页形式
     private UIToolbar toolBar;
     private UIFooter footer;
-    
+    //
+    // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
+    private List<HtmlContent> scriptCodes = new ArrayList<>();
+    // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
+    private List<String> jsFiles = new ArrayList<>();
+    // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
+    private List<String> cssFiles = new ArrayList<>();
+
     public JspPageDialog(IForm form) {
         super();
         setForm(form);
@@ -109,7 +121,7 @@ public class JspPageDialog extends JspPage {
         }
         return footer;
     }
-    
+
     public void installAdvertisement() {
         super.put("_showAd_", this.getHeader().getAdvertisement());
     }
@@ -130,6 +142,38 @@ public class JspPageDialog extends JspPage {
     public void add(String id, AbstractGrid grid) {
         put(id, grid);
         pages = grid.getPages();
+    }
+
+    @Deprecated
+    public final List<String> getJsFiles() {
+        return jsFiles;
+    }
+
+    @Deprecated
+    public final void addScriptFile(String file) {
+        file = CDN.get(file);
+        jsFiles.add(file);
+    }
+
+    @Deprecated
+    public final List<HtmlContent> getScriptCodes() {
+        return scriptCodes;
+    }
+
+    @Deprecated
+    public final void addScriptCode(HtmlContent scriptCode) {
+        scriptCodes.add(scriptCode);
+    }
+
+    @Deprecated
+    public final List<String> getCssFiles() {
+        return cssFiles;
+    }
+
+    @Deprecated
+    public final void addCssFile(String file) {
+        file = CDN.get(file);
+        cssFiles.add(file);
     }
 
 }
