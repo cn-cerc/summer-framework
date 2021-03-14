@@ -59,15 +59,11 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
 
     @Override
     public String checkToken(String token) throws IOException, ServletException {
-        IForm form = this.getForm();
         try {
             log.debug("create session by token {}", token);
             ITokenManage manage = Application.getBeanDefault(ITokenManage.class,
                     this.getForm().getHandle().getSession());
             if (manage.resumeToken(token)) {
-                return null;
-            }
-            if (form.logon()) {
                 return null;
             }
         } catch (Exception e) {
