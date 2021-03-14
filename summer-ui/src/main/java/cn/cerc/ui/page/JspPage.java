@@ -1,6 +1,7 @@
 package cn.cerc.ui.page;
 
 import cn.cerc.ui.mvc.AbstractPage;
+import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
 
 import java.io.File;
@@ -17,6 +18,8 @@ public class JspPage extends AbstractPage {
     private String jspFile;
     // 头部：广告+菜单
     private UIHeader header;
+    // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
+    private UIFooter footer;
     
     public JspPage() {
         super();
@@ -108,6 +111,15 @@ public class JspPage extends AbstractPage {
         String file = appPath + fileName;
         File f = new File(file);
         return f.exists();
+    }
+
+    @Deprecated
+    public UIFooter getFooter() {
+        if(footer == null) {
+            footer = new UIFooter(this);
+            this.add(footer.getId(), this);
+        }
+        return footer;
     }
 
 }
