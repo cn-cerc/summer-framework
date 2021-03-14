@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.IPassport;
+import cn.cerc.mis.core.PassportResult;
 import cn.cerc.mis.rds.PassportRecord;
 
 @Component
@@ -14,21 +15,23 @@ import cn.cerc.mis.rds.PassportRecord;
 public class PassportDefault implements IPassport {
     private IHandle handle;
     private ISession session;
+    
+    private static final String GUEST_DEFAULT = "guest.default";
 
     @Override
-    public boolean passProc(String versions, String procCode) {
-        return true;
+    public PassportResult passProc(String versions, String procCode) {
+        return GUEST_DEFAULT.equals(procCode) ? PassportResult.PASS : PassportResult.CHECK;
     }
 
     @Override
     public boolean passAction(String procCode, String action) {
-        return true;
+        return GUEST_DEFAULT.equals(procCode);
     }
 
     @Override
     public PassportRecord getRecord(String procCode) {
         PassportRecord result = new PassportRecord();
-        result.setAdmin(true);
+        result.setAdmin(GUEST_DEFAULT.equals(procCode));
         return result;
     }
 
