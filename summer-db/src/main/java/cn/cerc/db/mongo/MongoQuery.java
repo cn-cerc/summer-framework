@@ -21,11 +21,8 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
-import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ISessionOwner;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlOperator;
 
 public class MongoQuery extends DataQuery {

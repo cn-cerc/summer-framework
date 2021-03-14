@@ -5,7 +5,7 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.SupportHandle;
 
-public interface IService extends SupportHandle {
+public interface IService extends IHandle, SupportHandle {
     IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException;
 
     default ServiceStatus fail(String format, Object... args) {
@@ -41,4 +41,16 @@ public interface IService extends SupportHandle {
     default String getJSON(DataSet dataOut) {
         return String.format("[%s]", dataOut.getJSON());
     }
+
+    IHandle getHandle();
+
+    // 数据库连接
+    void setHandle(IHandle handle);
+
+    @Deprecated
+    @Override
+    default void init(IHandle handle) {
+        setHandle(handle);
+    }
+
 }

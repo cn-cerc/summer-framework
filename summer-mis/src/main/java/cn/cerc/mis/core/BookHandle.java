@@ -2,12 +2,10 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.mis.SummerMIS;
 
-public class BookHandle extends CustomBean implements ISession {
+public class BookHandle extends Handle implements ISession {
     private static final ClassResource res = new ClassResource(BookHandle.class, SummerMIS.ID);
 
     private String corpNo;
