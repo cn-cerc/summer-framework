@@ -123,12 +123,12 @@ public class StartForms implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-
+        log.info("{} init.", this.getClass().getName());
     }
 
     @Override
     public void destroy() {
-
+        log.info("{} destroy.", this.getClass().getName());
     }
 
 }

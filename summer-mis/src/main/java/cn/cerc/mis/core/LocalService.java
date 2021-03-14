@@ -124,7 +124,7 @@ public class LocalService implements IServiceProxy {
         try {
             if (!"SvrSession.byUserCode".equals(this.serviceCode)
                     && !"SvrUserMessages.getWaitList".equals(this.serviceCode)) {
-                log.info(this.serviceCode);
+                log.debug(this.serviceCode);
             }
             if (ServerConfig.isServerMaster()) {
                 IStatus status = bean.execute(dataIn, dataOut);
