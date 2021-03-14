@@ -1,18 +1,7 @@
 package cn.cerc.ui.mvc;
 
-import cn.cerc.core.ClassConfig;
-import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.config.ApplicationConfig;
-import cn.cerc.mis.core.AppClient;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IPage;
-import cn.cerc.ui.core.UrlRecord;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -22,11 +11,19 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
+
+import cn.cerc.core.ClassConfig;
+import cn.cerc.core.ISession;
+import cn.cerc.mis.SummerMIS;
+import cn.cerc.mis.core.AppClient;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.Handle;
+import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.IPage;
+import cn.cerc.ui.core.UrlRecord;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Deprecated // 请改使用 StartAppDefault
 public class StartApp implements Filter {
     private static final ClassConfig config = new ClassConfig(StartApp.class, SummerMIS.ID);
 
@@ -99,12 +96,12 @@ public class StartApp implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-
+        log.info("{} init.", this.getClass().getName());
     }
 
     @Override
     public void destroy() {
-
+        log.info("{} destroy.", this.getClass().getName());
     }
 
 }

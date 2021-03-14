@@ -7,8 +7,10 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import cn.cerc.mis.core.AbstractHandle;
+import cn.cerc.core.ISession;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
+import cn.cerc.ui.core.IRightMenuLoad;
 import cn.cerc.ui.mvc.IMenuBar;
 
 @Component
@@ -24,4 +26,13 @@ public class RightMenus extends Handle {
         this.items = items;
     }
 
+    @Override
+    public void setSession(ISession session) {
+        super.setSession(session);
+
+        IRightMenuLoad child = Application.getBeanDefault(IRightMenuLoad.class, session);
+        if (child != null)
+            child.loadMenu(items);
+
+    }
 }
