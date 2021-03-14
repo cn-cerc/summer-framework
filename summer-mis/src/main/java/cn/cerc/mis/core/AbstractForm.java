@@ -171,6 +171,10 @@ public abstract class AbstractForm implements IForm {
             if (CLIENTVER != null)
                 request.getSession().setAttribute("CLIENTVER", CLIENTVER);
 
+            if(this.logon()) {
+                return this.getPage(funcCode);
+            }
+            
             // 是否拥有此菜单调用权限
             IPassport passport = Application.getBeanDefault(IPassport.class, this.getSession()); 
             if (!passport.passForm(this)) {
