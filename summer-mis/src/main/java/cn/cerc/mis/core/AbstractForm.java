@@ -10,8 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.google.gson.Gson;
 
 import cn.cerc.core.ClassConfig;
@@ -25,12 +23,10 @@ import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
-//@Component
-//@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
-public class AbstractForm implements IForm {
+public abstract class AbstractForm implements IForm {
     private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
-    private static final ClassConfig config = new ClassConfig(CustomForm.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
     
     private ISession session;
     protected IHandle handle;
@@ -385,14 +381,6 @@ public class AbstractForm implements IForm {
 
     public String[] getPathVariables() {
         return this.pathVariables;
-    }
-
-    @Override
-    public IPage execute() throws Exception {
-        JsonPage page = new JsonPage(this);
-        page.put("class", this.getClass().getName());
-        page.setResultMessage(false, "page is not defined.");
-        return page;
     }
 
     @Override
