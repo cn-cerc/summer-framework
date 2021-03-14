@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.IPassport;
-import cn.cerc.mis.core.PassportResult;
 import cn.cerc.mis.rds.PassportRecord;
 
 @Component
@@ -19,8 +18,8 @@ public class PassportDefault implements IPassport {
     private static final String GUEST_DEFAULT = "guest.default";
 
     @Override
-    public PassportResult passProc(String versions, String procCode) {
-        return GUEST_DEFAULT.equals(procCode) ? PassportResult.PASS : PassportResult.CHECK;
+    public boolean passProc(String versions, String procCode) {
+        return GUEST_DEFAULT.equals(procCode);
     }
 
     @Override
