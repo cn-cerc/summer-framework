@@ -13,11 +13,11 @@ public interface IPassport extends ISessionOwner {
         }
         String verList = form.getParam("verlist", null);
         String procCode = form.getPermission();
-        return passProc(verList, procCode);
+        return passProc(verList, procCode) ? PassportResult.PASS : PassportResult.STOP;
     }
 
     // 是否有程序的执行权限
-    PassportResult passProc(String versions, String procCode);
+    boolean passProc(String versions, String procCode);
 
     // 是否有程序指定动作的权限
     boolean passAction(String procCode, String action);
