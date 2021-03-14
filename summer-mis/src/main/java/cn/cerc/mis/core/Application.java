@@ -72,10 +72,10 @@ public class Application {
     }
 
     public static void init(String packageId) {
-        if(context != null)
+        if (context != null)
             return;
         String xmlFile = String.format("%s-spring.xml", packageId);
-        if(packageId == null)
+        if (packageId == null)
             xmlFile = "application.xml";
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(xmlFile);
         context = ctx;
@@ -144,7 +144,7 @@ public class Application {
         }
         String beanId = classId.substring(0, 1).toLowerCase() + classId.substring(1);
         // 找不到自定义的，就再查找默认的类
-        T result = getBean(requiredType, beanId, beanId + "Default"); 
+        T result = getBean(requiredType, beanId, beanId + "Default");
         // 自动注入 session
         if ((session != null) && (result instanceof ISessionOwner)) {
             ((ISessionOwner) result).setSession(session);
@@ -219,7 +219,7 @@ public class Application {
     public static ISystemTable getSystemTable() {
         return getBeanDefault(ISystemTable.class, null);
     }
-    
+
     public static IForm getForm(HttpServletRequest req, HttpServletResponse resp, String formId) {
         if (formId == null || "".equals(formId) || "service".equals(formId)) {
             return null;
@@ -296,31 +296,28 @@ public class Application {
 
             // 进行安全检查，若未登录则显示登录对话框
             if (form.logon()) {
-                return form.getView(funcCode);
-            }
-
-            IAppLogin appLogin = Application.getBeanDefault(IAppLogin.class, session);
-            appLogin.init(form);
-
-            String loginJspFile = null;
-            // 若页面有传递用户帐号，则强制重新校验
-            if (form.getRequest().getParameter("login_usr") != null) {
-                // 检查服务器的角色状态，如果是从服务器，则允许登录
-                if (ApplicationConfig.isReplica())
-                    throw new RuntimeException(res.getString(1, "当前服务不支持登录，请返回首页重新登录"));
-
-                String login_usr = req.getParameter("login_usr");
-                String login_pwd = req.getParameter("login_pwd");
-                loginJspFile = appLogin.checkLogin(login_usr, login_pwd);
+                if (!Application.getPassport(session).pass(form)) {
+                    JsonPage output = new JsonPage(form);
+                    output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
+                    output.execute();
+                    return null;
+                }
+                // 安全登录设备认证
+                if (!form.passDevice()) {
+                    ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
+                    if (deviceCheck.pass(form) != PassportResult.PASS) {
+                        log.debug("没有进行认证过，跳转到设备认证页面");
+                        return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+                    }
+                }
             } else {
-                // 检查session或url中是否存在sid
-                loginJspFile = appLogin.checkToken(client.getToken());
+                IAppLogin appLogin = Application.getBeanDefault(IAppLogin.class, session);
+                if (!appLogin.pass(form)) {
+                    return appLogin.getJspFile();
+                }
             }
-            if (loginJspFile != null) {
-                return loginJspFile;
-            } else {
-                return form.getView(funcCode);
-            }
+
+            return form.getView(funcCode);
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
             return null;
