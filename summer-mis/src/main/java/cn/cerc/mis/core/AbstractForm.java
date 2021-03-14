@@ -17,10 +17,6 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -58,10 +54,7 @@ public abstract class AbstractForm implements IForm {
 
     @Override
     public boolean logon() {
-        if (getHandle() == null) {
-            return false;
-        }
-        return getSession().logon();
+        return false;
     }
 
     @Override
@@ -156,7 +149,7 @@ public abstract class AbstractForm implements IForm {
 
     // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
     @Override
-    public String getView(String funcCode) {
+    public String getView(String funcCode) throws Exception {
         HttpServletResponse response = this.getResponse();
         HttpServletRequest request = this.getRequest();
         if ("excel".equals(funcCode)) {
@@ -166,26 +159,11 @@ public abstract class AbstractForm implements IForm {
             response.setContentType("text/html;charset=UTF-8");
         }
 
-        try {
-            String CLIENTVER = request.getParameter("CLIENTVER");
-            if (CLIENTVER != null)
-                request.getSession().setAttribute("CLIENTVER", CLIENTVER);
+        String CLIENTVER = request.getParameter("CLIENTVER");
+        if (CLIENTVER != null)
+            request.getSession().setAttribute("CLIENTVER", CLIENTVER);
 
-            return this.getPage(funcCode);
-        } catch (Exception e) {
-            Throwable err = e.getCause();
-            if (err == null) {
-                err = e;
-            }
-            IAppErrorPage errorPage = Application.getBeanDefault(IAppErrorPage.class, null);
-            if (errorPage == null) {
-                log.warn("not define bean: errorPage");
-                log.error(err.getMessage());
-                err.printStackTrace();
-                return null;
-            }
-            return errorPage.getErrorPage(request, response, err);
-        }
+        return this.getPage(funcCode);
     }
 
     private String getPage(String funcCode) throws NoSuchMethodException, SecurityException, IllegalAccessException,

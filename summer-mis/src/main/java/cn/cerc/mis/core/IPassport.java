@@ -6,14 +6,14 @@ import cn.cerc.mis.rds.PassportRecord;
 public interface IPassport extends ISessionOwner {
 
     // 是否有菜单的执行权限
-    default PassportResult pass(IForm form) {
+    default boolean pass(IForm form) {
         String securityCheck = form.getParam("security", "true");
         if (!"true".equals(securityCheck)) {
-            return PassportResult.PASS;
+            return true;
         }
         String verList = form.getParam("verlist", null);
         String procCode = form.getPermission();
-        return passProc(verList, procCode) ? PassportResult.PASS : PassportResult.STOP;
+        return passProc(verList, procCode);
     }
 
     // 是否有程序的执行权限

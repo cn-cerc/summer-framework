@@ -52,7 +52,7 @@ public interface IForm extends IHandle {
     }
 
     // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
-    String getView(String funcId) throws ServletException, IOException;
+    String getView(String funcId) throws Exception;
 
     void setPathVariables(String[] pathVariables);
 }

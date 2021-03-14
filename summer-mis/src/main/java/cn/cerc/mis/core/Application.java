@@ -295,30 +295,25 @@ public class Application {
             form.setPathVariables(pathVariables);
 
             // 进行安全检查，若未登录则显示登录对话框
-            if (!form.logon()) {
-                switch (Application.getPassport(session).pass(form)) {
-                case STOP:
+            if (form.logon()) {
+                if (!Application.getPassport(session).pass(form)) {
                     JsonPage output = new JsonPage(form);
                     output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
                     output.execute();
                     return null;
-                case CHECK:
-                    return config.getString(Application.JSPFILE_LOGIN, "common/FrmLogin.jsp");
-                default:
-                    IAppLogin appLogin = Application.getBeanDefault(IAppLogin.class, session);
-                    if (!appLogin.pass(form)) {
-                        return appLogin.getJspFile();
-                    }
-                    break;
                 }
-            }
-
-            // 安全登录设备认证
-            if (!form.passDevice()) {
-                ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
-                if (deviceCheck.pass(form) != PassportResult.PASS) {
-                    log.debug("没有进行认证过，跳转到设备认证页面");
-                    return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+                // 安全登录设备认证
+                if (!form.passDevice()) {
+                    ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
+                    if (deviceCheck.pass(form) != PassportResult.PASS) {
+                        log.debug("没有进行认证过，跳转到设备认证页面");
+                        return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+                    }
+                }
+            } else {
+                IAppLogin appLogin = Application.getBeanDefault(IAppLogin.class, session);
+                if (!appLogin.pass(form)) {
+                    return appLogin.getJspFile();
                 }
             }
 
