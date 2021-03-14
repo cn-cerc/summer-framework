@@ -71,6 +71,16 @@ public class Application {
         staticPath = config.getString("app.static.path", "");
     }
 
+    public static void init(String packageId) {
+        if(context != null)
+            return;
+        String xmlFile = String.format("%s-spring.xml", packageId);
+        if(packageId == null)
+            xmlFile = "application.xml";
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(xmlFile);
+        context = ctx;
+    }
+
     public static ApplicationContext getContext() {
         return context;
     }
@@ -374,16 +384,6 @@ public class Application {
 
     public static String getStaticPath() {
         return staticPath;
-    }
-
-    public static void init(String packageId) {
-        if(context != null)
-            return;
-        String xmlFile = String.format("%s-spring.xml", packageId);
-        if(packageId == null)
-            xmlFile = "application.xml";
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(xmlFile);
-        context = ctx;
     }
 
     public static ITokenManage getTokenManage(ISession session) {
