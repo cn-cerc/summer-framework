@@ -37,7 +37,7 @@ public class SessionDefault implements ISession {
         params.put(Application.roleCode, "");
         params.put(Application.bookNo, "");
         params.put(Application.deviceLanguage, Application.App_Language);
-        log.debug("new CustomBean");
+        log.debug("new SessionDefault");
     }
 
     @Override

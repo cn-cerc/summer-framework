@@ -26,9 +26,6 @@ public interface IForm extends IHandle {
     // 数据库连接
     void setHandle(IHandle handle);
 
-    // 是否有登录
-    boolean logon();
-
     // 取得访问设备讯息
     IClient getClient();
 
@@ -45,6 +42,11 @@ public interface IForm extends IHandle {
 
     // 取得权限代码
     String getPermission();
+
+    // 是否有登录
+    default boolean logon() {
+        return false;
+    }
 
     // 设备安全检查通过否，为true时需要进行进一步授权
     default boolean passDevice() {

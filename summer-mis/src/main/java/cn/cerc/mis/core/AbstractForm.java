@@ -53,11 +53,6 @@ public abstract class AbstractForm implements IForm {
     }
 
     @Override
-    public boolean logon() {
-        return false;
-    }
-
-    @Override
     public HttpServletRequest getRequest() {
         return this.request;
     }
