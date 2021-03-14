@@ -7,12 +7,13 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import cn.cerc.db.core.CustomBean;
+import cn.cerc.mis.core.AbstractHandle;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.ui.mvc.IMenuBar;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class RightMenus extends CustomBean {
+public class RightMenus extends Handle {
     private List<IMenuBar> items = new ArrayList<>();
 
     public List<IMenuBar> getItems() {

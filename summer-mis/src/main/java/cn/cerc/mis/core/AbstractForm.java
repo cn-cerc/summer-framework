@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
-import cn.cerc.db.core.CustomBean;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.client.IServiceProxy;
@@ -28,9 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 //@Component
 //@Scope(WebApplicationContext.SCOPE_REQUEST)
 @Slf4j
-public class AbstractForm extends CustomBean implements IForm {
+public class AbstractForm implements IForm {
     private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
+    
+    private ISession session;
+    protected IHandle handle;
 
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -390,5 +393,26 @@ public class AbstractForm extends CustomBean implements IForm {
         page.put("class", this.getClass().getName());
         page.setResultMessage(false, "page is not defined.");
         return page;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
+    public void setHandle(IHandle handle) {
+        this.handle = handle;
+        if (handle != null) {
+            this.setSession(handle.getSession());
+        }
+    }
+
+    public IHandle getHandle() {
+        return this.handle;
     }
 }

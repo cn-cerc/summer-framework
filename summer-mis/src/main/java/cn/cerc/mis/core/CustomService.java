@@ -2,7 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.CustomBean;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Slf4j
-public class CustomService extends CustomBean implements IService, IRestful {
+public class CustomService extends AbstractService {
     private static final ClassResource res = new ClassResource(CustomService.class, SummerMIS.ID);
 
     @Autowired
@@ -22,14 +22,9 @@ public class CustomService extends CustomBean implements IService, IRestful {
     protected String funcCode;
     private String message = "";
     private StringBuffer msg = null;
-    private String restPath;
-
-    public void init(IHandle handle) {
-        this.setHandle(handle);
-    }
 
     public CustomService init(CustomService owner, boolean refData) {
-        this.init(owner);
+        this.setHandle(owner);
         if (refData) {
             this.dataIn = owner.getDataIn();
             this.dataOut = owner.getDataOut();
@@ -170,13 +165,4 @@ public class CustomService extends CustomBean implements IService, IRestful {
         this.funcCode = funcCode;
     }
 
-    @Override
-    public String getRestPath() {
-        return restPath;
-    }
-
-    @Override
-    public void setRestPath(String restPath) {
-        this.restPath = restPath;
-    }
 }

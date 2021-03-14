@@ -147,7 +147,7 @@ public class LocalService implements IServiceProxy {
             }
 
             // 没有缓存时，直接读取并存入缓存
-            bean.init(handle);
+            bean.setHandle(handle);
             IStatus status = bean.execute(dataIn, dataOut);
             boolean result = status.getResult();
             message = status.getMessage();

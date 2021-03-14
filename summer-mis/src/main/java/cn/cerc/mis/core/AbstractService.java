@@ -1,13 +1,15 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.CustomBean;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractService extends CustomBean implements IService, IRestful {
+public abstract class AbstractService implements IService, IRestful {
     @Autowired
     public ISystemTable systemTable;
     private String restPath;
+    private ISession session;
+    protected IHandle handle;
 
     @Override
     public String getRestPath() {
@@ -19,7 +21,29 @@ public abstract class AbstractService extends CustomBean implements IService, IR
         this.restPath = restPath;
     }
 
+    @Deprecated
     public void init(IHandle handle) {
         this.setHandle(handle);
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
+    public void setHandle(IHandle handle) {
+        this.handle = handle;
+        if (handle != null) {
+            this.setSession(handle.getSession());
+        }
+    }
+
+    public IHandle getHandle() {
+        return this.handle;
     }
 }

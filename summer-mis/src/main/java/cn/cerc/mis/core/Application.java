@@ -19,6 +19,7 @@ import cn.cerc.core.LanguageResource;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.SummerMIS;
@@ -184,6 +185,9 @@ public class Application {
         if (bean != null && handle != null) {
             if (bean instanceof SupportHandle) {
                 ((SupportHandle) bean).init(handle);
+            }            
+            if (bean instanceof IHandle) {
+                ((IHandle) bean).setSession(handle.getSession());
             }
         }
         return bean;
@@ -192,7 +196,7 @@ public class Application {
     public static IService getService(IHandle handle, String serviceCode) {
         IService bean = context.getBean(serviceCode, IService.class);
         if (bean != null && handle != null) {
-            bean.init(handle);
+            bean.setHandle(handle);
         }
         return bean;
     }
@@ -383,6 +387,10 @@ public class Application {
             xmlFile = "application.xml";
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(xmlFile);
         context = ctx;
+    }
+
+    public static ITokenManage getTokenManage(ISession session) {
+        return getBeanDefault(ITokenManage.class, session);
     }
 
 }

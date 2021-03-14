@@ -3,9 +3,11 @@ package cn.cerc.mis.task;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.CustomBean;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
+import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.SummerMIS;
+import cn.cerc.mis.core.AbstractHandle;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
@@ -13,7 +15,7 @@ import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class AbstractTask extends CustomBean implements Runnable {
+public abstract class AbstractTask extends Handle implements SupportHandle, Runnable {
 
     @Autowired
     public ISystemTable systemTable;
@@ -73,6 +75,11 @@ public abstract class AbstractTask extends CustomBean implements Runnable {
         }
     }
 
+    @Override
+    @Deprecated
+    public void init(IHandle handle) {
+        this.setHandle(handle);
+    }
     // 具体业务逻辑代码
     public abstract void execute() throws Exception;
 }

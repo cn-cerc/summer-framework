@@ -4,7 +4,6 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.CustomBean;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ISessionOwner;
 
