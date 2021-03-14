@@ -183,9 +183,6 @@ public class Application {
     public static <T> T getBean(IHandle handle, Class<T> requiredType) {
         T bean = getBean(requiredType);
         if (bean != null && handle != null) {
-            if (bean instanceof SupportHandle) {
-                ((SupportHandle) bean).init(handle);
-            }            
             if (bean instanceof IHandle) {
                 ((IHandle) bean).setSession(handle.getSession());
             }

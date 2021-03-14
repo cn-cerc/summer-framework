@@ -21,11 +21,6 @@ public abstract class AbstractService implements IService, IRestful {
         this.restPath = restPath;
     }
 
-    @Deprecated
-    public void init(IHandle handle) {
-        this.setHandle(handle);
-    }
-
     @Override
     public ISession getSession() {
         return session;
