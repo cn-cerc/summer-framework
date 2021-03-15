@@ -5,14 +5,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.IPassport;
 import cn.cerc.mis.rds.PassportRecord;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class PassportDefault implements IPassport {
-    private IHandle handle;
     private ISession session;
     
     private static final String GUEST_DEFAULT = "guest.default";
@@ -37,10 +35,6 @@ public class PassportDefault implements IPassport {
     @Override
     public boolean passsMenu(String menuCode) {
         return true;
-    }
-
-    public IHandle getHandle() {
-        return handle;
     }
 
     @Override
