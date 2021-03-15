@@ -65,7 +65,7 @@ public class RemoteService implements IServiceProxy {
                 headIn.setField(args[i].toString(), args[i + 1]);
             }
         }
-        log.info(this.service);
+        log.debug(this.service);
         if (Utils.isEmpty(this.service)) {
             this.setMessage(res.getString(2, "服务代码不允许为空"));
             return false;
@@ -83,11 +83,11 @@ public class RemoteService implements IServiceProxy {
             Curl curl = new Curl();
             curl.put("dataIn", getDataIn().getJSON());
             curl.put(RequestData.TOKEN, this.token);
-            log.info("url {}", this.getUrl());
-            log.info("params {}", curl.getParameters());
+            log.debug("url {}", this.getUrl());
+            log.debug("params {}", curl.getParameters());
 
             String response = curl.doPost(this.getUrl());
-            log.info("response {}", response);
+            log.debug("response {}", response);
 
             if (response == null) {
                 log.warn("url {}", this.getUrl());

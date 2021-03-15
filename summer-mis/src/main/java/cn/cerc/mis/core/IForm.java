@@ -1,12 +1,9 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.IHandle;
-
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import cn.cerc.db.core.IHandle;
 
 public interface IForm extends IHandle {
 
@@ -43,7 +40,7 @@ public interface IForm extends IHandle {
     // 取得权限代码
     String getPermission();
 
-    // 是否有登录
+    // 匿名可用否
     default boolean logon() {
         return false;
     }

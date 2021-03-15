@@ -251,8 +251,7 @@ public class Application {
         }
     }
 
-    public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode,
-            String... pathVariables) {
+    public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode, String... pathVariables) {
         // 设置登录开关
         req.setAttribute("logon", false);
 
@@ -294,20 +293,24 @@ public class Application {
             // 传递路径变量
             form.setPathVariables(pathVariables);
 
-            // 进行安全检查，若未登录则显示登录对话框
-            if (form.logon()) {
-                if (!Application.getPassport(session).pass(form)) {
-                    JsonPage output = new JsonPage(form);
-                    output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
-                    output.execute();
-                    return null;
-                }
-                // 安全登录设备认证
-                if (!form.passDevice()) {
-                    ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
-                    if (deviceCheck.pass(form) != PassportResult.PASS) {
-                        log.debug("没有进行认证过，跳转到设备认证页面");
-                        return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+            // 用户已登录系统
+            if (session.logon()) {
+                // 当前Form需要安全检查
+                if (form.logon()) {
+                    if (!Application.getPassport(session).pass(form)) {
+                        resp.setContentType("text/html;charset=UTF-8");
+                        JsonPage output = new JsonPage(form);
+                        output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
+                        output.execute();
+                        return null;
+                    }
+                    // 安全登录设备认证
+                    if (!form.passDevice()) {
+                        ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
+                        if (deviceCheck.pass(form) != PassportResult.PASS) {
+                            log.debug("没有进行认证过，跳转到设备认证页面");
+                            return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+                        }
                     }
                 }
             } else {
@@ -328,8 +331,7 @@ public class Application {
         }
     }
 
-    public static void outputView(HttpServletRequest request, HttpServletResponse response, String url)
-            throws IOException, ServletException {
+    public static void outputView(HttpServletRequest request, HttpServletResponse response, String url) throws IOException, ServletException {
         if (url == null)
             return;
 
