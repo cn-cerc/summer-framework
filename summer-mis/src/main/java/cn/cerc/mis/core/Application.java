@@ -293,44 +293,47 @@ public class Application {
             // 传递路径变量
             form.setPathVariables(pathVariables);
 
+            // 当前Form需要安全检查
+            if (form.allowGuestUser()) {
+                return form.getView(funcCode);
+            }
+
             // 用户已登录系统
             if (session.logon()) {
-                // 当前Form需要安全检查
-                if (!form.allowGuestUser()) {
-                    if (!Application.getPassport(session).pass(form)) {
-                        resp.setContentType("text/html;charset=UTF-8");
-                        JsonPage output = new JsonPage(form);
-                        output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
-                        output.execute();
-                        return null;
-                    }
+                // 权限检查
+                if (!Application.getPassport(session).pass(form)) {
+                    resp.setContentType("text/html;charset=UTF-8");
+                    JsonPage output = new JsonPage(form);
+                    output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
+                    output.execute();
+                    return null;
                 }
             } else {
+                // 登录验证
                 IAppLogin appLogin = Application.getBeanDefault(IAppLogin.class, session);
                 if (!appLogin.pass(form)) {
                     return appLogin.getJspFile();
                 }
+            }
 
+            // 设备校验
+            if (form.isSecurityDevice()) {
+                return form.getView(funcCode);
             }
-            // 安全登录设备认证
-            if (!form.allowGuestUser()) {
-                if (!form.isSecurityDevice()) {
-                    ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
-                    switch (deviceCheck.pass(form)) {
-                    case CHECK:
-                        return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
-                    case STOP:
-                        resp.setContentType("text/html;charset=UTF-8");
-                        JsonPage output = new JsonPage(form);
-                        output.setResultMessage(false, res.getString(2, "对不起，当前设备被禁止使用！"));
-                        output.execute();
-                        return null;
-                    default:
-                        break;
-                    }
-                }
+
+            ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
+            switch (deviceCheck.pass(form)) {
+            case PASS:
+                return form.getView(funcCode);
+            case CHECK:
+                return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+            default:
+                resp.setContentType("text/html;charset=UTF-8");
+                JsonPage output = new JsonPage(form);
+                output.setResultMessage(false, res.getString(2, "对不起，当前设备被禁止使用！"));
+                output.execute();
+                return null;
             }
-            return form.getView(funcCode);
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
             return null;
