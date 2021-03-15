@@ -347,11 +347,11 @@ public class SvrUserLogin extends CustomService {
             return true;
         }
 
+        getDataOut().getHead().setField("Used_", cdsVer.getInt("Used_"));
         // 未通过则需要检查验证码
         DataValidateException.stopRun(res.getString(21, "验证码不允许为空"), !headIn.hasValue("verifyCode"));
         String verifyCode = headIn.getString("verifyCode");
 
-        getDataOut().getHead().setField("Used_", cdsVer.getInt("Used_"));
         if (cdsVer.getInt("Used_") == 2) {
             throw new SecurityCheckException(res.getString(22, "您正在使用的这台设备，被管理员设置为禁止登入系统！"));
         }
