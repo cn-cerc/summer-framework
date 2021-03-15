@@ -29,6 +29,8 @@ public abstract class AbstractService implements IService, IRestful {
     @Override
     public void setSession(ISession session) {
         this.session = session;
+        if(handle == null)
+            handle = new Handle(session);
     }
 
     public void setHandle(IHandle handle) {
