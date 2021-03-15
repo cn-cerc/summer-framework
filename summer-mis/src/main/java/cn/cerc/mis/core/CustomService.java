@@ -83,8 +83,7 @@ public class CustomService extends AbstractService {
                 if (totalTime > timeout) {
                     String[] tmp = this.getClass().getName().split("\\.");
                     String service = tmp[tmp.length - 1] + "." + this.funcCode;
-                    log.warn(String.format("corpNo:%s, userCode:%s, service:%s, tickCount:%s", getCorpNo(),
-                            getUserCode(), service, totalTime));
+                    log.warn(String.format("corpNo:%s, userCode:%s, service:%s, tickCount:%s", getCorpNo(), getUserCode(), service, totalTime));
                 }
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -165,4 +164,11 @@ public class CustomService extends AbstractService {
         this.funcCode = funcCode;
     }
 
+    @Override
+    public String getCorpNo() {
+        if (handle != null)
+            return handle.getCorpNo();
+        else
+            return getSession().getCorpNo();
+    }
 }
