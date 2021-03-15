@@ -5,10 +5,10 @@ import java.util.List;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ITokenManage;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
@@ -67,11 +67,11 @@ public class UIHeader extends UIComponent implements IUserLanguage {
     }
 
     private String getHomeImage(AbstractPage owner) {
-        String homeImg = CDN.get(config.getClassProperty("icon.home", ""));
+        String homeImg = config.getClassProperty("icon.home", "");
         if (owner.getForm().getClient().isPhone()) {
             String phoneIndex = config.getString("app.phone.home.image", null);
             if (Utils.isNotEmpty(homeImg)) {
-                homeImg = CDN.get(phoneIndex);
+                homeImg = phoneIndex;
             }
         }
         return String.format("<img src=\"%s%s\"/>", Application.getStaticPath(), homeImg);

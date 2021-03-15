@@ -153,7 +153,7 @@ public class CustomService extends AbstractService {
 
     // 设置是否需要授权才能登入
     public boolean checkSecurity(IHandle handle) {
-        IHandle sess = (IHandle) handle.getProperty(null);
+        ISession sess = handle.getSession();
         return sess != null && sess.logon();
     }
 

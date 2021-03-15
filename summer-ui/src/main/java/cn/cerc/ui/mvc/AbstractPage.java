@@ -11,9 +11,9 @@ import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Buffer;
-import cn.cerc.db.oss.OssConnection;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.cdn.CDN;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mis.language.R;
@@ -37,14 +37,7 @@ public abstract class AbstractPage extends UIComponent implements IPage, IUserLa
     @Override
     public final void setForm(IForm form) {
         this.form = form;
-
-        // 获取cdn的地址
-        String site = config.getString(OssConnection.oss_site, "");
-        // 判断cdn是否启用
-        if (!Utils.isEmpty(site) && config.getBoolean(CDN.OSS_CDN_ENABLE, false))
-            site += "/resources/";
-
-        this.add("cdn", site);
+        this.add("cdn", Application.getStaticPath());
         this.add("version", config.getString(CDN.BROWSER_CACHE_VERSION, "1.0.0.0"));
         if (form != null) {
             this.put("jspPage", this);

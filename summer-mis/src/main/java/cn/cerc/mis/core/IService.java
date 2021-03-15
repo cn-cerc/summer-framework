@@ -1,6 +1,7 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.SupportHandle;
@@ -33,7 +34,7 @@ public interface IService extends IHandle, SupportHandle {
     }
 
     default boolean checkSecurity(IHandle handle) {
-        IHandle sess = (IHandle) handle.getProperty(null);
+        ISession sess = handle.getSession();
         return sess != null && sess.logon();
     }
 
