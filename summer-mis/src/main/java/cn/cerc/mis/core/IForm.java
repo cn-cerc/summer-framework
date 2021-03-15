@@ -41,11 +41,21 @@ public interface IForm extends IHandle {
     String getPermission();
 
     // 匿名可用否
+    default boolean allowGuestUser() {
+        return logon();
+    }
+    
+    @Deprecated
     default boolean logon() {
         return false;
     }
 
     // 设备安全检查通过否，为true时需要进行进一步授权
+    default boolean isSecurityDevice() {
+        return passDevice();
+    }
+    
+    @Deprecated
     default boolean passDevice() {
         return false;
     }

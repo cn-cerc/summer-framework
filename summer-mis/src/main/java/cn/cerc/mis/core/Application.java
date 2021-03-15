@@ -296,7 +296,7 @@ public class Application {
             // 用户已登录系统
             if (session.logon()) {
                 // 当前Form需要安全检查
-                if (form.logon()) {
+                if (!form.allowGuestUser()) {
                     if (!Application.getPassport(session).pass(form)) {
                         resp.setContentType("text/html;charset=UTF-8");
                         JsonPage output = new JsonPage(form);
@@ -304,22 +304,32 @@ public class Application {
                         output.execute();
                         return null;
                     }
-                    // 安全登录设备认证
-                    if (!form.passDevice()) {
-                        ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
-                        if (deviceCheck.pass(form) != PassportResult.PASS) {
-                            log.debug("没有进行认证过，跳转到设备认证页面");
-                            return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
-                        }
-                    }
                 }
             } else {
                 IAppLogin appLogin = Application.getBeanDefault(IAppLogin.class, session);
                 if (!appLogin.pass(form)) {
                     return appLogin.getJspFile();
                 }
-            }
 
+            }
+            // 安全登录设备认证
+            if (!form.allowGuestUser()) {
+                if (!form.isSecurityDevice()) {
+                    ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
+                    switch (deviceCheck.pass(form)) {
+                    case CHECK:
+                        return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+                    case STOP:
+                        resp.setContentType("text/html;charset=UTF-8");
+                        JsonPage output = new JsonPage(form);
+                        output.setResultMessage(false, res.getString(2, "对不起，当前设备被禁止使用！"));
+                        output.execute();
+                        return null;
+                    default:
+                        break;
+                    }
+                }
+            }
             return form.getView(funcCode);
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
