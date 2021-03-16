@@ -3,7 +3,6 @@ package cn.cerc.ui.parts;
 import cn.cerc.core.ClassResource;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.UrlMenu;
 
@@ -12,7 +11,7 @@ public class UISheetLine extends UISheet {
 
     private UrlMenu operaUrl;
 
-    public UISheetLine(UICustomComponent owner) {
+    public UISheetLine(UIComponent owner) {
         super(owner);
         this.setCaption(res.getString(1, "数据合计"));
     }

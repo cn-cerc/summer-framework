@@ -1,11 +1,12 @@
 package cn.cerc.ui.vcl;
 
-import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UICustomComponent;
+import cn.cerc.ui.parts.UIComponent;
 
 public class UIGroupBox extends UICustomComponent {
 
-    public UIGroupBox(UICustomComponent content) {
+    public UIGroupBox(UIComponent content) {
         super(content);
     }
 
