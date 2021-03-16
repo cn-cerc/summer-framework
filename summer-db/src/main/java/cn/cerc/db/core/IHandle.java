@@ -20,10 +20,6 @@ public interface IHandle extends ISessionOwner{
         return getSession().getUserName();
     }
 
-    default boolean logon() {
-        return getSession().logon();
-    }
-
     // 设置自定义参数
     default void setProperty(String key, Object value) {
         getSession().setProperty(key, value);
