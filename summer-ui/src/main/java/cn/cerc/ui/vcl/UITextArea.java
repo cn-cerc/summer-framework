@@ -13,7 +13,7 @@ import cn.cerc.ui.vcl.ext.UISpan;
 public class UITextArea extends UIComponent {
     private UISpan caption;
     private String name;
-    private String text;
+    private StringBuffer lines = new StringBuffer();
     private String placeholder;
     private int cols;// 列
     private int rows;// 行
@@ -65,7 +65,7 @@ public class UITextArea extends UIComponent {
         html.print(">");
 
         if (getText() != null) {
-            html.print(text);
+            html.print(lines.toString());
         }
         html.print("</textarea>");
     }
@@ -92,11 +92,16 @@ public class UITextArea extends UIComponent {
     }
 
     public String getText() {
-        return text;
+        return lines.toString();
     }
 
     public UITextArea setText(String text) {
-        this.text = text;
+        this.lines = new StringBuffer(text);
+        return this;
+    }
+    
+    public UITextArea append(String text) {
+        this.lines = lines.append(text);
         return this;
     }
 
