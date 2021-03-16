@@ -2,8 +2,9 @@ package cn.cerc.ui.parts;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.ui.SummerUI;
+import cn.cerc.ui.core.UICustomComponent;
 
-public class UISheet extends UIComponent {
+public class UISheet extends UICustomComponent {
     private static final ClassResource res = new ClassResource(UISheet.class, SummerUI.ID);
 
     private String caption = res.getString(1, "(无标题)");
@@ -13,8 +14,7 @@ public class UISheet extends UIComponent {
     public UISheet() {
         super(null);
     }
-
-    public UISheet(UIComponent owner) {
+    public UISheet(UICustomComponent owner) {
         super(owner);
     }
 

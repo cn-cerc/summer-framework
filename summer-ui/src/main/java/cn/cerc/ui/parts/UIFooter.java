@@ -1,17 +1,19 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.mvc.AbstractPage;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-
-public class UIFooter extends UIComponent {
+public class UIFooter extends UICustomComponent {
     private static final ClassResource res = new ClassResource(UIFooter.class, SummerUI.ID);
 
     private static final int MAX_MENUS = 7;
@@ -21,7 +23,7 @@ public class UIFooter extends UIComponent {
     private List<UIBottom> buttons = new ArrayList<>();
     private boolean showHotKeyName = false; // 是否显示快捷键名称
 
-    public UIFooter(UIComponent owner) {
+    public UIFooter(UICustomComponent owner) {
         super(owner);
         this.setId("bottom");
     }

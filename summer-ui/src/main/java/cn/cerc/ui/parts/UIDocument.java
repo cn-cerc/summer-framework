@@ -2,10 +2,12 @@ package cn.cerc.ui.parts;
 
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.mvc.AbstractPage;
 
-public class UIDocument extends UIComponent {
-    private UIControl control; // 可选存在
+public class UIDocument extends UICustomComponent {
+    @Deprecated
+    private UIComponent control; // 可选存在
     private UIContent content; // 必须存在
     private UIMessage message; // 必须存在
 
@@ -39,9 +41,10 @@ public class UIDocument extends UIComponent {
         html.print("</article>");
     }
 
-    public UIControl getControl() {
+    @Deprecated
+    public UIComponent getControl() {
         if (control == null) {
-            control = new UIControl(this);
+            control = new UICustomComponent(this);
         }
         return control;
     }

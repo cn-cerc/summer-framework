@@ -1,22 +1,11 @@
 package cn.cerc.mis.core;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import cn.cerc.db.core.IHandle;
 
-public interface IForm extends IHandle {
+public interface IForm extends IHandle, IRequestOwner, IResponseOwner, IPermission {
 
     // 页面名称
     String getName();
-
-    HttpServletRequest getRequest();
-
-    void setRequest(HttpServletRequest request);
-
-    HttpServletResponse getResponse();
-
-    void setResponse(HttpServletResponse response);
 
     IHandle getHandle();
 
@@ -37,31 +26,9 @@ public interface IForm extends IHandle {
     // 输出页面（支持jsp、reddirect、json等）
     IPage execute() throws Exception;
 
-    // 取得权限代码
-    String getPermission();
-
-    // 匿名可用否
-    default boolean allowGuestUser() {
-        return logon();
-    }
-    
-    @Deprecated
-    default boolean logon() {
-        return false;
-    }
-
-    // 设备安全检查通过否，为true时需要进行进一步授权
-    default boolean isSecurityDevice() {
-        return passDevice();
-    }
-    
-    @Deprecated
-    default boolean passDevice() {
-        return false;
-    }
-
     // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
     String getView(String funcId) throws Exception;
 
     void setPathVariables(String[] pathVariables);
+
 }

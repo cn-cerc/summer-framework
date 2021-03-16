@@ -1,5 +1,12 @@
 package cn.cerc.ui.page;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.cdn.CDN;
@@ -19,12 +26,6 @@ import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolbar;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class UIPage extends AbstractPage {
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
@@ -199,9 +200,9 @@ public abstract class UIPage extends AbstractPage {
         String[] params = menuCode.split("\\.");
         String formId = params[0];
         if (Utils.isNotEmpty(this.getForm().getName())) {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
+            out.printf("<title>%s</title>", R.asString(form.getHandle(), this.getForm().getName()));
         } else {
-            out.printf("<title>%s</title>\n",
+            out.printf("<title>%s</title>",
                     R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
         }
 
@@ -209,10 +210,10 @@ public abstract class UIPage extends AbstractPage {
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");
         out.println("<meta name=\"format-detection\" content=\"telephone=no\" />");
         out.println("<meta name=\"format-detection\" content=\"email=no\" />");
-        out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
+        out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
         out.printf(
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>");
         out.print(this.getCssHtml());
         out.print(getScriptHtml());
         out.println("<script>");

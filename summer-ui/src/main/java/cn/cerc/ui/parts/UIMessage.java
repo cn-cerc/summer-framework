@@ -16,8 +16,6 @@ public class UIMessage extends UIComponent {
         html.print(">");
         if (!"".equals(text)) {
             html.print(text);
-        } else {
-            super.output(html);
         }
         html.println("</section>");
     }

@@ -6,6 +6,7 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
@@ -297,7 +298,7 @@ public class UIFormHorizontal extends UIComponent implements DataSource {
         this.enctype = enctype;
     }
 
-    public class ButtonsFields extends UIComponent implements DataSource {
+    public class ButtonsFields extends UICustomComponent implements DataSource {
         private DataSource dataSource;
         private List<AbstractField> fields = new ArrayList<>();
 

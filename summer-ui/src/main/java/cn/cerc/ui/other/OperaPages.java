@@ -5,6 +5,7 @@ import cn.cerc.core.IUserLanguage;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.SummerUI;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.parts.UIComponent;
@@ -18,7 +19,7 @@ public class OperaPages extends UISheet implements IUserLanguage {
     private IForm form;
     private MutiPage pages;
 
-    public OperaPages(UIComponent owner, IForm form, MutiPage pages) {
+    public OperaPages(UICustomComponent owner, IForm form, MutiPage pages) {
         super(owner);
         this.form = form;
         this.pages = pages;

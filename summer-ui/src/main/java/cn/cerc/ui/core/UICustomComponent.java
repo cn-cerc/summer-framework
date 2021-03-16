@@ -1,11 +1,14 @@
-package cn.cerc.ui.parts;
+package cn.cerc.ui.core;
 
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.parts.UIComponent;
 
-public class UIControl extends UIComponent {
+public class UICustomComponent extends UIComponent {
+    
+    public UICustomComponent() {
+        super();
+    }
 
-    public UIControl(UIComponent owner) {
+    public UICustomComponent(UICustomComponent owner) {
         super(owner);
     }
 

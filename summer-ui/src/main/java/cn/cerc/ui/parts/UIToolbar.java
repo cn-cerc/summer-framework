@@ -1,17 +1,18 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.HtmlWriter;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UIToolbar extends UIComponent {
+import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UICustomComponent;
+
+public class UIToolbar extends UICustomComponent {
     private List<UISheet> sheets = new ArrayList<>();
 
-    public UIToolbar(UIComponent owner) {
+    public UIToolbar(UICustomComponent owner) {
         super(owner);
         this.setId("rightSide");
     }
@@ -24,7 +25,7 @@ public class UIToolbar extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.print("\n<aside role='toolBar' id='%s'", this.getId());
+        html.print("<aside role='toolBar' id='%s'", this.getId());
         if (isEmpty()) {
             // html.print(" style='display:none'");
             // FIXME: 2019/6/16 此处需改进

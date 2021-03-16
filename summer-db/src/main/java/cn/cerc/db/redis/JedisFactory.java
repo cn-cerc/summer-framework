@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 @Slf4j
 public class JedisFactory {
@@ -70,7 +71,12 @@ public class JedisFactory {
     }
 
     public static Jedis getJedis() {
-        return jedisPool.getResource();
+        try {
+            return jedisPool.getResource();
+        } catch (JedisConnectionException e) {
+            log.error("redis service not run.");
+            return null;
+        }
     }
 
 }

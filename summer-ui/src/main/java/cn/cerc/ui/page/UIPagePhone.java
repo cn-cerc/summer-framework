@@ -14,11 +14,13 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.parts.RightMenus;
+import cn.cerc.ui.parts.UIComponent;
 
 /**
  * 主体子页面(公用)
@@ -27,7 +29,7 @@ import cn.cerc.ui.parts.RightMenus;
  */
 public class UIPagePhone extends UIPage {
     private String searchWaitingId = "";
-    private Component body;
+    private UIComponent body;
 
     public UIPagePhone(IForm form) {
         super();
@@ -121,9 +123,9 @@ public class UIPagePhone extends UIPage {
     }
 
     @Deprecated // 请使用：getDocument().getContext()
-    public Component getBody() {
+    public UIComponent getBody() {
         if (body == null) {
-            body = new Component();
+            body = new UICustomComponent();
             body.setOwner(this.getContent());
             body.setId("search");
         }

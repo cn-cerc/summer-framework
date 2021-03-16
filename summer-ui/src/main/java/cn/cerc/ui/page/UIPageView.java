@@ -6,25 +6,32 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.cerc.core.ISession;
-import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.language.R;
+import cn.cerc.ui.code.IFormInfo;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.UrlRecord;
-import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.parts.RightMenus;
 
 public class UIPageView extends UIPage {
 
+    private String caption;
+
     public UIPageView(IForm form) {
         super();
         setForm(form);
         initCssFile();
         initJsFile();
+        
+        String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
+        String[] params = menuCode.split("\\.");
+        String formId = params[0];
+
+        IFormInfo menu = Application.getBeanDefault(IFormInfo.class, this.getForm().getHandle().getSession());
+        this.caption = menu.getFormCaption(this.getForm(), formId, this.getForm().getName());
     }
 
     @Override
@@ -57,16 +64,7 @@ public class UIPageView extends UIPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-
-        String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
-        String[] params = menuCode.split("\\.");
-        String formId = params[0];
-        if (Utils.isNotEmpty(this.getForm().getName())) {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
-        } else {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
-        }
-
+        out.printf("<title>%s</title>", this.caption);
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");
         out.println("<meta name=\"format-detection\" content=\"telephone=no\" />");
@@ -74,7 +72,7 @@ public class UIPageView extends UIPage {
         out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
         out.printf(
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>");
         out.print(this.getCssHtml());
         out.print(getScriptHtml());
         out.println("<script>");
@@ -93,5 +91,14 @@ public class UIPageView extends UIPage {
         writeBody(out);
         out.println("</body>");
         out.println("</html>");
+    }
+
+    public UIPageView setCaption(String caption) {
+        this.caption = caption;
+        return this;
+    }
+    
+    public String getCaption(String caption) {
+        return caption;
     }
 }

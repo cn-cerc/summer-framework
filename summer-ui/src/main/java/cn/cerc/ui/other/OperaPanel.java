@@ -1,12 +1,12 @@
 package cn.cerc.ui.other;
 
-import cn.cerc.ui.core.UrlRecord;
-import cn.cerc.ui.parts.UIComponent;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class OperaPanel extends UIComponent {
+import cn.cerc.ui.core.UICustomComponent;
+import cn.cerc.ui.core.UrlRecord;
+
+public class OperaPanel extends UICustomComponent {
     // 操作提示
     private String readme;
     // 基本资料
@@ -14,7 +14,7 @@ public class OperaPanel extends UIComponent {
     // 相关链接
     private List<UrlRecord> menus;
 
-    public OperaPanel(UIComponent owner) {
+    public OperaPanel(UICustomComponent owner) {
         super(owner);
         this.setId("right");
     }
