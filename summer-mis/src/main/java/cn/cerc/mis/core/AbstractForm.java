@@ -20,6 +20,8 @@ import cn.cerc.mis.SummerMIS;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+//@Component
+//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class AbstractForm implements IForm {
     private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
