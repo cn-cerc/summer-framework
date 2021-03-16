@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UICustomComponent;
+import cn.cerc.ui.parts.UIComponent;
 
 public class UIForm extends UICustomComponent {
     private String action;
@@ -17,13 +18,13 @@ public class UIForm extends UICustomComponent {
         super(null);
     }
 
-    public UIForm(UICustomComponent owner) {
+    public UIForm(UIComponent owner) {
         super.setOwner(owner);
     }
 
 
     @Deprecated
-    public UIForm(UICustomComponent owner, String id) {
+    public UIForm(UIComponent owner, String id) {
         super(owner);
         this.setId(id);
     }

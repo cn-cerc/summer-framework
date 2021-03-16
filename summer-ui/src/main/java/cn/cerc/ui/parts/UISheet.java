@@ -14,7 +14,7 @@ public class UISheet extends UICustomComponent {
     public UISheet() {
         super(null);
     }
-    public UISheet(UICustomComponent owner) {
+    public UISheet(UIComponent owner) {
         super(owner);
     }
 
