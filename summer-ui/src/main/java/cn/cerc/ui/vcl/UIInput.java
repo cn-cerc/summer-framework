@@ -1,9 +1,10 @@
 package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.parts.UIComponent;
 
-public class UIInput extends UIComponent {
+public class UIInput extends UIComponent implements INameOwner {
 
     private String caption = "";
     private String name;
@@ -45,6 +46,8 @@ public class UIInput extends UIComponent {
     }
 
     public String getName() {
+        if (name == null)
+            name = this.getId();
         return name;
     }
 
