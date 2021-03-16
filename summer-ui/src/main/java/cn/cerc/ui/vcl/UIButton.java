@@ -1,9 +1,10 @@
 package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.parts.UIComponent;
 
-public class UIButton extends UIComponent {
+public class UIButton extends UIComponent implements INameOwner {
     private String name;
     private String value;
     private String text;
@@ -104,10 +105,6 @@ public class UIButton extends UIComponent {
 
     public UIButton setType(String type) {
         this.type = type;
-        if ("submit".equals(type)) {
-            this.setName("submit");
-            this.setText("submit");
-        }
         return this;
     }
 }
