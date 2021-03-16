@@ -10,6 +10,7 @@
 6. 将原有的 LocalConfig、ServerConfig合并成 ClassConfig，支持了外部用户配置、项目配置、框架配置的优先级实现。
 7. 权限、设备、session、数据表等支持项目自定义实现统一放在 `cn.cerc.mis.custom` 包下，若不实现则使用框架自定义的实现方式。
 8. 增加了对 Spring MVC 的菜单支持。
+9. AbstractJspPage 拆分为 UIPage 和 JspPage，分别用于处理原始jsp文件和框架自定义生成页面。
 
 ---
 
