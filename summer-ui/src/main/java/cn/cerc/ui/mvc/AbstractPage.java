@@ -18,9 +18,10 @@ import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.parts.UIComponent;
 
-public abstract class AbstractPage extends UIComponent implements IPage, IUserLanguage {
+public abstract class AbstractPage extends UICustomComponent implements IPage, IUserLanguage {
     protected static final ClassConfig config = new ClassConfig(AbstractPage.class, SummerMIS.ID);
 
     private IForm form;

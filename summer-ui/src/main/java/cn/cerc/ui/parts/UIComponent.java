@@ -3,7 +3,7 @@ package cn.cerc.ui.parts;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 
-public class UIComponent extends Component {
+public abstract class UIComponent extends Component {
     protected String cssClass;
     protected String cssStyle;
 
@@ -31,13 +31,7 @@ public class UIComponent extends Component {
         this.cssStyle = cssStyle;
     }
 
-    public void output(HtmlWriter html) {
-        for (Component component : this.getComponents()) {
-            if (component instanceof UIComponent) {
-                ((UIComponent) component).output(html);
-            }
-        }
-    }
+    public abstract void output(HtmlWriter html);
 
     @Override
     public final String toString() {

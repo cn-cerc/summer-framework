@@ -1,6 +1,7 @@
 package cn.cerc.ui.parts;
 
 import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.HtmlWriter;
 
 import java.util.ArrayList;
@@ -8,10 +9,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UIToolbar extends UIComponent {
+public class UIToolbar extends UICustomComponent {
     private List<UISheet> sheets = new ArrayList<>();
 
-    public UIToolbar(UIComponent owner) {
+    public UIToolbar(UICustomComponent owner) {
         super(owner);
         this.setId("rightSide");
     }

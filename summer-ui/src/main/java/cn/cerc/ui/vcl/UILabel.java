@@ -71,16 +71,18 @@ public class UILabel extends UIComponent {
         return text;
     }
 
-    public void setText(String text) {
+    public UILabel setText(String text) {
         this.text = text;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public UILabel setUrl(String url) {
         this.url = url;
+        return this;
     }
 
 }
