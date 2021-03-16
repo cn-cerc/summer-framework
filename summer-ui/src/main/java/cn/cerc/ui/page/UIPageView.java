@@ -64,7 +64,7 @@ public class UIPageView extends UIPage {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
-        out.printf("<title>%s</title>\n", this.caption);
+        out.printf("<title>%s</title>", this.caption);
         // 所有的请求都不发送 referrer
         out.println("<meta name=\"referrer\" content=\"no-referrer\" />");
         out.println("<meta name=\"format-detection\" content=\"telephone=no\" />");
@@ -72,7 +72,7 @@ public class UIPageView extends UIPage {
         out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
         out.printf(
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>");
         out.print(this.getCssHtml());
         out.print(getScriptHtml());
         out.println("<script>");
@@ -87,7 +87,7 @@ public class UIPageView extends UIPage {
         out.println("});");
         out.println("</script>");
         out.println("</head>");
-        out.println("<body>\n");
+        out.println("<body>");
         writeBody(out);
         out.println("</body>");
         out.println("</html>");
