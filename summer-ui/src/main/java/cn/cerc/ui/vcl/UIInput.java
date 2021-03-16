@@ -5,10 +5,10 @@ import cn.cerc.ui.parts.UIComponent;
 
 public class UIInput extends UIComponent {
 
-    private String caption;
-    private String key;
+    private String caption = "";
+    private String name;
 
-    private String value;
+    private String value = "";
 
     public UIInput(UIComponent owner) {
         super(owner);
@@ -16,7 +16,23 @@ public class UIInput extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.print(String.format("%s<input name=\"%s\" value=\"%s\"/>", this.caption, this.key, value));
+        if (this.caption != null)
+            html.print(this.caption);
+
+        html.print("<input");
+
+        if (getId() != null) {
+            html.print(String.format(" id=\"%s\"", getId()));
+        }
+        if (name != null) {
+            html.print(String.format(" name=\"%s\"", name));
+        } else if (this.getId() != null) {
+            html.print(String.format(" name=\"%s\"", getId()));
+        }
+        if (value != null) {
+            html.print(String.format(" value=\"%s\"", value));
+        }
+        html.println("/>\n");
     }
 
     public String getCaption() {
@@ -28,12 +44,12 @@ public class UIInput extends UIComponent {
         return this;
     }
 
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
-    public UIInput setKey(String key) {
-        this.key = key;
+    public UIInput setName(String name) {
+        this.name = name;
         return this;
     }
 

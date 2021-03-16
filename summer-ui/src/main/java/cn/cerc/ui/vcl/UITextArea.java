@@ -9,6 +9,7 @@ import cn.cerc.ui.vcl.ext.UISpan;
  *
  * @author 黄荣君
  */
+//FIXME 应改为 UITextarea，ZhangGong 2021/3/19
 public class UITextArea extends UIComponent {
     private UISpan caption;
     private String name;
@@ -39,6 +40,8 @@ public class UITextArea extends UIComponent {
         }
         if (getName() != null) {
             html.print("name='%s' ", name);
+        } else if (this.getId() != null) {
+            html.print("name='%s' ", this.getId());
         }
         if (getRows() != 0) {
             html.print("rows='%s' ", rows);
