@@ -95,7 +95,7 @@ public abstract class UIPage extends AbstractPage {
     public final HtmlWriter getCssHtml() {
         HtmlWriter html = new HtmlWriter();
         for (String file : cssFiles) {
-            html.println("<link href=\"%s\" rel=\"stylesheet\">", file);
+            html.println("<link href=\"%s\" rel=\"stylesheet\">\n", file);
         }
         return html;
     }
@@ -106,7 +106,7 @@ public abstract class UIPage extends AbstractPage {
 
         // 加入脚本文件
         for (String file : getJsFiles()) {
-            html.println("<script src=\"%s\"></script>", file);
+            html.println("<script src=\"%s\"></script>\n", file);
         }
 
         // 加入脚本代码
@@ -125,7 +125,7 @@ public abstract class UIPage extends AbstractPage {
                 }
                 html.println("});");
             }
-            html.println("</script>");
+            html.println("</script>\n");
         }
         return html;
     }

@@ -87,7 +87,7 @@ public class UIPageView extends UIPage {
         out.println("});");
         out.println("</script>");
         out.println("</head>");
-        out.println("<body>");
+        out.println("<body>\n");
         writeBody(out);
         out.println("</body>");
         out.println("</html>");

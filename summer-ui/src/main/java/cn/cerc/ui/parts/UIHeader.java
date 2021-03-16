@@ -132,7 +132,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
 
         html.print("<header role='header'");
         super.outputCss(html);
-        html.println(">");
+        html.println(">\n");
         if (!"".equals(this.userName) && this.userName != null) {
             html.print("<div class='titel_top'>");
             html.print("<div class='logo_box'>");
@@ -150,12 +150,12 @@ public class UIHeader extends UIComponent implements IUserLanguage {
         if (advertisement != null) {
             html.println("<section role='advertisement'>");
             html.println(advertisement.toString());
-            html.println("</section>");
+            html.println("</section>\n");
         }
-        html.println("<nav role='mainMenu'>");
+        html.println("<nav role='mainMenu'>\n");
 
         // 输出：左边
-        html.println("<section role='leftMenu'>");
+        html.println("<section role='leftMenu'>\n");
         if (leftMenus.size() > 0) {
             html.print("<ul>");
             int i = 0;
@@ -166,7 +166,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
                 }
                 html.print("<a href=\"%s\">%s</a>", menu.getUrl(), menu.getName());
                 i++;
-                html.print("</li>");
+                html.print("</li>\n");
             }
             html.print("</ul>");
             if (leftBottom.size() > 0) {
@@ -177,7 +177,7 @@ public class UIHeader extends UIComponent implements IUserLanguage {
                 html.println("</div>");
             }
         }
-        html.println("</section>");
+        html.println("</section>\n");
 
         // 降序输出：右边
         html.println("<section role='rightMenu'>");

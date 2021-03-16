@@ -26,7 +26,7 @@ public class UIDocument extends UICustomComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.println("<article role='document'>");
+        html.println("<article role='document'>\n");
         // 可选
         if (control != null) {
             html.println("<section role='control'>");
@@ -38,7 +38,7 @@ public class UIDocument extends UICustomComponent {
         // 必须存在
         html.println(message.toString());
         super.outputCss(html);
-        html.print("</article>");
+        html.print("</article>\n");
     }
 
     @Deprecated

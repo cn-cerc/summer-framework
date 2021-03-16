@@ -51,11 +51,11 @@ public class UIFooter extends UICustomComponent {
         if (isEmpty()) {
             html.print(" style='display:none'");
         }
-        html.println(">");
+        html.println(">\n");
         if (this.operation != null) {
             html.println("<section role='footerOperation'>");
             this.operation.output(html);
-            html.println("</section>");
+            html.println("</section>\n");
             html.println("<section role='footerTools'>");
         } else {
             html.println("<section role='footerButtons'>");
@@ -65,7 +65,7 @@ public class UIFooter extends UICustomComponent {
                 ((UIComponent) component).output(html);
             }
         }
-        html.println("</section>");
+        html.println("</section>\n");
         HttpServletRequest request = getForm().getRequest();
         if (request != null) {
             if (!getForm().getClient().isPhone()) {
@@ -75,10 +75,10 @@ public class UIFooter extends UICustomComponent {
                 if (msg != null) {
                     html.print(msg.replaceAll("\r\n", "<br/>"));
                 }
-                html.println("</div>");
+                html.println("</div>\n");
             }
         }
-        html.print("</footer>");
+        html.print("</footer>\n");
     }
 
     public IForm getForm() {

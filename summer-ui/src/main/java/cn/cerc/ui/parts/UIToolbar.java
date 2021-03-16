@@ -25,15 +25,15 @@ public class UIToolbar extends UICustomComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.print("\n<aside role='toolBar' id='%s'", this.getId());
+        html.print("<aside role='toolBar' id='%s'", this.getId());
         if (isEmpty()) {
             // html.print(" style='display:none'");
             // FIXME: 2019/6/16 此处需改进
             this.cssStyle = "display:none";
         }
         super.outputCss(html);
-        html.println(">");
-        html.println("<div style='overflow-y: auto; height: 100%; position: relative;'>");
+        html.println(">\n");
+        html.println("<div style='overflow-y: auto; height: 100%; position: relative;'>\n");
 
         if (sheets.size() > 0) {
             // 分组归类
@@ -67,7 +67,7 @@ public class UIToolbar extends UICustomComponent {
             super.output(html);
         }
         html.println("</div>");
-        html.print("</aside>");
+        html.print("</aside>\n");
     }
 
     private boolean isEmpty() {
