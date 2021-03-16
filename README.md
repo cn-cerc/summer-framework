@@ -18,11 +18,15 @@ IService有提供 RESTful 接口，可提供第三方访问。 实际使用时�
 
 欢迎大家反馈更多的建议与意见，也欢迎其它业内人士，对此免费框架进行协同改进！
 
+## 版本历史
+
+[查看](Version.md)
+
 # 模块
 
-[summer-db](/summer-db) 数据库操作服务
+[summer-db](summer-db) 数据库操作服务
 
-[summer-mis](/summer-mis) 定位于页面组件，默认静态文件路径 forms
+[summer-mis](summer-mis) 定位于页面组件，默认静态文件路径 forms
 
 # 私服
 
