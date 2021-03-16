@@ -33,7 +33,7 @@ public class UIInput extends UIComponent implements INameOwner {
         if (value != null) {
             html.print(String.format(" value=\"%s\"", value));
         }
-        html.println("/>\n");
+        html.println("/>");
     }
 
     public String getCaption() {
@@ -45,6 +45,7 @@ public class UIInput extends UIComponent implements INameOwner {
         return this;
     }
 
+    @Override
     public String getName() {
         if (name == null)
             name = this.getId();

@@ -46,7 +46,7 @@ public class UIButton extends UIComponent implements INameOwner {
         super.outputCss(html);
         html.print(">");
         html.print(text);
-        html.println("</button>\n");
+        html.println("</button>");
     }
 
     public String getText() {
@@ -58,6 +58,7 @@ public class UIButton extends UIComponent implements INameOwner {
         return this;
     }
 
+    @Override
     public String getName() {
         return name;
     }

@@ -1,13 +1,13 @@
 package cn.cerc.ui.parts;
 
-import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.UICustomComponent;
-import cn.cerc.ui.core.HtmlWriter;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UICustomComponent;
 
 public class UIToolbar extends UICustomComponent {
     private List<UISheet> sheets = new ArrayList<>();
@@ -32,8 +32,8 @@ public class UIToolbar extends UICustomComponent {
             this.cssStyle = "display:none";
         }
         super.outputCss(html);
-        html.println(">\n");
-        html.println("<div style='overflow-y: auto; height: 100%; position: relative;'>\n");
+        html.println(">");
+        html.println("<div style='overflow-y: auto; height: 100%; position: relative;'>");
 
         if (sheets.size() > 0) {
             // 分组归类
@@ -67,7 +67,7 @@ public class UIToolbar extends UICustomComponent {
             super.output(html);
         }
         html.println("</div>");
-        html.print("</aside>\n");
+        html.print("</aside>");
     }
 
     private boolean isEmpty() {

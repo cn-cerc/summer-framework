@@ -76,7 +76,7 @@ public class UIForm extends UICustomComponent {
         if (this.enctype != null) {
             html.print(" enctype=\"%s\"", this.enctype);
         }
-        html.println(">\n");
+        html.println(">");
         for (String key : items.keySet()) {
             String value = items.get(key);
             html.print("<input");
@@ -84,7 +84,7 @@ public class UIForm extends UICustomComponent {
             html.print(" name=\"%s\"", key);
             html.print(" id=\"%s\"", key);
             html.print(" value=\"%s\"", value);
-            html.println("/>\n");
+            html.println("/>");
         }
     }
 

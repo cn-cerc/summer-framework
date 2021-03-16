@@ -1,8 +1,8 @@
 package cn.cerc.ui.parts;
 
 import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.mvc.AbstractPage;
 
 public class UIDocument extends UICustomComponent {
@@ -26,7 +26,7 @@ public class UIDocument extends UICustomComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.println("<article role='document'>\n");
+        html.println("<article role='document'>");
         // 可选
         if (control != null) {
             html.println("<section role='control'>");
@@ -38,7 +38,7 @@ public class UIDocument extends UICustomComponent {
         // 必须存在
         html.println(message.toString());
         super.outputCss(html);
-        html.print("</article>\n");
+        html.print("</article>");
     }
 
     @Deprecated

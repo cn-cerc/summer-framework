@@ -1,16 +1,17 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.mvc.AbstractPage;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UIFooter extends UICustomComponent {
     private static final ClassResource res = new ClassResource(UIFooter.class, SummerUI.ID);
@@ -51,11 +52,11 @@ public class UIFooter extends UICustomComponent {
         if (isEmpty()) {
             html.print(" style='display:none'");
         }
-        html.println(">\n");
+        html.println(">");
         if (this.operation != null) {
             html.println("<section role='footerOperation'>");
             this.operation.output(html);
-            html.println("</section>\n");
+            html.println("</section>");
             html.println("<section role='footerTools'>");
         } else {
             html.println("<section role='footerButtons'>");
@@ -65,7 +66,7 @@ public class UIFooter extends UICustomComponent {
                 ((UIComponent) component).output(html);
             }
         }
-        html.println("</section>\n");
+        html.println("</section>");
         HttpServletRequest request = getForm().getRequest();
         if (request != null) {
             if (!getForm().getClient().isPhone()) {
@@ -75,10 +76,10 @@ public class UIFooter extends UICustomComponent {
                 if (msg != null) {
                     html.print(msg.replaceAll("\r\n", "<br/>"));
                 }
-                html.println("</div>\n");
+                html.println("</div>");
             }
         }
-        html.print("</footer>\n");
+        html.print("</footer>");
     }
 
     public IForm getForm() {
