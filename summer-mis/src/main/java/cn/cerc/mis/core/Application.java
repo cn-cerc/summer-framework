@@ -34,6 +34,7 @@ public class Application {
     // tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
     // token id
+    // FIXME 与RequestData的Token对应的是一个值，在sql中对应 LoginID_，建议合并这两个变量
     public static final String TOKEN = "ID";
     // user id
     public static final String userId = "UserID";
