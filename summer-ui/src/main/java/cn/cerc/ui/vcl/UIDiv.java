@@ -16,7 +16,7 @@ public class UIDiv extends UICustomComponent {
         super();
     }
 
-    public UIDiv(UICustomComponent owner) {
+    public UIDiv(UIComponent owner) {
         super(owner);
     }
 
