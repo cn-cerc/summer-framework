@@ -104,8 +104,12 @@ public class UITextArea extends UIComponent implements INameOwner {
     }
     
     public UITextArea append(String text) {
-        this.lines = lines.append(text);
+        this.lines = lines.append(text).append("\n");
         return this;
+    }
+    
+    public UITextArea append(String format, Object... args) {
+        return this.append(String.format(format, args));
     }
 
     public String getPlaceholder() {
