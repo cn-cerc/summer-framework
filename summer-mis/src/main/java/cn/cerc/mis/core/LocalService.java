@@ -1,20 +1,23 @@
 package cn.cerc.mis.core;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.core.MD5;
 import cn.cerc.core.Record;
 import cn.cerc.db.cache.Redis;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 public class LocalService implements IServiceProxy {
@@ -101,7 +104,7 @@ public class LocalService implements IServiceProxy {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
             if (args.length % 2 != 0) {
-                //TODO 此处应该使用ClassResource
+                // TODO 此处应该使用ClassResource
                 throw new RuntimeException("传入的参数数量必须为偶数！");
             }
             for (int i = 0; i < args.length; i = i + 2) {
@@ -115,15 +118,27 @@ public class LocalService implements IServiceProxy {
             throw new RuntimeException("service is null.");
         }
 
-        IService bean = Application.getService(handle, serviceCode);
+        // 读取xml的服务配置
+        IService bean;
+        try {
+            bean = Application.getService(handle, serviceCode);
+        } catch (NoSuchBeanDefinitionException e) {
+            // 读取注解的配置
+            String beanId = serviceCode.split("\\.")[0];
+            beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
+            bean = Application.getService(handle, beanId);
+            if (bean instanceof CustomService) {
+                ((CustomService) bean).setFuncCode(serviceCode.split("\\.")[1]);
+            }
+        }
+
         if (bean == null) {
             this.message = String.format("bean %s not find", serviceCode);
             return false;
         }
 
         try {
-            if (!"SvrSession.byUserCode".equals(this.serviceCode)
-                    && !"SvrUserMessages.getWaitList".equals(this.serviceCode)) {
+            if (!"SvrSession.byUserCode".equals(this.serviceCode) && !"SvrUserMessages.getWaitList".equals(this.serviceCode)) {
                 log.debug(this.serviceCode);
             }
             if (ServerConfig.isServerMaster()) {
@@ -175,7 +190,7 @@ public class LocalService implements IServiceProxy {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
             if (args.length % 2 != 0) {
-                //TODO 此处应该使用ClassResource
+                // TODO 此处应该使用ClassResource
                 return new ServiceStatus(false, "传入的参数数量必须为偶数！");
             }
             for (int i = 0; i < args.length; i = i + 2) {
