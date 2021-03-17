@@ -1,14 +1,14 @@
 package cn.cerc.mis.language;
 
-import cn.cerc.db.core.IHandle;
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.ISystemTable;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 //TODO 此对象需要做更进一步抽象处理
@@ -45,6 +45,7 @@ public class R {
             }
         } catch (Exception e) {
             language = Language.zh_CN;
+            language = Application.App_Language;
         }
         return language;
     }
