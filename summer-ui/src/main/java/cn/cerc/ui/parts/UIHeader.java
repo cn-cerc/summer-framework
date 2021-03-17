@@ -20,6 +20,7 @@ import cn.cerc.mis.services.MemoryBookInfo;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.ICorpInfo;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.phone.Block104;
@@ -105,8 +106,8 @@ public class UIHeader extends UIComponent implements IUserLanguage {
             leftMenus.add(homePage);
             this.userName = handle.getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {
-                BookInfoRecord item = MemoryBookInfo.get(handle, handle.getCorpNo());
-                this.corpNoName = item.getShortName();
+                ICorpInfo info = Application.getBeanDefault(ICorpInfo.class, handle.getSession());
+                this.corpNoName = info.getShortName();
             }
             logoSrc = getLogo();
             welcome = config.getString("app.welcome.language", res.getString(3, "欢迎使用系统"));

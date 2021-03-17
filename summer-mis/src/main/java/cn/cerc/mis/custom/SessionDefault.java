@@ -20,7 +20,7 @@ import cn.cerc.mis.core.Application;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component("sessionDefault")
+@Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
 public class SessionDefault implements ISession {
