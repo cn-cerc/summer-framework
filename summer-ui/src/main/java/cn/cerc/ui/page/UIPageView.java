@@ -30,8 +30,8 @@ public class UIPageView extends UIPage {
         String[] params = menuCode.split("\\.");
         String formId = params[0];
 
-        IFormInfo menu = Application.getBeanDefault(IFormInfo.class, this.getForm().getHandle().getSession());
-        this.caption = menu.getFormCaption(this.getForm(), formId, this.getForm().getName());
+        IFormInfo menu = Application.getBeanDefault(IFormInfo.class, form.getHandle().getSession());
+        this.caption = menu.getFormCaption(this.getForm(), formId, form.getName());
     }
 
     @Override
