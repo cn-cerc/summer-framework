@@ -23,7 +23,6 @@ public class SystemTableDefault implements ISystemTable {
     }
 
     @Override
-    @Deprecated
     public String getCustomMenus() {
         return "s_custom_menus";
     }
@@ -59,7 +58,6 @@ public class SystemTableDefault implements ISystemTable {
     }
 
     @Override
-    @Deprecated
     public String getSecurityMobile() {
         return "s_security_mobile";
     }
@@ -85,7 +83,6 @@ public class SystemTableDefault implements ISystemTable {
     }
 
     @Override
-    @Deprecated
     public String getPageLogs() {
         return "s_page_logs";
     }
@@ -102,7 +99,7 @@ public class SystemTableDefault implements ISystemTable {
 
     @Override
     public String getLanguage() {
-        return "s_language";
+        return "s_dict_language";
     }
 
     @Override

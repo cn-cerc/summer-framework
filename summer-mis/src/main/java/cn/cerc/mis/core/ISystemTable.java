@@ -12,6 +12,7 @@ public interface ISystemTable {
     String getAppMenus(); // "s_menus";
 
     // 客户客制化菜单
+    @Deprecated
     String getCustomMenus(); // "cusmenu";
 
     // 用户自定义菜单
@@ -33,6 +34,7 @@ public interface ISystemTable {
     String getDeviceVerify(); // "AccountVerify";
 
     // 安全手机管控表
+    @Deprecated
     String getSecurityMobile(); // "s_securityMobile";
 
     // 当前在线用户
@@ -48,6 +50,7 @@ public interface ISystemTable {
     String getAppLogs(); // "AppServiceLogs";
 
     // 记录网页被调用的历史
+    @Deprecated
     String getPageLogs(); // "WebPageLogs";
 
     // 记录在线用户数
@@ -57,6 +60,7 @@ public interface ISystemTable {
     String getManageBook(); // "000000";
 
     // 多语言数据字典: 旧版本
+    @Deprecated
     String getLangDict(); // "s_langDict";
 
     // 多语言数据字典: 新版本
