@@ -3,6 +3,7 @@ package cn.cerc.ui.vcl;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
@@ -11,7 +12,7 @@ import cn.cerc.ui.vcl.ext.UISpan;
  * @author 黄荣君
  */
 //FIXME 应改为 UITextarea，ZhangGong 2021/3/19
-public class UITextArea extends UIComponent implements INameOwner {
+public class UITextArea extends UICssComponent implements INameOwner {
     private UISpan caption;
     private String name;
     private StringBuffer lines = new StringBuffer();

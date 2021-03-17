@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UIFormHorizontal extends UIComponent implements DataSource {
+public class UIFormHorizontal extends UICssComponent implements DataSource {
     private static final ClassResource res = new ClassResource(UIFormHorizontal.class, SummerUI.ID);
 
     protected String cssClass = "search";

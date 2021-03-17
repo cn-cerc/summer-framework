@@ -3,6 +3,7 @@ package cn.cerc.ui.phone;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 import cn.cerc.ui.vcl.UIImage;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Map;
 /**
  * 用于生成厂商、客户、帐套选择
  */
-public class Block301 extends UIComponent {
+public class Block301 extends UICssComponent {
     List<UIImage> list = new ArrayList<>();
     private UIImage leftIcon = new UIImage();
     private String title = "(title)";

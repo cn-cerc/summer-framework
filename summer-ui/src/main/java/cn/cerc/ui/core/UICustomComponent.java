@@ -3,8 +3,9 @@ package cn.cerc.ui.core;
 import java.lang.reflect.InvocationTargetException;
 
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UICustomComponent extends UIComponent {
+public class UICustomComponent extends UICssComponent {
     
     public UICustomComponent() {
         super();

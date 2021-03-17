@@ -2,8 +2,9 @@ package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UIImage extends UIComponent {
+public class UIImage extends UICssComponent {
     private String width;
     private String height;
     private String src;

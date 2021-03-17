@@ -3,7 +3,7 @@ package cn.cerc.ui.parts;
 import cn.cerc.core.Utils;
 import cn.cerc.ui.core.HtmlWriter;
 
-public class UIBottom extends UIComponent {
+public class UIBottom extends UICssComponent {
     private String caption;
     private String url;
     private String target;

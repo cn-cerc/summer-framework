@@ -2,8 +2,9 @@ package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UILabel extends UIComponent {
+public class UILabel extends UICssComponent {
     private String text;
     private String url;
     private String focusTarget;

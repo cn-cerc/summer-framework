@@ -17,7 +17,7 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIText;
 
-public class UIFormVertical extends UIComponent implements DataSource {
+public class UIFormVertical extends UICssComponent implements DataSource {
     private static final ClassResource res = new ClassResource(UIFormVertical.class, SummerUI.ID);
     private static final ClassConfig config = new ClassConfig(UIFormVertical.class, SummerUI.ID);
 

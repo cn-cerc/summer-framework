@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * ·提示信息列表
  */
-public class UIInfoList extends UIComponent {
+public class UIInfoList extends UICssComponent {
     private List<Line> items = new ArrayList<>();
     private String onClick;
 

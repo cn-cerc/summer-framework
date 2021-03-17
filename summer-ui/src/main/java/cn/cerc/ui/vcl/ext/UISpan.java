@@ -2,8 +2,9 @@ package cn.cerc.ui.vcl.ext;
 
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UISpan extends UIComponent {
+public class UISpan extends UICssComponent {
     private String text;
     private String role;
     private String onclick;

@@ -3,6 +3,7 @@ package cn.cerc.ui.vcl;
 import cn.cerc.core.Utils;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
@@ -10,7 +11,7 @@ import cn.cerc.ui.vcl.ext.UISpan;
  *
  * @author 张弓
  */
-public class UITextBox extends UIComponent {
+public class UITextBox extends UICssComponent {
     // 正则过滤
     protected String pattern;
     private UISpan caption;

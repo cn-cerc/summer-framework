@@ -2,7 +2,7 @@ package cn.cerc.ui.parts;
 
 import cn.cerc.ui.core.HtmlWriter;
 
-public class UIMessage extends UIComponent {
+public class UIMessage extends UICssComponent {
     private String text = "";
 
     public UIMessage(UIComponent owner) {

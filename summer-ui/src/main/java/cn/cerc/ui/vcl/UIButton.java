@@ -3,8 +3,9 @@ package cn.cerc.ui.vcl;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UIButton extends UIComponent implements INameOwner {
+public class UIButton extends UICssComponent implements INameOwner {
     private String name;
     private String value;
     private String text;

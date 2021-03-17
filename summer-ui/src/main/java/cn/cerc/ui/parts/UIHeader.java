@@ -25,7 +25,7 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.phone.Block104;
 
-public class UIHeader extends UIComponent implements IUserLanguage {
+public class UIHeader extends UICssComponent implements IUserLanguage {
     private static final ClassConfig config = new ClassConfig(UIHeader.class, SummerUI.ID);
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
