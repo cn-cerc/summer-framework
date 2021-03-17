@@ -9,97 +9,100 @@ public class SystemTableDefault implements ISystemTable {
 
     @Override
     public String getBookInfo() {
-        return "s_BookInfo";
+        return "s_book_info";
     }
 
     @Override
     public String getBookOptions() {
-        return "s_BookOptions";
+        return "s_book_options";
     }
 
     @Override
     public String getAppMenus() {
-        return "s_AppMenus";
+        return "s_app_menus";
     }
 
     @Override
+    @Deprecated
     public String getCustomMenus() {
-        return "s_CustomMenus";
+        return "s_custom_menus";
     }
 
     @Override
     public String getUserMenus() {
-        return "s_UserMenus";
+        return "s_user_menus";
     }
 
     @Override
     public String getUserInfo() {
-        return "s_UserInfo";
+        return "s_user_info";
     }
 
     @Override
     public String getUserOptions() {
-        return "s_UserOptions";
+        return "s_user_options";
     }
 
     @Override
     public String getUserRoles() {
-        return "s_UserRoles";
+        return "s_user_roles";
     }
 
     @Override
     public String getRoleAccess() {
-        return "s_RoleAccess";
+        return "s_role_access";
     }
 
     @Override
     public String getDeviceVerify() {
-        return "s_DeviceVerify";
+        return "s_device_verify";
     }
 
     @Override
+    @Deprecated
     public String getSecurityMobile() {
-        return "s_SecurityMobile";
+        return "s_security_mobile";
     }
 
     @Override
     public String getCurrentUser() {
-        return "s_CurrentUser";
+        return "s_current_user";
     }
 
     @Override
     public String getUserMessages() {
-        return "s_UserMessages";
+        return "s_user_messages";
     }
 
     @Override
     public String getUserLogs() {
-        return "s_UserLogs";
+        return "s_user_logs";
     }
 
     @Override
     public String getAppLogs() {
-        return "s_AppLogs";
+        return "s_app_logs";
     }
 
     @Override
+    @Deprecated
     public String getPageLogs() {
-        return "s_PageLogs";
+        return "s_page_logs";
     }
 
     @Override
     public String getOnlineUsers() {
-        return "s_OnlineUsers";
+        return "s_online_users";
     }
 
     @Override
     public String getLangDict() {
-        return "s_LangDict";
+        return "s_lang_dict";
     }
 
     @Override
     public String getLanguage() {
-        return "s_Language";
+        return "s_language";
     }
 
     @Override
