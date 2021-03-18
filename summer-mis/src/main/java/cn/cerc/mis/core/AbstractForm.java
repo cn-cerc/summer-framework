@@ -20,6 +20,7 @@ public abstract class AbstractForm implements IForm {
 //    private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
 //    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
 
+    private String id;
     private ISession session;
     protected IHandle handle;
 
@@ -281,4 +282,15 @@ public abstract class AbstractForm implements IForm {
     public IHandle getHandle() {
         return this.handle;
     }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+    
 }

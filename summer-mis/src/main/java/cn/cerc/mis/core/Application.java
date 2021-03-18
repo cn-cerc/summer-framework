@@ -64,6 +64,7 @@ public class Application {
     public static final String FORM_LOGOUT = "application.formLogout";
     public static final String FORM_VERIFY_DEVICE = "application.formVerifyDevice";
     public static final String JSPFILE_LOGIN = "application.jspLoginFile";
+    public static final String FORM_ID = "formId";
 
     private static ApplicationContext context;
     private static String staticPath;
@@ -289,6 +290,7 @@ public class Application {
             session.setProperty(Application.deviceLanguage, client.getLanguage());
             IHandle handle = new Handle(session);
             req.setAttribute("myappHandle", handle);
+            form.setId(formId);
             form.setHandle(handle);
 
             // 传递路径变量
