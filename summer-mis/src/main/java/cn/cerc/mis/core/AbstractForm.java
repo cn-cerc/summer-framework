@@ -1,30 +1,24 @@
 package cn.cerc.mis.core;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import cn.cerc.core.ClassConfig;
-import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.SummerMIS;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 //@Component
 //@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class AbstractForm implements IForm {
-    private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
-    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
+//    private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
+//    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
 
     private ISession session;
     protected IHandle handle;
@@ -160,11 +154,6 @@ public abstract class AbstractForm implements IForm {
         if (CLIENTVER != null)
             request.getSession().setAttribute("CLIENTVER", CLIENTVER);
 
-        return this.getPage(funcCode);
-    }
-
-    private String getPage(String funcCode) throws NoSuchMethodException, SecurityException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, ServletException, IOException {
         Object result;
         Method method = null;
         long startTime = System.currentTimeMillis();
@@ -228,11 +217,11 @@ public abstract class AbstractForm implements IForm {
             if (result == null)
                 return null;
 
-            if (result instanceof IPage) {
-                IPage output = (IPage) result;
+            if (result instanceof IView) {
+                IView output = (IView) result;
                 return output.execute();
             } else {
-                log.warn(String.format("%s pageOutput is not IPage: %s", funcCode, result));
+                log.warn(String.format("%s pageOutput is not IView: %s", funcCode, result));
                 return (String) result;
             }
         } catch (PageException e) {
