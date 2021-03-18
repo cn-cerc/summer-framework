@@ -405,4 +405,8 @@ public class Application {
         return getBeanDefault(ITokenManage.class, session);
     }
 
+    public static String getHomePage() {
+        return config.getString(Application.FORM_DEFAULT, "default");
+    }
+
 }
