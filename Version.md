@@ -14,3 +14,22 @@
 
 ---
 
+## 3.2.0 (2021-03-18)
+
+1. 将部分IPage替换为IView。
+2. 增加IAppLanguage接口，解决R对象中对UserOptions硬引用限制，s_language 表由业务项目自己实现。
+3. 增加ICorpInfo接口，以解决 MemoryBookInfo 和 MemoryBookRecord 获取帐套的问题。
+
+---
+
+## 3.2.1 (2021-03-18)
+
+1. 在IForm中增加了getId与setId。
+
+---
+
+## 3.2.2 (2021-03-18)
+
+1. 修复 Application 对象没有往自定义内部 session 赋值 sid 的问题，静态变量 TOKEN 统一指向 sid 字符串。
+
+---

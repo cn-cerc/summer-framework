@@ -21,9 +21,7 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
-import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.language.Language;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +33,7 @@ public class Application {
     public static final String sessionId = "sessionId";
     // token id
     // FIXME 与RequestData的Token对应的是一个值，在sql中对应 LoginID_，建议合并这两个变量
-    public static final String TOKEN = "ID";
+    public static final String TOKEN = "sid";
     // user id
     public static final String userId = "UserID";
     public static final String userCode = "UserCode";
@@ -288,6 +286,7 @@ public class Application {
             session = Application.createSession();
             session.setProperty(Application.sessionId, req.getSession().getId());
             session.setProperty(Application.deviceLanguage, client.getLanguage());
+            session.setProperty(Application.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
             IHandle handle = new Handle(session);
             req.setAttribute("myappHandle", handle);
             form.setId(formId);
