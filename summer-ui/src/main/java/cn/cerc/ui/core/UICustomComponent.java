@@ -3,9 +3,10 @@ package cn.cerc.ui.core;
 import java.lang.reflect.InvocationTargetException;
 
 import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.parts.UICssComponent;
 
-public class UICustomComponent extends UICssComponent {
+public class UICustomComponent extends UIComponent {
+    protected String cssClass;
+    protected String cssStyle;
     
     public UICustomComponent() {
         super();
@@ -35,4 +36,30 @@ public class UICustomComponent extends UICssComponent {
         return obj;
     }
 
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    @Deprecated
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
+    }
+
+    public String getCssStyle() {
+        return cssStyle;
+    }
+
+    @Deprecated
+    public void setCssStyle(String cssStyle) {
+        this.cssStyle = cssStyle;
+    }
+
+    protected void outputCss(HtmlWriter html) {
+        if (this.cssClass != null) {
+            html.print(" class='%s'", cssClass);
+        }
+        if (this.cssStyle != null) {
+            html.print(" style='%s'", cssStyle);
+        }
+    }
 }
