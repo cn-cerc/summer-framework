@@ -6,7 +6,7 @@
 
     <groupId>cn.cerc</groupId>
     <artifactId>summer-server</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -93,7 +93,7 @@
             <dependency>
                 <groupId>cn.cerc</groupId>
                 <artifactId>summer-core</artifactId>
-                <version>2.3.0</version>
+                <version>2.4.0</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code.gson</groupId>
