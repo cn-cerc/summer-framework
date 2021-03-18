@@ -4,6 +4,11 @@ import cn.cerc.db.core.IHandle;
 
 public interface IForm extends IHandle, IRequestOwner, IResponseOwner, IPermission {
 
+    // 页面代码
+    void setId(String formId);
+
+    String getId();
+
     // 页面名称
     String getName();
 
