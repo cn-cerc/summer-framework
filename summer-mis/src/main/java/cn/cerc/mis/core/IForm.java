@@ -24,7 +24,7 @@ public interface IForm extends IHandle, IRequestOwner, IResponseOwner, IPermissi
     String getParam(String key, String def);
 
     // 输出页面（支持jsp、reddirect、json等）
-    IView execute() throws Exception;
+    IPage execute() throws Exception;
 
     // 执行指定函数，并返回jsp文件名，若自行处理输出则直接返回null
     String getView(String funcId) throws Exception;
