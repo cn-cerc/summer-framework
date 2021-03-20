@@ -55,17 +55,7 @@ public class UIForm extends UIOriginComponent {
     @Override
     public void output(HtmlWriter html) {
         outHead(html);
-        if (top != null) {
-            html.print("<div role='top'>");
-            top.output(html);
-            html.println("</div>");
-        }
         super.output(html);
-        if (bottom != null) {
-            html.print("<div role='bottom'>");
-            bottom.output(html);
-            html.println("</div>");
-        }
         outFoot(html);
     }
 
@@ -98,6 +88,11 @@ public class UIForm extends UIOriginComponent {
             html.print(" value=\"%s\"", value);
             html.println("/>");
         }
+        if (top != null) {
+            html.print("<div role='top'>");
+            top.output(html);
+            html.println("</div>");
+        }
     }
 
     /**
@@ -106,6 +101,11 @@ public class UIForm extends UIOriginComponent {
      * @param html 输出器
      */
     public void outFoot(HtmlWriter html) {
+        if (bottom != null) {
+            html.print("<div role='bottom'>");
+            bottom.output(html);
+            html.println("</div>");
+        }
         html.println("</form>");
     }
 
