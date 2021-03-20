@@ -33,3 +33,12 @@
 1. 修复 Application 对象没有往自定义内部 session 赋值 sid 的问题，静态变量 TOKEN 统一指向 sid 字符串。
 
 ---
+
+## 3.2.3 (2021-03-20)
+
+1. 
+---
+
+## 3.2.4 (2021-03-20)
+
+1. summer-core 修复了config获取 application.properties getBoolean（）函数取值错误的问题。
