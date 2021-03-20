@@ -5,6 +5,7 @@ import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.IOriginOwner;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.ChildGridLine;
@@ -19,7 +20,7 @@ public abstract class AbstractGrid extends UIComponent implements DataSource {
     // 主行
     protected MasterGridLine masterLine;
     // 表单，后不得再使用
-    protected UIActionForm form;
+    private UIActionForm uiform;
     // 数据源
     private DataSet dataSet;
     // 支持表格分页
@@ -27,6 +28,18 @@ public abstract class AbstractGrid extends UIComponent implements DataSource {
     // 行管理器, 其中第1个一定为masterLine
     private List<AbstractGridLine> lines = new ArrayList<>();
 
+    public AbstractGrid(UIComponent owner) {
+        super(owner);
+        this.setId("grid");
+        masterLine = new MasterGridLine(this);
+        lines.add(masterLine);
+        if (owner instanceof IOriginOwner) {
+            IForm form = (IForm) ((IOriginOwner) owner).getOrigin();
+            pages.setRequest(form.getRequest());
+        }
+    }
+
+    @Deprecated
     public AbstractGrid(IForm form, UIComponent owner) {
         super(owner);
         this.setId("grid");
@@ -70,12 +83,12 @@ public abstract class AbstractGrid extends UIComponent implements DataSource {
 
     @Deprecated
     public UIActionForm getForm() {
-        return form;
+        return uiform;
     }
 
     @Deprecated
     public void setForm(UIActionForm form) {
-        this.form = form;
+        this.uiform = form;
     }
 
     public abstract void outputGrid(HtmlWriter html);

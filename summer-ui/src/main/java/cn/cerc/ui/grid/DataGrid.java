@@ -31,10 +31,10 @@ public class DataGrid extends AbstractGrid {
     @Override
     public void output(HtmlWriter html) {
         html.print("<div class='scrollArea'>");
-        if (form != null) {
-            form.outHead(html);
+        if (getForm() != null) {
+            getForm().outHead(html);
             outputGrid(html);
-            form.outFoot(html);
+            getForm().outFoot(html);
         } else {
             outputGrid(html);
         }
