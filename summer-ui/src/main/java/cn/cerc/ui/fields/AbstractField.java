@@ -12,13 +12,14 @@ import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UICssComponent;
 import cn.cerc.ui.vcl.UIText;
 
-public abstract class AbstractField extends UICssComponent implements IField {
+public abstract class AbstractField extends UICssComponent implements IField, INameOwner {
     private static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据库相关
     protected String field;

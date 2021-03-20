@@ -29,10 +29,10 @@ public class PhoneGrid extends AbstractGrid {
     public void output(HtmlWriter html) {
         html.print("<div class='%s'>", this.getCSSClass());
         if (this.getDataSet().size() > 0) {
-            if (form != null) {
-                form.outHead(html);
+            if (getForm() != null) {
+                getForm().outHead(html);
                 outputGrid(html);
-                form.outFoot(html);
+                getForm().outFoot(html);
             } else {
                 outputGrid(html);
             }
