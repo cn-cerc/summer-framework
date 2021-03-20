@@ -64,7 +64,6 @@ public class UIForm extends UIOriginComponent {
             }
         }
 
-        super.output(html);
         outFoot(html);
     }
 
