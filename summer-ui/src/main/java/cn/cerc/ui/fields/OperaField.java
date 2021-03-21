@@ -19,6 +19,8 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
 
     private BuildText buildText;
 
+    private BuildUrl buildUrl;
+
     public OperaField(UIComponent owner) {
         this(owner, res.getString(2, "操作"), 3);
         this.setReadonly(true);
