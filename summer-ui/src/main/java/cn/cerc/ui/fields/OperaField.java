@@ -6,10 +6,12 @@ import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OperaField extends AbstractField {
+public class OperaField extends AbstractField implements IDialogFieldOwner {
     private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
 
     private String value = res.getString(1, "内容");
+
+    private DialogField dialog;
 
     public OperaField(UIComponent owner) {
         this(owner, res.getString(2, "操作"), 3);
@@ -47,6 +49,28 @@ public class OperaField extends AbstractField {
     @Override
     public OperaField setReadonly(boolean readonly) {
         super.setReadonly(true);
+        return this;
+    }
+
+    @Override
+    public DialogField getDialog() {
+        return dialog;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        return this;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun, String... params) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        for (String string : params) {
+            this.dialog.add(string);
+        }
         return this;
     }
 }
