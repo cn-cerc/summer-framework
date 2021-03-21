@@ -13,6 +13,7 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.fields.ButtonField;
 import cn.cerc.ui.fields.ExpendField;
+import cn.cerc.ui.fields.IFieldRole;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.ExpenderGridLine;
 import cn.cerc.ui.other.SearchItem;
@@ -131,9 +132,14 @@ public class UIFormHorizontal extends UICssComponent implements DataSource {
         for (AbstractField field : fields) {
             if (!field.isHidden()) {
                 html.print("<li");
-                if (field.getRole() != null) {
-                    html.print(" role='%s'", field.getRole());
+
+                if (field instanceof IFieldRole) {
+                    IFieldRole obj = (IFieldRole) field;
+                    if (obj.getRole() != null) {
+                        html.print(" role='%s'", obj.getRole());
+                    }
                 }
+
                 if (field instanceof ExpendField) {
                     html.print(" class=\"select\"");
                 }

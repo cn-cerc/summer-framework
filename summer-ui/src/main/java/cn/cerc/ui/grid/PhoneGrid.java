@@ -193,8 +193,8 @@ public class PhoneGrid extends AbstractGrid {
             html.print("<section>");
             for (AbstractField field : columns) {
                 html.print("<span");
-                if (field.getCSSClass_phone() != null) {
-                    html.print(String.format(" class=\"%s\"", field.getCSSClass_phone()));
+                if (field.getCssClass() != null) {
+                    html.print(String.format(" class=\"%s\"", field.getCssClass()));
                 }
                 html.print(">");
                 BuildUrl build = field.getBuildUrl();
