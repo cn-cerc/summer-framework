@@ -19,9 +19,9 @@ public class CodeNameField extends AbstractField {
 
     @Override
     public void updateField() {
-        if (dataSource != null) {
-            dataSource.updateValue(this.getId(), this.getField());
-            dataSource.updateValue(getNameField(), getNameField());
+        if (getDataSource() != null) {
+            getDataSource().updateValue(this.getId(), this.getField());
+            getDataSource().updateValue(getNameField(), getNameField());
         }
     }
 
@@ -30,9 +30,9 @@ public class CodeNameField extends AbstractField {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         return record.getString(getField());
@@ -40,7 +40,7 @@ public class CodeNameField extends AbstractField {
 
     @Override
     public void output(HtmlWriter html) {
-        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
         if (this.isHidden()) {
             html.print("<input");
             html.print(" type=\"hidden\"");

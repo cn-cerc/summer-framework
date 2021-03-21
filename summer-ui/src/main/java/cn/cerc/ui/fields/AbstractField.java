@@ -24,31 +24,31 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
     // 数据库相关
     protected String field;
     // 自定义取值
-    protected BuildText buildText;
+    private BuildText buildText;
     // 焦点否
-    protected boolean autofocus;
+    private boolean autofocus;
     //
-    protected boolean required;
+    private boolean required;
     // 用于文件上传是否可以选则多个文件
-    protected boolean multiple = false;
+    private boolean multiple = false;
     //
-    protected String placeholder;
+    private String placeholder;
     // 正则过滤
-    protected String pattern;
+    private String pattern;
     //
-    protected boolean hidden;
+    private boolean hidden;
     // 角色
-    protected String role;
+    private String role;
     //
     protected DialogField dialog;
     // dialog 小图标
-    protected String icon;
+    private String icon;
     //
     protected BuildUrl buildUrl;
-    //
-    protected DataSource dataSource;
-    protected String oninput;
-    protected String onclick;
+    //数据源
+    private DataSource dataSource;
+    private String oninput;
+    private String onclick;
     private String htmlTag = "input";
     private String htmType;
     private String name;
@@ -714,6 +714,14 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
             }
             return json.toString().replace("\"", "'");
         }
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
 }

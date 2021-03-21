@@ -38,9 +38,9 @@ public class DateField extends AbstractField {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         if (record.hasValue(getField())) {

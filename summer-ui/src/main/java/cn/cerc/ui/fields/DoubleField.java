@@ -31,9 +31,9 @@ public class DoubleField extends AbstractField implements IColumn {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         try {

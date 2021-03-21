@@ -33,9 +33,9 @@ public class ButtonField extends AbstractField {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         return record.getString(getField());

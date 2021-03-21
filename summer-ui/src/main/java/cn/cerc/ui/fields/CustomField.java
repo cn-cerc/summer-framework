@@ -13,11 +13,11 @@ public class CustomField extends AbstractField {
 
     @Override
     public String getText(Record record) {
-        if (buildText == null) {
+        if (getBuildText() == null) {
             return "";
         }
         HtmlWriter html = new HtmlWriter();
-        buildText.outputText(record, html);
+        getBuildText().outputText(record, html);
         return html.toString();
     }
 

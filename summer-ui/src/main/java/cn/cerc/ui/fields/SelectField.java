@@ -37,9 +37,9 @@ public class SelectField extends AbstractField implements IColumn {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         String val = record.getString(field);
@@ -69,7 +69,7 @@ public class SelectField extends AbstractField implements IColumn {
         } else {
             html.print(">");
         }
-        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
         String current = record.getString(this.getField());
         for (String key : items.keySet()) {
             if (key.equals(current)) {

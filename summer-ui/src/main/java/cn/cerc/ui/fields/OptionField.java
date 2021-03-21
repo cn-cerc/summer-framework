@@ -47,9 +47,9 @@ public class OptionField extends AbstractField {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         return record.getString(getField());
@@ -66,7 +66,7 @@ public class OptionField extends AbstractField {
 
     @Override
     public void output(HtmlWriter html) {
-        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
         String current = this.getText(record);
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<select id=\"%s\" name=\"%s\"", this.getId(), this.getId());

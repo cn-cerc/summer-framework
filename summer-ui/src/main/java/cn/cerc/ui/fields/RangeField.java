@@ -24,8 +24,8 @@ public class RangeField extends AbstractField implements DataSource {
 
     @Override
     public void output(HtmlWriter html) {
-        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
-        if (this.hidden) {
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
+        if (this.isHidden()) {
             html.print("<input");
             html.print(" type=\"hidden\"");
             html.print(" name=\"%s\"", this.getId());
@@ -84,11 +84,11 @@ public class RangeField extends AbstractField implements DataSource {
 
     @Override
     public DataSet getDataSet() {
-        return dataSource.getDataSet();
+        return getDataSource().getDataSet();
     }
 
     @Override
     public void updateValue(String id, String code) {
-        dataSource.updateValue(id, code);
+        getDataSource().updateValue(id, code);
     }
 }
