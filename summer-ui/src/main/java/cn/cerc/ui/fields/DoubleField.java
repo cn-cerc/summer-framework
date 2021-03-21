@@ -10,9 +10,12 @@ import cn.cerc.ui.parts.UIComponent;
 
 import java.text.DecimalFormat;
 
-public class DoubleField extends AbstractField implements IColumn {
+public class DoubleField extends AbstractField implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus {
     private ColumnEditor editor;
     private String format = "0.####";
+    private String pattern;
+    private String placeholder;
+    private boolean autofocus;
 
     public DoubleField(UIComponent owner, String title, String field) {
         super(owner, title, 4);
@@ -101,6 +104,39 @@ public class DoubleField extends AbstractField implements IColumn {
 
     public DoubleField setFormat(String format) {
         this.format = format;
+        return this;
+    }
+
+    @Override
+    public String getPattern() {
+        return this.pattern;
+    }
+
+    @Override
+    public DoubleField setPattern(String pattern) {
+        this.pattern = pattern;
+        return this;
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    @Override
+    public DoubleField setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+        return this;
+    }
+
+    @Override
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    @Override
+    public DoubleField setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
         return this;
     }
 }

@@ -47,8 +47,8 @@ public class ButtonField extends AbstractField {
         if (this.data != null) {
             html.print(" value=\"%s\"", this.data);
         }
-        if (getCSSClass_phone() != null) {
-            html.print(" class=\"%s\"", getCSSClass_phone());
+        if (this.getCssClass() != null) {
+            html.print(" class=\"%s\"", this.getCssClass());
         }
         if (this.getOnclick() != null) {
             html.print(" onclick=\"%s\"", this.getOnclick());

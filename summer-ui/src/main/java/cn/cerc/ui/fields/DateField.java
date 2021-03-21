@@ -7,9 +7,15 @@ import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DateField extends AbstractField implements IDialogFieldOwner {
+public class DateField extends AbstractField
+        implements IDialogFieldOwner, IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
     private DialogField dialog;
+    private String pattern;
+    private String placeholder;
+    private boolean required;
+    private boolean autofocus;
+    private String icon;
 
     public DateField(UIComponent owner, String name, String field) {
         super(owner, name, 5);
@@ -57,19 +63,75 @@ public class DateField extends AbstractField implements IDialogFieldOwner {
     }
 
     @Override
-    public AbstractField setDialog(String dialogfun) {
+    public DateField setDialog(String dialogfun) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
         return this;
     }
 
     @Override
-    public AbstractField setDialog(String dialogfun, String... params) {
+    public DateField setDialog(String dialogfun, String... params) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
         for (String string : params) {
             this.dialog.add(string);
         }
+        return this;
+    }
+
+    @Override
+    public String getPattern() {
+        return this.pattern;
+    }
+
+    @Override
+    public DateField setPattern(String pattern) {
+        this.pattern = pattern;
+        return this;
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    @Override
+    public DateField setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+        return this;
+    }
+
+    @Override
+    public boolean isRequired() {
+        return required;
+    }
+
+    @Override
+    public DateField setRequired(boolean required) {
+        this.required = required;
+        return this;
+    }
+
+    @Override
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    @Override
+    public DateField setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
+        return this;
+    }
+
+
+    @Override
+    public String getIcon() {
+        return icon;
+    }
+
+    @Override
+    public DateField setIcon(String icon) {
+        this.icon = icon;
         return this;
     }
 }
