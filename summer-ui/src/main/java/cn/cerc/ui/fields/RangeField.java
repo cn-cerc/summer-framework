@@ -24,8 +24,8 @@ public class RangeField extends AbstractField implements DataSource {
 
     @Override
     public void output(HtmlWriter html) {
-        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
-        if (this.hidden) {
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
+        if (this.isHidden()) {
             html.print("<input");
             html.print(" type=\"hidden\"");
             html.print(" name=\"%s\"", this.getId());
@@ -50,9 +50,9 @@ public class RangeField extends AbstractField implements DataSource {
                     child.setCSSClass_phone(val);
                 }
             }
-            if (this.dialog != null) {
+            if (this.getDialog() != null) {
                 html.print("<span>");
-                html.print("<a href=\"javascript:%s('%s')\">", this.dialog, this.getId());
+                html.print("<a href=\"javascript:%s('%s')\">", this.getDialog(), this.getId());
                 html.print("<img src=\"images/select-pic.png\">");
                 html.print("</a>");
                 html.print("</span>");
@@ -72,11 +72,6 @@ public class RangeField extends AbstractField implements DataSource {
     }
 
     @Override
-    public boolean isReadonly() {
-        return dataSource.isReadonly();
-    }
-
-    @Override
     public void updateField() {
         AbstractField child = null;
         for (Component component : this.getComponents()) {
@@ -89,11 +84,11 @@ public class RangeField extends AbstractField implements DataSource {
 
     @Override
     public DataSet getDataSet() {
-        return dataSource.getDataSet();
+        return getDataSource().getDataSet();
     }
 
     @Override
     public void updateValue(String id, String code) {
-        dataSource.updateValue(id, code);
+        getDataSource().updateValue(id, code);
     }
 }

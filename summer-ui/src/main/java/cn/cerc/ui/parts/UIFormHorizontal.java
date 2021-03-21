@@ -285,11 +285,6 @@ public class UIFormHorizontal extends UICssComponent implements DataSource {
         return dataSet;
     }
 
-    @Override
-    public boolean isReadonly() {
-        return false;
-    }
-
     public String getEnctype() {
         return enctype;
     }
@@ -326,11 +321,6 @@ public class UIFormHorizontal extends UICssComponent implements DataSource {
         @Override
         public DataSet getDataSet() {
             return dataSource.getDataSet();
-        }
-
-        @Override
-        public boolean isReadonly() {
-            return dataSource.isReadonly();
         }
 
         @Override

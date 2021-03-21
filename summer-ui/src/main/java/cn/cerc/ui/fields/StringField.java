@@ -37,10 +37,10 @@ public class StringField extends AbstractField implements IColumn {
         String data = getDefaultText(record);
 
         if (this.isReadonly()) {
-            if (buildUrl != null) {
+            if (getBuildUrl() != null) {
                 HtmlWriter html = new HtmlWriter();
                 UrlRecord url = new UrlRecord();
-                buildUrl.buildUrl(record, url);
+                getBuildUrl().buildUrl(record, url);
                 if (!"".equals(url.getUrl())) {
                     html.print("<a href=\"%s\"", url.getUrl());
                     if (url.getTitle() != null) {

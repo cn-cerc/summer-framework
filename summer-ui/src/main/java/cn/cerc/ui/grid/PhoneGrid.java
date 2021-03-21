@@ -100,11 +100,11 @@ public class PhoneGrid extends AbstractGrid {
     public void setCSSClass(String CSSClass) {
         this.CSSClass = CSSClass;
     }
-
-    @Override
-    public boolean isReadonly() {
-        return true;
-    }
+//
+//    @Override
+//    public boolean isReadonly() {
+//        return true;
+//    }
 
     @Override
     public void updateValue(String id, String code) {
@@ -260,11 +260,6 @@ public class PhoneGrid extends AbstractGrid {
         @Override
         public DataSet getDataSet() {
             return dataSource.getDataSet();
-        }
-
-        @Override
-        public boolean isReadonly() {
-            return dataSource.isReadonly();
         }
 
         @Override

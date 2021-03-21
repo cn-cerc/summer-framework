@@ -93,11 +93,6 @@ public class MasterGridLine extends AbstractGridLine {
     }
 
     @Override
-    public boolean isReadonly() {
-        return dataSource.isReadonly();
-    }
-
-    @Override
     public void updateValue(String id, String code) {
         dataSource.updateValue(id, code);
     }

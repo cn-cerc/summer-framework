@@ -25,9 +25,9 @@ public class OperaField extends AbstractField {
 
     @Override
     public String getText(Record record) {
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         return this.value;

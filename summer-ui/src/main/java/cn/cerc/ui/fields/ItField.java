@@ -22,12 +22,12 @@ public class ItField extends AbstractField {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
-        return "" + dataSource.getDataSet().getRecNo();
+        return "" + getDataSource().getDataSet().getRecNo();
     }
 
     @Override
