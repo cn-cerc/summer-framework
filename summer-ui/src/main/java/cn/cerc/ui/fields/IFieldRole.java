@@ -1,6 +1,6 @@
 package cn.cerc.ui.fields;
 
-public interface IFieldRoleOwner {
+public interface IFieldRole {
 
     String getRole();
 
