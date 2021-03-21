@@ -13,6 +13,8 @@ public class OperaField extends AbstractField implements IDialogFieldOwner {
 
     private DialogField dialog;
 
+    private String icon;
+
     public OperaField(UIComponent owner) {
         this(owner, res.getString(2, "操作"), 3);
         this.setReadonly(true);
@@ -58,19 +60,30 @@ public class OperaField extends AbstractField implements IDialogFieldOwner {
     }
 
     @Override
-    public AbstractField setDialog(String dialogfun) {
+    public OperaField setDialog(String dialogfun) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
         return this;
     }
 
     @Override
-    public AbstractField setDialog(String dialogfun, String... params) {
+    public OperaField setDialog(String dialogfun, String... params) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
         for (String string : params) {
             this.dialog.add(string);
         }
+        return this;
+    }
+
+    @Override
+    public String getIcon() {
+        return icon;
+    }
+
+    @Override
+    public OperaField setIcon(String icon) {
+        this.icon = icon;
         return this;
     }
 }

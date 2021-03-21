@@ -8,9 +8,15 @@ import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField implements IColumn, IDialogFieldOwner {
+public class StringField extends AbstractField
+        implements IColumn, IDialogFieldOwner, IFieldPlaceholder, IFieldPattern, IFieldRequired, IFieldAutofocus {
     private ColumnEditor editor;
     private DialogField dialog;
+    private String placeholder;
+    private String pattern;
+    private boolean required;
+    private boolean autofocus;
+    private String icon;
 
     public StringField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -93,6 +99,61 @@ public class StringField extends AbstractField implements IColumn, IDialogFieldO
         for (String string : params) {
             this.dialog.add(string);
         }
+        return this;
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    @Override
+    public StringField setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+        return this;
+    }
+
+    @Override
+    public String getPattern() {
+        return pattern;
+    }
+
+    @Override
+    public StringField setPattern(String pattern) {
+        this.pattern = pattern;
+        return this;
+    }
+
+    @Override
+    public boolean isRequired() {
+        return required;
+    }
+
+    @Override
+    public StringField setRequired(boolean required) {
+        this.required = required;
+        return this;
+    }
+
+    @Override
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    @Override
+    public StringField setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
+        return this;
+    }
+
+    @Override
+    public String getIcon() {
+        return icon;
+    }
+
+    @Override
+    public StringField setIcon(String icon) {
+        this.icon = icon;
         return this;
     }
 }

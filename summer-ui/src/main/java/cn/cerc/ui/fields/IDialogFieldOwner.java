@@ -3,7 +3,11 @@ package cn.cerc.ui.fields;
 public interface IDialogFieldOwner {
     DialogField getDialog();
 
-    AbstractField setDialog(String dialogfun);
+    String getIcon();
 
-    AbstractField setDialog(String dialogfun, String[] params);
+    Object setDialog(String dialogfun);
+
+    Object setDialog(String dialogfun, String[] params);
+
+    Object setIcon(String icon);
 }

@@ -13,6 +13,7 @@ import cn.cerc.ui.parts.UIComponent;
 public class RangeField extends AbstractField implements DataSource, IDialogFieldOwner {
     private static final ClassResource res = new ClassResource(RangeField.class, SummerUI.ID);
     private DialogField dialog;
+    private String icon;
 
     public RangeField(UIComponent dataView, String name) {
         super(dataView, name, 0);
@@ -45,10 +46,10 @@ public class RangeField extends AbstractField implements DataSource, IDialogFiel
                         html.print("-");
                     }
                     child = (AbstractField) component;
-                    String val = child.getCSSClass_phone();
-                    child.setCSSClass_phone("price");
+                    String val = child.getCssClass();
+                    child.setCssClass("price");
                     child.outputInput(html, record);
-                    child.setCSSClass_phone(val);
+                    child.setCssClass(val);
                 }
             }
             if (this.getDialog() != null) {
@@ -99,19 +100,30 @@ public class RangeField extends AbstractField implements DataSource, IDialogFiel
     }
 
     @Override
-    public AbstractField setDialog(String dialogfun) {
+    public RangeField setDialog(String dialogfun) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
         return this;
     }
 
     @Override
-    public AbstractField setDialog(String dialogfun, String... params) {
+    public RangeField setDialog(String dialogfun, String... params) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
         for (String string : params) {
             this.dialog.add(string);
         }
+        return this;
+    }
+
+    @Override
+    public String getIcon() {
+        return icon;
+    }
+
+    @Override
+    public RangeField setIcon(String icon) {
+        this.icon = icon;
         return this;
     }
 }
