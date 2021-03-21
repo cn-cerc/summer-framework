@@ -6,10 +6,12 @@ import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
+import cn.cerc.ui.other.BuildText;
+import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField
-        implements IColumn, IFieldDialog, IFieldPlaceholder, IFieldPattern, IFieldRequired, IFieldAutofocus {
+public class StringField extends AbstractField implements IColumn, IFieldDialog, IFieldPlaceholder, IFieldPattern,
+        IFieldRequired, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private DialogField dialog;
     private String placeholder;
@@ -17,6 +19,8 @@ public class StringField extends AbstractField
     private boolean required;
     private boolean autofocus;
     private String icon;
+    private BuildUrl buildUrl;
+    private BuildText buildText;
 
     public StringField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -155,5 +159,27 @@ public class StringField extends AbstractField
     public StringField setIcon(String icon) {
         this.icon = icon;
         return this;
+    }
+
+    @Override
+    public StringField createUrl(BuildUrl buildUrl) {
+        this.buildUrl = buildUrl;
+        return this;
+    }
+
+    @Override
+    public BuildUrl getBuildUrl() {
+        return buildUrl;
+    }
+
+    @Override
+    public StringField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }
