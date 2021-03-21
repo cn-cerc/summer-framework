@@ -4,9 +4,10 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OperaField extends AbstractField implements IFieldDialog {
+public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText {
     private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
 
     private String value = res.getString(1, "内容");
@@ -14,6 +15,8 @@ public class OperaField extends AbstractField implements IFieldDialog {
     private DialogField dialog;
 
     private String icon;
+
+    private BuildText buildText;
 
     public OperaField(UIComponent owner) {
         this(owner, res.getString(2, "操作"), 3);
@@ -85,5 +88,16 @@ public class OperaField extends AbstractField implements IFieldDialog {
     public OperaField setIcon(String icon) {
         this.icon = icon;
         return this;
+    }
+
+    @Override
+    public OperaField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }
