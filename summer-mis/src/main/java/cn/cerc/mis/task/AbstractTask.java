@@ -1,13 +1,9 @@
 package cn.cerc.mis.task;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ITokenManage;
-import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
-import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -15,6 +11,8 @@ public abstract class AbstractTask extends Handle implements Runnable {
 
     public ISystemTable systemTable;
     private String describe;
+
+    private ISession session;
 
     /**
      * 缓存过期时间 单位：秒
@@ -51,16 +49,8 @@ public abstract class AbstractTask extends Handle implements Runnable {
      */
     @Override
     public void run() {
-        ISession session = Application.createSession();
         systemTable = Application.getSystemTable();
         try {
-            session.setProperty(Application.bookNo, StubHandle.DefaultBook);
-            session.setProperty(Application.userCode, "admin");
-            // 创建token
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
-            manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
-                    StubHandle.machineCode);
-            // 开始执行
             this.setHandle(new Handle(session));
             this.execute();
         } catch (Exception e) {
@@ -68,6 +58,16 @@ public abstract class AbstractTask extends Handle implements Runnable {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
     // 具体业务逻辑代码

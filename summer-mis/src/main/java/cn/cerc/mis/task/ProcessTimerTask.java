@@ -3,6 +3,8 @@ package cn.cerc.mis.task;
 import java.util.Calendar;
 import java.util.TimerTask;
 
+import cn.cerc.db.core.IHandle;
+import cn.cerc.mis.core.Handle;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -21,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-@Deprecated // 请改使用 StartTaskDefault
+@Deprecated // 请改使用 StartTaskDefault，注意测试不同用户的创建
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
 
     // 晚上12点执行，也即0点开始执行
@@ -112,8 +114,8 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             // 创建token
             //FIXME 此处需要复查是否存在创建token的必要性
             ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
-            manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
-                    StubHandle.machineCode);
+            // 注入token到session
+            manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password, StubHandle.machineCode);
             return;
         }
 
@@ -144,6 +146,8 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
         AbstractTask task = Application.getBean(beanId, AbstractTask.class);
         if (task != null) {
             task.setSession(session);
+            IHandle handle = new Handle(session);
+            task.setHandle(handle);
         }
         return task;
     }
