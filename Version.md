@@ -11,7 +11,6 @@
 7. 权限、设备、session、数据表等支持项目自定义实现统一放在 `cn.cerc.mis.custom` 包下，若不实现则使用框架自定义的实现方式。
 8. 增加了对 Spring MVC 的菜单支持。
 9. AbstractJspPage 拆分为 UIPage 和 JspPage，分别用于处理原始jsp文件和框架自定义生成页面。
-
 ---
 
 ## 3.2.0 (2021-03-18)
@@ -19,26 +18,28 @@
 1. 将部分IPage替换为IView。
 2. 增加IAppLanguage接口，解决R对象中对UserOptions硬引用限制，s_language 表由业务项目自己实现。
 3. 增加ICorpInfo接口，以解决 MemoryBookInfo 和 MemoryBookRecord 获取帐套的问题。
-
 ---
 
 ## 3.2.1 (2021-03-18)
 
 1. 在IForm中增加了getId与setId。
-
 ---
 
 ## 3.2.2 (2021-03-18)
 
 1. 修复 Application 对象没有往自定义内部 session 赋值 sid 的问题，静态变量 TOKEN 统一指向 sid 字符串。
-
 ---
 
 ## 3.2.3 (2021-03-20)
 
 1. 增加IOriginOwner接口。 
 ---
-
 ## 3.2.4 (2021-03-20)
 
 1. summer-core 修复了config获取 application.properties getBoolean（）函数取值错误的问题。
+---
+
+## 3.2.4 (2021-03-20)
+
+1. 修复task的handle没有取到值的问题
+---
