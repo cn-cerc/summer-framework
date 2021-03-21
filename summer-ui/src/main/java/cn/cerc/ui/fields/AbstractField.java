@@ -409,24 +409,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         this.dataSource = dataView;
     }
 
-    public String getOninput() {
-        return oninput;
-    }
-
-    public AbstractField setOninput(String oninput) {
-        this.oninput = oninput;
-        return this;
-    }
-
-    public String getOnclick() {
-        return onclick;
-    }
-
-    public AbstractField setOnclick(String onclick) {
-        this.onclick = onclick;
-        return this;
-    }
-
     @Override
     public String getTitle() {
         return this.getName();
