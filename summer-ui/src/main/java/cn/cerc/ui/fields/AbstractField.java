@@ -8,18 +8,19 @@ import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.cdn.CDN;
+import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.INameOwner;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.parts.UICssComponent;
 import cn.cerc.ui.vcl.UIText;
 
-public abstract class AbstractField extends UICssComponent implements IField, INameOwner {
+public abstract class AbstractField extends UIOriginComponent implements IField, INameOwner {
     private static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据库相关
     protected String field;
@@ -283,9 +284,20 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
     @Override
     public void output(HtmlWriter html) {
         Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
+
         if (this.hidden) {
             outputInput(html, record);
         } else {
+            if (this.getOrigin() instanceof IForm) {
+                IForm form = (IForm) this.getOrigin();
+                if (form.getClient().isPhone()) {
+                    if(this.readonly){
+                        html.print(this.getName() + "：");
+                        html.print(this.getText(record));
+                        return;
+                    }
+                }
+            }
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             outputInput(html, record);
             if (this.showStar) {
