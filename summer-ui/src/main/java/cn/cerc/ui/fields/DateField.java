@@ -5,10 +5,11 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.core.Application;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DateField extends AbstractField
-        implements IFieldDialog, IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus {
+        implements IFieldDialog, IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
     private DialogField dialog;
     private String pattern;
@@ -16,6 +17,7 @@ public class DateField extends AbstractField
     private boolean required;
     private boolean autofocus;
     private String icon;
+    private BuildText buildText;
 
     public DateField(UIComponent owner, String name, String field) {
         super(owner, name, 5);
@@ -123,7 +125,6 @@ public class DateField extends AbstractField
         return this;
     }
 
-
     @Override
     public String getIcon() {
         return icon;
@@ -133,5 +134,16 @@ public class DateField extends AbstractField
     public DateField setIcon(String icon) {
         this.icon = icon;
         return this;
+    }
+
+    @Override
+    public DateField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }

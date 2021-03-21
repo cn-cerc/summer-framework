@@ -4,14 +4,17 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ExpendField extends AbstractField implements SearchItem {
+public class ExpendField extends AbstractField implements SearchItem, IFieldBuildText {
     private static final ClassResource res = new ClassResource(ExpendField.class, SummerUI.ID);
 
     private boolean search;
     private String hiddenId = "hidden";
+
+    private BuildText buildText;
 
     public ExpendField(UIComponent owner) {
         this(owner, "", "_opera_", 5);
@@ -71,6 +74,17 @@ public class ExpendField extends AbstractField implements SearchItem {
 
     public void setHiddenId(String hiddenId) {
         this.hiddenId = hiddenId;
+    }
+
+    @Override
+    public ExpendField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 
 }
