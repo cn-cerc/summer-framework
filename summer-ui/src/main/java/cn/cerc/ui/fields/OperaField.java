@@ -5,9 +5,10 @@ import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.BuildText;
+import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText {
+public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText, IFieldBuildUrl {
     private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
 
     private String value = res.getString(1, "内容");
@@ -99,5 +100,16 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
     @Override
     public BuildText getBuildText() {
         return buildText;
+    }
+
+    @Override
+    public OperaField createUrl(BuildUrl buildUrl) {
+        this.buildUrl = buildUrl;
+        return this;
+    }
+
+    @Override
+    public BuildUrl getBuildUrl() {
+        return buildUrl;
     }
 }
