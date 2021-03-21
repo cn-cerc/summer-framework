@@ -21,63 +21,31 @@ import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIText;
 
-public abstract class AbstractField extends UIOriginComponent
-        implements IField, INameOwner, IReadonlyOwner {
+public abstract class AbstractField extends UIOriginComponent implements IField, INameOwner, IReadonlyOwner {
     private static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
-    // 数据库相关
-    protected String field;
-    // 自定义取值
-    private BuildText buildText;
-    // 焦点否
-    private boolean autofocus;
-    //
-    private boolean required;
-    // 用于文件上传是否可以选则多个文件
-    private boolean multiple = false;
-    // 提供可描述输入字段预期值的提示信息
-    private String placeholder;
-    // 正则过滤
-    private String pattern;
-    //
-    private boolean hidden;
-    // 角色
-    private String role;
-    // dialog 小图标
-    private String icon;
-    //
-    private BuildUrl buildUrl;
     // 数据源
     private DataSource dataSource;
-    private String oninput;
-    private String onclick;
-    private String htmlTag = "input";
-    private String htmType;
+    // 数据字段
+    protected String field;
     private String name;
     private String shortName;
+    private String htmType;
+    // 自定义取值
+    private BuildText buildText;
+    private BuildUrl buildUrl;
+    // 数据隐藏
+    private boolean hidden;
     private String align;
     private int width;
-    // 手机专用样式
-    private String CSSClass_phone;
+    // 动作设置
+    private String oninput;
+    private String onclick;
     // value
     private String value;
     // 只读否
     private boolean readonly;
-    // 自动完成（默认为 off）
-    private boolean autocomplete = false;
     // 栏位说明
     private UIText mark;
-    private boolean visible = true;
-    // TODO 专用于textarea标签，需要拆分该标签出来，黄荣君 2016-05-31
-    // 最大字符串数
-    private int maxlength;
-    // 可见行数
-    private int rows;
-    // 可见宽度
-    private int cols;
-    // 是否禁用
-    private boolean resize = true;
-    // 是否显示*号
-    private boolean showStar = false;
 
     public AbstractField(UIComponent owner, String name, int width) {
         super(owner);
@@ -98,14 +66,6 @@ public abstract class AbstractField extends UIOriginComponent
     public AbstractField setMark(UIText mark) {
         this.mark = mark;
         return this;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     @Override
@@ -201,12 +161,9 @@ public abstract class AbstractField extends UIOriginComponent
         return this;
     }
 
-    public String getCSSClass_phone() {
-        return CSSClass_phone;
-    }
-
+    @Deprecated
     public void setCSSClass_phone(String cSSClass_phone) {
-        CSSClass_phone = cSSClass_phone;
+        this.setCssClass(cSSClass_phone);
     }
 
     @Override
@@ -226,51 +183,6 @@ public abstract class AbstractField extends UIOriginComponent
 
     public AbstractField setValue(String value) {
         this.value = value;
-        return this;
-    }
-
-    public boolean isAutocomplete() {
-        return autocomplete;
-    }
-
-    public AbstractField setAutocomplete(boolean autocomplete) {
-        this.autocomplete = autocomplete;
-        return this;
-    }
-
-    public boolean isAutofocus() {
-        return autofocus;
-    }
-
-    public AbstractField setAutofocus(boolean autofocus) {
-        this.autofocus = autofocus;
-        return this;
-    }
-
-    public boolean isRequired() {
-        return required;
-    }
-
-    public AbstractField setRequired(boolean required) {
-        this.required = required;
-        return this;
-    }
-
-    public String getPlaceholder() {
-        return placeholder;
-    }
-
-    public AbstractField setPlaceholder(String placeholder) {
-        this.placeholder = placeholder;
-        return this;
-    }
-
-    public String getPattern() {
-        return pattern;
-    }
-
-    public AbstractField setPattern(String pattern) {
-        this.pattern = pattern;
         return this;
     }
 
@@ -302,17 +214,21 @@ public abstract class AbstractField extends UIOriginComponent
             }
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             outputInput(html, record);
-            if (this.showStar) {
-                html.println("<font>*</font>");
+            if (this instanceof IFieldShowStar) {
+                IFieldShowStar obj = (IFieldShowStar) this;
+                if (obj.isShowStar()) {
+                    html.println("<font>*</font>");
+                }
             }
-            if (this instanceof IDialogFieldOwner) {
-                DialogField dialog = ((IDialogFieldOwner) this).getDialog();
+            if (this instanceof IFieldDialog) {
+                IFieldDialog obj = (IFieldDialog) this;
+                DialogField dialog = obj.getDialog();
                 if (dialog != null && dialog.isOpen()) {
                     html.print("<span>");
                     html.print("<a href=\"%s\">", dialog.getUrl());
 
-                    if (this.icon != null) {
-                        html.print("<img src=\"%s\">", this.icon);
+                    if (obj.getIcon() != null) {
+                        html.print("<img src=\"%s\">", obj.getIcon());
                     } else {
                         html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
                     }
@@ -328,7 +244,7 @@ public abstract class AbstractField extends UIOriginComponent
     }
 
     protected void outputInput(HtmlWriter html, Record dataSet) {
-        if ("textarea".equals(htmlTag)) {
+        if (this instanceof IFieldTextArea) {
             outputTextArea(html, dataSet);
             return;
         }
@@ -362,28 +278,46 @@ public abstract class AbstractField extends UIOriginComponent
             if (this.isReadonly()) {
                 html.print(" readonly=\"readonly\"");
             }
-            if (this.autocomplete) {
-                html.print(" autocomplete=\"on\"");
-            } else {
-                html.print(" autocomplete=\"off\"");
+            if (this instanceof IFieldAutocomplete) {
+                IFieldAutocomplete obj = (IFieldAutocomplete) this;
+                if (obj.isAutocomplete()) {
+                    html.print(" autocomplete=\"on\"");
+                } else {
+                    html.print(" autocomplete=\"off\"");
+                }
             }
-            if (this.autofocus) {
-                html.print(" autofocus");
+            if (this instanceof IFieldAutofocus) {
+                IFieldAutofocus obj = (IFieldAutofocus) this;
+                if (obj.isAutofocus()) {
+                    html.print(" autofocus");
+                }
             }
-            if (this.required) {
-                html.print(" required");
+            if (this instanceof IFieldRequired) {
+                IFieldRequired obj = (IFieldRequired) this;
+                if (obj.isRequired()) {
+                    html.print(" required");
+                }
             }
-            if (this.multiple) {
-                html.print(" multiple");
+            if (this instanceof IFieldMultiple) {
+                IFieldMultiple obj = (IFieldMultiple) this;
+                if (obj.isMultiple()) {
+                    html.print(" multiple");
+                }
             }
-            if (this.placeholder != null) {
-                html.print(" placeholder=\"%s\"", this.placeholder);
+            if (this instanceof IFieldPlaceholder) {
+                IFieldPlaceholder obj = (IFieldPlaceholder) this;
+                if (obj.getPlaceholder() != null) {
+                    html.print(" placeholder=\"%s\"", obj.getPlaceholder());
+                }
             }
-            if (this.pattern != null) {
-                html.print(" pattern=\"%s\"", this.pattern);
+            if (this instanceof IFieldPattern) {
+                IFieldPattern obj = (IFieldPattern) this;
+                if (obj.getPattern() != null) {
+                    html.print(" pattern=\"%s\"", obj.getPattern());
+                }
             }
-            if (this.CSSClass_phone != null) {
-                html.print(" class=\"%s\"", this.CSSClass_phone);
+            if (this.getCssClass() != null) {
+                html.print(" class=\"%s\"", this.getCssClass());
             }
             if (this.oninput != null) {
                 html.print(" oninput=\"%s\"", this.oninput);
@@ -404,26 +338,38 @@ public abstract class AbstractField extends UIOriginComponent
         if (readonly) {
             html.print(" readonly=\"readonly\"");
         }
-        if (autofocus) {
-            html.print(" autofocus");
+        if (this instanceof IFieldAutofocus) {
+            IFieldAutofocus obj = (IFieldAutofocus) this;
+            if (obj.isAutofocus()) {
+                html.print(" autofocus");
+            }
         }
-        if (required) {
-            html.print(" required");
+        if (this instanceof IFieldRequired) {
+            IFieldRequired obj = (IFieldRequired) this;
+            if (obj.isRequired()) {
+                html.print(" required");
+            }
         }
-        if (placeholder != null) {
-            html.print(" placeholder=\"%s\"", placeholder);
+        if (this instanceof IFieldPlaceholder) {
+            IFieldPlaceholder obj = (IFieldPlaceholder) this;
+            if (obj.getPlaceholder() != null) {
+                html.print(" placeholder=\"%s\"", obj.getPlaceholder());
+            }
         }
-        if (maxlength > 0) {
-            html.print(" maxlength=\"%s\"", maxlength);
-        }
-        if (rows > 0) {
-            html.print(" rows=\"%s\"", rows);
-        }
-        if (cols > 0) {
-            html.print(" cols=\"%s\"", cols);
-        }
-        if (resize) {
-            html.println("style=\"resize: none;\"");
+        if (this instanceof IFieldTextArea) {
+            IFieldTextArea obj = (IFieldTextArea) this;
+            if (obj.getMaxlength() > 0) {
+                html.print(" maxlength=\"%s\"", obj.getMaxlength());
+            }
+            if (obj.getRows() > 0) {
+                html.print(" rows=\"%s\"", obj.getRows());
+            }
+            if (obj.getCols() > 0) {
+                html.print(" cols=\"%s\"", obj.getCols());
+            }
+            if (obj.isResize()) {
+                html.println("style=\"resize: none;\"");
+            }
         }
         html.println(">");
 
@@ -484,24 +430,6 @@ public abstract class AbstractField extends UIOriginComponent
     @Override
     public String getTitle() {
         return this.getName();
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public AbstractField setVisible(boolean visible) {
-        this.visible = visible;
-        return this;
-    }
-
-    public boolean isShowStar() {
-        return showStar;
-    }
-
-    public AbstractField setShowStar(boolean showStar) {
-        this.showStar = showStar;
-        return this;
     }
 
     public String getString() {
@@ -600,58 +528,6 @@ public abstract class AbstractField extends UIOriginComponent
     public TDateTime getDateTime(TDateTime def) {
         TDateTime result = this.getDateTime();
         return result != null ? result : def;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getHtmlTag() {
-        return htmlTag;
-    }
-
-    public AbstractField setHtmlTag(String htmlTag) {
-        this.htmlTag = htmlTag;
-        return this;
-    }
-
-    public int getMaxlength() {
-        return maxlength;
-    }
-
-    public AbstractField setMaxlength(int maxlength) {
-        this.maxlength = maxlength;
-        return this;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public AbstractField setRows(int rows) {
-        this.rows = rows;
-        return this;
-    }
-
-    public int getCols() {
-        return cols;
-    }
-
-    public AbstractField setCols(int cols) {
-        this.cols = cols;
-        return this;
-    }
-
-    public boolean isMultiple() {
-        return multiple;
-    }
-
-    public void setMultiple(boolean multiple) {
-        this.multiple = multiple;
     }
 
     public class Editor {
