@@ -9,7 +9,7 @@ import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class StringField extends AbstractField
-        implements IColumn, IDialogFieldOwner, IFieldPlaceholder, IFieldPattern, IFieldRequired, IFieldAutofocus {
+        implements IColumn, IFieldDialog, IFieldPlaceholder, IFieldPattern, IFieldRequired, IFieldAutofocus {
     private ColumnEditor editor;
     private DialogField dialog;
     private String placeholder;

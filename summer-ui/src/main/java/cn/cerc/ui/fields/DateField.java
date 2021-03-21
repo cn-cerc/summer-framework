@@ -8,7 +8,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DateField extends AbstractField
-        implements IDialogFieldOwner, IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus {
+        implements IFieldDialog, IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
     private DialogField dialog;
     private String pattern;

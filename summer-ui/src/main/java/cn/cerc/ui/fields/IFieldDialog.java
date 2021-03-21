@@ -1,6 +1,6 @@
 package cn.cerc.ui.fields;
 
-public interface IDialogFieldOwner {
+public interface IFieldDialog {
     DialogField getDialog();
 
     String getIcon();

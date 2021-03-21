@@ -10,7 +10,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.parts.UIComponent;
 
-public class RangeField extends AbstractField implements DataSource, IDialogFieldOwner {
+public class RangeField extends AbstractField implements DataSource, IFieldDialog {
     private static final ClassResource res = new ClassResource(RangeField.class, SummerUI.ID);
     private DialogField dialog;
     private String icon;

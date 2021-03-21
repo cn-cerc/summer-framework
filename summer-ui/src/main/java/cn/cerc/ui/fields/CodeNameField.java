@@ -8,7 +8,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class CodeNameField extends AbstractField
-        implements IDialogFieldOwner, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldShowStar {
+        implements IFieldDialog, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldShowStar {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
     private String nameField;
     private String placeholder;
