@@ -31,7 +31,7 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
     private boolean required;
     // 用于文件上传是否可以选则多个文件
     private boolean multiple = false;
-    //
+    // 提供可描述输入字段预期值的提示信息
     private String placeholder;
     // 正则过滤
     private String pattern;
@@ -45,7 +45,7 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
     private String icon;
     //
     private BuildUrl buildUrl;
-    //数据源
+    // 数据源
     private DataSource dataSource;
     private String oninput;
     private String onclick;
@@ -81,7 +81,7 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
     public AbstractField(UIComponent owner, String name, int width) {
         super(owner);
         if (owner != null) {
-             if ((owner instanceof DataSource)) {
+            if ((owner instanceof DataSource)) {
                 this.dataSource = (DataSource) owner;
                 dataSource.addField(this);
             }
