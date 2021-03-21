@@ -4,11 +4,13 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ItField extends AbstractField {
+public class ItField extends AbstractField implements IFieldBuildText{
 
     private static final ClassResource res = new ClassResource(ItField.class, SummerUI.ID);
+    private BuildText buildText;
 
     public ItField(UIComponent owner) {
         super(owner, res.getString(1, "序"), 2);
@@ -46,6 +48,17 @@ public class ItField extends AbstractField {
     public ItField setReadonly(boolean readonly) {
         super.setReadonly(true);
         return this;
+    }
+
+    @Override
+    public ItField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 
 }
