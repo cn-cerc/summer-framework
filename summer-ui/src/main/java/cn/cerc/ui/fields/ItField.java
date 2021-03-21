@@ -36,8 +36,8 @@ public class ItField extends AbstractField {
     }
 
     @Override
-    public Title createTitle() {
-        Title title = super.createTitle();
+    public FieldTitle createTitle() {
+        FieldTitle title = super.createTitle();
         title.setType("int");
         return title;
     }

@@ -34,8 +34,8 @@ public class DateField extends AbstractField
     }
 
     @Override
-    public Title createTitle() {
-        Title title = super.createTitle();
+    public FieldTitle createTitle() {
+        FieldTitle title = super.createTitle();
         title.setType("date");
         return title;
     }

@@ -390,8 +390,8 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         return buildUrl;
     }
 
-    public Title createTitle() {
-        Title title = new Title();
+    public FieldTitle createTitle() {
+        FieldTitle title = new FieldTitle();
         title.setName(this.getField());
         return title;
     }
@@ -529,7 +529,7 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         }
     }
 
-    public class Title {
+    public class FieldTitle {
         private String name;
         private String type;
         private String dateFormat;

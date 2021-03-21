@@ -49,8 +49,8 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
     }
 
     @Override
-    public Title createTitle() {
-        Title title = super.createTitle();
+    public FieldTitle createTitle() {
+        FieldTitle title = super.createTitle();
         title.setType("float");
         return title;
     }
