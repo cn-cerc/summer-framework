@@ -40,11 +40,11 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
     // 角色
     private String role;
     //
-    protected DialogField dialog;
+    private DialogField dialog;
     // dialog 小图标
     private String icon;
     //
-    protected BuildUrl buildUrl;
+    private BuildUrl buildUrl;
     //数据源
     private DataSource dataSource;
     private String oninput;

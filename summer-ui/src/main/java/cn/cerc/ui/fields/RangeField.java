@@ -50,9 +50,9 @@ public class RangeField extends AbstractField implements DataSource {
                     child.setCSSClass_phone(val);
                 }
             }
-            if (this.dialog != null) {
+            if (this.getDialog() != null) {
                 html.print("<span>");
-                html.print("<a href=\"javascript:%s('%s')\">", this.dialog, this.getId());
+                html.print("<a href=\"javascript:%s('%s')\">", this.getDialog(), this.getId());
                 html.print("<img src=\"images/select-pic.png\">");
                 html.print("</a>");
                 html.print("</span>");
