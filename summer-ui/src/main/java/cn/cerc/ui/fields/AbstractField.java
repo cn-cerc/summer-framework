@@ -13,8 +13,6 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.core.IReadonlyOwner;
 import cn.cerc.ui.core.UIOriginComponent;
-import cn.cerc.ui.other.BuildText;
-import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIText;
 
@@ -27,9 +25,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
     private String name;
     private String shortName;
     private String htmType;
-    // 自定义取值
-    private BuildText buildText;
-    private BuildUrl buildUrl;
     // 数据隐藏
     private boolean hidden;
     private String align;
@@ -135,24 +130,18 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
      */
     protected String getDefaultText(Record record) {
         if (record != null) {
-            if (buildText != null) {
-                HtmlWriter html = new HtmlWriter();
-                buildText.outputText(record, html);
-                return html.toString();
+            if (this instanceof IFieldBuildText) {
+                IFieldBuildText obj = (IFieldBuildText) this;
+                if (obj.getBuildText() != null) {
+                    HtmlWriter html = new HtmlWriter();
+                    obj.getBuildText().outputText(record, html);
+                    return html.toString();
+                }
             }
             return record.getString(getField());
         } else {
             return null;
         }
-    }
-
-    public BuildText getBuildText() {
-        return buildText;
-    }
-
-    public AbstractField createText(BuildText buildText) {
-        this.buildText = buildText;
-        return this;
     }
 
     @Deprecated
@@ -377,14 +366,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             html.print("%s", this.getValue());
         }
         html.println("</textarea>");
-    }
-
-    public void createUrl(BuildUrl build) {
-        this.buildUrl = build;
-    }
-
-    public BuildUrl getBuildUrl() {
-        return buildUrl;
     }
 
     public FieldTitle createTitle() {
