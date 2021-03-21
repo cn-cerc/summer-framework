@@ -2,13 +2,15 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ButtonField extends AbstractField implements IFieldEvent{
+public class ButtonField extends AbstractField implements IFieldEvent, IFieldBuildText {
     private String data;
     private String type;
     private String onclick;
     private String oninput;
+    private BuildText buildText;
 
     public ButtonField() {
         super(null, null, 0);
@@ -91,5 +93,16 @@ public class ButtonField extends AbstractField implements IFieldEvent{
     public ButtonField setOnclick(String onclick) {
         this.onclick = onclick;
         return this;
+    }
+
+    @Override
+    public ButtonField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }

@@ -5,10 +5,11 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class CodeNameField extends AbstractField
-        implements IFieldDialog, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldShowStar {
+        implements IFieldDialog, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldShowStar, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
     private String nameField;
     private String placeholder;
@@ -17,6 +18,7 @@ public class CodeNameField extends AbstractField
     private boolean autofocus;
     private String icon;
     private boolean showStar;
+    private BuildText buildText;
 
     public CodeNameField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -231,5 +233,16 @@ public class CodeNameField extends AbstractField
     public CodeNameField setShowStar(boolean showStar) {
         this.showStar = showStar;
         return this;
+    }
+
+    @Override
+    public CodeNameField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }

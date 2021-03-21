@@ -6,10 +6,11 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.fields.editor.CheckEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class BooleanField extends AbstractField implements SearchItem, IColumn, IFieldEvent {
+public class BooleanField extends AbstractField implements SearchItem, IColumn, IFieldEvent, IFieldBuildText {
     private String trueText = "是";
     private String falseText = "否";
     private String title;
@@ -17,6 +18,7 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
     private CheckEditor editor;
     private String onclick;
     private String oninput;
+    private BuildText buildText;
 
     public BooleanField(UIComponent owner, String title, String field) {
         this(owner, title, field, 0);
@@ -161,5 +163,16 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
     public BooleanField setOnclick(String onclick) {
         this.onclick = onclick;
         return this;
+    }
+
+    @Override
+    public BooleanField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }
