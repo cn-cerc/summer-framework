@@ -37,9 +37,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
     private boolean hidden;
     private String align;
     private int width;
-    // 动作设置
-    private String oninput;
-    private String onclick;
     // value
     private String value;
     // 只读否
@@ -319,11 +316,14 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             if (this.getCssClass() != null) {
                 html.print(" class=\"%s\"", this.getCssClass());
             }
-            if (this.oninput != null) {
-                html.print(" oninput=\"%s\"", this.oninput);
-            }
-            if (this.onclick != null) {
-                html.print(" onclick=\"%s\"", this.onclick);
+            if (this instanceof IFieldEvent) {
+                IFieldEvent event = (IFieldEvent) this;
+                if (event.getOninput() != null) {
+                    html.print(" oninput=\"%s\"", event.getOninput());
+                }
+                if (event.getOnclick() != null) {
+                    html.print(" onclick=\"%s\"", event.getOnclick());
+                }
             }
             html.println("/>");
         }
