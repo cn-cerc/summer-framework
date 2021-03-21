@@ -509,23 +509,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         return result != null ? result : def;
     }
 
-    public class Editor {
-        private String xtype;
-
-        public Editor(String xtype) {
-            super();
-            this.xtype = xtype;
-        }
-
-        public String getXtype() {
-            return xtype;
-        }
-
-        public void setXtype(String xtype) {
-            this.xtype = xtype;
-        }
-    }
-
     public DataSource getDataSource() {
         return dataSource;
     }
