@@ -19,7 +19,7 @@ import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IView;
+import cn.cerc.mis.core.IPage;
 import cn.cerc.ui.core.UrlRecord;
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,7 +84,7 @@ public class StartApp implements Filter {
                 ISession session = Application.createSession();
                 session.setProperty(Application.sessionId, req.getSession().getId());
                 form.setHandle(new Handle(session));
-                IView page = form.execute();
+                IPage page = form.execute();
                 page.execute();
             } catch (Exception e) {
                 resp.getWriter().print(e.getMessage());
