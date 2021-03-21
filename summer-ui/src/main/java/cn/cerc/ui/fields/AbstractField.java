@@ -81,7 +81,7 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
     public AbstractField(UIComponent owner, String name, int width) {
         super(owner);
         if (owner != null) {
-            if ((owner instanceof DataSource)) {
+             if ((owner instanceof DataSource)) {
                 this.dataSource = (DataSource) owner;
                 dataSource.addField(this);
                 this.setReadonly(dataSource.isReadonly());
@@ -287,7 +287,7 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
         if (this.hidden) {
             outputInput(html, record);
         } else {
-            html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
+            html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             outputInput(html, record);
             if (this.showStar) {
                 html.println("<font>*</font>");

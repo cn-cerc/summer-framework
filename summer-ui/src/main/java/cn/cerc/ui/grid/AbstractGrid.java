@@ -1,11 +1,15 @@
 package cn.cerc.ui.grid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.IOriginOwner;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.ChildGridLine;
@@ -13,10 +17,7 @@ import cn.cerc.ui.grid.lines.MasterGridLine;
 import cn.cerc.ui.parts.UIActionForm;
 import cn.cerc.ui.parts.UIComponent;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class AbstractGrid extends UIComponent implements DataSource {
+public abstract class AbstractGrid extends UIOriginComponent implements DataSource {
     // 主行
     protected MasterGridLine masterLine;
     // 表单，后不得再使用
