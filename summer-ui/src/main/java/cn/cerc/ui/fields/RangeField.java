@@ -10,8 +10,9 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.parts.UIComponent;
 
-public class RangeField extends AbstractField implements DataSource {
+public class RangeField extends AbstractField implements DataSource, IDialogFieldOwner {
     private static final ClassResource res = new ClassResource(RangeField.class, SummerUI.ID);
+    private DialogField dialog;
 
     public RangeField(UIComponent dataView, String name) {
         super(dataView, name, 0);
@@ -90,5 +91,27 @@ public class RangeField extends AbstractField implements DataSource {
     @Override
     public void updateValue(String id, String code) {
         getDataSource().updateValue(id, code);
+    }
+
+    @Override
+    public DialogField getDialog() {
+        return dialog;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        return this;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun, String... params) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        for (String string : params) {
+            this.dialog.add(string);
+        }
+        return this;
     }
 }
