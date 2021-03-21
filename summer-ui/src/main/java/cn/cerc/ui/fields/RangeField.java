@@ -72,11 +72,6 @@ public class RangeField extends AbstractField implements DataSource {
     }
 
     @Override
-    public boolean isReadonly() {
-        return dataSource.isReadonly();
-    }
-
-    @Override
     public void updateField() {
         AbstractField child = null;
         for (Component component : this.getComponents()) {

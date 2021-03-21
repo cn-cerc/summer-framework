@@ -84,7 +84,6 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
              if ((owner instanceof DataSource)) {
                 this.dataSource = (DataSource) owner;
                 dataSource.addField(this);
-                this.setReadonly(dataSource.isReadonly());
             }
         }
         this.name = name;
