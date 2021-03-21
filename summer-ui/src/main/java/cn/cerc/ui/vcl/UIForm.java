@@ -86,6 +86,9 @@ public class UIForm extends UIOriginComponent {
         if (this.enctype != null) {
             html.print(" enctype=\"%s\"", this.enctype);
         }
+        if (this.getCssClass() != null) {
+            html.print(" class=\"%s\"", this.getCssClass());
+        }
         html.println(">");
 
         if (top != null) {
