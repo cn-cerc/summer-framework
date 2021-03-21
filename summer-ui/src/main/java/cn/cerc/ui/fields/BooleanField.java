@@ -9,12 +9,14 @@ import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class BooleanField extends AbstractField implements SearchItem, IColumn {
+public class BooleanField extends AbstractField implements SearchItem, IColumn, IFieldEvent {
     private String trueText = "是";
     private String falseText = "否";
     private String title;
     private boolean search;
     private CheckEditor editor;
+    private String onclick;
+    private String oninput;
 
     public BooleanField(UIComponent owner, String title, String field) {
         this(owner, title, field, 0);
@@ -139,4 +141,25 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn {
         this.falseText = falseText;
     }
 
+    @Override
+    public String getOninput() {
+        return oninput;
+    }
+
+    @Override
+    public BooleanField setOninput(String oninput) {
+        this.oninput = oninput;
+        return this;
+    }
+
+    @Override
+    public String getOnclick() {
+        return onclick;
+    }
+
+    @Override
+    public BooleanField setOnclick(String onclick) {
+        this.onclick = onclick;
+        return this;
+    }
 }

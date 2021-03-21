@@ -8,5 +8,5 @@ public interface IFieldEvent {
 
     String getOnclick();
 
-    String getOnclick(String onclick);
+    Object setOnclick(String onclick);
 }

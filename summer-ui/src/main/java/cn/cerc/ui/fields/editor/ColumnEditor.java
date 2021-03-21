@@ -8,6 +8,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
+import cn.cerc.ui.fields.IFieldEvent;
 import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.MasterGridLine;
@@ -30,7 +31,8 @@ public class ColumnEditor {
     public ColumnEditor(AbstractField owner) {
         this.owner = owner;
         if (!(owner.getOwner() instanceof AbstractGridLine)) {
-            throw new RuntimeException(String.format(res.getString(1, "不支持的数据类型：%s"), owner.getOwner().getClass().getName()));
+            throw new RuntimeException(
+                    String.format(res.getString(1, "不支持的数据类型：%s"), owner.getOwner().getClass().getName()));
         }
         gridLine = (AbstractGridLine) (owner.getOwner());
     }
@@ -98,8 +100,15 @@ public class ColumnEditor {
             if (owner.getAlign() != null) {
                 inputStyle += String.format("text-align:%s;", owner.getAlign());
             }
-            if (owner.getOnclick() != null) {
-                html.print(" onclick=\"%s\"", owner.getOnclick());
+
+            String onclick = null;
+            if (owner instanceof IFieldEvent) {
+                IFieldEvent event = (IFieldEvent) owner;
+                onclick = event.getOnclick();
+            }
+
+            if (onclick != null) {
+                html.print(" onclick=\"%s\"", onclick);
             } else {
                 html.print(" onclick='this.select()'");
             }

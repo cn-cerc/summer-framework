@@ -4,9 +4,11 @@ import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ButtonField extends AbstractField {
+public class ButtonField extends AbstractField implements IFieldEvent{
     private String data;
     private String type;
+    private String onclick;
+    private String oninput;
 
     public ButtonField() {
         super(null, null, 0);
@@ -66,6 +68,28 @@ public class ButtonField extends AbstractField {
 
     public ButtonField setType(String type) {
         this.type = type;
+        return this;
+    }
+
+    @Override
+    public String getOninput() {
+        return oninput;
+    }
+
+    @Override
+    public ButtonField setOninput(String oninput) {
+        this.oninput = oninput;
+        return this;
+    }
+
+    @Override
+    public String getOnclick() {
+        return onclick;
+    }
+
+    @Override
+    public ButtonField setOnclick(String onclick) {
+        this.onclick = onclick;
         return this;
     }
 }
