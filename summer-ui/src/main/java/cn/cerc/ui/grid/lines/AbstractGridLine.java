@@ -12,6 +12,7 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.AbstractField;
+import cn.cerc.ui.fields.IFieldBuildUrl;
 import cn.cerc.ui.fields.IFieldVisible;
 import cn.cerc.ui.grid.RowCell;
 import cn.cerc.ui.other.BuildUrl;
@@ -48,10 +49,14 @@ public abstract class AbstractGridLine extends UICustomComponent implements Data
     protected void outputField(HtmlWriter html, AbstractField field) {
         Record record = dataSource.getDataSet().getCurrent();
 
-        BuildUrl build = field.getBuildUrl();
-        if (build != null) {
+        IFieldBuildUrl obj = null;
+        if (field instanceof IFieldBuildUrl) {
+            obj = (IFieldBuildUrl) field;
+        }
+
+        if (obj != null && obj.getBuildUrl() != null) {
             UrlRecord url = new UrlRecord();
-            build.buildUrl(record, url);
+            obj.getBuildUrl().buildUrl(record, url);
             if (!"".equals(url.getUrl())) {
                 html.print("<a href=\"%s\"", url.getUrl());
                 if (url.getTitle() != null) {
