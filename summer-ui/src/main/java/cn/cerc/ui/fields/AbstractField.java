@@ -14,13 +14,15 @@ import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.INameOwner;
+import cn.cerc.ui.core.IReadonlyOwner;
 import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIText;
 
-public abstract class AbstractField extends UIOriginComponent implements IField, INameOwner {
+public abstract class AbstractField extends UIOriginComponent
+        implements IField, INameOwner, IReadonlyOwner {
     private static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据库相关
     protected String field;
@@ -40,8 +42,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
     private boolean hidden;
     // 角色
     private String role;
-    //
-    private DialogField dialog;
     // dialog 小图标
     private String icon;
     //
@@ -209,10 +209,12 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         CSSClass_phone = cSSClass_phone;
     }
 
+    @Override
     public boolean isReadonly() {
         return readonly;
     }
 
+    @Override
     public AbstractField setReadonly(boolean readonly) {
         this.readonly = readonly;
         return this;
@@ -291,7 +293,7 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             if (this.getOrigin() instanceof IForm) {
                 IForm form = (IForm) this.getOrigin();
                 if (form.getClient().isPhone()) {
-                    if(this.readonly){
+                    if (this.readonly) {
                         html.print(this.getName() + "：");
                         html.print(this.getText(record));
                         return;
@@ -303,21 +305,25 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             if (this.showStar) {
                 html.println("<font>*</font>");
             }
-            if (this.dialog != null && this.dialog.isOpen()) {
-                html.print("<span>");
-                html.print("<a href=\"%s\">", dialog.getUrl());
+            if (this instanceof IDialogFieldOwner) {
+                DialogField dialog = ((IDialogFieldOwner) this).getDialog();
+                if (dialog != null && dialog.isOpen()) {
+                    html.print("<span>");
+                    html.print("<a href=\"%s\">", dialog.getUrl());
 
-                if (this.icon != null) {
-                    html.print("<img src=\"%s\">", this.icon);
-                } else {
-                    html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
+                    if (this.icon != null) {
+                        html.print("<img src=\"%s\">", this.icon);
+                    } else {
+                        html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
+                    }
+
+                    html.print("</a>");
+                    html.println("</span>");
+                    return;
                 }
-
-                html.print("</a>");
-                html.println("</span>");
-            } else {
-                html.println("<span></span>");
             }
+
+            html.println("<span></span>");
         }
     }
 
@@ -428,25 +434,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             html.print("%s", this.getValue());
         }
         html.println("</textarea>");
-    }
-
-    public DialogField getDialog() {
-        return dialog;
-    }
-
-    public AbstractField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        return this;
-    }
-
-    public AbstractField setDialog(String dialogfun, String... params) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        for (String string : params) {
-            this.dialog.add(string);
-        }
-        return this;
     }
 
     public void createUrl(BuildUrl build) {

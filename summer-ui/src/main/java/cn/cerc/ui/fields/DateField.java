@@ -7,8 +7,9 @@ import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DateField extends AbstractField {
+public class DateField extends AbstractField implements IDialogFieldOwner {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
+    private DialogField dialog;
 
     public DateField(UIComponent owner, String name, String field) {
         super(owner, name, 5);
@@ -48,5 +49,27 @@ public class DateField extends AbstractField {
         } else {
             return "";
         }
+    }
+
+    @Override
+    public DialogField getDialog() {
+        return dialog;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        return this;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun, String... params) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        for (String string : params) {
+            this.dialog.add(string);
+        }
+        return this;
     }
 }
