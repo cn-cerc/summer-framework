@@ -6,7 +6,7 @@
 
     <groupId>cn.cerc</groupId>
     <artifactId>summer-server</artifactId>
-    <version>3.2.5</version>
+    <version>3.2.6</version>
     <packaging>pom</packaging>
 
     <modules>
