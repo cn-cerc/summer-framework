@@ -231,11 +231,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
     }
 
     protected void outputInput(HtmlWriter html, Record dataSet) {
-        if (this instanceof IFieldTextArea) {
-            outputTextArea(html, dataSet);
-            return;
-        }
-
         if (this.hidden) {
             html.print("<input");
             html.print(" type=\"hidden\"");
@@ -317,59 +312,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             }
             html.println("/>");
         }
-    }
-
-    private void outputTextArea(HtmlWriter html, Record dataSet) {
-        html.print("<textarea");
-        html.print(" id=\"%s\"", this.getId());
-        html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(dataSet);
-
-        if (readonly) {
-            html.print(" readonly=\"readonly\"");
-        }
-        if (this instanceof IFieldAutofocus) {
-            IFieldAutofocus obj = (IFieldAutofocus) this;
-            if (obj.isAutofocus()) {
-                html.print(" autofocus");
-            }
-        }
-        if (this instanceof IFieldRequired) {
-            IFieldRequired obj = (IFieldRequired) this;
-            if (obj.isRequired()) {
-                html.print(" required");
-            }
-        }
-        if (this instanceof IFieldPlaceholder) {
-            IFieldPlaceholder obj = (IFieldPlaceholder) this;
-            if (obj.getPlaceholder() != null) {
-                html.print(" placeholder=\"%s\"", obj.getPlaceholder());
-            }
-        }
-        if (this instanceof IFieldTextArea) {
-            IFieldTextArea obj = (IFieldTextArea) this;
-            if (obj.getMaxlength() > 0) {
-                html.print(" maxlength=\"%s\"", obj.getMaxlength());
-            }
-            if (obj.getRows() > 0) {
-                html.print(" rows=\"%s\"", obj.getRows());
-            }
-            if (obj.getCols() > 0) {
-                html.print(" cols=\"%s\"", obj.getCols());
-            }
-            if (obj.isResize()) {
-                html.println("style=\"resize: none;\"");
-            }
-        }
-        html.println(">");
-
-        if (value != null) {
-            html.print("%s", value);
-        }
-        if (this.getValue() != null) {
-            html.print("%s", this.getValue());
-        }
-        html.println("</textarea>");
     }
 
     public FieldTitle createTitle() {

@@ -1,6 +1,8 @@
 package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
+import cn.cerc.mis.core.IForm;
+import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
 public class TextAreaField extends AbstractField implements IFieldPlaceholder, IFieldRequired, IFieldTextArea {
@@ -24,6 +26,69 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
         super(owner, name, 0);
         this.setField(field);
         this.setWidth(width);
+    }
+
+    @Override
+    public void output(HtmlWriter html) {
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
+
+        if (this.isHidden()) {
+            outputTextArea(html, record);
+            return;
+        }
+
+        if (this.getOrigin() instanceof IForm) {
+            IForm form = (IForm) this.getOrigin();
+            if (form.getClient().isPhone()) {
+                if (this.isReadonly()) {
+                    html.print(this.getName() + "：");
+                    html.print(this.getText(record));
+                    return;
+                }
+            }
+        }
+        
+        html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
+        outputTextArea(html, record);
+        html.println("<span></span>");
+    }
+
+    private void outputTextArea(HtmlWriter html, Record dataSet) {
+        html.print("<textarea");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText(dataSet);
+
+        if (this.isReadonly()) {
+            html.print(" readonly=\"readonly\"");
+        }
+        if (this.isRequired()) {
+            html.print(" required");
+        }
+        if (this.getPlaceholder() != null) {
+            html.print(" placeholder=\"%s\"", this.getPlaceholder());
+        }
+        if (this.getMaxlength() > 0) {
+            html.print(" maxlength=\"%s\"", this.getMaxlength());
+        }
+        if (this.getRows() > 0) {
+            html.print(" rows=\"%s\"", this.getRows());
+        }
+        if (this.getCols() > 0) {
+            html.print(" cols=\"%s\"", this.getCols());
+        }
+        if (this.isResize()) {
+            html.println("style=\"resize: none;\"");
+        }
+        html.println(">");
+
+        if (value != null) {
+            html.print("%s", value);
+        }
+        if (this.getValue() != null) {
+            html.print("%s", this.getValue());
+        }
+        html.println("</textarea>");
     }
 
     @Override
