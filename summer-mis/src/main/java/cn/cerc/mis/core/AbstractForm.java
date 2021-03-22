@@ -218,8 +218,8 @@ public abstract class AbstractForm implements IForm {
             if (result == null)
                 return null;
 
-            if (result instanceof IView) {
-                IView output = (IView) result;
+            if (result instanceof IPage) {
+                IPage output = (IPage) result;
                 return output.execute();
             } else {
                 log.warn(String.format("%s pageOutput is not IView: %s", funcCode, result));

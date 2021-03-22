@@ -1,10 +1,15 @@
 package cn.cerc.ui.grid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.IOriginOwner;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.ChildGridLine;
@@ -12,10 +17,7 @@ import cn.cerc.ui.grid.lines.MasterGridLine;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIForm;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class AbstractGrid extends UIComponent implements DataSource {
+public abstract class AbstractGrid extends UIOriginComponent implements DataSource {
     // 主行
     protected MasterGridLine masterLine;
     // 表单，后不得再使用
@@ -27,6 +29,18 @@ public abstract class AbstractGrid extends UIComponent implements DataSource {
     // 行管理器, 其中第1个一定为masterLine
     private List<AbstractGridLine> lines = new ArrayList<>();
 
+    public AbstractGrid(UIComponent owner) {
+        super(owner);
+        this.setId("grid");
+        masterLine = new MasterGridLine(this);
+        lines.add(masterLine);
+        if (owner instanceof IOriginOwner) {
+            IForm form = (IForm) ((IOriginOwner) owner).getOrigin();
+            pages.setRequest(form.getRequest());
+        }
+    }
+
+    @Deprecated
     public AbstractGrid(IForm form, UIComponent owner) {
         super(owner);
         this.setId("grid");

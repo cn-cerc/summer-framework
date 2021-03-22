@@ -29,10 +29,10 @@ public class PhoneGrid extends AbstractGrid {
     public void output(HtmlWriter html) {
         html.print("<div class='%s'>", this.getCSSClass());
         if (this.getDataSet().size() > 0) {
-            if (form != null) {
-                form.outHead(html);
+            if (getForm() != null) {
+                getForm().outHead(html);
                 outputGrid(html);
-                form.outFoot(html);
+                getForm().outFoot(html);
             } else {
                 outputGrid(html);
             }
@@ -100,11 +100,11 @@ public class PhoneGrid extends AbstractGrid {
     public void setCSSClass(String CSSClass) {
         this.CSSClass = CSSClass;
     }
-
-    @Override
-    public boolean isReadonly() {
-        return true;
-    }
+//
+//    @Override
+//    public boolean isReadonly() {
+//        return true;
+//    }
 
     @Override
     public void updateValue(String id, String code) {
@@ -260,11 +260,6 @@ public class PhoneGrid extends AbstractGrid {
         @Override
         public DataSet getDataSet() {
             return dataSource.getDataSet();
-        }
-
-        @Override
-        public boolean isReadonly() {
-            return dataSource.isReadonly();
         }
 
         @Override

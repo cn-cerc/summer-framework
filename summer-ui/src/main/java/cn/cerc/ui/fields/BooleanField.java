@@ -31,9 +31,9 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         return record.getBoolean(field) ? trueText : falseText;
@@ -63,7 +63,7 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn {
         html.print(String.format("<input type=\"checkbox\" id=\"%s\" name=\"%s\" value=\"1\"", this.getId(),
                 this.getId()));
         boolean val = false;
-        DataSet dataSet = dataSource != null ? dataSource.getDataSet() : null;
+        DataSet dataSet = getDataSource() != null ? getDataSource().getDataSet() : null;
         if (dataSet != null) {
             val = dataSet.getBoolean(field);
         }
@@ -73,8 +73,8 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn {
         if (this.isReadonly()) {
             html.print(" disabled");
         }
-        if (this.onclick != null) {
-            html.print(" onclick=\"%s\"", this.onclick);
+        if (this.getOnclick() != null) {
+            html.print(" onclick=\"%s\"", this.getOnclick());
         }
         html.print(">");
     }

@@ -31,10 +31,10 @@ public class DataGrid extends AbstractGrid {
     @Override
     public void output(HtmlWriter html) {
         html.print("<div class='scrollArea'>");
-        if (form != null) {
-            form.outHead(html);
+        if (getForm() != null) {
+            getForm().outHead(html);
             outputGrid(html);
-            form.outFoot(html);
+            getForm().outFoot(html);
         } else {
             outputGrid(html);
         }
@@ -135,11 +135,11 @@ public class DataGrid extends AbstractGrid {
         this.masterLine.setPrimaryKey(primaryKey);
         return this;
     }
-
-    @Override
-    public boolean isReadonly() {
-        return true;
-    }
+//
+//    @Override
+//    public boolean isReadonly() {
+//        return true;
+//    }
 
     @Override
     public void updateValue(String id, String code) {

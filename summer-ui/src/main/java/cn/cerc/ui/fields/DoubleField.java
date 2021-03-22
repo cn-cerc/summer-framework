@@ -31,9 +31,9 @@ public class DoubleField extends AbstractField implements IColumn {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         try {
@@ -60,10 +60,10 @@ public class DoubleField extends AbstractField implements IColumn {
 
         Record ds = (Record) value;
         if (this.isReadonly()) {
-            if (buildUrl != null) {
+            if (getBuildUrl() != null) {
                 HtmlWriter html = new HtmlWriter();
                 UrlRecord url = new UrlRecord();
-                buildUrl.buildUrl(ds, url);
+                getBuildUrl().buildUrl(ds, url);
                 if (!"".equals(url.getUrl())) {
                     html.print("<a href=\"%s\"", url.getUrl());
                     if (url.getTitle() != null) {

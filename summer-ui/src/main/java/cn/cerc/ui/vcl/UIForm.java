@@ -5,23 +5,24 @@ import java.util.Map;
 
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.UICustomComponent;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 
-public class UIForm extends UICustomComponent {
+public class UIForm extends UIOriginComponent {
     private String action;
     private String method = "post";
     private Map<String, String> items = new HashMap<>();
     private String enctype;
+    private UIComponent top;
+    private UIComponent bottom;
 
     public UIForm() {
         super(null);
     }
 
     public UIForm(UIComponent owner) {
-        super.setOwner(owner);
+        super(owner);
     }
-
 
     @Deprecated
     public UIForm(UIComponent owner, String id) {
@@ -54,7 +55,15 @@ public class UIForm extends UICustomComponent {
     @Override
     public void output(HtmlWriter html) {
         outHead(html);
-        super.output(html);
+
+        for (Component component : this.getComponents()) {
+            if (component instanceof UIComponent) {
+                if (component != top && component != bottom) {
+                    ((UIComponent) component).output(html);
+                }
+            }
+        }
+
         outFoot(html);
     }
 
@@ -77,7 +86,17 @@ public class UIForm extends UICustomComponent {
         if (this.enctype != null) {
             html.print(" enctype=\"%s\"", this.enctype);
         }
+        if (this.getCssClass() != null) {
+            html.print(" class=\"%s\"", this.getCssClass());
+        }
         html.println(">");
+
+        if (top != null) {
+            html.print("<div role='top'>");
+            top.output(html);
+            html.println("</div>");
+        }
+
         for (String key : items.keySet()) {
             String value = items.get(key);
             html.print("<input");
@@ -95,6 +114,11 @@ public class UIForm extends UICustomComponent {
      * @param html 输出器
      */
     public void outFoot(HtmlWriter html) {
+        if (bottom != null) {
+            html.print("<div role='bottom'>");
+            bottom.output(html);
+            html.println("</div>");
+        }
         html.println("</form>");
     }
 
@@ -112,6 +136,26 @@ public class UIForm extends UICustomComponent {
 
     public Map<String, String> getItems() {
         return items;
+    }
+
+    public UIComponent getTop() {
+        if (top == null)
+            top = new UIOriginComponent(this);
+        return top;
+    }
+
+    public void setTop(UIComponent top) {
+        this.top = top;
+    }
+
+    public UIComponent getBottom() {
+        if (bottom == null)
+            bottom = new UIOriginComponent(this);
+        return bottom;
+    }
+
+    public void setBottom(UIComponent bottom) {
+        this.bottom = bottom;
     }
 
 }

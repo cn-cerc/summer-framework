@@ -189,11 +189,6 @@ public class UIFormVertical extends UICssComponent implements DataSource {
         dataSet.setRecNo(dataSet.size());
     }
 
-    @Override
-    public boolean isReadonly() {
-        return false;
-    }
-
     public String getEnctype() {
         return enctype;
     }

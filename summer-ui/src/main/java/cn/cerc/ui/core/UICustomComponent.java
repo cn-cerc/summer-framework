@@ -40,7 +40,6 @@ public class UICustomComponent extends UIComponent {
         return cssClass;
     }
 
-    @Deprecated
     public void setCssClass(String cssClass) {
         this.cssClass = cssClass;
     }

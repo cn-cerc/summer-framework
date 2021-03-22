@@ -7,10 +7,12 @@ import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class CodeNameField extends AbstractField {
+public class CodeNameField extends AbstractField implements IDialogFieldOwner {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
 
     private String nameField;
+
+    private DialogField dialog;
 
     public CodeNameField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -19,9 +21,9 @@ public class CodeNameField extends AbstractField {
 
     @Override
     public void updateField() {
-        if (dataSource != null) {
-            dataSource.updateValue(this.getId(), this.getField());
-            dataSource.updateValue(getNameField(), getNameField());
+        if (getDataSource() != null) {
+            getDataSource().updateValue(this.getId(), this.getField());
+            getDataSource().updateValue(getNameField(), getNameField());
         }
     }
 
@@ -30,9 +32,9 @@ public class CodeNameField extends AbstractField {
         if (record == null) {
             return null;
         }
-        if (buildText != null) {
+        if (getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            buildText.outputText(record, html);
+            getBuildText().outputText(record, html);
             return html.toString();
         }
         return record.getString(getField());
@@ -40,7 +42,7 @@ public class CodeNameField extends AbstractField {
 
     @Override
     public void output(HtmlWriter html) {
-        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
         if (this.isHidden()) {
             html.print("<input");
             html.print(" type=\"hidden\"");
@@ -147,6 +149,28 @@ public class CodeNameField extends AbstractField {
 
     public CodeNameField setNameField(String nameField) {
         this.nameField = nameField;
+        return this;
+    }
+
+    @Override
+    public DialogField getDialog() {
+        return dialog;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        return this;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun, String... params) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        for (String string : params) {
+            this.dialog.add(string);
+        }
         return this;
     }
 

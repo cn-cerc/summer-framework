@@ -8,8 +8,9 @@ import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField implements IColumn {
+public class StringField extends AbstractField implements IColumn, IDialogFieldOwner {
     private ColumnEditor editor;
+    private DialogField dialog;
 
     public StringField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -37,10 +38,10 @@ public class StringField extends AbstractField implements IColumn {
         String data = getDefaultText(record);
 
         if (this.isReadonly()) {
-            if (buildUrl != null) {
+            if (getBuildUrl() != null) {
                 HtmlWriter html = new HtmlWriter();
                 UrlRecord url = new UrlRecord();
-                buildUrl.buildUrl(record, url);
+                getBuildUrl().buildUrl(record, url);
                 if (!"".equals(url.getUrl())) {
                     html.print("<a href=\"%s\"", url.getUrl());
                     if (url.getTitle() != null) {
@@ -71,5 +72,27 @@ public class StringField extends AbstractField implements IColumn {
             editor = new ColumnEditor(this);
         }
         return editor;
+    }
+
+    @Override
+    public DialogField getDialog() {
+        return dialog;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        return this;
+    }
+
+    @Override
+    public AbstractField setDialog(String dialogfun, String... params) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        for (String string : params) {
+            this.dialog.add(string);
+        }
+        return this;
     }
 }

@@ -8,46 +8,48 @@ import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.cdn.CDN;
+import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.INameOwner;
+import cn.cerc.ui.core.IReadonlyOwner;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.parts.UICssComponent;
 import cn.cerc.ui.vcl.UIText;
 
-public abstract class AbstractField extends UICssComponent implements IField {
+public abstract class AbstractField extends UIOriginComponent
+        implements IField, INameOwner, IReadonlyOwner {
     private static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据库相关
     protected String field;
     // 自定义取值
-    protected BuildText buildText;
+    private BuildText buildText;
     // 焦点否
-    protected boolean autofocus;
+    private boolean autofocus;
     //
-    protected boolean required;
+    private boolean required;
     // 用于文件上传是否可以选则多个文件
-    protected boolean multiple = false;
-    //
-    protected String placeholder;
+    private boolean multiple = false;
+    // 提供可描述输入字段预期值的提示信息
+    private String placeholder;
     // 正则过滤
-    protected String pattern;
+    private String pattern;
     //
-    protected boolean hidden;
+    private boolean hidden;
     // 角色
-    protected String role;
-    //
-    protected DialogField dialog;
+    private String role;
     // dialog 小图标
-    protected String icon;
+    private String icon;
     //
-    protected BuildUrl buildUrl;
-    //
-    protected DataSource dataSource;
-    protected String oninput;
-    protected String onclick;
+    private BuildUrl buildUrl;
+    // 数据源
+    private DataSource dataSource;
+    private String oninput;
+    private String onclick;
     private String htmlTag = "input";
     private String htmType;
     private String name;
@@ -83,7 +85,6 @@ public abstract class AbstractField extends UICssComponent implements IField {
             if ((owner instanceof DataSource)) {
                 this.dataSource = (DataSource) owner;
                 dataSource.addField(this);
-                this.setReadonly(dataSource.isReadonly());
             }
         }
         this.name = name;
@@ -208,10 +209,12 @@ public abstract class AbstractField extends UICssComponent implements IField {
         CSSClass_phone = cSSClass_phone;
     }
 
+    @Override
     public boolean isReadonly() {
         return readonly;
     }
 
+    @Override
     public AbstractField setReadonly(boolean readonly) {
         this.readonly = readonly;
         return this;
@@ -283,29 +286,44 @@ public abstract class AbstractField extends UICssComponent implements IField {
     @Override
     public void output(HtmlWriter html) {
         Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
+
         if (this.hidden) {
             outputInput(html, record);
         } else {
-            html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
+            if (this.getOrigin() instanceof IForm) {
+                IForm form = (IForm) this.getOrigin();
+                if (form.getClient().isPhone()) {
+                    if (this.readonly) {
+                        html.print(this.getName() + "：");
+                        html.print(this.getText(record));
+                        return;
+                    }
+                }
+            }
+            html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             outputInput(html, record);
             if (this.showStar) {
                 html.println("<font>*</font>");
             }
-            if (this.dialog != null && this.dialog.isOpen()) {
-                html.print("<span>");
-                html.print("<a href=\"%s\">", dialog.getUrl());
+            if (this instanceof IDialogFieldOwner) {
+                DialogField dialog = ((IDialogFieldOwner) this).getDialog();
+                if (dialog != null && dialog.isOpen()) {
+                    html.print("<span>");
+                    html.print("<a href=\"%s\">", dialog.getUrl());
 
-                if (this.icon != null) {
-                    html.print("<img src=\"%s\">", this.icon);
-                } else {
-                    html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
+                    if (this.icon != null) {
+                        html.print("<img src=\"%s\">", this.icon);
+                    } else {
+                        html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
+                    }
+
+                    html.print("</a>");
+                    html.println("</span>");
+                    return;
                 }
-
-                html.print("</a>");
-                html.println("</span>");
-            } else {
-                html.println("<span></span>");
             }
+
+            html.println("<span></span>");
         }
     }
 
@@ -416,25 +434,6 @@ public abstract class AbstractField extends UICssComponent implements IField {
             html.print("%s", this.getValue());
         }
         html.println("</textarea>");
-    }
-
-    public DialogField getDialog() {
-        return dialog;
-    }
-
-    public AbstractField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        return this;
-    }
-
-    public AbstractField setDialog(String dialogfun, String... params) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        for (String string : params) {
-            this.dialog.add(string);
-        }
-        return this;
     }
 
     public void createUrl(BuildUrl build) {
@@ -714,6 +713,14 @@ public abstract class AbstractField extends UICssComponent implements IField {
             }
             return json.toString().replace("\"", "'");
         }
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
 }
