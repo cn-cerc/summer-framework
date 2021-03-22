@@ -44,9 +44,14 @@ public class ButtonField extends AbstractField implements IFieldEvent, IFieldBui
         }
         return record.getString(getField());
     }
+    
+    @Override
+    public void outputReadonly(HtmlWriter html, Record record) {
+        outputDefault(html, record);
+    }
 
     @Override
-    public void output(HtmlWriter html) {
+    public void outputDefault(HtmlWriter html, Record record) {
         html.print("<button name=\"%s\"", this.getId());
         if (this.data != null) {
             html.print(" value=\"%s\"", this.data);

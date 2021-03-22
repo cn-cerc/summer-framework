@@ -58,10 +58,15 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
     }
 
     @Override
-    public void output(HtmlWriter html) {
-        writeInput(html);
+    public void outputReadonly(HtmlWriter html, Record record) {
+        outputDefault(html, record);
     }
 
+    @Override
+    public void outputDefault(HtmlWriter html, Record record) {
+        writeInput(html);
+    }
+    
     private String writeInput(HtmlWriter html) {
         html.print("<select name=\"%s\" role=\"%s\"", this.getId(), this.getField());
         if (!this.isReadonly() && getOnChange() != null) {

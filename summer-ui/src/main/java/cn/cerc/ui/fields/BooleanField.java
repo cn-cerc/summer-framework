@@ -50,7 +50,7 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
     }
 
     @Override
-    public void output(HtmlWriter html) {
+    public void outputDefault(HtmlWriter html, Record record) {
         if (!this.search) {
             html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "："));
             writeInput(html);

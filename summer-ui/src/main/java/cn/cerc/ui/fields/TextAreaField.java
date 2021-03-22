@@ -29,14 +29,12 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
     }
 
     @Override
-    public void output(HtmlWriter html) {
-        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
+    public void outputReadonly(HtmlWriter html, Record record) {
+        outputTextArea(html, record);
+    }
 
-        if (this.isHidden()) {
-            outputTextArea(html, record);
-            return;
-        }
-
+    @Override
+    public void outputDefault(HtmlWriter html, Record record) {
         if (this.getOrigin() instanceof IForm) {
             IForm form = (IForm) this.getOrigin();
             if (form.getClient().isPhone()) {

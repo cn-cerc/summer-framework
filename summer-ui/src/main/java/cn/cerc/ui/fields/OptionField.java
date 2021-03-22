@@ -68,8 +68,12 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
     }
 
     @Override
-    public void output(HtmlWriter html) {
-        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
+    public void outputReadonly(HtmlWriter html, Record record) {
+        outputDefault(html, record);
+    }
+
+    @Override
+    public void outputDefault(HtmlWriter html, Record record) {
         String current = this.getText(record);
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<select id=\"%s\" name=\"%s\"", this.getId(), this.getId());

@@ -25,43 +25,28 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
     }
 
     @Override
-    public void output(HtmlWriter html) {
-        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
-        if (this.isHidden()) {
-            html.print("<input");
-            html.print(" type=\"hidden\"");
-            html.print(" name=\"%s\"", this.getId());
-            html.print(" id=\"%s\"", this.getId());
-            String value = this.getText(record);
-            if (value != null) {
-                html.print(" value=\"%s\"", value);
-            }
-            html.println("/>");
-        } else {
-            html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
-            AbstractField child = null;
-            for (Component component : this.getComponents()) {
-                if (component instanceof AbstractField) {
-                    if (child != null) {
-                        html.print("-");
-                    }
-                    child = (AbstractField) component;
-                    String val = child.getCssClass();
-                    child.setCssClass("price");
-                    child.outputInput(html, record);
-                    child.setCssClass(val);
+    public void outputDefault(HtmlWriter html, Record record) {
+        html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
+        AbstractField child = null;
+        for (Component component : this.getComponents()) {
+            if (component instanceof AbstractField) {
+                if (child != null) {
+                    html.print("-");
                 }
-            }
-            if (this.getDialog() != null) {
-                html.print("<span>");
-                html.print("<a href=\"javascript:%s('%s')\">", this.getDialog(), this.getId());
-                html.print("<img src=\"images/select-pic.png\">");
-                html.print("</a>");
-                html.print("</span>");
-            } else {
-                html.print("<span></span>");
+                child = (AbstractField) component;
+                String val = child.getCssClass();
+                child.setCssClass("price");
+                child.outputDefault(html, record);
+                child.setCssClass(val);
             }
         }
+        html.print("<span>");
+        if (this.getDialog() != null) {
+            html.print("<a href=\"javascript:%s('%s')\">", this.getDialog(), this.getId());
+            html.print("<img src=\"images/select-pic.png\">");
+            html.print("</a>");
+        }
+        html.print("</span>");
     }
 
     @Override
