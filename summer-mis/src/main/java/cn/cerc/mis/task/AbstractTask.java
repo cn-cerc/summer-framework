@@ -1,5 +1,7 @@
 package cn.cerc.mis.task;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.cerc.core.ISession;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractTask extends Handle implements Runnable {
 
+    @Autowired
     public ISystemTable systemTable;
     private String describe;
 

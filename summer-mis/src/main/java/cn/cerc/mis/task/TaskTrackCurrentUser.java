@@ -16,7 +16,7 @@ public class TaskTrackCurrentUser extends AbstractTask {
     @Override
     public void execute() {
         // 清理在线用户记录表
-        MysqlConnection conn = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
+        MysqlConnection conn = (MysqlConnection) handle.getSession().getProperty(MysqlConnection.sessionId);
 
         // 删除超过100天的登录记录
         conn.execute(String.format("delete from %s where datediff(now(),LoginTime_)>100", systemTable.getCurrentUser()));
