@@ -89,9 +89,20 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
         html.println("</textarea>");
     }
 
-    @Override
     public String getText(Record record) {
-        return getDefaultText(record);
+        if (record != null) {
+            if (this instanceof IFieldBuildText) {
+                IFieldBuildText obj = (IFieldBuildText) this;
+                if (obj.getBuildText() != null) {
+                    HtmlWriter html = new HtmlWriter();
+                    obj.getBuildText().outputText(record, html);
+                    return html.toString();
+                }
+            }
+            return record.getString(getField());
+        } else {
+            return null;
+        }
     }
 
     @Override

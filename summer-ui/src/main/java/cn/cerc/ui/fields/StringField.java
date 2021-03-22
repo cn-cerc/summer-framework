@@ -34,9 +34,20 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
         this.setWidth(width);
     }
 
-    @Override
     public String getText(Record record) {
-        return getDefaultText(record);
+        if (record != null) {
+            if (this instanceof IFieldBuildText) {
+                IFieldBuildText obj = (IFieldBuildText) this;
+                if (obj.getBuildText() != null) {
+                    HtmlWriter html = new HtmlWriter();
+                    obj.getBuildText().outputText(record, html);
+                    return html.toString();
+                }
+            }
+            return record.getString(getField());
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -46,7 +57,7 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
         }
 
         Record record = (Record) value;
-        String data = getDefaultText(record);
+        String data = getText(record);
 
         if (this.isReadonly()) {
             if (getBuildUrl() != null) {

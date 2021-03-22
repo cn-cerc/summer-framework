@@ -124,28 +124,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         }
     }
 
-    public abstract String getText(Record record);
-
-    /**
-     * @param record 当前记录集
-     * @return 返回输出文本
-     */
-    protected String getDefaultText(Record record) {
-        if (record != null) {
-            if (this instanceof IFieldBuildText) {
-                IFieldBuildText obj = (IFieldBuildText) this;
-                if (obj.getBuildText() != null) {
-                    HtmlWriter html = new HtmlWriter();
-                    obj.getBuildText().outputText(record, html);
-                    return html.toString();
-                }
-            }
-            return record.getString(getField());
-        } else {
-            return null;
-        }
-    }
-
     @Deprecated
     public void setCSSClass_phone(String cSSClass_phone) {
         this.setCssClass(cSSClass_phone);
