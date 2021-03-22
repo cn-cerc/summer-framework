@@ -1,18 +1,10 @@
 package cn.cerc.ui.page;
 
+import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.JspFile;
-import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UIToolbar;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.language.R;
 
 public class JspPage extends JspFile {
     // 头部：广告+菜单

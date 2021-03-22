@@ -2,6 +2,7 @@ package cn.cerc.mis.language;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.cerc.core.LanguageResource;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
@@ -47,7 +48,7 @@ public class R {
 
     public static String asString(IHandle handle, String text) {
         String language = getLanguageId(handle);
-        if (Application.App_Language.equals(Language.zh_CN)) {
+        if (Application.App_Language.equals(LanguageResource.LANGUAGE_CN)) {
             return text;
         }
         if (text == null || "".equals(text.trim())) {

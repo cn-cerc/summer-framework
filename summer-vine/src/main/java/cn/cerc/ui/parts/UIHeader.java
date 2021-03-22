@@ -15,8 +15,6 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
-import cn.cerc.mis.services.BookInfoRecord;
-import cn.cerc.mis.services.MemoryBookInfo;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;

@@ -22,7 +22,6 @@ import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.language.Language;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -244,7 +243,7 @@ public class Application {
         String lang = ServerConfig.getInstance().getProperty(deviceLanguage);
         if (lang == null || "".equals(lang) || App_Language.equals(lang)) {
             return App_Language;
-        } else if (Language.en_US.equals(lang)) {
+        } else if (LanguageResource.LANGUAGE_EN.equals(lang)) {
             return lang;
         } else {
             throw new RuntimeException("not support language: " + lang);
