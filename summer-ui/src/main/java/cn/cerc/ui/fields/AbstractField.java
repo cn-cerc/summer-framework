@@ -9,12 +9,14 @@ import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.INameOwner;
+import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.core.IReadonlyOwner;
 import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIText;
 
-public abstract class AbstractField extends UIOriginComponent implements IField, INameOwner, IReadonlyOwner {
+public abstract class AbstractField extends UIOriginComponent
+        implements IField, IOutoutLine, INameOwner, IReadonlyOwner {
     protected static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据源
     private DataSource dataSource;
@@ -163,21 +165,15 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         Record record = getDataSource().getDataSet().getCurrent();
         if (this.isHidden()) {
             outputHidden(html, record);
-        } else if (this.isReadonly()) {
-            outputReadonly(html, record);
+            return;
         } else {
-            outputDefault(html, record);
+            if (this.isReadonly()) {
+                outputReadonly(html, record);
+            } else {
+                outputDefault(html, record);
+            }
         }
     }
-
-    // 隐藏输出
-    public abstract void outputHidden(HtmlWriter html, Record record);
-
-    // 只读输出
-    public abstract void outputReadonly(HtmlWriter html, Record record);
-
-    // 普通输出
-    public abstract void outputDefault(HtmlWriter html, Record record);
 
     public FieldTitle createTitle() {
         FieldTitle title = new FieldTitle();

@@ -15,5 +15,8 @@ public interface IField extends IReadonlyOwner {
     String getAlign();
 
 	String getText(Record record);
-    
+ 
+    // 隐藏输出
+    void outputHidden(HtmlWriter html, Record record);
+
 }
