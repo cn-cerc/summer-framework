@@ -184,59 +184,64 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
 
     @Override
     public void output(HtmlWriter html) {
-        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
-
         if (this.hidden) {
-            outputInput(html, record);
-        } else {
-            if (this.getOrigin() instanceof IForm) {
-                IForm form = (IForm) this.getOrigin();
-                if (form.getClient().isPhone()) {
-                    if (this.readonly) {
-                        html.print(this.getName() + "：");
-                        html.print(this.getText(record));
-                        return;
-                    }
-                }
-            }
-            html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
-            outputInput(html, record);
-            if (this instanceof IFieldShowStar) {
-                IFieldShowStar obj = (IFieldShowStar) this;
-                if (obj.isShowStar()) {
-                    html.println("<font>*</font>");
-                }
-            }
-            if (this instanceof IFieldDialog) {
-                IFieldDialog obj = (IFieldDialog) this;
-                DialogField dialog = obj.getDialog();
-                if (dialog != null && dialog.isOpen()) {
-                    html.print("<span>");
-                    html.print("<a href=\"%s\">", dialog.getUrl());
+            outputForHidden(html);
+            return;
+        }
 
-                    if (obj.getIcon() != null) {
-                        html.print("<img src=\"%s\">", obj.getIcon());
-                    } else {
-                        html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
-                    }
-
-                    html.print("</a>");
-                    html.println("</span>");
+        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
+        if (this.getOrigin() instanceof IForm) {
+            IForm form = (IForm) this.getOrigin();
+            if (form.getClient().isPhone()) {
+                if (this.readonly) {
+                    html.print(this.getName() + "：");
+                    html.print(this.getText(record));
                     return;
                 }
             }
-
-            html.println("<span></span>");
         }
+        html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
+        outputInput(html, record);
+        if (this instanceof IFieldShowStar) {
+            IFieldShowStar obj = (IFieldShowStar) this;
+            if (obj.isShowStar()) {
+                html.println("<font>*</font>");
+            }
+        }
+        if (this instanceof IFieldDialog) {
+            IFieldDialog obj = (IFieldDialog) this;
+            DialogField dialog = obj.getDialog();
+            if (dialog != null && dialog.isOpen()) {
+                html.print("<span>");
+                html.print("<a href=\"%s\">", dialog.getUrl());
+
+                if (obj.getIcon() != null) {
+                    html.print("<img src=\"%s\">", obj.getIcon());
+                } else {
+                    html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
+                }
+
+                html.print("</a>");
+                html.println("</span>");
+                return;
+            }
+        }
+
+        html.println("<span></span>");
     }
 
-    protected void outputInput(HtmlWriter html, Record dataSet) {
+    protected void outputForHidden(HtmlWriter html) {
+        Record record = dataSource.getDataSet().getCurrent();
+        outputInput(html, record);
+    }
+
+    protected void outputInput(HtmlWriter html, Record record) {
         if (this.hidden) {
             html.print("<input");
             html.print(" type=\"hidden\"");
             html.print(" name=\"%s\"", this.getId());
             html.print(" id=\"%s\"", this.getId());
-            String value = this.getText(dataSet);
+            String value = this.getText(record);
             if (value != null) {
                 html.print(" value=\"%s\"", value);
             }
@@ -250,7 +255,7 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             }
             html.print(" id=\"%s\"", this.getId());
             html.print(" name=\"%s\"", this.getId());
-            String value = this.getText(dataSet);
+            String value = this.getText(record);
             if (value != null) {
                 html.print(" value=\"%s\"", value);
             }
