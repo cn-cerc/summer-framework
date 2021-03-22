@@ -1,19 +1,21 @@
 package cn.cerc.mis.language;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.core.Application;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
+
+import cn.cerc.core.LanguageResource;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ServerConfig;
+import cn.cerc.mis.core.Application;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ResourceJstl extends SimpleTagSupport {
@@ -63,7 +65,7 @@ public class ResourceJstl extends SimpleTagSupport {
         text = sw.toString();
         Object temp = handle.getProperty(Application.deviceLanguage);
         String lang = (temp == null || "".equals(temp)) ? Application.getLanguage() : (String) temp;
-        if (Language.zh_CN.equals(lang)) {
+        if (LanguageResource.LANGUAGE_CN.equals(lang)) {
             return text;
         }
 
@@ -83,7 +85,7 @@ public class ResourceJstl extends SimpleTagSupport {
         }
 
         // 取不到值，但当前是英文时，则原样返回
-        if (Language.en_US.equals(lang)) {
+        if (LanguageResource.LANGUAGE_EN.equals(lang)) {
             if (ServerConfig.getInstance().isDebug()) {
                 return lang + ":" + text;
             } else {
@@ -92,7 +94,7 @@ public class ResourceJstl extends SimpleTagSupport {
         }
 
         // 如果是其它语言，则取英文的默认值
-        ResourceBuffer en = items.get(Language.en_US);
+        ResourceBuffer en = items.get(LanguageResource.LANGUAGE_EN);
         result = en.get(handle, text);
         if (result != null && !"".equals(result)) {
             return result;

@@ -3,7 +3,6 @@ package cn.cerc.ui.fields;
 import cn.cerc.core.Record;
 import cn.cerc.ui.parts.UIComponent;
 
-// TODO 专用于textarea标签，需要拆分该标签出来，黄荣君 2016-05-31
 public class TextAreaField extends AbstractField implements IFieldPlaceholder, IFieldRequired, IFieldTextArea {
     private String placeholder;
     private boolean required;

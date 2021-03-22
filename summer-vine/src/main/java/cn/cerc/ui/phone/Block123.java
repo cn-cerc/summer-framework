@@ -3,9 +3,9 @@ package cn.cerc.ui.phone;
 import cn.cerc.core.ClassResource;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.parts.UIActionForm;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
+import cn.cerc.ui.vcl.UIForm;
 import cn.cerc.ui.vcl.UITextBox;
 import cn.cerc.ui.vcl.ext.UISpan;
 
@@ -20,7 +20,7 @@ public class Block123 extends UIComponent {
     private UISpan title = new UISpan();
     private UITextBox textBox = new UITextBox();
     private UIButton button = new UIButton();
-    private UIActionForm form = new UIActionForm();
+    private UIForm form = new UIForm();
 
     public Block123(UIComponent owner) {
         super(owner);
@@ -48,7 +48,7 @@ public class Block123 extends UIComponent {
         return textBox;
     }
 
-    public UIActionForm getForm(String id) {
+    public UIForm getForm(String id) {
         form.setId(id);
         return form;
     }
