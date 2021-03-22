@@ -2,8 +2,6 @@ package cn.cerc.mis.security.sapi;
 
 import javax.servlet.http.HttpServletRequest;
 
-import cn.cerc.mis.security.sapi.JayunAPI;
-
 public class JayunConfig {
     public static final String sms_template_user_register = "sms_template_user_register";
     public static final String sms_template_security_check = "sms_template_security_check";

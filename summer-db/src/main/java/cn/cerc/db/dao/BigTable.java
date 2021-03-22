@@ -1,17 +1,9 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.core.SqlText;
-import cn.cerc.core.Utils;
-import cn.cerc.db.mysql.UpdateMode;
-import cn.cerc.db.redis.JedisFactory;
-import lombok.extern.slf4j.Slf4j;
-import redis.clients.jedis.Jedis;
-
 import java.io.IOException;
 import java.lang.Thread.State;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -21,6 +13,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.core.SqlText;
+import cn.cerc.core.Utils;
+import cn.cerc.db.mysql.UpdateMode;
+import cn.cerc.db.redis.JedisFactory;
+import lombok.extern.slf4j.Slf4j;
+import redis.clients.jedis.Jedis;
 
 @Slf4j
 public abstract class BigTable<T extends BigRecord> {
@@ -52,13 +53,13 @@ public abstract class BigTable<T extends BigRecord> {
     public static Object cloneObject(Object obj1) {
         Object obj2 = null;
         try {
-            obj2 = obj1.getClass().newInstance();
+            obj2 = obj1.getClass().getDeclaredConstructor().newInstance();
             Map<String, Object> items = new LinkedHashMap<>();
             BigOperator.copy(obj1, (key, value) -> {
                 items.put(key, value);
             });
             BigOperator.copy(items, obj2);
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             throw new RuntimeException(e);
         }
         return obj2;
@@ -183,7 +184,7 @@ public abstract class BigTable<T extends BigRecord> {
                         items.put(key, rs.getObject(key));
                     }
                     try {
-                        T obj = clazz.newInstance();
+                        T obj = clazz.getDeclaredConstructor().newInstance();
                         BigOperator.copy(items, obj);
                         this.put(obj);
                     } catch (InstantiationException | IllegalAccessException e) {

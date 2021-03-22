@@ -1,8 +1,7 @@
 package cn.cerc.mis.print;
 
-import cn.cerc.core.ClassResource;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.queue.QueueMode;
 import cn.cerc.db.queue.QueueQuery;
 

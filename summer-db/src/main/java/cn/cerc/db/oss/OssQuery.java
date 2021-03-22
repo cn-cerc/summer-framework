@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.queue.OssOperator;
 

@@ -2,9 +2,6 @@ package cn.cerc.mis.security.sapi;
 
 import javax.servlet.http.HttpServletRequest;
 
-import cn.cerc.mis.security.sapi.JayunAPI;
-import cn.cerc.mis.security.sapi.SendMode;
-
 public class JayunMessage {
     /**
      * 发送模式: 默认为手机简讯，可支持语音发送以及其它方式

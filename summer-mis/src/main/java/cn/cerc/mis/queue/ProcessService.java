@@ -1,5 +1,7 @@
 package cn.cerc.mis.queue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
@@ -12,10 +14,7 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
-import cn.cerc.mis.rds.StubHandle;
 import cn.cerc.mis.task.AbstractTask;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 
 /**

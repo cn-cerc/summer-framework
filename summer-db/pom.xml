@@ -94,7 +94,7 @@
         <!-- 阿里云短信服务 -->
         <dependency>
             <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <artifactId>dysmsapi20170525</artifactId>
         </dependency>
         <!-- 阿里云队列 -->
         <dependency>

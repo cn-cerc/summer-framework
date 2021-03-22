@@ -1,9 +1,10 @@
 package cn.cerc.db.jiguang;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ISessionOwner;
-import cn.cerc.db.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
@@ -16,9 +17,6 @@ import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Slf4j
 public class JiguangPush {
