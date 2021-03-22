@@ -248,8 +248,8 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             } else {
                 html.print(" type=\"text\"");
             }
-            html.print(" name=\"%s\"", this.getId());
             html.print(" id=\"%s\"", this.getId());
+            html.print(" name=\"%s\"", this.getId());
             String value = this.getText(dataSet);
             if (value != null) {
                 html.print(" value=\"%s\"", value);
@@ -259,6 +259,9 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             }
             if (this.isReadonly()) {
                 html.print(" readonly=\"readonly\"");
+            }
+            if (this.getCssClass() != null) {
+                html.print(" class=\"%s\"", this.getCssClass());
             }
             if (this instanceof IFieldAutocomplete) {
                 IFieldAutocomplete obj = (IFieldAutocomplete) this;
@@ -297,9 +300,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
                 if (obj.getPattern() != null) {
                     html.print(" pattern=\"%s\"", obj.getPattern());
                 }
-            }
-            if (this.getCssClass() != null) {
-                html.print(" class=\"%s\"", this.getCssClass());
             }
             if (this instanceof IFieldEvent) {
                 IFieldEvent event = (IFieldEvent) this;
