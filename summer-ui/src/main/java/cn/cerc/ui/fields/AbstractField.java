@@ -43,6 +43,9 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
                 this.dataSource = (DataSource) owner;
                 dataSource.addField(this);
             }
+            if (owner instanceof IReadonlyOwner) {
+                this.setReadonly(((IReadonlyOwner) owner).isReadonly());
+            }
         }
         this.name = name;
         this.width = width;
@@ -98,6 +101,7 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         return this;
     }
 
+    @Override
     public String getName() {
         return name;
     }
