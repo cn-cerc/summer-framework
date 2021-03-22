@@ -72,16 +72,6 @@ public class DateField extends AbstractField
     }
 
     @Override
-    public DateField setDialog(String dialogfun, String... params) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        for (String string : params) {
-            this.dialog.add(string);
-        }
-        return this;
-    }
-
-    @Override
     public String getPattern() {
         return this.pattern;
     }

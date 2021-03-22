@@ -28,7 +28,7 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
         super(owner, name, width);
         this.setField(field);
         this.setAlign("center");
-        this.setCSSClass_phone("right");
+        this.setCssClass("right");
     }
 
     @Override

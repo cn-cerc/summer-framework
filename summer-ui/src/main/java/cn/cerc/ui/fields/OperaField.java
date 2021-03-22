@@ -30,7 +30,7 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
         super(owner, name, width);
         this.setAlign("center");
         this.setField("_opera_");
-        this.setCSSClass_phone("right");
+        this.setCssClass("right");
     }
 
     @Override
@@ -69,16 +69,6 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
     public OperaField setDialog(String dialogfun) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
-        return this;
-    }
-
-    @Override
-    public OperaField setDialog(String dialogfun, String... params) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        for (String string : params) {
-            this.dialog.add(string);
-        }
         return this;
     }
 

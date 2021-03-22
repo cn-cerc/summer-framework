@@ -97,16 +97,6 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
     }
 
     @Override
-    public AbstractField setDialog(String dialogfun, String... params) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        for (String string : params) {
-            this.dialog.add(string);
-        }
-        return this;
-    }
-
-    @Override
     public String getPlaceholder() {
         return placeholder;
     }

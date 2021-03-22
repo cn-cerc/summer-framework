@@ -171,16 +171,6 @@ public class CodeNameField extends AbstractField
     }
 
     @Override
-    public CodeNameField setDialog(String dialogfun, String... params) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        for (String string : params) {
-            this.dialog.add(string);
-        }
-        return this;
-    }
-
-    @Override
     public String getPlaceholder() {
         return placeholder;
     }
