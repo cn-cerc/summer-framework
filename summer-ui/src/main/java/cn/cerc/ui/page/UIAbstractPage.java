@@ -168,21 +168,11 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         return header;
     }
 
-    public UIComponent setHeader(UIComponent header) {
-        this.header = header;
-        return this;
-    }
-
     public UIComponent getAside() {
         if (aside == null) {
             aside = new UIOriginComponent(this);
         }
         return aside;
-    }
-
-    public UIComponent setAside(UIComponent aside) {
-        this.aside = aside;
-        return this;
     }
 
     public UIComponent getMenuPath() {
@@ -191,20 +181,10 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         return menuPath;
     }
 
-    public UIComponent setMenuPath(UIComponent menuPath) {
-        this.menuPath = menuPath;
-        return this;
-    }
-
     public UIComponent getNotice() {
         if (notice == null)
             notice = new UIOriginComponent(this);
         return notice;
-    }
-
-    public UIComponent setNotice(UIComponent notice) {
-        this.notice = notice;
-        return this;
     }
 
     public UIComponent getContent() {
@@ -213,31 +193,16 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         return content;
     }
 
-    public UIComponent setContent(UIComponent content) {
-        this.content = content;
-        return this;
-    }
-
     public UIComponent getStatusBar() {
         if (statusBar == null)
             statusBar = new UIOriginComponent(this);
         return statusBar;
     }
 
-    public UIComponent setStatusBar(UIComponent statusBar) {
-        this.statusBar = statusBar;
-        return this;
-    }
-
     public UIComponent getFooter() {
         if (footer == null)
             footer = new UIOriginComponent(this);
         return footer;
-    }
-
-    public UIComponent setFooter(UIComponent footer) {
-        this.footer = footer;
-        return this;
     }
 
     @Override
