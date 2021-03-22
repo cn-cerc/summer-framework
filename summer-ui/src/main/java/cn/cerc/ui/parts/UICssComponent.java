@@ -18,7 +18,6 @@ public abstract class UICssComponent extends UIComponent {
         return cssClass;
     }
 
-    @Deprecated
     public void setCssClass(String cssClass) {
         this.cssClass = cssClass;
     }
