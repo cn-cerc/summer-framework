@@ -3,8 +3,6 @@ package cn.cerc.ui.menu;
 import lombok.Getter;
 import lombok.Setter;
 
-//TODO 此Class应该从框架中移出
-@Deprecated
 @Setter
 @Getter
 public class MenuModel {

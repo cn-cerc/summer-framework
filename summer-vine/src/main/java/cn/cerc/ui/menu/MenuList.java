@@ -23,8 +23,6 @@ import java.util.Map;
 /**
  * 系统菜单缓存 此对象不应该放在框架中
  */
-//TODO 此Class应该从框架中移出
-@Deprecated
 public class MenuList implements IDataCache, IUserLanguage {
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
