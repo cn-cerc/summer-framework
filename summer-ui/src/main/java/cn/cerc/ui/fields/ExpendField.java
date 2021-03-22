@@ -4,11 +4,12 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ExpendField extends AbstractField implements SearchItem, IFieldBuildText {
+public class ExpendField extends AbstractField implements SearchItem, IFieldBuildText, IOutoutLine {
     private static final ClassResource res = new ClassResource(ExpendField.class, SummerUI.ID);
 
     private boolean search;

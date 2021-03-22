@@ -5,10 +5,12 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ItField extends AbstractField implements IFieldBuildText {
+public class ItField extends AbstractField implements IFieldBuildText, IOutoutLine {
 
     private static final ClassResource res = new ClassResource(ItField.class, SummerUI.ID);
     private BuildText buildText;

@@ -5,11 +5,12 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText, IFieldBuildUrl {
+public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText, IFieldBuildUrl, IOutoutLine {
     private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
 
     private String value = res.getString(1, "内容");

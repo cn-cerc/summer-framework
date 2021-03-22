@@ -9,6 +9,7 @@ import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.AbstractField;
@@ -46,7 +47,7 @@ public abstract class AbstractGridLine extends UICustomComponent implements Data
 
     public abstract void output(HtmlWriter html, int lineNo);
 
-    protected void outputField(HtmlWriter html, AbstractField field) {
+    protected void outputField(HtmlWriter html, IField field) {
         Record record = dataSource.getDataSet().getCurrent();
 
         IFieldBuildUrl obj = null;

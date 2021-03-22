@@ -2,10 +2,11 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ButtonField extends AbstractField implements IFieldEvent, IFieldBuildText {
+public class ButtonField extends AbstractField implements IFieldEvent, IFieldBuildText, IOutoutLine {
     private String data;
     private String type;
     private String onclick;

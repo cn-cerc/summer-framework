@@ -5,6 +5,7 @@ import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 /**
  * 列表下拉框组件（不适用搜索查询表单）
  */
-public class SelectField extends AbstractField implements IColumn, IFieldBuildText {
+public class SelectField extends AbstractField implements IColumn, IFieldBuildText, IOutoutLine {
     private static final ClassResource res = new ClassResource(SelectField.class, SummerUI.ID);
 
     private String trueText = res.getString(1, "是");
@@ -113,7 +114,7 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
     }
 
     @Override
-    public String format(Object value) {
+    public String format(Record record) {
         return writeInput(new HtmlWriter());
     }
 

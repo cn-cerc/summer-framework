@@ -6,6 +6,7 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
@@ -13,8 +14,8 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DoubleField extends AbstractField
-        implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
+public class DoubleField extends AbstractField implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus,
+        IFieldBuildText, IFieldBuildUrl, IOutoutLine {
     private ColumnEditor editor;
     private String format = "0.####";
     private String pattern;
@@ -62,17 +63,12 @@ public class DoubleField extends AbstractField
     }
 
     @Override
-    public String format(Object value) {
-        if (!(value instanceof Record)) {
-            return value.toString();
-        }
-
-        Record ds = (Record) value;
+    public String format(Record record) {
         if (this.isReadonly()) {
             if (getBuildUrl() != null) {
                 HtmlWriter html = new HtmlWriter();
                 UrlRecord url = new UrlRecord();
-                getBuildUrl().buildUrl(ds, url);
+                getBuildUrl().buildUrl(record, url);
                 if (!"".equals(url.getUrl())) {
                     html.print("<a href=\"%s\"", url.getUrl());
                     if (url.getTitle() != null) {
@@ -81,20 +77,20 @@ public class DoubleField extends AbstractField
                     if (url.getTarget() != null) {
                         html.print(" target=\"%s\"", url.getTarget());
                     }
-                    html.println(">%s</a>", getText(ds));
+                    html.println(">%s</a>", getText(record));
                 } else {
-                    html.println(getText(ds));
+                    html.println(getText(record));
                 }
                 return html.toString();
             } else {
-                return getText(ds);
+                return getText(record);
             }
         }
         if (!(this.getOwner() instanceof AbstractGridLine)) {
-            return getText(ds);
+            return getText(record);
         }
 
-        return getEditor().format(ds);
+        return getEditor().format(record);
     }
 
     public ColumnEditor getEditor() {

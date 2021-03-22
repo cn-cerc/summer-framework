@@ -51,12 +51,7 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
     }
 
     @Override
-    public String format(Object value) {
-        if (!(value instanceof Record)) {
-            return value.toString();
-        }
-
-        Record record = (Record) value;
+    public String format(Record record) {
         String data = getText(record);
 
         if (this.isReadonly()) {
