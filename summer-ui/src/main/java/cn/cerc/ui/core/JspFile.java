@@ -1,13 +1,10 @@
-package cn.cerc.ui.page;
-
-import cn.cerc.ui.mvc.AbstractPage;
-import cn.cerc.ui.parts.UIFooter;
-import cn.cerc.ui.parts.UIHeader;
-import cn.cerc.ui.parts.UIToolbar;
+package cn.cerc.ui.core;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+
+import cn.cerc.ui.mvc.AbstractPage;
 
 import javax.servlet.ServletException;
 
@@ -15,41 +12,21 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 
-public class JspPage extends AbstractPage {
+public class JspFile extends AbstractPage {
     private String jspFile;
-    // 头部：广告+菜单
-    private UIHeader header;
-    // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
-    private UIToolbar toolBar;
-    // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
-    private UIFooter footer;
     
-    public JspPage() {
+    public JspFile() {
         super();
     }
 
-    public JspPage(IForm form) {
-        super();
-        setForm(form);
-    }
-
-    public JspPage(IForm form, String jspFile) {
+    public JspFile(IForm form) {
         super();
         setForm(form);
-        this.setJspFile(jspFile);
     }
 
-    public UIHeader getHeader() {
-        if (header == null) {
-            header = new UIHeader(this);
-        }
-        return header;
-    }
-
-    public void add(String id, Object value) {
+    public final void add(String id, Object value) {
         put(id, value);
     }
-    
 
     @Override
     public String execute() throws ServletException, IOException {
@@ -97,10 +74,6 @@ public class JspPage extends AbstractPage {
             return langFile;
         }
 
-        // 发送消息
-        String msg = form.getParam("message", "");
-        getRequest().setAttribute("message", msg == null ? "" : msg.replaceAll("\r\n", "<br/>"));
-
         return jspFile;
     }
     
@@ -114,23 +87,6 @@ public class JspPage extends AbstractPage {
         String file = appPath + fileName;
         File f = new File(file);
         return f.exists();
-    }
-
-    @Deprecated
-    public UIFooter getFooter() {
-        if(footer == null) {
-            footer = new UIFooter(this);
-            this.add(footer.getId(), footer);
-        }
-        return footer;
-    }
-
-    public UIToolbar getToolBar() {
-        if (toolBar == null) {
-            toolBar = new UIToolbar(this);
-            this.add(toolBar.getId(), toolBar);
-        }
-        return toolBar;
     }
 
 }

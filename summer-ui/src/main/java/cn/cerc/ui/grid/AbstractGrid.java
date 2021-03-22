@@ -14,14 +14,14 @@ import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.ChildGridLine;
 import cn.cerc.ui.grid.lines.MasterGridLine;
-import cn.cerc.ui.parts.UIActionForm;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.vcl.UIForm;
 
 public abstract class AbstractGrid extends UIOriginComponent implements DataSource {
     // 主行
     protected MasterGridLine masterLine;
     // 表单，后不得再使用
-    private UIActionForm uiform;
+    protected UIForm form;
     // 数据源
     private DataSet dataSet;
     // 支持表格分页
@@ -83,13 +83,13 @@ public abstract class AbstractGrid extends UIOriginComponent implements DataSour
     }
 
     @Deprecated
-    public UIActionForm getForm() {
-        return uiform;
+    public UIForm getForm() {
+        return form;
     }
 
     @Deprecated
-    public void setForm(UIActionForm form) {
-        this.uiform = form;
+    public void setForm(UIForm form) {
+        this.form = form;
     }
 
     public abstract void outputGrid(HtmlWriter html);
