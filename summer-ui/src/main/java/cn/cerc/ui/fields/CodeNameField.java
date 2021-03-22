@@ -35,7 +35,8 @@ public class CodeNameField extends AbstractField implements IFieldDialog, IField
     }
 
     @Override
-    public String getText(Record record) {
+    public String getText() {
+        Record record = getRecord();
         if (record == null) {
             return null;
         }
@@ -48,18 +49,18 @@ public class CodeNameField extends AbstractField implements IFieldDialog, IField
     }
 
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
+    public void outputReadonly(HtmlWriter html) {
         html.print(this.getName() + "：");
-        html.print(this.getText(record));
+        html.print(this.getText());
     }
 
     @Override
-    public void outputHidden(HtmlWriter html, Record record) {
+    public void outputHidden(HtmlWriter html) {
         html.print("<input");
         html.print(" type=\"hidden\"");
         html.print(" name=\"%s\"", this.getId());
         html.print(" id=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }
@@ -68,14 +69,14 @@ public class CodeNameField extends AbstractField implements IFieldDialog, IField
     }
 
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
+    public void outputDefault(HtmlWriter html) {
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
 
         html.print("<input");
         html.print(" type=\"hidden\"");
         html.print(" name=\"%s\"", this.getId());
         html.print(" id=\"%s\"", this.getId());
-        String codeValue = this.getText(record);
+        String codeValue = this.getText();
         if (codeValue != null) {
             html.print(" value=\"%s\"", codeValue);
         }
@@ -86,12 +87,15 @@ public class CodeNameField extends AbstractField implements IFieldDialog, IField
         html.print(" name=\"%s\"", getNameField());
         html.print(" id=\"%s\"", getNameField());
         String nameValue = null;
+        
+        Record record = getRecord();
         if (record != null) {
             nameValue = record.getString(getNameField());
             if (nameValue != null) {
                 html.print(" value=\"%s\"", nameValue);
             }
         }
+        
         if (this.isReadonly()) {
             html.print(" readonly=\"readonly\"");
         }

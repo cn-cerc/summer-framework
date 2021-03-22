@@ -17,7 +17,8 @@ public class UploadField extends AbstractField implements IFieldMultiple, IOutou
     }
 
     @Override
-    public String getText(Record record) {
+    public String getText() {
+        Record record = getRecord();
         return record.getString(field);
     }
 
@@ -34,12 +35,12 @@ public class UploadField extends AbstractField implements IFieldMultiple, IOutou
 
     // 隐藏输出
     @Override
-    public void outputHidden(HtmlWriter html, Record record) {
+    public void outputHidden(HtmlWriter html) {
         html.print("<input");
         html.print(" type=\"hidden\"");
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }
@@ -48,14 +49,14 @@ public class UploadField extends AbstractField implements IFieldMultiple, IOutou
 
     // 只读输出
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
+    public void outputReadonly(HtmlWriter html) {
         html.print(this.getName() + "：");
-        html.print(this.getText(record));
+        html.print(this.getText());
     }
 
     // 普通输出
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
+    public void outputDefault(HtmlWriter html) {
         html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<input");
         if (getHtmType() != null) {
@@ -65,7 +66,7 @@ public class UploadField extends AbstractField implements IFieldMultiple, IOutou
         }
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }

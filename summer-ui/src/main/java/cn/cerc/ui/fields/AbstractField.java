@@ -162,15 +162,14 @@ public abstract class AbstractField extends UIOriginComponent
 
     @Override
     public final void output(HtmlWriter html) {
-        Record record = getDataSource().getDataSet().getCurrent();
         if (this.isHidden()) {
-            outputHidden(html, record);
+            outputHidden(html);
             return;
         } else {
             if (this.isReadonly()) {
-                outputReadonly(html, record);
+                outputReadonly(html);
             } else {
-                outputDefault(html, record);
+                outputDefault(html);
             }
         }
     }
@@ -190,6 +189,7 @@ public abstract class AbstractField extends UIOriginComponent
         }
     }
 
+    @Deprecated
     public void setDataView(DataSource dataView) {
         this.dataSource = dataView;
     }
@@ -199,14 +199,20 @@ public abstract class AbstractField extends UIOriginComponent
         return this.getName();
     }
 
-    public String getString() {
+    @Override
+    public Record getRecord() {
         if (dataSource == null) {
             throw new RuntimeException("owner is null.");
         }
         if (dataSource.getDataSet() == null) {
             throw new RuntimeException("owner.dataSet is null.");
         }
-        return dataSource.getDataSet().getString(this.getField());
+        
+        return dataSource.getDataSet().getCurrent();
+    }
+
+    public String getString() {
+        return getRecord().getString(this.getField());
     }
 
     public boolean getBoolean() {

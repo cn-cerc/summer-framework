@@ -179,10 +179,10 @@ public class PhoneGrid extends AbstractGrid {
                     obj.getBuildUrl().buildUrl(record, url);
                     if (!"".equals(url.getUrl())) {
                         html.println("<a href=\"%s\">", url.getUrl());
-                        html.print(field.getText(record));
+                        html.print(field.getText());
                         html.println("</a>");
                     } else {
-                        html.println(field.getText(record));
+                        html.println(field.getText());
                     }
                 } else {
                     outputColumn(field, html);
@@ -216,7 +216,7 @@ public class PhoneGrid extends AbstractGrid {
                         outputColumn(field, html);
                         html.println("</a>");
                     } else {
-                        html.println(field.getText(record));
+                        html.println(field.getText());
                     }
                 } else {
                     outputColumn(field, html);
@@ -227,12 +227,11 @@ public class PhoneGrid extends AbstractGrid {
         }
 
         private void outputColumn(AbstractField field, HtmlWriter html) {
-            DataSet dataSet = dataSource != null ? dataSource.getDataSet() : null;
             String name = field.getShortName();
             if (!"".equals(name)) {
                 html.print(name + ": ");
             }
-            html.print(field.getText(dataSet.getCurrent()));
+            html.print(field.getText());
         }
 
         @Override

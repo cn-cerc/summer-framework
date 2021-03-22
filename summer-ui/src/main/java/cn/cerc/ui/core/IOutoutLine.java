@@ -1,20 +1,18 @@
 package cn.cerc.ui.core;
 
-import cn.cerc.core.Record;
-
 public interface IOutoutLine extends IField {
     
     // 只读输出
-    void outputReadonly(HtmlWriter html, Record record);
+    void outputReadonly(HtmlWriter html);
 
     // 普通输出
-    void outputDefault(HtmlWriter html, Record record);
+    void outputDefault(HtmlWriter html);
     
-    default void outputLine(HtmlWriter html, Record record) {
+    default void outputLine(HtmlWriter html) {
         if(this.isReadonly())
-            outputReadonly(html, record);
+            outputReadonly(html);
         else
-            outputDefault(html, record);
+            outputDefault(html);
     }
 
 }

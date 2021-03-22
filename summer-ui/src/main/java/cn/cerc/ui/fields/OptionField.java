@@ -47,7 +47,8 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
     }
 
     @Override
-    public String getText(Record record) {
+    public String getText() {
+        Record record = getRecord();
         if (record == null) {
             return null;
         }
@@ -69,13 +70,13 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
     }
 
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
-        outputDefault(html, record);
+    public void outputReadonly(HtmlWriter html) {
+        outputDefault(html);
     }
 
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
-        String current = this.getText(record);
+    public void outputDefault(HtmlWriter html) {
+        String current = this.getText();
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<select id=\"%s\" name=\"%s\"", this.getId(), this.getId());
         if (this.size > 0) {
@@ -136,12 +137,12 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
 
     // 隐藏输出
     @Override
-    public void outputHidden(HtmlWriter html, Record record) {
+    public void outputHidden(HtmlWriter html) {
         html.print("<input");
         html.print(" type=\"hidden\"");
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }

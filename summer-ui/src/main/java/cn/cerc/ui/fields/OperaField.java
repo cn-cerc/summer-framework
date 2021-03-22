@@ -36,8 +36,9 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
     }
 
     @Override
-    public String getText(Record record) {
+    public String getText() {
         if (getBuildText() != null) {
+            Record record = getRecord();
             HtmlWriter html = new HtmlWriter();
             getBuildText().outputText(record, html);
             return html.toString();
@@ -109,12 +110,12 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
 
     // 隐藏输出
     @Override
-    public void outputHidden(HtmlWriter html, Record record) {
+    public void outputHidden(HtmlWriter html) {
         html.print("<input");
         html.print(" type=\"hidden\"");
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }
@@ -123,14 +124,14 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
 
     // 只读输出
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
+    public void outputReadonly(HtmlWriter html) {
         html.print(this.getName() + "：");
-        html.print(this.getText(record));
+        html.print(this.getText());
     }
 
     // 普通输出
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
+    public void outputDefault(HtmlWriter html) {
         html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<input");
         if (getHtmType() != null) {
@@ -140,7 +141,7 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
         }
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }

@@ -7,16 +7,17 @@ public interface IField extends IReadonlyOwner {
 
     String getField();
 
-//    int getWidth();
     default int getWidth() {
         return 1;
     }
 
     String getAlign();
 
-	String getText(Record record);
+	String getText();
  
     // 隐藏输出
-    void outputHidden(HtmlWriter html, Record record);
+    void outputHidden(HtmlWriter html);
+    
+    Record getRecord();
 
 }

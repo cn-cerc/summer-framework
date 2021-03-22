@@ -29,33 +29,33 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
     }
 
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
-        outputTextArea(html, record);
+    public void outputReadonly(HtmlWriter html) {
+        outputTextArea(html);
     }
 
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
+    public void outputDefault(HtmlWriter html) {
         if (this.getOrigin() instanceof IForm) {
             IForm form = (IForm) this.getOrigin();
             if (form.getClient().isPhone()) {
                 if (this.isReadonly()) {
                     html.print(this.getName() + "：");
-                    html.print(this.getText(record));
+                    html.print(this.getText());
                     return;
                 }
             }
         }
 
         html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
-        outputTextArea(html, record);
+        outputTextArea(html);
         html.println("<span></span>");
     }
 
-    private void outputTextArea(HtmlWriter html, Record dataSet) {
+    private void outputTextArea(HtmlWriter html) {
         html.print("<textarea");
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(dataSet);
+        String value = this.getText();
 
         if (this.isReadonly()) {
             html.print(" readonly=\"readonly\"");
@@ -89,7 +89,9 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
         html.println("</textarea>");
     }
 
-    public String getText(Record record) {
+    @Override
+    public String getText() {
+        Record record = getRecord();
         if (record != null) {
             if (this instanceof IFieldBuildText) {
                 IFieldBuildText obj = (IFieldBuildText) this;
@@ -173,12 +175,12 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
 
     // 隐藏输出
     @Override
-    public void outputHidden(HtmlWriter html, Record record) {
+    public void outputHidden(HtmlWriter html) {
         html.print("<input");
         html.print(" type=\"hidden\"");
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }

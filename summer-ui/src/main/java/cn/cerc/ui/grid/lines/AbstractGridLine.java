@@ -69,12 +69,12 @@ public abstract class AbstractGridLine extends UICustomComponent implements Data
                 if (url.getHintMsg() != null) {
                     html.print(" onClick=\"return confirm('%s');\"", url.getHintMsg());
                 }
-                html.print(">%s</a>", field.getText(record));
+                html.print(">%s</a>", field.getText());
             } else {
-                html.print(field.getText(record));
+                html.print(field.getText());
             }
         } else {
-            html.print(field.getText(record));
+            html.print(field.getText());
         }
     }
 

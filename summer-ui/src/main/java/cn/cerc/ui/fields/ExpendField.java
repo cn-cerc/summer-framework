@@ -33,7 +33,8 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
     }
 
     @Override
-    public String getText(Record record) {
+    public String getText() {
+        Record record = this.getRecord();
         if (record == null) {
             return null;
         }
@@ -48,14 +49,26 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
         return String.format("<a href=\"javascript:displaySwitch('%d')\">%s</a>",
                 getDataSource().getDataSet().getRecNo(), res.getString(1, "展开"));
     }
-
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
-        outputDefault(html, record);
+    public void outputHidden(HtmlWriter html) {
+        html.print("<input");
+        html.print(" type=\"hidden\"");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText();
+        if (value != null) {
+            html.print(" value=\"%s\"", value);
+        }
+        html.println("/>");
     }
 
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
+    public void outputReadonly(HtmlWriter html) {
+        outputDefault(html);
+    }
+
+    @Override
+    public void outputDefault(HtmlWriter html) {
         if (this.search) {
             html.print("<a href=\"javascript:displaySwitch('%s')\">%s</a>", this.getHiddenId(), this.getName());
         } else {
@@ -92,20 +105,6 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
     @Override
     public BuildText getBuildText() {
         return buildText;
-    }
-
-    // 隐藏输出
-    @Override
-    public void outputHidden(HtmlWriter html, Record record) {
-        html.print("<input");
-        html.print(" type=\"hidden\"");
-        html.print(" id=\"%s\"", this.getId());
-        html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
-        if (value != null) {
-            html.print(" value=\"%s\"", value);
-        }
-        html.println("/>");
     }
 
 }

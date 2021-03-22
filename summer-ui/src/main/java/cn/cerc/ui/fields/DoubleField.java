@@ -37,7 +37,8 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
     }
 
     @Override
-    public String getText(Record record) {
+    public String getText() {
+        Record record = getRecord();
         if (record == null) {
             return null;
         }
@@ -77,17 +78,17 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
                     if (url.getTarget() != null) {
                         html.print(" target=\"%s\"", url.getTarget());
                     }
-                    html.println(">%s</a>", getText(record));
+                    html.println(">%s</a>", getText());
                 } else {
-                    html.println(getText(record));
+                    html.println(getText());
                 }
                 return html.toString();
             } else {
-                return getText(record);
+                return getText();
             }
         }
         if (!(this.getOwner() instanceof AbstractGridLine)) {
-            return getText(record);
+            return getText();
         }
 
         return getEditor().format(record);
@@ -166,12 +167,12 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
 
     // 隐藏输出
     @Override
-    public void outputHidden(HtmlWriter html, Record record) {
+    public void outputHidden(HtmlWriter html) {
         html.print("<input");
         html.print(" type=\"hidden\"");
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }
@@ -180,14 +181,14 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
 
     // 只读输出
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
+    public void outputReadonly(HtmlWriter html) {
         html.print(this.getName() + "：");
-        html.print(this.getText(record));
+        html.print(this.getText());
     }
 
     // 普通输出
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
+    public void outputDefault(HtmlWriter html) {
         html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<input");
         if (getHtmType() != null) {
@@ -197,7 +198,7 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
         }
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }

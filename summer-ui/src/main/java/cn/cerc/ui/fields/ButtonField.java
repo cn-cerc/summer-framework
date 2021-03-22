@@ -34,7 +34,8 @@ public class ButtonField extends AbstractField implements IFieldEvent, IFieldBui
     }
 
     @Override
-    public String getText(Record record) {
+    public String getText() {
+        Record record = getRecord();
         if (record == null) {
             return null;
         }
@@ -47,12 +48,25 @@ public class ButtonField extends AbstractField implements IFieldEvent, IFieldBui
     }
 
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
-        outputDefault(html, record);
+    public void outputHidden(HtmlWriter html) {
+        html.print("<input");
+        html.print(" type=\"hidden\"");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText();
+        if (value != null) {
+            html.print(" value=\"%s\"", value);
+        }
+        html.println("/>");
     }
 
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
+    public void outputReadonly(HtmlWriter html) {
+        outputDefault(html);
+    }
+
+    @Override
+    public void outputDefault(HtmlWriter html) {
         html.print("<button name=\"%s\"", this.getId());
         if (this.data != null) {
             html.print(" value=\"%s\"", this.data);
@@ -110,20 +124,6 @@ public class ButtonField extends AbstractField implements IFieldEvent, IFieldBui
     @Override
     public BuildText getBuildText() {
         return buildText;
-    }
-
-    // 隐藏输出
-    @Override
-    public void outputHidden(HtmlWriter html, Record record) {
-        html.print("<input");
-        html.print(" type=\"hidden\"");
-        html.print(" id=\"%s\"", this.getId());
-        html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
-        if (value != null) {
-            html.print(" value=\"%s\"", value);
-        }
-        html.println("/>");
     }
 
 }

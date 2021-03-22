@@ -19,7 +19,9 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
         super(dataView, name, 0);
     }
 
-    public String getText(Record record) {
+    @Override
+    public String getText() {
+        Record record = getRecord();
         if (record != null) {
             if (this instanceof IFieldBuildText) {
                 IFieldBuildText obj = (IFieldBuildText) this;
@@ -36,7 +38,7 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
     }
 
     @Override
-    public void outputDefault(HtmlWriter html, Record record) {
+    public void outputDefault(HtmlWriter html) {
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         AbstractField child = null;
         for (Component component : this.getComponents()) {
@@ -47,7 +49,7 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
                 child = (AbstractField) component;
                 String val = child.getCssClass();
                 child.setCssClass("price");
-                child.outputDefault(html, record);
+                child.outputDefault(html);
                 child.setCssClass(val);
             }
         }
@@ -115,12 +117,12 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
 
     // 隐藏输出
     @Override
-    public void outputHidden(HtmlWriter html, Record record) {
+    public void outputHidden(HtmlWriter html) {
         html.print("<input");
         html.print(" type=\"hidden\"");
         html.print(" id=\"%s\"", this.getId());
         html.print(" name=\"%s\"", this.getId());
-        String value = this.getText(record);
+        String value = this.getText();
         if (value != null) {
             html.print(" value=\"%s\"", value);
         }
@@ -129,8 +131,8 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
 
     // 只读输出
     @Override
-    public void outputReadonly(HtmlWriter html, Record record) {
+    public void outputReadonly(HtmlWriter html) {
         html.print(this.getName() + "：");
-        html.print(this.getText(record));
+        html.print(this.getText());
     }
 }
