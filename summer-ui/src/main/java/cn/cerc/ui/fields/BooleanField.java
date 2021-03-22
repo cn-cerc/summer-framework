@@ -175,4 +175,26 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
     public BuildText getBuildText() {
         return buildText;
     }
+
+    // 隐藏输出
+    @Override
+    public void outputHidden(HtmlWriter html, Record record) {
+        html.print("<input");
+        html.print(" type=\"hidden\"");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText(record);
+        if (value != null) {
+            html.print(" value=\"%s\"", value);
+        }
+        html.println("/>");
+    }
+
+    // 只读输出
+    @Override
+    public void outputReadonly(HtmlWriter html, Record record) {
+        html.print(this.getName() + "：");
+        html.print(this.getText(record));
+    }
+
 }

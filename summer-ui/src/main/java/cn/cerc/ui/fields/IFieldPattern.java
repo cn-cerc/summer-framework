@@ -4,7 +4,7 @@ package cn.cerc.ui.fields;
 public interface IFieldPattern {
 
     String getPattern();
-    
+
     Object setPattern(String pattern);
 
 }

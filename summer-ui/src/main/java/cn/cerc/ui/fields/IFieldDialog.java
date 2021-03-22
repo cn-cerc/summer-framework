@@ -10,12 +10,12 @@ public interface IFieldDialog {
     @Deprecated
     default Object setDialog(String dialogfun, String[] params) {
         setDialog(dialogfun);
-        
+
         DialogField dialog = getDialog();
         for (String string : params) {
             dialog.add(string);
         }
-        
+
         return this;
     }
 

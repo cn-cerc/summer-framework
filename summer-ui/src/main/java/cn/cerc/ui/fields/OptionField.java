@@ -124,13 +124,27 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
 
     @Override
     public OptionField createText(BuildText buildText) {
-       this.buildText = buildText;
+        this.buildText = buildText;
         return this;
     }
 
     @Override
     public BuildText getBuildText() {
         return buildText;
+    }
+
+    // 隐藏输出
+    @Override
+    public void outputHidden(HtmlWriter html, Record record) {
+        html.print("<input");
+        html.print(" type=\"hidden\"");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText(record);
+        if (value != null) {
+            html.print(" value=\"%s\"", value);
+        }
+        html.println("/>");
     }
 
 }

@@ -4,7 +4,7 @@ package cn.cerc.ui.fields;
 public interface IFieldShowStar {
 
     boolean isShowStar();
-    
+
     Object setShowStar(boolean showStar);
 
 }

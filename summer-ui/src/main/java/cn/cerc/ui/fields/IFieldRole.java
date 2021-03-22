@@ -4,6 +4,6 @@ public interface IFieldRole {
 
     String getRole();
 
-   void setRole(String role);
+    void setRole(String role);
 
 }

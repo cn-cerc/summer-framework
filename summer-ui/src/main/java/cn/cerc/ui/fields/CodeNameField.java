@@ -47,6 +47,12 @@ public class CodeNameField extends AbstractField
     }
 
     @Override
+    public void outputReadonly(HtmlWriter html, Record record) {
+        html.print(this.getName() + "：");
+        html.print(this.getText(record));
+    }
+
+    @Override
     public void outputHidden(HtmlWriter html, Record record) {
         html.print("<input");
         html.print(" type=\"hidden\"");
@@ -62,7 +68,6 @@ public class CodeNameField extends AbstractField
 
     @Override
     public void outputDefault(HtmlWriter html, Record record) {
-
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
 
         html.print("<input");
@@ -237,4 +242,5 @@ public class CodeNameField extends AbstractField
     public BuildText getBuildText() {
         return buildText;
     }
+
 }

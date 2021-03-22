@@ -45,7 +45,7 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
                 }
             }
         }
-        
+
         html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         outputTextArea(html, record);
         html.println("<span></span>");
@@ -158,6 +158,20 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
     public TextAreaField setResize(boolean resize) {
         this.resize = resize;
         return this;
+    }
+
+    // 隐藏输出
+    @Override
+    public void outputHidden(HtmlWriter html, Record record) {
+        html.print("<input");
+        html.print(" type=\"hidden\"");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText(record);
+        if (value != null) {
+            html.print(" value=\"%s\"", value);
+        }
+        html.println("/>");
     }
 
 }
