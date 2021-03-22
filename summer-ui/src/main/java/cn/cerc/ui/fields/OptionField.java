@@ -1,16 +1,19 @@
 package cn.cerc.ui.fields;
 
-import cn.cerc.core.Record;
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.parts.UIComponent;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class OptionField extends AbstractField {
+import cn.cerc.core.Record;
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
+import cn.cerc.ui.parts.UIComponent;
+
+public class OptionField extends AbstractField implements IFieldShowStar, IFieldBuildText {
+    private Map<String, String> items = new LinkedHashMap<>();
     private String defaultValue;
     private int size;// 默认显示行数
-    private Map<String, String> items = new LinkedHashMap<>();
+    private boolean showStar;
+    private BuildText buildText;
 
     public OptionField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -102,6 +105,28 @@ public class OptionField extends AbstractField {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    @Override
+    public boolean isShowStar() {
+        return showStar;
+    }
+
+    @Override
+    public OptionField setShowStar(boolean showStar) {
+        this.showStar = showStar;
+        return this;
+    }
+
+    @Override
+    public OptionField createText(BuildText buildText) {
+       this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 
 }

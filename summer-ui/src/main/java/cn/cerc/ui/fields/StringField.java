@@ -6,11 +6,21 @@ import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
+import cn.cerc.ui.other.BuildText;
+import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField implements IColumn, IDialogFieldOwner {
+public class StringField extends AbstractField implements IColumn, IFieldDialog, IFieldPlaceholder, IFieldPattern,
+        IFieldRequired, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private DialogField dialog;
+    private String placeholder;
+    private String pattern;
+    private boolean required;
+    private boolean autofocus;
+    private String icon;
+    private BuildUrl buildUrl;
+    private BuildText buildText;
 
     public StringField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -94,5 +104,82 @@ public class StringField extends AbstractField implements IColumn, IDialogFieldO
             this.dialog.add(string);
         }
         return this;
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    @Override
+    public StringField setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+        return this;
+    }
+
+    @Override
+    public String getPattern() {
+        return pattern;
+    }
+
+    @Override
+    public StringField setPattern(String pattern) {
+        this.pattern = pattern;
+        return this;
+    }
+
+    @Override
+    public boolean isRequired() {
+        return required;
+    }
+
+    @Override
+    public StringField setRequired(boolean required) {
+        this.required = required;
+        return this;
+    }
+
+    @Override
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    @Override
+    public StringField setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
+        return this;
+    }
+
+    @Override
+    public String getIcon() {
+        return icon;
+    }
+
+    @Override
+    public StringField setIcon(String icon) {
+        this.icon = icon;
+        return this;
+    }
+
+    @Override
+    public StringField createUrl(BuildUrl buildUrl) {
+        this.buildUrl = buildUrl;
+        return this;
+    }
+
+    @Override
+    public BuildUrl getBuildUrl() {
+        return buildUrl;
+    }
+
+    @Override
+    public StringField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }

@@ -1,5 +1,9 @@
 package cn.cerc.ui.fields.editor;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
@@ -8,13 +12,11 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
+import cn.cerc.ui.fields.IFieldBuildText;
+import cn.cerc.ui.fields.IFieldEvent;
 import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.MasterGridLine;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ColumnEditor {
     private static final ClassResource res = new ClassResource(ColumnEditor.class, SummerUI.ID);
@@ -30,7 +32,8 @@ public class ColumnEditor {
     public ColumnEditor(AbstractField owner) {
         this.owner = owner;
         if (!(owner.getOwner() instanceof AbstractGridLine)) {
-            throw new RuntimeException(String.format(res.getString(1, "不支持的数据类型：%s"), owner.getOwner().getClass().getName()));
+            throw new RuntimeException(
+                    String.format(res.getString(1, "不支持的数据类型：%s"), owner.getOwner().getClass().getName()));
         }
         gridLine = (AbstractGridLine) (owner.getOwner());
     }
@@ -45,9 +48,15 @@ public class ColumnEditor {
 
     public String format(Record ds) {
         String data = ds.getString(owner.getField());
-        if (owner.getBuildText() != null) {
+
+        IFieldBuildText build = null;
+        if (owner instanceof IFieldBuildText) {
+            build = (IFieldBuildText) owner;
+        }
+
+        if (build != null && build.getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            owner.getBuildText().outputText(ds, html);
+            build.getBuildText().outputText(ds, html);
             data = html.toString();
         } else if (ds.getField(owner.getField()) instanceof Double) {
             DecimalFormat df = new DecimalFormat("0.####");
@@ -98,8 +107,15 @@ public class ColumnEditor {
             if (owner.getAlign() != null) {
                 inputStyle += String.format("text-align:%s;", owner.getAlign());
             }
-            if (owner.getOnclick() != null) {
-                html.print(" onclick=\"%s\"", owner.getOnclick());
+
+            String onclick = null;
+            if (owner instanceof IFieldEvent) {
+                IFieldEvent event = (IFieldEvent) owner;
+                onclick = event.getOnclick();
+            }
+
+            if (onclick != null) {
+                html.print(" onclick=\"%s\"", onclick);
             } else {
                 html.print(" onclick='this.select()'");
             }

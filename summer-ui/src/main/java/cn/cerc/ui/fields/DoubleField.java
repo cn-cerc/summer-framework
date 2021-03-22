@@ -1,18 +1,26 @@
 package cn.cerc.ui.fields;
 
+import java.text.DecimalFormat;
+
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
+import cn.cerc.ui.other.BuildText;
+import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-import java.text.DecimalFormat;
-
-public class DoubleField extends AbstractField implements IColumn {
+public class DoubleField extends AbstractField
+        implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private String format = "0.####";
+    private String pattern;
+    private String placeholder;
+    private boolean autofocus;
+    private BuildText buildText;
+    private BuildUrl buildUrl;
 
     public DoubleField(UIComponent owner, String title, String field) {
         super(owner, title, 4);
@@ -46,8 +54,8 @@ public class DoubleField extends AbstractField implements IColumn {
     }
 
     @Override
-    public Title createTitle() {
-        Title title = super.createTitle();
+    public FieldTitle createTitle() {
+        FieldTitle title = super.createTitle();
         title.setType("float");
         return title;
     }
@@ -102,5 +110,60 @@ public class DoubleField extends AbstractField implements IColumn {
     public DoubleField setFormat(String format) {
         this.format = format;
         return this;
+    }
+
+    @Override
+    public String getPattern() {
+        return this.pattern;
+    }
+
+    @Override
+    public DoubleField setPattern(String pattern) {
+        this.pattern = pattern;
+        return this;
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    @Override
+    public DoubleField setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+        return this;
+    }
+
+    @Override
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    @Override
+    public DoubleField setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
+        return this;
+    }
+
+    @Override
+    public DoubleField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
+    }
+
+    @Override
+    public DoubleField createUrl(BuildUrl buildUrl) {
+        this.buildUrl = buildUrl;
+        return this;
+    }
+
+    @Override
+    public BuildUrl getBuildUrl() {
+        return buildUrl;
     }
 }

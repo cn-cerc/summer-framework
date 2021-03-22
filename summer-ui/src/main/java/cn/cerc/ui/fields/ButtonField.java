@@ -2,11 +2,15 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ButtonField extends AbstractField {
+public class ButtonField extends AbstractField implements IFieldEvent, IFieldBuildText {
     private String data;
     private String type;
+    private String onclick;
+    private String oninput;
+    private BuildText buildText;
 
     public ButtonField() {
         super(null, null, 0);
@@ -47,8 +51,8 @@ public class ButtonField extends AbstractField {
         if (this.data != null) {
             html.print(" value=\"%s\"", this.data);
         }
-        if (getCSSClass_phone() != null) {
-            html.print(" class=\"%s\"", getCSSClass_phone());
+        if (this.getCssClass() != null) {
+            html.print(" class=\"%s\"", this.getCssClass());
         }
         if (this.getOnclick() != null) {
             html.print(" onclick=\"%s\"", this.getOnclick());
@@ -67,5 +71,38 @@ public class ButtonField extends AbstractField {
     public ButtonField setType(String type) {
         this.type = type;
         return this;
+    }
+
+    @Override
+    public String getOninput() {
+        return oninput;
+    }
+
+    @Override
+    public ButtonField setOninput(String oninput) {
+        this.oninput = oninput;
+        return this;
+    }
+
+    @Override
+    public String getOnclick() {
+        return onclick;
+    }
+
+    @Override
+    public ButtonField setOnclick(String onclick) {
+        this.onclick = onclick;
+        return this;
+    }
+
+    @Override
+    public ButtonField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }

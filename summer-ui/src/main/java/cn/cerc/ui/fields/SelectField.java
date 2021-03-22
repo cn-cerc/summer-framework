@@ -5,6 +5,7 @@ import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 import java.util.LinkedHashMap;
@@ -13,7 +14,7 @@ import java.util.Map;
 /**
  * 列表下拉框组件（不适用搜索查询表单）
  */
-public class SelectField extends AbstractField implements IColumn {
+public class SelectField extends AbstractField implements IColumn, IFieldBuildText {
     private static final ClassResource res = new ClassResource(SelectField.class, SummerUI.ID);
 
     private String trueText = res.getString(1, "是");
@@ -21,6 +22,8 @@ public class SelectField extends AbstractField implements IColumn {
     private String title;
     private String onChange;
     private Map<String, String> items = new LinkedHashMap<>();
+
+    private BuildText buildText;
 
     public SelectField(UIComponent owner, String title, String field) {
         this(owner, title, field, 0);
@@ -115,5 +118,16 @@ public class SelectField extends AbstractField implements IColumn {
 
     public void setOnChange(String onChange) {
         this.onChange = onChange;
+    }
+
+    @Override
+    public SelectField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }

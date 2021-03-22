@@ -2,9 +2,12 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DateTimeField extends AbstractField {
+public class DateTimeField extends AbstractField implements IFieldBuildText {
+
+    private BuildText buildText;
 
     public DateTimeField(UIComponent owner, String name, String field) {
         super(owner, name, 10);
@@ -28,5 +31,16 @@ public class DateTimeField extends AbstractField {
             return html.toString();
         }
         return record.getString(getField());
+    }
+
+    @Override
+    public DateTimeField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    @Override
+    public BuildText getBuildText() {
+        return buildText;
     }
 }
