@@ -8,10 +8,10 @@
         <version>3.3.0</version>
     </parent>
 
-    <artifactId>summer-mis-cn</artifactId>
+    <artifactId>summer-vine</artifactId>
     <packaging>jar</packaging>
 
-    <description>summer-mis-cn</description>
+    <description>summer-vine</description>
 
     <build>
         <plugins>
@@ -49,11 +49,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>summer-ui</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>summer-vine</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

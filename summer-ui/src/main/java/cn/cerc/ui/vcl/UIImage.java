@@ -1,5 +1,6 @@
 package cn.cerc.ui.vcl;
 
+import cn.cerc.mis.core.Application;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UICssComponent;
@@ -22,7 +23,7 @@ public class UIImage extends UICssComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.print("<img src='%s'", this.src);
+        html.print("<img src='%s'", Application.getStaticPath() + this.src);
         if (role != null) {
             html.print(" role='%s'", this.role);
         }
