@@ -11,7 +11,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField implements IColumn, IFieldPlaceholder, IFieldRequired,
+public class StringField extends AbstractField implements IColumn, IFieldPlaceholder,
         IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private UIDialogField dialog;
@@ -79,12 +79,10 @@ public class StringField extends AbstractField implements IColumn, IFieldPlaceho
         return this;
     }
 
-    @Override
     public boolean isRequired() {
         return required;
     }
 
-    @Override
     public StringField setRequired(boolean required) {
         this.required = required;
         return this;

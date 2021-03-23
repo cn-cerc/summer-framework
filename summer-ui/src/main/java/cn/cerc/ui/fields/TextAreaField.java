@@ -5,7 +5,7 @@ import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class TextAreaField extends AbstractField implements IFieldPlaceholder, IFieldRequired, IFieldTextArea {
+public class TextAreaField extends AbstractField implements IFieldPlaceholder, IFieldTextArea {
     private String placeholder;
     private boolean required;
     // 最大字符串数
@@ -117,12 +117,10 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
         return this;
     }
 
-    @Override
     public boolean isRequired() {
         return required;
     }
 
-    @Override
     public TextAreaField setRequired(boolean required) {
         this.required = required;
         return this;

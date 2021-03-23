@@ -71,12 +71,6 @@ public class UploadField extends AbstractField {
             if (this.getCssClass() != null) {
                 html.print(" class=\"%s\"", this.getCssClass());
             }
-            if (this instanceof IFieldRequired) {
-                IFieldRequired obj = (IFieldRequired) this;
-                if (obj.isRequired()) {
-                    html.print(" required");
-                }
-            }
             if (this.isMultiple()) {
                 html.print(" multiple");
             }
