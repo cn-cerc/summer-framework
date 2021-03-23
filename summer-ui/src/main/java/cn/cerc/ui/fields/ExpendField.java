@@ -49,6 +49,7 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
         return String.format("<a href=\"javascript:displaySwitch('%d')\">%s</a>",
                 getDataSource().getDataSet().getRecNo(), res.getString(1, "展开"));
     }
+
     @Override
     public void outputHidden(HtmlWriter html) {
         html.print("<input");
@@ -63,12 +64,7 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
     }
 
     @Override
-    public void outputReadonly(HtmlWriter html) {
-        outputEditer(html);
-    }
-
-    @Override
-    public void outputEditer(HtmlWriter html) {
+    public void outputLine(HtmlWriter html) {
         if (this.search) {
             html.print("<a href=\"javascript:displaySwitch('%s')\">%s</a>", this.getHiddenId(), this.getName());
         } else {

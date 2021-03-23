@@ -70,11 +70,6 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
         return result;
     }
 
-    @Override
-    public void outputReadonly(HtmlWriter html) {
-        outputEditer(html);
-    }
-
     // 隐藏输出
     @Override
     public void outputHidden(HtmlWriter html) {
@@ -90,7 +85,7 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
     }
 
     @Override
-    public void outputEditer(HtmlWriter html) {
+    public void outputLine(HtmlWriter html) {
         String current = this.getText();
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<select id=\"%s\" name=\"%s\"", this.getId(), this.getId());
@@ -160,7 +155,7 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
             getBuildText().outputText(record, html);
             return;
         }
-        
+
         String value = record.getString(getField());
         if (items.size() > 0) {
             if (items.containsKey(value)) {
@@ -168,7 +163,7 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
                 return;
             }
         }
-        
+
         html.print(value);
     }
 

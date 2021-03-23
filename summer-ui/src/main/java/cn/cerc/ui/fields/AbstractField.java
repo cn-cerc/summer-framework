@@ -8,15 +8,12 @@ import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
-import cn.cerc.ui.core.INameOwner;
-import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.core.IReadonlyOwner;
+import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.vcl.UIText;
 
-public abstract class AbstractField extends UIOriginComponent
-        implements IField, ISimpleLine, INameOwner, IReadonlyOwner {
+public abstract class AbstractField extends UIOriginComponent implements IField, ISimpleLine {
     protected static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据源
     private DataSource dataSource;
@@ -33,8 +30,19 @@ public abstract class AbstractField extends UIOriginComponent
     private String value;
     // 只读否
     private boolean readonly;
-    // 栏位说明
-    private UIText mark;
+
+    public AbstractField(UIComponent owner) {
+        super(owner);
+        if (owner != null) {
+            if ((owner instanceof DataSource)) {
+                this.dataSource = (DataSource) owner;
+                dataSource.addField(this);
+            }
+            if (owner instanceof IReadonlyOwner) {
+                this.setReadonly(((IReadonlyOwner) owner).isReadonly());
+            }
+        }
+    }
 
     public AbstractField(UIComponent owner, String name, int width) {
         super(owner);
@@ -51,13 +59,13 @@ public abstract class AbstractField extends UIOriginComponent
         this.width = width;
     }
 
-    public UIText getMark() {
-        return mark;
-    }
-
-    public AbstractField setMark(UIText mark) {
-        this.mark = mark;
-        return this;
+    @Override
+    public final void output(HtmlWriter html) {
+        if (this.isHidden()) {
+            outputHidden(html);
+        } else {
+            outputLine(html);
+        }
     }
 
     @Override
@@ -160,20 +168,6 @@ public abstract class AbstractField extends UIOriginComponent
         return this;
     }
 
-    @Override
-    public final void output(HtmlWriter html) {
-        if (this.isHidden()) {
-            outputHidden(html);
-            return;
-        } else {
-            if (this.isReadonly()) {
-                outputReadonly(html);
-            } else {
-                outputEditer(html);
-            }
-        }
-    }
-
     public FieldTitle createTitle() {
         FieldTitle title = new FieldTitle();
         title.setName(this.getField());
@@ -207,7 +201,7 @@ public abstract class AbstractField extends UIOriginComponent
         if (dataSource.getDataSet() == null) {
             throw new RuntimeException("owner.dataSet is null.");
         }
-        
+
         return dataSource.getDataSet().getCurrent();
     }
 

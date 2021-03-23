@@ -29,26 +29,25 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
     }
 
     @Override
-    public void outputReadonly(HtmlWriter html) {
-        outputTextArea(html);
-    }
-
-    @Override
-    public void outputEditer(HtmlWriter html) {
-        if (this.getOrigin() instanceof IForm) {
-            IForm form = (IForm) this.getOrigin();
-            if (form.getClient().isPhone()) {
-                if (this.isReadonly()) {
-                    html.print(this.getName() + "：");
-                    html.print(this.getText());
-                    return;
+    public void outputLine(HtmlWriter html) {
+        if (this.isReadonly()) {
+            outputTextArea(html);
+        } else {
+            if (this.getOrigin() instanceof IForm) {
+                IForm form = (IForm) this.getOrigin();
+                if (form.getClient().isPhone()) {
+                    if (this.isReadonly()) {
+                        html.print(this.getName() + "：");
+                        html.print(this.getText());
+                        return;
+                    }
                 }
             }
-        }
 
-        html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
-        outputTextArea(html);
-        html.println("<span></span>");
+            html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
+            outputTextArea(html);
+            html.println("<span></span>");
+        }
     }
 
     private void outputTextArea(HtmlWriter html) {

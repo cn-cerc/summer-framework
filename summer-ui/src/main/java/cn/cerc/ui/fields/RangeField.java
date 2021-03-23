@@ -38,28 +38,33 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
     }
 
     @Override
-    public void outputEditer(HtmlWriter html) {
-        html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
-        AbstractField child = null;
-        for (Component component : this.getComponents()) {
-            if (component instanceof AbstractField) {
-                if (child != null) {
-                    html.print("-");
+    public void outputLine(HtmlWriter html) {
+        if (this.isReadonly()) {
+            html.print(this.getName() + "：");
+            html.print(this.getText());
+        } else {
+            html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
+            AbstractField child = null;
+            for (Component component : this.getComponents()) {
+                if (component instanceof AbstractField) {
+                    if (child != null) {
+                        html.print("-");
+                    }
+                    child = (AbstractField) component;
+                    String val = child.getCssClass();
+                    child.setCssClass("price");
+                    child.outputLine(html);
+                    child.setCssClass(val);
                 }
-                child = (AbstractField) component;
-                String val = child.getCssClass();
-                child.setCssClass("price");
-                child.outputEditer(html);
-                child.setCssClass(val);
             }
+            html.print("<span>");
+            if (this.getDialog() != null) {
+                html.print("<a href=\"javascript:%s('%s')\">", this.getDialog(), this.getId());
+                html.print("<img src=\"images/select-pic.png\">");
+                html.print("</a>");
+            }
+            html.print("</span>");
         }
-        html.print("<span>");
-        if (this.getDialog() != null) {
-            html.print("<a href=\"javascript:%s('%s')\">", this.getDialog(), this.getId());
-            html.print("<img src=\"images/select-pic.png\">");
-            html.print("</a>");
-        }
-        html.print("</span>");
     }
 
     @Override
@@ -129,10 +134,4 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
         html.println("/>");
     }
 
-    // 只读输出
-    @Override
-    public void outputReadonly(HtmlWriter html) {
-        html.print(this.getName() + "：");
-        html.print(this.getText());
-    }
 }

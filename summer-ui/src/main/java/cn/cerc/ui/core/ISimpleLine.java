@@ -8,17 +8,6 @@ package cn.cerc.ui.core;
  */
 public interface ISimpleLine extends IField {
 
-    // 只读输出
-    void outputReadonly(HtmlWriter html);
-
-    // 普通输出
-    void outputEditer(HtmlWriter html);
-
-    default void outputLine(HtmlWriter html) {
-        if (this.isReadonly())
-            outputReadonly(html);
-        else
-            outputEditer(html);
-    }
+    void outputLine(HtmlWriter html);
 
 }

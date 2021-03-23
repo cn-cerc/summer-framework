@@ -60,11 +60,31 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
     }
 
     @Override
-    public void outputReadonly(HtmlWriter html) {
-        outputEditer(html);
+    public void outputLine(HtmlWriter html) {
+        html.print("<select name=\"%s\" role=\"%s\"", this.getId(), this.getField());
+        if (!this.isReadonly() && getOnChange() != null) {
+            html.print(" onChange=\"%s\"", getOnChange());
+        }
+        if (this.isReadonly()) {
+            html.print(" readonly='readonly' disabled='disabled'>");
+        } else {
+            html.print(">");
+        }
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
+        String current = record.getString(this.getField());
+        for (String key : items.keySet()) {
+            if (key.equals(current)) {
+                html.print("<option value=\"%s\" selected>%s</option>", key, items.get(key));
+            } else {
+                html.print("<option value=\"%s\">%s</option>", key, items.get(key));
+            }
+        }
+        html.print("</select>");
     }
 
-    @Override
+    public void outputReadonly(HtmlWriter html) {
+    }
+
     public void outputEditer(HtmlWriter html) {
         writeInput(html);
     }
@@ -153,8 +173,8 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
 
     @Override
     public void outputColumn(HtmlWriter html) {
-        //FIXME: 此处需要继续重构
+        // FIXME: 此处需要继续重构
         html.print(format(getRecord()));
     }
-    
+
 }

@@ -53,16 +53,27 @@ public class BooleanField extends AbstractField
     }
 
     @Override
-    public void outputEditer(HtmlWriter html) {
-        if (!this.search) {
-            html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "："));
-            writeInput(html);
-            if (this.title != null) {
-                html.print("<label for=\"%s\">%s</label>", this.getId(), this.title);
-            }
+    public void outputColumn(HtmlWriter html) {
+        // FIXME: 此处需要继续重构
+        html.print(format(getRecord()));
+    }
+
+    @Override
+    public void outputLine(HtmlWriter html) {
+        if (this.isReadonly()) {
+            html.print(this.getName() + "：");
+            html.print(this.getText());
         } else {
-            writeInput(html);
-            html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName()));
+            if (!this.search) {
+                html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "："));
+                writeInput(html);
+                if (this.title != null) {
+                    html.print("<label for=\"%s\">%s</label>", this.getId(), this.title);
+                }
+            } else {
+                writeInput(html);
+                html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName()));
+            }
         }
     }
 
@@ -185,19 +196,6 @@ public class BooleanField extends AbstractField
             html.print(" value=\"%s\"", value);
         }
         html.println("/>");
-    }
-
-    // 只读输出
-    @Override
-    public void outputReadonly(HtmlWriter html) {
-        html.print(this.getName() + "：");
-        html.print(this.getText());
-    }
-
-    @Override
-    public void outputColumn(HtmlWriter html) {
-        // FIXME: 此处需要继续重构
-        html.print(format(getRecord()));
     }
 
 }
