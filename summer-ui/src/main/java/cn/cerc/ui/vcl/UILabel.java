@@ -52,7 +52,6 @@ public class UILabel extends UICssComponent {
 
     /**
      * 请改使用 getText
-     * @return
      */
     @Deprecated
     public String getCaption() {
