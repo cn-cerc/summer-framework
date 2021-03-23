@@ -14,7 +14,7 @@ import cn.cerc.ui.parts.UIComponent;
 public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText, IFieldBuildUrl, IColumn {
     private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
     private String value = res.getString(1, "内容");
-    private DialogField dialog;
+    private UIDialogField dialog;
     private BuildText buildText;
     private BuildUrl buildUrl;
 
@@ -59,13 +59,13 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
     }
 
     @Override
-    public DialogField getDialog() {
+    public UIDialogField getDialog() {
         return dialog;
     }
 
     @Override
     public OperaField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
+        this.dialog = new UIDialogField(dialogfun);
         dialog.setInputId(this.getId());
         return this;
     }

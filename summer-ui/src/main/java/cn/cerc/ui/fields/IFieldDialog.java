@@ -1,7 +1,7 @@
 package cn.cerc.ui.fields;
 
 public interface IFieldDialog {
-    DialogField getDialog();
+    UIDialogField getDialog();
 
     Object setDialog(String dialogfun);
 
@@ -9,7 +9,7 @@ public interface IFieldDialog {
     default Object setDialog(String dialogfun, String[] params) {
         setDialog(dialogfun);
 
-        DialogField dialog = getDialog();
+        UIDialogField dialog = getDialog();
         for (String string : params) {
             dialog.add(string);
         }

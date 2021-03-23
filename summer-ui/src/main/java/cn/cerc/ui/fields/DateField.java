@@ -12,7 +12,7 @@ import cn.cerc.ui.parts.UIComponent;
 public class DateField extends AbstractField
         implements IFieldDialog, IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
-    private DialogField dialog;
+    private UIDialogField dialog;
     private String pattern;
     private String placeholder;
     private boolean required;
@@ -59,13 +59,13 @@ public class DateField extends AbstractField
     }
 
     @Override
-    public DialogField getDialog() {
+    public UIDialogField getDialog() {
         return dialog;
     }
 
     @Override
     public DateField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
+        this.dialog = new UIDialogField(dialogfun);
         dialog.setInputId(this.getId());
         return this;
     }

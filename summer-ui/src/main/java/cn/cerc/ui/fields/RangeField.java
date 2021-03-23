@@ -12,7 +12,7 @@ import cn.cerc.ui.parts.UIComponent;
 
 public class RangeField extends AbstractField implements DataSource, IFieldDialog {
     private static final ClassResource res = new ClassResource(RangeField.class, SummerUI.ID);
-    private DialogField dialog;
+    private UIDialogField dialog;
 
     public RangeField(UIComponent dataView, String name) {
         super(dataView, name, 0);
@@ -96,13 +96,13 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
     }
 
     @Override
-    public DialogField getDialog() {
+    public UIDialogField getDialog() {
         return dialog;
     }
 
     @Override
     public RangeField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
+        this.dialog = new UIDialogField(dialogfun);
         dialog.setInputId(this.getId());
         return this;
     }

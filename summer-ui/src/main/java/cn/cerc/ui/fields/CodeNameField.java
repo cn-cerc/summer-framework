@@ -12,7 +12,7 @@ public class CodeNameField extends AbstractField
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
     private String nameField;
     private String placeholder;
-    private DialogField dialog;
+    private UIDialogField dialog;
     private boolean required;
     private boolean autofocus;
     private boolean showStar;
@@ -117,7 +117,7 @@ public class CodeNameField extends AbstractField
         }
     }
 
-    public String getUrl(DialogField dialog) {
+    public String getUrl(UIDialogField dialog) {
         if (dialog.getDialogfun() == null) {
             throw new RuntimeException("dialogfun is null");
         }
@@ -165,13 +165,13 @@ public class CodeNameField extends AbstractField
     }
 
     @Override
-    public DialogField getDialog() {
+    public UIDialogField getDialog() {
         return dialog;
     }
 
     @Override
     public CodeNameField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
+        this.dialog = new UIDialogField(dialogfun);
         dialog.setInputId(this.getId());
         return this;
     }

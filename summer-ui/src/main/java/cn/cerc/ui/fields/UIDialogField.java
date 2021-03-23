@@ -8,7 +8,7 @@ import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DialogField extends UIComponent {
+public class UIDialogField extends UIComponent {
     private List<String> params = new ArrayList<>();
     private String inputId;
     private String dialogFunc;
@@ -16,7 +16,7 @@ public class DialogField extends UIComponent {
     private String icon;
     private ClassConfig config;
 
-    public DialogField(String dialogFunc) {
+    public UIDialogField(String dialogFunc) {
         this.dialogFunc = dialogFunc;
     }
 
@@ -70,7 +70,7 @@ public class DialogField extends UIComponent {
         return params;
     }
 
-    public DialogField add(String param) {
+    public UIDialogField add(String param) {
         params.add(param);
         return this;
     }
@@ -79,7 +79,7 @@ public class DialogField extends UIComponent {
         return dialogFunc;
     }
 
-    public DialogField setDialogfun(String dialogfun) {
+    public UIDialogField setDialogfun(String dialogfun) {
         this.dialogFunc = dialogfun;
         return this;
     }
@@ -88,12 +88,12 @@ public class DialogField extends UIComponent {
         return inputId;
     }
 
-    public DialogField setInputId(String inputId) {
+    public UIDialogField setInputId(String inputId) {
         this.inputId = inputId;
         return this;
     }
 
-    public DialogField close() {
+    public UIDialogField close() {
         this.show = false;
         return this;
     }
@@ -103,7 +103,7 @@ public class DialogField extends UIComponent {
     }
 
     public static void main(String[] args) {
-        DialogField obj = new DialogField("showVipInfo");
+        UIDialogField obj = new UIDialogField("showVipInfo");
         obj.setInputId("inputid");
         obj.add("1");
         obj.add("2");
@@ -123,7 +123,7 @@ public class DialogField extends UIComponent {
         return config;
     }
 
-    public DialogField setConfig(ClassConfig config) {
+    public UIDialogField setConfig(ClassConfig config) {
         this.config = config;
         return this;
     }

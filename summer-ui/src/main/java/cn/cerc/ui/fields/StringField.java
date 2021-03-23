@@ -14,7 +14,7 @@ import cn.cerc.ui.parts.UIComponent;
 public class StringField extends AbstractField implements IColumn, IFieldDialog, IFieldPlaceholder, IFieldPattern,
         IFieldRequired, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
-    private DialogField dialog;
+    private UIDialogField dialog;
     private String placeholder;
     private String pattern;
     private boolean required;
@@ -60,13 +60,13 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
     }
 
     @Override
-    public DialogField getDialog() {
+    public UIDialogField getDialog() {
         return dialog;
     }
 
     @Override
     public AbstractField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
+        this.dialog = new UIDialogField(dialogfun);
         dialog.setInputId(this.getId());
         return this;
     }
