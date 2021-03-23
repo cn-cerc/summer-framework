@@ -4,7 +4,6 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
-import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.fields.editor.CheckEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.other.BuildText;
@@ -37,9 +36,9 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
         if (record == null) {
             return null;
         }
-        if (getBuildText() != null) {
+        if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            getBuildText().outputText(record, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
         return record.getBoolean(field) ? trueText : falseText;
@@ -52,9 +51,30 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
     }
 
     @Override
+    public void outputHidden(HtmlWriter html) {
+        html.print("<input");
+        html.print(" type=\"hidden\"");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText();
+        if (value != null) {
+            html.print(" value=\"%s\"", value);
+        }
+        html.println("/>");
+    }
+
+    @Override
     public void outputColumn(HtmlWriter html) {
-        // FIXME: 此处需要继续重构
-        html.print(format(getRecord()));
+        if (this.isReadonly()) {
+            html.print(getText());
+        } else {
+
+            if (!(this.getOwner() instanceof AbstractGridLine)) {
+                html.print(getText());
+            }
+
+            html.print(getEditor().format(getRecord()));
+        }
     }
 
     @Override
@@ -65,35 +85,33 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
         } else {
             if (!this.search) {
                 html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "："));
-                writeInput(html);
+            }
+            html.print(String.format("<input type=\"checkbox\" id=\"%s\" name=\"%s\" value=\"1\"", this.getId(),
+                    this.getId()));
+            boolean val = false;
+            DataSet dataSet = getDataSource() != null ? getDataSource().getDataSet() : null;
+            if (dataSet != null) {
+                val = dataSet.getBoolean(field);
+            }
+            if (val) {
+                html.print(" checked");
+            }
+            if (this.isReadonly()) {
+                html.print(" disabled");
+            }
+            if (this.getOnclick() != null) {
+                html.print(" onclick=\"%s\"", this.getOnclick());
+            }
+            html.print(">");
+
+            if (this.search) {
+                html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName()));
+            } else {
                 if (this.title != null) {
                     html.print("<label for=\"%s\">%s</label>", this.getId(), this.title);
                 }
-            } else {
-                writeInput(html);
-                html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName()));
             }
         }
-    }
-
-    private void writeInput(HtmlWriter html) {
-        html.print(String.format("<input type=\"checkbox\" id=\"%s\" name=\"%s\" value=\"1\"", this.getId(),
-                this.getId()));
-        boolean val = false;
-        DataSet dataSet = getDataSource() != null ? getDataSource().getDataSet() : null;
-        if (dataSet != null) {
-            val = dataSet.getBoolean(field);
-        }
-        if (val) {
-            html.print(" checked");
-        }
-        if (this.isReadonly()) {
-            html.print(" disabled");
-        }
-        if (this.getOnclick() != null) {
-            html.print(" onclick=\"%s\"", this.getOnclick());
-        }
-        html.print(">");
     }
 
     @Override
@@ -113,18 +131,6 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
     @Override
     public void setSearch(boolean search) {
         this.search = search;
-    }
-
-    public String format(Record record) {
-        if (this.isReadonly()) {
-            return getText();
-        }
-
-        if (!(this.getOwner() instanceof AbstractGridLine)) {
-            return getText();
-        }
-
-        return getEditor().format(record);
     }
 
     public CheckEditor getEditor() {
@@ -181,20 +187,6 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
     @Override
     public BuildText getBuildText() {
         return buildText;
-    }
-
-    // 隐藏输出
-    @Override
-    public void outputHidden(HtmlWriter html) {
-        html.print("<input");
-        html.print(" type=\"hidden\"");
-        html.print(" id=\"%s\"", this.getId());
-        html.print(" name=\"%s\"", this.getId());
-        String value = this.getText();
-        if (value != null) {
-            html.print(" value=\"%s\"", value);
-        }
-        html.println("/>");
     }
 
 }

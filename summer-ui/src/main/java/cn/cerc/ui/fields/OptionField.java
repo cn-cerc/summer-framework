@@ -6,7 +6,6 @@ import java.util.Map;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
-import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
@@ -115,6 +114,28 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
         html.print("<span></span>");
     }
 
+    @Override
+    public void outputColumn(HtmlWriter html) {
+        Record record = getRecord();
+        if (record == null) {
+            return;
+        }
+        if (getBuildText() != null) {
+            getBuildText().outputText(record, html);
+            return;
+        }
+
+        String value = record.getString(getField());
+        if (items.size() > 0) {
+            if (items.containsKey(value)) {
+                html.print(items.get(value));
+                return;
+            }
+        }
+
+        html.print(value);
+    }
+    
     public int getSize() {
         return size;
     }
@@ -143,28 +164,6 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
     @Override
     public BuildText getBuildText() {
         return buildText;
-    }
-
-    @Override
-    public void outputColumn(HtmlWriter html) {
-        Record record = getRecord();
-        if (record == null) {
-            return;
-        }
-        if (getBuildText() != null) {
-            getBuildText().outputText(record, html);
-            return;
-        }
-
-        String value = record.getString(getField());
-        if (items.size() > 0) {
-            if (items.containsKey(value)) {
-                html.print(items.get(value));
-                return;
-            }
-        }
-
-        html.print(value);
     }
 
 }

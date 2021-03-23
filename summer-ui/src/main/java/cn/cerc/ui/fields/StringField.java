@@ -53,39 +53,6 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
         }
     }
 
-    public String format(Record record) {
-        String data = getText();
-
-        if (this.isReadonly()) {
-            if (getBuildUrl() != null) {
-                HtmlWriter html = new HtmlWriter();
-                UrlRecord url = new UrlRecord();
-                getBuildUrl().buildUrl(record, url);
-                if (!"".equals(url.getUrl())) {
-                    html.print("<a href=\"%s\"", url.getUrl());
-                    if (url.getTitle() != null) {
-                        html.print(" title=\"%s\"", url.getTitle());
-                    }
-                    if (url.getTarget() != null) {
-                        html.print(" target=\"%s\"", url.getTarget());
-                    }
-                    html.println(">%s</a>", data);
-                } else {
-                    html.println(data);
-                }
-                return html.toString();
-            } else {
-                return data;
-            }
-        }
-
-        if (!(this.getOwner() instanceof AbstractGridLine)) {
-            return data;
-        }
-
-        return getEditor().format(record);
-    }
-
     public ColumnEditor getEditor() {
         if (editor == null) {
             editor = new ColumnEditor(this);
@@ -198,8 +165,32 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
 
     @Override
     public void outputColumn(HtmlWriter html) {
-        // FIXME: 此处需要继续重构
-        html.print(format(getRecord()));
+        if (this.isReadonly()) {
+            if (buildUrl != null) {
+                UrlRecord url = new UrlRecord();
+                buildUrl.buildUrl(getRecord(), url);
+                if (!"".equals(url.getUrl())) {
+                    html.print("<a href=\"%s\"", url.getUrl());
+                    if (url.getTitle() != null) {
+                        html.print(" title=\"%s\"", url.getTitle());
+                    }
+                    if (url.getTarget() != null) {
+                        html.print(" target=\"%s\"", url.getTarget());
+                    }
+                    html.println(">%s</a>", getText());
+                } else {
+                    html.println(getText());
+                }
+            } else {
+                html.print(getText());
+            }
+        } else {
+            if ((this.getOwner() instanceof AbstractGridLine)) {
+                html.print(getEditor().format(getRecord()));
+            } else {
+                html.print(getText());
+            }
+        }
     }
 
     @Override
@@ -230,61 +221,19 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
             if (this.getCssClass() != null) {
                 html.print(" class=\"%s\"", this.getCssClass());
             }
-            if (this instanceof IFieldAutocomplete) {
-                IFieldAutocomplete obj = (IFieldAutocomplete) this;
-                if (obj.isAutocomplete()) {
-                    html.print(" autocomplete=\"on\"");
-                } else {
-                    html.print(" autocomplete=\"off\"");
-                }
+            if (this.isAutofocus()) {
+                html.print(" autofocus");
             }
-            if (this instanceof IFieldAutofocus) {
-                IFieldAutofocus obj = (IFieldAutofocus) this;
-                if (obj.isAutofocus()) {
-                    html.print(" autofocus");
-                }
+            if (this.isRequired()) {
+                html.print(" required");
             }
-            if (this instanceof IFieldRequired) {
-                IFieldRequired obj = (IFieldRequired) this;
-                if (obj.isRequired()) {
-                    html.print(" required");
-                }
+            if (this.getPlaceholder() != null) {
+                html.print(" placeholder=\"%s\"", this.getPlaceholder());
             }
-            if (this instanceof IFieldMultiple) {
-                IFieldMultiple obj = (IFieldMultiple) this;
-                if (obj.isMultiple()) {
-                    html.print(" multiple");
-                }
-            }
-            if (this instanceof IFieldPlaceholder) {
-                IFieldPlaceholder obj = (IFieldPlaceholder) this;
-                if (obj.getPlaceholder() != null) {
-                    html.print(" placeholder=\"%s\"", obj.getPlaceholder());
-                }
-            }
-            if (this instanceof IFieldPattern) {
-                IFieldPattern obj = (IFieldPattern) this;
-                if (obj.getPattern() != null) {
-                    html.print(" pattern=\"%s\"", obj.getPattern());
-                }
-            }
-            if (this instanceof IFieldEvent) {
-                IFieldEvent event = (IFieldEvent) this;
-                if (event.getOninput() != null) {
-                    html.print(" oninput=\"%s\"", event.getOninput());
-                }
-                if (event.getOnclick() != null) {
-                    html.print(" onclick=\"%s\"", event.getOnclick());
-                }
+            if (this.getPattern() != null) {
+                html.print(" pattern=\"%s\"", this.getPattern());
             }
             html.println("/>");
-
-            if (this instanceof IFieldShowStar) {
-                IFieldShowStar obj = (IFieldShowStar) this;
-                if (obj.isShowStar()) {
-                    html.println("<font>*</font>");
-                }
-            }
 
             html.print("<span>");
             if (this instanceof IFieldDialog) {

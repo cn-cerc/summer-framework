@@ -1,16 +1,15 @@
 package cn.cerc.ui.fields;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
-import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * 列表下拉框组件（不适用搜索查询表单）
@@ -60,6 +59,42 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
     }
 
     @Override
+    public void outputHidden(HtmlWriter html) {
+        html.print("<input");
+        html.print(" type=\"hidden\"");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText();
+        if (value != null) {
+            html.print(" value=\"%s\"", value);
+        }
+        html.println("/>");
+    }
+
+    @Override
+    public void outputColumn(HtmlWriter html) {
+        html.print("<select name=\"%s\" role=\"%s\"", this.getId(), this.getField());
+        if (!this.isReadonly() && getOnChange() != null) {
+            html.print(" onChange=\"%s\"", getOnChange());
+        }
+        if (this.isReadonly()) {
+            html.print(" readonly='readonly' disabled='disabled'>");
+        } else {
+            html.print(">");
+        }
+        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
+        String current = record.getString(this.getField());
+        for (String key : items.keySet()) {
+            if (key.equals(current)) {
+                html.print("<option value=\"%s\" selected>%s</option>", key, items.get(key));
+            } else {
+                html.print("<option value=\"%s\">%s</option>", key, items.get(key));
+            }
+        }
+        html.print("</select>");
+    }
+
+    @Override
     public void outputLine(HtmlWriter html) {
         html.print("<select name=\"%s\" role=\"%s\"", this.getId(), this.getField());
         if (!this.isReadonly() && getOnChange() != null) {
@@ -80,36 +115,6 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
             }
         }
         html.print("</select>");
-    }
-
-    public void outputReadonly(HtmlWriter html) {
-    }
-
-    public void outputEditer(HtmlWriter html) {
-        writeInput(html);
-    }
-
-    private String writeInput(HtmlWriter html) {
-        html.print("<select name=\"%s\" role=\"%s\"", this.getId(), this.getField());
-        if (!this.isReadonly() && getOnChange() != null) {
-            html.print(" onChange=\"%s\"", getOnChange());
-        }
-        if (this.isReadonly()) {
-            html.print(" readonly='readonly' disabled='disabled'>");
-        } else {
-            html.print(">");
-        }
-        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
-        String current = record.getString(this.getField());
-        for (String key : items.keySet()) {
-            if (key.equals(current)) {
-                html.print("<option value=\"%s\" selected>%s</option>", key, items.get(key));
-            } else {
-                html.print("<option value=\"%s\">%s</option>", key, items.get(key));
-            }
-        }
-        html.print("</select>");
-        return html.toString();
     }
 
     @Override
@@ -134,10 +139,6 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
         items.putAll(data);
     }
 
-    public String format(Record record) {
-        return writeInput(new HtmlWriter());
-    }
-
     public String getOnChange() {
         return onChange;
     }
@@ -155,26 +156,6 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
     @Override
     public BuildText getBuildText() {
         return buildText;
-    }
-
-    // 隐藏输出
-    @Override
-    public void outputHidden(HtmlWriter html) {
-        html.print("<input");
-        html.print(" type=\"hidden\"");
-        html.print(" id=\"%s\"", this.getId());
-        html.print(" name=\"%s\"", this.getId());
-        String value = this.getText();
-        if (value != null) {
-            html.print(" value=\"%s\"", value);
-        }
-        html.println("/>");
-    }
-
-    @Override
-    public void outputColumn(HtmlWriter html) {
-        // FIXME: 此处需要继续重构
-        html.print(format(getRecord()));
     }
 
 }
