@@ -5,11 +5,12 @@ import java.util.Map;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OptionField extends AbstractField implements IFieldShowStar, IFieldBuildText, ISimpleLine {
+public class OptionField extends AbstractField implements IFieldShowStar, IFieldBuildText, ISimpleLine, IColumn {
     private Map<String, String> items = new LinkedHashMap<>();
     private String defaultValue;
     private int size;// 默认显示行数
@@ -74,6 +75,20 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
         outputEditer(html);
     }
 
+    // 隐藏输出
+    @Override
+    public void outputHidden(HtmlWriter html) {
+        html.print("<input");
+        html.print(" type=\"hidden\"");
+        html.print(" id=\"%s\"", this.getId());
+        html.print(" name=\"%s\"", this.getId());
+        String value = this.getText();
+        if (value != null) {
+            html.print(" value=\"%s\"", value);
+        }
+        html.println("/>");
+    }
+
     @Override
     public void outputEditer(HtmlWriter html) {
         String current = this.getText();
@@ -135,18 +150,26 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
         return buildText;
     }
 
-    // 隐藏输出
     @Override
-    public void outputHidden(HtmlWriter html) {
-        html.print("<input");
-        html.print(" type=\"hidden\"");
-        html.print(" id=\"%s\"", this.getId());
-        html.print(" name=\"%s\"", this.getId());
-        String value = this.getText();
-        if (value != null) {
-            html.print(" value=\"%s\"", value);
+    public void outputColumn(HtmlWriter html) {
+        Record record = getRecord();
+        if (record == null) {
+            return;
         }
-        html.println("/>");
+        if (getBuildText() != null) {
+            getBuildText().outputText(record, html);
+            return;
+        }
+        
+        String value = record.getString(getField());
+        if (items.size() > 0) {
+            if (items.containsKey(value)) {
+                html.print(items.get(value));
+                return;
+            }
+        }
+        
+        html.print(value);
     }
 
 }
