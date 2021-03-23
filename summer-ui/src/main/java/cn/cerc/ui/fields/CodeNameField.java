@@ -8,8 +8,7 @@ import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class CodeNameField extends AbstractField
-        implements IFieldPlaceholder, IFieldBuildText {
+public class CodeNameField extends AbstractField implements IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
     private String nameField;
     private String placeholder;
@@ -130,12 +129,10 @@ public class CodeNameField extends AbstractField
         return this;
     }
 
-    @Override
     public String getPlaceholder() {
         return placeholder;
     }
 
-    @Override
     public CodeNameField setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
         return this;

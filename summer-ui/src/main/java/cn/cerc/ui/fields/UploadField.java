@@ -74,21 +74,6 @@ public class UploadField extends AbstractField {
             if (this.isMultiple()) {
                 html.print(" multiple");
             }
-            if (this instanceof IFieldPlaceholder) {
-                IFieldPlaceholder obj = (IFieldPlaceholder) this;
-                if (obj.getPlaceholder() != null) {
-                    html.print(" placeholder=\"%s\"", obj.getPlaceholder());
-                }
-            }
-            if (this instanceof IFieldEvent) {
-                IFieldEvent event = (IFieldEvent) this;
-                if (event.getOninput() != null) {
-                    html.print(" oninput=\"%s\"", event.getOninput());
-                }
-                if (event.getOnclick() != null) {
-                    html.print(" onclick=\"%s\"", event.getOnclick());
-                }
-            }
             html.println("/>");
 
             html.print("<span>");

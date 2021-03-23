@@ -78,12 +78,6 @@ public class CustomField extends AbstractField implements IFieldBuildText {
             if (this.getCssClass() != null) {
                 html.print(" class=\"%s\"", this.getCssClass());
             }
-            if (this instanceof IFieldPlaceholder) {
-                IFieldPlaceholder obj = (IFieldPlaceholder) this;
-                if (obj.getPlaceholder() != null) {
-                    html.print(" placeholder=\"%s\"", obj.getPlaceholder());
-                }
-            }
             if (this instanceof IFieldEvent) {
                 IFieldEvent event = (IFieldEvent) this;
                 if (event.getOninput() != null) {

@@ -5,7 +5,7 @@ import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class TextAreaField extends AbstractField implements IFieldPlaceholder {
+public class TextAreaField extends AbstractField {
     private String placeholder;
     private boolean required;
     // 最大字符串数
@@ -106,12 +106,10 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder {
         }
     }
 
-    @Override
     public String getPlaceholder() {
         return placeholder;
     }
 
-    @Override
     public TextAreaField setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
         return this;
