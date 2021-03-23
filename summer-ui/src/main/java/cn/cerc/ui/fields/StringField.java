@@ -52,7 +52,6 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
         }
     }
 
-    @Override
     public String format(Record record) {
         String data = getText();
 
@@ -301,4 +300,11 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
         }
         html.println("</span>");
     }
+
+    @Override
+    public void outputColumn(HtmlWriter html) {
+        //FIXME: 此处需要继续重构
+        html.print(format(getRecord()));
+    }
+    
 }

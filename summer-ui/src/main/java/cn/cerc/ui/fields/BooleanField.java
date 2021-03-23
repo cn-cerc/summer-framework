@@ -105,7 +105,6 @@ public class BooleanField extends AbstractField
         this.search = search;
     }
 
-    @Override
     public String format(Record record) {
         if (this.isReadonly()) {
             return getText();
@@ -193,6 +192,12 @@ public class BooleanField extends AbstractField
     public void outputReadonly(HtmlWriter html) {
         html.print(this.getName() + "：");
         html.print(this.getText());
+    }
+
+    @Override
+    public void outputColumn(HtmlWriter html) {
+        // FIXME: 此处需要继续重构
+        html.print(format(getRecord()));
     }
 
 }

@@ -63,7 +63,6 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
         return title;
     }
 
-    @Override
     public String format(Record record) {
         if (this.isReadonly()) {
             if (getBuildUrl() != null) {
@@ -283,5 +282,11 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
             }
         }
         html.println("</span>");
+    }
+
+    @Override
+    public void outputColumn(HtmlWriter html) {
+        //FIXME: 此处需要继续重构
+        html.print(format(getRecord()));
     }
 }

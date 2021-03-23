@@ -9,14 +9,11 @@ import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
-import cn.cerc.ui.core.IOutoutLine;
 import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.UrlRecord;
-import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.fields.IFieldBuildUrl;
 import cn.cerc.ui.fields.IFieldVisible;
 import cn.cerc.ui.grid.RowCell;
-import cn.cerc.ui.other.BuildUrl;
 
 public abstract class AbstractGridLine extends UICustomComponent implements DataSource {
     protected DataSource dataSource;

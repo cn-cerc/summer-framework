@@ -45,19 +45,21 @@ public class ChildGridLine extends AbstractGridLine {
             html.print(">");
             for (IField obj : item.getFields()) {
                 if (obj instanceof AbstractField) {
-                    String resultHtml = "";
                     AbstractField field = (AbstractField) obj;
                     if (field instanceof IColumn) {
-                        resultHtml = ((IColumn) field).format(dataSource.getDataSet().getCurrent());
+                        if (field.getTitle() != null && !"".equals(field.getTitle())) {
+                            html.print("<span>%s：</span> ", field.getTitle());
+                        }
+                        ((IColumn) field).outputColumn(html);
                     } else {
                         HtmlWriter tempHtml = new HtmlWriter();
                         outputField(tempHtml, field);
-                        resultHtml = tempHtml.toString();
+                        String resultHtml = tempHtml.toString();
+                        if (field.getTitle() != null && !"".equals(field.getTitle())) {
+                            html.print("<span>%s：</span> ", field.getTitle());
+                        }
+                        html.print(resultHtml);
                     }
-                    if (field.getTitle() != null && !"".equals(field.getTitle())) {
-                        html.print("<span>%s：</span> ", field.getTitle());
-                    }
-                    html.print(resultHtml);
                 }
             }
             html.println("</td>");

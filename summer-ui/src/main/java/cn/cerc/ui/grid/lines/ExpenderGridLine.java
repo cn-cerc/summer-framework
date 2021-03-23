@@ -70,7 +70,7 @@ public class ExpenderGridLine extends AbstractGridLine {
                         html.print(": ");
                     }
                     if (field instanceof IColumn) {
-                        html.print(((IColumn) field).format(dataSource.getDataSet().getCurrent()));
+                        ((IColumn) field).outputColumn(html);
                     } else if (field instanceof AbstractField) {
                         outputField(html, field);
                     } else {

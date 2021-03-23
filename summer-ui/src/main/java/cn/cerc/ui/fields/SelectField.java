@@ -114,7 +114,6 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
         items.putAll(data);
     }
 
-    @Override
     public String format(Record record) {
         return writeInput(new HtmlWriter());
     }
@@ -151,4 +150,11 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
         }
         html.println("/>");
     }
+
+    @Override
+    public void outputColumn(HtmlWriter html) {
+        //FIXME: 此处需要继续重构
+        html.print(format(getRecord()));
+    }
+    
 }
