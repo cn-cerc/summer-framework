@@ -30,16 +30,16 @@ public class Application {
     private static final ClassConfig config = new ClassConfig(Application.class, SummerMIS.ID);
     // tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
-    // token id
-    // FIXME 与RequestData的Token对应的是一个值，在sql中对应 LoginID_，建议合并这两个变量
-    public static final String TOKEN = "sid";
-    // user id
+    //FIXME 如下5个常量需要取消其引用，改为直接使用ISession
+    public static final String TOKEN = ISession.TOKEN;
+    public static final String bookNo = ISession.CORP_NO;
+    public static final String userCode = ISession.USER_CODE;
+    public static final String userName = ISession.USER_NAME;
+    public static final String deviceLanguage = ISession.LANGUAGE_ID;
+    @Deprecated
     public static final String userId = "UserID";
-    public static final String userCode = "UserCode";
-    public static final String userName = "UserName";
+    @Deprecated
     public static final String roleCode = "RoleCode";
-    public static final String bookNo = "BookNo";
-    public static final String deviceLanguage = "language";
     // 签核代理用户列表，代理多个用户以半角逗号隔开
     public static final String ProxyUsers = "ProxyUsers";
     // 客户端代码
