@@ -9,7 +9,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class CodeNameField extends AbstractField
-        implements IFieldPlaceholder, IFieldShowStar, IFieldBuildText {
+        implements IFieldPlaceholder, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
     private String nameField;
     private String placeholder;
@@ -159,12 +159,10 @@ public class CodeNameField extends AbstractField
         return this;
     }
 
-    @Override
     public boolean isShowStar() {
         return showStar;
     }
 
-    @Override
     public CodeNameField setShowStar(boolean showStar) {
         this.showStar = showStar;
         return this;

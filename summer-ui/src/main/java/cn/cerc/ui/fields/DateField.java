@@ -174,13 +174,6 @@ public class DateField extends AbstractField implements IFieldPlaceholder, IFiel
             }
             html.println("/>");
 
-            if (this instanceof IFieldShowStar) {
-                IFieldShowStar obj = (IFieldShowStar) this;
-                if (obj.isShowStar()) {
-                    html.println("<font>*</font>");
-                }
-            }
-
             html.print("<span>");
             if (helper != null)
                 helper.output(html);

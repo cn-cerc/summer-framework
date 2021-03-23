@@ -9,7 +9,7 @@ import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OptionField extends AbstractField implements IFieldShowStar, IFieldBuildText, IColumn {
+public class OptionField extends AbstractField implements IFieldBuildText, IColumn {
     private Map<String, String> items = new LinkedHashMap<>();
     private String defaultValue;
     private int size;// 默认显示行数
@@ -144,12 +144,10 @@ public class OptionField extends AbstractField implements IFieldShowStar, IField
         this.size = size;
     }
 
-    @Override
     public boolean isShowStar() {
         return showStar;
     }
 
-    @Override
     public OptionField setShowStar(boolean showStar) {
         this.showStar = showStar;
         return this;

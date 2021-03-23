@@ -91,13 +91,6 @@ public class UploadField extends AbstractField {
             }
             html.println("/>");
 
-            if (this instanceof IFieldShowStar) {
-                IFieldShowStar obj = (IFieldShowStar) this;
-                if (obj.isShowStar()) {
-                    html.println("<font>*</font>");
-                }
-            }
-
             html.print("<span>");
             html.println("</span>");
         }
