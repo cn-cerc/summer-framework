@@ -7,12 +7,10 @@ import cn.cerc.ui.parts.UIComponent;
 public class UploadField extends AbstractField {
     // 用于文件上传是否可以选则多个文件
     private boolean multiple = false;
-    private String htmType;
 
     public UploadField(UIComponent owner, String name, String field) {
         super(owner, name, 5);
         this.setField(field);
-        this.setHtmType("file");
     }
 
     @Override
@@ -52,7 +50,7 @@ public class UploadField extends AbstractField {
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            html.print(" type=\"text\"");
+            html.print(" type=\"file\"");
             html.print(" id=\"%s\"", this.getId());
             html.print(" name=\"%s\"", this.getId());
             String value = this.getText();
