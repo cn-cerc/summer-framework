@@ -195,6 +195,12 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
         html.println("/>");
     }
 
+    @Override
+    public void outputColumn(HtmlWriter html) {
+        // FIXME: 此处需要继续重构
+        html.print(format(getRecord()));
+    }
+
     // 只读输出
     @Override
     public void outputReadonly(HtmlWriter html) {
@@ -301,10 +307,4 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
         html.println("</span>");
     }
 
-    @Override
-    public void outputColumn(HtmlWriter html) {
-        //FIXME: 此处需要继续重构
-        html.print(format(getRecord()));
-    }
-    
 }
