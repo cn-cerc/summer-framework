@@ -16,22 +16,31 @@ public class UIDialogField extends UIComponent {
     private String icon;
     private ClassConfig config;
 
+    public UIDialogField(UIComponent owner) {
+        super(owner);
+    }
+
+    @Deprecated
     public UIDialogField(String dialogFunc) {
+        super();
         this.dialogFunc = dialogFunc;
     }
 
     @Override
     public void output(HtmlWriter html) {
+        if (!this.isOpen()) {
+            return;
+        }
+
         html.print("<a href=\"%s\">", this.getUrl());
         if (this.getIcon() != null) {
             html.print("<img src=\"%s\">", CDN.get(this.getIcon()));
         } else if (config != null) {
             html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
-        }else {
+        } else {
             html.print("(*)");
         }
         html.print("</a>");
-        return;
     }
 
     public String getUrl() {
@@ -75,12 +84,12 @@ public class UIDialogField extends UIComponent {
         return this;
     }
 
-    public String getDialogfun() {
+    public String getDialogFunc() {
         return dialogFunc;
     }
 
-    public UIDialogField setDialogfun(String dialogfun) {
-        this.dialogFunc = dialogfun;
+    public UIDialogField setDialogFunc(String dialogfunc) {
+        this.dialogFunc = dialogfunc;
         return this;
     }
 

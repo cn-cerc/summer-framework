@@ -1,9 +1,9 @@
 package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
-import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
@@ -11,8 +11,8 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField implements IColumn, IFieldDialog, IFieldPlaceholder, IFieldPattern,
-        IFieldRequired, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
+public class StringField extends AbstractField implements IColumn, IFieldPlaceholder, IFieldPattern, IFieldRequired,
+        IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private UIDialogField dialog;
     private String placeholder;
@@ -57,18 +57,6 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
             editor = new ColumnEditor(this);
         }
         return editor;
-    }
-
-    @Override
-    public UIDialogField getDialog() {
-        return dialog;
-    }
-
-    @Override
-    public AbstractField setDialog(String dialogfun) {
-        this.dialog = new UIDialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        return this;
     }
 
     @Override
@@ -224,14 +212,15 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
             html.println("/>");
 
             html.print("<span>");
-            if (dialog != null && dialog.isOpen()) {
-                dialog.setConfig(config).output(html);
-            }
+            if (helper != null)
+                helper.output(html);
             html.println("</span>");
         }
     }
 
     public UIComponent getHelper() {
+        if (helper == null)
+            helper = new UIOriginComponent(this);
         return helper;
     }
 
@@ -243,6 +232,29 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
     @Deprecated
     private UIComponent setMark(UIComponent helper) {
         this.helper = helper;
+        return this;
+    }
+
+    public UIDialogField getDialog() {
+        return dialog;
+    }
+
+    public AbstractField setDialog(String dialogfunc) {
+        this.dialog = new UIDialogField(getHelper());
+        dialog.setDialogFunc(dialogfunc);
+        dialog.setInputId(this.getId());
+        dialog.setConfig(config);
+        return this;
+    }
+
+    @Deprecated
+    public StringField setDialog(String dialogfun, String[] params) {
+        setDialog(dialogfun);
+
+        for (String string : params) {
+            dialog.add(string);
+        }
+
         return this;
     }
 

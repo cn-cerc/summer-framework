@@ -2,21 +2,22 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
-import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText, IFieldBuildUrl, IColumn {
+public class OperaField extends AbstractField implements IFieldBuildText, IFieldBuildUrl, IColumn {
     private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
     private String value = res.getString(1, "内容");
     private UIDialogField dialog;
     private BuildText buildText;
     private BuildUrl buildUrl;
+    private UIComponent helper;
 
     public OperaField(UIComponent owner) {
         this(owner, res.getString(2, "操作"), 3);
@@ -55,18 +56,6 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
     @Override
     public OperaField setReadonly(boolean readonly) {
         super.setReadonly(true);
-        return this;
-    }
-
-    @Override
-    public UIDialogField getDialog() {
-        return dialog;
-    }
-
-    @Override
-    public OperaField setDialog(String dialogfun) {
-        this.dialog = new UIDialogField(dialogfun);
-        dialog.setInputId(this.getId());
         return this;
     }
 
@@ -137,9 +126,8 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
             html.println("/>");
 
             html.print("<span>");
-            if (dialog != null && dialog.isOpen()) {
-                dialog.setConfig(config).output(html);
-            }
+            if (helper != null)
+                helper.output(html);
             html.println("</span>");
         }
     }
@@ -169,6 +157,35 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
         } else {
             html.print(this.getText());
         }
+    }
+
+    public UIDialogField getDialog() {
+        return dialog;
+    }
+
+    public OperaField setDialog(String dialogfunc) {
+        this.dialog = new UIDialogField(getHelper());
+        dialog.setDialogFunc(dialogfunc);
+        dialog.setInputId(this.getId());
+        dialog.setConfig(config);
+        return this;
+    }
+
+    @Deprecated
+    public OperaField setDialog(String dialogfun, String[] params) {
+        setDialog(dialogfun);
+
+        for (String string : params) {
+            dialog.add(string);
+        }
+
+        return this;
+    }
+
+    public UIComponent getHelper() {
+        if(helper == null)
+            helper = new UIOriginComponent(this);
+        return helper;
     }
 
 }

@@ -4,11 +4,12 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class CodeNameField extends AbstractField
-        implements IFieldDialog, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldShowStar, IFieldBuildText {
+        implements IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldShowStar, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
     private String nameField;
     private String placeholder;
@@ -17,6 +18,7 @@ public class CodeNameField extends AbstractField
     private boolean autofocus;
     private boolean showStar;
     private BuildText buildText;
+    private UIComponent helper;
 
     public CodeNameField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -110,46 +112,10 @@ public class CodeNameField extends AbstractField
             }
 
             html.print("<span>");
-            if (dialog != null && dialog.isOpen()) {
-                dialog.setConfig(config).output(html);
-            }
+            if (helper != null)
+                helper.output(html);
             html.print("</span>");
         }
-    }
-
-    public String getUrl(UIDialogField dialog) {
-        if (dialog.getDialogfun() == null) {
-            throw new RuntimeException("dialogfun is null");
-        }
-
-        StringBuilder build = new StringBuilder();
-        build.append("javascript:");
-        build.append(dialog.getDialogfun());
-        build.append("(");
-
-        build.append("'");
-        build.append(getId());
-        build.append(",");
-        build.append(getNameField());
-        build.append("'");
-
-        if (dialog.getParams().size() > 0) {
-            build.append(",");
-        }
-
-        int i = 0;
-        for (String param : dialog.getParams()) {
-            build.append("'");
-            build.append(param);
-            build.append("'");
-            if (i != dialog.getParams().size() - 1) {
-                build.append(",");
-            }
-            i++;
-        }
-        build.append(")");
-
-        return build.toString();
     }
 
     public String getNameField() {
@@ -161,18 +127,6 @@ public class CodeNameField extends AbstractField
 
     public CodeNameField setNameField(String nameField) {
         this.nameField = nameField;
-        return this;
-    }
-
-    @Override
-    public UIDialogField getDialog() {
-        return dialog;
-    }
-
-    @Override
-    public CodeNameField setDialog(String dialogfun) {
-        this.dialog = new UIDialogField(dialogfun);
-        dialog.setInputId(this.getId());
         return this;
     }
 
@@ -229,6 +183,35 @@ public class CodeNameField extends AbstractField
     @Override
     public BuildText getBuildText() {
         return buildText;
+    }
+
+    public UIDialogField getDialog() {
+        return dialog;
+    }
+
+    public CodeNameField setDialog(String dialogfunc) {
+        this.dialog = new UIDialogField(getHelper());
+        dialog.setDialogFunc(dialogfunc);
+        dialog.setInputId(this.getId());
+        dialog.setConfig(config);
+        return this;
+    }
+
+    @Deprecated
+    public CodeNameField setDialog(String dialogfun, String[] params) {
+        setDialog(dialogfun);
+
+        for (String string : params) {
+            dialog.add(string);
+        }
+
+        return this;
+    }
+
+    public UIComponent getHelper() {
+        if (helper == null)
+            helper = new UIOriginComponent(this);
+        return helper;
     }
 
 }

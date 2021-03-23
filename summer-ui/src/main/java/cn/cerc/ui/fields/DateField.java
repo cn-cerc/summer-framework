@@ -2,15 +2,14 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Record;
-import cn.cerc.mis.cdn.CDN;
-import cn.cerc.mis.core.Application;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DateField extends AbstractField
-        implements IFieldDialog, IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldBuildText {
+        implements IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
     private UIDialogField dialog;
     private String pattern;
@@ -18,6 +17,7 @@ public class DateField extends AbstractField
     private boolean required;
     private boolean autofocus;
     private BuildText buildText;
+    private UIComponent helper;
 
     public DateField(UIComponent owner, String name, String field) {
         super(owner, name, 5);
@@ -56,18 +56,6 @@ public class DateField extends AbstractField
         } else {
             return "";
         }
-    }
-
-    @Override
-    public UIDialogField getDialog() {
-        return dialog;
-    }
-
-    @Override
-    public DateField setDialog(String dialogfun) {
-        this.dialog = new UIDialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        return this;
     }
 
     @Override
@@ -224,11 +212,39 @@ public class DateField extends AbstractField
             }
 
             html.print("<span>");
-            if (dialog != null && dialog.isOpen()) {
-                dialog.setConfig(config).output(html);
-            }
+            if (helper != null)
+                helper.output(html);
             html.println("</span>");
         }
+    }
+
+    public UIDialogField getDialog() {
+        return dialog;
+    }
+
+    public DateField setDialog(String dialogfunc) {
+        this.dialog = new UIDialogField(getHelper());
+        dialog.setDialogFunc(dialogfunc);
+        dialog.setInputId(this.getId());
+        dialog.setConfig(config);
+        return this;
+    }
+
+    @Deprecated
+    public DateField setDialog(String dialogfun, String[] params) {
+        setDialog(dialogfun);
+
+        for (String string : params) {
+            dialog.add(string);
+        }
+
+        return this;
+    }
+
+    public UIComponent getHelper() {
+        if(helper == null)
+            helper = new UIOriginComponent(this);
+        return helper;
     }
 
 }

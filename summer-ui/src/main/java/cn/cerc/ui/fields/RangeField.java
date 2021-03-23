@@ -8,11 +8,13 @@ import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 
-public class RangeField extends AbstractField implements DataSource, IFieldDialog {
+public class RangeField extends AbstractField implements DataSource {
     private static final ClassResource res = new ClassResource(RangeField.class, SummerUI.ID);
     private UIDialogField dialog;
+    private UIComponent helper;
 
     public RangeField(UIComponent dataView, String name) {
         super(dataView, name, 0);
@@ -57,10 +59,8 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
                 }
             }
             html.print("<span>");
-            if (dialog != null && dialog.isOpen()) {
-                dialog.setIcon("images/select-pic.png");
-                dialog.setConfig(config).output(html);
-            }
+            if (helper != null)
+                helper.output(html);
             html.print("</span>");
         }
     }
@@ -95,18 +95,6 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
         getDataSource().updateValue(id, code);
     }
 
-    @Override
-    public UIDialogField getDialog() {
-        return dialog;
-    }
-
-    @Override
-    public RangeField setDialog(String dialogfun) {
-        this.dialog = new UIDialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        return this;
-    }
-
     // 隐藏输出
     @Override
     public void outputHidden(HtmlWriter html) {
@@ -119,6 +107,36 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
             html.print(" value=\"%s\"", value);
         }
         html.println("/>");
+    }
+
+    public UIDialogField getDialog() {
+        return dialog;
+    }
+
+    public RangeField setDialog(String dialogfunc) {
+        this.dialog = new UIDialogField(getHelper());
+        dialog.setDialogFunc(dialogfunc);
+        dialog.setInputId(this.getId());
+        dialog.setIcon("images/select-pic.png");
+        dialog.setConfig(config);
+        return this;
+    }
+
+    @Deprecated
+    public RangeField setDialog(String dialogfun, String[] params) {
+        setDialog(dialogfun);
+
+        for (String string : params) {
+            dialog.add(string);
+        }
+
+        return this;
+    }
+
+    public UIComponent getHelper() {
+        if(helper == null)
+            helper = new UIOriginComponent(this);
+        return helper;
     }
 
 }
