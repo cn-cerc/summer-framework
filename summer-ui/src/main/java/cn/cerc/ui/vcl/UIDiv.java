@@ -3,9 +3,9 @@ package cn.cerc.ui.vcl;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.HtmlContent;
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.parts.UIComponent;
 
 public class UIDiv extends UICustomComponent {
@@ -40,6 +40,11 @@ public class UIDiv extends UICustomComponent {
 
     public UIDiv setText(String text) {
         this.text = text;
+        return this;
+    }
+
+    public UIDiv setText(String format, Object... args) {
+        this.text = String.format(format, args);
         return this;
     }
 
