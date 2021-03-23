@@ -88,14 +88,6 @@ public class RadioField extends AbstractField {
             if (this.getCssClass() != null) {
                 html.print(" class=\"%s\"", this.getCssClass());
             }
-            if (this instanceof IFieldAutocomplete) {
-                IFieldAutocomplete obj = (IFieldAutocomplete) this;
-                if (obj.isAutocomplete()) {
-                    html.print(" autocomplete=\"on\"");
-                } else {
-                    html.print(" autocomplete=\"off\"");
-                }
-            }
             if (this instanceof IFieldAutofocus) {
                 IFieldAutofocus obj = (IFieldAutofocus) this;
                 if (obj.isAutofocus()) {
