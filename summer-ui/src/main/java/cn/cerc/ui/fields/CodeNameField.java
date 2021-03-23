@@ -9,7 +9,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class CodeNameField extends AbstractField
-        implements IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldShowStar, IFieldBuildText {
+        implements IFieldPlaceholder, IFieldRequired, IFieldShowStar, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
     private String nameField;
     private String placeholder;
@@ -152,12 +152,10 @@ public class CodeNameField extends AbstractField
         return this;
     }
 
-    @Override
     public boolean isAutofocus() {
         return autofocus;
     }
 
-    @Override
     public CodeNameField setAutofocus(boolean autofocus) {
         this.autofocus = autofocus;
         return this;

@@ -12,7 +12,7 @@ import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
 public class StringField extends AbstractField implements IColumn, IFieldPlaceholder, IFieldPattern, IFieldRequired,
-        IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
+        IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private UIDialogField dialog;
     private String placeholder;
@@ -92,12 +92,10 @@ public class StringField extends AbstractField implements IColumn, IFieldPlaceho
         return this;
     }
 
-    @Override
     public boolean isAutofocus() {
         return autofocus;
     }
 
-    @Override
     public StringField setAutofocus(boolean autofocus) {
         this.autofocus = autofocus;
         return this;

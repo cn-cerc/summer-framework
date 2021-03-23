@@ -78,12 +78,6 @@ public class CustomField extends AbstractField implements IFieldBuildText {
             if (this.getCssClass() != null) {
                 html.print(" class=\"%s\"", this.getCssClass());
             }
-            if (this instanceof IFieldAutofocus) {
-                IFieldAutofocus obj = (IFieldAutofocus) this;
-                if (obj.isAutofocus()) {
-                    html.print(" autofocus");
-                }
-            }
             if (this instanceof IFieldRequired) {
                 IFieldRequired obj = (IFieldRequired) this;
                 if (obj.isRequired()) {

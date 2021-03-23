@@ -9,7 +9,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DateField extends AbstractField
-        implements IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldBuildText {
+        implements IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
     private UIDialogField dialog;
     private String pattern;
@@ -91,12 +91,10 @@ public class DateField extends AbstractField
         return this;
     }
 
-    @Override
     public boolean isAutofocus() {
         return autofocus;
     }
 
-    @Override
     public DateField setAutofocus(boolean autofocus) {
         this.autofocus = autofocus;
         return this;
@@ -155,11 +153,8 @@ public class DateField extends AbstractField
             if (this.getCssClass() != null) {
                 html.print(" class=\"%s\"", this.getCssClass());
             }
-            if (this instanceof IFieldAutofocus) {
-                IFieldAutofocus obj = (IFieldAutofocus) this;
-                if (obj.isAutofocus()) {
-                    html.print(" autofocus");
-                }
+            if (this.isAutofocus()) {
+                html.print(" autofocus");
             }
             if (this instanceof IFieldRequired) {
                 IFieldRequired obj = (IFieldRequired) this;
@@ -234,7 +229,7 @@ public class DateField extends AbstractField
     }
 
     public UIComponent getHelper() {
-        if(helper == null)
+        if (helper == null)
             helper = new UIOriginComponent(this);
         return helper;
     }

@@ -13,7 +13,7 @@ import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DoubleField extends AbstractField
-        implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
+        implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private String format = "0.####";
     private String pattern;
@@ -129,12 +129,10 @@ public class DoubleField extends AbstractField
         return this;
     }
 
-    @Override
     public boolean isAutofocus() {
         return autofocus;
     }
 
-    @Override
     public DoubleField setAutofocus(boolean autofocus) {
         this.autofocus = autofocus;
         return this;
