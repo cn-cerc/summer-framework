@@ -4,7 +4,7 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
-import cn.cerc.ui.core.IOutoutLine;
+import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.fields.editor.CheckEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.other.BuildText;
@@ -12,7 +12,7 @@ import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
 public class BooleanField extends AbstractField
-        implements SearchItem, IColumn, IOutoutLine, IFieldEvent, IFieldBuildText {
+        implements SearchItem, IColumn, ISimpleLine, IFieldEvent, IFieldBuildText {
     private String trueText = "是";
     private String falseText = "否";
     private String title;

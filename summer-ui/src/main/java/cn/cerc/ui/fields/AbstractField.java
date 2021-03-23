@@ -9,14 +9,14 @@ import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.INameOwner;
-import cn.cerc.ui.core.IOutoutLine;
+import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.core.IReadonlyOwner;
 import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIText;
 
 public abstract class AbstractField extends UIOriginComponent
-        implements IField, IOutoutLine, INameOwner, IReadonlyOwner {
+        implements IField, ISimpleLine, INameOwner, IReadonlyOwner {
     protected static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据源
     private DataSource dataSource;

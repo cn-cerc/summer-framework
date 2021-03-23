@@ -6,7 +6,7 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
-import cn.cerc.ui.core.IOutoutLine;
+import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
@@ -15,7 +15,7 @@ import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DoubleField extends AbstractField implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus,
-        IFieldBuildText, IFieldBuildUrl, IOutoutLine {
+        IFieldBuildText, IFieldBuildUrl, ISimpleLine {
     private ColumnEditor editor;
     private String format = "0.####";
     private String pattern;

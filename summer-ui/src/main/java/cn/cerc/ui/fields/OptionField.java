@@ -5,11 +5,11 @@ import java.util.Map;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IOutoutLine;
+import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OptionField extends AbstractField implements IFieldShowStar, IFieldBuildText, IOutoutLine {
+public class OptionField extends AbstractField implements IFieldShowStar, IFieldBuildText, ISimpleLine {
     private Map<String, String> items = new LinkedHashMap<>();
     private String defaultValue;
     private int size;// 默认显示行数

@@ -5,12 +5,12 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IOutoutLine;
+import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class CodeNameField extends AbstractField implements IFieldDialog, IFieldPlaceholder, IFieldRequired,
-        IFieldAutofocus, IFieldShowStar, IFieldBuildText, IOutoutLine {
+        IFieldAutofocus, IFieldShowStar, IFieldBuildText, ISimpleLine {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
     private String nameField;
     private String placeholder;

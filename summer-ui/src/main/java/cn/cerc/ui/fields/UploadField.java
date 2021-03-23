@@ -3,10 +3,10 @@ package cn.cerc.ui.fields;
 import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IOutoutLine;
+import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.parts.UIComponent;
 
-public class UploadField extends AbstractField implements IFieldMultiple, IOutoutLine {
+public class UploadField extends AbstractField implements IFieldMultiple, ISimpleLine {
     // 用于文件上传是否可以选则多个文件
     private boolean multiple = false;
 
