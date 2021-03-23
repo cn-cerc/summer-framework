@@ -10,8 +10,8 @@ import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DateField extends AbstractField implements IFieldDialog, IFieldPattern, IFieldPlaceholder, IFieldRequired,
-        IFieldAutofocus, IFieldBuildText, ISimpleLine {
+public class DateField extends AbstractField
+        implements IFieldDialog, IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
     private DialogField dialog;
     private String pattern;

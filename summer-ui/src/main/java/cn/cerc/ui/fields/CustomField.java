@@ -7,7 +7,7 @@ import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class CustomField extends AbstractField implements IFieldBuildText, ISimpleLine {
+public class CustomField extends AbstractField implements IFieldBuildText {
 
     private BuildText buildText;
 

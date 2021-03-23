@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * 列表下拉框组件（不适用搜索查询表单）
  */
-public class SelectField extends AbstractField implements IColumn, IFieldBuildText, ISimpleLine {
+public class SelectField extends AbstractField implements IColumn, IFieldBuildText {
     private static final ClassResource res = new ClassResource(SelectField.class, SummerUI.ID);
 
     private String trueText = res.getString(1, "是");

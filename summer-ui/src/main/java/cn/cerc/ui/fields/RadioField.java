@@ -11,7 +11,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.parts.UIComponent;
 
-public class RadioField extends AbstractField implements ISimpleLine {
+public class RadioField extends AbstractField {
 
     private final List<String> items = new ArrayList<>();
 

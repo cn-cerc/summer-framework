@@ -11,7 +11,7 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ItField extends AbstractField implements IFieldBuildText, ISimpleLine, IColumn {
+public class ItField extends AbstractField implements IFieldBuildText, IColumn {
 
     private static final ClassResource res = new ClassResource(ItField.class, SummerUI.ID);
     private BuildText buildText;

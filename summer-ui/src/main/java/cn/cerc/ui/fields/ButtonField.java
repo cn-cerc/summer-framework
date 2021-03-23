@@ -6,7 +6,7 @@ import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ButtonField extends AbstractField implements IFieldEvent, IFieldBuildText, ISimpleLine {
+public class ButtonField extends AbstractField implements IFieldEvent, IFieldBuildText {
     private String data;
     private String type;
     private String onclick;

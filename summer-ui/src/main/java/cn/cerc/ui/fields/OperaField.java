@@ -12,8 +12,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OperaField extends AbstractField
-        implements IFieldDialog, IFieldBuildText, IFieldBuildUrl, ISimpleLine, IColumn {
+public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText, IFieldBuildUrl, IColumn {
     private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
 
     private String value = res.getString(1, "内容");

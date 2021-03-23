@@ -11,8 +11,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class BooleanField extends AbstractField
-        implements SearchItem, IColumn, ISimpleLine, IFieldEvent, IFieldBuildText {
+public class BooleanField extends AbstractField implements SearchItem, IColumn, IFieldEvent, IFieldBuildText {
     private String trueText = "是";
     private String falseText = "否";
     private String title;

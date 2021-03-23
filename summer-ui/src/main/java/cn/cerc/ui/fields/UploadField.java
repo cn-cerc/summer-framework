@@ -6,7 +6,7 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.parts.UIComponent;
 
-public class UploadField extends AbstractField implements IFieldMultiple, ISimpleLine {
+public class UploadField extends AbstractField implements IFieldMultiple {
     // 用于文件上传是否可以选则多个文件
     private boolean multiple = false;
 

@@ -9,7 +9,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ExpendField extends AbstractField implements SearchItem, IFieldBuildText, ISimpleLine {
+public class ExpendField extends AbstractField implements SearchItem, IFieldBuildText {
     private static final ClassResource res = new ClassResource(ExpendField.class, SummerUI.ID);
 
     private boolean search;

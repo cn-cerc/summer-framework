@@ -14,8 +14,8 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DoubleField extends AbstractField implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus,
-        IFieldBuildText, IFieldBuildUrl, ISimpleLine {
+public class DoubleField extends AbstractField
+        implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private String format = "0.####";
     private String pattern;

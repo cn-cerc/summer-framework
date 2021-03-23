@@ -10,7 +10,7 @@ import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class OptionField extends AbstractField implements IFieldShowStar, IFieldBuildText, ISimpleLine, IColumn {
+public class OptionField extends AbstractField implements IFieldShowStar, IFieldBuildText, IColumn {
     private Map<String, String> items = new LinkedHashMap<>();
     private String defaultValue;
     private int size;// 默认显示行数

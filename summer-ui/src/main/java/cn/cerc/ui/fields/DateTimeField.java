@@ -9,7 +9,7 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DateTimeField extends AbstractField implements IColumn, IFieldBuildText, ISimpleLine {
+public class DateTimeField extends AbstractField implements IColumn, IFieldBuildText {
 
     private BuildText buildText;
 

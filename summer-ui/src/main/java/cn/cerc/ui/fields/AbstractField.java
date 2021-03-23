@@ -7,13 +7,12 @@ import cn.cerc.core.TDateTime;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.IReadonlyOwner;
 import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 
-public abstract class AbstractField extends UIOriginComponent implements IField, ISimpleLine {
+public abstract class AbstractField extends UIOriginComponent implements ISimpleLine {
     protected static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据源
     private DataSource dataSource;
