@@ -13,15 +13,9 @@ import cn.cerc.ui.parts.UIComponent;
 
 public class OperaField extends AbstractField implements IFieldDialog, IFieldBuildText, IFieldBuildUrl, IColumn {
     private static final ClassResource res = new ClassResource(OperaField.class, SummerUI.ID);
-
     private String value = res.getString(1, "内容");
-
     private DialogField dialog;
-
-    private String icon;
-
     private BuildText buildText;
-
     private BuildUrl buildUrl;
 
     public OperaField(UIComponent owner) {
@@ -73,17 +67,6 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
     public OperaField setDialog(String dialogfun) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
-        return this;
-    }
-
-    @Override
-    public String getIcon() {
-        return icon;
-    }
-
-    @Override
-    public OperaField setIcon(String icon) {
-        this.icon = icon;
         return this;
     }
 
@@ -154,16 +137,8 @@ public class OperaField extends AbstractField implements IFieldDialog, IFieldBui
             html.println("/>");
 
             html.print("<span>");
-            DialogField dialog = this.getDialog();
             if (dialog != null && dialog.isOpen()) {
-                html.print("<a href=\"%s\">", dialog.getUrl());
-                if (this.getIcon() != null) {
-                    html.print("<img src=\"%s\">", this.getIcon());
-                } else {
-                    html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
-                }
-                html.print("</a>");
-                return;
+                dialog.setConfig(config).output(html);
             }
             html.println("</span>");
         }

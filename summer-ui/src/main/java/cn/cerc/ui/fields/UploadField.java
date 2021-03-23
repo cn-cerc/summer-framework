@@ -1,9 +1,7 @@
 package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
-import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class UploadField extends AbstractField implements IFieldMultiple {
@@ -132,20 +130,6 @@ public class UploadField extends AbstractField implements IFieldMultiple {
             }
 
             html.print("<span>");
-            if (this instanceof IFieldDialog) {
-                IFieldDialog obj = (IFieldDialog) this;
-                DialogField dialog = obj.getDialog();
-                if (dialog != null && dialog.isOpen()) {
-                    html.print("<a href=\"%s\">", dialog.getUrl());
-                    if (obj.getIcon() != null) {
-                        html.print("<img src=\"%s\">", obj.getIcon());
-                    } else {
-                        html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
-                    }
-                    html.print("</a>");
-                    return;
-                }
-            }
             html.println("</span>");
         }
     }

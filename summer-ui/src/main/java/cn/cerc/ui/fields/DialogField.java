@@ -3,24 +3,45 @@ package cn.cerc.ui.fields;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DialogField {
+import cn.cerc.core.ClassConfig;
+import cn.cerc.mis.cdn.CDN;
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.parts.UIComponent;
+
+public class DialogField extends UIComponent {
     private List<String> params = new ArrayList<>();
     private String inputId;
-    private String dialogfun;
+    private String dialogFunc;
     private boolean show = true;
+    private String icon;
+    private ClassConfig config;
 
-    public DialogField(String dialogfun) {
-        this.dialogfun = dialogfun;
+    public DialogField(String dialogFunc) {
+        this.dialogFunc = dialogFunc;
+    }
+
+    @Override
+    public void output(HtmlWriter html) {
+        html.print("<a href=\"%s\">", this.getUrl());
+        if (this.getIcon() != null) {
+            html.print("<img src=\"%s\">", CDN.get(this.getIcon()));
+        } else if (config != null) {
+            html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
+        }else {
+            html.print("(*)");
+        }
+        html.print("</a>");
+        return;
     }
 
     public String getUrl() {
-        if (dialogfun == null) {
+        if (dialogFunc == null) {
             throw new RuntimeException("dialogFunc is null");
         }
 
         StringBuilder build = new StringBuilder();
         build.append("javascript:");
-        build.append(dialogfun);
+        build.append(dialogFunc);
         build.append("(");
 
         build.append("'");
@@ -55,11 +76,11 @@ public class DialogField {
     }
 
     public String getDialogfun() {
-        return dialogfun;
+        return dialogFunc;
     }
 
     public DialogField setDialogfun(String dialogfun) {
-        this.dialogfun = dialogfun;
+        this.dialogFunc = dialogfun;
         return this;
     }
 
@@ -89,4 +110,22 @@ public class DialogField {
         obj.add("3");
         System.out.println(obj.getUrl());
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public ClassConfig getConfig() {
+        return config;
+    }
+
+    public DialogField setConfig(ClassConfig config) {
+        this.config = config;
+        return this;
+    }
+
 }

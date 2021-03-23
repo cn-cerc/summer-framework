@@ -13,7 +13,6 @@ import cn.cerc.ui.parts.UIComponent;
 public class RangeField extends AbstractField implements DataSource, IFieldDialog {
     private static final ClassResource res = new ClassResource(RangeField.class, SummerUI.ID);
     private DialogField dialog;
-    private String icon;
 
     public RangeField(UIComponent dataView, String name) {
         super(dataView, name, 0);
@@ -58,10 +57,9 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
                 }
             }
             html.print("<span>");
-            if (this.getDialog() != null) {
-                html.print("<a href=\"javascript:%s('%s')\">", this.getDialog(), this.getId());
-                html.print("<img src=\"images/select-pic.png\">");
-                html.print("</a>");
+            if (dialog != null && dialog.isOpen()) {
+                dialog.setIcon("images/select-pic.png");
+                dialog.setConfig(config).output(html);
             }
             html.print("</span>");
         }
@@ -106,17 +104,6 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
     public RangeField setDialog(String dialogfun) {
         this.dialog = new DialogField(dialogfun);
         dialog.setInputId(this.getId());
-        return this;
-    }
-
-    @Override
-    public String getIcon() {
-        return icon;
-    }
-
-    @Override
-    public RangeField setIcon(String icon) {
-        this.icon = icon;
         return this;
     }
 

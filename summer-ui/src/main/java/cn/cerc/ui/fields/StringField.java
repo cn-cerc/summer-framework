@@ -19,7 +19,6 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
     private String pattern;
     private boolean required;
     private boolean autofocus;
-    private String icon;
     private BuildUrl buildUrl;
     private BuildText buildText;
     private UIComponent helper;
@@ -113,17 +112,6 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
     @Override
     public StringField setAutofocus(boolean autofocus) {
         this.autofocus = autofocus;
-        return this;
-    }
-
-    @Override
-    public String getIcon() {
-        return icon;
-    }
-
-    @Override
-    public StringField setIcon(String icon) {
-        this.icon = icon;
         return this;
     }
 
@@ -236,19 +224,8 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
             html.println("/>");
 
             html.print("<span>");
-            if (this instanceof IFieldDialog) {
-                IFieldDialog obj = (IFieldDialog) this;
-                DialogField dialog = obj.getDialog();
-                if (dialog != null && dialog.isOpen()) {
-                    html.print("<a href=\"%s\">", dialog.getUrl());
-                    if (obj.getIcon() != null) {
-                        html.print("<img src=\"%s\">", obj.getIcon());
-                    } else {
-                        html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
-                    }
-                    html.print("</a>");
-                    return;
-                }
+            if (dialog != null && dialog.isOpen()) {
+                dialog.setConfig(config).output(html);
             }
             html.println("</span>");
         }

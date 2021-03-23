@@ -17,14 +17,12 @@ public class DateField extends AbstractField
     private String placeholder;
     private boolean required;
     private boolean autofocus;
-    private String icon;
     private BuildText buildText;
 
     public DateField(UIComponent owner, String name, String field) {
         super(owner, name, 5);
         this.setField(field);
         this.setDialog("showDateDialog");
-        this.setIcon(Application.getStaticPath() + config.getClassProperty("icon", ""));
         this.setAlign("center");
     }
 
@@ -32,7 +30,6 @@ public class DateField extends AbstractField
         super(owner, name, width);
         this.setField(field);
         this.setDialog("showDateDialog");
-        this.setIcon(Application.getStaticPath() + config.getClassProperty("icon", ""));
         this.setAlign("center");
     }
 
@@ -114,17 +111,6 @@ public class DateField extends AbstractField
     @Override
     public DateField setAutofocus(boolean autofocus) {
         this.autofocus = autofocus;
-        return this;
-    }
-
-    @Override
-    public String getIcon() {
-        return icon;
-    }
-
-    @Override
-    public DateField setIcon(String icon) {
-        this.icon = icon;
         return this;
     }
 
@@ -238,19 +224,8 @@ public class DateField extends AbstractField
             }
 
             html.print("<span>");
-            if (this instanceof IFieldDialog) {
-                IFieldDialog obj = (IFieldDialog) this;
-                DialogField dialog = obj.getDialog();
-                if (dialog != null && dialog.isOpen()) {
-                    html.print("<a href=\"%s\">", dialog.getUrl());
-                    if (obj.getIcon() != null) {
-                        html.print("<img src=\"%s\">", obj.getIcon());
-                    } else {
-                        html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
-                    }
-                    html.print("</a>");
-                    return;
-                }
+            if (dialog != null && dialog.isOpen()) {
+                dialog.setConfig(config).output(html);
             }
             html.println("</span>");
         }

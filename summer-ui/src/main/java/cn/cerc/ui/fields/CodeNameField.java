@@ -2,7 +2,6 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Record;
-import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.BuildText;
@@ -16,7 +15,6 @@ public class CodeNameField extends AbstractField
     private DialogField dialog;
     private boolean required;
     private boolean autofocus;
-    private String icon;
     private boolean showStar;
     private BuildText buildText;
 
@@ -112,10 +110,8 @@ public class CodeNameField extends AbstractField
             }
 
             html.print("<span>");
-            if (this.getDialog() != null && this.getDialog().isOpen()) {
-                html.print("<a href=\"%s\">", getUrl(this.getDialog()));
-                html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
-                html.print("</a>");
+            if (dialog != null && dialog.isOpen()) {
+                dialog.setConfig(config).output(html);
             }
             html.print("</span>");
         }
@@ -210,17 +206,6 @@ public class CodeNameField extends AbstractField
     @Override
     public CodeNameField setAutofocus(boolean autofocus) {
         this.autofocus = autofocus;
-        return this;
-    }
-
-    @Override
-    public String getIcon() {
-        return icon;
-    }
-
-    @Override
-    public CodeNameField setIcon(String icon) {
-        this.icon = icon;
         return this;
     }
 

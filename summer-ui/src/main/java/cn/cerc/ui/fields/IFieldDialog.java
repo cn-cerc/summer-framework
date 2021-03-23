@@ -3,8 +3,6 @@ package cn.cerc.ui.fields;
 public interface IFieldDialog {
     DialogField getDialog();
 
-    String getIcon();
-
     Object setDialog(String dialogfun);
 
     @Deprecated
@@ -19,5 +17,4 @@ public interface IFieldDialog {
         return this;
     }
 
-    Object setIcon(String icon);
 }
