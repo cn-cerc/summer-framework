@@ -32,19 +32,17 @@ public abstract class AbstractField extends UIOriginComponent implements ISimple
 
     public AbstractField(UIComponent owner) {
         super(owner);
-        if (owner != null) {
-            if ((owner instanceof DataSource)) {
-                this.dataSource = (DataSource) owner;
-                dataSource.addField(this);
-            }
-            if (owner instanceof IReadonlyOwner) {
-                this.setReadonly(((IReadonlyOwner) owner).isReadonly());
-            }
-        }
+        initOwner(owner);
     }
 
     public AbstractField(UIComponent owner, String name, int width) {
         super(owner);
+        initOwner(owner);
+        this.name = name;
+        this.width = width;
+    }
+
+    private void initOwner(UIComponent owner) {
         if (owner != null) {
             if ((owner instanceof DataSource)) {
                 this.dataSource = (DataSource) owner;
@@ -54,8 +52,6 @@ public abstract class AbstractField extends UIOriginComponent implements ISimple
                 this.setReadonly(((IReadonlyOwner) owner).isReadonly());
             }
         }
-        this.name = name;
-        this.width = width;
     }
 
     @Override
@@ -133,11 +129,6 @@ public abstract class AbstractField extends UIOriginComponent implements ISimple
         }
     }
 
-    @Deprecated
-    public void setCSSClass_phone(String cSSClass_phone) {
-        this.setCssClass(cSSClass_phone);
-    }
-
     @Override
     public boolean isReadonly() {
         return readonly;
@@ -180,11 +171,6 @@ public abstract class AbstractField extends UIOriginComponent implements ISimple
                 dataSource.updateValue(this.getId(), this.getField());
             }
         }
-    }
-
-    @Deprecated
-    public void setDataView(DataSource dataView) {
-        this.dataSource = dataView;
     }
 
     @Override
@@ -302,6 +288,16 @@ public abstract class AbstractField extends UIOriginComponent implements ISimple
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    @Deprecated
+    public void setCSSClass_phone(String cSSClass_phone) {
+        this.setCssClass(cSSClass_phone);
+    }
+
+    @Deprecated
+    public void setDataView(DataSource dataView) {
+        this.dataSource = dataView;
     }
 
 }
