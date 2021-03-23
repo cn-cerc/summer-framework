@@ -8,7 +8,6 @@ import java.util.List;
 import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.ISimpleLine;
 import cn.cerc.ui.parts.UIComponent;
 
 public class RadioField extends AbstractField {

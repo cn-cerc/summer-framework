@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.IRequestOwner;
-import lombok.extern.slf4j.Slf4j;
 
 public class RequestReader {
 
