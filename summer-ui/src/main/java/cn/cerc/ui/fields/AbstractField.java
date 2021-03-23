@@ -54,7 +54,7 @@ public abstract class AbstractField extends UIOriginComponent implements ISimple
     }
 
     @Override
-    public final void output(HtmlWriter html) {
+    public void output(HtmlWriter html) {
         if (this.isHidden()) {
             outputHidden(html);
         } else {
