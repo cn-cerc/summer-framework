@@ -13,7 +13,7 @@ import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DoubleField extends AbstractField
-        implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldBuildText, IFieldBuildUrl {
+        implements IColumn, IFieldPlaceholder, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private String format = "0.####";
     private String pattern;
@@ -107,12 +107,10 @@ public class DoubleField extends AbstractField
         return this;
     }
 
-    @Override
     public String getPattern() {
         return this.pattern;
     }
 
-    @Override
     public DoubleField setPattern(String pattern) {
         this.pattern = pattern;
         return this;

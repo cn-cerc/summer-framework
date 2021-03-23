@@ -11,7 +11,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField implements IColumn, IFieldPlaceholder, IFieldPattern, IFieldRequired,
+public class StringField extends AbstractField implements IColumn, IFieldPlaceholder, IFieldRequired,
         IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private UIDialogField dialog;
@@ -70,12 +70,10 @@ public class StringField extends AbstractField implements IColumn, IFieldPlaceho
         return this;
     }
 
-    @Override
     public String getPattern() {
         return pattern;
     }
 
-    @Override
     public StringField setPattern(String pattern) {
         this.pattern = pattern;
         return this;

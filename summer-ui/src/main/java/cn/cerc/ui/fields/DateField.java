@@ -8,8 +8,7 @@ import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class DateField extends AbstractField
-        implements IFieldPattern, IFieldPlaceholder, IFieldRequired, IFieldBuildText {
+public class DateField extends AbstractField implements IFieldPlaceholder, IFieldRequired, IFieldBuildText {
     private static final ClassConfig config = new ClassConfig(DateField.class, SummerUI.ID);
     private UIDialogField dialog;
     private String pattern;
@@ -58,12 +57,10 @@ public class DateField extends AbstractField
         }
     }
 
-    @Override
     public String getPattern() {
         return this.pattern;
     }
 
-    @Override
     public DateField setPattern(String pattern) {
         this.pattern = pattern;
         return this;
@@ -168,11 +165,8 @@ public class DateField extends AbstractField
                     html.print(" placeholder=\"%s\"", obj.getPlaceholder());
                 }
             }
-            if (this instanceof IFieldPattern) {
-                IFieldPattern obj = (IFieldPattern) this;
-                if (obj.getPattern() != null) {
-                    html.print(" pattern=\"%s\"", obj.getPattern());
-                }
+            if (this.getPattern() != null) {
+                html.print(" pattern=\"%s\"", this.getPattern());
             }
             if (this instanceof IFieldEvent) {
                 IFieldEvent event = (IFieldEvent) this;

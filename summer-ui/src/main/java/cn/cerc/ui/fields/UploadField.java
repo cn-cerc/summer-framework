@@ -86,12 +86,6 @@ public class UploadField extends AbstractField {
                     html.print(" placeholder=\"%s\"", obj.getPlaceholder());
                 }
             }
-            if (this instanceof IFieldPattern) {
-                IFieldPattern obj = (IFieldPattern) this;
-                if (obj.getPattern() != null) {
-                    html.print(" pattern=\"%s\"", obj.getPattern());
-                }
-            }
             if (this instanceof IFieldEvent) {
                 IFieldEvent event = (IFieldEvent) this;
                 if (event.getOninput() != null) {
