@@ -12,6 +12,7 @@ import cn.cerc.ui.parts.UIComponent;
 public class RadioField extends AbstractField {
 
     private final List<String> items = new ArrayList<>();
+    private String htmType;
 
     public RadioField(UIComponent owner, String name, String field, int width) {
         super(owner, name, width);
@@ -68,11 +69,7 @@ public class RadioField extends AbstractField {
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            if (getHtmType() != null) {
-                html.print(" type=\"%s\"", this.getHtmType());
-            } else {
-                html.print(" type=\"text\"");
-            }
+            html.print(" type=\"text\"");
             html.print(" id=\"%s\"", this.getId());
             html.print(" name=\"%s\"", this.getId());
             String value = this.getText();

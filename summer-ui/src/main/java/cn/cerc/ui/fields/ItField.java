@@ -85,11 +85,7 @@ public class ItField extends AbstractField implements IFieldBuildText, IColumn {
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            if (getHtmType() != null) {
-                html.print(" type=\"%s\"", this.getHtmType());
-            } else {
-                html.print(" type=\"text\"");
-            }
+            html.print(" type=\"text\"");
             html.print(" id=\"%s\"", this.getId());
             html.print(" name=\"%s\"", this.getId());
             String value = this.getText();
@@ -116,4 +112,5 @@ public class ItField extends AbstractField implements IFieldBuildText, IColumn {
     public void outputColumn(HtmlWriter html) {
         html.print(this.getText());
     }
+
 }

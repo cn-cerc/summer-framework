@@ -18,6 +18,7 @@ public class OperaField extends AbstractField implements IFieldBuildText, IField
     private BuildText buildText;
     private BuildUrl buildUrl;
     private UIComponent helper;
+    private String inputType;
 
     public OperaField(UIComponent owner) {
         this(owner, res.getString(2, "操作"), 3);
@@ -103,8 +104,8 @@ public class OperaField extends AbstractField implements IFieldBuildText, IField
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            if (getHtmType() != null) {
-                html.print(" type=\"%s\"", this.getHtmType());
+            if (getInputType() != null) {
+                html.print(" type=\"%s\"", this.getInputType());
             } else {
                 html.print(" type=\"text\"");
             }
@@ -186,6 +187,21 @@ public class OperaField extends AbstractField implements IFieldBuildText, IField
         if(helper == null)
             helper = new UIOriginComponent(this);
         return helper;
+    }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public OperaField setInputType(String inputType) {
+        this.inputType = inputType;
+        return this;
+    }
+
+    @Deprecated
+    public OperaField setHtmType(String htmType) {
+        this.inputType = htmType;
+        return this;
     }
 
 }

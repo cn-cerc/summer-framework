@@ -20,6 +20,7 @@ public class DoubleField extends AbstractField implements IColumn, IFieldBuildTe
     private boolean autofocus;
     private BuildText buildText;
     private BuildUrl buildUrl;
+    private String inputType;
 
     public DoubleField(UIComponent owner, String title, String field) {
         super(owner, title, 4);
@@ -177,8 +178,8 @@ public class DoubleField extends AbstractField implements IColumn, IFieldBuildTe
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            if (getHtmType() != null) {
-                html.print(" type=\"%s\"", this.getHtmType());
+            if (getInputType() != null) {
+                html.print(" type=\"%s\"", this.getInputType());
             } else {
                 html.print(" type=\"text\"");
             }
@@ -219,4 +220,20 @@ public class DoubleField extends AbstractField implements IColumn, IFieldBuildTe
         // FIXME: 此处需要继续重构
         html.print(format(getRecord()));
     }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public DoubleField setInputType(String inputType) {
+        this.inputType = inputType;
+        return this;
+    }
+
+    @Deprecated
+    public DoubleField setHtmType(String htmType) {
+        this.inputType = htmType;
+        return this;
+    }
+
 }

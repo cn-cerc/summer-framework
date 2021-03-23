@@ -20,7 +20,6 @@ public abstract class AbstractField extends UIOriginComponent implements ISimple
     protected String field;
     private String name;
     private String shortName;
-    private String htmType;
     // 数据隐藏
     private boolean hidden;
     private String align;
@@ -82,15 +81,6 @@ public abstract class AbstractField extends UIOriginComponent implements ISimple
 
     public AbstractField setShortName(String shortName) {
         this.shortName = shortName;
-        return this;
-    }
-
-    public String getHtmType() {
-        return htmType;
-    }
-
-    public AbstractField setHtmType(String htmType) {
-        this.htmType = htmType;
         return this;
     }
 

@@ -8,6 +8,7 @@ import cn.cerc.ui.parts.UIComponent;
 public class CustomField extends AbstractField implements IFieldBuildText {
 
     private BuildText buildText;
+    private String inputType;
 
     public CustomField(UIComponent dataView, String name, int width) {
         super(dataView, name, width);
@@ -58,8 +59,8 @@ public class CustomField extends AbstractField implements IFieldBuildText {
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            if (getHtmType() != null) {
-                html.print(" type=\"%s\"", this.getHtmType());
+            if (getInputType() != null) {
+                html.print(" type=\"%s\"", this.getInputType());
             } else {
                 html.print(" type=\"text\"");
             }
@@ -92,6 +93,21 @@ public class CustomField extends AbstractField implements IFieldBuildText {
             html.print("<span>");
             html.println("</span>");
         }
+    }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public CustomField setInputType(String inputType) {
+        this.inputType = inputType;
+        return this;
+    }
+
+    @Deprecated
+    public CustomField setHtmType(String htmType) {
+        this.inputType = htmType;
+        return this;
     }
 
 }

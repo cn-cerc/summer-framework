@@ -3,13 +3,13 @@ package cn.cerc.ui.fields;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IColumn;
-import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DateTimeField extends AbstractField implements IColumn, IFieldBuildText {
 
     private BuildText buildText;
+    private String inputType;
 
     public DateTimeField(UIComponent owner, String name, String field) {
         super(owner, name, 10);
@@ -69,8 +69,8 @@ public class DateTimeField extends AbstractField implements IColumn, IFieldBuild
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            if (getHtmType() != null) {
-                html.print(" type=\"%s\"", this.getHtmType());
+            if (getInputType() != null) {
+                html.print(" type=\"%s\"", this.getInputType());
             } else {
                 html.print(" type=\"text\"");
             }
@@ -99,6 +99,21 @@ public class DateTimeField extends AbstractField implements IColumn, IFieldBuild
     @Override
     public void outputColumn(HtmlWriter html) {
         html.print(this.getText());
+    }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public DateTimeField setInputType(String inputType) {
+        this.inputType = inputType;
+        return this;
+    }
+
+    @Deprecated
+    public DateTimeField setHtmType(String htmType) {
+        this.inputType = htmType;
+        return this;
     }
 
 }

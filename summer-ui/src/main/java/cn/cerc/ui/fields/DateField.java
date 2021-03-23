@@ -17,6 +17,7 @@ public class DateField extends AbstractField implements IFieldBuildText {
     private boolean autofocus;
     private BuildText buildText;
     private UIComponent helper;
+    private String inputType;
 
     public DateField(UIComponent owner, String name, String field) {
         super(owner, name, 5);
@@ -126,8 +127,8 @@ public class DateField extends AbstractField implements IFieldBuildText {
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            if (getHtmType() != null) {
-                html.print(" type=\"%s\"", this.getHtmType());
+            if (inputType != null) {
+                html.print(" type=\"%s\"", this.inputType);
             } else {
                 html.print(" type=\"text\"");
             }
@@ -203,6 +204,21 @@ public class DateField extends AbstractField implements IFieldBuildText {
         if (helper == null)
             helper = new UIOriginComponent(this);
         return helper;
+    }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public DateField setInputType(String inputType) {
+        this.inputType = inputType;
+        return this;
+    }
+
+    @Deprecated
+    public DateField setHtmType(String htmType) {
+        this.inputType = htmType;
+        return this;
     }
 
 }

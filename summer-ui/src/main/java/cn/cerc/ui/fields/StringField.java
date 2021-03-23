@@ -21,6 +21,7 @@ public class StringField extends AbstractField implements IColumn, IFieldBuildTe
     private BuildUrl buildUrl;
     private BuildText buildText;
     private UIComponent helper;
+    private String inputType;
 
     public StringField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -168,8 +169,8 @@ public class StringField extends AbstractField implements IColumn, IFieldBuildTe
         } else {
             html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             html.print("<input");
-            if (getHtmType() != null) {
-                html.print(" type=\"%s\"", this.getHtmType());
+            if (getInputType() != null) {
+                html.print(" type=\"%s\"", this.getInputType());
             } else {
                 html.print(" type=\"text\"");
             }
@@ -246,6 +247,21 @@ public class StringField extends AbstractField implements IColumn, IFieldBuildTe
             dialog.add(string);
         }
 
+        return this;
+    }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public StringField setInputType(String inputType) {
+        this.inputType = inputType;
+        return this;
+    }
+    
+    @Deprecated
+    public StringField setHtmType(String htmType) {
+        this.inputType = htmType;
         return this;
     }
 
