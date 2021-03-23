@@ -69,7 +69,7 @@ public class CodeNameField extends AbstractField implements IFieldDialog, IField
     }
 
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
 
         html.print("<input");

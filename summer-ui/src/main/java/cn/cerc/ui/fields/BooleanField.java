@@ -53,7 +53,7 @@ public class BooleanField extends AbstractField
     }
 
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         if (!this.search) {
             html.println(String.format("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "："));
             writeInput(html);

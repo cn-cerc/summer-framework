@@ -169,7 +169,7 @@ public abstract class AbstractField extends UIOriginComponent
             if (this.isReadonly()) {
                 outputReadonly(html);
             } else {
-                outputDefault(html);
+                outputEditer(html);
             }
         }
     }

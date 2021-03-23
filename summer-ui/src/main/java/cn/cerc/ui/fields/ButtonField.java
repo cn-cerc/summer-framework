@@ -62,11 +62,11 @@ public class ButtonField extends AbstractField implements IFieldEvent, IFieldBui
 
     @Override
     public void outputReadonly(HtmlWriter html) {
-        outputDefault(html);
+        outputEditer(html);
     }
 
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         html.print("<button name=\"%s\"", this.getId());
         if (this.data != null) {
             html.print(" value=\"%s\"", this.data);

@@ -38,7 +38,7 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
     }
 
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         AbstractField child = null;
         for (Component component : this.getComponents()) {
@@ -49,7 +49,7 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
                 child = (AbstractField) component;
                 String val = child.getCssClass();
                 child.setCssClass("price");
-                child.outputDefault(html);
+                child.outputEditer(html);
                 child.setCssClass(val);
             }
         }

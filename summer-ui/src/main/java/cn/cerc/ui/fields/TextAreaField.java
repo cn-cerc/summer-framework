@@ -34,7 +34,7 @@ public class TextAreaField extends AbstractField implements IFieldPlaceholder, I
     }
 
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         if (this.getOrigin() instanceof IForm) {
             IForm form = (IForm) this.getOrigin();
             if (form.getClient().isPhone()) {

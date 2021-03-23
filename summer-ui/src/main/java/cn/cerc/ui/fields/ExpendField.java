@@ -64,11 +64,11 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
 
     @Override
     public void outputReadonly(HtmlWriter html) {
-        outputDefault(html);
+        outputEditer(html);
     }
 
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         if (this.search) {
             html.print("<a href=\"javascript:displaySwitch('%s')\">%s</a>", this.getHiddenId(), this.getName());
         } else {

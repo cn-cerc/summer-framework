@@ -187,7 +187,7 @@ public class DoubleField extends AbstractField implements IColumn, IFieldPattern
 
     // 普通输出
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<input");
         if (getHtmType() != null) {

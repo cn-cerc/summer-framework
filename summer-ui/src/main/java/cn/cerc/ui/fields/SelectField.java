@@ -61,11 +61,11 @@ public class SelectField extends AbstractField implements IColumn, IFieldBuildTe
 
     @Override
     public void outputReadonly(HtmlWriter html) {
-        outputDefault(html);
+        outputEditer(html);
     }
 
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         writeInput(html);
     }
 

@@ -12,13 +12,13 @@ public interface ISimpleLine extends IField {
     void outputReadonly(HtmlWriter html);
 
     // 普通输出
-    void outputDefault(HtmlWriter html);
+    void outputEditer(HtmlWriter html);
 
     default void outputLine(HtmlWriter html) {
         if (this.isReadonly())
             outputReadonly(html);
         else
-            outputDefault(html);
+            outputEditer(html);
     }
 
 }

@@ -61,7 +61,7 @@ public class CustomField extends AbstractField implements IFieldBuildText, ISimp
 
     // 普通输出
     @Override
-    public void outputDefault(HtmlWriter html) {
+    public void outputEditer(HtmlWriter html) {
         html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
         html.print("<input");
         if (getHtmType() != null) {
