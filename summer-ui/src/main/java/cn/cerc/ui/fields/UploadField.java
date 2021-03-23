@@ -77,11 +77,8 @@ public class UploadField extends AbstractField {
                     html.print(" required");
                 }
             }
-            if (this instanceof IFieldMultiple) {
-                IFieldMultiple obj = (IFieldMultiple) this;
-                if (obj.isMultiple()) {
-                    html.print(" multiple");
-                }
+            if (this.isMultiple()) {
+                html.print(" multiple");
             }
             if (this instanceof IFieldPlaceholder) {
                 IFieldPlaceholder obj = (IFieldPlaceholder) this;

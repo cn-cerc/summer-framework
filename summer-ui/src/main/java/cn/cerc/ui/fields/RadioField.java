@@ -94,12 +94,6 @@ public class RadioField extends AbstractField {
                     html.print(" required");
                 }
             }
-            if (this instanceof IFieldMultiple) {
-                IFieldMultiple obj = (IFieldMultiple) this;
-                if (obj.isMultiple()) {
-                    html.print(" multiple");
-                }
-            }
             if (this instanceof IFieldPlaceholder) {
                 IFieldPlaceholder obj = (IFieldPlaceholder) this;
                 if (obj.getPlaceholder() != null) {
