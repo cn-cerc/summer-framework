@@ -13,18 +13,9 @@ public class DialogField {
         this.dialogfun = dialogfun;
     }
 
-    public static void main(String[] args) {
-        DialogField obj = new DialogField("showVipInfo");
-        obj.setInputId("inputid");
-        obj.add("1");
-        obj.add("2");
-        obj.add("3");
-        System.out.println(obj.getUrl());
-    }
-
     public String getUrl() {
         if (dialogfun == null) {
-            throw new RuntimeException("dialogfun is null");
+            throw new RuntimeException("dialogFunc is null");
         }
 
         StringBuilder build = new StringBuilder();
@@ -90,4 +81,12 @@ public class DialogField {
         return show;
     }
 
+    public static void main(String[] args) {
+        DialogField obj = new DialogField("showVipInfo");
+        obj.setInputId("inputid");
+        obj.add("1");
+        obj.add("2");
+        obj.add("3");
+        System.out.println(obj.getUrl());
+    }
 }
