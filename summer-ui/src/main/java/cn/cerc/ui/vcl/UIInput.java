@@ -11,6 +11,7 @@ public class UIInput extends UIComponent implements INameOwner {
     private boolean readonly;
     private boolean hidden;
     private String placeholder;
+    private String inputType;
 
     public UIInput(UIComponent owner) {
         super(owner);
@@ -42,6 +43,11 @@ public class UIInput extends UIComponent implements INameOwner {
             return;
         }
 
+        // 以下为附加功能
+
+        if (inputType != null) {
+            html.print(" type=\"%s\"", this.inputType);
+        }
         if (placeholder != null) {
             html.print(" placeholder=\"%s\"", this.placeholder);
         }
@@ -101,6 +107,14 @@ public class UIInput extends UIComponent implements INameOwner {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
     }
 
 }
