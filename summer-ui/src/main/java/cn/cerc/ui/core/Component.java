@@ -26,9 +26,6 @@ public abstract class Component {
     public void addComponent(Component component) {
         if (!components.contains(component)) {
             components.add(component);
-            if (component.getId() == null) {
-                component.setId("component" + components.size());
-            }
         }
     }
 

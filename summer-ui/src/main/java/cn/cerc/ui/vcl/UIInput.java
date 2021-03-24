@@ -5,11 +5,12 @@ import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.parts.UIComponent;
 
 public class UIInput extends UIComponent implements INameOwner {
-
-    private String caption = "";
+    private String caption;
     private String name;
-    private String value = "";
+    private String value;
     private boolean readonly;
+    private boolean hidden;
+    private String placeholder;
 
     public UIInput(UIComponent owner) {
         super(owner);
@@ -17,9 +18,9 @@ public class UIInput extends UIComponent implements INameOwner {
 
     @Override
     public void output(HtmlWriter html) {
-        if (this.caption != null)
+        if (this.caption != null) {
             html.print(this.caption);
-
+        }
         html.print("<input");
 
         if (getId() != null) {
@@ -36,6 +37,14 @@ public class UIInput extends UIComponent implements INameOwner {
         if (value != null) {
             html.print(String.format(" value=\"%s\"", value));
         }
+        if (this.hidden) {
+            html.println(" type=\"hidden\" />");
+            return;
+        }
+
+        if (placeholder != null) {
+            html.print(" placeholder=\"%s\"", this.placeholder);
+        }
         html.println("/>");
     }
 
@@ -43,6 +52,7 @@ public class UIInput extends UIComponent implements INameOwner {
         return caption;
     }
 
+    @Deprecated
     public UIInput setCaption(String caption) {
         this.caption = caption;
         return this;
@@ -75,6 +85,22 @@ public class UIInput extends UIComponent implements INameOwner {
 
     public void setReadonly(boolean readonly) {
         this.readonly = readonly;
+    }
+
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 
 }

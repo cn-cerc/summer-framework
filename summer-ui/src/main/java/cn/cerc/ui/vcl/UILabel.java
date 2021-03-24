@@ -16,7 +16,7 @@ public class UILabel extends UICssComponent {
     public UILabel() {
         super();
     }
-    
+
     public UILabel(String text) {
         super();
         this.text = text;
@@ -44,7 +44,11 @@ public class UILabel extends UICssComponent {
                 html.print(" for='%s'", focusTarget);
             }
             super.outputCss(html);
-            html.print(">%s</label>", this.text);
+
+            html.print(">");
+            if (this.text != null)
+                html.print(this.text);
+            html.print("</label>");
         } else {
             html.print("<a href='%s'>%s</a>", this.url, this.text);
         }
@@ -52,6 +56,7 @@ public class UILabel extends UICssComponent {
 
     /**
      * 请改使用 getText
+     * 
      * @return
      */
     @Deprecated
@@ -61,9 +66,10 @@ public class UILabel extends UICssComponent {
 
     /**
      * 请改使用 setText
+     * 
      * @param caption
      */
-    @Deprecated 
+    @Deprecated
     public void setCaption(String caption) {
         this.text = caption;
     }
