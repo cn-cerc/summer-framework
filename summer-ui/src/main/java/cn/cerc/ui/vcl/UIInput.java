@@ -8,8 +8,8 @@ public class UIInput extends UIComponent implements INameOwner {
 
     private String caption = "";
     private String name;
-
     private String value = "";
+    private boolean readonly;
 
     public UIInput(UIComponent owner) {
         super(owner);
@@ -29,6 +29,9 @@ public class UIInput extends UIComponent implements INameOwner {
             html.print(String.format(" name=\"%s\"", name));
         } else if (this.getId() != null) {
             html.print(String.format(" name=\"%s\"", getId()));
+        }
+        if (this.readonly) {
+            html.print(" readonly=\"readonly\"");
         }
         if (value != null) {
             html.print(String.format(" value=\"%s\"", value));
@@ -64,6 +67,14 @@ public class UIInput extends UIComponent implements INameOwner {
     public UIInput setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    public boolean isReadonly() {
+        return readonly;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
     }
 
 }
