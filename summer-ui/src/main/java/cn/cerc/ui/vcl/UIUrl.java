@@ -1,12 +1,21 @@
 package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UICssComponent;
 
 public class UIUrl extends UICssComponent {
     private String text;
     private String href;
     private String onclick;
+
+    public UIUrl() {
+        super();
+    }
+
+    public UIUrl(UIComponent owner) {
+        super(owner);
+    }
 
     @Override
     public void output(HtmlWriter html) {
@@ -44,6 +53,16 @@ public class UIUrl extends UICssComponent {
     }
 
     public UIUrl setHref(String href, Object... args) {
+        this.href = String.format(href, args);
+        return this;
+    }
+
+    public UIUrl setUrl(String href) {
+        this.href = href;
+        return this;
+    }
+
+    public UIUrl setUrl(String href, Object... args) {
         this.href = String.format(href, args);
         return this;
     }
