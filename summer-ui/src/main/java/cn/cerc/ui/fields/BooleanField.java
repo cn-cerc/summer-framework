@@ -3,14 +3,14 @@ package cn.cerc.ui.fields;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.fields.editor.CheckEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class BooleanField extends AbstractField implements SearchItem, IColumn, IFieldEvent, IFieldBuildText {
+public class BooleanField extends AbstractField implements SearchItem, IFormatColumn, IFieldEvent, IFieldBuildText {
     private String trueText = "是";
     private String falseText = "否";
     private String title;
@@ -103,12 +103,8 @@ public class BooleanField extends AbstractField implements SearchItem, IColumn, 
     }
 
     @Override
-    public String format(Object value) {
-        if (!(value instanceof Record)) {
-            return value.toString();
-        }
-
-        Record ds = (Record) value;
+    public String format(Record value) {
+        Record ds = value;
         if (this.isReadonly()) {
             return getText(ds);
         }

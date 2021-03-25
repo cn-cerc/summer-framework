@@ -5,7 +5,7 @@ import cn.cerc.core.DataSet;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.IColumnsManager;
@@ -60,8 +60,8 @@ public class MasterGridLine extends AbstractGridLine {
             html.print(">");
             if (obj instanceof AbstractField) {
                 AbstractField field = (AbstractField) obj;
-                if (field instanceof IColumn) {
-                    html.print(((IColumn) field).format(dataSource.getDataSet().getCurrent()));
+                if (field instanceof IFormatColumn) {
+                    html.print(((IFormatColumn) field).format(dataSource.getDataSet().getCurrent()));
                 } else if (field instanceof AbstractField) {
                     outputField(html, field);
                 } else {

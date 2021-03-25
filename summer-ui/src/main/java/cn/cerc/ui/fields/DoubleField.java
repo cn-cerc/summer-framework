@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
@@ -13,7 +13,7 @@ import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
 public class DoubleField extends AbstractField
-        implements IColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
+        implements IFormatColumn, IFieldPattern, IFieldPlaceholder, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private String format = "0.####";
     private String pattern;
@@ -61,12 +61,8 @@ public class DoubleField extends AbstractField
     }
 
     @Override
-    public String format(Object value) {
-        if (!(value instanceof Record)) {
-            return value.toString();
-        }
-
-        Record ds = (Record) value;
+    public String format(Record value) {
+        Record ds = value;
         if (this.isReadonly()) {
             if (getBuildUrl() != null) {
                 HtmlWriter html = new HtmlWriter();

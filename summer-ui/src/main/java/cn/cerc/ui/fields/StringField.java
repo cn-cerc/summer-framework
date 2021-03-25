@@ -2,7 +2,7 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
@@ -10,7 +10,7 @@ import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField implements IColumn, IFieldDialog, IFieldPlaceholder, IFieldPattern,
+public class StringField extends AbstractField implements IFormatColumn, IFieldDialog, IFieldPlaceholder, IFieldPattern,
         IFieldRequired, IFieldAutofocus, IFieldBuildText, IFieldBuildUrl {
     private ColumnEditor editor;
     private DialogField dialog;
@@ -39,12 +39,8 @@ public class StringField extends AbstractField implements IColumn, IFieldDialog,
     }
 
     @Override
-    public String format(Object value) {
-        if (!(value instanceof Record)) {
-            return value.toString();
-        }
-
-        Record record = (Record) value;
+    public String format(Record value) {
+        Record record = value;
         String data = getDefaultText(record);
 
         if (this.isReadonly()) {

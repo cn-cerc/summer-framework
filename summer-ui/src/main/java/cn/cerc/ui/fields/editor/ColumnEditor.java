@@ -9,7 +9,7 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.fields.IFieldBuildText;
@@ -67,7 +67,7 @@ public class ColumnEditor {
             dataSet = gridLine.getDataSet();
             columns = new ArrayList<>();
             for (IField field : gridLine.getFields()) {
-                if (field instanceof IColumn) {
+                if (field instanceof IFormatColumn) {
                     if (((AbstractField) field).isReadonly()) {
                         continue;
                     }
