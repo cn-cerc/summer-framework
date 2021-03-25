@@ -8,7 +8,6 @@ import org.junit.Test;
 
 @Slf4j
 public class JiguangPushTest {
-    private static final String sound = "trade_mall.wav";
     private StubHandleText handle;
 
     @Before
