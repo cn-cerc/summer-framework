@@ -15,7 +15,6 @@ import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -238,7 +237,7 @@ public class LocalService implements IServiceProxy {
     @Override
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getExportKey, handle.getUserCode(), tmp)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getExportKey, handle.getUserCode(), tmp)) {
             buff.setField("data", this.getDataIn().getJSON());
         }
         return tmp;

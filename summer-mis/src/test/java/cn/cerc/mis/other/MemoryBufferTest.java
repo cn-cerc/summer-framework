@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import cn.cerc.mis.core.SystemBufferType;
+
 import static org.junit.Assert.assertEquals;
 
 @Slf4j
@@ -12,7 +14,7 @@ public class MemoryBufferTest {
     @Test
     @Ignore
     public void test_connect() {
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test")) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.test, "test")) {
             if (buff.Connected()) {
                 if (buff.isNull()) {
                     buff.setField("Code_", "1000");
@@ -33,14 +35,14 @@ public class MemoryBufferTest {
     @Ignore
     public void test_read_write() {
         String data = "AAA";
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test")) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.test, "test")) {
             buff.setField("A", data);
         }
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test")) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.test, "test")) {
             assertEquals(data, buff.getString("A"));
         }
-        MemoryBuffer.delete(BufferType.test, "test");
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.test, "test")) {
+        MemoryBuffer.delete(SystemBufferType.test, "test");
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.test, "test")) {
             assertEquals(null, buff.getRecord().getField("A"));
         }
     }

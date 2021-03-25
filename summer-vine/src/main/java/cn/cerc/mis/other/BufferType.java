@@ -1,7 +1,9 @@
 package cn.cerc.mis.other;
 
+import cn.cerc.mis.core.IBufferKey;
+
 //FIXME: BufferType应从框架中移出
-public enum BufferType {
+public enum BufferType implements IBufferKey {
     // 0.测试专用
     test,
     // 1.取得用户基本资料
@@ -57,5 +59,15 @@ public enum BufferType {
     // 26.总库存缓存
     getPartStock,
     // 27.分仓库存缓存
-    getStockNum
+    getStockNum;
+
+    @Override
+    public int getStartingPoint() {
+        return 100;
+    }
+
+    @Override
+    public int getMinimumNumber() {
+        return 1;
+    }
 }

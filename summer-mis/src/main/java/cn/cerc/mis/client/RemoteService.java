@@ -6,14 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.RequestData;
-import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -147,7 +147,7 @@ public class RemoteService implements IServiceProxy {
     @Override
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getExportKey, handle.getUserCode(), tmp)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getExportKey, handle.getUserCode(), tmp)) {
             buff.setField("data", this.getDataIn().getJSON());
         }
         return tmp;
