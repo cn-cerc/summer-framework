@@ -31,7 +31,7 @@ public class DataSetFile {
         template.setFileName(fileName);
         template.setDataSet(dataSet);
         if (template.getColumns().size() == 0) {
-            for (String field : dataSet.getFieldDefs().getFields()) {
+            for (String field : dataSet.getFieldDefs()) {
                 StringColumn column = new StringColumn();
                 column.setCode(field);
                 column.setName(field);

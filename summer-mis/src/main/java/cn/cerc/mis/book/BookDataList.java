@@ -23,11 +23,6 @@ public class BookDataList implements Iterable<IBookData>, Iterator<IBookData> {
         this.section = section;
     }
 
-    public static void main(String[] args) {
-        TDateTime dateFrom = TDateTime.now().incDay(1);
-        System.out.println(TDateTime.now().compareDay(dateFrom));
-    }
-
     public void add(IBookData data) {
         check(data);
         items.add(data);
