@@ -14,6 +14,7 @@ public class CustomColumn extends AbstractColumn implements IDataColumn {
 
     public CustomColumn(UIComponent owner) {
         super(owner);
+        this.setName("操作");
     }
 
     public CustomColumn(UIComponent owner, String name, String code) {
