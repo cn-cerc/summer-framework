@@ -289,7 +289,7 @@ public class MssqlOperator implements IDataOperator {
     }
 
     private void initPrimaryKeys(Connection conn, Record record) throws SQLException {
-        for (String key : record.getFieldDefs().getFields()) {
+        for (String key : record.getFieldDefs()) {
             if (updateKey.equalsIgnoreCase(key)) {
                 if (!updateKey.equals(key)) {
                     throw new RuntimeException(String.format("%s <> %s", updateKey, key));

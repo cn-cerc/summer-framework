@@ -104,7 +104,7 @@ public class MssqlQuery extends DataQuery {
             for (int i = 1; i <= meta.getColumnCount(); i++) {
                 String field = meta.getColumnLabel(i);
                 if (!defs.exists(field)) {
-                    defs.add(field);
+                    defs.addField(field, field);
                 }
             }
 

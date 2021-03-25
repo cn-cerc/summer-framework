@@ -65,8 +65,7 @@ public class MongoOperator implements IDataOperator {
 
     private Document getValue(Record record) {
         Document doc = new Document();
-        for (int i = 0; i < record.getFieldDefs().size(); i++) {
-            String field = record.getFieldDefs().getFields().get(i);
+        for(String field : record.getFieldDefs()) {
             if ("_id".equals(field)) {
                 continue;
             }

@@ -76,7 +76,7 @@ public class DaoUtil {
             }
 
             // 查找并赋值
-            for (String fieldName : record.getFieldDefs().getFields()) {
+            for (String fieldName : record.getFieldDefs()) {
                 boolean exists = false;
                 for (Field field : items.keySet()) {
                     // 默认等于对象的属性
@@ -165,7 +165,7 @@ public class DaoUtil {
         ds.getSqlText().setMaximum(1);
         ds.open();
         Record record = ds.eof() ? null : ds.getCurrent();
-        for (String field : ds.getFieldDefs().getFields()) {
+        for (String field : ds.getFieldDefs()) {
             if ("UID_".equals(field)) {
                 sb.append("@Id").append("\r\n");
                 sb.append("@GeneratedValue(strategy = GenerationType.IDENTITY)").append("\r\n");
