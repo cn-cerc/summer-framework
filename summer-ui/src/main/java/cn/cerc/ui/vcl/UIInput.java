@@ -5,12 +5,24 @@ import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.parts.UIComponent;
 
 public class UIInput extends UIComponent implements INameOwner {
+
+    public static final String TYPE_BUTTON = "button";
+    public static final String TYPE_CHECKBOX = "checkbox";
+    public static final String TYPE_RADIO = "radio";
+    public static final String TYPE_PASSWORD = "password";
+    public static final String TYPE_SUBMIT = "submit";
+    public static final String TYPE_FILE = "file";
+    public static final String TYPE_DATE = "date";
+    public static final String TYPE_DATETIME_LOCAL = "datetime-local";
+    public static final String TYPE_TEXT = "text";
+
     private String caption;
     private String name;
     private String value;
     private boolean readonly;
     private boolean required;
     private boolean hidden;
+    private boolean checked;
     private String placeholder;
     private String inputType;
 
@@ -44,12 +56,18 @@ public class UIInput extends UIComponent implements INameOwner {
             return;
         }
 
+        if (this.isChecked()) {
+            html.print(" checked");
+        }
         // 以下为附加功能
         if (this.required) {
             html.print(" required");
         }
         if (inputType != null) {
             html.print(" type=\"%s\"", this.inputType);
+            if (this.isChecked()) {
+                html.print(" checked");
+            }
         }
         if (placeholder != null) {
             html.print(" placeholder=\"%s\"", this.placeholder);
@@ -126,6 +144,14 @@ public class UIInput extends UIComponent implements INameOwner {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
 }
