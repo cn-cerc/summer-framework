@@ -64,6 +64,7 @@ public class UIUrl extends UICssComponent {
         return this;
     }
 
+    @Deprecated
     public UIUrl setUrl(String href, Object... args) {
         this.href = String.format(href, args);
         return this;

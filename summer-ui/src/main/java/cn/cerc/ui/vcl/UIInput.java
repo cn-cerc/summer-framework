@@ -13,6 +13,7 @@ public class UIInput extends UIComponent implements INameOwner {
     public static final String TYPE_SUBMIT = "submit";
     public static final String TYPE_FILE = "file";
     public static final String TYPE_DATE = "date";
+    public static final String TYPE_DATETIME_LOCAL = "datetime-local";
     public static final String TYPE_TEXT = "text";
 
     private String caption;
