@@ -23,7 +23,7 @@ public class UIFooter extends UICustomComponent {
     private List<UIBottom> buttons = new ArrayList<>();
     private boolean showHotKeyName = false; // 是否显示快捷键名称
 
-    public UIFooter(UICustomComponent owner) {
+    public UIFooter(UIComponent owner) {
         super(owner);
         this.setId("bottom");
     }
