@@ -48,7 +48,7 @@ public class UIPhoneLine extends UIOriginComponent implements IReadonlyOwner {
     /**
      * 建立相应的格子，并设置每个格式的宽度
      * 
-     * @param int[] args 数组，其各值加起来必须等于100
+     * @param percents 数组，其各值加起来必须等于100
      */
     public void buildCells(int... percents) {
         int total = 0;

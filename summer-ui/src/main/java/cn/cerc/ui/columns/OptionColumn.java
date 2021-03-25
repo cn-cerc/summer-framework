@@ -96,32 +96,6 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
         html.print("<span></span>");
     }
 
-    /**
-     * 
-     * @param text sample: map{0:未启用;1:使用中;2:停用}
-     * @return
-     */
-    public OptionColumn sh(String text) {
-        if (!text.startsWith("map{"))
-            return this;
-
-        String cont = text.substring(4, text.length() - 1);
-        String[] args = cont.split(";");
-        if (args.length == 0)
-            return this;
-
-        for (String arg : args) {
-            if (arg.indexOf(":") > 0) {
-                String[] tmp = arg.split(":");
-                if (tmp.length == 2) {
-                    select.getOptions().put(tmp[0], tmp[1]);
-                }
-            }
-        }
-
-        return this;
-    }
-
     public OptionColumn setOptions(Map<String, String> items) {
         select.setOptions(items);
         return this;

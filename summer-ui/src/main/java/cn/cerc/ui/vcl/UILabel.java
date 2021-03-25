@@ -57,7 +57,7 @@ public class UILabel extends UICssComponent {
     /**
      * 请改使用 getText
      * 
-     * @return
+     * @return 返回 text 值
      */
     @Deprecated
     public String getCaption() {
@@ -67,7 +67,7 @@ public class UILabel extends UICssComponent {
     /**
      * 请改使用 setText
      * 
-     * @param caption
+     * @param caption 设置 text 的值
      */
     @Deprecated
     public void setCaption(String caption) {
