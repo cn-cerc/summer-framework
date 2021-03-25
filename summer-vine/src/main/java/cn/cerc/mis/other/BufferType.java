@@ -63,7 +63,7 @@ public enum BufferType implements IBufferKey {
 
     @Override
     public int getStartingPoint() {
-        return 100;
+        return 1000;
     }
 
     @Override
