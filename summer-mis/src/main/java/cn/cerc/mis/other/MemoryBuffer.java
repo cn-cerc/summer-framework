@@ -8,17 +8,17 @@ public class MemoryBuffer extends Buffer implements AutoCloseable {
 
     private static final ClassResource res = new ClassResource(MemoryBuffer.class, SummerMIS.ID);
 
-    public MemoryBuffer(BufferType bt, String... keys) {
+    public MemoryBuffer(Enum<?> bufferType, String... keys) {
         super();
-        this.setKey(buildKey(bt, keys));
+        this.setKey(buildKey(bufferType, keys));
     }
 
-    public static void delete(BufferType bt, String... keys) {
-        Buffer buff = new Buffer(buildKey(bt, keys));
+    public static void delete(Enum<?> bufferType, String... keys) {
+        Buffer buff = new Buffer(buildKey(bufferType, keys));
         buff.clear();
     }
 
-    public static String buildKey(BufferType bt, String... keys) {
+    public static String buildKey(Enum<?> bufferType, String... keys) {
         if (keys == null || keys.length == 0) {
             throw new RuntimeException(res.getString(1, "[MemoryBuffer]错误的初始化参数！"));
         }
@@ -28,7 +28,7 @@ public class MemoryBuffer extends Buffer implements AutoCloseable {
         }
 
         StringBuffer str = new StringBuffer();
-        str.append(bt.ordinal());
+        str.append(bufferType.ordinal());
         for (String key : keys) {
             str.append(".").append(key);
         }
