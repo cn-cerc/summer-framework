@@ -1,6 +1,7 @@
 package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UICssComponent;
 
@@ -8,6 +9,7 @@ public class UIUrl extends UICssComponent {
     private String text;
     private String href;
     private String onclick;
+    private UrlRecord url;
 
     public UIUrl() {
         super();
@@ -22,9 +24,9 @@ public class UIUrl extends UICssComponent {
         html.print("<a");
         if (this.getCssClass() != null)
             html.print(" class=\"%s\"", this.getCssClass());
-        if (this.href != null)
-            html.print(" href=\"%s\"", this.href);
-        if (this.href != null)
+        if (this.getHref() != null)
+            html.print(" href=\"%s\"", this.getHref());
+        if (this.onclick != null)
             html.print(" onclick=\"%s\"", this.onclick);
         html.print(">");
 
@@ -44,7 +46,7 @@ public class UIUrl extends UICssComponent {
     }
 
     public String getHref() {
-        return href;
+        return url != null ? url.getUrl() : href;
     }
 
     public UIUrl setHref(String href) {
@@ -71,8 +73,23 @@ public class UIUrl extends UICssComponent {
         return onclick;
     }
 
-    public void setOnclick(String onclick) {
+    public UIUrl setOnclick(String onclick) {
         this.onclick = onclick;
+        return this;
+    }
+
+    public UIUrl setSite(String site) {
+        if (url == null)
+            url = new UrlRecord();
+        url.setSite(site);
+        return this;
+    }
+
+    public UIUrl putParam(String key, String value) {
+        if (url == null)
+            url = new UrlRecord();
+        url.putParam(key, value);
+        return this;
     }
 
 }

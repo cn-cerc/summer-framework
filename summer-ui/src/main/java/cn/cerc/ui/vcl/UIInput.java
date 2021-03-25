@@ -9,6 +9,7 @@ public class UIInput extends UIComponent implements INameOwner {
     private String name;
     private String value;
     private boolean readonly;
+    private boolean required;
     private boolean hidden;
     private String placeholder;
     private String inputType;
@@ -44,14 +45,16 @@ public class UIInput extends UIComponent implements INameOwner {
         }
 
         // 以下为附加功能
-
+        if (this.required) {
+            html.print(" required");
+        }
         if (inputType != null) {
             html.print(" type=\"%s\"", this.inputType);
         }
         if (placeholder != null) {
             html.print(" placeholder=\"%s\"", this.placeholder);
         }
-        html.println("/>");
+        html.println(" />");
     }
 
     public String getCaption() {
@@ -115,6 +118,14 @@ public class UIInput extends UIComponent implements INameOwner {
 
     public void setInputType(String inputType) {
         this.inputType = inputType;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 
 }
