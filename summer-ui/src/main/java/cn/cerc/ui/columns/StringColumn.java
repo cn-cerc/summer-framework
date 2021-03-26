@@ -78,11 +78,10 @@ public class StringColumn extends AbstractColumn implements IDataColumn {
         } else {
             UILabel label = new UILabel();
             label.setFocusTarget(this.getCode());
-            label.setText(getName());
-            label.output(html);
             if (!"".equals(getName())) {
-                html.print("：");
+                label.setText(getName() + "：");
             }
+            label.output(html);
 
             input.setId(getCode());
             input.setReadonly(readonly);
@@ -98,11 +97,10 @@ public class StringColumn extends AbstractColumn implements IDataColumn {
         if (!this.isHidden()) {
             UILabel label = new UILabel();
             label.setFocusTarget(this.getCode());
-            label.setText(getName());
-            label.output(html);
             if (!"".equals(getName())) {
-                html.print("：");
+                label.setText(getName() + "：");
             }
+            label.output(html);
         }
 
         input.setId(getCode());
