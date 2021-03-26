@@ -24,7 +24,7 @@ public class UIDiv extends UICustomComponent {
     public void output(HtmlWriter html) {
         html.print("<div");
         super.outputCss(html);
-        html.println(">");
+        html.print(">");
 
         super.output(html);
 
