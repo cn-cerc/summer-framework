@@ -30,7 +30,7 @@ public class Application {
     private static final ClassConfig config = new ClassConfig(Application.class, SummerMIS.ID);
     // tomcat JSESSION.ID
     public static final String sessionId = "sessionId";
-    //FIXME 如下5个常量需要取消其引用，改为直接使用ISession
+    // FIXME 如下5个常量需要取消其引用，改为直接使用ISession
     public static final String TOKEN = ISession.TOKEN;
     public static final String bookNo = ISession.CORP_NO;
     public static final String userCode = ISession.USER_CODE;
@@ -108,7 +108,7 @@ public class Application {
         return context;
     }
 
-    //请改为使用下面的函数
+    // 请改为使用下面的函数
     @Deprecated
     public static <T> T getBean(String beanId, Class<T> requiredType) {
         return context.getBean(beanId, requiredType);
@@ -251,7 +251,8 @@ public class Application {
         }
     }
 
-    public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode, String... pathVariables) {
+    public static String getFormView(HttpServletRequest req, HttpServletResponse resp, String formId, String funcCode,
+            String... pathVariables) {
         // 设置登录开关
         req.setAttribute("logon", false);
 
@@ -287,8 +288,8 @@ public class Application {
             ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
             manage.resumeToken((String) req.getSession().getAttribute(RequestData.TOKEN));
             session.setProperty(Application.sessionId, req.getSession().getId());
-            // session.setProperty(Application.deviceLanguage, client.getLanguage());
-            // session.setProperty(Application.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
+            session.setProperty(Application.deviceLanguage, client.getLanguage());
+            session.setProperty(Application.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
             IHandle handle = new Handle(session);
             req.setAttribute("myappHandle", handle);
             form.setId(formId);
@@ -348,7 +349,8 @@ public class Application {
         }
     }
 
-    public static void outputView(HttpServletRequest request, HttpServletResponse response, String url) throws IOException, ServletException {
+    public static void outputView(HttpServletRequest request, HttpServletResponse response, String url)
+            throws IOException, ServletException {
         if (url == null)
             return;
 
