@@ -14,7 +14,6 @@ import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.fields.AbstractField;
-import cn.cerc.ui.fields.IFieldRole;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIText;
 
@@ -114,11 +113,8 @@ public class UIFormVertical extends UICssComponent implements DataSource {
         for (AbstractField field : fields) {
             if (!field.isHidden()) {
                 html.print("<li");
-                if (field instanceof IFieldRole) {
-                    IFieldRole obj = (IFieldRole) field;
-                    if (obj.getRole() != null) {
-                        html.print(" role='%s'", obj.getRole());
-                    }
+                if (field.getRole() != null) {
+                    html.print(" role='%s'", field.getRole());
                 }
                 html.print(">");
                 field.output(html);
@@ -191,6 +187,11 @@ public class UIFormVertical extends UICssComponent implements DataSource {
     public void setRecord(Record record) {
         dataSet.getCurrent().copyValues(record, record.getFieldDefs());
         dataSet.setRecNo(dataSet.size());
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return false;
     }
 
     public String getEnctype() {

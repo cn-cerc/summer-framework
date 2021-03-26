@@ -1,8 +1,5 @@
 package cn.cerc.ui.grid;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.mis.core.IForm;
@@ -12,8 +9,11 @@ import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.fields.ExpendField;
-import cn.cerc.ui.fields.IFieldBuildUrl;
+import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // 手机专用表格
 public class PhoneGrid extends AbstractGrid {
@@ -100,11 +100,11 @@ public class PhoneGrid extends AbstractGrid {
     public void setCSSClass(String CSSClass) {
         this.CSSClass = CSSClass;
     }
-//
-//    @Override
-//    public boolean isReadonly() {
-//        return true;
-//    }
+
+    @Override
+    public boolean isReadonly() {
+        return true;
+    }
 
     @Override
     public void updateValue(String id, String code) {
@@ -165,18 +165,14 @@ public class PhoneGrid extends AbstractGrid {
                 }
                 html.print(">");
 
-                IFieldBuildUrl obj = null;
-                if(field instanceof IFieldBuildUrl) {
-                    obj = (IFieldBuildUrl) field;
-                }
-                
-                if (obj != null && obj.getBuildUrl() != null) {
+                BuildUrl build = field.getBuildUrl();
+                if (build != null) {
                     String name = field.getShortName();
                     if (!"".equals(name)) {
                         html.print(name + ": ");
                     }
                     UrlRecord url = new UrlRecord();
-                    obj.getBuildUrl().buildUrl(record, url);
+                    build.buildUrl(record, url);
                     if (!"".equals(url.getUrl())) {
                         html.println("<a href=\"%s\">", url.getUrl());
                         html.print(field.getText(record));
@@ -197,20 +193,15 @@ public class PhoneGrid extends AbstractGrid {
             html.print("<section>");
             for (AbstractField field : columns) {
                 html.print("<span");
-                if (field.getCssClass() != null) {
-                    html.print(String.format(" class=\"%s\"", field.getCssClass()));
+                if (field.getCSSClass_phone() != null) {
+                    html.print(String.format(" class=\"%s\"", field.getCSSClass_phone()));
                 }
                 html.print(">");
-                
-                IFieldBuildUrl obj = null;
-                if(field instanceof IFieldBuildUrl) {
-                    obj = (IFieldBuildUrl) field;
-                }
-                
-                if (obj != null && obj.getBuildUrl() != null) {
+                BuildUrl build = field.getBuildUrl();
+                if (build != null) {
                     Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
                     UrlRecord url = new UrlRecord();
-                    obj.getBuildUrl().buildUrl(record, url);
+                    build.buildUrl(record, url);
                     if (!"".equals(url.getUrl())) {
                         html.println("<a href=\"%s\">", url.getUrl());
                         outputColumn(field, html);
@@ -269,6 +260,11 @@ public class PhoneGrid extends AbstractGrid {
         @Override
         public DataSet getDataSet() {
             return dataSource.getDataSet();
+        }
+
+        @Override
+        public boolean isReadonly() {
+            return dataSource.isReadonly();
         }
 
         @Override

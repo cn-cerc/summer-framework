@@ -2,8 +2,8 @@ package cn.cerc.ui.grid.lines;
 
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.RowCell;
 
@@ -74,6 +74,11 @@ public class ChildGridLine extends AbstractGridLine {
         col.setRole(field.getField());
         getCells().add(col);
         col.addField(field);
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return dataSource.isReadonly();
     }
 
     @Override

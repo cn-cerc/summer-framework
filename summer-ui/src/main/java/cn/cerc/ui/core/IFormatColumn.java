@@ -4,7 +4,7 @@ import cn.cerc.core.Record;
 
 public interface IFormatColumn extends IField {
 
-    String format(Record value);
+    String format(Object value);
 
     @Override
     default int getWidth() {

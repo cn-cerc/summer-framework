@@ -1,40 +1,82 @@
 package cn.cerc.ui.fields;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.cdn.CDN;
-import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.core.INameOwner;
-import cn.cerc.ui.core.IReadonlyOwner;
-import cn.cerc.ui.core.UIOriginComponent;
+import cn.cerc.ui.other.BuildText;
+import cn.cerc.ui.other.BuildUrl;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 import cn.cerc.ui.vcl.UIText;
 
-public abstract class AbstractField extends UIOriginComponent implements IField, INameOwner, IReadonlyOwner {
+public abstract class AbstractField extends UICssComponent implements IField, INameOwner {
     private static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
-    // 数据源
-    private DataSource dataSource;
-    // 数据字段
+    // 数据库相关
     protected String field;
+    // 自定义取值
+    protected BuildText buildText;
+    // 焦点否
+    protected boolean autofocus;
+    //
+    protected boolean required;
+    // 用于文件上传是否可以选则多个文件
+    protected boolean multiple = false;
+    //
+    protected String placeholder;
+    // 正则过滤
+    protected String pattern;
+    //
+    protected boolean hidden;
+    // 角色
+    protected String role;
+    //
+    protected DialogField dialog;
+    // dialog 小图标
+    protected String icon;
+    //
+    protected BuildUrl buildUrl;
+    //
+    protected DataSource dataSource;
+    protected String oninput;
+    protected String onclick;
+    private String htmlTag = "input";
+    private String htmType;
     private String name;
     private String shortName;
-    private String htmType;
-    // 数据隐藏
-    private boolean hidden;
     private String align;
     private int width;
+    // 手机专用样式
+    private String CSSClass_phone;
     // value
     private String value;
     // 只读否
     private boolean readonly;
+    // 自动完成（默认为 off）
+    private boolean autocomplete = false;
     // 栏位说明
     private UIText mark;
+    private boolean visible = true;
+    // TODO 专用于textarea标签，需要拆分该标签出来，黄荣君 2016-05-31
+    // 最大字符串数
+    private int maxlength;
+    // 可见行数
+    private int rows;
+    // 可见宽度
+    private int cols;
+    // 是否禁用
+    private boolean resize = true;
+    // 是否显示*号
+    private boolean showStar = false;
 
     public AbstractField(UIComponent owner, String name, int width) {
         super(owner);
@@ -42,9 +84,7 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             if ((owner instanceof DataSource)) {
                 this.dataSource = (DataSource) owner;
                 dataSource.addField(this);
-            }
-            if (owner instanceof IReadonlyOwner) {
-                this.setReadonly(((IReadonlyOwner) owner).isReadonly());
+                this.setReadonly(dataSource.isReadonly());
             }
         }
         this.name = name;
@@ -58,6 +98,14 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
     public AbstractField setMark(UIText mark) {
         this.mark = mark;
         return this;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
@@ -101,7 +149,6 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         return this;
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -134,13 +181,10 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
      */
     protected String getDefaultText(Record record) {
         if (record != null) {
-            if (this instanceof IFieldBuildText) {
-                IFieldBuildText obj = (IFieldBuildText) this;
-                if (obj.getBuildText() != null) {
-                    HtmlWriter html = new HtmlWriter();
-                    obj.getBuildText().outputText(record, html);
-                    return html.toString();
-                }
+            if (buildText != null) {
+                HtmlWriter html = new HtmlWriter();
+                buildText.outputText(record, html);
+                return html.toString();
             }
             return record.getString(getField());
         } else {
@@ -148,17 +192,27 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         }
     }
 
-    @Deprecated
-    public void setCSSClass_phone(String cSSClass_phone) {
-        this.setCssClass(cSSClass_phone);
+    public BuildText getBuildText() {
+        return buildText;
     }
 
-    @Override
+    public AbstractField createText(BuildText buildText) {
+        this.buildText = buildText;
+        return this;
+    }
+
+    public String getCSSClass_phone() {
+        return CSSClass_phone;
+    }
+
+    public void setCSSClass_phone(String cSSClass_phone) {
+        CSSClass_phone = cSSClass_phone;
+    }
+
     public boolean isReadonly() {
         return readonly;
     }
 
-    @Override
     public AbstractField setReadonly(boolean readonly) {
         this.readonly = readonly;
         return this;
@@ -170,6 +224,51 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
 
     public AbstractField setValue(String value) {
         this.value = value;
+        return this;
+    }
+
+    public boolean isAutocomplete() {
+        return autocomplete;
+    }
+
+    public AbstractField setAutocomplete(boolean autocomplete) {
+        this.autocomplete = autocomplete;
+        return this;
+    }
+
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    public AbstractField setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
+        return this;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public AbstractField setRequired(boolean required) {
+        this.required = required;
+        return this;
+    }
+
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    public AbstractField setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+        return this;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public AbstractField setPattern(String pattern) {
+        this.pattern = pattern;
         return this;
     }
 
@@ -185,53 +284,34 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
     @Override
     public void output(HtmlWriter html) {
         Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
-
         if (this.hidden) {
             outputInput(html, record);
         } else {
-            if (this.getOrigin() instanceof IForm) {
-                IForm form = (IForm) this.getOrigin();
-                if (form.getClient().isPhone()) {
-                    if (this.readonly) {
-                        html.print(this.getName() + "：");
-                        html.print(this.getText(record));
-                        return;
-                    }
-                }
-            }
-            html.print("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
+            html.println("<label for=\"%s\">%s</label>", this.getId(), this.getName() + "：");
             outputInput(html, record);
-            if (this instanceof IFieldShowStar) {
-                IFieldShowStar obj = (IFieldShowStar) this;
-                if (obj.isShowStar()) {
-                    html.println("<font>*</font>");
-                }
+            if (this.showStar) {
+                html.println("<font>*</font>");
             }
-            if (this instanceof IFieldDialog) {
-                IFieldDialog obj = (IFieldDialog) this;
-                DialogField dialog = obj.getDialog();
-                if (dialog != null && dialog.isOpen()) {
-                    html.print("<span>");
-                    html.print("<a href=\"%s\">", dialog.getUrl());
+            if (this.dialog != null && this.dialog.isOpen()) {
+                html.print("<span>");
+                html.print("<a href=\"%s\">", dialog.getUrl());
 
-                    if (obj.getIcon() != null) {
-                        html.print("<img src=\"%s\">", obj.getIcon());
-                    } else {
-                        html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
-                    }
-
-                    html.print("</a>");
-                    html.println("</span>");
-                    return;
+                if (this.icon != null) {
+                    html.print("<img src=\"%s\">", this.icon);
+                } else {
+                    html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
                 }
-            }
 
-            html.println("<span></span>");
+                html.print("</a>");
+                html.println("</span>");
+            } else {
+                html.println("<span></span>");
+            }
         }
     }
 
     protected void outputInput(HtmlWriter html, Record dataSet) {
-        if (this instanceof IFieldTextArea) {
+        if ("textarea".equals(htmlTag)) {
             outputTextArea(html, dataSet);
             return;
         }
@@ -265,55 +345,34 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
             if (this.isReadonly()) {
                 html.print(" readonly=\"readonly\"");
             }
-            if (this instanceof IFieldAutocomplete) {
-                IFieldAutocomplete obj = (IFieldAutocomplete) this;
-                if (obj.isAutocomplete()) {
-                    html.print(" autocomplete=\"on\"");
-                } else {
-                    html.print(" autocomplete=\"off\"");
-                }
+            if (this.autocomplete) {
+                html.print(" autocomplete=\"on\"");
+            } else {
+                html.print(" autocomplete=\"off\"");
             }
-            if (this instanceof IFieldAutofocus) {
-                IFieldAutofocus obj = (IFieldAutofocus) this;
-                if (obj.isAutofocus()) {
-                    html.print(" autofocus");
-                }
+            if (this.autofocus) {
+                html.print(" autofocus");
             }
-            if (this instanceof IFieldRequired) {
-                IFieldRequired obj = (IFieldRequired) this;
-                if (obj.isRequired()) {
-                    html.print(" required");
-                }
+            if (this.required) {
+                html.print(" required");
             }
-            if (this instanceof IFieldMultiple) {
-                IFieldMultiple obj = (IFieldMultiple) this;
-                if (obj.isMultiple()) {
-                    html.print(" multiple");
-                }
+            if (this.multiple) {
+                html.print(" multiple");
             }
-            if (this instanceof IFieldPlaceholder) {
-                IFieldPlaceholder obj = (IFieldPlaceholder) this;
-                if (obj.getPlaceholder() != null) {
-                    html.print(" placeholder=\"%s\"", obj.getPlaceholder());
-                }
+            if (this.placeholder != null) {
+                html.print(" placeholder=\"%s\"", this.placeholder);
             }
-            if (this instanceof IFieldPattern) {
-                IFieldPattern obj = (IFieldPattern) this;
-                if (obj.getPattern() != null) {
-                    html.print(" pattern=\"%s\"", obj.getPattern());
-                }
+            if (this.pattern != null) {
+                html.print(" pattern=\"%s\"", this.pattern);
             }
-            if (this.getCssClass() != null) {
-                html.print(" class=\"%s\"", this.getCssClass());
+            if (this.CSSClass_phone != null) {
+                html.print(" class=\"%s\"", this.CSSClass_phone);
             }
-            if (this instanceof IFieldEvent) {
-                IFieldEvent event = (IFieldEvent) this;
-                if (event.getOninput() != null) {
-                    html.print(" oninput=\"%s\"", event.getOninput());
-                }
-                if (event.getOnclick() != null) {
-                    html.print(" onclick=\"%s\"", event.getOnclick());
-                }
+            if (this.oninput != null) {
+                html.print(" oninput=\"%s\"", this.oninput);
+            }
+            if (this.onclick != null) {
+                html.print(" onclick=\"%s\"", this.onclick);
             }
             html.println("/>");
         }
@@ -328,38 +387,26 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         if (readonly) {
             html.print(" readonly=\"readonly\"");
         }
-        if (this instanceof IFieldAutofocus) {
-            IFieldAutofocus obj = (IFieldAutofocus) this;
-            if (obj.isAutofocus()) {
-                html.print(" autofocus");
-            }
+        if (autofocus) {
+            html.print(" autofocus");
         }
-        if (this instanceof IFieldRequired) {
-            IFieldRequired obj = (IFieldRequired) this;
-            if (obj.isRequired()) {
-                html.print(" required");
-            }
+        if (required) {
+            html.print(" required");
         }
-        if (this instanceof IFieldPlaceholder) {
-            IFieldPlaceholder obj = (IFieldPlaceholder) this;
-            if (obj.getPlaceholder() != null) {
-                html.print(" placeholder=\"%s\"", obj.getPlaceholder());
-            }
+        if (placeholder != null) {
+            html.print(" placeholder=\"%s\"", placeholder);
         }
-        if (this instanceof IFieldTextArea) {
-            IFieldTextArea obj = (IFieldTextArea) this;
-            if (obj.getMaxlength() > 0) {
-                html.print(" maxlength=\"%s\"", obj.getMaxlength());
-            }
-            if (obj.getRows() > 0) {
-                html.print(" rows=\"%s\"", obj.getRows());
-            }
-            if (obj.getCols() > 0) {
-                html.print(" cols=\"%s\"", obj.getCols());
-            }
-            if (obj.isResize()) {
-                html.println("style=\"resize: none;\"");
-            }
+        if (maxlength > 0) {
+            html.print(" maxlength=\"%s\"", maxlength);
+        }
+        if (rows > 0) {
+            html.print(" rows=\"%s\"", rows);
+        }
+        if (cols > 0) {
+            html.print(" cols=\"%s\"", cols);
+        }
+        if (resize) {
+            html.println("style=\"resize: none;\"");
         }
         html.println(">");
 
@@ -372,8 +419,35 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         html.println("</textarea>");
     }
 
-    public FieldTitle createTitle() {
-        FieldTitle title = new FieldTitle();
+    public DialogField getDialog() {
+        return dialog;
+    }
+
+    public AbstractField setDialog(String dialogfun) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        return this;
+    }
+
+    public AbstractField setDialog(String dialogfun, String... params) {
+        this.dialog = new DialogField(dialogfun);
+        dialog.setInputId(this.getId());
+        for (String string : params) {
+            this.dialog.add(string);
+        }
+        return this;
+    }
+
+    public void createUrl(BuildUrl build) {
+        this.buildUrl = build;
+    }
+
+    public BuildUrl getBuildUrl() {
+        return buildUrl;
+    }
+
+    public Title createTitle() {
+        Title title = new Title();
         title.setName(this.getField());
         return title;
     }
@@ -391,9 +465,45 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         this.dataSource = dataView;
     }
 
+    public String getOninput() {
+        return oninput;
+    }
+
+    public AbstractField setOninput(String oninput) {
+        this.oninput = oninput;
+        return this;
+    }
+
+    public String getOnclick() {
+        return onclick;
+    }
+
+    public AbstractField setOnclick(String onclick) {
+        this.onclick = onclick;
+        return this;
+    }
+
     @Override
     public String getTitle() {
         return this.getName();
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public AbstractField setVisible(boolean visible) {
+        this.visible = visible;
+        return this;
+    }
+
+    public boolean isShowStar() {
+        return showStar;
+    }
+
+    public AbstractField setShowStar(boolean showStar) {
+        this.showStar = showStar;
+        return this;
     }
 
     public String getString() {
@@ -494,12 +604,117 @@ public abstract class AbstractField extends UIOriginComponent implements IField,
         return result != null ? result : def;
     }
 
-    public DataSource getDataSource() {
-        return dataSource;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getHtmlTag() {
+        return htmlTag;
+    }
+
+    public AbstractField setHtmlTag(String htmlTag) {
+        this.htmlTag = htmlTag;
+        return this;
+    }
+
+    public int getMaxlength() {
+        return maxlength;
+    }
+
+    public AbstractField setMaxlength(int maxlength) {
+        this.maxlength = maxlength;
+        return this;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public AbstractField setRows(int rows) {
+        this.rows = rows;
+        return this;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public AbstractField setCols(int cols) {
+        this.cols = cols;
+        return this;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
+
+    public class Editor {
+        private String xtype;
+
+        public Editor(String xtype) {
+            super();
+            this.xtype = xtype;
+        }
+
+        public String getXtype() {
+            return xtype;
+        }
+
+        public void setXtype(String xtype) {
+            this.xtype = xtype;
+        }
+    }
+
+    public class Title {
+        private String name;
+        private String type;
+        private String dateFormat;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getDateFormat() {
+            return dateFormat;
+        }
+
+        public void setDateFormat(String dateFormat) {
+            this.dateFormat = dateFormat;
+        }
+
+        @Override
+        public String toString() {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode json = mapper.createObjectNode();
+            json.put("name", this.name);
+            if (this.type != null) {
+                json.put("type", this.type);
+            }
+            if (this.dateFormat != null) {
+                json.put("dateFormat", this.dateFormat);
+            }
+            return json.toString().replace("\"", "'");
+        }
     }
 
 }
