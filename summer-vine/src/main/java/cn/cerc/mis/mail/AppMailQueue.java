@@ -1,7 +1,5 @@
 package cn.cerc.mis.mail;
 
-@Deprecated
-//TODO 此处应该改使用ClassConfig
 public class AppMailQueue {
     // 每晚自动邮件
     public static final String queueAutoMail = "automail";
