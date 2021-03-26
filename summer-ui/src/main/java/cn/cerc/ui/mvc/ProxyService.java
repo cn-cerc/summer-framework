@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ProxyService extends AbstractForm {
+    public static final String BEAN_ID = "proxyService";
+    
     private static final ClassResource res = new ClassResource(ProxyService.class, SummerUI.ID);
 
     @Override

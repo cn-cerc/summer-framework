@@ -108,6 +108,7 @@ public class Application {
         return context;
     }
 
+    //请改为使用下面的函数
     @Deprecated
     public static <T> T getBean(String beanId, Class<T> requiredType) {
         return context.getBean(beanId, requiredType);
