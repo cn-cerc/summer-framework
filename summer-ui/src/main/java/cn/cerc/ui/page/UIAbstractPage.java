@@ -22,11 +22,16 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
     private List<String> jsFiles = new ArrayList<>();
     private UIComponent header; // 头部区域，剩下的均为下部区域
     private UIComponent aside; // 左部区域，剩下的均为右部区域
+    @Deprecated
     private UIComponent menuPath; // （中间右边上方）菜单路径
+    @Deprecated
     private UIComponent notice; // （中间右边上方）通知区域
+    private UIComponent controls; // （中间右边上方）控制区域（Web显示固定）
     private UIComponent content; // （中间右边）主内容区域
-    private UIComponent statusBar; // （中间右边下方）下方状态条
-    private UIComponent footer; // 底部区域
+    private UIComponent footer; // （中间右边）尾部区部（Web显示固定）
+    @Deprecated
+    private UIComponent statusBar; // （中间右边下方）下方状态条（Web显示固定）
+    private UIComponent address; // 底部区域
     private IForm form;
     private Object origin;
 
@@ -58,7 +63,8 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         out.println("<meta name=\"format-detection\" content=\"email=no\" />");
         out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
-        out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>");
+        out.println(
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>");
         // 加入脚本文件
         String device = this.getForm().getClient().isPhone() ? "phone" : "pc";
         String staticPath = Application.getStaticPath();
@@ -72,7 +78,6 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
             out.println(String.format("<link href=\"%s%s-%s.%s\" rel=\"stylesheet\">", staticPath, args[0], device,
                     args[1]));
         }
-        
 
         out.println("</head>");
         out.println("<body>");
@@ -91,40 +96,56 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
             out.println(aside);
             out.println("</aside>");
         }
+
         // 右侧区域
         out.println("<article>");
-        if (menuPath != null) {
-            out.print("<div class='menuPath'>");
-            out.print(menuPath);
+        // （中间右边上方）控制区域（Web显示固定）
+        if (controls != null) {
+            out.print("<div class='controls'>");
+            out.print(controls);
             out.println("</div>");
         }
-        if (notice != null) {
-            out.print("<div class='notice'>");
-            out.print(notice);
-            out.println("</div>");
-        }
+        // （中间右边）主内容区域
         out.println("<content>");
         if (content != null)
             out.println(content);
         out.println("</content>");
         // （中间右边下方）下方状态条
-        if (statusBar != null) {
-            out.println("<div class='statusBar'>");
-            out.println(statusBar);
-            out.println("</div>");
+        if (!isPhone()) {
+            if (footer != null) {
+                out.println("<footer>");
+                out.println(footer);
+                out.println("</footer>");
+            }
         }
         out.println("</article>");
         out.println("</main>");
 
-        // 底部区域
-        if (footer != null) {
-            out.println("<footer>");
-            out.println(footer);
-            out.println("</footer>");
+        if (address != null) {
+            out.println("<address>");
+            out.println(address);
+            out.println("</address>");
         }
+        if (isPhone()) {
+            if (footer != null) {
+                out.println("<footer>");
+                out.println(footer);
+                out.println("</footer>");
+            }
+        }
+        // 底部区域
         out.println("</body>");
         out.println("</html>");
         return null;
+    }
+
+    private boolean isPhone() {
+        if (this.getOrigin() instanceof IForm) {
+            IForm form = (IForm) this.getOrigin();
+            return form.getClient().isPhone();
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -175,15 +196,19 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         return aside;
     }
 
+    @Deprecated
+    // 请改使用 getControls
     public UIComponent getMenuPath() {
         if (menuPath == null)
-            menuPath = new UIOriginComponent(this);
+            menuPath = new UIOriginComponent(this.getControls());
         return menuPath;
     }
 
+    @Deprecated
+    // 请改使用 getControls
     public UIComponent getNotice() {
         if (notice == null)
-            notice = new UIOriginComponent(this);
+            notice = new UIOriginComponent(this.getControls());
         return notice;
     }
 
@@ -193,6 +218,14 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         return content;
     }
 
+    public UIComponent getControls() {
+        if (controls == null)
+            controls = new UIOriginComponent(this);
+        return controls;
+    }
+
+    @Deprecated
+    // 请改使用 getFooter
     public UIComponent getStatusBar() {
         if (statusBar == null)
             statusBar = new UIOriginComponent(this);
@@ -205,6 +238,12 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         return footer;
     }
 
+    public UIComponent getAddress() {
+        if (address == null)
+            address = new UIOriginComponent(this);
+        return address;
+    }
+    
     @Override
     public final void setOrigin(Object orgin) {
         this.origin = orgin;
