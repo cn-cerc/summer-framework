@@ -24,7 +24,7 @@ public class UIInput extends UIComponent implements INameOwner {
     private boolean hidden;
     private boolean checked;
     private String placeholder;
-    private String inputType;
+    private String inputType = TYPE_TEXT;
 
     public UIInput(UIComponent owner) {
         super(owner);

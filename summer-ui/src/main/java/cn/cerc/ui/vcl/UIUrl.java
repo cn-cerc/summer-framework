@@ -33,6 +33,10 @@ public class UIUrl extends UICssComponent {
         if (this.text != null)
             html.print(this.text);
 
+        for (UIComponent item : this) {
+            item.output(html);
+        }
+
         html.print("</a>");
     }
 

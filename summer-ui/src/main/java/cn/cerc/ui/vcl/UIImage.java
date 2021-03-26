@@ -43,7 +43,7 @@ public class UIImage extends UICssComponent {
             html.print(" onclick='%s'", this.onclick);
         }
         super.outputCss(html);
-        html.println("/>");
+        html.print("/>");
     }
 
     public String getWidth() {
