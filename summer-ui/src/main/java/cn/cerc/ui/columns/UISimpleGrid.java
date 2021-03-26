@@ -19,9 +19,8 @@ public class UISimpleGrid extends UIGrid {
 
     public void initColumns() {
         if (this.getColumns().size() == 0) {
-            Map<String, String> items = this.getDataSet().getFieldDefs().getItems();
-            for (String code : items.keySet()) {
-                new StringColumn(this).setCode(code).setName(items.get(code));
+            for (String code : this.getDataSet().getFieldDefs()) {
+                new StringColumn(this).setCode(code).setName(code);
             }
         }
     }
