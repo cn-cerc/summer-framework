@@ -5,20 +5,12 @@ import cn.cerc.core.Record;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class CodeNameField extends AbstractField
-        implements IFieldDialog, IFieldPlaceholder, IFieldRequired, IFieldAutofocus, IFieldShowStar, IFieldBuildText {
+public class CodeNameField extends AbstractField {
     private static final ClassConfig config = new ClassConfig(CodeNameField.class, SummerUI.ID);
+
     private String nameField;
-    private String placeholder;
-    private DialogField dialog;
-    private boolean required;
-    private boolean autofocus;
-    private String icon;
-    private boolean showStar;
-    private BuildText buildText;
 
     public CodeNameField(UIComponent owner, String name, String field) {
         super(owner, name, 0);
@@ -27,9 +19,9 @@ public class CodeNameField extends AbstractField
 
     @Override
     public void updateField() {
-        if (getDataSource() != null) {
-            getDataSource().updateValue(this.getId(), this.getField());
-            getDataSource().updateValue(getNameField(), getNameField());
+        if (dataSource != null) {
+            dataSource.updateValue(this.getId(), this.getField());
+            dataSource.updateValue(getNameField(), getNameField());
         }
     }
 
@@ -38,9 +30,9 @@ public class CodeNameField extends AbstractField
         if (record == null) {
             return null;
         }
-        if (getBuildText() != null) {
+        if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            getBuildText().outputText(record, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
         return record.getString(getField());
@@ -48,7 +40,7 @@ public class CodeNameField extends AbstractField
 
     @Override
     public void output(HtmlWriter html) {
-        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
+        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
         if (this.isHidden()) {
             html.print("<input");
             html.print(" type=\"hidden\"");
@@ -158,91 +150,4 @@ public class CodeNameField extends AbstractField
         return this;
     }
 
-    @Override
-    public DialogField getDialog() {
-        return dialog;
-    }
-
-    @Override
-    public CodeNameField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        return this;
-    }
-
-    @Override
-    public CodeNameField setDialog(String dialogfun, String... params) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        for (String string : params) {
-            this.dialog.add(string);
-        }
-        return this;
-    }
-
-    @Override
-    public String getPlaceholder() {
-        return placeholder;
-    }
-
-    @Override
-    public CodeNameField setPlaceholder(String placeholder) {
-        this.placeholder = placeholder;
-        return this;
-    }
-
-    @Override
-    public boolean isRequired() {
-        return required;
-    }
-
-    @Override
-    public CodeNameField setRequired(boolean required) {
-        this.required = required;
-        return this;
-    }
-
-    @Override
-    public boolean isAutofocus() {
-        return autofocus;
-    }
-
-    @Override
-    public CodeNameField setAutofocus(boolean autofocus) {
-        this.autofocus = autofocus;
-        return this;
-    }
-
-    @Override
-    public String getIcon() {
-        return icon;
-    }
-
-    @Override
-    public CodeNameField setIcon(String icon) {
-        this.icon = icon;
-        return this;
-    }
-
-    @Override
-    public boolean isShowStar() {
-        return showStar;
-    }
-
-    @Override
-    public CodeNameField setShowStar(boolean showStar) {
-        this.showStar = showStar;
-        return this;
-    }
-
-    @Override
-    public CodeNameField createText(BuildText buildText) {
-        this.buildText = buildText;
-        return this;
-    }
-
-    @Override
-    public BuildText getBuildText() {
-        return buildText;
-    }
 }

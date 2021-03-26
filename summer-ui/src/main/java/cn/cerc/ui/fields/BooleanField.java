@@ -6,19 +6,15 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.fields.editor.CheckEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
-import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class BooleanField extends AbstractField implements SearchItem, IFormatColumn, IFieldEvent, IFieldBuildText {
+public class BooleanField extends AbstractField implements SearchItem, IFormatColumn {
     private String trueText = "是";
     private String falseText = "否";
     private String title;
     private boolean search;
     private CheckEditor editor;
-    private String onclick;
-    private String oninput;
-    private BuildText buildText;
 
     public BooleanField(UIComponent owner, String title, String field) {
         this(owner, title, field, 0);
@@ -35,9 +31,9 @@ public class BooleanField extends AbstractField implements SearchItem, IFormatCo
         if (record == null) {
             return null;
         }
-        if (getBuildText() != null) {
+        if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            getBuildText().outputText(record, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
         return record.getBoolean(field) ? trueText : falseText;
@@ -67,7 +63,7 @@ public class BooleanField extends AbstractField implements SearchItem, IFormatCo
         html.print(String.format("<input type=\"checkbox\" id=\"%s\" name=\"%s\" value=\"1\"", this.getId(),
                 this.getId()));
         boolean val = false;
-        DataSet dataSet = getDataSource() != null ? getDataSource().getDataSet() : null;
+        DataSet dataSet = dataSource != null ? dataSource.getDataSet() : null;
         if (dataSet != null) {
             val = dataSet.getBoolean(field);
         }
@@ -77,8 +73,8 @@ public class BooleanField extends AbstractField implements SearchItem, IFormatCo
         if (this.isReadonly()) {
             html.print(" disabled");
         }
-        if (this.getOnclick() != null) {
-            html.print(" onclick=\"%s\"", this.getOnclick());
+        if (this.onclick != null) {
+            html.print(" onclick=\"%s\"", this.onclick);
         }
         html.print(">");
     }
@@ -103,8 +99,12 @@ public class BooleanField extends AbstractField implements SearchItem, IFormatCo
     }
 
     @Override
-    public String format(Record value) {
-        Record ds = value;
+    public String format(Object value) {
+        if (!(value instanceof Record)) {
+            return value.toString();
+        }
+
+        Record ds = (Record) value;
         if (this.isReadonly()) {
             return getText(ds);
         }
@@ -139,36 +139,4 @@ public class BooleanField extends AbstractField implements SearchItem, IFormatCo
         this.falseText = falseText;
     }
 
-    @Override
-    public String getOninput() {
-        return oninput;
-    }
-
-    @Override
-    public BooleanField setOninput(String oninput) {
-        this.oninput = oninput;
-        return this;
-    }
-
-    @Override
-    public String getOnclick() {
-        return onclick;
-    }
-
-    @Override
-    public BooleanField setOnclick(String onclick) {
-        this.onclick = onclick;
-        return this;
-    }
-
-    @Override
-    public BooleanField createText(BuildText buildText) {
-        this.buildText = buildText;
-        return this;
-    }
-
-    @Override
-    public BuildText getBuildText() {
-        return buildText;
-    }
 }

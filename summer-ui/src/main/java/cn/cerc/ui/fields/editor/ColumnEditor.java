@@ -9,11 +9,9 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.fields.AbstractField;
-import cn.cerc.ui.fields.IFieldBuildText;
-import cn.cerc.ui.fields.IFieldEvent;
 import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.MasterGridLine;
@@ -32,8 +30,7 @@ public class ColumnEditor {
     public ColumnEditor(AbstractField owner) {
         this.owner = owner;
         if (!(owner.getOwner() instanceof AbstractGridLine)) {
-            throw new RuntimeException(
-                    String.format(res.getString(1, "不支持的数据类型：%s"), owner.getOwner().getClass().getName()));
+            throw new RuntimeException(String.format(res.getString(1, "不支持的数据类型：%s"), owner.getOwner().getClass().getName()));
         }
         gridLine = (AbstractGridLine) (owner.getOwner());
     }
@@ -48,15 +45,9 @@ public class ColumnEditor {
 
     public String format(Record ds) {
         String data = ds.getString(owner.getField());
-
-        IFieldBuildText build = null;
-        if (owner instanceof IFieldBuildText) {
-            build = (IFieldBuildText) owner;
-        }
-
-        if (build != null && build.getBuildText() != null) {
+        if (owner.getBuildText() != null) {
             HtmlWriter html = new HtmlWriter();
-            build.getBuildText().outputText(ds, html);
+            owner.getBuildText().outputText(ds, html);
             data = html.toString();
         } else if (ds.getField(owner.getField()) instanceof Double) {
             DecimalFormat df = new DecimalFormat("0.####");
@@ -107,15 +98,8 @@ public class ColumnEditor {
             if (owner.getAlign() != null) {
                 inputStyle += String.format("text-align:%s;", owner.getAlign());
             }
-
-            String onclick = null;
-            if (owner instanceof IFieldEvent) {
-                IFieldEvent event = (IFieldEvent) owner;
-                onclick = event.getOnclick();
-            }
-
-            if (onclick != null) {
-                html.print(" onclick=\"%s\"", onclick);
+            if (owner.getOnclick() != null) {
+                html.print(" onclick=\"%s\"", owner.getOnclick());
             } else {
                 html.print(" onclick='this.select()'");
             }

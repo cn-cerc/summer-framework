@@ -4,17 +4,14 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ExpendField extends AbstractField implements SearchItem, IFieldBuildText {
+public class ExpendField extends AbstractField implements SearchItem {
     private static final ClassResource res = new ClassResource(ExpendField.class, SummerUI.ID);
 
     private boolean search;
     private String hiddenId = "hidden";
-
-    private BuildText buildText;
 
     public ExpendField(UIComponent owner) {
         this(owner, "", "_opera_", 5);
@@ -39,12 +36,12 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
         if (this.search) {
             return this.getName();
         }
-        if (getBuildText() != null) {
+        if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            getBuildText().outputText(record, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
-        return String.format("<a href=\"javascript:displaySwitch('%d')\">%s</a>", getDataSource().getDataSet().getRecNo(), res.getString(1, "展开"));
+        return String.format("<a href=\"javascript:displaySwitch('%d')\">%s</a>", dataSource.getDataSet().getRecNo(), res.getString(1, "展开"));
     }
 
     @Override
@@ -69,22 +66,11 @@ public class ExpendField extends AbstractField implements SearchItem, IFieldBuil
         if (this.search) {
             return hiddenId;
         }
-        return "" + getDataSource().getDataSet().getRecNo();
+        return "" + dataSource.getDataSet().getRecNo();
     }
 
     public void setHiddenId(String hiddenId) {
         this.hiddenId = hiddenId;
-    }
-
-    @Override
-    public ExpendField createText(BuildText buildText) {
-        this.buildText = buildText;
-        return this;
-    }
-
-    @Override
-    public BuildText getBuildText() {
-        return buildText;
     }
 
 }

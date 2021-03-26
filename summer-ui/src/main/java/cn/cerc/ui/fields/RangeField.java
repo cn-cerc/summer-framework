@@ -10,10 +10,8 @@ import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
 import cn.cerc.ui.parts.UIComponent;
 
-public class RangeField extends AbstractField implements DataSource, IFieldDialog {
+public class RangeField extends AbstractField implements DataSource {
     private static final ClassResource res = new ClassResource(RangeField.class, SummerUI.ID);
-    private DialogField dialog;
-    private String icon;
 
     public RangeField(UIComponent dataView, String name) {
         super(dataView, name, 0);
@@ -26,8 +24,8 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
 
     @Override
     public void output(HtmlWriter html) {
-        Record record = getDataSource() != null ? getDataSource().getDataSet().getCurrent() : null;
-        if (this.isHidden()) {
+        Record record = dataSource != null ? dataSource.getDataSet().getCurrent() : null;
+        if (this.hidden) {
             html.print("<input");
             html.print(" type=\"hidden\"");
             html.print(" name=\"%s\"", this.getId());
@@ -46,15 +44,15 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
                         html.print("-");
                     }
                     child = (AbstractField) component;
-                    String val = child.getCssClass();
-                    child.setCssClass("price");
+                    String val = child.getCSSClass_phone();
+                    child.setCSSClass_phone("price");
                     child.outputInput(html, record);
-                    child.setCssClass(val);
+                    child.setCSSClass_phone(val);
                 }
             }
-            if (this.getDialog() != null) {
+            if (this.dialog != null) {
                 html.print("<span>");
-                html.print("<a href=\"javascript:%s('%s')\">", this.getDialog(), this.getId());
+                html.print("<a href=\"javascript:%s('%s')\">", this.dialog, this.getId());
                 html.print("<img src=\"images/select-pic.png\">");
                 html.print("</a>");
                 html.print("</span>");
@@ -74,6 +72,11 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
     }
 
     @Override
+    public boolean isReadonly() {
+        return dataSource.isReadonly();
+    }
+
+    @Override
     public void updateField() {
         AbstractField child = null;
         for (Component component : this.getComponents()) {
@@ -86,44 +89,11 @@ public class RangeField extends AbstractField implements DataSource, IFieldDialo
 
     @Override
     public DataSet getDataSet() {
-        return getDataSource().getDataSet();
+        return dataSource.getDataSet();
     }
 
     @Override
     public void updateValue(String id, String code) {
-        getDataSource().updateValue(id, code);
-    }
-
-    @Override
-    public DialogField getDialog() {
-        return dialog;
-    }
-
-    @Override
-    public RangeField setDialog(String dialogfun) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        return this;
-    }
-
-    @Override
-    public RangeField setDialog(String dialogfun, String... params) {
-        this.dialog = new DialogField(dialogfun);
-        dialog.setInputId(this.getId());
-        for (String string : params) {
-            this.dialog.add(string);
-        }
-        return this;
-    }
-
-    @Override
-    public String getIcon() {
-        return icon;
-    }
-
-    @Override
-    public RangeField setIcon(String icon) {
-        this.icon = icon;
-        return this;
+        dataSource.updateValue(id, code);
     }
 }

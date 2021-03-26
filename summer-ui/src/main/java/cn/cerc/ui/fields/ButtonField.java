@@ -2,15 +2,11 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.other.BuildText;
 import cn.cerc.ui.parts.UIComponent;
 
-public class ButtonField extends AbstractField implements IFieldEvent, IFieldBuildText {
+public class ButtonField extends AbstractField {
     private String data;
     private String type;
-    private String onclick;
-    private String oninput;
-    private BuildText buildText;
 
     public ButtonField() {
         super(null, null, 0);
@@ -37,9 +33,9 @@ public class ButtonField extends AbstractField implements IFieldEvent, IFieldBui
         if (record == null) {
             return null;
         }
-        if (getBuildText() != null) {
+        if (buildText != null) {
             HtmlWriter html = new HtmlWriter();
-            getBuildText().outputText(record, html);
+            buildText.outputText(record, html);
             return html.toString();
         }
         return record.getString(getField());
@@ -51,8 +47,8 @@ public class ButtonField extends AbstractField implements IFieldEvent, IFieldBui
         if (this.data != null) {
             html.print(" value=\"%s\"", this.data);
         }
-        if (this.getCssClass() != null) {
-            html.print(" class=\"%s\"", this.getCssClass());
+        if (getCSSClass_phone() != null) {
+            html.print(" class=\"%s\"", getCSSClass_phone());
         }
         if (this.getOnclick() != null) {
             html.print(" onclick=\"%s\"", this.getOnclick());
@@ -71,38 +67,5 @@ public class ButtonField extends AbstractField implements IFieldEvent, IFieldBui
     public ButtonField setType(String type) {
         this.type = type;
         return this;
-    }
-
-    @Override
-    public String getOninput() {
-        return oninput;
-    }
-
-    @Override
-    public ButtonField setOninput(String oninput) {
-        this.oninput = oninput;
-        return this;
-    }
-
-    @Override
-    public String getOnclick() {
-        return onclick;
-    }
-
-    @Override
-    public ButtonField setOnclick(String onclick) {
-        this.onclick = onclick;
-        return this;
-    }
-
-    @Override
-    public ButtonField createText(BuildText buildText) {
-        this.buildText = buildText;
-        return this;
-    }
-
-    @Override
-    public BuildText getBuildText() {
-        return buildText;
     }
 }

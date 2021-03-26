@@ -1,8 +1,14 @@
 package cn.cerc.ui.core;
 
-public interface DataSource extends IDataSetOwner{
+import cn.cerc.core.DataSet;
+
+public interface DataSource {
 
     void addField(IField field);
+
+    DataSet getDataSet();
+
+    boolean isReadonly();
 
     void updateValue(String id, String code);
 }

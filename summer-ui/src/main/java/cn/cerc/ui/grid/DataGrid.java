@@ -135,11 +135,11 @@ public class DataGrid extends AbstractGrid {
         this.masterLine.setPrimaryKey(primaryKey);
         return this;
     }
-//
-//    @Override
-//    public boolean isReadonly() {
-//        return true;
-//    }
+
+    @Override
+    public boolean isReadonly() {
+        return true;
+    }
 
     @Override
     public void updateValue(String id, String code) {
