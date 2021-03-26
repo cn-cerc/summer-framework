@@ -72,12 +72,7 @@ public class StartApp implements Filter {
                 req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
             }
             try {
-                IForm form;
-                if (Application.get(req).containsBean("mobileConfig")) {
-                    form = Application.getBean("mobileConfig", IForm.class);
-                } else {
-                    form = Application.getBean("MobileConfig", IForm.class);
-                }
+                IForm form = Application.getBean(IForm.class, "mobileConfig", "MobileConfig");
                 form.setRequest((HttpServletRequest) request);
                 form.setResponse((HttpServletResponse) response);
 

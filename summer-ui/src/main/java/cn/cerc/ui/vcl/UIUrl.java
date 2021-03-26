@@ -58,17 +58,13 @@ public class UIUrl extends UICssComponent {
         return this;
     }
 
-    public UIUrl setHref(String href, Object... args) {
-        this.href = String.format(href, args);
-        return this;
-    }
-
+    // 此函数特别允许与setHref重复，以方便记忆
     public UIUrl setUrl(String href) {
         this.href = href;
         return this;
     }
 
-    @Deprecated
+    // 此函数特别允许与setHref重复，以方便记忆
     public UIUrl setUrl(String href, Object... args) {
         this.href = String.format(href, args);
         return this;

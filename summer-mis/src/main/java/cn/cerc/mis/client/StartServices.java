@@ -42,7 +42,7 @@ public class StartServices extends HttpServlet {
         }
         services = new HashMap<>();
         for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
-            IRestful service = Application.getBean(serviceCode, IRestful.class);
+            IRestful service = Application.getBean(IRestful.class, serviceCode);
             String path = service.getRestPath();
             if (null != path && !"".equals(path)) {
                 services.put(path, serviceCode);

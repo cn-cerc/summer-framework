@@ -13,9 +13,7 @@ import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,7 +26,7 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
     private ApplicationContext context;
 
     public static AbstractTask getTask(ISession session, String beanId) {
-        AbstractTask task = Application.getBean(beanId, AbstractTask.class);
+        AbstractTask task = Application.getBean(AbstractTask.class, beanId);
         if (task != null) {
             task.setSession(session);
         }

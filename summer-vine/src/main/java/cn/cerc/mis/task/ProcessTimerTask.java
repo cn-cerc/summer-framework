@@ -142,7 +142,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
     }
 
     public static AbstractTask getTask(ISession session, String beanId) {
-        AbstractTask task = Application.getBean(beanId, AbstractTask.class);
+        AbstractTask task = Application.getBean(AbstractTask.class, beanId);
         if (task != null) {
             task.setSession(session);
             IHandle handle = new Handle(session);
