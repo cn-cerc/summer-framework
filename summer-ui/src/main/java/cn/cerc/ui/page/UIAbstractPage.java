@@ -200,7 +200,7 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
     // 请改使用 getControls
     public UIComponent getMenuPath() {
         if (menuPath == null)
-            menuPath = new UIOriginComponent(this.getControls());
+            menuPath = new UIOriginComponent(this.getFrontPanel());
         return menuPath;
     }
 
