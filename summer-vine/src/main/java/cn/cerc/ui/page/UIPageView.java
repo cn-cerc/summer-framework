@@ -25,7 +25,7 @@ public class UIPageView extends UIPage {
         setForm(form);
         initCssFile();
         initJsFile();
-        
+
         String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
         String[] params = menuCode.split("\\.");
         String formId = params[0];
@@ -54,9 +54,11 @@ public class UIPageView extends UIPage {
         Component content = this.getContent();
         if (form instanceof AbstractForm) {
             this.getHeader().initHeader();
-            request.setAttribute(content.getId(), content);
+            if (content.getId() != null)
+                request.setAttribute(content.getId(), content);
             for (Component component : content.getComponents()) {
-                request.setAttribute(component.getId(), component);
+                if (component.getId() != null)
+                    request.setAttribute(component.getId(), component);
             }
         }
 
@@ -97,7 +99,7 @@ public class UIPageView extends UIPage {
         this.caption = caption;
         return this;
     }
-    
+
     public String getCaption(String caption) {
         return caption;
     }
