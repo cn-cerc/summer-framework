@@ -42,6 +42,11 @@ public class UIText extends UIComponent {
         return this;
     }
 
+    public UIText setContent(String text, Object... args) {
+        this.content = String.format(text, args);
+        return this;
+    }
+
     public List<String> getLines() {
         if (lines == null) {
             lines = new ArrayList<>();
