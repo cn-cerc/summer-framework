@@ -26,7 +26,7 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
     private UIComponent menuPath; // （中间右边上方）菜单路径
     @Deprecated
     private UIComponent notice; // （中间右边上方）通知区域
-    private UIComponent controls; // （中间右边上方）控制区域（Web显示固定）
+    private UIComponent frontPanel; // （中间右边上方）控制区域（Web显示固定）
     private UIComponent content; // （中间右边）主内容区域
     private UIComponent footer; // （中间右边）尾部区部（Web显示固定）
     @Deprecated
@@ -100,9 +100,9 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         // 右侧区域
         out.println("<article>");
         // （中间右边上方）控制区域（Web显示固定）
-        if (controls != null) {
-            out.print("<div class='controls'>");
-            out.print(controls);
+        if (frontPanel != null) {
+            out.print("<div class='frontPanel'>");
+            out.print(frontPanel);
             out.println("</div>");
         }
         // （中间右边）主内容区域
@@ -208,7 +208,7 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
     // 请改使用 getControls
     public UIComponent getNotice() {
         if (notice == null)
-            notice = new UIOriginComponent(this.getControls());
+            notice = new UIOriginComponent(this.getFrontPanel());
         return notice;
     }
 
@@ -218,10 +218,10 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         return content;
     }
 
-    public UIComponent getControls() {
-        if (controls == null)
-            controls = new UIOriginComponent(this);
-        return controls;
+    public UIComponent getFrontPanel() {
+        if (frontPanel == null)
+            frontPanel = new UIOriginComponent(this);
+        return frontPanel;
     }
 
     @Deprecated
