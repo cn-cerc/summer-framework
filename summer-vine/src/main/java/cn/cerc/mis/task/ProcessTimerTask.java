@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
+@Deprecated // 请改使用 StartTaskDefault，注意测试不同用户的创建
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
 
     // 晚上12点执行，也即0点开始执行

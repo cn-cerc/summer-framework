@@ -284,9 +284,11 @@ public class Application {
 
             // 建立数据库资源
             session = Application.createSession();
+            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+            manage.resumeToken((String) req.getSession().getAttribute(RequestData.TOKEN));
             session.setProperty(Application.sessionId, req.getSession().getId());
-            session.setProperty(Application.deviceLanguage, client.getLanguage());
-            session.setProperty(Application.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
+            // session.setProperty(Application.deviceLanguage, client.getLanguage());
+            // session.setProperty(Application.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
             IHandle handle = new Handle(session);
             req.setAttribute("myappHandle", handle);
             form.setId(formId);
