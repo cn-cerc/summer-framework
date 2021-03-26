@@ -1,12 +1,12 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.cerc.core.ClassResource;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.other.UrlMenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UISheetHelp extends UISheet {
     private static final ClassResource res = new ClassResource(UISheetHelp.class, SummerUI.ID);
@@ -14,6 +14,12 @@ public class UISheetHelp extends UISheet {
     private String content;
     private UrlMenu operaUrl;
     private List<String> lines = new ArrayList<>();
+
+    @Deprecated
+    public UISheetHelp() {
+        super();
+        this.setCaption(res.getString(1, "操作提示"));
+    }
 
     public UISheetHelp(UIToolbar owner) {
         super(owner);

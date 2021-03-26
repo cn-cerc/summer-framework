@@ -1,14 +1,14 @@
 package cn.cerc.ui.parts;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import cn.cerc.core.ClassResource;
 import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UISheetUrl extends UISheet {
     private static final ClassResource res = new ClassResource(UISheetUrl.class, SummerUI.ID);
@@ -17,6 +17,14 @@ public class UISheetUrl extends UISheet {
     // 使用于page-link.xml中
     private Map<String, String> items = new LinkedHashMap<>();
     private boolean isCloseSheet;
+
+    /**
+     * page-link.xml
+     */
+    private UISheetUrl() {
+        super();
+        this.setCaption(res.getString(1, "相关操作"));
+    }
 
     public UISheetUrl(UIToolbar owner) {
         super(owner);

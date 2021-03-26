@@ -12,7 +12,7 @@ import cn.cerc.ui.core.UICustomComponent;
 public class UIToolbar extends UICustomComponent {
     private List<UISheet> sheets = new ArrayList<>();
 
-    public UIToolbar(UIComponent owner) {
+    public UIToolbar(UICustomComponent owner) {
         super(owner);
         this.setId("rightSide");
     }

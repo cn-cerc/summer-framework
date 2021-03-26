@@ -1,17 +1,22 @@
 package cn.cerc.ui.parts;
 
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.UrlRecord;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.UrlRecord;
-
 public class UISheetModule extends UISheet {
     private List<UrlRecord> urls = new ArrayList<>();
     // 使用于page-link.xml中
     private Map<String, String> items = new LinkedHashMap<>();
+
+    @Deprecated
+    public UISheetModule() {
+        super();
+    }
 
     public UISheetModule(UIToolbar owner) {
         super(owner);
