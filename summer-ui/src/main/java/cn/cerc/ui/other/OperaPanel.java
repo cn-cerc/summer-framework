@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.UrlRecord;
+import cn.cerc.ui.parts.UIComponent;
 
 public class OperaPanel extends UICustomComponent {
     // 操作提示
@@ -14,7 +15,7 @@ public class OperaPanel extends UICustomComponent {
     // 相关链接
     private List<UrlRecord> menus;
 
-    public OperaPanel(UICustomComponent owner) {
+    public OperaPanel(UIComponent owner) {
         super(owner);
         this.setId("right");
     }
