@@ -29,8 +29,8 @@ public abstract class UIComponent extends Component implements Iterable<UICompon
     @Override
     public Iterator<UIComponent> iterator() {
         List<UIComponent> list = new ArrayList<>();
-        for(Component component: this.getComponents()) {
-            if(component instanceof UIComponent) {
+        for (Component component : this.getComponents()) {
+            if (component instanceof UIComponent) {
                 list.add((UIComponent) component);
             }
         }
