@@ -17,6 +17,8 @@ import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.vcl.table.UITd;
+import cn.cerc.ui.vcl.table.UITr;
 
 public class UIGrid extends UIOriginComponent implements IReadonlyOwner {
     private static final ClassResource res = new ClassResource(DataGrid.class, SummerUI.ID);
@@ -29,11 +31,13 @@ public class UIGrid extends UIOriginComponent implements IReadonlyOwner {
     private DataSet dataSet;
     // 支持表格分页
     private MutiPage pages = new MutiPage();
-    //所有字段对象
+    // 所有字段对象
     private List<IColumn> columns = new ArrayList<>();
     // 默认表格内容为只读
     private boolean readonly = true;
+    //
     private IForm form;
+    private IDefineEmptyData defineEmptyData;
 
     public UIGrid(UIComponent owner) {
         super(owner);
@@ -175,9 +179,27 @@ public class UIGrid extends UIOriginComponent implements IReadonlyOwner {
                 // 下一行
                 i++;
             }
+        } else {
+            UITr tr = new UITr().setCssClass("empty");
+            UITd td = new UITd(tr).setColspan(this.getMasterLine().getComponents().size());
+            if (defineEmptyData != null) {
+                defineEmptyData.execute(this, td);
+            } else {
+                td.setText("（没有数据）");
+            }
+            tr.output(html);
         }
         html.println("</table>");
         html.print("</div>");
+    }
+
+    public interface IDefineEmptyData {
+        void execute(UIGrid sender, UITd td);
+    }
+
+    public UIGrid defineEmptyData(IDefineEmptyData defineEmptyData) {
+        this.defineEmptyData = defineEmptyData;
+        return this;
     }
 
     @Override

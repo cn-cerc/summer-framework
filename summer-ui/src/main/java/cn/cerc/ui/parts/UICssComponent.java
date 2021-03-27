@@ -4,6 +4,7 @@ import cn.cerc.ui.core.HtmlWriter;
 
 public abstract class UICssComponent extends UIComponent {
     protected String cssClass;
+    @Deprecated
     protected String cssStyle;
     
     public UICssComponent() {
@@ -18,10 +19,12 @@ public abstract class UICssComponent extends UIComponent {
         return cssClass;
     }
 
-    public void setCssClass(String cssClass) {
+    public UICssComponent setCssClass(String cssClass) {
         this.cssClass = cssClass;
+        return this;
     }
 
+    @Deprecated
     public String getCssStyle() {
         return cssStyle;
     }
@@ -31,6 +34,7 @@ public abstract class UICssComponent extends UIComponent {
         this.cssStyle = cssStyle;
     }
 
+    @Deprecated
     protected void outputCss(HtmlWriter html) {
         if (this.cssClass != null) {
             html.print(" class='%s'", cssClass);
