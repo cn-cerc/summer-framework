@@ -2,7 +2,6 @@ package cn.cerc.mis.other;
 
 import cn.cerc.mis.core.IBufferKey;
 
-//FIXME: BufferType应从框架中移出
 public enum BufferType implements IBufferKey {
     // 0.测试专用
     test,
@@ -69,5 +68,10 @@ public enum BufferType implements IBufferKey {
     @Override
     public int getMinimumNumber() {
         return 1;
+    }
+
+    @Override
+    public int getMaximumNumber() {
+        return 99;
     }
 }

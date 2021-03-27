@@ -13,4 +13,9 @@ public enum SystemBufferType implements IBufferKey {
         return 0;
     }
 
+    @Override
+    public int getMaximumNumber() {
+        return 99;
+    }
+
 }

@@ -30,6 +30,10 @@ public class MemoryBuffer extends Buffer implements AutoCloseable {
             throw new RuntimeException(res.getString(3, "参数数量不足！"));
         }
 
+        if(keys.length > bufferKey.getMinimumNumber()) {
+            throw new RuntimeException(res.getString(4, "参数数量过多！"));
+        }
+
         StringBuffer result = new StringBuffer();
         
         result.append(bufferKey.getStartingPoint() + bufferType.ordinal());
