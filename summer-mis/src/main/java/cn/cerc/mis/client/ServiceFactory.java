@@ -4,6 +4,7 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IServiceProxyFactory;
 
+@Deprecated
 public class ServiceFactory {
     private static IServiceProxyFactory factory;
 
