@@ -79,7 +79,7 @@ public class LocalService implements IServiceProxy {
     }
 
     @Override
-    public IServiceProxy setService(String service) {
+    public LocalService setService(String service) {
         this.serviceCode = service;
         return this;
     }

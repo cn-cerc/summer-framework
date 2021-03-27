@@ -1,16 +1,15 @@
 package cn.cerc.mis.client;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
 
 public interface IServiceProxy {
-    String _message_ = "_message_";
+    public static final String _message_ = "_message_";
 
     // 返回服务代码
     String getService();
 
     // 设置服务代码
-    IServiceProxy setService(String service);
+    Object setService(String service);
 
     // 传入数据
     DataSet getDataIn();

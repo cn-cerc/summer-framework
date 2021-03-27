@@ -135,7 +135,7 @@ public class RemoteService implements IServiceProxy {
     }
 
     @Override
-    public IServiceProxy setService(String service) {
+    public RemoteService setService(String service) {
         this.service = service;
         return this;
     }
