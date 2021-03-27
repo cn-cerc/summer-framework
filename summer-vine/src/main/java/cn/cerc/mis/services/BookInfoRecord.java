@@ -3,8 +3,6 @@ package cn.cerc.mis.services;
 import lombok.Getter;
 import lombok.Setter;
 
-@Deprecated
-//FIXME BookInfoRecord 应该从框架中移出
 @Getter
 @Setter
 public class BookInfoRecord {
