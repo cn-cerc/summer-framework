@@ -26,7 +26,6 @@ import java.util.List;
 public class UIFormHorizontal extends UICssComponent implements DataSource {
     private static final ClassResource res = new ClassResource(UIFormHorizontal.class, SummerUI.ID);
 
-    protected String cssClass = "search";
     protected String method = "post";
     protected HttpServletRequest request;
     protected List<AbstractField> fields = new ArrayList<>();
@@ -44,6 +43,7 @@ public class UIFormHorizontal extends UICssComponent implements DataSource {
 
     public UIFormHorizontal(UIComponent owner, HttpServletRequest request) {
         super(owner);
+        this.setCssClass("search");
         this.request = request;
         this.setId("form1");
         this.setCssClass("search");
@@ -52,16 +52,6 @@ public class UIFormHorizontal extends UICssComponent implements DataSource {
         dataSet.append();
         this.title = new UILabel();
         this.setSearchTitle(res.getString(1, "搜索查询"));
-    }
-
-    @Override
-    public String getCssClass() {
-        return cssClass;
-    }
-
-    @Override
-    public void setCssClass(String cssClass) {
-        this.cssClass = cssClass;
     }
 
     public Record getRecord() {
