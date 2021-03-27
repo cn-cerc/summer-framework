@@ -19,7 +19,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class LocalService implements IServiceProxy {
+public class LocalService extends CustomProxy implements IServiceProxy {
     private String serviceCode;
 
     private String message;

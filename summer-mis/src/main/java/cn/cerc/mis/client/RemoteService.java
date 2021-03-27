@@ -12,13 +12,14 @@ import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.CustomProxy;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RemoteService implements IServiceProxy {
+public class RemoteService extends CustomProxy implements IServiceProxy {
     private static final ClassResource res = new ClassResource(RemoteService.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(RemoteService.class, SummerMIS.ID);
 
@@ -32,14 +33,19 @@ public class RemoteService implements IServiceProxy {
     private DataSet dataIn;
     private DataSet dataOut;
     private String message;
-
     private String buffKey;
+    
+    public RemoteService(IHandle handle) {
+        this.handle = handle;
+    }
 
+    @Deprecated
     public static RemoteService create(IHandle handle, String bookNo) {
         return new RemoteService(handle, bookNo);
     }
 
-    private RemoteService(IHandle handle, String bookNo) {
+    @Deprecated
+    public RemoteService(IHandle handle, String bookNo) {
         this.handle = handle;
         this.token = Application.getToken(handle);
 
