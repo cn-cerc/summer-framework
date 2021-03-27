@@ -19,7 +19,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class LocalService extends CustomProxy implements IServiceProxy {
+public class LocalService implements IServiceProxy {
     private String serviceCode;
 
     private String message;
@@ -234,7 +234,6 @@ public class LocalService extends CustomProxy implements IServiceProxy {
         return this.dataIn;
     }
 
-    @Override
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
         try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getExportKey, handle.getUserCode(), tmp)) {

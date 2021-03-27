@@ -23,38 +23,38 @@ public interface IServiceProxy {
 
     // 执行
     boolean exec(Object... args);
-
-    // 服务缓存
-    default String getExportKey() {
-        return null;
-    }
-
-    // select
-    default boolean get(Object... args) {
-        Record headIn = this.getDataIn().getHead();
-        headIn.setField("_method_", "get");
-        return exec(args);
-    }
-
-    // append
-    default boolean post(Object... args) {
-        Record headIn = this.getDataIn().getHead();
-        headIn.setField("_method_", "post");
-        return exec(args);
-    }
-
-    // update
-    default boolean put(Object... args) {
-        Record headIn = this.getDataIn().getHead();
-        headIn.setField("_method_", "put");
-        return exec(args);
-    }
-
-    // delete
-    default boolean delete(Object... args) {
-        Record headIn = this.getDataIn().getHead();
-        headIn.setField("_method_", "delete");
-        return exec(args);
-    }
+//
+//    // 服务缓存
+//    default String getExportKey() {
+//        return null;
+//    }
+//
+//    // select
+//    default boolean get(Object... args) {
+//        Record headIn = this.getDataIn().getHead();
+//        headIn.setField("_method_", "get");
+//        return exec(args);
+//    }
+//
+//    // append
+//    default boolean post(Object... args) {
+//        Record headIn = this.getDataIn().getHead();
+//        headIn.setField("_method_", "post");
+//        return exec(args);
+//    }
+//
+//    // update
+//    default boolean put(Object... args) {
+//        Record headIn = this.getDataIn().getHead();
+//        headIn.setField("_method_", "put");
+//        return exec(args);
+//    }
+//
+//    // delete
+//    default boolean delete(Object... args) {
+//        Record headIn = this.getDataIn().getHead();
+//        headIn.setField("_method_", "delete");
+//        return exec(args);
+//    }
 
 }
