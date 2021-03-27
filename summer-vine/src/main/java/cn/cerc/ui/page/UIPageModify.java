@@ -66,9 +66,11 @@ public class UIPageModify extends UIPage {
         Component content = this.getContent();
         if (form instanceof AbstractForm) {
             this.getHeader().initHeader();
-            request.setAttribute(content.getId(), content);
+            if (content.getId() != null)
+                request.setAttribute(content.getId(), content);
             for (Component component : content.getComponents()) {
-                request.setAttribute(component.getId(), component);
+                if (component.getId() != null)
+                    request.setAttribute(component.getId(), component);
             }
         }
 
@@ -83,7 +85,8 @@ public class UIPageModify extends UIPage {
         if (Utils.isNotEmpty(this.getForm().getName())) {
             out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
         } else {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+            out.printf("<title>%s</title>\n",
+                    R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
         }
 
         // 所有的请求都不发送 referrer
@@ -92,7 +95,8 @@ public class UIPageModify extends UIPage {
         out.println("<meta name=\"format-detection\" content=\"email=no\" />");
         out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
-        out.printf("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
+        out.printf(
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
         out.print(this.getCssHtml());
         out.print(getScriptHtml());
         out.println("<script>");
