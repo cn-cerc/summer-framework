@@ -13,6 +13,7 @@ public class ServiceFactory {
         return get(handle, BOOK_PUBLIC);
     }
 
+    @Deprecated
     public static IServiceProxy get(IHandle handle, String corpNo) {
         if (factory == null)
             factory = Application.getBeanDefault(IServiceProxyFactory.class, handle.getSession());
