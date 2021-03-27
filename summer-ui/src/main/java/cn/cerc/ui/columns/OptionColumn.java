@@ -144,7 +144,6 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
         return this;
     }
 
-    @Deprecated
     public void put(String key, String value) {
         select.getOptions().put(key, value);
     }
