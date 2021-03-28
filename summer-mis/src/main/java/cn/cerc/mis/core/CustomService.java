@@ -168,6 +168,7 @@ public class CustomService implements IMultiplService, IRestful {
         return funcCode;
     }
 
+    @Override
     public void setFuncCode(String funcCode) {
         this.funcCode = funcCode;
     }

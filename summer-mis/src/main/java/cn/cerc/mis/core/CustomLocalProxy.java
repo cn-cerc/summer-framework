@@ -1,5 +1,7 @@
 package cn.cerc.mis.core;
 
+import org.springframework.context.ApplicationContext;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.db.core.IHandle;
 
@@ -47,16 +49,21 @@ public abstract class CustomLocalProxy {
         }
 
         // 读取xml中的配置
-        Object bean = Application.getContext().getBean(this.getService());
-        if (bean == null) {
-            // 读取注解的配置
+        Object bean = null;
+        ApplicationContext context = Application.getContext();
+        if (context.containsBean(getService())) {
+            bean = context.getBean(this.getService());
+        } else {
+            // 读取注解的配置，并自动将第一个字母改为小写
             String beanId = getService().split("\\.")[0];
             beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
-            // 支持指定函数
-            bean = Application.getBean(IService.class, beanId);
-            if (bean instanceof CustomService) {
-                CustomService cs = ((CustomService) bean);
-                cs.setFuncCode(getService().split("\\.")[1]);
+            if (context.containsBean(beanId)) {
+                bean = context.getBean(beanId);
+                // 支持指定函数
+                if (bean instanceof IMultiplService) {
+                    IMultiplService cs = ((IMultiplService) bean);
+                    cs.setFuncCode(getService().split("\\.")[1]);
+                }
             }
         }
         if (bean == null) {

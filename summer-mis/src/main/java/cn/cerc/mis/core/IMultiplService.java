@@ -11,9 +11,10 @@ public interface IMultiplService extends IDataService {
     void setDataIn(DataSet dataIn);
 
     void setDataOut(DataSet dataOut);
-    
+
     String getFuncCode();
+    
+    void setFuncCode(String string);
 
     public IStatus execute();
-
 }
