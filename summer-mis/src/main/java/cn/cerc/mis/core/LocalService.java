@@ -144,11 +144,15 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
 
     @Override
     public DataSet getDataOut() {
+        if (this.dataOut == null)
+            this.dataOut = new DataSet();
         return this.dataOut;
     }
 
     @Override
     public DataSet getDataIn() {
+        if (this.dataIn == null)
+            this.dataIn = new DataSet();
         return this.dataIn;
     }
 
