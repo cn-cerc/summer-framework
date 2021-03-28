@@ -12,7 +12,7 @@ public class LocalProxy extends CustomLocalProxy {
 
     public LocalProxy(IHandle handle, String service) {
         this(handle);
-        this.setHandle(handle);
+        this.setService(service);
     }
 
     public DataSet execute(String... args) {
