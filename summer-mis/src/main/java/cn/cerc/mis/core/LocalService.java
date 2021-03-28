@@ -45,6 +45,11 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
     // 带缓存调用服务
     @Override
     public boolean exec(Object... args) {
+        if (this.dataIn == null)
+            this.dataIn = new DataSet();
+        if (this.dataOut == null)
+            this.dataOut = new DataSet();
+
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
             if (args.length % 2 != 0) {
@@ -55,11 +60,6 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
                 headIn.setField(args[i].toString(), args[i + 1]);
             }
         }
-
-        if (this.dataIn == null)
-            this.dataIn = new DataSet();
-        if (this.dataOut == null)
-            this.dataOut = new DataSet();
 
         Object object = getServiceObject();
         if (object == null) {
