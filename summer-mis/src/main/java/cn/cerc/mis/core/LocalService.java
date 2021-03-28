@@ -6,8 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.MD5;
 import cn.cerc.core.Record;
@@ -19,11 +17,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class LocalService implements IServiceProxy {
-    private String serviceCode;
-
-    private String message;
-    private IHandle handle;
+public class LocalService extends CustomLocalProxy implements IServiceProxy {
     // 是否激活缓存
     private boolean bufferRead = true;
     private boolean bufferWrite = true;
@@ -32,11 +26,7 @@ public class LocalService implements IServiceProxy {
     private DataSet dataOut = new DataSet();
 
     public LocalService(IHandle handle) {
-        this.handle = handle;
-        if (handle == null) {
-            throw new RuntimeException("handle is null.");
-        }
-
+        super(handle);
         String pageNo = null;
         HttpServletRequest req = (HttpServletRequest) handle.getProperty("request");
         if (req != null) {
@@ -52,6 +42,7 @@ public class LocalService implements IServiceProxy {
         this.setService(service);
     }
 
+    @Deprecated
     public static void listMethod(Class<?> clazz) {
         Map<String, Class<?>> items = new HashMap<>();
         String[] args = clazz.getName().split("\\.");
@@ -73,102 +64,53 @@ public class LocalService implements IServiceProxy {
         }
     }
 
-    @Override
-    public String getService() {
-        return serviceCode;
-    }
-
-    @Override
-    public LocalService setService(String service) {
-        this.serviceCode = service;
-        return this;
-    }
-
-    @Override
-    public String getMessage() {
-        if (message != null) {
-            return message.replaceAll("'", "\"");
-        } else {
-            return null;
-        }
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     // 带缓存调用服务
     @Override
     public boolean exec(Object... args) {
         if (args.length > 0) {
             Record headIn = getDataIn().getHead();
             if (args.length % 2 != 0) {
-                // TODO 此处应该使用ClassResource
+                // TODO 此处应该使用 ClassResource
                 throw new RuntimeException("传入的参数数量必须为偶数！");
             }
             for (int i = 0; i < args.length; i = i + 2) {
                 headIn.setField(args[i].toString(), args[i + 1]);
             }
         }
-        if (handle == null) {
-            throw new RuntimeException("handle is null.");
-        }
-        if (serviceCode == null) {
-            throw new RuntimeException("service is null.");
-        }
 
-        // 读取xml的服务配置
-        IService bean;
-        try {
-            bean = Application.getService(handle, serviceCode);
-        } catch (NoSuchBeanDefinitionException e) {
-            // 读取注解的配置
-            String beanId = serviceCode.split("\\.")[0];
-            beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
-            bean = Application.getService(handle, beanId);
-            if (bean instanceof CustomService) {
-                ((CustomService) bean).setFuncCode(serviceCode.split("\\.")[1]);
-            }
-        }
-
-        if (bean == null) {
-            this.message = String.format("bean %s not find", serviceCode);
+        Object object = getServiceObject();
+        if (object == null) {
             return false;
         }
 
         try {
-            if (!"SvrSession.byUserCode".equals(this.serviceCode) && !"SvrUserMessages.getWaitList".equals(this.serviceCode)) {
-                log.debug(this.serviceCode);
+            if (!"SvrSession.byUserCode".equals(this.getService())
+                    && !"SvrUserMessages.getWaitList".equals(this.getService())) {
+                log.debug(this.getService());
             }
+            
             if (ServerConfig.isServerMaster()) {
-                IStatus status = bean.execute(dataIn, dataOut);
-                boolean result = status.getResult();
-                message = status.getMessage();
-                return result;
+                return executeService(object, this.dataIn, this.dataOut);
             }
 
             // 制作临时缓存Key
-            String key = MD5.get(handle.getUserCode() + this.serviceCode + dataIn.getJSON());
-
+            String key = MD5.get(getHandle().getUserCode() + this.getService() + dataIn.getJSON());
+            
             if (bufferRead) {
                 String buffValue = Redis.get(key);
                 if (buffValue != null) {
-                    log.debug("read from buffer: " + this.serviceCode);
+                    log.debug("read from buffer: " + this.getService());
                     dataOut.setJSON(buffValue);
-                    message = dataOut.getHead().getString("_message_");
+                    setMessage(dataOut.getHead().getString("_message_"));
                     return dataOut.getHead().getBoolean("_result_");
                 }
             }
 
             // 没有缓存时，直接读取并存入缓存
-            bean.setHandle(handle);
-            IStatus status = bean.execute(dataIn, dataOut);
-            boolean result = status.getResult();
-            message = status.getMessage();
-
+            Boolean result = executeService(object, this.dataIn, this.dataOut);
             if (bufferWrite) {
-                log.debug("write to buffer: " + this.serviceCode);
-                dataOut.getHead().setField("_message_", message);
+                log.debug("write to buffer: " + this.getService());
+                dataOut.getHead().setField("_message_", this.getMessage());
                 dataOut.getHead().setField("_result_", result);
                 Redis.set(key, dataOut.getJSON());
             }
@@ -179,7 +121,7 @@ public class LocalService implements IServiceProxy {
                 err = e.getCause();
             }
             log.error(err.getMessage(), err);
-            message = err.getMessage();
+            setMessage(err.getMessage());
             return false;
         }
     }
@@ -196,22 +138,17 @@ public class LocalService implements IServiceProxy {
                 headIn.setField(args[i].toString(), args[i + 1]);
             }
         }
-        if (handle == null) {
-            return new ServiceStatus(false, "handle is null.");
-        }
-        if (serviceCode == null) {
-            return new ServiceStatus(false, "service is null.");
-        }
 
-        IService bean = Application.getService(handle, serviceCode);
-        if (bean == null) {
-            return new ServiceStatus(false, String.format("bean %s not find", serviceCode));
+        Object object = getServiceObject();
+        if (object == null) {
+            return new ServiceStatus(false, this.getMessage());
         }
 
         try {
-            log.info(this.serviceCode);
-            IStatus status = bean.execute(dataIn, dataOut);
-            message = status.getMessage();
+            log.debug(this.getService());
+            ServiceStatus status = new ServiceStatus();
+            status.setResult(executeService(object, this.dataIn, this.dataOut));
+            status.setMessage(this.getMessage());
             return status;
         } catch (Exception e) {
             Throwable err = e;
@@ -219,8 +156,8 @@ public class LocalService implements IServiceProxy {
                 err = e.getCause();
             }
             log.error(err.getMessage(), err);
-            message = err.getMessage();
-            return new ServiceStatus(false, message);
+            setMessage(err.getMessage());
+            return new ServiceStatus(false, this.getMessage());
         }
     }
 
@@ -236,7 +173,7 @@ public class LocalService implements IServiceProxy {
 
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
-        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getExportKey, handle.getUserCode(), tmp)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getExportKey, getHandle().getUserCode(), tmp)) {
             buff.setField("data", this.getDataIn().getJSON());
         }
         return tmp;
