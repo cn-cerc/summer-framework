@@ -19,10 +19,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class LocalService implements IServiceProxy {
-    private String serviceCode;
-
-    private String message;
+public class LocalService extends CustomLocalProxy implements IServiceProxy {
     private IHandle handle;
     // 是否激活缓存
     private boolean bufferRead = true;
@@ -73,30 +70,6 @@ public class LocalService implements IServiceProxy {
         }
     }
 
-    @Override
-    public String getService() {
-        return serviceCode;
-    }
-
-    @Override
-    public LocalService setService(String service) {
-        this.serviceCode = service;
-        return this;
-    }
-
-    @Override
-    public String getMessage() {
-        if (message != null) {
-            return message.replaceAll("'", "\"");
-        } else {
-            return null;
-        }
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     // 带缓存调用服务
     @Override
     public boolean exec(Object... args) {
@@ -113,49 +86,50 @@ public class LocalService implements IServiceProxy {
         if (handle == null) {
             throw new RuntimeException("handle is null.");
         }
-        if (serviceCode == null) {
+        if (getService() == null) {
             throw new RuntimeException("service is null.");
         }
 
         // 读取xml的服务配置
         IService bean;
         try {
-            bean = Application.getService(handle, serviceCode);
+            bean = Application.getService(handle, getService());
         } catch (NoSuchBeanDefinitionException e) {
             // 读取注解的配置
-            String beanId = serviceCode.split("\\.")[0];
+            String beanId = getService().split("\\.")[0];
             beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
             bean = Application.getService(handle, beanId);
             if (bean instanceof CustomService) {
-                ((CustomService) bean).setFuncCode(serviceCode.split("\\.")[1]);
+                ((CustomService) bean).setFuncCode(getService().split("\\.")[1]);
             }
         }
 
         if (bean == null) {
-            this.message = String.format("bean %s not find", serviceCode);
+            this.setMessage(String.format("bean %s not find", getService()));
             return false;
         }
 
         try {
-            if (!"SvrSession.byUserCode".equals(this.serviceCode) && !"SvrUserMessages.getWaitList".equals(this.serviceCode)) {
-                log.debug(this.serviceCode);
+            if (!"SvrSession.byUserCode".equals(this.getService())
+                    && !"SvrUserMessages.getWaitList".equals(this.getService())) {
+                log.debug(this.getService());
             }
             if (ServerConfig.isServerMaster()) {
                 IStatus status = bean.execute(dataIn, dataOut);
                 boolean result = status.getResult();
-                message = status.getMessage();
+                setMessage(status.getMessage());
                 return result;
             }
 
             // 制作临时缓存Key
-            String key = MD5.get(handle.getUserCode() + this.serviceCode + dataIn.getJSON());
+            String key = MD5.get(handle.getUserCode() + this.getService() + dataIn.getJSON());
 
             if (bufferRead) {
                 String buffValue = Redis.get(key);
                 if (buffValue != null) {
-                    log.debug("read from buffer: " + this.serviceCode);
+                    log.debug("read from buffer: " + this.getService());
                     dataOut.setJSON(buffValue);
-                    message = dataOut.getHead().getString("_message_");
+                    setMessage(dataOut.getHead().getString("_message_"));
                     return dataOut.getHead().getBoolean("_result_");
                 }
             }
@@ -164,11 +138,11 @@ public class LocalService implements IServiceProxy {
             bean.setHandle(handle);
             IStatus status = bean.execute(dataIn, dataOut);
             boolean result = status.getResult();
-            message = status.getMessage();
+            setMessage(status.getMessage());
 
             if (bufferWrite) {
-                log.debug("write to buffer: " + this.serviceCode);
-                dataOut.getHead().setField("_message_", message);
+                log.debug("write to buffer: " + this.getService());
+                dataOut.getHead().setField("_message_", this.getMessage());
                 dataOut.getHead().setField("_result_", result);
                 Redis.set(key, dataOut.getJSON());
             }
@@ -179,7 +153,7 @@ public class LocalService implements IServiceProxy {
                 err = e.getCause();
             }
             log.error(err.getMessage(), err);
-            message = err.getMessage();
+            setMessage(err.getMessage());
             return false;
         }
     }
@@ -199,19 +173,19 @@ public class LocalService implements IServiceProxy {
         if (handle == null) {
             return new ServiceStatus(false, "handle is null.");
         }
-        if (serviceCode == null) {
+        if (getService() == null) {
             return new ServiceStatus(false, "service is null.");
         }
 
-        IService bean = Application.getService(handle, serviceCode);
+        IService bean = Application.getService(handle, getService());
         if (bean == null) {
-            return new ServiceStatus(false, String.format("bean %s not find", serviceCode));
+            return new ServiceStatus(false, String.format("bean %s not find", getService()));
         }
 
         try {
-            log.info(this.serviceCode);
+            log.debug(this.getService());
             IStatus status = bean.execute(dataIn, dataOut);
-            message = status.getMessage();
+            setMessage(status.getMessage());
             return status;
         } catch (Exception e) {
             Throwable err = e;
@@ -219,8 +193,8 @@ public class LocalService implements IServiceProxy {
                 err = e.getCause();
             }
             log.error(err.getMessage(), err);
-            message = err.getMessage();
-            return new ServiceStatus(false, message);
+            setMessage(err.getMessage());
+            return new ServiceStatus(false, this.getMessage());
         }
     }
 

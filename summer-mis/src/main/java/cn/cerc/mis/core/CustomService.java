@@ -32,6 +32,7 @@ public class CustomService extends AbstractService {
         return this;
     }
 
+    @Override
     public IStatus execute(DataSet dataIn, DataSet dataOut) {
         if (this.funcCode == null) {
             throw new RuntimeException("funcCode is null");
@@ -124,6 +125,7 @@ public class CustomService extends AbstractService {
         return false;
     }
 
+    @Deprecated
     public StringBuffer getMsg() {
         if (msg == null) {
             msg = new StringBuffer(message);
@@ -146,11 +148,13 @@ public class CustomService extends AbstractService {
         }
     }
 
+    @Override
     public String getJSON(DataSet dataOut) {
         return String.format("[%s]", this.getDataOut().getJSON());
     }
 
     // 设置是否需要授权才能登入
+    @Override
     public boolean checkSecurity(IHandle handle) {
         ISession sess = handle.getSession();
         return sess != null && sess.logon();
