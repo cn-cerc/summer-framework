@@ -22,8 +22,8 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
     private boolean bufferRead = true;
     private boolean bufferWrite = true;
 
-    private DataSet dataIn = new DataSet();
-    private DataSet dataOut = new DataSet();
+    private DataSet dataIn;
+    private DataSet dataOut;
 
     public LocalService(IHandle handle) {
         super(handle);
@@ -42,28 +42,6 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
         this.setService(service);
     }
 
-    @Deprecated
-    public static void listMethod(Class<?> clazz) {
-        Map<String, Class<?>> items = new HashMap<>();
-        String[] args = clazz.getName().split("\\.");
-        String classCode = args[args.length - 1];
-        Method[] methods = clazz.getDeclaredMethods();
-        for (Method method : methods) {
-            if ("boolean".equals(method.getReturnType().getName())) {
-                if (method.getParameters().length == 0) {
-                    String name = method.getName();
-                    if (method.getName().startsWith("_")) {
-                        name = name.substring(1);
-                    }
-                    items.put(classCode + "." + name, clazz);
-                }
-            }
-        }
-        for (String key : items.keySet()) {
-            log.info(key);
-        }
-    }
-
     // 带缓存调用服务
     @Override
     public boolean exec(Object... args) {
@@ -78,6 +56,11 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
             }
         }
 
+        if (this.dataIn == null)
+            this.dataIn = new DataSet();
+        if (this.dataOut == null)
+            this.dataOut = new DataSet();
+
         Object object = getServiceObject();
         if (object == null) {
             return false;
@@ -88,14 +71,14 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
                     && !"SvrUserMessages.getWaitList".equals(this.getService())) {
                 log.debug(this.getService());
             }
-            
+
             if (ServerConfig.isServerMaster()) {
                 return executeService(object, this.dataIn, this.dataOut);
             }
 
             // 制作临时缓存Key
             String key = MD5.get(getHandle().getUserCode() + this.getService() + dataIn.getJSON());
-            
+
             if (bufferRead) {
                 String buffValue = Redis.get(key);
                 if (buffValue != null) {
@@ -126,49 +109,19 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
         }
     }
 
-    // 不带缓存调用服务
-    public IStatus execute(Object... args) {
-        if (args.length > 0) {
-            Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0) {
-                // TODO 此处应该使用ClassResource
-                return new ServiceStatus(false, "传入的参数数量必须为偶数！");
-            }
-            for (int i = 0; i < args.length; i = i + 2) {
-                headIn.setField(args[i].toString(), args[i + 1]);
-            }
-        }
-
-        Object object = getServiceObject();
-        if (object == null) {
-            return new ServiceStatus(false, this.getMessage());
-        }
-
-        try {
-            log.debug(this.getService());
-            ServiceStatus status = new ServiceStatus();
-            status.setResult(executeService(object, this.dataIn, this.dataOut));
-            status.setMessage(this.getMessage());
-            return status;
-        } catch (Exception e) {
-            Throwable err = e;
-            if (e.getCause() != null) {
-                err = e.getCause();
-            }
-            log.error(err.getMessage(), err);
-            setMessage(err.getMessage());
-            return new ServiceStatus(false, this.getMessage());
-        }
+    public DataSet execute(Object... args) {
+        return this.exec(args) ? this.getDataOut() : null;
     }
 
-    @Override
-    public DataSet getDataOut() {
-        return this.dataOut;
+    public DataSet execute(Record headIn) {
+        this.dataIn = new DataSet();
+        this.dataIn.getHead().copyValues(headIn);
+        return this.exec() ? this.getDataOut() : null;
     }
 
-    @Override
-    public DataSet getDataIn() {
-        return this.dataIn;
+    public DataSet execute(DataSet dataIn) {
+        this.dataIn = dataIn;
+        return this.exec() ? this.getDataOut() : null;
     }
 
     public String getExportKey() {
@@ -187,6 +140,46 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
     public LocalService setBufferWrite(boolean bufferWrite) {
         this.bufferWrite = bufferWrite;
         return this;
+    }
+
+    @Override
+    public DataSet getDataOut() {
+        return this.dataOut;
+    }
+
+    @Override
+    public DataSet getDataIn() {
+        return this.dataIn;
+    }
+
+    public void setDataIn(DataSet dataIn) {
+        this.dataIn = dataIn;
+    }
+
+    public void setDataOut(DataSet dataOut) {
+        this.dataOut = dataOut;
+    }
+
+    @Deprecated
+    public static void listMethod(Class<?> clazz) {
+        Map<String, Class<?>> items = new HashMap<>();
+        String[] args = clazz.getName().split("\\.");
+        String classCode = args[args.length - 1];
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method method : methods) {
+            if ("boolean".equals(method.getReturnType().getName())) {
+                if (method.getParameters().length == 0) {
+                    String name = method.getName();
+                    if (method.getName().startsWith("_")) {
+                        name = name.substring(1);
+                    }
+                    items.put(classCode + "." + name, clazz);
+                }
+            }
+        }
+        for (String key : items.keySet()) {
+            log.info(key);
+        }
     }
 
 }
