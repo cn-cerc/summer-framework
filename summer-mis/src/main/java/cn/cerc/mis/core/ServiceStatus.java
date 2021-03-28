@@ -4,6 +4,9 @@ public class ServiceStatus implements IStatus {
     private int status;
     private boolean result;
     private String message;
+    
+    public ServiceStatus() {
+    }
 
     public ServiceStatus(boolean result) {
         this.result = result;

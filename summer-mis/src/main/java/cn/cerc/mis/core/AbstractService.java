@@ -1,8 +1,9 @@
 package cn.cerc.mis.core;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractService implements IService, IRestful {
     @Autowired
@@ -29,10 +30,11 @@ public abstract class AbstractService implements IService, IRestful {
     @Override
     public void setSession(ISession session) {
         this.session = session;
-        if(handle == null)
+        if (handle == null)
             handle = new Handle(session);
     }
 
+    @Override
     public void setHandle(IHandle handle) {
         this.handle = handle;
         if (handle != null) {
@@ -40,7 +42,9 @@ public abstract class AbstractService implements IService, IRestful {
         }
     }
 
+    @Override
     public IHandle getHandle() {
         return this.handle;
     }
+
 }

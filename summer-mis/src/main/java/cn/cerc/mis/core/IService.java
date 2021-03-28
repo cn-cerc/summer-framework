@@ -3,10 +3,9 @@ package cn.cerc.mis.core;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.SupportHandle;
 
-public interface IService extends IHandle, SupportHandle {
+public interface IService extends IDataService, SupportHandle {
     IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException;
 
     default ServiceStatus fail(String format, Object... args) {
@@ -42,11 +41,6 @@ public interface IService extends IHandle, SupportHandle {
     default String getJSON(DataSet dataOut) {
         return String.format("[%s]", dataOut.getJSON());
     }
-
-    IHandle getHandle();
-
-    // 数据库连接
-    void setHandle(IHandle handle);
 
     @Deprecated
     @Override
