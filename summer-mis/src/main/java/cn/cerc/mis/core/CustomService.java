@@ -42,7 +42,7 @@ public class CustomService implements IMultiplService, IRestful {
     }
 
     @Override
-    public IStatus execute() {
+    public IStatus executeService() {
         if (this.funcCode == null) {
             throw new RuntimeException("funcCode is null");
         }
@@ -230,7 +230,7 @@ public class CustomService implements IMultiplService, IRestful {
     public IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException {
         this.setDataIn(dataIn);
         this.setDataOut(dataOut);
-        return this.execute();
+        return this.executeService();
     }
 
 }

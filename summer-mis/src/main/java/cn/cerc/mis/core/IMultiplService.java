@@ -16,5 +16,5 @@ public interface IMultiplService extends IDataService {
     
     void setFuncCode(String string);
 
-    public IStatus execute();
+    public IStatus executeService();
 }

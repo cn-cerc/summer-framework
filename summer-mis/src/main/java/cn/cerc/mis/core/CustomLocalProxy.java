@@ -30,7 +30,7 @@ public abstract class CustomLocalProxy {
             IMultiplService ms = (IMultiplService) bean;
             ms.setDataIn(dataIn);
             ms.setDataOut(dataOut);
-            status = ms.execute();
+            status = ms.executeService();
         } else {
             status = new ServiceStatus(false, String.format("not support: %s ！", bean.getClass().getName()));
         }
