@@ -10,7 +10,12 @@ public class LocalProxy extends CustomLocalProxy {
         super(handle);
     }
 
-    public DataSet exec(String... args) {
+    public LocalProxy(IHandle handle, String service) {
+        this(handle);
+        this.setHandle(handle);
+    }
+
+    public DataSet execute(String... args) {
         Object bean = this.getServiceObject();
         if (bean == null)
             return null;
@@ -34,7 +39,7 @@ public class LocalProxy extends CustomLocalProxy {
             return null;
     }
 
-    public DataSet exec(Record headIn) {
+    public DataSet execute(Record headIn) {
         Object bean = this.getServiceObject();
         if (bean == null)
             return null;
@@ -48,7 +53,7 @@ public class LocalProxy extends CustomLocalProxy {
             return null;
     }
 
-    public DataSet exec(DataSet dataIn) {
+    public DataSet execute(DataSet dataIn) {
         Object bean = this.getServiceObject();
         if (bean == null)
             return null;
