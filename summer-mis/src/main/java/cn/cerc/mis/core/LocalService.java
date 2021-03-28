@@ -114,8 +114,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
     }
 
     public DataSet execute(Record headIn) {
-        this.dataIn = new DataSet();
-        this.dataIn.getHead().copyValues(headIn);
+        this.getDataIn().getHead().copyValues(headIn);
         return this.exec() ? this.getDataOut() : null;
     }
 
