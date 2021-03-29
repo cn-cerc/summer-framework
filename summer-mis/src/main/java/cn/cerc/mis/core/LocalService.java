@@ -51,16 +51,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
         if (this.dataOut == null)
             this.dataOut = new DataSet();
 
-        if (args.length > 0) {
-            Record headIn = getDataIn().getHead();
-            if (args.length % 2 != 0) {
-                // TODO 此处应该使用 ClassResource
-                throw new RuntimeException("传入的参数数量必须为偶数！");
-            }
-            for (int i = 0; i < args.length; i = i + 2) {
-                headIn.setField(args[i].toString(), args[i + 1]);
-            }
-        }
+        initDataIn(args);
 
         Object object = getServiceObject();
         if (object == null) {
@@ -109,6 +100,19 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
             log.error(err.getMessage(), err);
             setMessage(err.getMessage());
             return false;
+        }
+    }
+
+    private void initDataIn(Object... args) {
+        if (args.length > 0) {
+            Record headIn = getDataIn().getHead();
+            if (args.length % 2 != 0) {
+                // TODO 此处应该使用 ClassResource
+                throw new RuntimeException("传入的参数数量必须为偶数！");
+            }
+            for (int i = 0; i < args.length; i = i + 2) {
+                headIn.setField(args[i].toString(), args[i + 1]);
+            }
         }
     }
 
