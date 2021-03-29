@@ -13,7 +13,7 @@ import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.core.SystemBufferType;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -87,7 +87,7 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
                 }
 
                 int timeOut = task.getInterval();
-                String buffKey = String.format("%d.%s.%s", BufferType.getObject.ordinal(), this.getClass().getName(),
+                String buffKey = String.format("%d.%s.%s", SystemBufferType.getObject.ordinal(), this.getClass().getName(),
                         task.getClass().getName());
                 if (Redis.get(buffKey) != null) {
                     continue;

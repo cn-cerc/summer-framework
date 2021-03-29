@@ -8,11 +8,11 @@ import cn.cerc.db.cache.Redis;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.CustomService;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.message.JPushRecord;
 import cn.cerc.mis.message.MessageLevel;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
-import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.queue.AsyncService;
 
 import java.math.BigInteger;
@@ -20,8 +20,6 @@ import java.math.BigInteger;
 /**
  * 异步消息操作
  */
-@Deprecated
-//FIXME: SvrUserMessages 应该从框架移出
 public class SvrUserMessages extends CustomService {
     private static final ClassResource res = new ClassResource(SvrUserMessages.class, SummerMIS.ID);
 
@@ -91,7 +89,7 @@ public class SvrUserMessages extends CustomService {
         cdsMsg.post();
 
         // 清除缓存
-        String buffKey = String.format("%d.%s.%s.%s", BufferType.getObject.ordinal(), MessageRecord.class, corpNo,
+        String buffKey = String.format("%d.%s.%s.%s", SystemBufferType.getObject.ordinal(), MessageRecord.class, corpNo,
                 userCode);
         Redis.delete(buffKey);
 
@@ -151,7 +149,7 @@ public class SvrUserMessages extends CustomService {
 
         if (process == 3) {
             // 清除缓存
-            String buffKey = String.format("%d.%s.%s.%s", BufferType.getObject.ordinal(), MessageRecord.class,
+            String buffKey = String.format("%d.%s.%s.%s", SystemBufferType.getObject.ordinal(), MessageRecord.class,
                     cdsMsg.getString("CorpNo_"), cdsMsg.getString("UserCode_"));
             Redis.delete(buffKey);
         }

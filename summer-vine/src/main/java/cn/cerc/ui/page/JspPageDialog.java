@@ -25,9 +25,7 @@ import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIToolbar;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class JspPageDialog extends JspPage {
     private boolean showMenus = true; // 是否显示主菜单
     private MutiPage pages;

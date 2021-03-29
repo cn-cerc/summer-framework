@@ -19,6 +19,7 @@ import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.ServiceException;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 
@@ -101,7 +102,7 @@ public class SvrUserLoginTest {
         IHandle handle = new Handle(session);
 
         // 清空缓存
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, handle.getUserCode(),
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getObject, handle.getUserCode(),
                 SvrUserLogin.class.getName(), "sendVerifyCode")) {
             buff.clear();
         }

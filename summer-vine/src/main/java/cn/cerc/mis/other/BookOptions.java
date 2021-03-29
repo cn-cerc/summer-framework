@@ -16,9 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
-// FIXME 每个业务项目应自己生成一个
 @Slf4j
-@Deprecated
 public class BookOptions {
     public static final String BookInfo_Set = "_BookInfoSet_";
     public static final String HideLoginInfo = "_HideLoginInfo_";

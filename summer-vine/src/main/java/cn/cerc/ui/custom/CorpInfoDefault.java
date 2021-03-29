@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.services.BookInfoRecord;
 import cn.cerc.mis.services.MemoryBookInfo;
@@ -31,7 +30,6 @@ public class CorpInfoDefault implements ICorpInfo {
     @Override
     public String getShortName() {
         IHandle handle = new Handle(session);
-        ICorpInfo info = Application.getBeanDefault(ICorpInfo.class, session);
         BookInfoRecord item = MemoryBookInfo.get(handle, handle.getCorpNo());
         return item.getShortName();
     }

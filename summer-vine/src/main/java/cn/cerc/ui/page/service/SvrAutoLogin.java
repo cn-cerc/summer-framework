@@ -15,8 +15,8 @@ import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.RequestData;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.language.R;
-import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
 import cn.cerc.ui.SummerUI;
@@ -25,8 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
-@Deprecated 
-//TODO SvrAutoLogin应该重构，具体逻辑应该从框架中移出
 public class SvrAutoLogin implements IUserLanguage {
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
@@ -82,7 +80,7 @@ public class SvrAutoLogin implements IUserLanguage {
             SvrUserLogin svrUserLogin = Application.getBean(new Handle(session), SvrUserLogin.class);
             svrUserLogin.updateCurrentUser("unknow", "", form.getClient().getLanguage());
 
-            try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionInfo, userId, deviceId)) {
+            try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getSessionInfo, userId, deviceId)) {
                 buff.setField("UserID_", userId);
                 buff.setField("UserCode_", dsUser.getString("Code_"));
                 buff.setField("UserName_", dsUser.getString("Name_"));
