@@ -17,8 +17,6 @@ import cn.cerc.ui.SummerUI;
 /**
  * 文件上传服务
  */
-@Deprecated 
-//TODO SvrAutoLogin应该重构，具体逻辑应该从框架中移出
 public class SvrFileUpload extends CustomService implements IUserLanguage {
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
 

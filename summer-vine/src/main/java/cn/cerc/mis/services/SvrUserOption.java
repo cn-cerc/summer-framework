@@ -7,8 +7,6 @@ import cn.cerc.mis.core.AbstractService;
 import cn.cerc.mis.core.IStatus;
 import cn.cerc.mis.core.ServiceException;
 
-@Deprecated
-//FIXME: SvrUserOption 应该从框架移出
 public class SvrUserOption extends AbstractService {
 
     @Override

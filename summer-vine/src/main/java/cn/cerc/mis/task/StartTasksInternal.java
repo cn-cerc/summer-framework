@@ -9,7 +9,6 @@ import javax.servlet.ServletContextListener;
 import java.util.Timer;
 
 //使用内部驱动定时任务
-@Deprecated // 请改使用 StartTaskDefault
 @Slf4j
 public class StartTasksInternal implements ServletContextListener {
 

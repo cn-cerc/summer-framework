@@ -4,8 +4,6 @@ import cn.cerc.core.Record;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.CustomService;
 
-@Deprecated
-//FIXME SvrFormTimeout 对象应该从框架中移出
 public class SvrFormTimeout extends CustomService {
 
     // 保存Form用户请求

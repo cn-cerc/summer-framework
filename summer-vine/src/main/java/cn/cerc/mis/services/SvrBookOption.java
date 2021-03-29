@@ -1,16 +1,12 @@
 package cn.cerc.mis.services;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.AbstractService;
 import cn.cerc.mis.core.IStatus;
 import cn.cerc.mis.core.ServiceException;
 
-@Deprecated
-//FIXME SvrBookOption 对象应该从框架中移出
 public class SvrBookOption extends AbstractService {
 
     @Override

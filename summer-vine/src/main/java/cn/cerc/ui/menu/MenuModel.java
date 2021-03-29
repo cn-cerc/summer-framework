@@ -23,7 +23,6 @@ public class MenuModel {
     private boolean win;
     private boolean web;
     private boolean phone;
-    @Deprecated
     private boolean custom;// 需要购买
     private int orderType;// 订购类型
 

@@ -14,8 +14,6 @@ import cn.cerc.mis.other.UserNotFindException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Deprecated
-//FIXME: SvrSession 应该从框架移出
 public class SvrSession extends CustomService {
     private static final ClassResource res = new ClassResource(SvrSession.class, SummerMIS.ID);
 

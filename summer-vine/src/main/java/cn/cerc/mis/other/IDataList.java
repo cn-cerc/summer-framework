@@ -1,6 +1,5 @@
 package cn.cerc.mis.other;
 
-@Deprecated
 /**
  * FIXME 建议使用 IDataCache
  */
