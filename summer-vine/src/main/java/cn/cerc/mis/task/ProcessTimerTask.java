@@ -5,6 +5,8 @@ import java.util.TimerTask;
 
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.Handle;
+import cn.cerc.mis.core.SystemBufferType;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -17,13 +19,12 @@ import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.rds.StubHandle;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-@Deprecated // 请改使用 StartTaskDefault，注意测试不同用户的创建
+// 请改使用 StartTaskDefault，注意测试不同用户的创建
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
 
     // 晚上12点执行，也即0点开始执行
@@ -84,7 +85,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 }
 
                 int timeOut = task.getInterval();
-                String buffKey = String.format("%d.%s.%s.%s", BufferType.getObject.ordinal(), ServerConfig.getAppName(), this.getClass().getName(), task.getClass().getName());
+                String buffKey = String.format("%d.%s.%s.%s", SystemBufferType.getObject.ordinal(), ServerConfig.getAppName(), this.getClass().getName(), task.getClass().getName());
                 if (Redis.get(buffKey) != null) {
                     continue;
                 }
