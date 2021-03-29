@@ -41,7 +41,7 @@ public class UIViewPanel extends UIOriginComponent {
     public void output(HtmlWriter html) {
         if (!form.getClient().isPhone()) {
             UIDiv div = new UIDiv();
-            div.setCssClass("title");
+            div.setCssClass("panelTitle");
             div.setText(this.getTitle());
             div.output(html);
         }
