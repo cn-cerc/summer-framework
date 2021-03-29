@@ -8,8 +8,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
+import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class MemoryBookInfo {
         }
 
         BookInfoRecord item = new BookInfoRecord();
-        IServiceProxy svr = ServiceFactory.get(handle);
+        CenterService svr = new CenterService(handle);
         svr.setService("SvrBookInfo.getRecord");
         if (!svr.exec("corpNo", corpNo)) {
             log.error(svr.getMessage());

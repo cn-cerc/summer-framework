@@ -11,7 +11,6 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -22,7 +21,7 @@ public abstract class RemoteService implements IServiceProxy {
     private static final ClassResource res = new ClassResource(RemoteService.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(RemoteService.class, SummerMIS.ID);
 
-    private final IHandle handle;
+    private IHandle handle;
 
     private String host;
     private String path;
@@ -34,24 +33,28 @@ public abstract class RemoteService implements IServiceProxy {
     private String message;
     private String buffKey;
 
+    public RemoteService() {
+        
+    }
+
     public RemoteService(IHandle handle) {
         this.handle = handle;
     }
 
-    @Deprecated
-    public RemoteService(IHandle handle, String bookNo) {
-        this.handle = handle;
-        this.token = Application.getToken(handle);
-
-        this.host = getApiHost(bookNo);
-        this.path = bookNo;
-    }
+//    @Deprecated
+//    public RemoteService(IHandle handle, String bookNo) {
+//        this.handle = handle;
+//        this.token = Application.getToken(handle);
+//
+//        this.host = getApiHost(bookNo);
+//        this.path = bookNo;
+//    }
 
     public static String getApiHost(String bookNo) {
         String result = config.getString(String.format("remote.host.%s", bookNo), "");
         if (!"".equals(result))
             return result;
-        return config.getString(String.format("remote.host.%s", ServiceFactory.BOOK_PUBLIC), "");
+        return config.getString(String.format("remote.host.public"), "");
     }
 
     @Override

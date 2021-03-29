@@ -1,10 +1,8 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 
@@ -22,7 +20,7 @@ public interface IBookOption extends IOption {
     default String getValue(IHandle handle, String def) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), getKey())) {
             if (buff.isNull()) {
-                IServiceProxy svr = ServiceFactory.get(handle);
+                CenterService svr = new CenterService(handle);
                 svr.setService("ApiBookOption.getValue");
                 Record headIn = svr.getDataIn().getHead();
                 headIn.setField("CorpNo_", handle.getCorpNo());

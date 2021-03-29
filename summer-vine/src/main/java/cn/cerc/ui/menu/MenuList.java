@@ -1,24 +1,24 @@
 package cn.cerc.ui.menu;
 
-import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataSet;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.core.IUserLanguage;
-import cn.cerc.core.Utils;
-import cn.cerc.db.cache.Redis;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
-import cn.cerc.mis.language.R;
-import cn.cerc.mis.other.BufferType;
-import cn.cerc.mis.other.IDataCache;
-import cn.cerc.ui.SummerUI;
+import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import cn.cerc.core.ClassResource;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.IUserLanguage;
+import cn.cerc.core.Utils;
+import cn.cerc.db.cache.Redis;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.mis.core.CenterService;
+import cn.cerc.mis.language.R;
+import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.other.IDataCache;
+import cn.cerc.ui.SummerUI;
 
 /**
  * 系统菜单缓存 此对象不应该放在框架中
@@ -79,7 +79,7 @@ public class MenuList implements IDataCache, IUserLanguage {
         }
 
         // 从数据库中读取
-        IServiceProxy svr = ServiceFactory.get(handle);
+        CenterService svr = new CenterService(handle);
         svr.setService("ApiMenus.getMenus");
         if (!svr.exec()) {
             throw new RuntimeException(svr.getMessage());

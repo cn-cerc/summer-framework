@@ -1,21 +1,21 @@
 package cn.cerc.mis.tools;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.excel.output.AccreditException;
 import cn.cerc.mis.excel.output.ExportExcel;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.vine.core.PartnerService;
 import jxl.write.WriteException;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 public class ExportService extends ExportExcel {
     private static final ClassResource res = new ClassResource(ExportService.class, SummerMIS.ID);
@@ -53,7 +53,8 @@ public class ExportService extends ExportExcel {
         if (Utils.isEmpty(this.corpNo)) {
             this.corpNo = handle.getCorpNo();
         }
-        IServiceProxy app = ServiceFactory.get(handle, this.corpNo);
+        PartnerService app = new PartnerService(handle);
+        app.setCorpNo(this.corpNo);
         app.setService(service);
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getExportKey, handle.getUserCode(), exportKey)) {
             app.getDataIn().close();
