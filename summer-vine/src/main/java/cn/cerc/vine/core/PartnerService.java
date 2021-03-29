@@ -35,7 +35,7 @@ public class PartnerService extends RemoteService {
     public boolean exec(Object... args) {
         String site = config.getClassProperty("site", null);
         if (site != null) {
-            String url = String.format("%s?corpNo=%s,service=%s", site, this.corpNo, this.getService());
+            String url = String.format("%s?corpNo=%s&service=%s", site, this.corpNo, this.getService());
             return this.executeService(url);
         } else {
             this.initDataIn(args);
