@@ -1,20 +1,19 @@
 package cn.cerc.ui.grid.lines;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.Component;
-import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.RowCell;
 import cn.cerc.ui.other.BuildUrl;
-import cn.cerc.ui.parts.UIComponent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AbstractGridLine extends UICustomComponent implements DataSource {
     protected DataSource dataSource;
