@@ -1,5 +1,7 @@
 package cn.cerc.mis.custom;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ISession;
@@ -19,6 +21,7 @@ import redis.clients.jedis.Jedis;
 
 @Slf4j
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TokenManageDefault implements ITokenManage {
 
     private ISession session;
