@@ -71,7 +71,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
                     && !"SvrUserMessages.getWaitList".equals(this.getService())) {
                 log.debug(this.getService());
             }
-
+            bean.init(handle);
             if (ServerConfig.isServerMaster()) {
                 return executeService(object, this.dataIn, this.dataOut);
             }
