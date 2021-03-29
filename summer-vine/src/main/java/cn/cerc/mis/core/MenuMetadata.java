@@ -7,8 +7,6 @@ import lombok.Setter;
 /**
  * 菜单元数据
  */
-@Deprecated
-//TODO MenuMetadata 此对象不应该存在框架中
 public class MenuMetadata {
     // 页面类名代码，用于css定位
     private String id = "";

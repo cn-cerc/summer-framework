@@ -24,9 +24,9 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.LocalService;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.core.Webfunc;
 import cn.cerc.mis.other.BookVersion;
-import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,8 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Deprecated
-//FIXME: SvrUserLogin 应该从框架移出
 public class SvrUserLogin extends CustomService {
     private static final ClassResource res = new ClassResource(SvrUserLogin.class, SummerMIS.ID);
 
@@ -204,7 +202,7 @@ public class SvrUserLogin extends CustomService {
             // 更新当前用户总数
             updateCurrentUser(device_name, headIn.getString("Screen_"), headIn.getString("Language_"));
 
-            try (MemoryBuffer Buff = new MemoryBuffer(BufferType.getSessionInfo,
+            try (MemoryBuffer Buff = new MemoryBuffer(SystemBufferType.getSessionInfo,
                     (String) getProperty(Application.userId), deviceId)) {
                 Buff.setField("UserID_", getProperty(Application.userId));
                 Buff.setField("UserCode_", getUserCode());
@@ -238,7 +236,7 @@ public class SvrUserLogin extends CustomService {
     public boolean ExitSystem() {
         if (getProperty(Application.userId) != null) {
             // TODO 此处的key有问题
-            MemoryBuffer.delete(BufferType.getSessionInfo, (String) getProperty(Application.userId), "webclient");
+            MemoryBuffer.delete(SystemBufferType.getSessionInfo, (String) getProperty(Application.userId), "webclient");
         }
 
         String token = (String) getProperty(Application.TOKEN);
@@ -371,7 +369,7 @@ public class SvrUserLogin extends CustomService {
         cdsUser.post();
 
         // 校验成功清理验证码缓存
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
             buff.clear();
         }
         getDataOut().getHead().setField("Used_", cdsVer.getInt("Used_"));
@@ -380,7 +378,7 @@ public class SvrUserLogin extends CustomService {
 
     @Webfunc
     public boolean sendVerifyCode() throws DataValidateException {
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getObject, getUserCode(), SvrUserLogin.class.getName(), "sendVerifyCode")) {
             if (!buff.isNull()) {
                 log.info("verifyCode {}", buff.getString("verifyCode"));
                 throw new RuntimeException(String.format(res.getString(23, "请勿在 %d 分钟内重复点击获取认证码！"), TimeOut));

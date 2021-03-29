@@ -10,9 +10,9 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AbstractForm;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.excel.output.AccreditException;
 import cn.cerc.mis.excel.output.ExportExcel;
-import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.vine.core.PartnerService;
 import jxl.write.WriteException;
@@ -56,7 +56,7 @@ public class ExportService extends ExportExcel {
         PartnerService app = new PartnerService(handle);
         app.setCorpNo(this.corpNo);
         app.setService(service);
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getExportKey, handle.getUserCode(), exportKey)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getExportKey, handle.getUserCode(), exportKey)) {
             app.getDataIn().close();
             app.getDataIn().setJSON(buff.getString("data"));
         }

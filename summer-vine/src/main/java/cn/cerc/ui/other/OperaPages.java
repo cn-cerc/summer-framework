@@ -8,7 +8,6 @@ import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.grid.MutiPage;
-import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UISheet;
 
 import javax.servlet.http.HttpServletRequest;

@@ -2,7 +2,6 @@ package cn.cerc.ui;
 
 import cn.cerc.mis.cdn.CDN;
 
-@Deprecated
 public class UIConfig {
 
     // 开始图标

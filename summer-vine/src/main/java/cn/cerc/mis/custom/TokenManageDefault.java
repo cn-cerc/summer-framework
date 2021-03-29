@@ -13,7 +13,7 @@ import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.core.Handle;
-import cn.cerc.mis.other.BufferType;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -52,7 +52,7 @@ public class TokenManageDefault implements ITokenManage {
             throw new RuntimeException("token 值有错！");
         }
 
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token);
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getSessionBase, token);
                 Jedis redis = JedisFactory.getJedis()) {
             if (buff.isNull()) {
                 buff.setField("exists", false);
@@ -127,7 +127,7 @@ public class TokenManageDefault implements ITokenManage {
         session.setProperty(Application.deviceLanguage, record.getString("Language_"));
 
         // 将用户信息赋值到缓存
-        try (MemoryBuffer buff = new MemoryBuffer(BufferType.getSessionBase, token)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getSessionBase, token)) {
             buff.setField("LoginTime_", record.getDateTime("LoginTime_"));
             buff.setField("UserID_", record.getString("UserID_"));
             buff.setField("UserCode_", userCode);

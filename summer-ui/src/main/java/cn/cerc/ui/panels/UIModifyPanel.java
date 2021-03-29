@@ -13,6 +13,7 @@ import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIButtonSubmit;
+import cn.cerc.ui.vcl.UIDiv;
 import cn.cerc.ui.vcl.UIForm;
 
 public class UIModifyPanel extends UIOriginComponent {
@@ -20,22 +21,33 @@ public class UIModifyPanel extends UIOriginComponent {
     private UIButton submit;
     private HttpServletRequest request;
     private String submitValue;
-    private Record record;
     private UIComponent inputPanel;
+    private Record record;
+    private String title;
+    private IForm form;
 
     public UIModifyPanel(UIComponent owner) {
         super(owner);
         if (this.getOrigin() instanceof IForm) {
-            this.request = ((IForm) this.getOrigin()).getRequest();
+            form = (IForm) this.getOrigin();
+            this.request = form.getRequest();
         }
         uiform = new UIForm(this);
         this.inputPanel = new UIOriginComponent(uiform);
         submit = new UIButtonSubmit(uiform.getBottom());
         submit.setText("保存");
+        this.title = "修改";
     }
 
     @Override
     public void output(HtmlWriter html) {
+        if (!form.getClient().isPhone()) {
+            UIDiv div = new UIDiv();
+            div.setCssClass("panelTitle");
+            div.setText(this.getTitle());
+            div.output(html);
+        }
+        
         uiform.setCssClass("modifyPanel");
         uiform.outHead(html);
 
@@ -114,6 +126,14 @@ public class UIModifyPanel extends UIOriginComponent {
 
     public void setRecord(Record record) {
         this.record = record;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

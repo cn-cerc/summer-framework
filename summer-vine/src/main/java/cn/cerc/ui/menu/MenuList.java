@@ -13,10 +13,10 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.core.CenterService;
+import cn.cerc.mis.client.IServiceProxy;
+import cn.cerc.mis.client.ServiceFactory;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.language.R;
-import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.IDataCache;
 import cn.cerc.ui.SummerUI;
 
@@ -38,7 +38,7 @@ public class MenuList implements IDataCache, IUserLanguage {
     private MenuList(IHandle handle) {
         super();
         this.handle = handle;
-        buffKey = String.format("%d.%s.%d", BufferType.getObject.ordinal(), this.getClass().getName(), Version);
+        buffKey = String.format("%d.%s.%d", SystemBufferType.getObject.ordinal(), this.getClass().getName(), Version);
     }
 
     public String getName(String menu) {

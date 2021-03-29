@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 
 import cn.cerc.mis.core.IForm;
 
-@Deprecated
 public class UIPageWelcome extends UIPage {
 
     public UIPageWelcome(IForm form) {
