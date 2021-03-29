@@ -109,20 +109,6 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
         }
     }
 
-    public DataSet execute(Object... args) {
-        return this.exec(args) ? this.getDataOut() : null;
-    }
-
-    public DataSet execute(Record headIn) {
-        this.getDataIn().getHead().copyValues(headIn);
-        return this.exec() ? this.getDataOut() : null;
-    }
-
-    public DataSet execute(DataSet dataIn) {
-        this.dataIn = dataIn;
-        return this.exec() ? this.getDataOut() : null;
-    }
-
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
         try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getExportKey, getHandle().getUserCode(), tmp)) {
