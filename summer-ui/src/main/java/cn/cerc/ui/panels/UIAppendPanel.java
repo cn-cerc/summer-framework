@@ -13,6 +13,7 @@ import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIButtonSubmit;
+import cn.cerc.ui.vcl.UIDiv;
 import cn.cerc.ui.vcl.UIForm;
 
 public class UIAppendPanel extends UIOriginComponent {
@@ -22,6 +23,7 @@ public class UIAppendPanel extends UIOriginComponent {
     private String submitValue;
     private Record record = new Record();
     private UIComponent inputPanel;
+    private String title;
 
     public UIAppendPanel(UIComponent owner) {
         super(owner);
@@ -32,10 +34,16 @@ public class UIAppendPanel extends UIOriginComponent {
         this.inputPanel = new UIOriginComponent(uiform);
         submit = new UIButtonSubmit(uiform.getBottom());
         submit.setText("保存");
+        this.title = "增加";
     }
 
     @Override
     public void output(HtmlWriter html) {
+        UIDiv div = new UIDiv();
+        div.setCssClass("title");
+        div.setText(this.getTitle());
+        div.output(html);
+        
         uiform.setCssClass("appendPanel");
         uiform.outHead(html);
 
@@ -114,6 +122,14 @@ public class UIAppendPanel extends UIOriginComponent {
 
     public void setRecord(Record record) {
         this.record = record;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

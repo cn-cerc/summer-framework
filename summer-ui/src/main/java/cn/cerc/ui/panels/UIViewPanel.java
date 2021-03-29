@@ -12,6 +12,7 @@ import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.vcl.UIButton;
 import cn.cerc.ui.vcl.UIButtonSubmit;
+import cn.cerc.ui.vcl.UIDiv;
 import cn.cerc.ui.vcl.UIForm;
 
 public class UIViewPanel extends UIOriginComponent {
@@ -20,6 +21,7 @@ public class UIViewPanel extends UIOriginComponent {
     private HttpServletRequest request;
     private UIComponent content;
     private Record record;
+    private String title;
 
     public UIViewPanel(UIComponent owner) {
         super(owner);
@@ -30,10 +32,16 @@ public class UIViewPanel extends UIOriginComponent {
         this.content = new UIOriginComponent(uiform);
         submit = new UIButtonSubmit(uiform.getBottom());
         submit.setText("确定");
+        this.title = "查看";
     }
 
     @Override
     public void output(HtmlWriter html) {
+        UIDiv div = new UIDiv();
+        div.setCssClass("title");
+        div.setText(this.getTitle());
+        div.output(html);
+        
         uiform.setCssClass("viewPanel");
         uiform.outHead(html);
 
@@ -100,6 +108,14 @@ public class UIViewPanel extends UIOriginComponent {
     public UIViewPanel setRecord(Record record) {
         this.record = record;
         return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }
