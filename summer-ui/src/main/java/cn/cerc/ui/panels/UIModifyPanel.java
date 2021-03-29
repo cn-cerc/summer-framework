@@ -24,11 +24,13 @@ public class UIModifyPanel extends UIOriginComponent {
     private UIComponent inputPanel;
     private Record record;
     private String title;
+    private IForm form;
 
     public UIModifyPanel(UIComponent owner) {
         super(owner);
         if (this.getOrigin() instanceof IForm) {
-            this.request = ((IForm) this.getOrigin()).getRequest();
+            form = (IForm) this.getOrigin();
+            this.request = form.getRequest();
         }
         uiform = new UIForm(this);
         this.inputPanel = new UIOriginComponent(uiform);
@@ -39,10 +41,12 @@ public class UIModifyPanel extends UIOriginComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        UIDiv div = new UIDiv();
-        div.setCssClass("title");
-        div.setText(this.getTitle());
-        div.output(html);
+        if (!form.getClient().isPhone()) {
+            UIDiv div = new UIDiv();
+            div.setCssClass("title");
+            div.setText(this.getTitle());
+            div.output(html);
+        }
         
         uiform.setCssClass("modifyPanel");
         uiform.outHead(html);

@@ -24,11 +24,13 @@ public class UIAppendPanel extends UIOriginComponent {
     private Record record = new Record();
     private UIComponent inputPanel;
     private String title;
+    private IForm form;
 
     public UIAppendPanel(UIComponent owner) {
         super(owner);
         if (this.getOrigin() instanceof IForm) {
-            this.request = ((IForm) this.getOrigin()).getRequest();
+            form = (IForm) this.getOrigin();
+            this.request = form.getRequest();
         }
         uiform = new UIForm(this);
         this.inputPanel = new UIOriginComponent(uiform);
@@ -39,11 +41,13 @@ public class UIAppendPanel extends UIOriginComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        UIDiv div = new UIDiv();
-        div.setCssClass("title");
-        div.setText(this.getTitle());
-        div.output(html);
-        
+        if (!form.getClient().isPhone()) {
+            UIDiv div = new UIDiv();
+            div.setCssClass("title");
+            div.setText(this.getTitle());
+            div.output(html);
+        }
+
         uiform.setCssClass("appendPanel");
         uiform.outHead(html);
 
