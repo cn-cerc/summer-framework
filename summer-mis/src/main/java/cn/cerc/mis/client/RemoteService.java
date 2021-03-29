@@ -18,7 +18,7 @@ import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RemoteService implements IServiceProxy {
+public abstract class RemoteService implements IServiceProxy {
     private static final ClassResource res = new ClassResource(RemoteService.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(RemoteService.class, SummerMIS.ID);
 
@@ -33,14 +33,9 @@ public class RemoteService implements IServiceProxy {
     private DataSet dataOut;
     private String message;
     private String buffKey;
-    
+
     public RemoteService(IHandle handle) {
         this.handle = handle;
-    }
-
-    @Deprecated
-    public static RemoteService create(IHandle handle, String bookNo) {
-        return new RemoteService(handle, bookNo);
     }
 
     @Deprecated
