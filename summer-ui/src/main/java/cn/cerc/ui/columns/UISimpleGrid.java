@@ -1,7 +1,5 @@
 package cn.cerc.ui.columns;
 
-import java.util.Map;
-
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 

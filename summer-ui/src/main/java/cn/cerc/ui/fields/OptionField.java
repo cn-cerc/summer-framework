@@ -1,11 +1,11 @@
 package cn.cerc.ui.fields;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class OptionField extends AbstractField {
     private String defaultValue;
