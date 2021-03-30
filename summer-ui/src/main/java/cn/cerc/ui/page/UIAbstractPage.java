@@ -14,6 +14,7 @@ import cn.cerc.mis.core.IPage;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IOriginOwner;
+import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 
@@ -34,6 +35,7 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
     private UIComponent address; // 底部区域
     private IForm form;
     private Object origin;
+    private DefineContent defineHead;
 
     public UIAbstractPage(IForm form) {
         this.setForm(form);
@@ -77,6 +79,12 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
             String[] args = file.split("\\.");
             out.println(String.format("<link href=\"%s%s-%s.%s\" rel=\"stylesheet\">", staticPath, args[0], device,
                     args[1]));
+        }
+
+        if (defineHead != null) {
+            UIComponent content = new UICustomComponent();
+            defineHead.execute(this, content);
+            out.print(content.toString());
         }
 
         out.println("</head>");
@@ -137,6 +145,14 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         out.println("</body>");
         out.println("</html>");
         return null;
+    }
+
+    public interface DefineContent {
+        void execute(UIAbstractPage sender, UIComponent content);
+    }
+
+    public void DefineHead(DefineContent defineHead) {
+        this.defineHead = defineHead;
     }
 
     private boolean isPhone() {
@@ -243,7 +259,7 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
             address = new UIOriginComponent(this);
         return address;
     }
-    
+
     @Override
     public final void setOrigin(Object orgin) {
         this.origin = orgin;
