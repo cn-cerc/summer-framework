@@ -9,7 +9,7 @@ import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
-public class CheckboxesColumn extends AbstractColumn implements IDataColumn {
+public class CheckboxesColumn extends AbstractColumn implements IArrayColumn {
 
     private Map<String, String> items = new LinkedHashMap<>();
     private boolean hidden;
