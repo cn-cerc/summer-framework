@@ -1,22 +1,15 @@
 package cn.cerc.mis.config;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataSet;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.core.LanguageResource;
+import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.HttpClientUtil;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.client.RemoteService;
-import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.CenterService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -102,54 +95,22 @@ public class ApplicationConfig {
             throw new RuntimeException(String.format(res.getString(1, "%s 不允许为空"), "machineCode"));
         }
 
-        // 构建public地址
-        String host = RemoteService.getApiHost(ServiceFactory.BOOK_PUBLIC);
-        String url = host + ApplicationConfig.App_Path + "Login.getToken";
-        log.info("request url {}", url);
-        // 构建登录请求参数
-        DataSet dataIn = new DataSet();
-        dataIn.getHead().setField("userCode", userCode);
-        dataIn.getHead().setField("password", password);
-        dataIn.getHead().setField("clientId", machineCode);
-        dataIn.getHead().setField("device", AppClient.pc);
-        dataIn.getHead().setField("languageId", Application.App_Language);
-        dataIn.getHead().setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
-        String json = dataIn.getJSON();
-        log.info("request params {}", json);
-
-        String token;
-        try {
-            String content = HttpClientUtil.post(url, json);
-            log.info("response content {}", content);
-            if (Utils.isEmpty(content)) {
-                throw new RuntimeException(res.getString(2, "服务器返回内容为空"));
-            }
-
-            // 解析post结果
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode object = mapper.readTree(content);
-            boolean result = object.get("result").asBoolean();
-            String message = object.get("message").asText();
-            if (!result) {
-                log.error("userCode {} init token failure", userCode);
-                throw new RuntimeException(message);
-            }
-
-            // 取消外围 []，还原标准的dataSet格式
-            String data = object.get("data").toString();
-            data = data.substring(1, data.length() - 1);
-
-            DataSet dataSet = new DataSet();
-            dataSet.setJSON(data);
-
-            token = dataSet.getHead().getString("token");
-            log.info("userCode {} token {}", userCode, token);
-            if (Utils.isEmpty(token)) {
-                throw new RuntimeException(res.getString(3, "服务器没有返回token"));
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            return null;
+        CenterService svr = new CenterService();
+        svr.setService("SvrLogin.getToken");
+        Record headIn = svr.getDataIn().getHead();
+        headIn.setField("userCode", userCode);
+        headIn.setField("password", password);
+        headIn.setField("clientId", machineCode);
+        headIn.setField("device", AppClient.pc);
+        headIn.setField("languageId", Application.App_Language);
+        headIn.setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
+        if (!svr.exec()) {
+            throw new RuntimeException(svr.getMessage());
+        }
+        String token = svr.getDataOut().getHead().getString("token");
+        log.debug("userCode {} token {}", userCode, token);
+        if (Utils.isEmpty(token)) {
+            throw new RuntimeException(res.getString(3, "服务器没有返回token"));
         }
         return token;
     }

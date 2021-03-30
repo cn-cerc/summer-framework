@@ -1,21 +1,23 @@
 package cn.cerc.mis.other;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDate;
-import cn.cerc.db.mysql.BuildQuery;
-import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ISystemTable;
-import cn.cerc.mis.core.LocalService;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.cerc.core.DataSet;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDate;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.mysql.BuildQuery;
+import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.CenterService;
+import cn.cerc.mis.core.ISystemTable;
+import cn.cerc.mis.core.LocalService;
+import lombok.extern.slf4j.Slf4j;
+import java.util.HashMap;
+import java.util.Map;
+
+// FIXME 每个业务项目应自己生成一个
 @Slf4j
 public class BookOptions {
     public static final String BookInfo_Set = "_BookInfoSet_";
@@ -354,7 +356,7 @@ public class BookOptions {
 
     // 从系统帐套中取开帐日期
     private static TDate getBookCreateDate(IHandle handle) {
-        IServiceProxy svr = ServiceFactory.get(handle);
+        CenterService svr = new CenterService(handle);
         svr.setService("ApiOurInfo.getBookCreateDate");
         if (!svr.exec("CorpNo_", handle.getCorpNo())) {
             throw new RuntimeException(svr.getMessage());
@@ -447,7 +449,7 @@ public class BookOptions {
 
     // 增加帐套参数
     public void appendToCorpOption(String corpNo, String paramKey, String def) {
-        IServiceProxy svr1 = ServiceFactory.get(handle);
+        CenterService svr1 = new CenterService(handle);
         svr1.setService("ApiOurInfo.getVineOptionsByCode");
         if (!svr1.exec("CorpNo_", handle.getCorpNo(), "Code_", paramKey)) {
             throw new RuntimeException(svr1.getMessage());
@@ -458,7 +460,7 @@ public class BookOptions {
         }
         String paramName = getParamName(paramKey);
 
-        IServiceProxy svr2 = ServiceFactory.get(handle);
+        CenterService svr2 = new CenterService(handle);
         svr2.setService("ApiOurInfo.appendToCorpOption");
         Record headIn = svr2.getDataIn().getHead();
         headIn.setField("CorpNo_", corpNo);

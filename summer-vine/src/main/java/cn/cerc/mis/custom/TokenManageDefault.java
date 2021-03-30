@@ -9,10 +9,9 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.redis.JedisFactory;
-import cn.cerc.mis.client.IServiceProxy;
-import cn.cerc.mis.client.ServiceFactory;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -57,7 +56,7 @@ public class TokenManageDefault implements ITokenManage {
                 Jedis redis = JedisFactory.getJedis()) {
             if (buff.isNull()) {
                 buff.setField("exists", false);
-                IServiceProxy svr = ServiceFactory.get(new Handle(session));
+                CenterService svr = new CenterService(new Handle(session));
                 svr.setService("SvrSession.byToken");
                 if (!svr.exec("token", token)) {
                     log.error("token restore error，{}", svr.getMessage());
@@ -114,7 +113,7 @@ public class TokenManageDefault implements ITokenManage {
         session.setProperty(Application.clientIP, "0.0.0.0");
 
         // 将用户信息赋值到句柄
-        IServiceProxy svr = ServiceFactory.get(new Handle(session));
+        CenterService svr = new CenterService(new Handle(session));
         svr.setService("SvrSession.byUserCode");
         if (!svr.exec("CorpNo_", corpNo, "UserCode_", userCode)) {
             throw new RuntimeException(svr.getMessage());
