@@ -201,37 +201,6 @@ public class TableDefine implements Iterable<FieldDefine> {
         print("    }");
     }
 
-    public void createCodeDefineClass() {
-        print("package cn.cerc.mis.magic;");
-
-        print("import cn.cerc.mis.magic.DatabaseDefine;");
-        print("import cn.cerc.mis.magic.FieldDefine;");
-        print("import cn.cerc.mis.magic.TableDefine;");
-
-        print("");
-        print("/**");
-        print("* 范例表");
-        print("*");
-        print("*/");
-        print("public class s_example {");
-        print("/**");
-        print("* %s", this.comment);
-        print("*/");
-        print("public static String _id = \"%s\";", this.getCode());
-        print("/**");
-        print("* 表对象");
-        print("*/");
-        print("public static TableDefine define = DatabaseDefine.getTable(_id);");
-        for (FieldDefine field : this) {
-            print("/**");
-            print("* %s", field.getName());
-            print("*/");
-            print("public static FieldDefine %s = DatabaseDefine.getField(_id + \".%s\");", field.getCode(),
-                    field.getCode());
-        }
-        print("}");
-    }
-
     public void createCodeColumns() {
         for (FieldDefine field : this) {
             print(String.format("new StringColumn(line1, \"%s\", \"%s\", 6));", field.getName(), field.getCode()));
