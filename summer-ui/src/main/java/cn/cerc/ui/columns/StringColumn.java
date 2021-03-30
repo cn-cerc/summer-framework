@@ -1,6 +1,7 @@
 package cn.cerc.ui.columns;
 
 import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.magic.FieldDefine;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IReadonlyOwner;
 import cn.cerc.ui.core.UIOriginComponent;
@@ -22,6 +23,15 @@ public class StringColumn extends AbstractColumn implements IDataColumn {
         if (owner instanceof IReadonlyOwner) {
             this.setReadonly(((IReadonlyOwner) owner).isReadonly());
         }
+    }
+
+    public StringColumn(UIComponent owner, FieldDefine field) {
+        super(owner);
+        this.setCode(field.getCode()).setName(field.getName());
+        if (owner instanceof IReadonlyOwner) {
+            this.setReadonly(((IReadonlyOwner) owner).isReadonly());
+        }
+        input.setName(field.getCode());
     }
 
     public StringColumn(UIComponent owner, String name, String code) {
