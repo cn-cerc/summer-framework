@@ -1,6 +1,6 @@
 package cn.cerc.mis.core;
 
-public interface IOption {
+public interface IVineOption {
 
     String getTitle();
 
