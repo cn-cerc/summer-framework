@@ -64,7 +64,9 @@ public class UIPageBill extends UIPage {
         Component content = this.getContent();
         if (form instanceof AbstractForm) {
             this.getHeader().initHeader();
-            request.setAttribute(content.getId(), content);
+            if (content.getId() != null) {
+                request.setAttribute(content.getId(), content);
+            }
             for (Component component : content.getComponents()) {
                 request.setAttribute(component.getId(), component);
             }

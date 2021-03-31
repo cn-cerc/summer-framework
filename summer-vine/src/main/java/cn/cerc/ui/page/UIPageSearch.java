@@ -81,8 +81,9 @@ public class UIPageSearch extends UIPage {
         Component content = this.getContent();
         if (form instanceof AbstractForm) {
             this.getHeader().initHeader();
-            if (content.getId() != null)
+            if (content.getId() != null) {
                 request.setAttribute(content.getId(), content);
+            }
             for (Component component : content.getComponents()) {
                 if (component.getId() != null)
                     request.setAttribute(component.getId(), component);
