@@ -20,6 +20,9 @@ public class MemoryBookInfo {
     private static final String buffVersion = "5";
 
     public static BookInfoRecord get(IHandle handle, String corpNo) {
+        if (Utils.isEmpty(corpNo)) {
+            throw new RuntimeException("corpNo is null.");
+        }
         Gson gson = new Gson();
         String tmp = Redis.get(getBuffKey(corpNo));
         if (Utils.isNotEmpty(tmp)) {
@@ -109,7 +112,7 @@ public class MemoryBookInfo {
     public static String getShortName(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
-            throw new RuntimeException(String.format(res.getString(1,"没有找到注册的帐套 %s"), corpNo));
+            throw new RuntimeException(String.format(res.getString(1, "没有找到注册的帐套 %s"), corpNo));
         }
         return item.getShortName();
     }
@@ -122,7 +125,7 @@ public class MemoryBookInfo {
     public static String getName(IHandle handle, String corpNo) {
         BookInfoRecord item = get(handle, corpNo);
         if (item == null) {
-            throw new RuntimeException(String.format(res.getString(1,"没有找到注册的帐套 %s"), corpNo));
+            throw new RuntimeException(String.format(res.getString(1, "没有找到注册的帐套 %s"), corpNo));
         }
         return item.getName();
     }
