@@ -290,6 +290,7 @@ public class Application {
             session.setProperty(Application.sessionId, req.getSession().getId());
             session.setProperty(Application.deviceLanguage, client.getLanguage());
             session.setProperty(Application.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
+            session.setProperty(ISession.REQUEST, req);
             IHandle handle = new Handle(session);
             req.setAttribute("myappHandle", handle);
             form.setId(formId);
