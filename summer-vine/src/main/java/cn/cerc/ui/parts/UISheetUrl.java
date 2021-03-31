@@ -18,6 +18,14 @@ public class UISheetUrl extends UISheet {
     private Map<String, String> items = new LinkedHashMap<>();
     private boolean isCloseSheet;
 
+    /**
+     * page-link.xml初始化用到
+     */
+    public UISheetUrl() {
+        super();
+        this.setCaption(res.getString(1, "相关操作"));
+    }
+
     public UISheetUrl(UIToolbar owner) {
         super(owner);
         this.setCaption(res.getString(1, "相关操作"));

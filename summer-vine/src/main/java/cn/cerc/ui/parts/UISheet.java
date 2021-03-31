@@ -10,6 +10,10 @@ public class UISheet extends UICustomComponent {
     private String caption = res.getString(1, "(无标题)");
     private String group = res.getString(2, "工具面板");
 
+    public UISheet() {
+        super();
+    }
+
     public UISheet(UIComponent owner) {
         super(owner);
     }

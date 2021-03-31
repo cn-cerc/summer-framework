@@ -15,6 +15,14 @@ public class UISheetHelp extends UISheet {
     private UrlMenu operaUrl;
     private List<String> lines = new ArrayList<>();
 
+    /**
+     * page-help.xml初始化用到
+     */
+    public UISheetHelp() {
+        super();
+        this.setCaption(res.getString(1, "操作提示"));
+    }
+
     public UISheetHelp(UIToolbar owner) {
         super(owner);
         this.setCaption(res.getString(1, "操作提示"));
