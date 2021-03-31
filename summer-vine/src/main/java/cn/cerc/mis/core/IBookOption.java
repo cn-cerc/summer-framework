@@ -7,7 +7,7 @@ import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 
 //TODO IBookOption 抽象有误，需要进行一步改进
-public interface IBookOption extends IOption {
+public interface IBookOption extends IVineOption {
 
     default String getBookId(IHandle handle) {
         return handle.getCorpNo();

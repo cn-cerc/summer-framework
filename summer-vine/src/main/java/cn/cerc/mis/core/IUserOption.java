@@ -6,7 +6,7 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 
-public interface IUserOption extends IOption {
+public interface IUserOption extends IVineOption {
 
     default String getOption(IHandle handle) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), getKey())) {
