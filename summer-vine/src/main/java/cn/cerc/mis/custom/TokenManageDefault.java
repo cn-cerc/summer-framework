@@ -63,8 +63,9 @@ public class TokenManageDefault implements ITokenManage {
                     session.setProperty(Application.TOKEN, null);
                     return false;
                 }
-
                 Record record = svr.getDataOut().getHead();
+                log.debug(record.toString());
+
                 buff.setField("LoginTime_", record.getDateTime("LoginTime_"));
                 buff.setField("UserID_", record.getString("UserID_"));
                 buff.setField("UserCode_", record.getString("UserCode_"));
@@ -140,6 +141,5 @@ public class TokenManageDefault implements ITokenManage {
         }
         return true;
     }
-
 
 }

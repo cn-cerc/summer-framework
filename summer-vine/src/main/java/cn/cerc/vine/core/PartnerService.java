@@ -43,7 +43,7 @@ public class PartnerService extends RemoteService {
             svr.setService(this.getService());
             svr.setDataIn(getDataIn());
             boolean result = svr.exec();
-            this.setDataOut(getDataOut());
+            this.setDataOut(svr.getDataOut());
             return result;
         }
     }
