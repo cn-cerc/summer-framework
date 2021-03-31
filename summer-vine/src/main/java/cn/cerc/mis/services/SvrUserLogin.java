@@ -24,6 +24,7 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.LocalService;
+import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.core.Webfunc;
 import cn.cerc.mis.other.BookVersion;
@@ -202,7 +203,7 @@ public class SvrUserLogin extends CustomService {
             // 更新当前用户总数
             updateCurrentUser(device_name, headIn.getString("Screen_"), headIn.getString("Language_"));
 
-            try (MemoryBuffer Buff = new MemoryBuffer(SystemBufferType.getSessionInfo,
+            try (MemoryBuffer Buff = new MemoryBuffer(SystemBuffer.User.SessionInfo,
                     (String) getProperty(Application.userId), deviceId)) {
                 Buff.setField("UserID_", getProperty(Application.userId));
                 Buff.setField("UserCode_", getUserCode());
@@ -236,7 +237,7 @@ public class SvrUserLogin extends CustomService {
     public boolean ExitSystem() {
         if (getProperty(Application.userId) != null) {
             // TODO 此处的key有问题
-            MemoryBuffer.delete(SystemBufferType.getSessionInfo, (String) getProperty(Application.userId), "webclient");
+            MemoryBuffer.delete(SystemBuffer.User.SessionInfo, (String) getProperty(Application.userId), "webclient");
         }
 
         String token = (String) getProperty(Application.TOKEN);

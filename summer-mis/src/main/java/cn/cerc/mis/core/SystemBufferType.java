@@ -1,7 +1,8 @@
 package cn.cerc.mis.core;
 
+@Deprecated
 public enum SystemBufferType implements IBufferKey {
-    test, getGlobal, getSessionInfo, getDeviceInfo, getSessionBase, getExportKey, getObject;
+    test, getObject;
 
     @Override
     public int getStartingPoint() {

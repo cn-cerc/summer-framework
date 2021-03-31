@@ -118,7 +118,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
 
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
-        try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getExportKey, getHandle().getUserCode(), tmp)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.User.ExportKey, getHandle().getUserCode(), tmp)) {
             buff.setField("data", this.getDataIn().getJSON());
         }
         return tmp;
