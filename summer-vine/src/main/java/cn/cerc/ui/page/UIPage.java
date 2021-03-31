@@ -2,6 +2,7 @@ package cn.cerc.ui.page;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public abstract class UIPage extends AbstractPage {
 
     @Override
     public final String execute() throws ServletException, IOException {
+        getResponse().setCharacterEncoding(StandardCharsets.UTF_8.name());
         writeHtml(getResponse().getWriter());
         return null;
     }
