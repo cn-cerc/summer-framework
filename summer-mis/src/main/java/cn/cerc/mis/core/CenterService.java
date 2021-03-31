@@ -41,6 +41,9 @@ public class CenterService extends RemoteService {
             svr.setDataIn(getDataIn());
             boolean result = svr.exec();
             this.setDataOut(svr.getDataOut());
+            if (!result) {
+                this.setMessage(svr.getMessage());
+            }
             return result;
         }
     }
