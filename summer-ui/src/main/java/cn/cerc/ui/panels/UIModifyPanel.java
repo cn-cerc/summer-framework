@@ -34,6 +34,7 @@ public class UIModifyPanel extends UIOriginComponent {
             this.request = form.getRequest();
         }
         uiform = new UIForm(this);
+        uiform.setCssClass("modifyPanel");
         this.inputPanel = new UIOriginComponent(uiform);
         submit = new UIButtonSubmit(uiform.getBottom());
         submit.setText("保存");
@@ -49,7 +50,6 @@ public class UIModifyPanel extends UIOriginComponent {
             div.output(html);
         }
 
-        uiform.setCssClass("modifyPanel");
         uiform.outHead(html);
 
         for (UIComponent component : inputPanel) {

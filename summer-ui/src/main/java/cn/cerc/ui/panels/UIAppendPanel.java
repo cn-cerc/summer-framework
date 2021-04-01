@@ -34,6 +34,7 @@ public class UIAppendPanel extends UIOriginComponent {
             this.request = form.getRequest();
         }
         uiform = new UIForm(this);
+        uiform.setCssClass("appendPanel");
         this.inputPanel = new UIOriginComponent(uiform);
         submit = new UIButtonSubmit(uiform.getBottom());
         submit.setText("保存");
@@ -49,7 +50,6 @@ public class UIAppendPanel extends UIOriginComponent {
             div.output(html);
         }
 
-        uiform.setCssClass("appendPanel");
         uiform.outHead(html);
 
         for (UIComponent component : inputPanel) {
