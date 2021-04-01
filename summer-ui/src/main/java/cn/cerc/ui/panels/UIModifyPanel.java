@@ -48,7 +48,7 @@ public class UIModifyPanel extends UIOriginComponent {
             div.setText(this.getTitle());
             div.output(html);
         }
-        
+
         uiform.setCssClass("modifyPanel");
         uiform.outHead(html);
 
@@ -86,8 +86,12 @@ public class UIModifyPanel extends UIOriginComponent {
         uiform.outFoot(html);
     }
 
-    public void setAction(String action) {
+    public void uiform(String action) {
         uiform.setAction(action);
+    }
+
+    public void setFormEnctype(String enctype) {
+        uiform.setEnctype(enctype);
     }
 
     public String readAll() {
