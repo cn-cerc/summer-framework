@@ -43,7 +43,6 @@ public class AutoService extends CustomLocalProxy {
             throw new RuntimeException("not specified service");
         }
 
-        // 根据xml进行反射初始化服务信息
         Object object = getServiceObject();
         if (object == null) {
             return false;
