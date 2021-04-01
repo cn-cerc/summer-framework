@@ -252,6 +252,15 @@ public class BuildQuery {
         this.dataSet = dataSet;
     }
 
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("[%s]%n", this.getClass().getName()));
+        builder.append(String.format("CommandText:%s%n", this.getCommandText()));
+        return builder.toString();
+    }
+
     protected String getSelectCommand() {
         if (this.sql != null) {
             sql = sql.replaceFirst("%s", "");
