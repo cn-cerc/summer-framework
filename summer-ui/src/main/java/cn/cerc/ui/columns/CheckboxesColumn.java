@@ -63,6 +63,7 @@ public class CheckboxesColumn extends AbstractColumn implements IArrayColumn {
             i++;
             String id = this.getId() + i;
             String value = items.get(key);
+            html.print("<div>");
             html.println("<input type='checkbox' id='%s' name='%s'", id, this.getCode());
             html.println(" value='%s'", key);
             if (current.indexOf(key) > -1) {
@@ -70,8 +71,8 @@ public class CheckboxesColumn extends AbstractColumn implements IArrayColumn {
             }
             html.print(">");
             html.println("<label for=\"%s\">%s</label>", id, value);
+            html.print("</div>");
         }
-        html.println("</select>");
         html.println("</div>");
     }
 
