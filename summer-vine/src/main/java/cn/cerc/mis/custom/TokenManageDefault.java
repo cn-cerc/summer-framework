@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.redis.JedisFactory;
 import cn.cerc.mis.config.ApplicationConfig;
@@ -14,7 +15,6 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.SystemBuffer;
-import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -105,7 +105,8 @@ public class TokenManageDefault implements ITokenManage {
      */
     @Override
     public boolean createToken(String corpNo, String userCode, String password, String machineCode) {
-        String token = ApplicationConfig.getAuthToken(userCode, password, machineCode);
+        IHandle handle = new Handle(session);
+        String token = ApplicationConfig.getAuthToken(userCode, password, machineCode, handle);
         if (Utils.isEmpty(token)) {
             return false;
         }
@@ -115,7 +116,7 @@ public class TokenManageDefault implements ITokenManage {
         session.setProperty(Application.clientIP, "0.0.0.0");
 
         // 将用户信息赋值到句柄
-        CenterService svr = new CenterService(new Handle(session));
+        CenterService svr = new CenterService(handle);
         svr.setService("SvrSession.byUserCode");
         if (!svr.exec("CorpNo_", corpNo, "UserCode_", userCode)) {
             throw new RuntimeException(svr.getMessage());

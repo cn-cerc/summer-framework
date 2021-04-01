@@ -84,7 +84,7 @@ public class ApplicationConfig {
      * @param machineCode 设备代码
      * @return 用户授权令牌 token
      */
-    public static String getAuthToken(String userCode, String password, String machineCode) {
+    public static String getAuthToken(String userCode, String password, String machineCode, IHandle handle) {
         if (Utils.isEmpty(userCode)) {
             throw new RuntimeException(String.format(res.getString(1, "%s 不允许为空"), "userCode"));
         }
@@ -95,7 +95,7 @@ public class ApplicationConfig {
             throw new RuntimeException(String.format(res.getString(1, "%s 不允许为空"), "machineCode"));
         }
 
-        CenterService svr = new CenterService();
+        CenterService svr = new CenterService(handle);
         svr.setService("SvrLogin.getToken");
         Record headIn = svr.getDataIn().getHead();
         headIn.setField("userCode", userCode);
