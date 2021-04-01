@@ -73,7 +73,9 @@ public class UIPagePhone extends UIPage {
                 request.setAttribute(content.getId(), content);
             }
             for (Component component : content.getComponents()) {
-                request.setAttribute(component.getId(), component);
+                if (component.getId() != null) {
+                    request.setAttribute(component.getId(), component);
+                }
             }
         }
 
@@ -88,7 +90,8 @@ public class UIPagePhone extends UIPage {
         if (Utils.isNotEmpty(this.getForm().getName())) {
             out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
         } else {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+            out.printf("<title>%s</title>\n",
+                    R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
         }
 
         // 所有的请求都不发送 referrer
