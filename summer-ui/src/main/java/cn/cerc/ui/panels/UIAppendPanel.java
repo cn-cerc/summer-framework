@@ -90,10 +90,6 @@ public class UIAppendPanel extends UIOriginComponent {
         uiform.setAction(action);
     }
 
-    public void setFormEnctype(String enctype) {
-        uiform.setEnctype(enctype);
-    }
-
     public String readAll() {
         submitValue = request.getParameter(submit.getName());
         if (Utils.isNotEmpty(submitValue)) {
@@ -144,6 +140,10 @@ public class UIAppendPanel extends UIOriginComponent {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public UIForm getUiform() {
+        return uiform;
     }
 
 }
