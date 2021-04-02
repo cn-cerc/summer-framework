@@ -85,8 +85,9 @@ public class UIPageSearch extends UIPage {
                 request.setAttribute(content.getId(), content);
             }
             for (Component component : content.getComponents()) {
-                if (component.getId() != null)
+                if (component.getId() != null) {
                     request.setAttribute(component.getId(), component);
+                }
             }
         }
 
