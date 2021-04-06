@@ -73,7 +73,12 @@ public class ImageColumn extends AbstractColumn implements IDataColumn {
         String text = getRecord().getString(this.getCode());
         if (this.readonly) {
             html.print(getName() + "：");
-            html.print(text);
+            UIImage img = new UIImage();
+            img.setStaticPath("");
+            img.setSrc(text);
+            img.setWidth(this.getWidth());
+            img.setHeight(this.getHeight());
+            img.output(html);
         } else {
             UILabel label = new UILabel();
             label.setFocusTarget(this.getCode());
