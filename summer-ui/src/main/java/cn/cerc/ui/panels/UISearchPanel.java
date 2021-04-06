@@ -114,4 +114,8 @@ public class UISearchPanel extends UIOriginComponent {
     public void setRecord(Record record) {
         this.record = record;
     }
+
+    public UIForm getUiform() {
+        return uiform;
+    }
 }
