@@ -161,5 +161,10 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
         }
 
     }
+    
+    public OptionColumn setSelectReadOnly(boolean readonly) {
+        this.select.setReadonly(readonly);
+        return this;
+    }
 
 }

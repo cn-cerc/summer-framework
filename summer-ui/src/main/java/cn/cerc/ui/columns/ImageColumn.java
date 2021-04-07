@@ -104,8 +104,12 @@ public class ImageColumn extends AbstractColumn implements IDataColumn {
 
         input.setId(getId());
         input.setReadonly(readonly);
-        input.setValue(text);
-        input.output(html);
+        UIImage img = new UIImage();
+        img.setStaticPath("");
+        img.setSrc(text);
+        img.setWidth(this.getWidth());
+        img.setHeight(this.getHeight());
+        img.output(html);
 
         if (!this.isHidden()) {
             html.print("<span>");
