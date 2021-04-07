@@ -1,5 +1,7 @@
 package cn.cerc.mis.custom;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,14 +18,12 @@ import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.other.MemoryBuffer;
-import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
-@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TokenManageDefault implements ITokenManage {
-
+    private static final Logger log = LoggerFactory.getLogger(TokenManageDefault.class);
     private ISession session;
 
     @Override

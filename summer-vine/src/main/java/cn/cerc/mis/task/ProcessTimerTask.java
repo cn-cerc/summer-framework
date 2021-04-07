@@ -3,10 +3,8 @@ package cn.cerc.mis.task;
 import java.util.Calendar;
 import java.util.TimerTask;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.core.Handle;
-import cn.cerc.mis.core.SystemBufferType;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,18 +13,19 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ISession;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.cache.Redis;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.Handle;
+import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.rds.StubHandle;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Slf4j
 // 请改使用 StartTaskDefault，注意测试不同用户的创建
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
-
+    private static final Logger log = LoggerFactory.getLogger(ProcessTimerTask.class);
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;
@@ -85,7 +84,8 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 }
 
                 int timeOut = task.getInterval();
-                String buffKey = String.format("%d.%s.%s.%s", SystemBufferType.getObject.ordinal(), ServerConfig.getAppName(), this.getClass().getName(), task.getClass().getName());
+                String buffKey = String.format("%d.%s.%s.%s", SystemBufferType.getObject.ordinal(),
+                        ServerConfig.getAppName(), this.getClass().getName(), task.getClass().getName());
                 if (Redis.get(buffKey) != null) {
                     continue;
                 }
@@ -113,10 +113,11 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             Application.init(SummerMIS.ID);
             session = Application.createSession();
             // 创建token
-            //FIXME 此处需要复查是否存在创建token的必要性
+            // FIXME 此处需要复查是否存在创建token的必要性
             ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
             // 注入token到session
-            manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password, StubHandle.machineCode);
+            manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
+                    StubHandle.machineCode);
             return;
         }
 
@@ -134,7 +135,7 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             Application.init(SummerMIS.ID);
             session = Application.createSession();
             // 创建token
-            //FIXME 此处需要复查是否存在创建token的必要性
+            // FIXME 此处需要复查是否存在创建token的必要性
             ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
             manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
                     StubHandle.machineCode);

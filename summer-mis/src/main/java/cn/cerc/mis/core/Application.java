@@ -8,6 +8,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -22,10 +24,9 @@ import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class Application {
+    private static final Logger log = LoggerFactory.getLogger(Application.class);
     private static final ClassResource res = new ClassResource(Application.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(Application.class, SummerMIS.ID);
     // tomcat JSESSION.ID
@@ -90,8 +91,7 @@ public class Application {
 
     public static void setContext(ApplicationContext applicationContext) {
         if (context != applicationContext) {
-            if (context == null) {
-            } else {
+            if (context != null) {
                 log.warn("applicationContext overload!");
             }
             context = applicationContext;

@@ -1,5 +1,7 @@
 package cn.cerc.mis.custom;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -7,13 +9,11 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ISession;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.IAppLanguage;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppLanguageDefault implements IAppLanguage {
-
+    private static final Logger log = LoggerFactory.getLogger(AppLanguageDefault.class);
     private ISession session;
 
     // FIXME: 2019/11/21 用户配置表需要改为动态获取
@@ -32,7 +32,7 @@ public class AppLanguageDefault implements IAppLanguage {
             log.error(e.getMessage());
         }
         return result;
-   }
+    }
 
     @Override
     public ISession getSession() {

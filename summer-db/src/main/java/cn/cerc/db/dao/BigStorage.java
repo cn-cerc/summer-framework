@@ -1,9 +1,10 @@
 package cn.cerc.db.dao;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class BigStorage implements Runnable {
+    private static final Logger log = LoggerFactory.getLogger(BigStorage.class);
 
     private BigTable<?> table;
     private BigControl control;

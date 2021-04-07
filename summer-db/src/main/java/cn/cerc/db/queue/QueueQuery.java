@@ -1,5 +1,8 @@
 package cn.cerc.db.queue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.model.Message;
 import com.google.gson.JsonSyntaxException;
@@ -9,11 +12,10 @@ import cn.cerc.core.ISession;
 import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.DataQuery;
 import cn.cerc.db.core.ISessionOwner;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class QueueQuery extends DataQuery {
     private static final ClassResource res = new ClassResource(QueueQuery.class, SummerDB.ID);
+    private static final Logger log = LoggerFactory.getLogger(QueueQuery.class);
 
     private static final long serialVersionUID = 7781788221337787366L;
     private QueueOperator operator;

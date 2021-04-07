@@ -1,14 +1,16 @@
 package cn.cerc.db.jiguang;
 
-import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.StubHandleText;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.StubHandleText;
+
 public class JiguangPushTest {
     private StubHandleText handle;
+    private static final Logger log = LoggerFactory.getLogger(JiguangPushTest.class);
 
     @Before
     public void setUp() throws Exception {

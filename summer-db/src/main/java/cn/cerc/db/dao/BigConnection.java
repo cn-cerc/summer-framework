@@ -6,17 +6,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
 import cn.cerc.db.mysql.MysqlConnection;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class BigConnection implements Closeable {
     private static final ClassConfig config = new ClassConfig(BigConnection.class, SummerDB.ID);
+    private static final Logger log = LoggerFactory.getLogger(BigConnection.class);
 
     // 饿汉式
     private static ComboPooledDataSource dataSource;

@@ -2,6 +2,8 @@ package cn.cerc.mis.task;
 
 import java.util.Calendar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -14,11 +16,9 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.SystemBufferType;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class StartTaskDefault implements Runnable, ApplicationContextAware {
-
+    private static final Logger log = LoggerFactory.getLogger(StartTaskDefault.class);
     // 晚上12点执行，也即0点开始执行
     private static final int C_SCHEDULE_HOUR = 0;
     private static boolean isRunning = false;
@@ -87,8 +87,8 @@ public class StartTaskDefault implements Runnable, ApplicationContextAware {
                 }
 
                 int timeOut = task.getInterval();
-                String buffKey = String.format("%d.%s.%s", SystemBufferType.getObject.ordinal(), this.getClass().getName(),
-                        task.getClass().getName());
+                String buffKey = String.format("%d.%s.%s", SystemBufferType.getObject.ordinal(),
+                        this.getClass().getName(), task.getClass().getName());
                 if (Redis.get(buffKey) != null) {
                     continue;
                 }

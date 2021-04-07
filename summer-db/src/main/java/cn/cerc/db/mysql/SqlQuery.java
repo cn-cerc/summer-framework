@@ -10,6 +10,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
 import cn.cerc.core.FieldDefs;
@@ -19,10 +22,9 @@ import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.core.DataQuery;
 import cn.cerc.db.core.ISessionOwner;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class SqlQuery extends DataQuery {
+    private static final Logger log = LoggerFactory.getLogger(SqlQuery.class);
 
     private static final long serialVersionUID = 7316772894058168187L;
     private SqlConnection connection;

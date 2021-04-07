@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -19,14 +21,12 @@ import cn.cerc.mis.core.IAppLogin;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.IUserLoginCheck;
 import cn.cerc.ui.page.JspPage;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AppLoginDefault extends JspPage implements IAppLogin {
     private ISession session;
-
+    private static final Logger log = LoggerFactory.getLogger(AppLoginDefault.class);
     // 注意：此处应该使用SummerMVC.ID，别改为SummerUI.ID
     private static final ClassConfig config = new ClassConfig(AppLoginDefault.class, SummerMIS.ID);
 

@@ -13,6 +13,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
 import cn.cerc.core.FieldDefs;
@@ -26,10 +29,9 @@ import cn.cerc.db.mysql.BigdataException;
 import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.mysql.SqlOperator;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public abstract class DaoQuery<T extends Serializable> extends DataQuery {
+    private static final Logger log = LoggerFactory.getLogger(DaoQuery.class);
 
     private static final long serialVersionUID = -7323397340337332570L;
     private MysqlConnection connection;

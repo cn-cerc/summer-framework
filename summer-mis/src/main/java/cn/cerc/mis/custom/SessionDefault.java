@@ -3,6 +3,8 @@ package cn.cerc.mis.custom;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -17,14 +19,12 @@ import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
 import cn.cerc.mis.core.Application;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // @Scope(WebApplicationContext.SCOPE_REQUEST)
 public class SessionDefault implements ISession {
-
+    private static final Logger log = LoggerFactory.getLogger(SessionDefault.class);
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
 

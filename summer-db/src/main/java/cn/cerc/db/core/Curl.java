@@ -1,15 +1,5 @@
 package cn.cerc.db.core;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +15,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * HTTP请求代理类
  *
@@ -32,7 +33,6 @@ import java.util.Map.Entry;
  * @version 1.0, 2018-1-1
  */
 //FIXME 需重构调用方式初始化直接创建url  new Curl(url);
-@Slf4j
 public class Curl {
 
     /**
@@ -59,6 +59,8 @@ public class Curl {
      * 返回内容
      */
     private String responseContent = null;
+    private static final Logger log = LoggerFactory.getLogger(Curl.class);
+
 
     public String sendGet(String reqUrl) {
         StringBuilder result = new StringBuilder();

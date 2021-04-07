@@ -1,8 +1,14 @@
 package cn.cerc.mis.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassResource;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.book.BookDataList;
 import cn.cerc.mis.book.IBookData;
@@ -10,13 +16,9 @@ import cn.cerc.mis.book.IBookEnroll;
 import cn.cerc.mis.book.IBookManage;
 import cn.cerc.mis.book.IBookSource;
 import cn.cerc.mis.other.BookOptions;
-import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Slf4j
 public class SearchManager implements IBookManage {
+    private static final Logger log = LoggerFactory.getLogger(SearchManager.class);
     private static final ClassResource res = new ClassResource(SearchManager.class, SummerMIS.ID);
 
     private IHandle handle;
@@ -36,7 +38,8 @@ public class SearchManager implements IBookManage {
     @Override
     public void setDateRange(TDateTime beginDate, TDateTime endDate, boolean forceExecute) {
         if (initMonth.compareTo(beginDate.getYearMonth()) > 0) {
-            throw new RuntimeException(String.format(res.getString(1, "起始日期(%s)小于开账年月(%s)"), beginDate.getYearMonth(), initMonth));
+            throw new RuntimeException(
+                    String.format(res.getString(1, "起始日期(%s)小于开账年月(%s)"), beginDate.getYearMonth(), initMonth));
         }
 
         if (beginDate.compareTo(endDate) > 0) {

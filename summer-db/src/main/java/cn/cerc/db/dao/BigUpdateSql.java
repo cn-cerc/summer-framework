@@ -1,13 +1,5 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.core.ClassResource;
-import cn.cerc.db.SummerDB;
-import cn.cerc.db.mysql.BuildStatement;
-import cn.cerc.db.mysql.UpdateMode;
-import lombok.extern.slf4j.Slf4j;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Connection;
@@ -16,12 +8,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.core.ClassResource;
+import cn.cerc.db.SummerDB;
+import cn.cerc.db.mysql.BuildStatement;
+import cn.cerc.db.mysql.UpdateMode;
+
 public class BigUpdateSql {
     private static final ClassResource res = new ClassResource(BigUpdateSql.class, SummerDB.ID);
+    private static final Logger log = LoggerFactory.getLogger(BigUpdateSql.class);
 
     public static boolean exec(Connection conn, Object oldRecord, Object curRecord, UpdateMode updateMode,
-                               boolean preview) throws Exception {
+            boolean preview) throws Exception {
         String lastCommand = null;
         ClassData classData = ClassFactory.get(curRecord.getClass());
         String updateKey = classData.getUpdateKey();

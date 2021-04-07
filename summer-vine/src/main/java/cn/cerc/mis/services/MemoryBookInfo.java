@@ -1,5 +1,8 @@
 package cn.cerc.mis.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
 
 import cn.cerc.core.ClassResource;
@@ -11,10 +14,9 @@ import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class MemoryBookInfo {
+    private static final Logger log = LoggerFactory.getLogger(MemoryBookInfo.class);
     private static final ClassResource res = new ClassResource(MemoryBookInfo.class, SummerMIS.ID);
 
     private static final String buffVersion = "5";

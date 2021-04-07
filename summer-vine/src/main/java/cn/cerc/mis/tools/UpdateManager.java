@@ -1,8 +1,14 @@
 package cn.cerc.mis.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassResource;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.book.BookDataList;
 import cn.cerc.mis.book.IBook;
@@ -11,13 +17,9 @@ import cn.cerc.mis.book.IBookManage;
 import cn.cerc.mis.book.UpdateBook;
 import cn.cerc.mis.book.VirtualData;
 import cn.cerc.mis.other.BookOptions;
-import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Slf4j
 public class UpdateManager implements IBookManage {
+    private static final Logger log = LoggerFactory.getLogger(UpdateManager.class);
     private static final ClassResource res = new ClassResource(UpdateManager.class, SummerMIS.ID);
 
     private IHandle handle;

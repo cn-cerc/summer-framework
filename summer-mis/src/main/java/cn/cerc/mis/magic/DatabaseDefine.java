@@ -6,15 +6,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.custom.SessionDefault;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class DatabaseDefine implements Iterable<TableDefine> {
+    private static final Logger log = LoggerFactory.getLogger(DatabaseDefine.class);
     // 获取所有表
     public static final String DataTables = "information_schema.tables";
     // 获取表字段
@@ -65,7 +67,7 @@ public class DatabaseDefine implements Iterable<TableDefine> {
     public static FieldDefine getField(String fieldPath) {
         String[] args = fieldPath.split("\\.");
         TableDefine table = getTable(args[0]);
-        if(table != null)
+        if (table != null)
             return table.getField(args[1]);
         else
             return null;

@@ -1,5 +1,8 @@
 package cn.cerc.mis.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,12 +15,10 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.core.SystemBuffer;
-import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.MemoryBuffer;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public abstract class RemoteService implements IServiceProxy {
+    private static final Logger log = LoggerFactory.getLogger(RemoteService.class);
     private static final ClassResource res = new ClassResource(RemoteService.class, SummerMIS.ID);
     private IHandle handle;
     private String service;

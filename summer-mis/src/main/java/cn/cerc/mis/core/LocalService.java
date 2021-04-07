@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.MD5;
 import cn.cerc.core.Record;
@@ -15,10 +18,9 @@ import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.core.SupportHandle;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.other.MemoryBuffer;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class LocalService extends CustomLocalProxy implements IServiceProxy {
+    private static final Logger log = LoggerFactory.getLogger(LocalService.class);
     // 是否激活缓存
     private boolean bufferRead = true;
     private boolean bufferWrite = true;
