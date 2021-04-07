@@ -3,6 +3,9 @@ package cn.cerc.db.jiguang;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.ISessionOwner;
 import cn.jiguang.common.resp.APIConnectionException;
@@ -16,10 +19,9 @@ import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class JiguangPush {
+    private static final Logger log = LoggerFactory.getLogger(JiguangPush.class);
 
     private JiguangConnection connection;
     // 消息id，回调时使用

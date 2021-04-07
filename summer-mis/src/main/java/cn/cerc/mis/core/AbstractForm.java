@@ -7,16 +7,18 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 //@Component
 //@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class AbstractForm implements IForm {
+    private static final Logger log = LoggerFactory.getLogger(AbstractForm.class);
 //    private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
 //    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
 

@@ -1,17 +1,18 @@
 package cn.cerc.mis.language;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.mis.core.LocalService;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.Record;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.mis.core.LocalService;
+
 //TODO 此对象需要做更进一步抽象处理
 public class ResourceBuffer {
-
+    private static final Logger log = LoggerFactory.getLogger(ResourceBuffer.class);
     private static Map<String, String> items = new HashMap<>();
     private String lang;
 

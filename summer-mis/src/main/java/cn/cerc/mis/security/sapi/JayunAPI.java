@@ -2,16 +2,17 @@ package cn.cerc.mis.security.sapi;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.security.sapi.JayunAPI;
-import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
-@Slf4j
 public class JayunAPI {
+    private static final Logger log = LoggerFactory.getLogger(JayunAPI.class);
     private static final ClassConfig config = new ClassConfig(JayunAPI.class, SummerMIS.ID);
     private static String jayunHost;
     private static boolean jayunStop = false;
@@ -32,7 +33,7 @@ public class JayunAPI {
         jayunHost = config.getString("jayun.host", "https://www.jayun.site");
         jayunStop = config.getBoolean("jayun.stop", false);
     }
-    
+
     public JayunAPI(HttpServletRequest request) {
         this.request = request;
         this.remoteIP = getRemoteAddr();

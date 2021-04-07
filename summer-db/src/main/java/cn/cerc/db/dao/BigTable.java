@@ -14,17 +14,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassData;
 import cn.cerc.core.ClassFactory;
 import cn.cerc.core.SqlText;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.UpdateMode;
 import cn.cerc.db.redis.JedisFactory;
-import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
-@Slf4j
 public abstract class BigTable<T extends BigRecord> {
+    private static final Logger log = LoggerFactory.getLogger(BigTable.class);
 
     // 有变动待保存数据，保存完后会自动清除
     protected Map<T, T> updateList = new ConcurrentHashMap<>();

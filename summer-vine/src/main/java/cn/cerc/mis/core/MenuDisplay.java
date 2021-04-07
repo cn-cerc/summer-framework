@@ -1,13 +1,8 @@
 package cn.cerc.mis.core;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * 用于构建右边菜单的显示
  */
-@Setter
-@Getter
 public class MenuDisplay {
 
     // 菜单代码
@@ -37,4 +32,68 @@ public class MenuDisplay {
 
     // 是否支持手机
     private boolean phone;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(String pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public boolean isWindow() {
+        return window;
+    }
+
+    public void setWindow(boolean window) {
+        this.window = window;
+    }
+
+    public boolean isPhone() {
+        return phone;
+    }
+
+    public void setPhone(boolean phone) {
+        this.phone = phone;
+    }
 }

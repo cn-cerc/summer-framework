@@ -1,5 +1,8 @@
 package cn.cerc.mis.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
@@ -11,18 +14,19 @@ import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.other.UserNotFindException;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class SvrSession extends CustomService {
+    private static final Logger log = LoggerFactory.getLogger(SvrSession.class);
     private static final ClassResource res = new ClassResource(SvrSession.class, SummerMIS.ID);
 
     public boolean byUserCode() throws ServiceException, UserNotFindException {
         Record headIn = getDataIn().getHead();
-        DataValidateException.stopRun(String.format(res.getString(1, "%s 不允许为空"), "CorpNo_"), !headIn.hasValue("CorpNo_"));
+        DataValidateException.stopRun(String.format(res.getString(1, "%s 不允许为空"), "CorpNo_"),
+                !headIn.hasValue("CorpNo_"));
         String corpNo = headIn.getString("CorpNo_");
 
-        DataValidateException.stopRun(String.format(res.getString(1, "%s 不允许为空"), "UserCode_"), !headIn.hasValue("UserCode_"));
+        DataValidateException.stopRun(String.format(res.getString(1, "%s 不允许为空"), "UserCode_"),
+                !headIn.hasValue("UserCode_"));
         String userCode = headIn.getString("UserCode_");
 
         SqlQuery cdsUser = new SqlQuery(this);
@@ -41,8 +45,8 @@ public class SvrSession extends CustomService {
     }
 
     /*
-     * 1、从 CurrentUser 表中，取出公司别 CorpNo_ 与 UserCode_
-     * 2、再依据 UserCode_ 从Account表取出 RoleCode_
+     * 1、从 CurrentUser 表中，取出公司别 CorpNo_ 与 UserCode_ 2、再依据 UserCode_ 从Account表取出
+     * RoleCode_
      */
     public boolean byToken() throws ServiceException {
         Record headIn = getDataIn().getHead();

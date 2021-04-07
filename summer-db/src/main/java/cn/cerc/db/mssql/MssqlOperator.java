@@ -9,6 +9,9 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
@@ -18,11 +21,10 @@ import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.mysql.BuildStatement;
 import cn.cerc.db.mysql.UpdateMode;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class MssqlOperator implements IDataOperator {
     private static final ClassResource res = new ClassResource(MssqlOperator.class, SummerDB.ID);
+    private static final Logger log = LoggerFactory.getLogger(MssqlOperator.class);
 
     private String updateKey = "UID_";
     private String tableName;

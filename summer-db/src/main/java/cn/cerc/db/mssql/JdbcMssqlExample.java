@@ -1,14 +1,14 @@
 package cn.cerc.db.mssql;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class JdbcMssqlExample {
 
     /**
@@ -27,6 +27,7 @@ public class JdbcMssqlExample {
      * 用户密码
      */
     private static final String JDBC_PASSWORD = "sa";
+    private static final Logger log = LoggerFactory.getLogger(JdbcMssqlExample.class);
 
     public static void main(String[] args) {
         try {

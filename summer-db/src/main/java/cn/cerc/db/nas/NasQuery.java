@@ -6,16 +6,17 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.DataQuery;
 import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.queue.QueueOperator;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class NasQuery extends DataQuery {
+    private static final Logger log = LoggerFactory.getLogger(NasQuery.class);
 
     private static final long serialVersionUID = 1L;
 

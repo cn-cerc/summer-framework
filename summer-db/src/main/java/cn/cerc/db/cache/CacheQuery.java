@@ -1,16 +1,18 @@
 package cn.cerc.db.cache;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.IRecord;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
-import lombok.extern.slf4j.Slf4j;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-@Slf4j
 public class CacheQuery implements IRecord {
+    private static final Logger log = LoggerFactory.getLogger(CacheQuery.class);
 
     private String key;
     private boolean existsData = false;

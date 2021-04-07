@@ -1,17 +1,20 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.ClassResource;
-import cn.cerc.mis.SummerMIS;
-
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@Slf4j
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+
+import cn.cerc.core.ClassResource;
+import cn.cerc.mis.SummerMIS;
+
 public class RequestData {
+    private static final Logger log = LoggerFactory.getLogger(RequestData.class);
     private static final ClassResource res = new ClassResource(RequestData.class, SummerMIS.ID);
 
     // FIXME: 2019/12/7 sid 应该改为 token

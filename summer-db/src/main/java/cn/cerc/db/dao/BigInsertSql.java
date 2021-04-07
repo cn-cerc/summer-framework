@@ -1,13 +1,5 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.db.mysql.BuildStatement;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
@@ -19,8 +11,19 @@ import java.sql.Statement;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Slf4j
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.db.mysql.BuildStatement;
+
 public class BigInsertSql {
+    private static final Logger log = LoggerFactory.getLogger(BigInsertSql.class);
 
     public static boolean exec(Connection conn, Object oldRecord, boolean preview) {
         String lastCommand = null;

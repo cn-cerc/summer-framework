@@ -1,5 +1,7 @@
 package cn.cerc.db.queue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -17,13 +19,12 @@ import cn.cerc.core.IConfig;
 import cn.cerc.core.IConnection;
 import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.ServerConfig;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AliyunQueueConnection implements IConnection {
     private static final ClassResource res = new ClassResource(AliyunQueueConnection.class, SummerDB.ID);
+    private static final Logger log = LoggerFactory.getLogger(AliyunQueueConnection.class);
 
     public static final String AccountEndpoint = "mns.accountendpoint";
     public static final String AccessKeyId = "mns.accesskeyid";

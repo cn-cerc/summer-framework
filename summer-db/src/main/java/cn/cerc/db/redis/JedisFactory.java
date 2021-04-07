@@ -1,14 +1,16 @@
 package cn.cerc.db.redis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassConfig;
-import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
-@Slf4j
 public class JedisFactory {
+    private static final Logger log = LoggerFactory.getLogger(JedisFactory.class);
 
     public static final String redis_site = "redis.host";
     public static final String redis_port = "redis.port";
