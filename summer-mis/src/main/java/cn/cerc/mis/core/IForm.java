@@ -32,4 +32,14 @@ public interface IForm extends IHandle, IHandleOwner, IRequestOwner, IResponseOw
 
     void setPathVariables(String[] pathVariables);
 
+    @Deprecated
+    default Object getProperty(String key) {
+        return getSession().getProperty(key);
+    }
+
+    @Deprecated
+    default void setProperty(String key, Object value) {
+        getSession().setProperty(key, value);
+    }
+    
 }

@@ -209,7 +209,7 @@ public class SvrUserLogin extends CustomService {
                     (String) getProperty(Application.userId), deviceId)) {
                 Buff.setField("UserID_", getProperty(Application.userId));
                 Buff.setField("UserCode_", getUserCode());
-                Buff.setField("UserName_", getUserName());
+                Buff.setField("UserName_", getSession().getUserName());
                 Buff.setField("LoginTime_", session.getProperty(Application.loginTime));
                 Buff.setField("YGUser", YGLogin);
                 Buff.setField("VerifyMachine", false);

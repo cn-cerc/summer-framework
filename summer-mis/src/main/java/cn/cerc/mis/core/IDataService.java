@@ -42,4 +42,14 @@ public interface IDataService extends IHandle, IHandleOwner {
         return String.format("[%s]", dataOut.getJSON());
     }
 
+    @Deprecated
+    default Object getProperty(String key) {
+        return getSession().getProperty(key);
+    }
+
+    @Deprecated
+    default void setProperty(String key, Object value) {
+        getSession().setProperty(key, value);
+    }
+    
 }
