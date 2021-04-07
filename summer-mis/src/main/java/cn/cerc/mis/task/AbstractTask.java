@@ -1,5 +1,7 @@
 package cn.cerc.mis.task;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.cerc.core.ISession;
@@ -7,10 +9,9 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.custom.SessionDefault;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public abstract class AbstractTask extends Handle implements Runnable {
+    private static final Logger log = LoggerFactory.getLogger(AbstractTask.class);
 
     @Autowired
     public ISystemTable systemTable;

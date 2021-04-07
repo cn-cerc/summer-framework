@@ -1,5 +1,11 @@
 package cn.cerc.ui.mvc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.core.AbstractForm;
@@ -9,15 +15,11 @@ import cn.cerc.mis.core.JsonPage;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.ui.SummerUI;
 
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
-@Slf4j
 @Component
 public class ProxyService extends AbstractForm {
+    private static final Logger log = LoggerFactory.getLogger(ProxyService.class);
     public static final String BEAN_ID = "proxyService";
-    
+
     private static final ClassResource res = new ClassResource(ProxyService.class, SummerUI.ID);
 
     @Override

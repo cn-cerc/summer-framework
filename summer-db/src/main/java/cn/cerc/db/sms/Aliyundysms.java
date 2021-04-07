@@ -1,5 +1,8 @@
 package cn.cerc.db.sms;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
@@ -8,11 +11,10 @@ import com.aliyun.teaopenapi.models.Config;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IConfig;
 import cn.cerc.db.SummerDB;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class Aliyundysms {
     private static final ClassResource res = new ClassResource(Aliyundysms.class, SummerDB.ID);
+    private static final Logger log = LoggerFactory.getLogger(Aliyundysms.class);
 
     public static final String SingName = "dayu.singName";
     public static final String aliyun_accessKeyId = "oss.accessKeyId";

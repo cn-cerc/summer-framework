@@ -1,19 +1,21 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.core.TDate;
-import cn.cerc.core.TDateTime;
-import lombok.extern.slf4j.Slf4j;
-
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.Map;
 
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.core.TDate;
+import cn.cerc.core.TDateTime;
+
 public class BigOperator {
+    private static final Logger log = LoggerFactory.getLogger(BigOperator.class);
 
     public static void copy(Object object, ReadFieldEvent event) {
         if (object == null) {

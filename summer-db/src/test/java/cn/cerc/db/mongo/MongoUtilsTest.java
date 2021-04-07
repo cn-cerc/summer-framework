@@ -1,19 +1,22 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.db.core.StubHandleText;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import lombok.extern.slf4j.Slf4j;
-import org.bson.Document;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@Slf4j
+import org.bson.Document;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+
+import cn.cerc.db.core.StubHandleText;
+
 public class MongoUtilsTest {
+    private static final Logger log = LoggerFactory.getLogger(MongoUtilsTest.class);
 
     private static MongoUtils utils;
 

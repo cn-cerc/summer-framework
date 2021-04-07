@@ -1,5 +1,8 @@
 package cn.cerc.mis.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.LanguageResource;
@@ -10,10 +13,9 @@ import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CenterService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class ApplicationConfig {
+    private static final Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
     private static final ClassResource res = new ClassResource(ApplicationConfig.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(ApplicationConfig.class, SummerMIS.ID);
 

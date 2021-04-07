@@ -1,16 +1,5 @@
 package cn.cerc.mis.tools;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.ISystemTable;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -20,14 +9,27 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.ISystemTable;
+
 /**
  * 扫描需要翻译的中文
  */
-@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ExportChinese {
-
+    private static final Logger log = LoggerFactory.getLogger(ExportChinese.class);
     private final Set<String> items = new TreeSet<>();
 
     public static void main(String[] args) throws JsonProcessingException {
@@ -107,7 +109,7 @@ public class ExportChinese {
      * 写入字典
      */
     public void writeDict(IHandle handle) {
-        //FIXME: 此处应该进一步抽象处理
+        // FIXME: 此处应该进一步抽象处理
         ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select * from %s", systemTable.getLangDict());

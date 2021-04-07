@@ -1,8 +1,6 @@
 package cn.cerc.mis.core;
 
 import com.google.gson.Gson;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 菜单元数据
@@ -36,8 +34,6 @@ public class MenuMetadata {
     private String module;
     private String group;
 
-    @Setter
-    @Getter
     private int child;// 子项数量
 
     public String getModule() {
@@ -215,6 +211,14 @@ public class MenuMetadata {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public int getChild() {
+        return child;
+    }
+
+    public void setChild(int child) {
+        this.child = child;
     }
 
 }

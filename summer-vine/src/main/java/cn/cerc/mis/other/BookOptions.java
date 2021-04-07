@@ -3,6 +3,9 @@ package cn.cerc.mis.other;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
@@ -13,12 +16,8 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.LocalService;
-import lombok.extern.slf4j.Slf4j;
-import java.util.HashMap;
-import java.util.Map;
 
 // FIXME 每个业务项目应自己生成一个
-@Slf4j
 public class BookOptions {
     public static final String BookInfo_Set = "_BookInfoSet_";
     public static final String HideLoginInfo = "_HideLoginInfo_";
@@ -112,6 +111,7 @@ public class BookOptions {
     public static final String EnableAutoMRP = "EnableAutoMRP";
 
     private static Map<String, String> items = new HashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(BookOptions.class);
 
     static {
         // 虚拟参数

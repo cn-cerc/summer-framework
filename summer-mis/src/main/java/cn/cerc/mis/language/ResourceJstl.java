@@ -11,15 +11,16 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.LanguageResource;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class ResourceJstl extends SimpleTagSupport {
-
+    private static final Logger log = LoggerFactory.getLogger(ResourceJstl.class);
     private static Map<String, ResourceBuffer> items = new HashMap<>();
     private String toId = null;
 

@@ -3,6 +3,8 @@ package cn.cerc.mis.core;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.cerc.core.ClassResource;
@@ -10,10 +12,9 @@ import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class CustomService implements IMultiplService, IRestful {
+    private static final Logger log = LoggerFactory.getLogger(CustomService.class);
     private static final ClassResource res = new ClassResource(CustomService.class, SummerMIS.ID);
 
     @Autowired
@@ -57,7 +58,8 @@ public class CustomService implements IMultiplService, IRestful {
             }
         }
         if (mt == null) {
-            this.setMessage(String.format(res.getString(1, "没有找到服务：%s.%s ！"), this.getClass().getName(), this.funcCode));
+            this.setMessage(
+                    String.format(res.getString(1, "没有找到服务：%s.%s ！"), this.getClass().getName(), this.funcCode));
             ss.setMessage(this.getMessage());
             ss.setResult(false);
             return ss;
@@ -87,7 +89,8 @@ public class CustomService implements IMultiplService, IRestful {
                 if (totalTime > timeout) {
                     String[] tmp = this.getClass().getName().split("\\.");
                     String service = tmp[tmp.length - 1] + "." + this.funcCode;
-                    log.warn(String.format("corpNo:%s, userCode:%s, service:%s, tickCount:%s", getCorpNo(), getUserCode(), service, totalTime));
+                    log.warn(String.format("corpNo:%s, userCode:%s, service:%s, tickCount:%s", getCorpNo(),
+                            getUserCode(), service, totalTime));
                 }
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -13,12 +15,12 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.core.IConfig;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Slf4j
 public class MysqlConnection extends SqlConnection {
+    private static final Logger log = LoggerFactory.getLogger(MysqlConnection.class);
+
     private static final ClassConfig config = new ClassConfig(MysqlConnection.class, SummerDB.ID);
     // IHandle中识别码
     public static final String sessionId = "sqlSession";

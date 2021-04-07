@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.mis.config.AppStaticFileDefault;
@@ -19,10 +21,9 @@ import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.ui.SummerUI;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class StartForms implements Filter {
+    private static final Logger log = LoggerFactory.getLogger(StartForms.class);
     private static final ClassConfig config = new ClassConfig(StartForms.class, SummerUI.ID);
 
     @Override

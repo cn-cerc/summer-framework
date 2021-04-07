@@ -1,12 +1,17 @@
 package cn.cerc.ui.page.service;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ITokenManage;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.mis.core.AppClient;
@@ -16,19 +21,14 @@ import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.core.SystemBuffer;
-import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.MemoryBuffer;
 import cn.cerc.mis.services.SvrUserLogin;
 import cn.cerc.ui.SummerUI;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
-
-@Slf4j
 public class SvrAutoLogin implements IUserLanguage {
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
-
+    private static final Logger log = LoggerFactory.getLogger(SvrAutoLogin.class);
     private IHandle handle;
     private String message;
 
@@ -97,7 +97,7 @@ public class SvrAutoLogin implements IUserLanguage {
             AppClient client = new AppClient();
             client.setRequest(request);
             client.setToken(token);
-            
+
             ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
             manage.resumeToken(token);
 

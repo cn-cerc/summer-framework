@@ -1,5 +1,17 @@
 package cn.cerc.mis.client;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
@@ -14,19 +26,10 @@ import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-@Slf4j
 @Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
+    private static final Logger log = LoggerFactory.getLogger(StartServices.class);
     private static final ClassResource res = new ClassResource(StartServices.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(StartServices.class, SummerMIS.ID);
 
