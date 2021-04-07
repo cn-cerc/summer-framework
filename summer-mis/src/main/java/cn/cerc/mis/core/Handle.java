@@ -2,8 +2,9 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.SupportHandle;
 
-public class Handle implements IHandle {
+public class Handle implements IHandle, SupportHandle {
 
     protected IHandle handle;
     private ISession session;

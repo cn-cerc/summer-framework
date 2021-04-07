@@ -1,8 +1,9 @@
 package cn.cerc.mis.core;
 
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.SupportHandle;
 
-public interface IForm extends IHandle, IRequestOwner, IResponseOwner, IPermission {
+public interface IForm extends IHandle, SupportHandle, IRequestOwner, IResponseOwner, IPermission {
 
     // 页面代码
     void setId(String formId);
@@ -13,9 +14,6 @@ public interface IForm extends IHandle, IRequestOwner, IResponseOwner, IPermissi
     String getName();
 
     IHandle getHandle();
-
-    // 数据库连接
-    void setHandle(IHandle handle);
 
     // 取得访问设备讯息
     IClient getClient();

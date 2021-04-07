@@ -3,8 +3,9 @@ package cn.cerc.mis.core;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.SupportHandle;
 
-public interface IDataService extends IHandle {
+public interface IDataService extends IHandle, SupportHandle {
 
     IHandle getHandle();
 
