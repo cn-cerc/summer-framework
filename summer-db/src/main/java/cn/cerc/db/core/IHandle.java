@@ -20,7 +20,6 @@ public interface IHandle extends ISessionOwner {
         return getSession().getUserName();
     }
 
-    // 设置自定义参数
     default void setProperty(String key, Object value) {
         getSession().setProperty(key, value);
     }

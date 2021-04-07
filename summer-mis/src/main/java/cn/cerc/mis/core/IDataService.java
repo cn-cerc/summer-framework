@@ -7,8 +7,6 @@ import cn.cerc.db.core.IHandleOwner;
 
 public interface IDataService extends IHandle, IHandleOwner {
 
-    IHandle getHandle();
-
     default ServiceStatus fail(String format, Object... args) {
         ServiceStatus status = new ServiceStatus(false);
         if (args.length > 0) {

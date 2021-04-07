@@ -9,11 +9,9 @@ public interface IForm extends IHandle, IHandleOwner, IRequestOwner, IResponseOw
     void setId(String formId);
 
     String getId();
-
+    
     // 页面名称
     String getName();
-
-    IHandle getHandle();
 
     // 取得访问设备讯息
     IClient getClient();

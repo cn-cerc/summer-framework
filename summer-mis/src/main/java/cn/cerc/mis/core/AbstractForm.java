@@ -25,7 +25,6 @@ public abstract class AbstractForm implements IForm {
     private String id;
     private ISession session;
     protected IHandle handle;
-
     private HttpServletRequest request;
     private HttpServletResponse response;
     private IClient client;
@@ -274,6 +273,7 @@ public abstract class AbstractForm implements IForm {
         this.session = session;
     }
 
+    @Override
     public void setHandle(IHandle handle) {
         this.handle = handle;
         if (handle != null) {
@@ -281,6 +281,7 @@ public abstract class AbstractForm implements IForm {
         }
     }
 
+    @Override
     public IHandle getHandle() {
         return this.handle;
     }
