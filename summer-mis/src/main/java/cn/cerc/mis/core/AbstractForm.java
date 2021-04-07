@@ -79,7 +79,7 @@ public abstract class AbstractForm implements IForm {
             return this.getRequest().getSession();
         }
 
-        return handle.getProperty(key);
+        return handle.getSession().getProperty(key);
     }
 
     @Override

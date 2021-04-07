@@ -398,7 +398,7 @@ public class Application {
      * @return
      */
     public static String getToken(IHandle handle) {
-        return (String) handle.getProperty(Application.TOKEN);
+        return handle.getSession().getToken();
     }
 
     public static String getStaticPath() {

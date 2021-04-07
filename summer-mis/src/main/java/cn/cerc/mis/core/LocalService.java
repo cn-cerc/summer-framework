@@ -31,7 +31,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
     public LocalService(IHandle handle) {
         super(handle);
         String pageNo = null;
-        HttpServletRequest req = (HttpServletRequest) handle.getProperty("request");
+        HttpServletRequest req = (HttpServletRequest) handle.getSession().getProperty("request");
         if (req != null) {
             pageNo = req.getParameter("pageno");
         }

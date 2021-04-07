@@ -23,10 +23,10 @@ public class R {
             log.warn("handle is null.");
             return null;
         }
-        Object temp = handle.getProperty(Application.deviceLanguage);
+        Object temp = handle.getSession().getProperty(Application.deviceLanguage);
         if (temp == null || "".equals(temp)) {
             log.debug("handle language is null");
-            Object request = handle.getProperty("request");
+            Object request = handle.getSession().getProperty("request");
             if (request != null) {
                 log.debug(request.getClass().getName());
                 if (request instanceof HttpServletRequest) {
