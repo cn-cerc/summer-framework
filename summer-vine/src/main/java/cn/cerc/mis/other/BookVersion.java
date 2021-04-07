@@ -9,8 +9,6 @@ import java.util.Map;
 /**
  * 帐套版本
  */
-//FIXME BookVersion 应该从框架移出
-@Deprecated
 public enum BookVersion {
     /**
      * 服务商

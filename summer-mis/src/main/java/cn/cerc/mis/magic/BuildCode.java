@@ -37,7 +37,7 @@ public class BuildCode {
         try {
             String srcFile = this.classPath + "\\db\\" + this.tableCode + ".java";
             log.info("create {}", srcFile);
-            File file = new File(srcFile);
+            file = new File(srcFile);
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
             }

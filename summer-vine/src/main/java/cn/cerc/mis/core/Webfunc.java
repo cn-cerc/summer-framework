@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@Deprecated
 public @interface Webfunc {
     // 允许版本号列表
     BookVersion version() default BookVersion.ctAll;
