@@ -3,6 +3,7 @@ package cn.cerc.vine.core;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.client.RemoteService;
+import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.vine.SummerVine;
@@ -39,7 +40,7 @@ public class PartnerService extends RemoteService {
             return this.executeService(url);
         } else {
             this.initDataIn(args);
-            LocalService svr = new LocalService(this.getHandle());
+            LocalService svr = new LocalService(new BookHandle(this.getHandle(), this.corpNo));
             svr.setService(this.getService());
             svr.setDataIn(getDataIn());
             boolean result = svr.exec();
