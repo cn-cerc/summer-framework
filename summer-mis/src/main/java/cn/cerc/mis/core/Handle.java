@@ -3,15 +3,15 @@ package cn.cerc.mis.core;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 
-public class Handle implements IHandle{
+public class Handle implements IHandle {
 
     protected IHandle handle;
     private ISession session;
-    
+
     public Handle() {
 
     }
-    
+
     public Handle(ISession session) {
         this.session = session;
     }
@@ -40,6 +40,7 @@ public class Handle implements IHandle{
         this.session = session;
     }
 
+    @Override
     public void setHandle(IHandle handle) {
         this.handle = handle;
         if (handle != null) {

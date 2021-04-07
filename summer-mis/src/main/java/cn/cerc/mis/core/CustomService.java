@@ -28,11 +28,6 @@ public class CustomService implements IMultiplService, IRestful {
     private ISession session;
     protected IHandle handle;
 
-    public CustomService init(IHandle handle) {
-        this.setHandle(handle);
-        return this;
-    }
-
     public CustomService init(CustomService owner, boolean refData) {
         this.setHandle(owner);
         if (refData) {

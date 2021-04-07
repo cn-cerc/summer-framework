@@ -8,9 +8,6 @@ public interface IDataService extends IHandle {
 
     IHandle getHandle();
 
-    // 数据库连接
-    void setHandle(IHandle handle);
-
     default ServiceStatus fail(String format, Object... args) {
         ServiceStatus status = new ServiceStatus(false);
         if (args.length > 0) {
