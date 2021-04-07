@@ -1,5 +1,17 @@
 package cn.cerc.mis.core;
 
+import java.io.IOException;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
@@ -11,16 +23,6 @@ import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Slf4j
 public class Application {
@@ -198,12 +200,10 @@ public class Application {
         return bean;
     }
 
-    public static Object getService(IHandle handle, String serviceCode) {
-        Object bean = context.getBean(serviceCode);
+    public static IDataService getService(IHandle handle, String serviceCode) {
+        IDataService bean = context.getBean(serviceCode, IDataService.class);
         if (bean != null && handle != null) {
-            if(bean instanceof IDataService) {
-                ((IDataService) bean).setHandle(handle);
-            }
+            bean.setHandle(handle);
         }
         return bean;
     }
