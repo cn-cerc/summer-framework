@@ -65,10 +65,6 @@ public class CustomService implements IMultiplService, IRestful {
             return ss;
         }
 
-        Webfunc webfunc = mt.getAnnotation(Webfunc.class);
-        // if (webfunc == null)
-        // log.warn("webfunc not define: " + self.getName() + "." + func);
-
         try {
             long startTime = System.currentTimeMillis();
             try {
@@ -85,7 +81,7 @@ public class CustomService implements IMultiplService, IRestful {
                     dataOut.first();
                 }
                 long totalTime = System.currentTimeMillis() - startTime;
-                long timeout = webfunc != null ? webfunc.timeout() : 1000;
+                long timeout = 1000;
                 if (totalTime > timeout) {
                     String[] tmp = this.getClass().getName().split("\\.");
                     String service = tmp[tmp.length - 1] + "." + this.funcCode;
@@ -156,11 +152,13 @@ public class CustomService implements IMultiplService, IRestful {
         }
     }
 
+    @Override
     public String getJSON(DataSet dataOut) {
         return String.format("[%s]", this.getDataOut().getJSON());
     }
 
     // 设置是否需要授权才能登入
+    @Override
     public boolean checkSecurity(IHandle handle) {
         ISession sess = handle.getSession();
         return sess != null && sess.logon();
