@@ -29,8 +29,8 @@ public abstract class CustomLocalProxy {
         } else if (bean instanceof IMultiplService) {
             IMultiplService ms = (IMultiplService) bean;
             ms.setDataIn(dataIn);
-            ms.setDataOut(dataOut);
             status = ms.executeService();
+            dataOut = ms.getDataOut();
         } else {
             status = new ServiceStatus(false, String.format("not support: %s ！", bean.getClass().getName()));
         }
