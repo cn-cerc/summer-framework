@@ -1,20 +1,5 @@
 package cn.cerc.mis.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
@@ -30,6 +15,19 @@ import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 //@Controller
@@ -132,22 +130,30 @@ public class StartServiceDefault {
             manage.resumeToken(req.getParameter("token"));
             session.setProperty(sessionId, req.getSession().getId());
             IHandle handle = new Handle(session);
-            IService bean = Application.getService(handle, serviceCode);
+            Object bean = Application.getService(handle, serviceCode);
             if (bean == null) {
                 respData.setMessage(String.format("service(%s) is null.", serviceCode));
                 resp.getWriter().write(respData.toString());
                 return;
             }
-            if (!bean.checkSecurity(handle)) {
+
+            if (!(bean instanceof IService)) {
+                respData.setMessage(String.format("service(%s) not IService.", serviceCode));
+                resp.getWriter().write(respData.toString());
+                return;
+            }
+
+            IService svr = (IService) bean;
+            if (!svr.checkSecurity(handle)) {
                 respData.setMessage(res.getString(1, "请您先登入系统"));
                 resp.getWriter().write(respData.toString());
                 return;
             }
             DataSet dataOut = new DataSet();
-            IStatus status = bean.execute(dataIn, dataOut);
+            IStatus status = svr.execute(dataIn, dataOut);
             respData.setResult(status.getResult());
             respData.setMessage(status.getMessage());
-            respData.setData(bean.getJSON(dataOut));
+            respData.setData(svr.getJSON(dataOut));
         } catch (Exception e) {
             Throwable err = e.getCause() != null ? e.getCause() : e;
             log.error(err.getMessage(), err);
