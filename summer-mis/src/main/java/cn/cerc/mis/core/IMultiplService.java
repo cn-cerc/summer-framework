@@ -10,7 +10,6 @@ public interface IMultiplService extends IDataService {
 
     void setDataIn(DataSet dataIn);
 
-    @Deprecated
     void setDataOut(DataSet dataOut);
 
     String getFuncCode();
