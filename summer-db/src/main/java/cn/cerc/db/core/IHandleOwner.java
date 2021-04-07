@@ -1,6 +1,6 @@
 package cn.cerc.db.core;
 
-public interface SupportHandle {
+public interface IHandleOwner {
 
     void setHandle(IHandle handle);
 
