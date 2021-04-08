@@ -200,8 +200,8 @@ public class Application {
         return bean;
     }
 
-    public static IDataService getService(IHandle handle, String serviceCode) {
-        IDataService bean = context.getBean(serviceCode, IDataService.class);
+    public static IService getService(IHandle handle, String serviceCode) {
+        IService bean = context.getBean(serviceCode, IService.class);
         if (bean != null && handle != null) {
             bean.setHandle(handle);
         }
