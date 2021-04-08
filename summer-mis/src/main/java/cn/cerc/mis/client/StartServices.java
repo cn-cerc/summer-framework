@@ -121,6 +121,7 @@ public class StartServices extends HttpServlet {
             DataSet dataOut = new DataSet();
             IStatus status;
             if (bean instanceof IService) {
+                ((IService) bean).init(handle);
                 status = ((IService) bean).execute(dataIn, dataOut);
             } else if (bean instanceof IMultiplService) {
                 IMultiplService svr = (IMultiplService) bean;
