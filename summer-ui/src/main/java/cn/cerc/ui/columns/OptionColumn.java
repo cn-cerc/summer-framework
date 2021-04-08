@@ -113,6 +113,7 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
     @Override
     public OptionColumn setReadonly(boolean readonly) {
         this.readonly = readonly;
+        this.select.setReadonly(readonly);
         return this;
     }
 
