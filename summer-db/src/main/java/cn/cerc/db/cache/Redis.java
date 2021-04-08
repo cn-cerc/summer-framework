@@ -7,7 +7,7 @@ public class Redis {
 
     public static String get(String key) {
         try (Jedis jedis = JedisFactory.getJedis()) {
-            return jedis.get(key);
+            return jedis != null ? jedis.get(key) : null;
         }
     }
 
