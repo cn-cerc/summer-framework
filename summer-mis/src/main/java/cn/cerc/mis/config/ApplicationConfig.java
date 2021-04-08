@@ -64,7 +64,7 @@ public class ApplicationConfig {
      */
     @Deprecated
     public static String getToken(IHandle handle) {
-        return (String) handle.getProperty(Application.TOKEN);
+        return handle.getSession().getToken();
     }
 
     @Deprecated

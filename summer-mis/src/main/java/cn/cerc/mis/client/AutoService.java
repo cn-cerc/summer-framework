@@ -30,10 +30,12 @@ public class AutoService extends CustomLocalProxy {
         return dataOut;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }
@@ -51,7 +53,7 @@ public class AutoService extends CustomLocalProxy {
         BookHandle handle = new BookHandle(this.handle, service.getCorpNo());
         handle.setUserCode(service.getUserCode());
         if (object instanceof CustomService) {
-            ((CustomService) object).init(handle);
+            ((CustomService) object).setHandle(handle);
         }
         boolean result = executeService(object, service.getDataIn(), dataOut);
 
@@ -59,6 +61,7 @@ public class AutoService extends CustomLocalProxy {
         return result;
     }
 
+    @Override
     public String getService() {
         return this.service.getService();
     }

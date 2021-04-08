@@ -24,7 +24,7 @@ public class OssDisk {
     private String localPath;
 
     public OssDisk(IHandle handle) {
-        connection = (OssConnection) handle.getProperty(OssConnection.sessionId);
+        connection = (OssConnection) handle.getSession().getProperty(OssConnection.sessionId);
         client = connection.getClient();
     }
 

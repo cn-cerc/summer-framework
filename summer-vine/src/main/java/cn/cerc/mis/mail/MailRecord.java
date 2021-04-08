@@ -21,7 +21,7 @@ public class MailRecord implements Serializable {
     }
 
     public boolean send() {
-        AliyunQueueConnection sess = (AliyunQueueConnection) handle.getProperty(AliyunQueueConnection.sessionId);
+        AliyunQueueConnection sess = (AliyunQueueConnection) handle.getSession().getProperty(AliyunQueueConnection.sessionId);
         CloudQueue queue = sess.openQueue(AppMailQueue.queueSendMail);
         return sess.append(queue, this.toString());
     }
