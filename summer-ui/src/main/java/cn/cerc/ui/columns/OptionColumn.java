@@ -35,10 +35,10 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
     public OptionColumn(UIComponent owner, String name, String code, int width) {
         super(owner);
         this.setCode(code).setName(name).setSpaceWidth(width);
+        this.select = new UISelect();
         if (owner instanceof IReadonlyOwner) {
             this.setReadonly(((IReadonlyOwner) owner).isReadonly());
         }
-        this.select = new UISelect();
     }
 
     @Override
