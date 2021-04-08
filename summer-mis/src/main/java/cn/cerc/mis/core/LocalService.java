@@ -66,7 +66,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
                 log.debug(this.getService());
             }
             if (object instanceof IHandleOwner) {
-                ((IHandleOwner) object).init(this.getHandle());
+                ((IHandleOwner) object).setHandle(this.getHandle());
             }
             if (ServerConfig.isServerMaster()) {
                 return executeService(object, this.dataIn, this.dataOut);
