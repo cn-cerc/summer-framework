@@ -17,19 +17,19 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
 
     public OptionColumn(UIComponent owner) {
         super(owner);
+        this.select = new UISelect();
         if (owner instanceof IReadonlyOwner) {
             this.setReadonly(((IReadonlyOwner) owner).isReadonly());
         }
-        this.select = new UISelect();
     }
 
     public OptionColumn(UIComponent owner, String name, String code) {
         super(owner);
         this.setCode(code).setName(name);
+        this.select = new UISelect();
         if (owner instanceof IReadonlyOwner) {
             this.setReadonly(((IReadonlyOwner) owner).isReadonly());
         }
-        this.select = new UISelect();
     }
 
     public OptionColumn(UIComponent owner, String name, String code, int width) {
