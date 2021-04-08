@@ -21,6 +21,7 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
         if (owner instanceof IReadonlyOwner) {
             this.setReadonly(((IReadonlyOwner) owner).isReadonly());
         }
+        this.setReadonly(this.isReadonly());
     }
 
     public OptionColumn(UIComponent owner, String name, String code) {
@@ -30,6 +31,7 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
         if (owner instanceof IReadonlyOwner) {
             this.setReadonly(((IReadonlyOwner) owner).isReadonly());
         }
+        this.setReadonly(this.isReadonly());
     }
 
     public OptionColumn(UIComponent owner, String name, String code, int width) {
@@ -39,6 +41,7 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
         if (owner instanceof IReadonlyOwner) {
             this.setReadonly(((IReadonlyOwner) owner).isReadonly());
         }
+        this.setReadonly(this.isReadonly());
     }
 
     @Override
@@ -113,7 +116,9 @@ public class OptionColumn extends AbstractColumn implements IDataColumn {
     @Override
     public OptionColumn setReadonly(boolean readonly) {
         this.readonly = readonly;
-        this.select.setReadonly(readonly);
+        if (this.select != null) {
+            this.select.setReadonly(readonly);
+        }
         return this;
     }
 
