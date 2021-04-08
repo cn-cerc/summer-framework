@@ -39,7 +39,7 @@ public class SvrUserLoginTest {
         IHandle handle = new Handle(session);
         
         SvrUserLogin app = new SvrUserLogin();
-        app.init(handle);
+        app.setHandle(handle);
         Record headIn = app.getDataIn().getHead();
         headIn.setField("Account_", userCode);
         assertFalse(app.Check());
@@ -55,7 +55,7 @@ public class SvrUserLoginTest {
         String userCode = handle.getUserCode();
         SvrUserLogin app = new SvrUserLogin();
 
-        app.init(handle);
+        app.setHandle(handle);
         Record headIn = app.getDataIn().getHead();
         headIn.setField("Account_", userCode);
         boolean ok = app.Check();
@@ -78,7 +78,7 @@ public class SvrUserLoginTest {
         IHandle handle = new Handle(session);
         
         SvrUserLogin app = new SvrUserLogin();
-        app.init(handle);
+        app.setHandle(handle);
         Record headIn = app.getDataIn().getHead();
         headIn.setField("Account_", userCode);
         boolean ok = app.Check();

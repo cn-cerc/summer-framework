@@ -2,31 +2,24 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandleOwner;
 
-public class Handle implements IHandle{
+public class Handle implements IHandle, IHandleOwner {
 
     protected IHandle handle;
     private ISession session;
-    
+
     public Handle() {
 
     }
-    
+
     public Handle(ISession session) {
         this.session = session;
     }
 
     public Handle(ISession session, String corpNo, String userCode) {
         this(session);
-        setCorpNo(corpNo);
-        setUserCode(userCode);
-    }
-
-    private void setCorpNo(String corpNo) {
         session.setProperty(Application.bookNo, corpNo);
-    }
-
-    private void setUserCode(String userCode) {
         session.setProperty(Application.userCode, userCode);
     }
 
@@ -40,6 +33,7 @@ public class Handle implements IHandle{
         this.session = session;
     }
 
+    @Override
     public void setHandle(IHandle handle) {
         this.handle = handle;
         if (handle != null) {
@@ -47,8 +41,19 @@ public class Handle implements IHandle{
         }
     }
 
+    @Override
     public IHandle getHandle() {
         return this.handle;
     }
 
+    @Deprecated
+    public Object getProperty(String key) {
+        return getSession().getProperty(key);
+    }
+
+    @Deprecated
+    public void setProperty(String key, Object value) {
+        getSession().setProperty(key, value);
+    }
+    
 }

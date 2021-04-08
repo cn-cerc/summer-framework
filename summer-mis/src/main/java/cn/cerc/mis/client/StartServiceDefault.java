@@ -28,8 +28,6 @@ import cn.cerc.db.core.ITokenManage;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
-import cn.cerc.mis.core.IDataService;
-import cn.cerc.mis.core.IMultiplService;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
@@ -135,7 +133,7 @@ public class StartServiceDefault {
             manage.resumeToken(req.getParameter("token"));
             session.setProperty(sessionId, req.getSession().getId());
             IHandle handle = new Handle(session);
-            IDataService bean = Application.getService(handle, serviceCode);
+            IService bean = Application.getService(handle, serviceCode);
             if (bean == null) {
                 respData.setMessage(String.format("service(%s) is null.", serviceCode));
                 resp.getWriter().write(respData.toString());
@@ -148,18 +146,7 @@ public class StartServiceDefault {
                 return;
             }
             DataSet dataOut = new DataSet();
-            IStatus status;
-            if (bean instanceof IService) {
-                ((IService) bean).init(handle);
-                status = ((IService) bean).execute(dataIn, dataOut);
-            } else if (bean instanceof IMultiplService) {
-                IMultiplService svr = (IMultiplService) bean;
-                svr.setDataIn(dataIn);
-                status = svr.executeService();
-                dataOut = svr.getDataOut();
-            } else {
-                throw new RuntimeException("bean is not IService|IMultiplService");
-            }
+            IStatus status = bean.execute(dataIn, dataOut);
             respData.setResult(status.getResult());
             respData.setMessage(status.getMessage());
             respData.setData(bean.getJSON(dataOut));

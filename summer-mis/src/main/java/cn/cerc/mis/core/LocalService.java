@@ -15,7 +15,7 @@ import cn.cerc.core.Record;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
-import cn.cerc.db.core.SupportHandle;
+import cn.cerc.db.core.IHandleOwner;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.other.MemoryBuffer;
 
@@ -31,7 +31,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
     public LocalService(IHandle handle) {
         super(handle);
         String pageNo = null;
-        HttpServletRequest req = (HttpServletRequest) handle.getProperty("request");
+        HttpServletRequest req = (HttpServletRequest) handle.getSession().getProperty("request");
         if (req != null) {
             pageNo = req.getParameter("pageno");
         }
@@ -65,8 +65,8 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
                     && !"SvrUserMessages.getWaitList".equals(this.getService())) {
                 log.debug(this.getService());
             }
-            if (object instanceof SupportHandle) {
-                ((SupportHandle) object).init(this.getHandle());
+            if (object instanceof IHandleOwner) {
+                ((IHandleOwner) object).setHandle(this.getHandle());
             }
             if (ServerConfig.isServerMaster()) {
                 return executeService(object, this.dataIn, this.dataOut);

@@ -2,7 +2,7 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.DataSet;
 
-public interface IMultiplService extends IDataService {
+public interface IMultiplService extends IService {
 
     DataSet getDataIn();
 
@@ -15,6 +15,4 @@ public interface IMultiplService extends IDataService {
     String getFuncCode();
     
     void setFuncCode(String funcCode);
-
-    public IStatus executeService();
 }

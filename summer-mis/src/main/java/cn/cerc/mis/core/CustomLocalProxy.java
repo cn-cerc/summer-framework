@@ -19,20 +19,11 @@ public abstract class CustomLocalProxy {
 
     protected boolean executeService(Object bean, DataSet dataIn, DataSet dataOut) {
         IStatus status;
-        if (bean instanceof IService) {
-            IService ss = (IService) bean;
-            try {
-                status = ss.execute(dataIn, dataOut);
-            } catch (ServiceException e) {
-                status = new ServiceStatus(false, e.getMessage());
-            }
-        } else if (bean instanceof IMultiplService) {
-            IMultiplService ms = (IMultiplService) bean;
-            ms.setDataIn(dataIn);
-            ms.setDataOut(dataOut);
-            status = ms.executeService();
-        } else {
-            status = new ServiceStatus(false, String.format("not support: %s ！", bean.getClass().getName()));
+        IService ss = (IService) bean;
+        try {
+            status = ss.execute(dataIn, dataOut);
+        } catch (ServiceException e) {
+            status = new ServiceStatus(false, e.getMessage());
         }
         this.setMessage(status.getMessage());
         return status.getResult();
@@ -71,8 +62,8 @@ public abstract class CustomLocalProxy {
             return null;
         }
 
-        if (bean instanceof IDataService) {
-            ((IDataService) bean).setHandle(handle);
+        if (bean instanceof IService) {
+            ((IService) bean).setHandle(handle);
         }
         return bean;
     }

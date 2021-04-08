@@ -1,8 +1,5 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.SupportHandle;
-
 /**
  * 请改使用 Handle
  * 
@@ -10,12 +7,6 @@ import cn.cerc.db.core.SupportHandle;
  *
  */
 @Deprecated
-public class AbstractHandle extends Handle implements SupportHandle {
-
-    @Override
-    @Deprecated
-    public void init(IHandle handle) {
-        this.setHandle(handle);
-    }
+public class AbstractHandle extends Handle {
 
 }
