@@ -145,5 +145,8 @@ public class UIAppendPanel extends UIOriginComponent {
     public UIForm getUiform() {
         return uiform;
     }
-
+    
+    public UIButton getSubmit() {
+        return submit;
+    }
 }
