@@ -145,5 +145,8 @@ public class UIModifyPanel extends UIOriginComponent {
     public UIForm getUiform() {
         return uiform;
     }
-
+    
+    public UIButton getSubmit() {
+        return submit;
+    }
 }

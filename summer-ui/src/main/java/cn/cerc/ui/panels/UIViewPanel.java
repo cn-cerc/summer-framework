@@ -121,5 +121,12 @@ public class UIViewPanel extends UIOriginComponent {
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
+    public UIForm getUiform() {
+        return uiform;
+    }
+    
+    public UIButton getSubmit() {
+        return submit;
+    }
 }
