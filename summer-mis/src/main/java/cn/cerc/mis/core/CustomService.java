@@ -38,7 +38,10 @@ public class CustomService implements IMultiplService, IRestful {
     }
 
     @Override
-    public IStatus executeService() {
+    public IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException {
+        this.setDataIn(dataIn);
+        this.setDataOut(dataOut);
+
         if (this.funcCode == null) {
             throw new RuntimeException("funcCode is null");
         }
@@ -220,13 +223,6 @@ public class CustomService implements IMultiplService, IRestful {
     @Override
     public IHandle getHandle() {
         return this.handle;
-    }
-
-    @Deprecated
-    public IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException {
-        this.setDataIn(dataIn);
-        this.setDataOut(dataOut);
-        return this.executeService();
     }
 
 }
