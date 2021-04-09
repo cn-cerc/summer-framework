@@ -312,6 +312,7 @@ public class BuildQuery {
         return ds;
     }
 
+    @Deprecated
     public SqlQuery openReadonly() {
         SqlQuery ds = getDataSet();
         ds.getSqlText().clear();
@@ -320,6 +321,7 @@ public class BuildQuery {
         return ds;
     }
 
+    @Deprecated
     public SqlQuery open(Record head, Record foot) {
         SqlQuery ds = getDataSet();
         if (!head.exists("__offset__")) {
@@ -336,6 +338,7 @@ public class BuildQuery {
         return ds;
     }
 
+    @Deprecated
     public SqlQuery openReadonly(Record head, Record foot) {
         SqlQuery ds = getDataSet();
         if (head.exists("__offset__")) {
@@ -350,7 +353,6 @@ public class BuildQuery {
         return ds;
     }
 
-    // @Override
     public void close() {
         sql = null;
         sqlText.clear();
