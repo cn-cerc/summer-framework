@@ -28,6 +28,7 @@ public class JspPage extends JspFile {
         this.setJspFile(jspFile);
     }
 
+    @Deprecated
     public UIHeader getHeader() {
         if (header == null) {
             header = new UIHeader(this);
@@ -44,6 +45,7 @@ public class JspPage extends JspFile {
         return footer;
     }
 
+    @Deprecated
     public UIToolbar getToolBar() {
         if (toolBar == null) {
             toolBar = new UIToolbar(this);
