@@ -1,5 +1,6 @@
 package cn.cerc.mis.core;
 
+@Deprecated
 public class PageException extends RuntimeException {
     private static final long serialVersionUID = -7877763096373935534L;
     private String viewFile;
