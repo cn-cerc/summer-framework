@@ -28,7 +28,6 @@ import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.core.SystemBufferType;
-import cn.cerc.mis.core.Webfunc;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.MemoryBuffer;
 
@@ -48,7 +47,6 @@ public class SvrUserLogin extends CustomService {
     /*
      * 用户登录入口
      */
-    @Webfunc
     public boolean Check() throws SecurityCheckException {
         Record headIn = getDataIn().getHead();
         getDataOut().getHead().setField("errorNo", 0);
@@ -235,7 +233,6 @@ public class SvrUserLogin extends CustomService {
      *
      * @return 暂未使用
      */
-    @Webfunc
     public boolean ExitSystem() {
         if (getProperty(Application.userId) != null) {
             // TODO 此处的key有问题
@@ -249,7 +246,6 @@ public class SvrUserLogin extends CustomService {
     }
 
     // 获取登录状态
-    @Webfunc
     public boolean getState() {
         getDataOut().getHead().setField("UserID_", getProperty(Application.userId));
         getDataOut().getHead().setField("UserCode_", getUserCode());
@@ -262,7 +258,6 @@ public class SvrUserLogin extends CustomService {
         return true;
     }
 
-    @Webfunc
     public boolean autoLogin() throws SecurityCheckException {
         Record headIn = getDataIn().getHead();
 
@@ -296,7 +291,6 @@ public class SvrUserLogin extends CustomService {
     }
 
     // 判断手机号码且账号类型为5是否已存在账号
-    @Webfunc
     public boolean getTelToUserCode() {
         Record headIn = getDataIn().getHead();
         String userCode = headIn.getString("UserCode_");
@@ -383,7 +377,6 @@ public class SvrUserLogin extends CustomService {
         return true;
     }
 
-    @Webfunc
     public boolean sendVerifyCode() throws DataValidateException {
         try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getObject, getUserCode(),
                 SvrUserLogin.class.getName(), "sendVerifyCode")) {
