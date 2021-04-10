@@ -100,4 +100,9 @@ public class MenuItem {
         this.window = window;
     }
 
+    @Deprecated
+    public void setId(String menuId) {
+        setCode(menuId);
+    }
+
 }
