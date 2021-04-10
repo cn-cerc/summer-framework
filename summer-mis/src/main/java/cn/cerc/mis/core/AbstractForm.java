@@ -91,6 +91,11 @@ public abstract class AbstractForm implements IForm {
         this.name = name;
     }
 
+    @Deprecated
+    public final void setCaption(String name) {
+        setName(name);
+    }
+    
     @Override
     public IClient getClient() {
         if (client == null) {
