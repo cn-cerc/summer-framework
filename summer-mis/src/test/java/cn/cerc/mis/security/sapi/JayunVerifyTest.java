@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
-import cn.cerc.mis.security.sapi.JayunVerify;
-
 public class JayunVerifyTest {
 
     private HttpServletRequest request;

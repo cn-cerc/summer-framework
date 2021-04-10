@@ -3,7 +3,6 @@ package cn.cerc.mis.core;
 import cn.cerc.core.ISession;
 import cn.cerc.core.TDateTime;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.rds.StubHandle;
 
 import org.junit.Ignore;
 import org.junit.Test;

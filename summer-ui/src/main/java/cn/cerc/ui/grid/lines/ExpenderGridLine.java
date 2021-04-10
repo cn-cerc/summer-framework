@@ -3,7 +3,6 @@ package cn.cerc.ui.grid.lines;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.ui.SummerUI;
-import cn.cerc.ui.columns.IColumn;
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IField;

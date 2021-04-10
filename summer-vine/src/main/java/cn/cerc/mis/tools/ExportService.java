@@ -11,7 +11,6 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.SystemBuffer;
-import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.excel.output.AccreditException;
 import cn.cerc.mis.excel.output.ExportExcel;
 import cn.cerc.mis.other.MemoryBuffer;

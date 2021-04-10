@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cn.cerc.mis.security.sapi.JayunServer;
-
 public class JayunServerTest {
     private JayunServer api = new JayunServer(null);
 

@@ -2,7 +2,6 @@ package cn.cerc.ui.grid;
 
 import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.IField;
-import cn.cerc.ui.parts.UIComponent;
 
 import java.util.ArrayList;
 import java.util.List;
