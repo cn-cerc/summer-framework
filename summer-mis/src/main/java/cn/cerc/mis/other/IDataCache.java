@@ -1,8 +1,12 @@
 package cn.cerc.mis.other;
 
-public interface IDataCache {
-
-    void clear();
+@Deprecated
+public interface IDataCache extends IDataList {
 
     boolean exist(String key);
+
+    @Override
+    default boolean exists(String key) {
+        return exist(key);
+    }
 }
