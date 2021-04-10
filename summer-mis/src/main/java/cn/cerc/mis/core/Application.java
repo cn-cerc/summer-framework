@@ -413,4 +413,9 @@ public class Application {
         return config.getString(Application.FORM_DEFAULT, "default");
     }
 
+    @Deprecated
+    public static String getLangage() {
+        return getLanguage();
+    }
+
 }
