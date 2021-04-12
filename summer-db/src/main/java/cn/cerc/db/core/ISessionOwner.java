@@ -6,7 +6,7 @@ import cn.cerc.db.mysql.MysqlConnection;
 public interface ISessionOwner {
 
     ISession getSession();
-    
+
     void setSession(ISession session);
 
     default String getCorpNo() {
