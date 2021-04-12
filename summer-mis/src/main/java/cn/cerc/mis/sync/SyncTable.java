@@ -56,20 +56,111 @@ public class SyncTable implements ISessionOwner {
                 record.delete("__table");
                 record.delete("__opera");
                 record.delete("__error");
-                if (!process(tableCode, record, SyncOpera.values()[opera])) {
+
+                boolean result;
+                switch (SyncOpera.values()[opera]) {
+                case Append:
+                    result = appendRecord(tableCode, record);
+                    break;
+                case Delete:
+                    result = deleteRecord(tableCode, record);
+                    break;
+                case Update:
+                    result = updateRecord(tableCode, record);
+                    break;
+                case Reset:
+                    result = resetRecord(tableCode, record);
+                    break;
+                default:
+                    throw new RuntimeException("not support opera.");
+                }
+
+                if (!result) {
+                    record.setField("__table", tableCode);
+                    record.setField("__opera", opera);
+                    record.setField("__error", error + 1);
                     if (error < 5) {
-                        record.setField("__table", tableCode);
-                        record.setField("__opera", opera);
-                        record.setField("__error", error + 1);
                         jedis.rpush(buffKey, record.toString());
-                        log.error("sync error: {}.{}", tableCode, opera);
+                        log.error("sync {}.{} fail, times {}", tableCode, opera, error);
+                    } else {
+                        abortRecord(tableCode, record, SyncOpera.values()[opera]);
                     }
                 }
             }
         }
     }
 
-    private boolean process(String tableCode, Record record, SyncOpera opera) {
+    protected boolean appendRecord(String tableCode, Record record) {
+        SqlQuery ds = new SqlQuery(this);
+        ds.add("select * from %s", tableCode);
+        ds.add("where UID_='%s'", record.getString("UID_"));
+        ds.open();
+        if (!ds.eof())
+            return false;
+
+        ISyncRecord sync = Application.getBean(ISyncRecord.class, "sync_" + tableCode);
+        if (sync != null) {
+            if (sync instanceof ISessionOwner) {
+                ((ISessionOwner) sync).setSession(this.getSession());
+            }
+            if (!sync.onAppend(record)) {
+                return false;
+            }
+        }
+
+        ds.getDefaultOperator().setUpdateKey("");
+        ds.append();
+        ds.copyRecord(record, ds.getFieldDefs());
+        ds.post();
+
+        return true;
+    }
+
+    protected boolean deleteRecord(String tableCode, Record record) {
+        SqlQuery ds = new SqlQuery(this);
+        ds.add("select * from %s", tableCode);
+        ds.add("where UID_='%s'", record.getString("UID_"));
+        ds.open();
+        if (ds.eof())
+            return false;
+
+        ISyncRecord sync = Application.getBean(ISyncRecord.class, "sync_" + tableCode);
+        if (sync != null) {
+            if (sync instanceof ISessionOwner) {
+                ((ISessionOwner) sync).setSession(this.getSession());
+            }
+            if (!sync.onDelete(ds.getCurrent()))
+                return false;
+        }
+
+        ds.delete();
+        return true;
+    }
+
+    protected boolean updateRecord(String tableCode, Record record) {
+        SqlQuery ds = new SqlQuery(this);
+        ds.add("select * from %s", tableCode);
+        ds.add("where UID_='%s'", record.getString("UID_"));
+        ds.open();
+        if (ds.eof())
+            return false;
+
+        ISyncRecord sync = Application.getBean(ISyncRecord.class, "sync_" + tableCode);
+        if (sync != null) {
+            if (sync instanceof ISessionOwner) {
+                ((ISessionOwner) sync).setSession(this.getSession());
+            }
+            if (!sync.onUpdate(ds.getCurrent(), record))
+                return false;
+        }
+
+        ds.edit();
+        ds.copyRecord(record, ds.getFieldDefs());
+        ds.post();
+        return true;
+    }
+
+    protected boolean resetRecord(String tableCode, Record record) {
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", tableCode);
         ds.add("where UID_='%s'", record.getString("UID_"));
@@ -79,51 +170,26 @@ public class SyncTable implements ISessionOwner {
         if (sync != null && sync instanceof ISessionOwner) {
             ((ISessionOwner) sync).setSession(this.getSession());
         }
-        switch (opera) {
-        case Append:
-            if (!ds.eof())
-                return false;
+
+        if (ds.eof()) {
             if (sync != null && !sync.onAppend(record))
                 return false;
             ds.getDefaultOperator().setUpdateKey("");
             ds.append();
             ds.copyRecord(record, ds.getFieldDefs());
             ds.post();
-            break;
-        case Delete:
-            if (ds.eof())
-                return false;
-            if (sync != null && !sync.onDelete(ds.getCurrent()))
-                return false;
-            ds.delete();
-            break;
-        case Update:
-            if (ds.eof())
-                return false;
+        } else {
             if (sync != null && !sync.onUpdate(ds.getCurrent(), record))
                 return false;
             ds.edit();
             ds.copyRecord(record, ds.getFieldDefs());
             ds.post();
-            break;
-        case Reset:
-            if (ds.eof()) {
-                if (sync != null && !sync.onAppend(record))
-                    return false;
-                ds.getDefaultOperator().setUpdateKey("");
-                ds.append();
-            } else {
-                if (sync != null && !sync.onUpdate(ds.getCurrent(), record))
-                    return false;
-                ds.edit();
-            }
-            ds.copyRecord(record, ds.getFieldDefs());
-            ds.post();
-            break;
-        default:
-            throw new RuntimeException("not support opera.");
         }
         return true;
-    };
+    }
+
+    protected void abortRecord(String tableCode, Record record, SyncOpera opera) {
+        log.error("sync {}.{} abort.", tableCode, SyncOpera.getName(opera));
+    }
 
 }

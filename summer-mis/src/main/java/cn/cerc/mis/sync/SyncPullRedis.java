@@ -11,11 +11,10 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 
 public class SyncPullRedis {
     private static final Logger log = LoggerFactory.getLogger(SyncPullRedis.class);
-
-    public static final String redis_site = "sync.pull.redis.host";
-    public static final String redis_port = "sync.pull.redis.port";
-    public static final String redis_password = "sync.pull.redis.password";
-    public static final String redis_timeout = "sync.pull.redis.timeout";
+    private static final String redis_site = "sync.pull.redis.host";
+    private static final String redis_port = "sync.pull.redis.port";
+    private static final String redis_password = "sync.pull.redis.password";
+    private static final String redis_timeout = "sync.pull.redis.timeout";
 
     // 可用连接实例的最大数目，默认值为8；
 
