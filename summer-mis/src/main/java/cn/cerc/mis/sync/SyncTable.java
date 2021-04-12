@@ -1,7 +1,6 @@
 package cn.cerc.mis.sync;
 
 import cn.cerc.core.Record;
-import cn.cerc.db.redis.JedisFactory;
 import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.other.MemoryBuffer;
 import redis.clients.jedis.Jedis;
@@ -15,7 +14,7 @@ public class SyncTable {
         rs.copyValues(record);
 
         String buffKey = MemoryBuffer.buildKey(SystemBuffer.Global.SyncDatabase);
-        try (Jedis jedis = JedisFactory.getJedis()) {
+        try (Jedis jedis = SyncPushRedis.getJedis()) {
             jedis.lpush(buffKey, rs.toString());
         }
     }
@@ -27,7 +26,7 @@ public class SyncTable {
         rs.copyValues(record);
 
         String buffKey = MemoryBuffer.buildKey(SystemBuffer.Global.SyncDatabase);
-        try (Jedis jedis = JedisFactory.getJedis()) {
+        try (Jedis jedis = SyncPushRedis.getJedis()) {
             jedis.lpush(buffKey, rs.toString());
         }
     }
@@ -39,7 +38,7 @@ public class SyncTable {
         rs.copyValues(record);
 
         String buffKey = MemoryBuffer.buildKey(SystemBuffer.Global.SyncDatabase);
-        try (Jedis jedis = JedisFactory.getJedis()) {
+        try (Jedis jedis = SyncPushRedis.getJedis()) {
             jedis.lpush(buffKey, rs.toString());
         }
     }

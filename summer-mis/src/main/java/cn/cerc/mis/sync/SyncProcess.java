@@ -7,7 +7,6 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.db.redis.JedisFactory;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -17,9 +16,19 @@ public abstract class SyncProcess implements ISessionOwner {
     private static final Logger log = LoggerFactory.getLogger(SyncProcess.class);
     private ISession session;
 
+    @Override
+    public ISession getSession() {
+        return this.session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
     public void execute() {
         String buffKey = MemoryBuffer.buildKey(SystemBuffer.Global.SyncDatabase);
-        try (Jedis jedis = JedisFactory.getJedis()) {
+        try (Jedis jedis = SyncPullRedis.getJedis()) {
             while (true) {
                 String data = jedis.rpop(buffKey);
                 if (data == null)
@@ -55,16 +64,6 @@ public abstract class SyncProcess implements ISessionOwner {
                 }
             }
         }
-    }
-
-    @Override
-    public ISession getSession() {
-        return this.session;
-    }
-
-    @Override
-    public void setSession(ISession session) {
-        this.session = session;
     }
 
     public boolean sync(String tableCode, Record record, SyncOpera opera) {
