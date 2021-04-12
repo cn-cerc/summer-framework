@@ -2,7 +2,7 @@ package cn.cerc.mis.sync;
 
 import cn.cerc.core.Record;
 
-public interface ISyncRecord {
+public interface ISyncEvent {
 
     boolean onAppend(Record newRecord);
 

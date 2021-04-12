@@ -98,7 +98,7 @@ public class SyncTable implements ISessionOwner {
         if (!ds.eof())
             return false;
 
-        ISyncRecord sync = Application.getBean(ISyncRecord.class, "sync_" + tableCode);
+        ISyncEvent sync = Application.getBean(ISyncEvent.class, "sync_" + tableCode);
         if (sync != null) {
             if (sync instanceof ISessionOwner) {
                 ((ISessionOwner) sync).setSession(this.getSession());
@@ -124,7 +124,7 @@ public class SyncTable implements ISessionOwner {
         if (ds.eof())
             return false;
 
-        ISyncRecord sync = Application.getBean(ISyncRecord.class, "sync_" + tableCode);
+        ISyncEvent sync = Application.getBean(ISyncEvent.class, "sync_" + tableCode);
         if (sync != null) {
             if (sync instanceof ISessionOwner) {
                 ((ISessionOwner) sync).setSession(this.getSession());
@@ -145,7 +145,7 @@ public class SyncTable implements ISessionOwner {
         if (ds.eof())
             return false;
 
-        ISyncRecord sync = Application.getBean(ISyncRecord.class, "sync_" + tableCode);
+        ISyncEvent sync = Application.getBean(ISyncEvent.class, "sync_" + tableCode);
         if (sync != null) {
             if (sync instanceof ISessionOwner) {
                 ((ISessionOwner) sync).setSession(this.getSession());
@@ -166,7 +166,7 @@ public class SyncTable implements ISessionOwner {
         ds.add("where UID_='%s'", record.getString("UID_"));
         ds.open();
 
-        ISyncRecord sync = Application.getBean(ISyncRecord.class, "sync_" + tableCode);
+        ISyncEvent sync = Application.getBean(ISyncEvent.class, "sync_" + tableCode);
         if (sync != null && sync instanceof ISessionOwner) {
             ((ISessionOwner) sync).setSession(this.getSession());
         }
