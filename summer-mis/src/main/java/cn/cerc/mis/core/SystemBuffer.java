@@ -2,7 +2,7 @@ package cn.cerc.mis.core;
 
 public class SystemBuffer {
     public enum Global implements IBufferKey {
-        OnlineUsers;
+        OnlineUsers, SyncDatabase;
 
         @Override
         public int getStartingPoint() {
