@@ -330,7 +330,7 @@ public class Application {
             ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
             switch (deviceCheck.pass(form)) {
             case PASS:
-                log.info("{}.{}", formId, funcCode);
+                log.debug("{}.{}", formId, funcCode);
                 return form.getView(funcCode);
             case CHECK:
                 return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
