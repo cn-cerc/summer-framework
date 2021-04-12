@@ -8,7 +8,7 @@ import redis.clients.jedis.Jedis;
 
 public class SyncTable {
 
-    public void append(String tableCode, Record record) {
+    public static void append(String tableCode, Record record) {
         Record rs = new Record();
         rs.setField("__table", tableCode);
         rs.setField("__opera", "append");
@@ -20,7 +20,7 @@ public class SyncTable {
         }
     }
 
-    public void delete(String tableCode, Record record) {
+    public static void delete(String tableCode, Record record) {
         Record rs = new Record();
         rs.setField("__table", tableCode);
         rs.setField("__opera", "delete");
@@ -32,7 +32,7 @@ public class SyncTable {
         }
     }
 
-    public void update(String tableCode, Record record) {
+    public static void update(String tableCode, Record record) {
         Record rs = new Record();
         rs.setField("__table", tableCode);
         rs.setField("__opera", "update");
