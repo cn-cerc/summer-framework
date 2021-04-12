@@ -14,6 +14,9 @@ public class BooleanColumn extends AbstractColumn implements IDataColumn {
     private UIComponent helper;
     private Object origin;
     private boolean readonly;
+    private String valueCode;
+    private String trueText = "是";
+    private String falseText = "否";
 
     public BooleanColumn(UIComponent owner) {
         super(owner);
@@ -25,6 +28,15 @@ public class BooleanColumn extends AbstractColumn implements IDataColumn {
     public BooleanColumn(UIComponent owner, String name, String code) {
         super(owner);
         this.setCode(code).setName(name).setSpaceWidth(10);
+        if (owner instanceof IReadonlyOwner) {
+            this.setReadonly(((IReadonlyOwner) owner).isReadonly());
+        }
+        input.setName(code);
+    }
+
+    public BooleanColumn(UIComponent owner, String name, String code, int width) {
+        super(owner);
+        this.setCode(code).setName(name).setSpaceWidth(width);
         if (owner instanceof IReadonlyOwner) {
             this.setReadonly(((IReadonlyOwner) owner).isReadonly());
         }
@@ -47,7 +59,7 @@ public class BooleanColumn extends AbstractColumn implements IDataColumn {
         boolean value = this.getRecord().getBoolean(getCode());
         if (this.readonly) {
             html.print(getName() + "：");
-            html.print(value ? "是" : "否");
+            html.print(value ? trueText : falseText);
         } else {
             UILabel label = new UILabel();
             label.setFocusTarget(this.getCode());
@@ -55,6 +67,12 @@ public class BooleanColumn extends AbstractColumn implements IDataColumn {
             label.output(html);
 
             input.setInputType(UIInput.TYPE_CHECKBOX);
+            if (this.valueCode != null) {
+                String valueText = getRecord().getString(this.valueCode);
+                input.setValue(valueText);
+            } else {
+                input.setValue(String.valueOf(value));
+            }
             input.setChecked(value);
             input.setId(getCode());
             input.output(html);
@@ -62,11 +80,18 @@ public class BooleanColumn extends AbstractColumn implements IDataColumn {
     }
 
     private void outputCellWeb(HtmlWriter html) {
-        String text = getRecord().getString(this.getCode());
+        boolean value = this.getRecord().getBoolean(getCode());
         if (this.readonly) {
-            html.print(text);
+            html.print(value ? trueText : falseText);
         } else {
-            input.setValue(text);
+            input.setInputType(UIInput.TYPE_CHECKBOX);
+            if (this.valueCode != null) {
+                String valueText = getRecord().getString(this.valueCode);
+                input.setValue(valueText);
+            } else {
+                input.setValue(String.valueOf(value));
+            }
+            input.setChecked(value);
             input.output(html);
         }
     }
@@ -84,6 +109,12 @@ public class BooleanColumn extends AbstractColumn implements IDataColumn {
 
         input.setId(getCode());
         input.setInputType(UIInput.TYPE_CHECKBOX);
+        if (this.valueCode != null) {
+            String valueText = getRecord().getString(this.valueCode);
+            input.setValue(valueText);
+        } else {
+            input.setValue(String.valueOf(value));
+        }
         input.setChecked(value);
         input.setReadonly(readonly);
         input.output(html);
@@ -101,6 +132,10 @@ public class BooleanColumn extends AbstractColumn implements IDataColumn {
         if (helper != null)
             helper = new UIOriginComponent(this);
         return helper;
+    }
+
+    public void setValueCode(String valueCode) {
+        this.valueCode = valueCode;
     }
 
     @Override
@@ -135,4 +170,9 @@ public class BooleanColumn extends AbstractColumn implements IDataColumn {
         return this;
     }
 
+    public BooleanColumn setShowText(String trueText, String falseText) {
+        this.trueText = trueText;
+        this.falseText = falseText;
+        return this;
+    }
 }
