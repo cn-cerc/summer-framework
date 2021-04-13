@@ -27,6 +27,9 @@ public class UIImage extends UICssComponent {
     @Override
     public void output(HtmlWriter html) {
         html.print("<img src='%s%s'", this.staticPath != null ? staticPath : "", this.src);
+        if (getId() != null) {
+            html.print(" id='%s'", getId());
+        }
         if (role != null) {
             html.print(" role='%s'", this.role);
         }

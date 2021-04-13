@@ -75,7 +75,13 @@ public class UISearchPanel extends UIOriginComponent {
                     IColumn column = (IColumn) component;
                     if (component instanceof IArrayColumn) {
                         String[] values = request.getParameterValues(column.getCode());
-                        record.setField(column.getCode(), String.join(",", values));
+                        if (values == null) {
+                            if (!((IArrayColumn) component).isReadonly()) {
+                                record.setField(column.getCode(), "");
+                            }
+                        } else {
+                            record.setField(column.getCode(), String.join(",", values));
+                        }
                     } else {
                         String val = request.getParameter(column.getCode());
                         record.setField(column.getCode(), val == null ? "" : val);
