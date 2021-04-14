@@ -7,9 +7,11 @@ import org.springframework.context.ApplicationContext;
 import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.IPage;
+import cn.cerc.ui.parts.UIComponent;
 
-public abstract class CustomPluginsFactory {
-    private static final Logger log = LoggerFactory.getLogger(CustomPluginsFactory.class);
+public abstract class PluginsFactory {
+    private static final Logger log = LoggerFactory.getLogger(PluginsFactory.class);
 
     /**
      * 判断当前公司别当前对象，是否存在插件，如FrmProduct_131001（必须继承IPlugins）
@@ -17,7 +19,7 @@ public abstract class CustomPluginsFactory {
      * @param owner
      * @return 返回true or false
      */
-    protected static boolean exists(Object owner) {
+    public static boolean exists(Object owner, Class<? extends IPlugins> requiredType) {
         ApplicationContext context = Application.getContext();
         if (context == null)
             return false;
@@ -29,7 +31,7 @@ public abstract class CustomPluginsFactory {
             return false;
         String target = names[names.length - 1] + "_" + corpNo;
         target = target.substring(0, 1).toLowerCase() + target.substring(1, target.length());
-        String[] beans = context.getBeanNamesForType(IPlugins.class);
+        String[] beans = context.getBeanNamesForType(requiredType);
         for (String item : beans) {
             if (item.equals(target))
                 return true;
@@ -43,7 +45,7 @@ public abstract class CustomPluginsFactory {
      * @param owner
      * @return 返回插件对象，或返回null
      */
-    protected static <T> T get(Object owner, Class<T> requiredType) {
+    public static <T> T get(Object owner, Class<T> requiredType) {
         ApplicationContext context = Application.getContext();
         if (context == null)
             return null;
@@ -71,12 +73,19 @@ public abstract class CustomPluginsFactory {
         return result;
     }
 
-    public final static IRedirectPage getRedirectPage(AbstractForm owner) {
-        return get(owner, IRedirectPage.class);
+    public final static IPage getRedirectPage(AbstractForm owner, String funcCode) {
+        IRedirectPage plugins = get(owner, IRedirectPage.class);
+        return plugins != null ? plugins.getPage(funcCode) : null;
     }
 
-    public final static IContextDefine getContextDefine(AbstractForm owner) {
-        return get(owner, IContextDefine.class);
+    public final static boolean attachContext(AbstractForm owner, UIComponent sender) {
+        IContextDefine plugins = get(owner, IContextDefine.class);
+        if (plugins != null) {
+            return plugins.attach(sender);
+        } else {
+            return false;
+        }
+
     }
 
 }
