@@ -10,7 +10,7 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.ui.parts.UIComponent;
 
-public abstract class PluginsFactory {
+public class PluginsFactory {
     private static final Logger log = LoggerFactory.getLogger(PluginsFactory.class);
 
     /**
