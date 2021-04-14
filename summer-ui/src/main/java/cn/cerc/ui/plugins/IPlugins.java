@@ -1,4 +1,4 @@
-package cn.cerc.mis.core;
+package cn.cerc.ui.plugins;
 
 /**
  * 为系统提供客制化支持
