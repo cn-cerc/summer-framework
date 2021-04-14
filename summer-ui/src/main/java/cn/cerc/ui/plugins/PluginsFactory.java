@@ -78,14 +78,13 @@ public class PluginsFactory {
         return plugins != null ? plugins.getPage(funcCode) : null;
     }
 
-    public final static boolean attachContext(AbstractForm owner, UIComponent sender) {
+    public final static boolean attachContext(AbstractForm owner, String funcCode, UIComponent sender) {
         IContextDefine plugins = get(owner, IContextDefine.class);
         if (plugins != null) {
-            return plugins.attach(sender);
+            return plugins.attach(sender, funcCode);
         } else {
             return false;
         }
-
     }
 
 }
