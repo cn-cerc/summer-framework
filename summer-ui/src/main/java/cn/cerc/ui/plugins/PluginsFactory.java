@@ -29,7 +29,10 @@ public class PluginsFactory {
         if (corpNo == null || "".equals(corpNo))
             return false;
         String target = names[names.length - 1] + "_" + corpNo;
-        target = target.substring(0, 1).toLowerCase() + target.substring(1, target.length());
+        // 前两个字母都是大写，则不处理
+        if (!target.substring(0, 2).toUpperCase().equals(target.substring(0, 2))) {
+            target = target.substring(0, 1).toLowerCase() + target.substring(1, target.length());
+        }
         String[] beans = context.getBeanNamesForType(requiredType);
         for (String item : beans) {
             if (item.equals(target))
@@ -54,7 +57,10 @@ public class PluginsFactory {
         if (corpNo == null || "".equals(corpNo))
             return null;
         String target = names[names.length - 1] + "_" + corpNo;
-        target = target.substring(0, 1).toLowerCase() + target.substring(1, target.length());
+        // 前两个字母都是大写，则不处理
+        if (!target.substring(0, 2).toUpperCase().equals(target.substring(0, 2))) {
+            target = target.substring(0, 1).toLowerCase() + target.substring(1, target.length());
+        }
         T result = context.getBean(target, requiredType);
         if (result != null) {
             // 要求必须继承IPlugins
