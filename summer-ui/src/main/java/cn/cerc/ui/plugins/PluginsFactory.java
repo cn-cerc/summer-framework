@@ -73,18 +73,28 @@ public class PluginsFactory {
         return result;
     }
 
-    public final static IPage getRedirectPage(AbstractForm owner, String funcCode) {
+    public final static IPage getRedirectPage(AbstractForm owner) {
+        String funcCode = getSenderFuncCode();
         IRedirectPage plugins = get(owner, IRedirectPage.class);
         return plugins != null ? plugins.getPage(funcCode) : null;
     }
 
-    public final static boolean attachContext(AbstractForm owner, String funcCode, UIComponent sender) {
+    public final static boolean attachContext(AbstractForm owner, UIComponent sender) {
+        String funcCode = getSenderFuncCode();
+        if (!"".equals(funcCode))
+            return false;
         IContextDefine plugins = get(owner, IContextDefine.class);
         if (plugins != null) {
             return plugins.attach(sender, funcCode);
         } else {
             return false;
         }
+    }
+
+    private final static String getSenderFuncCode() {
+        StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+        StackTraceElement e = stacktrace[3];
+        return e.getMethodName();
     }
 
 }
