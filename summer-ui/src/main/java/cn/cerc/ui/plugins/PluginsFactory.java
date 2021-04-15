@@ -16,8 +16,8 @@ public class PluginsFactory {
     /**
      * 判断当前公司别当前对象，是否存在插件，如FrmProduct_131001（必须继承IPlugins）
      * 
-     * @param owner
-     * @return 返回true or false
+     * @param owner 插件拥有者，一般为 form
+     * 
      */
     public static boolean exists(Object owner, Class<? extends IPlugins> requiredType) {
         ApplicationContext context = Application.getContext();
@@ -42,8 +42,7 @@ public class PluginsFactory {
     /**
      * 返回当前公司别当前对象之之插件对象，如FrmProduct_131001（必须继承IPlugins）
      * 
-     * @param owner
-     * @return 返回插件对象，或返回null
+     * @param owner        插件拥有者，一般为 form
      */
     public static <T> T get(Object owner, Class<T> requiredType) {
         ApplicationContext context = Application.getContext();
@@ -87,7 +86,6 @@ public class PluginsFactory {
     /**
      * 用于自定义 page 场景，或重定向到新的 form
      * 
-     * @param owner
      * @return 如返回 RedirectPage 对象
      */
     public final static IPage getRedirectPage(AbstractForm form) {
@@ -99,8 +97,6 @@ public class PluginsFactory {
     /**
      * 用于自定义服务场影
      * 
-     * @param form
-     * @param defaultService
      * @return 返回自定义 service 或 defaultService
      */
     public static String getService(AbstractForm form, String defaultService) {
@@ -111,9 +107,7 @@ public class PluginsFactory {
     /**
      * 用于自定义内容页，比如在工具栏添加新的菜单项之类
      * 
-     * @param form
-     * @param sender
-     * @return
+     * @return 添加成功否
      */
     public final static boolean attachContext(AbstractForm form, UIComponent sender) {
         String funcCode = getSenderFuncCode();
