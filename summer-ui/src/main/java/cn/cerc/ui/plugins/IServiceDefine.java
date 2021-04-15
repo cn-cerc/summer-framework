@@ -1,7 +1,7 @@
 package cn.cerc.ui.plugins;
 
-public interface IServiceDefine {
+public interface IServiceDefine extends IPlugins {
 
-    String getService(String funcCode);
+    String getService();
 
 }

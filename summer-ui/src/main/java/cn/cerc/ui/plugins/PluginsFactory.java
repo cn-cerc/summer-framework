@@ -8,7 +8,6 @@ import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IPage;
-import cn.cerc.ui.parts.UIComponent;
 
 public class PluginsFactory {
     private static final Logger log = LoggerFactory.getLogger(PluginsFactory.class);
@@ -42,7 +41,7 @@ public class PluginsFactory {
     /**
      * 返回当前公司别当前对象之之插件对象，如FrmProduct_131001（必须继承IPlugins）
      * 
-     * @param owner        插件拥有者，一般为 form
+     * @param owner 插件拥有者，一般为 form
      */
     public static <T> T getBean(Object owner, Class<T> requiredType) {
         ApplicationContext context = Application.getContext();
@@ -89,9 +88,8 @@ public class PluginsFactory {
      * @return 如返回 RedirectPage 对象
      */
     public final static IPage getRedirectPage(AbstractForm form) {
-        String funcCode = getSenderFuncCode();
         IRedirectPage plugins = getBean(form, IRedirectPage.class);
-        return plugins != null ? plugins.getPage(funcCode) : null;
+        return plugins != null ? plugins.getPage() : null;
     }
 
     /**
@@ -101,24 +99,10 @@ public class PluginsFactory {
      */
     public static String getService(AbstractForm form, String defaultService) {
         IServiceDefine plugins = getBean(form, IServiceDefine.class);
-        return plugins != null ? plugins.getService(getSenderFuncCode()) : defaultService;
-    }
-
-    /**
-     * 用于自定义内容页，比如在工具栏添加新的菜单项之类
-     * 
-     * @return 添加成功否
-     */
-    public final static boolean attachContext(AbstractForm form, UIComponent sender) {
-        String funcCode = getSenderFuncCode();
-        if (!"".equals(funcCode))
-            return false;
-        IContextDefine plugins = getBean(form, IContextDefine.class);
-        if (plugins != null) {
-            return plugins.attach(sender, funcCode);
-        } else {
-            return false;
-        }
+        if (plugins == null)
+            return defaultService;
+        String result = plugins.getService();
+        return result != null ? result : defaultService;
     }
 
 }
