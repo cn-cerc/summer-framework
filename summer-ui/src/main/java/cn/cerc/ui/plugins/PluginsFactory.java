@@ -44,7 +44,7 @@ public class PluginsFactory {
      * 
      * @param owner        插件拥有者，一般为 form
      */
-    public static <T> T get(Object owner, Class<T> requiredType) {
+    public static <T> T getPlugins(Object owner, Class<T> requiredType) {
         ApplicationContext context = Application.getContext();
         if (context == null)
             return null;
@@ -90,7 +90,7 @@ public class PluginsFactory {
      */
     public final static IPage getRedirectPage(AbstractForm form) {
         String funcCode = getSenderFuncCode();
-        IRedirectPage plugins = get(form, IRedirectPage.class);
+        IRedirectPage plugins = getPlugins(form, IRedirectPage.class);
         return plugins != null ? plugins.getPage(funcCode) : null;
     }
 
@@ -100,7 +100,7 @@ public class PluginsFactory {
      * @return 返回自定义 service 或 defaultService
      */
     public static String getService(AbstractForm form, String defaultService) {
-        IServiceDefine plugins = get(form, IServiceDefine.class);
+        IServiceDefine plugins = getPlugins(form, IServiceDefine.class);
         return plugins != null ? plugins.getService(getSenderFuncCode()) : defaultService;
     }
 
@@ -113,7 +113,7 @@ public class PluginsFactory {
         String funcCode = getSenderFuncCode();
         if (!"".equals(funcCode))
             return false;
-        IContextDefine plugins = get(form, IContextDefine.class);
+        IContextDefine plugins = getPlugins(form, IContextDefine.class);
         if (plugins != null) {
             return plugins.attach(sender, funcCode);
         } else {
