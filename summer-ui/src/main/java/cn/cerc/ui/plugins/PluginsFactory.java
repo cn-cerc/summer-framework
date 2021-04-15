@@ -73,28 +73,58 @@ public class PluginsFactory {
         return result;
     }
 
-    public final static IPage getRedirectPage(AbstractForm owner) {
+    /**
+     * 取得调用者的函数名称
+     * 
+     * @return form的函数名称，如 execute append modify 等
+     */
+    protected final static String getSenderFuncCode() {
+        StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+        StackTraceElement e = stacktrace[3];
+        return e.getMethodName();
+    }
+
+    /**
+     * 用于自定义 page 场景，或重定向到新的 form
+     * 
+     * @param owner
+     * @return 如返回 RedirectPage 对象
+     */
+    public final static IPage getRedirectPage(AbstractForm form) {
         String funcCode = getSenderFuncCode();
-        IRedirectPage plugins = get(owner, IRedirectPage.class);
+        IRedirectPage plugins = get(form, IRedirectPage.class);
         return plugins != null ? plugins.getPage(funcCode) : null;
     }
 
-    public final static boolean attachContext(AbstractForm owner, UIComponent sender) {
+    /**
+     * 用于自定义服务场影
+     * 
+     * @param form
+     * @param defaultService
+     * @return 返回自定义 service 或 defaultService
+     */
+    public static String getService(AbstractForm form, String defaultService) {
+        IServiceDefine plugins = get(form, IServiceDefine.class);
+        return plugins != null ? plugins.getService(getSenderFuncCode()) : defaultService;
+    }
+
+    /**
+     * 用于自定义内容页，比如在工具栏添加新的菜单项之类
+     * 
+     * @param form
+     * @param sender
+     * @return
+     */
+    public final static boolean attachContext(AbstractForm form, UIComponent sender) {
         String funcCode = getSenderFuncCode();
         if (!"".equals(funcCode))
             return false;
-        IContextDefine plugins = get(owner, IContextDefine.class);
+        IContextDefine plugins = get(form, IContextDefine.class);
         if (plugins != null) {
             return plugins.attach(sender, funcCode);
         } else {
             return false;
         }
-    }
-
-    private final static String getSenderFuncCode() {
-        StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-        StackTraceElement e = stacktrace[3];
-        return e.getMethodName();
     }
 
 }
