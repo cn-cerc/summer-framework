@@ -22,20 +22,13 @@ public class PluginsFactory {
         ApplicationContext context = Application.getContext();
         if (context == null)
             return false;
-        String names[] = owner.getClass().getName().split("\\.");
-        String corpNo = null;
-        if (owner instanceof ISessionOwner)
-            corpNo = ((ISessionOwner) owner).getCorpNo();
-        if (corpNo == null || "".equals(corpNo))
+        String customName = getCustomClassName(owner);
+        if (customName == null) {
             return false;
-        String target = names[names.length - 1] + "_" + corpNo;
-        // 前两个字母都是大写，则不处理
-        if (!target.substring(0, 2).toUpperCase().equals(target.substring(0, 2))) {
-            target = target.substring(0, 1).toLowerCase() + target.substring(1, target.length());
         }
         String[] beans = context.getBeanNamesForType(requiredType);
         for (String item : beans) {
-            if (item.equals(target))
+            if (item.equals(customName))
                 return true;
         }
         return false;
@@ -50,7 +43,32 @@ public class PluginsFactory {
         ApplicationContext context = Application.getContext();
         if (context == null)
             return null;
-        String names[] = owner.getClass().getName().split("\\.");
+        String customName = getCustomClassName(owner);
+        if (customName == null) {
+            return null;
+        }
+        T result = context.getBean(customName, requiredType);
+        if (result != null) {
+            // 要求必须继承IPlugins
+            if (result instanceof IPlugins) {
+                ((IPlugins) result).setOwner(owner);
+            } else {
+                log.warn("{} not supports IPlugins.", customName);
+                return null;
+            }
+            if (result instanceof ISessionOwner && owner instanceof ISessionOwner) {
+                ((ISessionOwner) result).setSession(((ISessionOwner) owner).getSession());
+            }
+        }
+        return result;
+    }
+
+    protected static String getCustomClassName(Object owner) {
+        String names[];
+        if (owner instanceof Class)
+            names = ((Class<?>) owner).getName().split("\\.");
+        else
+            names = owner.getClass().getName().split("\\.");
         String corpNo = null;
         if (owner instanceof ISessionOwner)
             corpNo = ((ISessionOwner) owner).getCorpNo();
@@ -61,20 +79,7 @@ public class PluginsFactory {
         if (!target.substring(0, 2).toUpperCase().equals(target.substring(0, 2))) {
             target = target.substring(0, 1).toLowerCase() + target.substring(1, target.length());
         }
-        T result = context.getBean(target, requiredType);
-        if (result != null) {
-            // 要求必须继承IPlugins
-            if (result instanceof IPlugins) {
-                ((IPlugins) result).setOwner(owner);
-            } else {
-                log.warn("{} not supports IPlugins.", target);
-                return null;
-            }
-            if (result instanceof ISessionOwner) {
-                ((ISessionOwner) result).setSession(((ISessionOwner) owner).getSession());
-            }
-        }
-        return result;
+        return target;
     }
 
     /**
