@@ -227,11 +227,11 @@ public class Application {
 
         setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext()));
 
-        String beanId;
-        if (formId.substring(0, 2).toUpperCase().equals(formId.substring(0, 2))) {
-            beanId = formId;
-        } else {
-            beanId = formId.substring(0, 1).toLowerCase() + formId.substring(1);
+        String beanId = formId;
+        if (!context.containsBean(formId)) {
+            if (!formId.substring(0, 2).toUpperCase().equals(formId.substring(0, 2))) {
+                beanId = formId.substring(0, 1).toLowerCase() + formId.substring(1);
+            }
         }
 
         if (!context.containsBean(beanId)) {
