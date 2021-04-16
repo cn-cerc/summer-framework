@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
+import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 
@@ -180,6 +181,15 @@ public class CustomService implements IMultiplService, IRestful {
             return getSession().getCorpNo();
     }
 
+    @Override
+    public String getUserCode() {
+        if (handle != null) {
+            return Utils.isNotEmpty(handle.getUserCode()) ? handle.getUserCode() : getSession().getUserCode();
+        } else {
+            return getSession().getUserCode();
+        }
+    }
+    
     @Override
     public void setDataIn(DataSet dataIn) {
         this.dataIn = dataIn;
