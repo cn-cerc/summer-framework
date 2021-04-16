@@ -4,21 +4,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.db.core.ISessionOwner;
-import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.IPage;
 
-public class PluginsFactory {
-    private static final Logger log = LoggerFactory.getLogger(PluginsFactory.class);
+/**
+ * 用于项目级客制化需求
+ * 
+ * @author 张弓
+ *
+ */
+public class ProjectPlugins {
+    private static final Logger log = LoggerFactory.getLogger(ProjectPlugins.class);
+    private static final ClassConfig config = new ClassConfig(ProjectPlugins.class, null);
+    private static final String ProjectId = "application.id";
+    private static final String projectId;
+
+    static {
+        projectId = config.getString(ProjectId, "").trim();
+    }
 
     /**
-     * 判断当前公司别当前对象，是否存在插件，如FrmProduct_131001（必须继承IPlugins）
+     * 判断当前项目的当前对象，是否存在插件，如FrmProduct_Diaoyou（必须继承IPlugins）
      * 
      * @param owner 插件拥有者，一般为 form
      * 
      */
     public static boolean exists(Object owner, Class<? extends IPlugins> requiredType) {
+        if (projectId == null || "".equals(projectId))
+            return false;
         ApplicationContext context = Application.getContext();
         if (context == null)
             return false;
@@ -35,11 +49,13 @@ public class PluginsFactory {
     }
 
     /**
-     * 返回当前公司别当前对象之之插件对象，如FrmProduct_131001（必须继承IPlugins）
+     * 返回当前项目的当前对象之插件对象，如FrmProduct_Diaoyou（必须继承IPlugins）
      * 
      * @param owner 插件拥有者，一般为 form
      */
     public static <T> T getBean(Object owner, Class<T> requiredType) {
+        if (projectId == null || "".equals(projectId))
+            return null;
         ApplicationContext context = Application.getContext();
         if (context == null)
             return null;
@@ -69,12 +85,9 @@ public class PluginsFactory {
             names = ((Class<?>) owner).getName().split("\\.");
         else
             names = owner.getClass().getName().split("\\.");
-        String corpNo = null;
-        if (owner instanceof ISessionOwner)
-            corpNo = ((ISessionOwner) owner).getCorpNo();
-        if (corpNo == null || "".equals(corpNo))
+        if (projectId == null || "".equals(projectId))
             return null;
-        String target = names[names.length - 1] + "_" + corpNo;
+        String target = names[names.length - 1] + "_" + projectId;
         // 前两个字母都是大写，则不处理
         if (!target.substring(0, 2).toUpperCase().equals(target.substring(0, 2))) {
             target = target.substring(0, 1).toLowerCase() + target.substring(1, target.length());
@@ -91,29 +104,6 @@ public class PluginsFactory {
         StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
         StackTraceElement e = stacktrace[3];
         return e.getMethodName();
-    }
-
-    /**
-     * 用于自定义 page 场景，或重定向到新的 form
-     * 
-     * @return 如返回 RedirectPage 对象
-     */
-    public final static IPage getRedirectPage(AbstractForm form) {
-        IRedirectPage plugins = getBean(form, IRedirectPage.class);
-        return plugins != null ? plugins.getPage() : null;
-    }
-
-    /**
-     * 用于自定义服务场影
-     * 
-     * @return 返回自定义 service 或 defaultService
-     */
-    public static String getService(AbstractForm form, String defaultService) {
-        IServiceDefine plugins = getBean(form, IServiceDefine.class);
-        if (plugins == null)
-            return defaultService;
-        String result = plugins.getService();
-        return result != null ? result : defaultService;
     }
 
 }
