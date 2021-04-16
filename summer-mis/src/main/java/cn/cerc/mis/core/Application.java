@@ -227,11 +227,18 @@ public class Application {
 
         setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext()));
 
-        if (!context.containsBean(formId)) {
-            throw new RuntimeException(String.format("form %s not find!", formId));
+        String beanId;
+        if (formId.substring(0, 2).toUpperCase().equals(formId.substring(0, 2))) {
+            beanId = formId;
+        } else {
+            beanId = formId.substring(0, 1).toLowerCase() + formId.substring(1);
         }
 
-        IForm form = context.getBean(formId, IForm.class);
+        if (!context.containsBean(beanId)) {
+            throw new RuntimeException(String.format("form %s not find!", beanId));
+        }
+
+        IForm form = context.getBean(beanId, IForm.class);
         if (form != null) {
             form.setRequest(req);
             form.setResponse(resp);
