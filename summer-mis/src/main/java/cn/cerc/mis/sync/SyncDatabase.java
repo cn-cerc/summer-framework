@@ -24,7 +24,7 @@ public class SyncDatabase implements ISessionOwner {
         rs.setField("__opera", opera.ordinal());
         rs.copyValues(record);
 
-        queue.push(record);
+        queue.push(rs);
     }
 
     public void pull(int times) {
