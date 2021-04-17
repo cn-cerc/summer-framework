@@ -16,11 +16,11 @@ public class SyncTableDefault implements ISyncRecord {
     public boolean appendRecord(Record record) {
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", tableCode);
-        ds.add("where UID_='%s'", record.getString("UID_"));
+        ds.add("where UID_=%d", record.getInt("UID_"));
         ds.open();
         if (!ds.eof())
             return false;
-        if (!this.onAppend(record)) 
+        if (!this.onAppend(record))
             return false;
         ds.getDefaultOperator().setUpdateKey("");
         ds.append();
@@ -34,7 +34,7 @@ public class SyncTableDefault implements ISyncRecord {
     public boolean deleteRecord(Record record) {
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", tableCode);
-        ds.add("where UID_='%s'", record.getString("UID_"));
+        ds.add("where UID_=%d", record.getInt("UID_"));
         ds.open();
         if (ds.eof())
             return false;
@@ -50,7 +50,7 @@ public class SyncTableDefault implements ISyncRecord {
     public boolean updateRecord(Record record) {
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", tableCode);
-        ds.add("where UID_='%s'", record.getString("UID_"));
+        ds.add("where UID_=%d", record.getInt("UID_"));
         ds.open();
         if (ds.eof())
             return false;
@@ -68,7 +68,7 @@ public class SyncTableDefault implements ISyncRecord {
     public boolean resetRecord(Record record) {
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", tableCode);
-        ds.add("where UID_='%s'", record.getString("UID_"));
+        ds.add("where UID_=%d", record.getInt("UID_"));
         ds.open();
 
         if (ds.eof()) {
