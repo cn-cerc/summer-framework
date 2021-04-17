@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.cerc.core.ClassConfig;
@@ -25,7 +28,8 @@ import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
 
-public class Application {
+@Component
+public class Application implements ApplicationContextAware {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
     private static final ClassResource res = new ClassResource(Application.class, SummerMIS.ID);
     private static final ClassConfig config = new ClassConfig(Application.class, SummerMIS.ID);
@@ -424,6 +428,11 @@ public class Application {
     @Deprecated
     public static String getLangage() {
         return getLanguage();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
     }
 
 }
