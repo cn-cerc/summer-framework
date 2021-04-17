@@ -29,7 +29,7 @@ public class SyncDatabase implements IPopProcesser {
     }
 
     @Override
-    public boolean saveRecord(ISession session, Record record) {
+    public boolean popRecord(ISession session, Record record) {
         String tableCode = record.getString("__table");
         int opera = record.getInt("__opera");
         int error = record.getInt("__error");

@@ -41,7 +41,7 @@ public class SyncServerRedis implements ISyncServer {
 
                 Record record = new Record();
                 record.setJSON(data);
-                popProcesser.saveRecord(session, record);
+                popProcesser.popRecord(session, record);
             }
         }
         return maxRecords;
