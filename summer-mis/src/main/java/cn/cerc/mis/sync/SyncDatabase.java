@@ -5,91 +5,78 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
-import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.mis.core.Application;
 
-public class SyncDatabase implements ISessionOwner {
+public class SyncDatabase implements IPopProcesser {
     private static final Logger log = LoggerFactory.getLogger(SyncDatabase.class);
-    private ISession session;
-    private ISyncQueue queue;
+    private ISyncServer queue;
 
-    public SyncDatabase(ISyncQueue queue) {
+    public SyncDatabase(ISyncServer queue) {
         super();
         this.queue = queue;
     }
 
-    public void push(String tableCode, Record record, SyncOpera opera) {
+    public void push(ISession session, String tableCode, Record record, SyncOpera opera) {
         Record rs = new Record();
         rs.setField("__table", tableCode);
         rs.setField("__opera", opera.ordinal());
         rs.copyValues(record);
-
-        queue.push(rs);
+        queue.push(session, rs);
     }
 
-    public void pull(int times) {
-        for (int i = 0; i < times; i++) {
-            Record record = queue.pop();
-            if (record == null)
-                break;
+    public void pop(ISession session, int maxRecords) {
+        queue.pop(session, this, maxRecords);
+    }
 
-            String tableCode = record.getString("__table");
-            int opera = record.getInt("__opera");
-            int error = record.getInt("__error");
-            record.delete("__table");
-            record.delete("__opera");
-            record.delete("__error");
+    @Override
+    public boolean saveRecord(ISession session, Record record) {
+        String tableCode = record.getString("__table");
+        int opera = record.getInt("__opera");
+        int error = record.getInt("__error");
+        record.delete("__table");
+        record.delete("__opera");
+        record.delete("__error");
 
-            ISyncRecord sync = Application.getBean(ISyncRecord.class, "sync_" + tableCode);
-            if (sync == null) {
-                sync = new SyncTableDefault().setTableCode(tableCode);
-            }
-            sync.setSession(session);
+        IPushProcesser processer = Application.getBean(IPushProcesser.class, "sync_" + tableCode);
+        if (processer == null) {
+            processer = new PushTableDefault().setTableCode(tableCode);
+        }
+        processer.setSession(session);
 
-            boolean result;
-            switch (SyncOpera.values()[opera]) {
-            case Append:
-                result = sync.appendRecord(record);
-                break;
-            case Delete:
-                result = sync.deleteRecord(record);
-                break;
-            case Update:
-                result = sync.updateRecord(record);
-                break;
-            case Reset:
-                result = sync.resetRecord(record);
-                break;
-            default:
-                throw new RuntimeException("not support opera.");
-            }
+        boolean result;
+        switch (SyncOpera.values()[opera]) {
+        case Append:
+            result = processer.appendRecord(record);
+            break;
+        case Delete:
+            result = processer.deleteRecord(record);
+            break;
+        case Update:
+            result = processer.updateRecord(record);
+            break;
+        case Reset:
+            result = processer.resetRecord(record);
+            break;
+        default:
+            throw new RuntimeException("not support opera.");
+        }
 
-            if (!result) {
-                record.setField("__table", tableCode);
-                record.setField("__opera", opera);
-                record.setField("__error", error + 1);
-                if (error < 5) {
-                    queue.repush(record);
-                    log.warn("sync {}.{} fail, times {}", tableCode, opera, error);
-                } else {
-                    sync.abortRecord(record, SyncOpera.values()[opera]);
-                }
+        if (!result) {
+            record.setField("__table", tableCode);
+            record.setField("__opera", opera);
+            record.setField("__error", error + 1);
+            if (error < 5) {
+                queue.repush(session, record);
+                log.warn("sync {}.{} fail, times {}", tableCode, opera, error);
+            } else {
+                processer.abortRecord(record, SyncOpera.values()[opera]);
             }
         }
+        return result;
     }
 
-    public ISyncQueue getQueue() {
+    public ISyncServer getQueue() {
         return queue;
-    }
-
-    @Override
-    public ISession getSession() {
-        return session;
-    }
-
-    @Override
-    public void setSession(ISession session) {
-        this.session = session;
     }
 
 }

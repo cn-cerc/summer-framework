@@ -7,8 +7,8 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.db.mysql.SqlQuery;
 
-public class SyncTableDefault implements ISyncRecord {
-    private static final Logger log = LoggerFactory.getLogger(SyncTableDefault.class);
+public class PushTableDefault implements IPushProcesser {
+    private static final Logger log = LoggerFactory.getLogger(PushTableDefault.class);
     private ISession session;
     private String tableCode;
 
@@ -109,7 +109,7 @@ public class SyncTableDefault implements ISyncRecord {
         return tableCode;
     }
 
-    public SyncTableDefault setTableCode(String tableCode) {
+    public PushTableDefault setTableCode(String tableCode) {
         this.tableCode = tableCode;
         return this;
     }

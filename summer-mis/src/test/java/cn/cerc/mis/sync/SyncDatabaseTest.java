@@ -1,6 +1,7 @@
 package cn.cerc.mis.sync;
 
 import cn.cerc.core.Record;
+import cn.cerc.mis.custom.SessionDefault;
 
 public class SyncDatabaseTest {
 
@@ -8,7 +9,7 @@ public class SyncDatabaseTest {
         Record record = new Record();
         record.setField("code", "a01");
         SyncDatabase db = new SyncDatabase(new SyncQueueTest());
-        db.push("part", record, SyncOpera.Update);
+        db.push(new SessionDefault(), "part", record, SyncOpera.Update);
     }
 
 }

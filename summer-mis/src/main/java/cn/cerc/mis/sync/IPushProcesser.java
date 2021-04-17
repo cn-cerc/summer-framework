@@ -3,7 +3,7 @@ package cn.cerc.mis.sync;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ISessionOwner;
 
-public interface ISyncRecord extends ISessionOwner {
+public interface IPushProcesser extends ISessionOwner {
 
     boolean appendRecord(Record record);
 
