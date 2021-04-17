@@ -44,7 +44,9 @@ public enum BufferType implements IBufferKey {
     // 20.总库存缓存
     getPartStock,
     // 21.分仓库存缓存
-    getStockNum;
+    getStockNum,
+    //创建单号
+    createTBNo;
 
     @Override
     public int getStartingPoint() {
