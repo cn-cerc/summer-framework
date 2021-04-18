@@ -32,6 +32,7 @@ public class JedisFactory {
     private JedisPool jedisPool = null;
     private String host;
     private int port;
+    private int error = 0;
 
     /**
      * 创建默认的 RedisServer
@@ -52,7 +53,6 @@ public class JedisFactory {
         synchronized (JedisFactory.class) {
             JedisFactory item = new JedisFactory(configId);
             items.put(configId, item);
-            log.info("items.size={}", items.size());
             return item;
         }
     }
@@ -119,10 +119,17 @@ public class JedisFactory {
             log.error("redis server {}:{} not exist.", host, port);
             return null;
         }
+        // 达3次时，不再重试
+        if (error >= 3) {
+            return null;
+        }
         try {
             return jedisPool.getResource();
         } catch (JedisConnectionException e) {
-            log.error("redis server not run.");
+            if (error < 3) {
+                log.error("redis server not run.");
+                error++;
+            }
             return null;
         }
     }

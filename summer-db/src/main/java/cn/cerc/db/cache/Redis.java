@@ -17,18 +17,21 @@ public class Redis {
 
     public static void set(String key, Object value, int expires) {
         try (Jedis jedis = JedisFactory.getJedis()) {
-            if (value instanceof String) {
-                jedis.set(key, (String) value);
-            } else {
-                jedis.set(key, value.toString());
+            if (jedis != null) {
+                if (value instanceof String) {
+                    jedis.set(key, (String) value);
+                } else {
+                    jedis.set(key, value.toString());
+                }
+                jedis.expire(key, expires);
             }
-            jedis.expire(key, expires);
         }
     }
 
     public static void delete(String key) {
         try (Jedis jedis = JedisFactory.getJedis()) {
-            jedis.del(key);
+            if (jedis != null)
+                jedis.del(key);
         }
     }
 }

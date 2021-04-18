@@ -15,9 +15,11 @@ import cn.cerc.core.Record;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.db.redis.JedisFactory;
 import cn.cerc.db.core.IHandleOwner;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.other.MemoryBuffer;
+import redis.clients.jedis.Jedis;
 
 public class LocalService extends CustomLocalProxy implements IServiceProxy {
     private static final Logger log = LoggerFactory.getLogger(LocalService.class);
@@ -91,7 +93,12 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
                 log.debug("write to buffer: " + this.getService());
                 dataOut.getHead().setField("_message_", this.getMessage());
                 dataOut.getHead().setField("_result_", result);
-                Redis.set(key, dataOut.getJSON());
+                try (Jedis jedis = JedisFactory.getJedis()) {
+                    if (jedis != null) {
+                        jedis.set(key, dataOut.getJSON());
+                        jedis.expire(key, 3600);
+                    }
+                }
             }
             return result;
         } catch (Exception e) {
