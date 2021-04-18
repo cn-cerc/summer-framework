@@ -29,6 +29,7 @@ import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIFormVertical;
+import cn.cerc.ui.parts.UIHeader;
 
 /**
  * 主体子页面
@@ -66,21 +67,26 @@ public class UIPageSearch extends UIPage {
         }
         IForm form = this.getForm();
         ISession session = form.getHandle().getSession();
-        if (session.logon()) {
-            List<UrlRecord> rightMenus = getHeader().getRightMenus();
-            RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
-            menus.setHandle(form.getHandle());
-            for (IMenuBar item : menus.getItems()) {
-                item.enrollMenu(form, rightMenus);
+        UIHeader header = getHeader();
+        if (header != null) {
+            if (session.logon()) {
+                List<UrlRecord> rightMenus = getHeader().getRightMenus();
+                RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
+                menus.setHandle(form.getHandle());
+                for (IMenuBar item : menus.getItems()) {
+                    item.enrollMenu(form, rightMenus);
+                }
+            } else {
+                getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
             }
-        } else {
-            getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
         }
 
         // 系统通知消息
         Component content = this.getContent();
         if (form instanceof AbstractForm) {
-            this.getHeader().initHeader();
+            if (header != null) {
+                header.initHeader();
+            }
             if (content.getId() != null) {
                 request.setAttribute(content.getId(), content);
             }
