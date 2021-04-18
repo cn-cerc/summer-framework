@@ -44,13 +44,25 @@ public class UILabel extends UICssComponent {
                 html.print(" for='%s'", focusTarget);
             }
             super.outputCss(html);
-
+            if (this.url != null)
+                html.print(" href='%s'");
             html.print(">");
+            for (UIComponent item : this)
+                item.output(html);
             if (this.text != null)
                 html.print(this.text);
             html.print("</label>");
         } else {
-            html.print("<a href='%s'>%s</a>", this.url, this.text);
+            html.print("<a");
+            super.outputCss(html);
+            if (this.url != null)
+                html.print(" href='%s'", this.url);
+            html.print(">");
+            for (UIComponent item : this)
+                item.output(html);
+            if (this.text != null)
+                html.print(this.text);
+            html.print("</a>");
         }
     }
 

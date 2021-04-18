@@ -21,6 +21,7 @@ import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.menu.MenuModel;
 import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.mvc.StartForms;
+import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UIContent;
 import cn.cerc.ui.parts.UIDocument;
 import cn.cerc.ui.parts.UIFooter;
@@ -36,7 +37,7 @@ public abstract class UIPage extends AbstractPage {
     private List<HtmlContent> scriptFunctions = new ArrayList<>();
     private List<HtmlContent> scriptCodes = new ArrayList<>();
     // 头部：广告+菜单
-    private UIHeader header;
+    private UIComponent header;
     // 主体: 控制区(可选)+内容+消息区
     private UIDocument document;
     // 工具面板：多页形式
@@ -146,7 +147,9 @@ public abstract class UIPage extends AbstractPage {
         if (header == null) {
             header = new UIHeader(this);
         }
-        return header;
+        if (!(header instanceof UIHeader))
+            return null;
+        return (UIHeader) header;
     }
 
     public UIDocument getDocument() {
@@ -239,7 +242,8 @@ public abstract class UIPage extends AbstractPage {
     }
 
     protected void writeBody(PrintWriter out) {
-        out.println(this.getHeader());
+        if (this.header != null)
+            out.println(this.header);
         out.println(this.getToolBar());
         out.println(this.getDocument());
         out.println(this.getFooter());
@@ -289,7 +293,7 @@ public abstract class UIPage extends AbstractPage {
         // FIXME 不应该出现此处的调用！
         throw new RuntimeException("不应该出现此处的调用！");
     }
-    
+
     @Deprecated
     public final String getJspFile() {
         return jspFile;
@@ -298,6 +302,10 @@ public abstract class UIPage extends AbstractPage {
     @Deprecated
     public final void setJspFile(String jspFile) {
         this.jspFile = jspFile;
+    }
+
+    public void setHeader(UIComponent header) {
+        this.header = header;
     }
 
 }
