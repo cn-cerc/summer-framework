@@ -2,7 +2,7 @@ package cn.cerc.mis.core;
 
 public class SystemBuffer {
     public enum Global implements IBufferKey {
-        OnlineUsers, SyncDatabase;
+        OnlineUsers;
 
         @Override
         public int getStartingPoint() {
@@ -64,4 +64,24 @@ public class SystemBuffer {
         }
 
     }
+
+    public enum SyncServer implements IBufferKey {
+        Diteng, Diaoyou, Tieke;
+
+        @Override
+        public int getStartingPoint() {
+            return 40;
+        }
+
+        @Override
+        public int getMinimumNumber() {
+            return 0;
+        }
+
+        @Override
+        public int getMaximumNumber() {
+            return 0;
+        }
+    }
+
 }
