@@ -25,7 +25,6 @@ public class UICustomComponent extends UIComponent {
         }
     }
 
-    @Deprecated
     public <T> T create(Class<T> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         T obj = clazz.getDeclaredConstructor().newInstance();
         if (!(obj instanceof Component)) {
