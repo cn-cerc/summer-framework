@@ -41,7 +41,7 @@ public class SyncServerRedis implements ISyncServer {
         if (popQueue == null)
             throw new RuntimeException("popQueue is null");
         String buffKey = MemoryBuffer.buildKey(popQueue);
-        String configKey = "sync." + pushQueue.name().toLowerCase();
+        String configKey = "sync." + popQueue.name().toLowerCase();
         try (Jedis jedis = JedisFactory.getJedis(configKey)) {
             for (int i = 0; i < maxRecords; i++) {
                 // 从右边取出

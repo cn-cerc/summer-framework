@@ -29,13 +29,20 @@ public class JedisFactory {
     private static final boolean TEST_ON_BORROW = true;
 
     // redis pool
-    private String host = null;
     private JedisPool jedisPool = null;
+    private String host;
     private int port;
 
     /**
+     * 创建默认的 RedisServer
+     */
+    public static JedisFactory create() {
+        return create(null);
+    }
+
+    /**
      * 创建 RedisServer
-     * 
+     *
      * @param configId 用于在配置文件中区分不同的redis服务器的连接参数，取值如：sync，若为 null 则返回缺省配置
      */
     public static JedisFactory create(String configId) {
@@ -52,18 +59,11 @@ public class JedisFactory {
 
     /**
      * 返回 RedisServer 的 Jedis
-     * 
+     *
      * @param configId 用于在配置文件中区分不同的redis服务器的连接参数，取值如：sync，若为 null 则返回缺省配置
      */
     public static Jedis getJedis(String configId) {
         return create(configId).getResource();
-    }
-
-    /**
-     * 创建默认的 RedisServer
-     */
-    public static JedisFactory create() {
-        return create(null);
     }
 
     /**
