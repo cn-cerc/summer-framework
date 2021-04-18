@@ -21,6 +21,7 @@ import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFormHorizontal;
 import cn.cerc.ui.parts.UIFormVertical;
+import cn.cerc.ui.parts.UIHeader;
 
 /**
  * 主体子页面
@@ -49,26 +50,30 @@ public class UIPageBill extends UIPage {
         HttpServletRequest request = getRequest();
         IForm form = this.getForm();
         ISession session = form.getHandle().getSession();
-        if (session.logon()) {
-            List<UrlRecord> rightMenus = getHeader().getRightMenus();
-            RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
-            menus.setHandle(form.getHandle());
-            for (IMenuBar item : menus.getItems()) {
-                item.enrollMenu(form, rightMenus);
+        UIHeader header = getHeader();
+        if (header != null) {
+            if (session.logon()) {
+                List<UrlRecord> rightMenus = header.getRightMenus();
+                RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
+                menus.setHandle(form.getHandle());
+                for (IMenuBar item : menus.getItems()) {
+                    item.enrollMenu(form, rightMenus);
+                }
+            } else {
+                header.getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
             }
-        } else {
-            getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
         }
-
         // 系统通知消息
         Component content = this.getContent();
         if (form instanceof AbstractForm) {
-            this.getHeader().initHeader();
+            if (header != null) {
+                header.initHeader();
+            }
             if (content.getId() != null) {
                 request.setAttribute(content.getId(), content);
             }
             for (Component component : content.getComponents()) {
-                if(component.getId() != null) {
+                if (component.getId() != null) {
                     request.setAttribute(component.getId(), component);
                 }
             }
@@ -85,7 +90,8 @@ public class UIPageBill extends UIPage {
         if (Utils.isNotEmpty(this.getForm().getName())) {
             out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
         } else {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+            out.printf("<title>%s</title>\n",
+                    R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
         }
 
         // 所有的请求都不发送 referrer
@@ -94,7 +100,8 @@ public class UIPageBill extends UIPage {
         out.println("<meta name=\"format-detection\" content=\"email=no\" />");
         out.printf("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
         out.println("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9; IE=8; IE=7;\"/>");
-        out.printf("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
+        out.printf(
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\"/>\n");
         out.print(this.getCssHtml());
         out.print(getScriptHtml());
         out.println("<script>");

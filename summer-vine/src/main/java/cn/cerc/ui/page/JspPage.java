@@ -2,13 +2,14 @@ package cn.cerc.ui.page;
 
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.JspFile;
+import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UIToolbar;
 
 public class JspPage extends JspFile {
     // 头部：广告+菜单
-    private UIHeader header;
+    private UIComponent header;
     // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
     private UIToolbar toolBar;
     // FIXME 此处调用不合理，为保障编译通过先保留 2021/3/14
@@ -28,15 +29,15 @@ public class JspPage extends JspFile {
         this.setJspFile(jspFile);
     }
 
-    @Deprecated
     public UIHeader getHeader() {
         if (header == null) {
             header = new UIHeader(this);
         }
-        return header;
+        if (!(header instanceof UIHeader))
+            return null;
+        return (UIHeader) header;
     }
 
-    @Deprecated
     public UIFooter getFooter() {
         if(footer == null) {
             footer = new UIFooter(this);
@@ -52,6 +53,10 @@ public class JspPage extends JspFile {
             this.add(toolBar.getId(), toolBar);
         }
         return toolBar;
+    }
+
+    public void setHeader(UIComponent header) {
+        this.header = header;
     }
 
 }

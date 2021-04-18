@@ -24,6 +24,7 @@ import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFooter;
+import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UIToolbar;
 
 public class JspPageDialog extends JspPage {
@@ -59,15 +60,19 @@ public class JspPageDialog extends JspPage {
         ISession session = form.getHandle().getSession();
         request.setAttribute("passport", session.logon());
         request.setAttribute("logon", session.logon());
-        if (session.logon()) {
-            List<UrlRecord> rightMenus = getHeader().getRightMenus();
-            RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
-            menus.setHandle(form.getHandle());
-            for (IMenuBar item : menus.getItems()) {
-                item.enrollMenu(form, rightMenus);
+
+        UIHeader header = getHeader();
+        if (header != null) {
+            if (session.logon()) {
+                List<UrlRecord> rightMenus = header.getRightMenus();
+                RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
+                menus.setHandle(form.getHandle());
+                for (IMenuBar item : menus.getItems()) {
+                    item.enrollMenu(form, rightMenus);
+                }
+            } else {
+                header.getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
             }
-        } else {
-            getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
         }
         // 设置首页
         request.setAttribute("_showMenu_", "true".equals(form.getParam("showMenus", "true")));
@@ -78,14 +83,15 @@ public class JspPageDialog extends JspPage {
 
         if (form instanceof AbstractForm) {
             if (this.isShowMenus()) {
-                this.getHeader().initHeader();
-
-                this.getRequest().setAttribute("logoSrc", this.getHeader().getLogoSrc());
-                this.getRequest().setAttribute("welcomeLanguage", this.getHeader().getWelcome());
-                if (Utils.isNotEmpty(this.getHeader().getUserName())) {
-                    this.getRequest().setAttribute("exitSystem", this.getHeader().getExitSystem());
-                    this.getRequest().setAttribute("userName", this.getHeader().getUserName());
-                    this.getRequest().setAttribute("currentUser", this.getHeader().getCurrentUser());
+                if (header != null) {
+                    header.initHeader();
+                    this.getRequest().setAttribute("logoSrc", header.getLogoSrc());
+                    this.getRequest().setAttribute("welcomeLanguage", header.getWelcome());
+                    if (Utils.isNotEmpty(header.getUserName())) {
+                        this.getRequest().setAttribute("exitSystem", header.getExitSystem());
+                        this.getRequest().setAttribute("userName", header.getUserName());
+                        this.getRequest().setAttribute("currentUser", header.getCurrentUser());
+                    }
                 }
             }
         }
@@ -106,6 +112,7 @@ public class JspPageDialog extends JspPage {
         return this.getViewFile();
     }
 
+    @Override
     public UIToolbar getToolBar() {
         if (toolBar == null) {
             toolBar = new UIToolbar(this);
@@ -113,6 +120,7 @@ public class JspPageDialog extends JspPage {
         return toolBar;
     }
 
+    @Override
     public UIFooter getFooter() {
         if (footer == null) {
             footer = new UIFooter(this);
@@ -121,7 +129,9 @@ public class JspPageDialog extends JspPage {
     }
 
     public void installAdvertisement() {
-        super.put("_showAd_", this.getHeader().getAdvertisement());
+        UIHeader header = this.getHeader();
+        if (header != null)
+            super.put("_showAd_", header.getAdvertisement());
     }
 
     public boolean isShowMenus() {

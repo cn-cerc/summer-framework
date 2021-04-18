@@ -70,14 +70,14 @@ public class UIPageSearch extends UIPage {
         UIHeader header = getHeader();
         if (header != null) {
             if (session.logon()) {
-                List<UrlRecord> rightMenus = getHeader().getRightMenus();
+                List<UrlRecord> rightMenus = header.getRightMenus();
                 RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
                 menus.setHandle(form.getHandle());
                 for (IMenuBar item : menus.getItems()) {
                     item.enrollMenu(form, rightMenus);
                 }
             } else {
-                getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
+                header.getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
             }
         }
 

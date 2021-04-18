@@ -62,7 +62,7 @@ public class UIPageModify extends UIPage {
                     item.enrollMenu(form, rightMenus);
                 }
             } else {
-                getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
+                header.getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
             }
         }
 

@@ -15,6 +15,7 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
 import cn.cerc.ui.parts.RightMenus;
+import cn.cerc.ui.parts.UIHeader;
 
 public class UIPageView extends UIPage {
 
@@ -39,21 +40,26 @@ public class UIPageView extends UIPage {
         HttpServletRequest request = getRequest();
         IForm form = this.getForm();
         ISession session = form.getHandle().getSession();
-        if (session.logon()) {
-            List<UrlRecord> rightMenus = getHeader().getRightMenus();
-            RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
-            menus.setHandle(form.getHandle());
-            for (IMenuBar item : menus.getItems()) {
-                item.enrollMenu(form, rightMenus);
+        UIHeader header = getHeader();
+        if (header != null) {
+            if (session.logon()) {
+                List<UrlRecord> rightMenus = header.getRightMenus();
+                RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
+                menus.setHandle(form.getHandle());
+                for (IMenuBar item : menus.getItems()) {
+                    item.enrollMenu(form, rightMenus);
+                }
+            } else {
+                header.getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
             }
-        } else {
-            getHeader().getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
         }
 
         // 系统通知消息
         Component content = this.getContent();
         if (form instanceof AbstractForm) {
-            this.getHeader().initHeader();
+            if (header != null) {
+                header.initHeader();
+            }
             if (content.getId() != null) {
                 request.setAttribute(content.getId(), content);
             }

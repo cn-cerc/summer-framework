@@ -257,7 +257,8 @@ public abstract class UIPage extends AbstractPage {
     public String getHtmlBody() {
         StringBuilder builder = new StringBuilder();
         builder.append("<body>");
-        builder.append(this.getHeader());
+        if (header != null)
+            builder.append(this.header);
         builder.append(this.getDocument());
         builder.append(this.getToolBar());
         builder.append(this.getFooter());
