@@ -312,7 +312,6 @@ public class BuildQuery {
         return ds;
     }
 
-    @Deprecated
     public SqlQuery openReadonly() {
         SqlQuery ds = getDataSet();
         ds.getSqlText().clear();

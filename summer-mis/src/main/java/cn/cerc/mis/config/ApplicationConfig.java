@@ -56,17 +56,6 @@ public class ApplicationConfig {
     @Deprecated
     public static final String Rempte_Host_Key = "remote.host";
 
-    /**
-     * 请改使用Application.getToken函数
-     * 
-     * @param handle
-     * @return
-     */
-    @Deprecated
-    public static String getToken(IHandle handle) {
-        return handle.getSession().getToken();
-    }
-
     @Deprecated
     public static boolean isMaster() {
         String appRole = config.getString(ApplicationConfig.App_Role_Key, ApplicationConfig.App_Role_Master);
