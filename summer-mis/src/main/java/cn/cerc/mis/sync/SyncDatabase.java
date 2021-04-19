@@ -24,8 +24,8 @@ public class SyncDatabase implements IPopProcesser {
         queue.push(session, rs);
     }
 
-    public void pop(ISession session, int maxRecords) {
-        queue.pop(session, this, maxRecords);
+    public int pop(ISession session, int maxRecords) {
+       return queue.pop(session, this, maxRecords);
     }
 
     @Override
@@ -45,20 +45,20 @@ public class SyncDatabase implements IPopProcesser {
 
         boolean result;
         switch (SyncOpera.values()[opera]) {
-        case Append:
-            result = processer.appendRecord(record);
-            break;
-        case Delete:
-            result = processer.deleteRecord(record);
-            break;
-        case Update:
-            result = processer.updateRecord(record);
-            break;
-        case Reset:
-            result = processer.resetRecord(record);
-            break;
-        default:
-            throw new RuntimeException("not support opera.");
+            case Append:
+                result = processer.appendRecord(record);
+                break;
+            case Delete:
+                result = processer.deleteRecord(record);
+                break;
+            case Update:
+                result = processer.updateRecord(record);
+                break;
+            case Reset:
+                result = processer.resetRecord(record);
+                break;
+            default:
+                throw new RuntimeException("not support opera.");
         }
 
         if (!result) {
