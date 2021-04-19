@@ -156,6 +156,7 @@ public class Application implements ApplicationContextAware {
         return result;
     }
 
+    @Deprecated
     public static <T> T getBean(Class<T> requiredType) {
         String[] items = requiredType.getName().split("\\.");
         String itemId = items[items.length - 1];
