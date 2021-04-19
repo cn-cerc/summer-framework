@@ -71,18 +71,19 @@ public class UISearchPanel extends UIOriginComponent {
         if (Utils.isNotEmpty(result)) {
             // 将用户值或缓存值存入到dataSet中
             for (UIComponent component : this.filterPanel) {
-                if (component instanceof IColumn) {
-                    IColumn column = (IColumn) component;
-                    if (component instanceof IArrayColumn) {
-                        String[] values = request.getParameterValues(column.getCode());
-                        if (values == null) {
-                            if (!((IArrayColumn) component).isReadonly()) {
-                                record.setField(column.getCode(), "");
-                            }
-                        } else {
-                            record.setField(column.getCode(), String.join(",", values));
+                if (component instanceof IArrayColumn) {
+                    IArrayColumn column = (IArrayColumn) component;
+                    String[] values = request.getParameterValues(column.getCode());
+                    if (values == null) {
+                        if (!column.isReadonly()) {
+                            record.setField(column.getCode(), "");
                         }
                     } else {
+                        record.setField(column.getCode(), String.join(",", values));
+                    }
+                } else if (component instanceof IDataColumn) {
+                    IDataColumn column = (IDataColumn) component;
+                    if (!column.isReadonly()) {
                         String val = request.getParameter(column.getCode());
                         record.setField(column.getCode(), val == null ? "" : val);
                     }

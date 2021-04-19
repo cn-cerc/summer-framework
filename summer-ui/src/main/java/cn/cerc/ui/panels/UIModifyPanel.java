@@ -94,18 +94,19 @@ public class UIModifyPanel extends UIOriginComponent {
         submitValue = request.getParameter(submit.getName());
         if (Utils.isNotEmpty(submitValue)) {
             for (UIComponent component : this.inputPanel) {
-                if (component instanceof IColumn) {
-                    IColumn column = (IColumn) component;
-                    if (component instanceof IArrayColumn) {
-                        String[] values = request.getParameterValues(column.getCode());
-                        if (values == null) {
-                            if (!((IArrayColumn) component).isReadonly()) {
-                                record.setField(column.getCode(), "");
-                            }
-                        } else {
-                            record.setField(column.getCode(), String.join(",", values));
+                if (component instanceof IArrayColumn) {
+                    IArrayColumn column = (IArrayColumn) component;
+                    String[] values = request.getParameterValues(column.getCode());
+                    if (values == null) {
+                        if (!column.isReadonly()) {
+                            record.setField(column.getCode(), "");
                         }
                     } else {
+                        record.setField(column.getCode(), String.join(",", values));
+                    }
+                } else if (component instanceof IDataColumn) {
+                    IDataColumn column = (IDataColumn) component;
+                    if (!column.isReadonly()) {
                         String val = request.getParameter(column.getCode());
                         record.setField(column.getCode(), val == null ? "" : val);
                     }
