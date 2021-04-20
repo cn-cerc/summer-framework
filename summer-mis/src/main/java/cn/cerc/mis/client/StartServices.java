@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
@@ -43,7 +44,8 @@ public class StartServices extends HttpServlet {
             return;
         }
         services = new HashMap<>();
-        for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
+        Application.setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext()));
+        for (String serviceCode : Application.getContext().getBeanNamesForType(IRestful.class)) {
             IRestful service = Application.getBean(IRestful.class, serviceCode);
             String path = service.getRestPath();
             if (null != path && !"".equals(path)) {

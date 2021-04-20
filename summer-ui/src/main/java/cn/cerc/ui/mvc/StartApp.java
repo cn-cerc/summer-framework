@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
@@ -50,7 +51,7 @@ public class StartApp implements Filter {
         }
 
         String uri = req.getRequestURI();
-        Application.get(req);
+        Application.setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext()));
 
         // 处理默认首页问题
         if ("/".equals(uri)) {

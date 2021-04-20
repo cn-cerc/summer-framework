@@ -2,9 +2,7 @@ package cn.cerc.mis.core;
 
 import java.io.IOException;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +19,6 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
-import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ISessionOwner;
 import cn.cerc.db.core.ITokenManage;
@@ -92,6 +89,7 @@ public class Application implements ApplicationContextAware {
         return LanguageResource.appLanguage;
     }
 
+    @Deprecated
     public static void setContext(ApplicationContext applicationContext) {
         if (context != applicationContext) {
             if (context != null) {
@@ -99,16 +97,6 @@ public class Application implements ApplicationContextAware {
             }
             context = applicationContext;
         }
-    }
-
-    public static ApplicationContext get(ServletContext servletContext) {
-        setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext));
-        return context;
-    }
-
-    public static ApplicationContext get(ServletRequest request) {
-        setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext()));
-        return context;
     }
 
     public static <T> T getBean(IHandle handle, Class<T> requiredType) {

@@ -7,6 +7,7 @@ import javax.servlet.ServletContextListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.Application;
@@ -24,7 +25,7 @@ public class StartTasksInternal implements ServletContextListener {
             timer = new Timer(true);
             log.info("Timer started ...");
 
-            Application.get(event.getServletContext());
+            Application.setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(event.getServletContext()));
             ProcessTimerTask task = new ProcessTimerTask();
             task.setApplicationContext(Application.getContext());
 

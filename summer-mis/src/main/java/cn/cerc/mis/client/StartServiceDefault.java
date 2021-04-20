@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
@@ -55,7 +56,8 @@ public class StartServiceDefault {
             return;
         }
         services = new HashMap<>();
-        for (String serviceCode : Application.get(req).getBeanNamesForType(IRestful.class)) {
+        Application.setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext()));
+        for (String serviceCode : Application.getContext().getBeanNamesForType(IRestful.class)) {
             IRestful service = Application.getBean(IRestful.class, serviceCode);
             String path = service.getRestPath();
             if (null != path && !"".equals(path)) {
