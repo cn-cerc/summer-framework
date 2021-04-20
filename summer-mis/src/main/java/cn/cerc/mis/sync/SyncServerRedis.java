@@ -3,11 +3,9 @@ package cn.cerc.mis.sync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.db.redis.JedisFactory;
-import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.core.SystemBuffer.SyncServer;
 import cn.cerc.mis.other.MemoryBuffer;
 import redis.clients.jedis.Jedis;
