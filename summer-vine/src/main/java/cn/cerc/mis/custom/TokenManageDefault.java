@@ -90,7 +90,8 @@ public class TokenManageDefault implements ITokenManage {
                 session.setProperty(Application.deviceLanguage, buff.getString("Language_"));
 
                 // 刷新缓存生命值
-                redis.expire(buff.getKey(), buff.getExpires());
+                if (redis != null)
+                    redis.expire(buff.getKey(), buff.getExpires());
                 return true;
             } else {
                 return false;
