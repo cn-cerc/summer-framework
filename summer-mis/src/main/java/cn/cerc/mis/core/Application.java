@@ -77,26 +77,25 @@ public class Application implements ApplicationContextAware {
         String xmlFile = String.format("%s-spring.xml", packageId);
         if (packageId == null)
             xmlFile = "application.xml";
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(xmlFile);
-        context = ctx;
+        setContext(new ClassPathXmlApplicationContext(xmlFile));
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        Application.setContext(applicationContext);
+    }
+
+    public static void setContext(ApplicationContext applicationContext) {
+        if (context != applicationContext) {
+            if (context != null) {
+                log.error("applicationContext overload!");
+            }
+            context = applicationContext;
+        }
     }
 
     public static ApplicationContext getContext() {
         return context;
-    }
-
-    private static String getAppLanguage() {
-        return LanguageResource.appLanguage;
-    }
-
-    @Deprecated
-    public static void setContext(ApplicationContext applicationContext) {
-        if (context != applicationContext) {
-            if (context != null) {
-                log.warn("applicationContext overload!");
-            }
-            context = applicationContext;
-        }
     }
 
     public static <T> T getBean(IHandle handle, Class<T> requiredType) {
@@ -382,9 +381,8 @@ public class Application implements ApplicationContextAware {
         return config.getString(Application.FORM_DEFAULT, "default");
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
+    private static String getAppLanguage() {
+        return LanguageResource.appLanguage;
     }
 
 }
