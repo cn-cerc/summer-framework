@@ -112,18 +112,11 @@ public class Application implements ApplicationContextAware {
         return context;
     }
 
-    // 请改为使用下面的函数
-    @Deprecated
-    public static <T> T getBean(String beanId, Class<T> requiredType) {
-        return context.getBean(beanId, requiredType);
-    }
-
     public static <T> T getBean(Class<T> requiredType, String... beans) {
         for (String key : beans) {
-            if (!context.containsBean(key)) {
-                continue;
+            if (context.containsBean(key)) {
+                return context.getBean(key, requiredType);
             }
-            return context.getBean(key, requiredType);
         }
         return null;
     }
@@ -424,11 +417,6 @@ public class Application implements ApplicationContextAware {
 
     public static String getHomePage() {
         return config.getString(Application.FORM_DEFAULT, "default");
-    }
-
-    @Deprecated
-    public static String getLangage() {
-        return getLanguage();
     }
 
     @Override
