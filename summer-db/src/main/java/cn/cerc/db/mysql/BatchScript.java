@@ -117,7 +117,8 @@ public class BatchScript {
         return tmp[i].trim();
     }
 
-    public void clean() {
+    public BatchScript clean() {
         items = new StringBuffer();
+        return this;
     }
 }
