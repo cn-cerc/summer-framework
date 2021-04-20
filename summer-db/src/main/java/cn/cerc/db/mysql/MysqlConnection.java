@@ -24,13 +24,9 @@ public class MysqlConnection extends SqlConnection {
     private static final ClassConfig config = new ClassConfig(MysqlConnection.class, SummerDB.ID);
     // IHandle中识别码
     public static final String sessionId = "sqlSession";
-    @Deprecated
     public static final String rds_site = "rds.site";
-    @Deprecated
     public static final String rds_database = "rds.database";
-    @Deprecated
     public static final String rds_username = "rds.username";
-    @Deprecated
     public static final String rds_password = "rds.password";
 
     public static String dataSource = "dataSource";

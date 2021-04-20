@@ -2,7 +2,6 @@ package cn.cerc.db.core;
 
 import cn.cerc.core.IConfig;
 
-@Deprecated
 public interface IAppConfig extends IConfig {
 
     // 未登录时的首页
