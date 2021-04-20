@@ -17,6 +17,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class utilsTest {
+    @SuppressWarnings("deprecation")
     @Test
     public void test_roundTo() {
         assertThat("舍入测试", roundTo(1.234, -2), is(1.23));
@@ -29,6 +30,7 @@ public class utilsTest {
         assertThat("负数测试", roundTo(-12.3, 0), is(-12.0));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void test_Trunc() {
         assertThat(trunc(-123.55), is(-123.00));
