@@ -41,7 +41,6 @@ public class Application implements ApplicationContextAware {
     public static final String userCode = ISession.USER_CODE;
     public static final String userName = ISession.USER_NAME;
     public static final String deviceLanguage = ISession.LANGUAGE_ID;
-    @Deprecated
     public static final String userId = "UserID";
     @Deprecated
     public static final String roleCode = "RoleCode";
@@ -112,6 +111,27 @@ public class Application implements ApplicationContextAware {
         return context;
     }
 
+    public static <T> T getBean(IHandle handle, Class<T> requiredType) {
+        T bean = getBean(requiredType);
+        if (bean != null && handle != null) {
+            if (bean instanceof IHandle) {
+                ((IHandle) bean).setSession(handle.getSession());
+            }
+        }
+        return bean;
+    }
+
+    public static <T> T getBean(Class<T> requiredType) {
+        String items[] = context.getBeanNamesForType(requiredType);
+        if (items.length > 1) {
+            log.warn("{} size > 1", requiredType.getName());
+        }
+        for (String beanId : items) {
+            return context.getBean(beanId, requiredType);
+        }
+        return null;
+    }
+
     public static <T> T getBean(Class<T> requiredType, String... beans) {
         for (String key : beans) {
             if (context.containsBean(key)) {
@@ -149,53 +169,8 @@ public class Application implements ApplicationContextAware {
         return result;
     }
 
-    @Deprecated
-    public static <T> T getBean(Class<T> requiredType) {
-        String[] items = requiredType.getName().split("\\.");
-        String itemId = items[items.length - 1];
-
-        String beanId;
-        if (itemId.substring(0, 2).toUpperCase().equals(itemId.substring(0, 2))) {
-            beanId = itemId;
-        } else {
-            beanId = itemId.substring(0, 1).toLowerCase() + itemId.substring(1);
-        }
-
-        return context.getBean(beanId, requiredType);
-    }
-
-    @Deprecated
-    public static IHandle getHandle() {
-        return new Handle(createSession());
-    }
-
     public static ISession createSession() {
         return getBeanDefault(ISession.class, null);
-    }
-
-    /**
-     * 请改为直接使用ClassResource，参考AppConfigDefault
-     *
-     * @return
-     */
-    @Deprecated
-    public static IAppConfig getAppConfig() {
-        return getBeanDefault(IAppConfig.class, null);
-    }
-
-    @Deprecated // 请改使用 getBean
-    public static <T> T get(IHandle handle, Class<T> requiredType) {
-        return getBean(handle, requiredType);
-    }
-
-    public static <T> T getBean(IHandle handle, Class<T> requiredType) {
-        T bean = getBean(requiredType);
-        if (bean != null && handle != null) {
-            if (bean instanceof IHandle) {
-                ((IHandle) bean).setSession(handle.getSession());
-            }
-        }
-        return bean;
     }
 
     public static IService getService(IHandle handle, String serviceCode) {
