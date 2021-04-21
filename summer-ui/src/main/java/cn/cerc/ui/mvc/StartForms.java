@@ -14,11 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.FormFactory;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.ui.SummerUI;
 
@@ -86,10 +89,13 @@ public class StartForms implements Filter {
             return;
         }
 
+        ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext());
+        FormFactory factory = context.getBean(FormFactory.class);
+
         // 2、处理Url请求
         String childCode = getRequestCode(req);
         if (childCode == null) {
-            Application.outputErrorPage(req, resp, new RuntimeException("无效的请求：" + req.getServletPath()));
+            factory.outputErrorPage(req, resp, new RuntimeException("无效的请求：" + req.getServletPath()));
             return;
         }
 
@@ -97,8 +103,8 @@ public class StartForms implements Filter {
         String formId = params[0];
         String funcCode = params.length == 1 ? "execute" : params[1];
 
-        String viewId = Application.getFormView(req, resp, formId, funcCode);
-        Application.outputView(req, resp, viewId);
+        String viewId = factory.getFormView(req, resp, formId, funcCode);
+        factory.outputView(req, resp, viewId);
     }
 
     public static String getRequestCode(HttpServletRequest req) {
