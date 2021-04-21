@@ -156,7 +156,8 @@ public class SessionDefault implements ISession {
         return connections;
     }
 
-    public void setConnections(Map<String, IConnection> connections) {
-        this.connections = connections;
+    public Map<String, Object> getParams() {
+        return params;
     }
+
 }
