@@ -1,8 +1,6 @@
 package cn.cerc.db.core;
 
-import cn.cerc.core.IConfig;
-
-public interface IAppConfig extends IConfig {
+public interface IAppConfig {
 
     // 未登录时的首页
     String getFormWelcome();
