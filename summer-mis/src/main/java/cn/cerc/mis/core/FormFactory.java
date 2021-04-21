@@ -71,7 +71,7 @@ public class FormFactory implements ApplicationContextAware {
             ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
             manage.resumeToken((String) req.getSession().getAttribute(RequestData.TOKEN));
             session.setProperty(Application.sessionId, req.getSession().getId());
-            session.setProperty(Application.deviceLanguage, client.getLanguage());
+            session.setProperty(ISession.LANGUAGE_ID, client.getLanguage());
             session.setProperty(Application.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
             session.setProperty(ISession.REQUEST, req);
             IHandle handle = new Handle(session);

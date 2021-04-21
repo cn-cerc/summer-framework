@@ -14,6 +14,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
@@ -64,7 +65,7 @@ public class ResourceJstl extends SimpleTagSupport {
         StringWriter sw = new StringWriter();
         jf.invoke(sw);
         text = sw.toString();
-        Object temp = handle.getSession().getProperty(Application.deviceLanguage);
+        Object temp = handle.getSession().getProperty(ISession.LANGUAGE_ID);
         String lang = (temp == null || "".equals(temp)) ? Application.getLanguage() : (String) temp;
         if (LanguageResource.LANGUAGE_CN.equals(lang)) {
             return text;

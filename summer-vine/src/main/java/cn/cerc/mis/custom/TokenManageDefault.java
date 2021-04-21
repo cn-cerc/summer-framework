@@ -87,7 +87,7 @@ public class TokenManageDefault implements ITokenManage {
                 session.setProperty(Application.userName, buff.getString("UserName_"));
                 session.setProperty(Application.ProxyUsers, buff.getString("ProxyUsers_"));
                 session.setProperty(Application.roleCode, buff.getString("RoleCode_"));
-                session.setProperty(Application.deviceLanguage, buff.getString("Language_"));
+                session.setProperty(ISession.LANGUAGE_ID, buff.getString("Language_"));
 
                 // 刷新缓存生命值
                 if (redis != null)
@@ -128,7 +128,7 @@ public class TokenManageDefault implements ITokenManage {
         session.setProperty(Application.roleCode, record.getString("RoleCode_"));
         session.setProperty(Application.ProxyUsers, record.getString("ProxyUsers_"));
         session.setProperty(Application.userName, record.getString("UserName_"));
-        session.setProperty(Application.deviceLanguage, record.getString("Language_"));
+        session.setProperty(ISession.LANGUAGE_ID, record.getString("Language_"));
 
         // 将用户信息赋值到缓存
         try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.Token.SessionBase, token)) {

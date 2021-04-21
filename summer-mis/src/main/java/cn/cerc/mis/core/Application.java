@@ -28,7 +28,9 @@ public class Application implements ApplicationContextAware {
     public static final String bookNo = ISession.CORP_NO;
     public static final String userCode = ISession.USER_CODE;
     public static final String userName = ISession.USER_NAME;
+    @Deprecated
     public static final String deviceLanguage = ISession.LANGUAGE_ID;
+    @Deprecated
     public static final String userId = "UserID";
     @Deprecated
     public static final String roleCode = "RoleCode";
@@ -172,7 +174,7 @@ public class Application implements ApplicationContextAware {
     }
 
     public static String getLanguage() {
-        String lang = ServerConfig.getInstance().getProperty(deviceLanguage);
+        String lang = ServerConfig.getInstance().getProperty(ISession.LANGUAGE_ID);
         if (lang == null || "".equals(lang) || App_Language.equals(lang)) {
             return App_Language;
         } else if (LanguageResource.LANGUAGE_EN.equals(lang)) {

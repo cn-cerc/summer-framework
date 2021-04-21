@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.other.MemoryBuffer;
 
@@ -184,13 +185,13 @@ public class AppClient implements IClient, Serializable {
         request.setAttribute(CLIENT_ID, this.deviceId);
         request.getSession().setAttribute(CLIENT_ID, this.deviceId);
 
-        this.languageId = request.getParameter(Application.deviceLanguage);
+        this.languageId = request.getParameter(ISession.LANGUAGE_ID);
         if (this.languageId == null || "".equals(this.languageId)) {
-            this.languageId = (String) request.getSession().getAttribute(Application.deviceLanguage);
+            this.languageId = (String) request.getSession().getAttribute(ISession.LANGUAGE_ID);
         }
 
-        request.setAttribute(Application.deviceLanguage, this.languageId);
-        request.getSession().setAttribute(Application.deviceLanguage, this.languageId);
+        request.setAttribute(ISession.LANGUAGE_ID, this.languageId);
+        request.getSession().setAttribute(ISession.LANGUAGE_ID, this.languageId);
 
         // 取得并保存token
         String token = request.getParameter(RequestData.TOKEN);// 获取客户端的 token

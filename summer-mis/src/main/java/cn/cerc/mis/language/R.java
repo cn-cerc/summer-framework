@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
@@ -23,7 +24,7 @@ public class R {
             log.warn("handle is null.");
             return null;
         }
-        Object temp = handle.getSession().getProperty(Application.deviceLanguage);
+        Object temp = handle.getSession().getProperty(ISession.LANGUAGE_ID);
         if (temp == null || "".equals(temp)) {
             log.debug("handle language is null");
             Object request = handle.getSession().getProperty("request");
@@ -31,7 +32,7 @@ public class R {
                 log.debug(request.getClass().getName());
                 if (request instanceof HttpServletRequest) {
                     HttpServletRequest req = (HttpServletRequest) request;
-                    temp = req.getSession().getAttribute(Application.deviceLanguage);
+                    temp = req.getSession().getAttribute(ISession.LANGUAGE_ID);
                     log.debug("session language value " + temp);
                 }
             }
