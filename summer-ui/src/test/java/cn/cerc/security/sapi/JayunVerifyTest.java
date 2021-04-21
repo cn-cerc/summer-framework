@@ -1,8 +1,10 @@
-package cn.cerc.mis.security.sapi;
+package cn.cerc.security.sapi;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
+
+import security.sapi.JayunVerify;
 
 public class JayunVerifyTest {
 

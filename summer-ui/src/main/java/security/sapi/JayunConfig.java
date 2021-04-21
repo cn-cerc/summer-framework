@@ -1,4 +1,4 @@
-package cn.cerc.mis.security.sapi;
+package security.sapi;
 
 import javax.servlet.http.HttpServletRequest;
 

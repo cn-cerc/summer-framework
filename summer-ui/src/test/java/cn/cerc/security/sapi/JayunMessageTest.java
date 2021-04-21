@@ -1,4 +1,4 @@
-package cn.cerc.mis.security.sapi;
+package cn.cerc.security.sapi;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import security.sapi.JayunMessage;
+import security.sapi.SendMode;
 
 public class JayunMessageTest {
     private JayunMessage api = new JayunMessage(null);

@@ -2,7 +2,7 @@ package cn.cerc.ui.page.qrcode;
 
 import cn.cerc.core.MD5;
 import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.security.sapi.JayunAPI;
+import security.sapi.JayunAPI;
 
 import com.google.gson.Gson;
 import org.slf4j.Logger;
