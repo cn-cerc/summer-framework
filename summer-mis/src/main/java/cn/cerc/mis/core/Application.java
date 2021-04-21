@@ -104,7 +104,7 @@ public class Application implements ApplicationContextAware {
     public static <T> T getBean(Class<T> requiredType) {
         String items[] = context.getBeanNamesForType(requiredType);
         if (items.length > 1) {
-            log.warn("{} size > 1", requiredType.getName());
+            log.warn("{} size {} > 1", requiredType.getName(), items.length);
         }
         for (String beanId : items) {
             return context.getBean(beanId, requiredType);
