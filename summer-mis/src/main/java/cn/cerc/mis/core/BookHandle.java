@@ -1,62 +1,75 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.core.ClassResource;
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.SummerMIS;
+import cn.cerc.db.core.IHandleOwner;
 
-public class BookHandle extends Handle implements ISession {
-    private static final ClassResource res = new ClassResource(BookHandle.class, SummerMIS.ID);
-
-    private String corpNo;
-    private String userCode;
-    private String userName;
+public class BookHandle implements IHandle, IHandleOwner {
+    private ISession owner;
+    private ISession session;
+    private Map<String, Object> params = new HashMap<>();
 
     public BookHandle(IHandle handle, String corpNo) {
-        this.setHandle(handle);
-        this.corpNo = corpNo;
-    }
+        this.owner = handle.getSession();
 
-    @Override
-    public String getCorpNo() {
-        return this.corpNo;
-    }
+        this.session = new ISession() {
+            @Override
+            public Object getProperty(String key) {
+                if (params.containsKey(key))
+                    return params.get(key);
+                else
+                    return owner.getProperty(key);
+            }
 
-    @Override
-    public String getUserCode() {
-        return userCode != null ? userCode : getSession().getUserCode();
+            @Override
+            public void setProperty(String key, Object value) {
+                params.put(key, value);
+            }
+
+            @Override
+            public boolean logon() {
+                return owner.logon();
+            }
+
+            @Override
+            public void close() {
+                owner.close();
+            }
+
+        };
+
+        session.setProperty(ISession.CORP_NO, corpNo);
     }
 
     public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
-
-    @Override
-    public String getUserName() {
-        return userName != null ? userName : getSession().getUserName();
+        session.setProperty(ISession.USER_CODE, userCode);
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        session.setProperty(ISession.USER_NAME, userName);
     }
 
     @Override
-    public Object getProperty(String key) {
-        return getSession().getProperty(key);
+    public ISession getSession() {
+        return session;
     }
 
     @Override
-    public void setProperty(String key, Object value) {
-        throw new RuntimeException(res.getString(1, "调用了未被实现的接口"));
+    public void setSession(ISession session) {
+        throw new RuntimeException("BookHandle not support setSession.");
     }
 
     @Override
-    public boolean logon() {
-        return false;
+    public IHandle getHandle() {
+        return this;
     }
 
     @Override
-    public void close() {
-
+    public void setHandle(IHandle handle) {
+        throw new RuntimeException("BookHandle not support setHandle.");
     }
+
 }

@@ -2,9 +2,9 @@ package cn.cerc.mis.client;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IHandleOwner;
 import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.CustomLocalProxy;
-import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.ServiceException;
 
 public class AutoService extends CustomLocalProxy {
@@ -52,9 +52,10 @@ public class AutoService extends CustomLocalProxy {
 
         BookHandle handle = new BookHandle(this.handle, service.getCorpNo());
         handle.setUserCode(service.getUserCode());
-        if (object instanceof CustomService) {
-            ((CustomService) object).setHandle(handle);
+        if (object instanceof IHandleOwner) {
+            ((IHandleOwner) object).setHandle(handle);
         }
+
         boolean result = executeService(object, service.getDataIn(), dataOut);
 
         this.setMessage(getMessage());
