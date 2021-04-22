@@ -101,6 +101,7 @@ public class Application implements ApplicationContextAware {
         return bean;
     }
 
+    @SuppressWarnings("unchecked")
     @Deprecated
     public static <T> T getBean(Class<T> requiredType) {
         String[] items = requiredType.getName().split("\\.");
@@ -113,7 +114,11 @@ public class Application implements ApplicationContextAware {
             beanId = itemId.substring(0, 1).toLowerCase() + itemId.substring(1);
         }
 
-        return context.getBean(beanId, requiredType);
+        if (context.containsBean(beanId)) {
+            return (T) context.getBean(beanId);
+        } else {
+            return context.getBean(requiredType);
+        }
     }
 
     public static <T> T getBean(Class<T> requiredType, String... beans) {
