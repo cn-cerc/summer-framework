@@ -101,15 +101,19 @@ public class Application implements ApplicationContextAware {
         return bean;
     }
 
+    @Deprecated
     public static <T> T getBean(Class<T> requiredType) {
-        String items[] = context.getBeanNamesForType(requiredType);
-        if (items.length > 1) {
-            log.warn("{} size {} > 1", requiredType.getName(), items.length);
+        String[] items = requiredType.getName().split("\\.");
+        String itemId = items[items.length - 1];
+
+        String beanId;
+        if (itemId.substring(0, 2).toUpperCase().equals(itemId.substring(0, 2))) {
+            beanId = itemId;
+        } else {
+            beanId = itemId.substring(0, 1).toLowerCase() + itemId.substring(1);
         }
-        for (String beanId : items) {
-            return context.getBean(beanId, requiredType);
-        }
-        return null;
+
+        return context.getBean(beanId, requiredType);
     }
 
     public static <T> T getBean(Class<T> requiredType, String... beans) {
