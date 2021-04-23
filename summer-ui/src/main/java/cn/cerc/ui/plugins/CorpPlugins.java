@@ -53,6 +53,9 @@ public class CorpPlugins {
         if (customName == null) {
             return null;
         }
+        if (!context.containsBean(customName)) {
+            return null;
+        }
         T result = context.getBean(customName, requiredType);
         if (result != null) {
             // 要求必须继承IPlugins
