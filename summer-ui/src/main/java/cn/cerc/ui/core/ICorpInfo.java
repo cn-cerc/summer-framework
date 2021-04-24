@@ -1,8 +1,8 @@
 package cn.cerc.ui.core;
 
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
-public interface ICorpInfo extends ISessionOwner{
+public interface ICorpInfo extends IHandle{
 
     String getShortName();
 }

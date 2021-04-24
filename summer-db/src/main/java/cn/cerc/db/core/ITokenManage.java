@@ -1,7 +1,7 @@
 package cn.cerc.db.core;
 
 //此接口由原来的 IHandle 中分离出来
-public interface ITokenManage extends ISessionOwner{
+public interface ITokenManage extends IHandle{
     
     // 根据帐号密码等，生成新的 token，原命名为 init
     @Deprecated

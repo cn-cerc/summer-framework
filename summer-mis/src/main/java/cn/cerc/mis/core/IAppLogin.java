@@ -3,12 +3,12 @@ package cn.cerc.mis.core;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.config.ApplicationConfig;
 
 import java.io.IOException;
 
-public interface IAppLogin extends ISessionOwner{
+public interface IAppLogin extends IHandle{
 
     void init(IForm form);
 

@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IPage;
@@ -65,8 +65,8 @@ public class CorpPlugins {
                 log.warn("{} not supports IPlugins.", customName);
                 return null;
             }
-            if (result instanceof ISessionOwner && owner instanceof ISessionOwner) {
-                ((ISessionOwner) result).setSession(((ISessionOwner) owner).getSession());
+            if (result instanceof IHandle && owner instanceof IHandle) {
+                ((IHandle) result).setSession(((IHandle) owner).getSession());
             }
         }
         return result;
@@ -79,8 +79,8 @@ public class CorpPlugins {
         else
             names = owner.getClass().getName().split("\\.");
         String corpNo = null;
-        if (owner instanceof ISessionOwner)
-            corpNo = ((ISessionOwner) owner).getCorpNo();
+        if (owner instanceof IHandle)
+            corpNo = ((IHandle) owner).getCorpNo();
         if (corpNo == null || "".equals(corpNo))
             return null;
         String target = names[names.length - 1] + "_" + corpNo;

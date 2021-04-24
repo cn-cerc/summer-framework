@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
 public class Transaction implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(Transaction.class);
@@ -25,7 +25,7 @@ public class Transaction implements AutoCloseable {
         setConn(cn.getClient());
     }
 
-    public Transaction(ISessionOwner owner) {
+    public Transaction(IHandle owner) {
         this(owner.getSession());
     }
     

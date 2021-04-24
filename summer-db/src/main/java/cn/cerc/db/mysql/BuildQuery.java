@@ -11,7 +11,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
 /**
  * 用于组合生成select指令，便于多条件查询编写
@@ -32,7 +32,7 @@ public class BuildQuery {
         this.session = session;
     }
 
-    public BuildQuery(ISessionOwner owner) {
+    public BuildQuery(IHandle owner) {
         this(owner.getSession());
     }
 

@@ -14,7 +14,7 @@ import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
 public class MongoOperator implements IDataOperator {
     private String tableName;
@@ -24,7 +24,7 @@ public class MongoOperator implements IDataOperator {
         this.connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
     }
 
-    public MongoOperator(ISessionOwner owner) {
+    public MongoOperator(IHandle owner) {
         this(owner.getSession());
     }
 

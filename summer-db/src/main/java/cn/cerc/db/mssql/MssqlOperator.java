@@ -18,7 +18,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.BuildStatement;
 import cn.cerc.db.mysql.UpdateMode;
 
@@ -54,7 +54,7 @@ public class MssqlOperator implements IDataOperator {
         }
     }
 
-    public MssqlOperator(ISessionOwner owner) {
+    public MssqlOperator(IHandle owner) {
         this(owner.getSession());
     }
 

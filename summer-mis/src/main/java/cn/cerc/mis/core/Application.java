@@ -12,7 +12,7 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.SummerMIS;
@@ -131,7 +131,7 @@ public class Application implements ApplicationContextAware {
     }
 
     /**
-     * 创建指定的实例，若实例支持 ISessionOwner，就自动注入 session
+     * 创建指定的实例，若实例支持 IHandle，就自动注入 session
      * 
      * 如创建ITokenManage，则自动查找 tokenManage, tokenManageDefault
      * 
@@ -152,8 +152,8 @@ public class Application implements ApplicationContextAware {
         // 找不到自定义的，就再查找默认的类
         T result = getBean(requiredType, beanId, beanId + "Default");
         // 自动注入 session
-        if ((session != null) && (result instanceof ISessionOwner)) {
-            ((ISessionOwner) result).setSession(session);
+        if ((session != null) && (result instanceof IHandle)) {
+            ((IHandle) result).setSession(session);
         }
         return result;
     }
@@ -174,7 +174,7 @@ public class Application implements ApplicationContextAware {
         return getBeanDefault(IPassport.class, session);
     }
 
-    public static IPassport getPassport(ISessionOwner owner) {
+    public static IPassport getPassport(IHandle owner) {
         return getBeanDefault(IPassport.class, owner.getSession());
     }
 

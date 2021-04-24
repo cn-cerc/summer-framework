@@ -2,9 +2,9 @@ package security.menu;
 
 import java.util.List;
 
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
-public interface IAppMenus extends ISessionOwner{
+public interface IAppMenus extends IHandle{
 
     List<IMenuItem> getItems();
 

@@ -1,8 +1,8 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
-public interface ISecurityDeviceCheck extends ISessionOwner {
+public interface ISecurityDeviceCheck extends IHandle {
 
     PassportResult pass(IForm form);
 }

@@ -21,7 +21,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
 public class SqlQuery extends DataQuery {
     private static final Logger log = LoggerFactory.getLogger(SqlQuery.class);
@@ -48,7 +48,7 @@ public class SqlQuery extends DataQuery {
         this.slaveDataSource = (DataSource) session.getProperty(SlaveMysqlConnection.slaveDataSource);
     }
 
-    public SqlQuery(ISessionOwner owner) {
+    public SqlQuery(IHandle owner) {
         this(owner.getSession());
     }
 

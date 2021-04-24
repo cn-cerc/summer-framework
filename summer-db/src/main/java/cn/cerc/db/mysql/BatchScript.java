@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
 public class BatchScript {
     private static final Logger log = LoggerFactory.getLogger(BatchScript.class);
@@ -20,7 +20,7 @@ public class BatchScript {
         this.connection = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
     }
 
-    public BatchScript(ISessionOwner owner) {
+    public BatchScript(IHandle owner) {
         this(owner.getSession());
     }
 

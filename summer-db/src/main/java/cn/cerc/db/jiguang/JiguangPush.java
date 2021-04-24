@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
@@ -40,7 +40,7 @@ public class JiguangPush {
         this.connection = (JiguangConnection) session.getProperty(JiguangConnection.sessionId);
     }
 
-    public JiguangPush(ISessionOwner owner) {
+    public JiguangPush(IHandle owner) {
         this(owner.getSession());
     }
 

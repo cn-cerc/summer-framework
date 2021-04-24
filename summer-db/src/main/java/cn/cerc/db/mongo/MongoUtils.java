@@ -10,7 +10,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
 public class MongoUtils {
     private MongoConnection connection;
@@ -21,7 +21,7 @@ public class MongoUtils {
         database = connection.getClient();
     }
 
-    public MongoUtils(ISessionOwner owner) {
+    public MongoUtils(IHandle owner) {
         this(owner.getSession());
     }
 

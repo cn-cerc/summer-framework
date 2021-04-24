@@ -1,9 +1,9 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.rds.PassportRecord;
 
-public interface IPassport extends ISessionOwner {
+public interface IPassport extends IHandle {
 
     // 是否有菜单的执行权限
     default boolean pass(IForm form) {

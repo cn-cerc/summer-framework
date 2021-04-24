@@ -11,7 +11,7 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
 import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
 public class QueueQuery extends DataQuery {
     private static final ClassResource res = new ClassResource(QueueQuery.class, SummerDB.ID);
@@ -31,7 +31,7 @@ public class QueueQuery extends DataQuery {
         this.connection = (AliyunQueueConnection) session.getProperty(AliyunQueueConnection.sessionId);
     }
 
-    public QueueQuery(ISessionOwner owner) {
+    public QueueQuery(IHandle owner) {
         this(owner.getSession());
     }
 

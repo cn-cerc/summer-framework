@@ -22,7 +22,7 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.DataQuery;
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlOperator;
 
 public class MongoQuery extends DataQuery {
@@ -40,7 +40,7 @@ public class MongoQuery extends DataQuery {
         connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
     }
 
-    public MongoQuery(ISessionOwner owner) {
+    public MongoQuery(IHandle owner) {
         this(owner.getSession());
     }
 

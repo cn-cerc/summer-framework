@@ -1,8 +1,8 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.ISessionOwner;
+import cn.cerc.db.core.IHandle;
 
-public interface IUserLoginCheck extends ISessionOwner {
+public interface IUserLoginCheck extends IHandle {
 
     // 登录验证
     boolean check(String userCode, String password, String machineCode, String clientIP, String language);
