@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +72,7 @@ public class NasQuery extends DataQuery {
         File file = FileUtils.getFile(this.filePath, this.fileName);
         try {
             String content = this.getJSON();
-            FileUtils.writeStringToFile(file, content, CharEncoding.UTF_8, false);// 不存在则创建,存在则不追加到文件末尾
+            FileUtils.writeStringToFile(file, content, StandardCharsets.UTF_8.name(), false);// 不存在则创建,存在则不追加到文件末尾
         } catch (IOException e) {
             log.info("文件:" + file.getPath() + "保存失败");
             e.printStackTrace();
