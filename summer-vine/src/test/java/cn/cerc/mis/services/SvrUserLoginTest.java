@@ -35,7 +35,7 @@ public class SvrUserLoginTest {
         session.setProperty(ISession.USER_CODE, userCode);
         IHandle handle = new Handle(session);
         
-        SvrUserLogin app = new SvrUserLogin();
+        TAppLogin app = new TAppLogin();
         app.setHandle(handle);
         Record headIn = app.getDataIn().getHead();
         headIn.setField("Account_", userCode);
@@ -50,7 +50,7 @@ public class SvrUserLoginTest {
         IHandle handle = new Handle(session);
         
         String userCode = handle.getUserCode();
-        SvrUserLogin app = new SvrUserLogin();
+        TAppLogin app = new TAppLogin();
 
         app.setHandle(handle);
         Record headIn = app.getDataIn().getHead();
@@ -74,7 +74,7 @@ public class SvrUserLoginTest {
         session.setProperty(ISession.USER_CODE, userCode);
         IHandle handle = new Handle(session);
         
-        SvrUserLogin app = new SvrUserLogin();
+        TAppLogin app = new TAppLogin();
         app.setHandle(handle);
         Record headIn = app.getDataIn().getHead();
         headIn.setField("Account_", userCode);
@@ -100,7 +100,7 @@ public class SvrUserLoginTest {
 
         // 清空缓存
         try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getObject, handle.getUserCode(),
-                SvrUserLogin.class.getName(), "sendVerifyCode")) {
+                TAppLogin.class.getName(), "sendVerifyCode")) {
             buff.clear();
         }
         // 检查验证码是否存在
@@ -114,7 +114,7 @@ public class SvrUserLoginTest {
         String msg = String.format("帐号 %s 验证码 %s 不存在，无法完成测试", userCode, deviceId);
         assertEquals(msg, ds.eof(), is(false));
 
-        SvrUserLogin app = Application.getBean(handle, SvrUserLogin.class);
+        TAppLogin app = Application.getBean(handle, TAppLogin.class);
         app.getDataIn().getHead().setField("deviceId", deviceId);
         assertEquals(app.sendVerifyCode(), is(true));
         Thread.sleep(1000 * 30);
@@ -125,7 +125,7 @@ public class SvrUserLoginTest {
             e.printStackTrace();
             assertEquals(e.getMessage().indexOf("5 分钟") > 0, is(true));
         }
-        Thread.sleep(1000 * 60 * SvrUserLogin.TimeOut);
+        Thread.sleep(1000 * 60 * TAppLogin.TimeOut);
         assertEquals(app.sendVerifyCode(), is(true));
     }
 }

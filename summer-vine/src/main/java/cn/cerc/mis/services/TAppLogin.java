@@ -36,9 +36,9 @@ import cn.cerc.mis.other.MemoryBuffer;
  */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SvrUserLogin extends CustomService {
-    private static final Logger log = LoggerFactory.getLogger(SvrUserLogin.class);
-    private static final ClassResource res = new ClassResource(SvrUserLogin.class, SummerMIS.ID);
+public class TAppLogin extends CustomService {
+    private static final Logger log = LoggerFactory.getLogger(TAppLogin.class);
+    private static final ClassResource res = new ClassResource(TAppLogin.class, SummerMIS.ID);
 
     public static int TimeOut = 5; // 效验代码超时时间（分钟）
     private static String GuidNull = "";
@@ -370,7 +370,7 @@ public class SvrUserLogin extends CustomService {
 
         // 校验成功清理验证码缓存
         try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getObject, getUserCode(),
-                SvrUserLogin.class.getName(), "sendVerifyCode")) {
+                TAppLogin.class.getName(), "sendVerifyCode")) {
             buff.clear();
         }
         getDataOut().getHead().setField("Used_", cdsVer.getInt("Used_"));
@@ -379,7 +379,7 @@ public class SvrUserLogin extends CustomService {
 
     public boolean sendVerifyCode() throws DataValidateException {
         try (MemoryBuffer buff = new MemoryBuffer(SystemBufferType.getObject, getUserCode(),
-                SvrUserLogin.class.getName(), "sendVerifyCode")) {
+                TAppLogin.class.getName(), "sendVerifyCode")) {
             if (!buff.isNull()) {
                 log.info("verifyCode {}", buff.getString("verifyCode"));
                 throw new RuntimeException(String.format(res.getString(23, "请勿在 %d 分钟内重复点击获取认证码！"), TimeOut));
