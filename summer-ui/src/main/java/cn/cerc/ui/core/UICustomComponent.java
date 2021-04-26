@@ -47,7 +47,6 @@ public class UICustomComponent extends UIComponent {
         return cssStyle;
     }
 
-    @Deprecated
     public void setCssStyle(String cssStyle) {
         this.cssStyle = cssStyle;
     }

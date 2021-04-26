@@ -38,8 +38,8 @@ public class ResetManager implements IBookManage {
     private ISession session;
 
     @Override
-    public void setSession(ISession handle) {
-        this.session = handle;
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
     @Override

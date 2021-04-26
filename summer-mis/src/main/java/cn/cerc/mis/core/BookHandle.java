@@ -5,9 +5,8 @@ import java.util.Map;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.IHandleOwner;
 
-public class BookHandle implements IHandle, IHandleOwner {
+public class BookHandle implements IHandle {
     private ISession owner;
     private ISession session;
     private Map<String, Object> params = new HashMap<>();
@@ -60,16 +59,6 @@ public class BookHandle implements IHandle, IHandleOwner {
     @Override
     public void setSession(ISession session) {
         throw new RuntimeException("BookHandle not support setSession.");
-    }
-
-    @Override
-    public IHandle getHandle() {
-        return this;
-    }
-
-    @Override
-    public void setHandle(IHandle handle) {
-        throw new RuntimeException("BookHandle not support setHandle.");
     }
 
 }
