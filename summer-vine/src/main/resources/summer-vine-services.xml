@@ -4,7 +4,7 @@
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
     <!-- 登入系统 -->
-    <bean id="TAppLogin.check" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+    <bean id="TAppLogin.Check" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="Check" />
     </bean>
     <!-- 校验硬件码 -->
