@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 
+//@Component
+//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class AbstractService implements IService, IRestful {
     @Autowired
     public ISystemTable systemTable;

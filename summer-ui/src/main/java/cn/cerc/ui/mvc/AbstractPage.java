@@ -21,6 +21,8 @@ import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
 
+//@Component
+//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class AbstractPage extends UIComponent implements IPage, IUserLanguage {
     protected static final ClassConfig config = new ClassConfig(AbstractPage.class, SummerMIS.ID);
 
