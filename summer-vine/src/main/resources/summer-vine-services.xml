@@ -28,7 +28,7 @@
         <property name="funcCode" value="getState" />
     </bean>
     <!-- 退出系统 -->
-    <bean id="TAppLogin.exitSystem" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+    <bean id="TAppLogin.ExitSystem" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="ExitSystem" />
     </bean>
     <!-- 获取设备信息 -->
