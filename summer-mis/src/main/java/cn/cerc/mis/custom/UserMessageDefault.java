@@ -87,7 +87,7 @@ public class UserMessageDefault implements IHandle, IUserMessage {
         cdsMsg.setField("AppDate_", TDateTime.now());
         // 日志类消息默认为已读
         cdsMsg.setField("Status_", level == MessageLevel.Logger ? 1 : 0);
-        cdsMsg.setField("Process_", process.ordinal());
+        cdsMsg.setField("Process_", process == null ? 0 : process.ordinal());
         cdsMsg.setField("Final_", false);
         cdsMsg.post();
 
