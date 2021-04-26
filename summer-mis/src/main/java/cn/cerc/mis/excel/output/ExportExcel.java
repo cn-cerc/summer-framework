@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.db.core.LocalConfig;
 import jxl.Workbook;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -19,6 +18,7 @@ import jxl.write.WriteException;
 
 public class ExportExcel {
     private static ApplicationContext app;
+    public static final String LocalPath = System.getProperty("user.home") + System.getProperty("file.separator");
     private final static String xmlFile = "classpath:export-excel.xml";
     private HttpServletResponse response;
     private String templateId;
@@ -77,7 +77,7 @@ public class ExportExcel {
             response.setContentType("application/msexcel");// 定义输出类型
             workbook = Workbook.createWorkbook(os);
         } else {
-            String path = LocalConfig.path + "\\" + template.getFileName() + ".xls";
+            String path = LocalPath + "\\" + template.getFileName() + ".xls";
             workbook = Workbook.createWorkbook(new File(path));
         }
 
