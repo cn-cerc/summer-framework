@@ -78,7 +78,7 @@ public class UserMessageDefault implements IHandle, IUserMessage {
         cdsMsg.append();
         cdsMsg.setField("CorpNo_", corpNo);
         cdsMsg.setField("UserCode_", userCode);
-        cdsMsg.setField("Level_", level);
+        cdsMsg.setField("Level_", level.ordinal());
         cdsMsg.setField("Subject_", subject);
         if (content.length() > 0) {
             cdsMsg.setField("Content_", content);
