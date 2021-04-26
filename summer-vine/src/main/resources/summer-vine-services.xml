@@ -4,35 +4,35 @@
            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
     <!-- 登入系统 -->
-    <bean id="SvrUserLogin.check" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
+    <bean id="TAppLogin.check" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="Check" />
     </bean>
     <!-- 校验硬件码 -->
-    <bean id="SvrUserLogin.verifyMachine" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
+    <bean id="TAppLogin.verifyMachine" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="verifyMachine" />
     </bean>
     <!-- 根据手机号，转化成用户帐号 -->
-    <bean id="SvrUserLogin.getUserCodeByMobile" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
+    <bean id="TAppLogin.getUserCodeByMobile" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="getTelToUserCode" />
     </bean>
     <!-- 微信自动登录 -->
-    <bean id="SvrUserLogin.autoLogin" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
+    <bean id="TAppLogin.autoLogin" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="autoLogin" />
     </bean>
     <!-- 发送校验码 -->
-    <bean id="SvrUserLogin.sendVerifyCode" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
+    <bean id="TAppLogin.sendVerifyCode" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="sendVerifyCode" />
     </bean>
     <!-- 获取当前登录状态(client.exe使用) -->
-    <bean id="SvrUserLogin.getState" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
+    <bean id="TAppLogin.getState" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="getState" />
     </bean>
     <!-- 退出系统 -->
-    <bean id="SvrUserLogin.exitSystem" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
+    <bean id="TAppLogin.ExitSystem" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="ExitSystem" />
     </bean>
     <!-- 获取设备信息 -->
-    <bean id="SvrUserLogin.getMachInfo" class="cn.cerc.mis.services.SvrUserLogin" scope="prototype">
+    <bean id="TAppLogin.getMachInfo" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="getMachInfo" />
     </bean>
 
