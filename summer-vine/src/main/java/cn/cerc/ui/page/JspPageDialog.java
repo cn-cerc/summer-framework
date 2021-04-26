@@ -151,12 +151,10 @@ public class JspPageDialog extends JspPage {
         pages = grid.getPages();
     }
 
-    @Deprecated
     public final List<String> getJsFiles() {
         return jsFiles;
     }
 
-    @Deprecated
     public final void addScriptFile(String file) {
         file = CDN.get(file);
         jsFiles.add(file);
