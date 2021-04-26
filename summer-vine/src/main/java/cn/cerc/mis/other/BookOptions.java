@@ -14,8 +14,8 @@ import cn.cerc.db.mysql.BuildQuery;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CenterService;
+import cn.cerc.mis.core.IOptionReader;
 import cn.cerc.mis.core.ISystemTable;
-import cn.cerc.mis.core.LocalService;
 
 // FIXME 每个业务项目应自己生成一个
 public class BookOptions {
@@ -235,41 +235,28 @@ public class BookOptions {
         return getOption(handle, ACode, "");
     }
 
-    public static String getOption(IHandle handle, String ACode, String ADefault) {
+    public static String getOption(IHandle handle, String ACode, String defaultValue) {
         if (ACode.equals(AccInitYearMonth)) {
-            return getOption2(handle, ACode, ADefault);
+            return getOption2(handle, ACode, defaultValue);
         }
 
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
             if (buff.isNull()) {
-                ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
-                BuildQuery f = new BuildQuery(handle);
-                f.add("select Value_ from %s ", systemTable.getBookOptions());
-                f.byField("CorpNo_", handle.getCorpNo());
-                f.byField("Code_", ACode);
-                f.open();
-                if (!f.getDataSet().eof()) {
-                    buff.setField("Value_", f.getDataSet().getString("Value_"));
-                } else {
-                    buff.setField("Value_", ADefault);
-                }
-
+                IOptionReader reader = Application.getDefaultBean(handle, IOptionReader.class);
+                String value = reader.getCorpValue(handle.getCorpNo(), ACode, defaultValue);
+                buff.setField("Value_", value);
             }
             return buff.getString("Value_");
         }
     }
 
-    public static String getOption2(IHandle handle, String ACode, String def) {
+    public static String getOption2(IHandle handle, String ACode, String defaultValue) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
             if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 log.info("reset buffer.");
-                LocalService ser = new LocalService(handle, "SvrBookOption");
-                if (ser.exec("Code_", ACode) && !ser.getDataOut().eof()) {
-                    buff.setField("Value_", ser.getDataOut().getString("Value_"));
-                } else {
-                    buff.setField("Value_", def);
-                }
-
+                IOptionReader reader = Application.getDefaultBean(handle, IOptionReader.class);
+                String value = reader.getCorpValue(handle.getCorpNo(), ACode, defaultValue);
+                buff.setField("Value_", value);
             }
             return buff.getString("Value_");
         }
@@ -322,7 +309,7 @@ public class BookOptions {
         // String result = getOption(owner, paramKey, "201301";
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), paramKey)) {
             if (buff.isNull() || "".equals(buff.getString("Value_"))) {
-                ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
+                ISystemTable systemTable = Application.getSystemTable();
                 BuildQuery f = new BuildQuery(handle);
                 String corpNo = handle.getCorpNo();
                 f.add("select * from %s ", systemTable.getBookOptions());

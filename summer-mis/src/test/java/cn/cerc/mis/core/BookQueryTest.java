@@ -12,8 +12,8 @@ public class BookQueryTest {
     @Test(expected = RuntimeException.class)
     @Ignore
     public void test() {
-        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
-        Application.init(SummerMIS.ID);
+        ISystemTable systemTable = Application.getSystemTable();
+        Application.initOnlyFramework();
         ISession session = Application.createSession();
         BookQuery ds = new BookQuery(new Handle(session));
         ds.add("select * from %s where CorpNo_='144001'", systemTable.getBookInfo());

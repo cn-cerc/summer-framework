@@ -19,10 +19,6 @@ public class PartnerService extends RemoteService {
 
     private String corpNo;
 
-    public PartnerService() {
-        super();
-    }
-
     public PartnerService(IHandle handle) {
         super(handle);
     }

@@ -30,7 +30,7 @@ public class RightMenus extends Handle {
     public void setSession(ISession session) {
         super.setSession(session);
 
-        IRightMenuLoad child = Application.getBeanDefault(IRightMenuLoad.class, session);
+        IRightMenuLoad child = Application.getDefaultBean(new Handle(session), IRightMenuLoad.class);
         if (child != null)
             child.loadMenu(items);
 

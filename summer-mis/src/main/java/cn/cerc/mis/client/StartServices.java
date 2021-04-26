@@ -77,7 +77,7 @@ public class StartServices extends HttpServlet {
 
     private void doProcess(String method, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String uri = req.getRequestURI();
-        if (!uri.startsWith("/" + config.getString(Application.PATH_SERVICES, "services"))) {
+        if (!uri.startsWith("/" + Application.getConfig().getServicesPath())) {
             return;
         }
 
@@ -102,7 +102,7 @@ public class StartServices extends HttpServlet {
 
         ISession session = Application.createSession();
         try { // 执行指定函数
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+            ITokenManage manage = Application.getDefaultBean(new Handle(session), ITokenManage.class);
             manage.resumeToken(req.getParameter("token"));
             session.setProperty(sessionId, req.getSession().getId());
             IHandle handle = new Handle(session);

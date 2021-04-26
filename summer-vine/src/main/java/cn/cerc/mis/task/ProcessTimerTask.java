@@ -16,14 +16,12 @@ import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
-import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.rds.StubHandle;
 
 @Component
-// 请改使用 StartTaskDefault，注意测试不同用户的创建
 public class ProcessTimerTask extends TimerTask implements ApplicationContextAware {
     private static final Logger log = LoggerFactory.getLogger(ProcessTimerTask.class);
     // 晚上12点执行，也即0点开始执行
@@ -110,11 +108,11 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
      */
     private void init() {
         if (session == null) {
-            Application.init(SummerMIS.ID);
+            Application.initOnlyFramework();
             session = Application.createSession();
             // 创建token
             // FIXME 此处需要复查是否存在创建token的必要性
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+            ITokenManage manage = Application.getDefaultBean(new Handle(session), ITokenManage.class);
             // 注入token到session
             manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
                     StubHandle.machineCode);
@@ -132,11 +130,11 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
                 session = null;
             }
             log.warn("{} queue reinitialization handle", TDateTime.now());// 队列重新初始化句柄
-            Application.init(SummerMIS.ID);
+            Application.initOnlyFramework();
             session = Application.createSession();
             // 创建token
             // FIXME 此处需要复查是否存在创建token的必要性
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+            ITokenManage manage = Application.getDefaultBean(new Handle(session), ITokenManage.class);
             manage.createToken(StubHandle.DefaultBook, StubHandle.DefaultUser, StubHandle.password,
                     StubHandle.machineCode);
             // 60s内不重复初始化Handle

@@ -6,9 +6,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.core.Record;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.core.LocalService;
+import cn.cerc.mis.core.Application;
 
 //TODO 此对象需要做更进一步抽象处理
 public class ResourceBuffer {
@@ -22,40 +21,18 @@ public class ResourceBuffer {
 
     public String get(IHandle handle, String text) {
         if (items.size() == 0) {
-            LocalService svr = new LocalService(handle, "SvrLanguage.downloadAll");
-            Record headIn = svr.getDataIn().getHead();
-            headIn.setField("lang_", lang);
-            if (!svr.exec()) {
-                log.error(svr.getMessage());
-                return text;
-            }
-            for (Record item : svr.getDataOut()) {
-                items.put(item.getString("key_"), item.getString("value_"));
-            }
-            if (items.size() == 0) {
+            ILanguageReader reader = Application.getDefaultBean(handle, ILanguageReader.class);
+            if (reader.loadDictionary(items, lang) == 0)
                 log.error("dictionary data can not be found");
-            }
         }
         if (items.containsKey(text)) {
             return items.get(text);
         }
 
-        String result = getValue(handle, text);
+        ILanguageReader reader = Application.getDefaultBean(handle, ILanguageReader.class);
+        String result =  reader.getOrSet(lang, text);
         items.put(text, result);
         return result;
-    }
-
-    private String getValue(IHandle handle, String text) {
-        LocalService svr = new LocalService(handle, "SvrLanguage.download");
-        Record headIn = svr.getDataIn().getHead();
-        headIn.setField("key_", text);
-        headIn.setField("lang_", lang);
-        if (!svr.exec()) {
-            log.error(svr.getMessage());
-            return text;
-        }
-
-        return svr.getDataOut().getHead().getString("value");
     }
 
     public void clear() {

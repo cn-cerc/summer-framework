@@ -17,12 +17,6 @@ public class Handle implements IHandle, IHandleOwner {
         this.session = session;
     }
 
-    public Handle(ISession session, String corpNo, String userCode) {
-        this(session);
-        session.setProperty(Application.bookNo, corpNo);
-        session.setProperty(Application.userCode, userCode);
-    }
-
     @Override
     public ISession getSession() {
         return session;
@@ -45,15 +39,5 @@ public class Handle implements IHandle, IHandleOwner {
     public IHandle getHandle() {
         return this.handle;
     }
-
-    @Deprecated
-    public Object getProperty(String key) {
-        return getSession().getProperty(key);
-    }
-
-    @Deprecated
-    public void setProperty(String key, Object value) {
-        getSession().setProperty(key, value);
-    }
-    
+  
 }

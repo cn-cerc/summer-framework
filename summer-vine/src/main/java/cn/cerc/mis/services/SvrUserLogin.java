@@ -60,9 +60,9 @@ public class SvrUserLogin extends CustomService {
 
         ISession session = getSession();
         if (headIn.exists("ClientIP_")) {
-            session.setProperty(Application.clientIP, headIn.getString("ClientIP_"));
+            session.setProperty(Application.ClientIP, headIn.getString("ClientIP_"));
         } else {
-            session.setProperty(Application.clientIP, "0.0.0.0");
+            session.setProperty(Application.ClientIP, "0.0.0.0");
         }
 
         // 开始进行用户验证
@@ -190,31 +190,31 @@ public class SvrUserLogin extends CustomService {
                 MemoryBookInfo.clear(corpNo);
             }
 
-            session.setProperty(Application.TOKEN, Utils.generateToken());
-            session.setProperty(Application.userId, dsUser.getString("ID_"));
-            session.setProperty(Application.bookNo, dsUser.getString("CorpNo_"));
-            session.setProperty(Application.userCode, dsUser.getString("Code_"));
+            session.setProperty(ISession.TOKEN, Utils.generateToken());
+            session.setProperty(Application.UserId, dsUser.getString("ID_"));
+            session.setProperty(ISession.CORP_NO, dsUser.getString("CorpNo_"));
+            session.setProperty(ISession.USER_CODE, dsUser.getString("Code_"));
             if (dsUser.getBoolean("DiyRole_")) {
-                session.setProperty(Application.roleCode, dsUser.getString("Code_"));
+                session.setProperty(Application.RoleCode, dsUser.getString("Code_"));
             } else {
-                session.setProperty(Application.roleCode, dsUser.getString("RoleCode_"));
+                session.setProperty(Application.RoleCode, dsUser.getString("RoleCode_"));
             }
 
             // 更新当前用户总数
             updateCurrentUser(device_name, headIn.getString("Screen_"), headIn.getString("Language_"));
 
             try (MemoryBuffer Buff = new MemoryBuffer(SystemBuffer.User.SessionInfo,
-                    (String) getProperty(Application.userId), deviceId)) {
-                Buff.setField("UserID_", getProperty(Application.userId));
+                    (String) getProperty(Application.UserId), deviceId)) {
+                Buff.setField("UserID_", getProperty(Application.UserId));
                 Buff.setField("UserCode_", getUserCode());
                 Buff.setField("UserName_", getSession().getUserName());
-                Buff.setField("LoginTime_", session.getProperty(Application.loginTime));
+                Buff.setField("LoginTime_", session.getProperty(Application.LoginTime));
                 Buff.setField("YGUser", YGLogin);
                 Buff.setField("VerifyMachine", false);
             }
             // 返回值于前台
-            getDataOut().getHead().setField("SessionID_", getProperty(Application.TOKEN));
-            getDataOut().getHead().setField("UserID_", getProperty(Application.userId));
+            getDataOut().getHead().setField("SessionID_", getProperty(ISession.TOKEN));
+            getDataOut().getHead().setField("UserID_", getProperty(Application.UserId));
             getDataOut().getHead().setField("UserCode_", getUserCode());
             getDataOut().getHead().setField("CorpNo_", handle.getCorpNo());
             getDataOut().getHead().setField("YGUser", YGLogin);
@@ -234,12 +234,12 @@ public class SvrUserLogin extends CustomService {
      * @return 暂未使用
      */
     public boolean ExitSystem() {
-        if (getProperty(Application.userId) != null) {
+        if (getProperty(Application.UserId) != null) {
             // TODO 此处的key有问题
-            MemoryBuffer.delete(SystemBuffer.User.SessionInfo, (String) getProperty(Application.userId), "webclient");
+            MemoryBuffer.delete(SystemBuffer.User.SessionInfo, (String) getProperty(Application.UserId), "webclient");
         }
 
-        String token = (String) getProperty(Application.TOKEN);
+        String token = (String) getProperty(ISession.TOKEN);
         getConnection().execute(String.format("Update %s Set Viability_=-1,LogoutTime_=now() where LoginID_='%s'",
                 systemTable.getCurrentUser(), token));
         return true;
@@ -247,7 +247,7 @@ public class SvrUserLogin extends CustomService {
 
     // 获取登录状态
     public boolean getState() {
-        getDataOut().getHead().setField("UserID_", getProperty(Application.userId));
+        getDataOut().getHead().setField("UserID_", getProperty(Application.UserId));
         getDataOut().getHead().setField("UserCode_", getUserCode());
         getDataOut().getHead().setField("CorpNo_", handle.getCorpNo());
         return true;
@@ -569,12 +569,12 @@ public class SvrUserLogin extends CustomService {
 
         // 增加新的记录
         Record rs = new Record();
-        rs.setField("UserID_", this.getProperty(Application.userId));
+        rs.setField("UserID_", this.getProperty(Application.UserId));
         rs.setField("CorpNo_", handle.getCorpNo());
         rs.setField("Account_", getUserCode());
-        rs.setField("LoginID_", this.getProperty(Application.TOKEN));
+        rs.setField("LoginID_", this.getProperty(ISession.TOKEN));
         rs.setField("Computer_", computer);
-        rs.setField("clientIP_", this.getProperty(Application.clientIP));
+        rs.setField("clientIP_", this.getProperty(Application.ClientIP));
         rs.setField("LoginTime_", TDateTime.now());
         rs.setField("ParamValue_", handle.getCorpNo());
         rs.setField("KeyCardID_", GuidNull);

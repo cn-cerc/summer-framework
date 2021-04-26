@@ -93,7 +93,7 @@ public class SpringCheckBeanId {
     public static void main(String[] args) {
         // 此下代码须在项目中执行，以便其加载application.xml文件！
         // 用于检测命名异常，修复后可以删除app-services.xml之类的文件
-        Application.init(null);
+        Application.init();
         new SpringCheckBeanId().run();
     }
 

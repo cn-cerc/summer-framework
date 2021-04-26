@@ -17,7 +17,6 @@ public interface IHandle {
         return getSession().getUserCode();
     }
 
-    @Deprecated
     default MysqlConnection getConnection() {
         return (MysqlConnection) getSession().getProperty(MysqlConnection.sessionId);
     }

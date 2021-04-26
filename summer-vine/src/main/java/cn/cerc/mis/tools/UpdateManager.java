@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
@@ -22,7 +23,6 @@ public class UpdateManager implements IBookManage {
     private static final Logger log = LoggerFactory.getLogger(UpdateManager.class);
     private static final ClassResource res = new ClassResource(UpdateManager.class, SummerMIS.ID);
 
-    private IHandle handle;
     private String initMonth;
     private List<UpdateBook> books = new ArrayList<>();
     private BookDataList dataList;
@@ -32,9 +32,20 @@ public class UpdateManager implements IBookManage {
     private boolean previewUpdate;
     private boolean locked = false;
     private String partCode;
+    private ISession session;
+
+    @Override
+    public void setSession(ISession handle) {
+        this.session = handle;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
 
     public UpdateManager(IHandle handle) {
-        this.handle = handle;
+        this.setSession(handle.getSession());;
         initMonth = BookOptions.getAccInitYearMonth(handle);
     }
 
@@ -55,8 +66,8 @@ public class UpdateManager implements IBookManage {
     public void execute() throws DataUpdateException {
         locked = true; // 防止调用错误
 
-        if (handle == null) {
-            throw new RuntimeException("handle is null");
+        if (session == null) {
+            throw new RuntimeException("session is null");
         }
 
         if (duration == null) {
@@ -116,15 +127,6 @@ public class UpdateManager implements IBookManage {
         }
 
         timer.get("process total").stop();
-    }
-
-    @Override
-    public IHandle getHandle() {
-        return handle;
-    }
-
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
     }
 
     public UpdateManager addBook(UpdateBook book) {

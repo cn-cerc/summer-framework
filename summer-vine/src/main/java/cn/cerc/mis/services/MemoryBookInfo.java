@@ -11,7 +11,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.core.CenterService;
+import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.BufferType;
 
@@ -31,15 +31,16 @@ public class MemoryBookInfo {
             return gson.fromJson(tmp, BookInfoRecord.class);
         }
 
+        
+        ICorpInfoReader reader = Application.getBean(handle, ICorpInfoReader.class);
+        Record record = reader.getCorpInfo(corpNo);
+        
         BookInfoRecord item = new BookInfoRecord();
-        CenterService svr = new CenterService(handle);
-        svr.setService("SvrBookInfo.getRecord");
-        if (!svr.exec("corpNo", corpNo)) {
-            log.error(svr.getMessage());
+        if (record == null) {
+            log.error(String.format("corpNo %s not find.", corpNo));
             item.setCode(corpNo);
             return item;
         }
-        Record record = svr.getDataOut().getHead();
 
         item.setCode(record.getString("CorpNo_"));
         item.setShortName(record.getString("ShortName_"));

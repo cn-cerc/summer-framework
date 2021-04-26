@@ -5,8 +5,8 @@ import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.IHandleOwner;
 
-public interface IService extends IHandle, IHandleOwner{
-    
+public interface IService extends IHandle, IHandleOwner {
+
     IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException;
 
     default ServiceStatus fail(String format, Object... args) {
@@ -53,5 +53,5 @@ public interface IService extends IHandle, IHandleOwner{
     default void setProperty(String key, Object value) {
         getSession().setProperty(key, value);
     }
-    
+
 }

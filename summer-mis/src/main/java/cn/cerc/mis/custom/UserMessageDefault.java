@@ -1,13 +1,25 @@
-package cn.cerc.mis.services;
+package cn.cerc.mis.custom;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.core.CustomService;
+import cn.cerc.mis.core.ISystemTable;
+import cn.cerc.mis.core.IUserMessage;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.message.JPushRecord;
 import cn.cerc.mis.message.MessageLevel;
@@ -15,44 +27,36 @@ import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.message.MessageRecord;
 import cn.cerc.mis.queue.AsyncService;
 
-import java.math.BigInteger;
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class UserMessageDefault implements IHandle, IUserMessage {
+    private static final ClassResource res = new ClassResource(UserMessageDefault.class, SummerMIS.ID);
+    @Autowired
+    private ISystemTable systemTable;
+    private ISession session;
 
-/**
- * 异步消息操作
- */
-public class SvrUserMessages extends CustomService {
-    private static final ClassResource res = new ClassResource(SvrUserMessages.class, SummerMIS.ID);
-
-    /*
-     * 取出所有的等待处理的消息列表
-     */
-    public boolean getWaitList() {
+    @Override
+    public List<String> getWaitList() {
+        List<String> result = new ArrayList<>();
         SqlQuery ds = new SqlQuery(this);
         ds.setMaximum(5);
         ds.add("select ms.UID_ from %s ms", systemTable.getUserMessages());
         ds.add("where ms.Level_=%s", MessageLevel.Service.ordinal());
         ds.add("and ms.Process_=%s", MessageProcess.wait.ordinal());
         ds.open();
-        this.getDataOut().appendDataSet(ds);
-        return true;
+        while (ds.fetch()) {
+            result.add(ds.getString("UID_"));
+        }
+        return result;
     }
 
-    /*
-     * 增加一条新的消息记录
-     */
-    public boolean appendRecord() {
-        Record headIn = getDataIn().getHead();
-        String corpNo = headIn.getString("corpNo");
-        String userCode = headIn.getString("userCode");
-        String subject = headIn.getString("subject");
-        String content = headIn.getString("content");
-        int process = headIn.getInt("process");
-        int level = headIn.getInt("level");
-
+    @Override
+    public String appendRecord(String corpNo, String userCode, MessageLevel level, String subject, String content,
+            MessageProcess process) {
         // 若为异步任务消息请求
-        if (level == MessageLevel.Service.ordinal()) {
+        if (level == MessageLevel.Service) {
             // 若已存在同一公司别同一种回算请求在排队或者执行中，则不重复插入回算请求
-            SqlQuery ds2 = new SqlQuery(handle);
+            SqlQuery ds2 = new SqlQuery(session);
             ds2.setMaximum(1);
             ds2.add("select UID_ from %s ", systemTable.getUserMessages());
             ds2.add("where CorpNo_='%s' ", corpNo);
@@ -61,8 +65,7 @@ public class SvrUserMessages extends CustomService {
             ds2.open();
             if (ds2.size() > 0) {
                 // 返回消息的编号
-                getDataOut().getHead().setField("msgId", ds2.getBigInteger("UID_"));
-                return true;
+                return ds2.getString("UID_");
             }
         }
 
@@ -80,11 +83,11 @@ public class SvrUserMessages extends CustomService {
         if (content.length() > 0) {
             cdsMsg.setField("Content_", content);
         }
-        cdsMsg.setField("AppUser_", handle.getUserCode());
+        cdsMsg.setField("AppUser_", session.getUserCode());
         cdsMsg.setField("AppDate_", TDateTime.now());
         // 日志类消息默认为已读
-        cdsMsg.setField("Status_", level == MessageLevel.Logger.ordinal() ? 1 : 0);
-        cdsMsg.setField("Process_", process);
+        cdsMsg.setField("Status_", level == MessageLevel.Logger ? 1 : 0);
+        cdsMsg.setField("Process_", process.ordinal());
         cdsMsg.setField("Final_", false);
         cdsMsg.post();
 
@@ -94,15 +97,11 @@ public class SvrUserMessages extends CustomService {
         Redis.delete(buffKey);
 
         // 返回消息的编号
-        getDataOut().getHead().setField("msgId", cdsMsg.getBigInteger("UID_"));
-        return true;
+        return cdsMsg.getString("UID_");
     }
 
-    /*
-     * 读取指定的消息记录
-     */
-    public boolean readAsyncService() {
-        String msgId = getDataIn().getHead().getString("msgId");
+    @Override
+    public Record readAsyncService(String msgId) {
         SqlQuery ds = new SqlQuery(this);
         ds.add("select * from %s", systemTable.getUserMessages());
         ds.add("where Level_=%s", MessageLevel.Service.ordinal());
@@ -111,55 +110,48 @@ public class SvrUserMessages extends CustomService {
         ds.open();
         // 此任务可能被其它主机抢占
         if (ds.eof()) {
-            return false;
+            return null;
         }
 
-        Record headOut = getDataOut().getHead();
-        headOut.setField("corpNo", ds.getString("CorpNo_"));
-        headOut.setField("userCode", ds.getString("UserCode_"));
-        headOut.setField("subject", ds.getString("Subject_"));
-        headOut.setField("content", ds.getString("Content_"));
-        return true;
+        Record result = new Record();
+        result.setField("corpNo", ds.getString("CorpNo_"));
+        result.setField("userCode", ds.getString("UserCode_"));
+        result.setField("subject", ds.getString("Subject_"));
+        result.setField("content", ds.getString("Content_"));
+        return result;
     }
 
-    /*
-     * 更新异步服务进度
-     */
-    public boolean updateAsyncService() {
-        String msgId = getDataIn().getHead().getString("msgId");
-        String content = getDataIn().getHead().getString("content");
-        int process = getDataIn().getHead().getInt("process");
-
+    @Override
+    public boolean updateAsyncService(String msgId, String content, MessageProcess process) {
         SqlQuery cdsMsg = new SqlQuery(this);
         cdsMsg.add("select * from %s", systemTable.getUserMessages());
         cdsMsg.add("where UID_='%s'", msgId);
         cdsMsg.open();
         if (cdsMsg.eof()) {
-            // 此任务可能被其它主机抢占
-            this.setMessage(String.format(res.getString(1, "消息号UID_ %s 不存在"), msgId));
             return false;
         }
+        
         cdsMsg.edit();
         cdsMsg.setField("Content_", content);
         cdsMsg.setField("Process_", process);
-        if (process == 3) {
+        if (process == MessageProcess.ok) {
             cdsMsg.setField("Status_", 1);
         }
         cdsMsg.post();
 
-        if (process == 3) {
+        if (process == MessageProcess.ok) {
             // 清除缓存
             String buffKey = String.format("%d.%s.%s.%s", SystemBufferType.getObject.ordinal(), MessageRecord.class,
                     cdsMsg.getString("CorpNo_"), cdsMsg.getString("UserCode_"));
             Redis.delete(buffKey);
         }
-        if (!cdsMsg.getString("Subject_").contains(res.getString(2, "月账单明细回算"))) {
+        if (!cdsMsg.getString("Subject_").contains(res.getString(1, "月账单明细回算"))) {
             // 极光推送
             pushToJiGuang(cdsMsg);
         }
         return true;
     }
-
+    
     private void pushToJiGuang(SqlQuery cdsMsg) {
         String subject = cdsMsg.getString("Subject_");
         if ("".equals(subject)) {
@@ -176,6 +168,16 @@ public class SvrUserMessages extends CustomService {
         JPushRecord jPush = new JPushRecord(corpNo, userCode, msgId.toString());
         jPush.setAlert(subject);
         jPush.send(this);
+    }
+    
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
 }

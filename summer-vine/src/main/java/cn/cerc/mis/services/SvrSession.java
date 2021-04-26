@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.ServiceException;
@@ -45,8 +45,10 @@ public class SvrSession extends CustomService {
     }
 
     /*
-     * 1、从 CurrentUser 表中，取出公司别 CorpNo_ 与 UserCode_ 2、再依据 UserCode_ 从Account表取出
-     * RoleCode_
+     * 1、从 CurrentUser 表中，取出公司别 CorpNo_ 与 UserCode_ 
+     * 
+     * 2、再依据 UserCode_ 从Account表取出 RoleCode_
+     * 
      */
     public boolean byToken() throws ServiceException {
         Record headIn = getDataIn().getHead();
@@ -60,13 +62,13 @@ public class SvrSession extends CustomService {
         cdsToken.open();
         if (cdsToken.eof()) {
             log.warn("can not find token in database: {}", token);
-            this.getSession().setProperty(Application.TOKEN, null);
+            this.getSession().setProperty(ISession.TOKEN, null);
             return false;
         }
 
         if (cdsToken.getInt("Viability_") <= 0 && !"13100154".equals(cdsToken.getString("UserCode_"))) {
             log.warn("token expired，please login again {}", token);
-            this.getSession().setProperty(Application.TOKEN, null);
+            this.getSession().setProperty(ISession.TOKEN, null);
             return false;
         }
 
@@ -78,7 +80,7 @@ public class SvrSession extends CustomService {
         cdsUser.open();
         if (cdsUser.eof()) {
             log.warn(String.format("userId %s 没有找到！", userId));
-            this.getSession().setProperty(Application.TOKEN, null);
+            this.getSession().setProperty(ISession.TOKEN, null);
             return false;
         }
 

@@ -40,7 +40,7 @@ public class StartForms implements Filter {
 
         if (StringUtils.countMatches(uri, "/") < 2 && !uri.contains("favicon.ico")) {
             String redirect = String.format("%s%s", ApplicationConfig.App_Path,
-                    config.getString(Application.FORM_WELCOME, "welcome"));
+                    Application.getConfig().getWelcomePage());
             redirect = resp.encodeRedirectURL(redirect);
             resp.sendRedirect(redirect);
             return;
@@ -66,7 +66,7 @@ public class StartForms implements Filter {
             if (index < 0) {
                 request.getServletContext().getRequestDispatcher(uri).forward(request, response);
             } else {
-                String source = "/" + config.getString(Application.PATH_FORMS, "forms") + uri.substring(index);
+                String source = "/" + Application.getConfig().getFormsPath() + uri.substring(index);
                 request.getServletContext().getRequestDispatcher(source).forward(request, response);
                 log.debug("after  {}", source);
             }
@@ -118,9 +118,9 @@ public class StartForms implements Filter {
                 } else {
                     String token = (String) req.getAttribute(RequestData.TOKEN);
                     if (token != null && !"".equals(token)) {
-                        url = config.getString(Application.FORM_DEFAULT, "default");
+                        url = Application.getConfig().getDefaultPage();
                     } else {
-                        url = config.getString(Application.FORM_WELCOME, "welcome");
+                        url = Application.getConfig().getWelcomePage();
                     }
                 }
             }

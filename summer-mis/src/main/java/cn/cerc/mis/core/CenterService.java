@@ -14,11 +14,6 @@ import cn.cerc.mis.client.RemoteService;
 public class CenterService extends RemoteService {
     private static final ClassConfig config = new ClassConfig(CenterService.class, SummerMIS.ID);
 
-    @Deprecated
-    public CenterService() {
-        super();
-    }
-
     public CenterService(IHandle handle) {
         super(handle);
     }

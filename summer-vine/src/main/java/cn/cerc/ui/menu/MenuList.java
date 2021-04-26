@@ -17,13 +17,13 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.CenterService;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.language.R;
-import cn.cerc.mis.other.IDataCache;
+import cn.cerc.mis.other.IDataList;
 import cn.cerc.ui.SummerUI;
 
 /**
  * 系统菜单缓存 此对象不应该放在框架中
  */
-public class MenuList implements IDataCache, IUserLanguage {
+public class MenuList implements IDataList, IUserLanguage {
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
     private final IHandle handle;
@@ -125,7 +125,7 @@ public class MenuList implements IDataCache, IUserLanguage {
     }
 
     @Override
-    public boolean exist(String key) {
+    public boolean exists(String key) {
         this.init();
         return buff.get(key) != null;
     }

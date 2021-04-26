@@ -63,8 +63,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
         }
 
         try {
-            if (!"SvrSession.byUserCode".equals(this.getService())
-                    && !"SvrUserMessages.getWaitList".equals(this.getService())) {
+            if (!"SvrSession.byUserCode".equals(this.getService())) {
                 log.debug(this.getService());
             }
             if (object instanceof IHandleOwner) {

@@ -1,4 +1,4 @@
-package cn.cerc.mis.custom;
+package cn.cerc.ui.custom;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,7 @@ public class TokenManageDefault implements ITokenManage {
      */
     @Override
     public boolean resumeToken(String token) {
-        session.setProperty(Application.TOKEN, token);
+        session.setProperty(ISession.TOKEN, token);
         if (token == null)
             log.warn("initialize session, token is null");
         else
@@ -61,7 +61,7 @@ public class TokenManageDefault implements ITokenManage {
                 svr.setService("SvrSession.byToken");
                 if (!svr.exec("token", token)) {
                     log.error("token restore error，{}", svr.getMessage());
-                    session.setProperty(Application.TOKEN, null);
+                    session.setProperty(ISession.TOKEN, null);
                     return false;
                 }
                 Record record = svr.getDataOut().getHead();
@@ -80,13 +80,13 @@ public class TokenManageDefault implements ITokenManage {
 
             if (buff.getBoolean("exists")) {
                 // 将用户信息赋值到句柄
-                session.setProperty(Application.loginTime, buff.getDateTime("LoginTime_"));
-                session.setProperty(Application.bookNo, buff.getString("CorpNo_"));
-                session.setProperty(Application.userId, buff.getString("UserID_"));
-                session.setProperty(Application.userCode, buff.getString("UserCode_"));
-                session.setProperty(Application.userName, buff.getString("UserName_"));
+                session.setProperty(Application.LoginTime, buff.getDateTime("LoginTime_"));
+                session.setProperty(ISession.CORP_NO, buff.getString("CorpNo_"));
+                session.setProperty(Application.UserId, buff.getString("UserID_"));
+                session.setProperty(ISession.USER_CODE, buff.getString("UserCode_"));
+                session.setProperty(ISession.USER_NAME, buff.getString("UserName_"));
                 session.setProperty(Application.ProxyUsers, buff.getString("ProxyUsers_"));
-                session.setProperty(Application.roleCode, buff.getString("RoleCode_"));
+                session.setProperty(Application.RoleCode, buff.getString("RoleCode_"));
                 session.setProperty(ISession.LANGUAGE_ID, buff.getString("Language_"));
 
                 // 刷新缓存生命值
@@ -111,10 +111,10 @@ public class TokenManageDefault implements ITokenManage {
         if (Utils.isEmpty(token)) {
             return false;
         }
-        session.setProperty(Application.TOKEN, token);
-        session.setProperty(Application.bookNo, corpNo);
-        session.setProperty(Application.userCode, userCode);
-        session.setProperty(Application.clientIP, "0.0.0.0");
+        session.setProperty(ISession.TOKEN, token);
+        session.setProperty(ISession.CORP_NO, corpNo);
+        session.setProperty(ISession.USER_CODE, userCode);
+        session.setProperty(Application.ClientIP, "0.0.0.0");
 
         // 将用户信息赋值到句柄
         CenterService svr = new CenterService(handle);
@@ -123,11 +123,11 @@ public class TokenManageDefault implements ITokenManage {
             throw new RuntimeException(svr.getMessage());
         }
         Record record = svr.getDataOut().getHead();
-        session.setProperty(Application.userId, record.getString("UserID_"));
-        session.setProperty(Application.loginTime, record.getDateTime("LoginTime_"));
-        session.setProperty(Application.roleCode, record.getString("RoleCode_"));
+        session.setProperty(Application.UserId, record.getString("UserID_"));
+        session.setProperty(Application.LoginTime, record.getDateTime("LoginTime_"));
+        session.setProperty(Application.RoleCode, record.getString("RoleCode_"));
         session.setProperty(Application.ProxyUsers, record.getString("ProxyUsers_"));
-        session.setProperty(Application.userName, record.getString("UserName_"));
+        session.setProperty(ISession.USER_NAME, record.getString("UserName_"));
         session.setProperty(ISession.LANGUAGE_ID, record.getString("Language_"));
 
         // 将用户信息赋值到缓存

@@ -11,7 +11,6 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AppClient;
-import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CenterService;
 
 public class ApplicationConfig {
@@ -22,8 +21,10 @@ public class ApplicationConfig {
     /**
      * 本地主机
      */
+    @Deprecated
     public static final String Local_Host = "http://127.0.0.1";
 
+    @Deprecated
     public static final String App_Path = "/public/";
 
     public static String rewrite(String form) {
@@ -93,7 +94,7 @@ public class ApplicationConfig {
         headIn.setField("password", password);
         headIn.setField("clientId", machineCode);
         headIn.setField("device", AppClient.pc);
-        headIn.setField("languageId", Application.App_Language);
+        headIn.setField("languageId", LanguageResource.appLanguage);
         headIn.setField("access", AccessLevel.Access_Task);// 访问层级获取队列授权
         if (!svr.exec()) {
             throw new RuntimeException(svr.getMessage());

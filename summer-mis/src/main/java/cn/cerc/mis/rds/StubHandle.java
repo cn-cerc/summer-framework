@@ -1,5 +1,6 @@
 package cn.cerc.mis.rds;
 
+import cn.cerc.core.ISession;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 
@@ -16,15 +17,15 @@ public class StubHandle extends Handle {
     public static final String DefaultDept = "10050001";
 
     public StubHandle() {
-        Application.init(null);
+        Application.initOnlyFramework();
         this.setSession(Application.createSession());
     }
     
     public StubHandle(String corpNo, String userCode) {
-        Application.init(null);
+        Application.initOnlyFramework();
         this.setSession(Application.createSession());
-        getSession().setProperty(Application.bookNo, corpNo);
-        getSession().setProperty(Application.userCode, userCode);
+        getSession().setProperty(ISession.CORP_NO, corpNo);
+        getSession().setProperty(ISession.USER_CODE, userCode);
     }
 
 }

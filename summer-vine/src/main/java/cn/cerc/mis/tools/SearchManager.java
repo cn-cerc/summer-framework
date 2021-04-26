@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
@@ -21,7 +22,6 @@ public class SearchManager implements IBookManage {
     private static final Logger log = LoggerFactory.getLogger(SearchManager.class);
     private static final ClassResource res = new ClassResource(SearchManager.class, SummerMIS.ID);
 
-    private IHandle handle;
     private String initMonth;
     private List<IBookSource> sources = new ArrayList<>();
     private List<IBookEnroll> books = new ArrayList<>();
@@ -29,9 +29,20 @@ public class SearchManager implements IBookManage {
     private TimingList timer = new TimingList();
     private DurationSplit duration;
     private DurationSection section;
+    private ISession session;
+
+    @Override
+    public void setSession(ISession handle) {
+        this.session = handle;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
 
     public SearchManager(IHandle handle) {
-        this.handle = handle;
+        this.setSession(handle.getSession());
         initMonth = BookOptions.getAccInitYearMonth(handle);
     }
 
@@ -50,8 +61,8 @@ public class SearchManager implements IBookManage {
     }
 
     public void execute() throws Exception {
-        if (handle == null) {
-            throw new RuntimeException("handle is null");
+        if (session == null) {
+            throw new RuntimeException("session is null");
         }
 
         if (duration == null) {
@@ -74,7 +85,7 @@ public class SearchManager implements IBookManage {
 
     private void process(DurationSection section) throws Exception {
         this.section = section;
-        log.info(String.format("corpNo:%s, init:%s, book total: %d", handle.getCorpNo(), initMonth, books.size()));
+        log.info(String.format("corpNo:%s, init:%s, book total: %d", session.getCorpNo(), initMonth, books.size()));
         log.info(String.format("dateFrom: %s, dateTo: %s", section.getDateFrom(), section.getDateTo()));
         log.info(String.format("取得数据源, source total:%d", sources.size()));
 
@@ -98,15 +109,6 @@ public class SearchManager implements IBookManage {
         }
         pt1.stop();
         log.info("finish");
-    }
-
-    @Override
-    public IHandle getHandle() {
-        return handle;
-    }
-
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
     }
 
     public List<IBookSource> getSources() {

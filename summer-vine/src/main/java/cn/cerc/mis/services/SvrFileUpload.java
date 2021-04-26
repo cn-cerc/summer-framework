@@ -1,4 +1,4 @@
-package cn.cerc.ui.page.service;
+package cn.cerc.mis.services;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;

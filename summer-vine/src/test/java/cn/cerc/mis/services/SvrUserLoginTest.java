@@ -12,7 +12,6 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.Handle;
@@ -30,10 +29,10 @@ public class SvrUserLoginTest {
         String corpNo = "911001";
         String userCode = "91100101";
         
-        Application.init(SummerMIS.ID);
+        Application.initOnlyFramework();
         ISession session = Application.createSession();
-        session.setProperty(Application.bookNo, corpNo);
-        session.setProperty(Application.userCode, userCode);
+        session.setProperty(ISession.CORP_NO, corpNo);
+        session.setProperty(ISession.USER_CODE, userCode);
         IHandle handle = new Handle(session);
         
         SvrUserLogin app = new SvrUserLogin();
@@ -46,7 +45,7 @@ public class SvrUserLoginTest {
     @Test
     @Ignore
     public void testCheck2() throws SecurityCheckException {
-        Application.init(SummerMIS.ID);
+        Application.initOnlyFramework();
         ISession session = Application.createSession();
         IHandle handle = new Handle(session);
         
@@ -69,10 +68,10 @@ public class SvrUserLoginTest {
         String corpNo = "911001";
         String userCode = "9110010001";
 
-        Application.init(SummerMIS.ID);
+        Application.initOnlyFramework();
         ISession session = Application.createSession();
-        session.setProperty(Application.bookNo, corpNo);
-        session.setProperty(Application.userCode, userCode);
+        session.setProperty(ISession.CORP_NO, corpNo);
+        session.setProperty(ISession.USER_CODE, userCode);
         IHandle handle = new Handle(session);
         
         SvrUserLogin app = new SvrUserLogin();
@@ -88,15 +87,15 @@ public class SvrUserLoginTest {
     @Test
     @Ignore(value = "此处用于测试在5分钟内不允许重复申请验证码，耗时很长")
     public void test_sendVerifyCode() throws InterruptedException, DataValidateException {
-        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
+        ISystemTable systemTable = Application.getSystemTable();
         String corpNo = "911001";
         String userCode = "91100123";
         String deviceId = "TEST";
         
-        Application.init(SummerMIS.ID);
+        Application.initOnlyFramework();
         ISession session = Application.createSession();
-        session.setProperty(Application.bookNo, corpNo);
-        session.setProperty(Application.userCode, userCode);
+        session.setProperty(ISession.CORP_NO, corpNo);
+        session.setProperty(ISession.USER_CODE, userCode);
         IHandle handle = new Handle(session);
 
         // 清空缓存

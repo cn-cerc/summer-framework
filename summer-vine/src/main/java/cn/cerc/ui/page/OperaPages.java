@@ -1,4 +1,4 @@
-package cn.cerc.ui.other;
+package cn.cerc.ui.page;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.IUserLanguage;

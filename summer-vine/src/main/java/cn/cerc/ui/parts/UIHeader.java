@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
@@ -88,7 +89,7 @@ public class UIHeader extends UICssComponent implements IUserLanguage {
         super(page);
         this.handle = page.getForm().getHandle();
 
-        String defaultPage = config.getString(Application.FORM_DEFAULT, "default");
+        String defaultPage = Application.getConfig().getDefaultPage();
         homePage = new UrlRecord(defaultPage, getHomeImage(page));
         leftMenus.add(homePage);
 
@@ -97,14 +98,14 @@ public class UIHeader extends UICssComponent implements IUserLanguage {
         IClient client = page.getForm().getClient();
         boolean isShowBar = config.getBoolean("app.ui.head.show", true);
         if (!client.isPhone() && isShowBar) {
-            String token = (String) handle.getSession().getProperty(Application.TOKEN);
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, handle.getSession());
+            String token = (String) handle.getSession().getProperty(ISession.TOKEN);
+            ITokenManage manage = Application.getDefaultBean(handle, ITokenManage.class);
             manage.resumeToken(token);
             currentUser = res.getString(2, "用户");
             leftMenus.add(homePage);
             this.userName = handle.getSession().getUserName();
             if (Utils.isNotEmpty(handle.getCorpNo())) {
-                ICorpInfo info = Application.getBeanDefault(ICorpInfo.class, handle.getSession());
+                ICorpInfo info = Application.getDefaultBean(handle, ICorpInfo.class);
                 this.corpNoName = info.getShortName();
             }
             logoSrc = getLogo();
@@ -115,12 +116,6 @@ public class UIHeader extends UICssComponent implements IUserLanguage {
             exitSystem = new UrlRecord();
             exitSystem.setName(exitName).setSite(exitUrl);
         }
-    }
-
-    @Override
-    @Deprecated
-    public void setOwner(Component owner) {
-        super.setOwner(owner);
     }
 
     @Override

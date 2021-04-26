@@ -12,7 +12,7 @@ public class LocalServiceTest {
 
     @Before
     public void setUp() {
-        Application.init(SummerMIS.ID);
+        Application.initOnlyFramework();
         session = Application.createSession();
     }
 

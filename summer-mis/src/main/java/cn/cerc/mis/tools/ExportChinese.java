@@ -110,7 +110,7 @@ public class ExportChinese {
      */
     public void writeDict(IHandle handle) {
         // FIXME: 此处应该进一步抽象处理
-        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
+        ISystemTable systemTable = Application.getSystemTable();
         SqlQuery ds = new SqlQuery(handle);
         ds.add("select * from %s", systemTable.getLangDict());
         ds.open();

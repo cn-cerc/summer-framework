@@ -1,15 +1,12 @@
 package cn.cerc.mis.book;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.TDateTime;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.core.TDateTime;
 
-public interface IBookManage {
+public interface IBookManage extends IHandle {
     ClassResource res = new ClassResource(IBookManage.class, SummerMIS.ID);
-
-    // 取得环境
-    IHandle getHandle();
 
     // 是否为批处理模式（月度回算 or 单据过帐)
     boolean isBatchMode();

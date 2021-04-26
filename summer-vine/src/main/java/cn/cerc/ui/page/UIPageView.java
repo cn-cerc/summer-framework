@@ -31,7 +31,7 @@ public class UIPageView extends UIPage {
         String[] params = menuCode.split("\\.");
         String formId = params[0];
 
-        IFormInfo menu = Application.getBeanDefault(IFormInfo.class, form.getHandle().getSession());
+        IFormInfo menu = Application.getDefaultBean(form, IFormInfo.class);
         this.caption = menu.getFormCaption(this.getForm(), formId, form.getName());
     }
 
@@ -50,7 +50,7 @@ public class UIPageView extends UIPage {
                     item.enrollMenu(form, rightMenus);
                 }
             } else {
-                header.getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
+                header.getHomePage().setSite(Application.getConfig().getWelcomePage());
             }
         }
 

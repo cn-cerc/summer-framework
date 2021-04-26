@@ -68,13 +68,13 @@ public class FormFactory implements ApplicationContextAware {
 
             // 建立数据库资源
             session = Application.createSession();
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
-            manage.resumeToken((String) req.getSession().getAttribute(RequestData.TOKEN));
-            session.setProperty(Application.sessionId, req.getSession().getId());
-            session.setProperty(ISession.LANGUAGE_ID, client.getLanguage());
-            session.setProperty(Application.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
-            session.setProperty(ISession.REQUEST, req);
             IHandle handle = new Handle(session);
+            ITokenManage manage = Application.getDefaultBean(handle, ITokenManage.class);
+            manage.resumeToken((String) req.getSession().getAttribute(RequestData.TOKEN));
+            session.setProperty(Application.SessionId, req.getSession().getId());
+            session.setProperty(ISession.LANGUAGE_ID, client.getLanguage());
+            session.setProperty(ISession.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
+            session.setProperty(ISession.REQUEST, req);
             req.setAttribute("myappHandle", handle);
             form.setId(formId);
             form.setHandle(handle);
@@ -90,7 +90,7 @@ public class FormFactory implements ApplicationContextAware {
             // 用户已登录系统
             if (session.logon()) {
                 // 权限检查
-                if (!Application.getPassport(session).pass(form)) {
+                if (!Application.getPassport(form).pass(form)) {
                     resp.setContentType("text/html;charset=UTF-8");
                     JsonPage output = new JsonPage(form);
                     output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
@@ -99,7 +99,7 @@ public class FormFactory implements ApplicationContextAware {
                 }
             } else {
                 // 登录验证
-                IAppLogin appLogin = Application.getBeanDefault(IAppLogin.class, session);
+                IAppLogin appLogin = Application.getDefaultBean(form, IAppLogin.class);
                 if (!appLogin.pass(form)) {
                     return appLogin.getJspFile();
                 }
@@ -110,13 +110,13 @@ public class FormFactory implements ApplicationContextAware {
                 return form.getView(funcCode);
             }
 
-            ISecurityDeviceCheck deviceCheck = Application.getBeanDefault(ISecurityDeviceCheck.class, session);
+            ISecurityDeviceCheck deviceCheck = Application.getDefaultBean(form, ISecurityDeviceCheck.class);
             switch (deviceCheck.pass(form)) {
             case PASS:
                 log.debug("{}.{}", formId, funcCode);
                 return form.getView(funcCode);
             case CHECK:
-                return "redirect:" + config.getString(Application.FORM_VERIFY_DEVICE, "VerifyDevice");
+                return "redirect:" + Application.getConfig().getVerifyDevicePage();
             default:
                 resp.setContentType("text/html;charset=UTF-8");
                 JsonPage output = new JsonPage(form);
@@ -147,7 +147,7 @@ public class FormFactory implements ApplicationContextAware {
         }
 
         // 输出jsp文件
-        String jspFile = String.format("/WEB-INF/%s/%s", config.getString(Application.PATH_FORMS, "forms"), url);
+        String jspFile = String.format("/WEB-INF/%s/%s", Application.getConfig().getFormsPath(), url);
         request.getServletContext().getRequestDispatcher(jspFile).forward(request, response);
     }
 
@@ -156,11 +156,11 @@ public class FormFactory implements ApplicationContextAware {
         if (err == null) {
             err = e;
         }
-        IAppErrorPage errorPage = Application.getBeanDefault(IAppErrorPage.class, null);
+        IAppErrorPage errorPage = Application.getDefaultBean(null, IAppErrorPage.class);
         if (errorPage != null) {
             String result = errorPage.getErrorPage(request, response, err);
             if (result != null) {
-                String url = String.format("/WEB-INF/%s/%s", config.getString(Application.PATH_FORMS, "forms"), result);
+                String url = String.format("/WEB-INF/%s/%s", Application.getConfig().getFormsPath(), result);
                 try {
                     request.getServletContext().getRequestDispatcher(url).forward(request, response);
                 } catch (ServletException | IOException e1) {

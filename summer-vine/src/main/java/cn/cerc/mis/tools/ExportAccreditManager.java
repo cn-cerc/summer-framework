@@ -1,9 +1,8 @@
 package cn.cerc.mis.tools;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.Record;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.core.CenterService;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.IOptionReader;
 import cn.cerc.mis.excel.output.IAccreditManager;
 import cn.cerc.mis.other.BufferType;
 import cn.cerc.mis.other.MemoryBuffer;
@@ -24,21 +23,9 @@ public class ExportAccreditManager implements IAccreditManager {
     private String userOptionEnabled(IHandle handle, String optCode) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), optCode)) {
             if (buff.isNull()) {
-                //FIXME 此处应该进一步抽象处理
-                CenterService svr = new CenterService(handle);
-                svr.setService("ApiUserOption.getOptValue");
-                Record headIn = svr.getDataIn().getHead();
-                headIn.setField("UserCode_", handle.getUserCode());
-                headIn.setField("OptCode_", optCode);
-                if (!svr.exec()) {
-                    throw new RuntimeException(svr.getMessage());
-                }
-                DataSet cdsTmp = svr.getDataOut();
-                if (!cdsTmp.eof()) {
-                    buff.setField("Value_", cdsTmp.getString("Value_"));
-                } else {
-                    buff.setField("Value_", "");
-                }
+                IOptionReader reader = Application.getDefaultBean(handle, IOptionReader.class);
+                String value = reader.getUserValue(handle.getUserCode(), optCode, "");
+                buff.setField("Value_", value);
             }
             return buff.getString("Value_");
         }

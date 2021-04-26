@@ -21,7 +21,6 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.grid.AbstractGrid;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.mvc.IMenuBar;
-import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
@@ -71,7 +70,7 @@ public class JspPageDialog extends JspPage {
                     item.enrollMenu(form, rightMenus);
                 }
             } else {
-                header.getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
+                header.getHomePage().setSite(Application.getConfig().getWelcomePage());
             }
         }
         // 设置首页

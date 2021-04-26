@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-@Deprecated // 请改使用 StartDocDefault
 public class StartDocs extends HttpServlet {
     private static final ClassResource res = new ClassResource(StartDocs.class, SummerUI.ID);
 

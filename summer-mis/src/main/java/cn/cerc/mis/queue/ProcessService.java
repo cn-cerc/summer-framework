@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
@@ -15,6 +14,7 @@ import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.client.AutoService;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
+import cn.cerc.mis.core.IUserMessage;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.task.AbstractTask;
@@ -30,7 +30,7 @@ public class ProcessService extends AbstractTask {
 
     // 手动执行所有的预约服务
     public static void main(String[] args) {
-        Application.init(SummerMIS.ID);
+        Application.initOnlyFramework();
         ISession session = Application.createSession();
         IHandle handle = new Handle(session);
 
@@ -41,15 +41,10 @@ public class ProcessService extends AbstractTask {
 
     @Override
     public void execute() throws JsonProcessingException {
-        // FIXME 此处应该做进一步抽象
-        LocalService svr = new LocalService(this, "SvrUserMessages.getWaitList");
-        if (!svr.exec()) {
-            throw new RuntimeException(svr.getMessage());
-        }
-        DataSet ds = svr.getDataOut();
-        while (ds.fetch()) {
-            log.info("开始处理异步任务，UID=" + ds.getString("UID_"));
-            processService(ds.getString("UID_"));
+        IUserMessage um = Application.getBean(handle, IUserMessage.class);
+        for (String uid : um.getWaitList()) {
+            log.info("开始处理异步任务，UID=" + uid);
+            processService(uid);
         }
     }
 
@@ -58,12 +53,11 @@ public class ProcessService extends AbstractTask {
      */
     private void processService(String taskId) throws JsonProcessingException {
         // 此任务可能被其它主机抢占
-        // FIXME 此处应该做进一步抽象
-        LocalService svrMsg = new LocalService(this, "SvrUserMessages.readAsyncService");
-        if (!svrMsg.exec("msgId", taskId)) {
+        IUserMessage um = Application.getBean(handle, IUserMessage.class);
+        Record ds = um.readAsyncService(taskId);
+        if (ds == null) {
             return;
         }
-        Record ds = svrMsg.getDataOut().getHead();
         String corpNo = ds.getString("corpNo");
         String userCode = ds.getString("userCode");
         String content = ds.getString("content");
@@ -72,7 +66,7 @@ public class ProcessService extends AbstractTask {
         // 读取并标识为工作中，以防被其它用户抢占
         AsyncService async = new AsyncService();
         async.read(content);
-        async.setProcess(MessageProcess.working.ordinal());
+        async.setProcess(MessageProcess.working);
         updateTaskprocess(async, taskId, subject);
         try {
             // 执行指定的数据服务
@@ -80,16 +74,16 @@ public class ProcessService extends AbstractTask {
             auto.getDataIn().appendDataSet(async.getDataIn(), true);
             if (auto.exec()) {
                 async.getDataOut().appendDataSet(auto.getDataOut(), true);
-                async.setProcess(MessageProcess.ok.ordinal());
+                async.setProcess(MessageProcess.ok);
             } else {
                 async.getDataOut().appendDataSet(auto.getDataOut(), true);
-                async.setProcess(MessageProcess.error.ordinal());
+                async.setProcess(MessageProcess.error);
             }
             async.getDataOut().getHead().setField("_message_", auto.getMessage());
             updateTaskprocess(async, taskId, subject);
         } catch (Throwable e) {
             e.printStackTrace();
-            async.setProcess(MessageProcess.error.ordinal());
+            async.setProcess(MessageProcess.error);
             async.getDataOut().getHead().setField("_message_", e.getMessage());
             updateTaskprocess(async, taskId, subject);
         }
@@ -98,13 +92,13 @@ public class ProcessService extends AbstractTask {
     /**
      * 更新队列的消息状态
      */
-    private void updateTaskprocess(AsyncService async, String taskId, String subject) {
+    private void updateTaskprocess(AsyncService async, String msgId, String subject) {
         async.setProcessTime(TDateTime.now().toString());
-        // FIXME 此处应该做进一步抽象
-        LocalService svr = new LocalService(this, "SvrUserMessages.updateAsyncService");
-        if (!svr.exec("msgId", taskId, "content", async.toString(), "process", async.getProcess())) {
-            throw new RuntimeException(String.format(res.getString(1, "更新任务队列进度异常：%s"), svr.getMessage()));
+        IUserMessage um = Application.getBean(handle, IUserMessage.class);
+        if (!um.updateAsyncService(msgId, async.toString(), async.getProcess())) {
+            throw new RuntimeException(String.format("msgId %s not find.", msgId));
         }
-        log.debug(async.getService() + ":" + subject + ":" + AsyncService.getProcessTitle(async.getProcess()));
+
+        log.debug(async.getService() + ":" + subject + ":" + async.getProcess().getTitle());
     }
 }

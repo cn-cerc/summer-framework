@@ -41,9 +41,9 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
     @Override
     public void init(IForm form) {
         this.setForm(form);
-        this.setJspFile(config.getString(Application.JSPFILE_LOGIN, "common/FrmLogin.jsp"));
+        this.setJspFile(Application.getConfig().getJspLoginFile());
         this.setSession(form.getHandle().getSession());
-        this.add("homePage", config.getString(Application.FORM_WELCOME, "welcome"));
+        this.add("homePage", Application.getConfig().getWelcomePage());
         this.add("needVerify", "false");
         String logoUrl = config.getString("vine.mall.logoUrl", "");
         if (!"".equals(logoUrl)) {
@@ -59,8 +59,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
     public String checkToken(String token) throws IOException, ServletException {
         try {
             log.debug("create session by token {}", token);
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class,
-                    this.getForm().getHandle().getSession());
+            ITokenManage manage = Application.getDefaultBean(this.getForm(), ITokenManage.class);
             if (manage.resumeToken(token)) {
                 return null;
             }
@@ -84,7 +83,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         req.setAttribute("password", password);
         req.setAttribute("needVerify", "false");
 
-        IUserLoginCheck obj = Application.getBeanDefault(IUserLoginCheck.class, form.getHandle().getSession());
+        IUserLoginCheck obj = Application.getDefaultBean(form.getHandle(), IUserLoginCheck.class);
 
         // 如长度大于10表示用手机号码登入
         if (userCode.length() > 10) {

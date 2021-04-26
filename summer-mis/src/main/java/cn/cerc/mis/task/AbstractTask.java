@@ -57,7 +57,7 @@ public abstract class AbstractTask extends Handle implements Runnable {
         SessionDefault session = new SessionDefault();
         try {
             this.setHandle(new Handle(session));
-            session.setProperty(Application.userCode, "admin");
+            session.setProperty(ISession.USER_CODE, "admin");
             this.execute();
         } catch (Exception e) {
             log.error(e.getMessage(), e);

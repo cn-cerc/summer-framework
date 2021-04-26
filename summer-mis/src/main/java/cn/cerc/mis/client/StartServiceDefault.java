@@ -98,7 +98,7 @@ public class StartServiceDefault {
     }
 
     private void doProcess(String method, String uri) {
-        if (!uri.startsWith("/" + config.getString(Application.PATH_SERVICES, "services"))) {
+        if (!uri.startsWith("/" + Application.getConfig().getServicesPath())) {
             return;
         }
 
@@ -131,7 +131,7 @@ public class StartServiceDefault {
 
         ISession session = Application.createSession();
         try { // 执行指定函数
-            ITokenManage manage = Application.getBeanDefault(ITokenManage.class, session);
+            ITokenManage manage = Application.getDefaultBean(new Handle(session), ITokenManage.class);
             manage.resumeToken(req.getParameter("token"));
             session.setProperty(sessionId, req.getSession().getId());
             IHandle handle = new Handle(session);

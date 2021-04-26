@@ -15,7 +15,7 @@ public class AsyncServiceTest {
     @Test
     @Ignore
     public void test_send_get() {
-        Application.init(SummerMIS.ID);
+        Application.initOnlyFramework();
         ISession session = Application.createSession();
         AsyncService app = new AsyncService(new Handle(session));
         app.setService("TAppCreditLine.calCusCreditLimit");

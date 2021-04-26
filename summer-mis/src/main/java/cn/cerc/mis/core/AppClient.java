@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import cn.cerc.core.ISession;
+import cn.cerc.core.LanguageResource;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.other.MemoryBuffer;
 
@@ -115,7 +116,7 @@ public class AppClient implements IClient, Serializable {
 
     @Override
     public String getLanguage() {
-        return languageId == null ? Application.App_Language : languageId;
+        return languageId == null ? LanguageResource.appLanguage : languageId;
     }
 
     public String getToken() {

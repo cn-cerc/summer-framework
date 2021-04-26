@@ -51,7 +51,7 @@ public class AsyncService implements IServiceProxy {
     // 预约时间，若为空则表示立即执行
     private String timer;
     // 执行进度
-    private int process = 1;
+    private MessageProcess process = MessageProcess.wait;
     // 处理时间
     private String processTime;
     //
@@ -93,7 +93,7 @@ public class AsyncService implements IServiceProxy {
             this.getDataIn().setJSON(json.get("dataIn").asText());
         }
         if (json.has("process")) {
-            this.setProcess(json.get("process").asInt());
+            this.setProcess(MessageProcess.values()[json.get("process").asInt()]);
         }
         if (json.has("timer")) {
             this.setTimer(json.get("timer").asText());
@@ -124,7 +124,7 @@ public class AsyncService implements IServiceProxy {
         this.send(); // 发送到队列服务器
 
         getDataOut().getHead().setField("_msgId_", msgId);
-        if (this.process == MessageProcess.working.ordinal()) {
+        if (this.process == MessageProcess.working) {
             // 返回消息的编号插入到阿里云消息队列
             QueueQuery ds = new QueueQuery(handle);
             ds.setQueueMode(QueueMode.append);
@@ -173,7 +173,7 @@ public class AsyncService implements IServiceProxy {
             content.put("dataOut", dataOut.getJSON());
         }
         content.put("timer", this.timer);
-        content.put("process", this.process);
+        content.put("process", this.process.ordinal());
         if (this.processTime != null) {
             content.put("processTime", this.processTime);
         }
@@ -215,14 +215,11 @@ public class AsyncService implements IServiceProxy {
         this.dataOut = dataOut;
     }
 
-    public int getProcess() {
+    public MessageProcess getProcess() {
         return process;
     }
 
-    public void setProcess(int process) {
-        if (process < 0 || process > processTiles.size()) {
-            throw new RuntimeException(String.format(res.getString(8, "非法的任务进度值：%s"), process));
-        }
+    public void setProcess(MessageProcess process) {
         this.process = process;
     }
 

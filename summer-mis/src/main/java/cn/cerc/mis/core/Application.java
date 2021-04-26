@@ -1,17 +1,20 @@
 package cn.cerc.mis.core;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
-import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ITokenManage;
 import cn.cerc.db.core.ServerConfig;
@@ -21,56 +24,58 @@ import cn.cerc.mis.SummerMIS;
 public class Application implements ApplicationContextAware {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
     private static final ClassConfig config = new ClassConfig(Application.class, SummerMIS.ID);
+//    public static final String TOKEN = ISession.TOKEN;
+//    public static final String bookNo = ISession.CORP_NO;
+//    public static final String userCode = ISession.USER_CODE;
+//    public static final String userName = ISession.USER_NAME;
     // tomcat JSESSION.ID
-    public static final String sessionId = "sessionId";
-    // FIXME 如下5个常量需要取消其引用，改为直接使用ISession
-    public static final String TOKEN = ISession.TOKEN;
-    public static final String bookNo = ISession.CORP_NO;
-    public static final String userCode = ISession.USER_CODE;
-    public static final String userName = ISession.USER_NAME;
+    public static final String SessionId = "sessionId";
+    // FIXME 如下2个常量需要取消其引用，改为直接使用ISession
     @Deprecated
-    public static final String deviceLanguage = ISession.LANGUAGE_ID;
+    public static final String UserId = "UserID";
     @Deprecated
-    public static final String userId = "UserID";
-    @Deprecated
-    public static final String roleCode = "RoleCode";
+    public static final String RoleCode = "RoleCode";
     // 签核代理用户列表，代理多个用户以半角逗号隔开
     public static final String ProxyUsers = "ProxyUsers";
     // 客户端代码
-    public static final String clientIP = "clientIP";
+    public static final String ClientIP = "clientIP";
     // 本地会话登录时间
-    public static final String loginTime = "loginTime";
+    public static final String LoginTime = "loginTime";
     // 浏览器通用客户设备Id
-    public static final String webclient = "webclient";
-
-    // 默认界面语言版本
-    // FIXME: 2019/12/7 此处应改为从函数，并从配置文件中读取默认的语言类型
-    public static final String App_Language = getAppLanguage(); // 可选：cn/en
-
-    // 各类应用配置代码
-    public static final String PATH_FORMS = "application.pathForms";
-    public static final String PATH_SERVICES = "application.pathServices";
-    public static final String FORM_WELCOME = "application.formWelcome";
-    public static final String FORM_DEFAULT = "application.formDefault";
-    public static final String FORM_LOGOUT = "application.formLogout";
-    public static final String FORM_VERIFY_DEVICE = "application.formVerifyDevice";
-    public static final String JSPFILE_LOGIN = "application.jspLoginFile";
-    public static final String FORM_ID = "formId";
-
-    private static ApplicationContext context;
+    public static final String WebClient = "webclient";
+    // 图片静态路径
     private static String staticPath;
+    // spring context
+    private static ApplicationContext context;
 
     static {
         staticPath = config.getString("app.static.path", "");
     }
 
-    public static void init(String packageId) {
+    /**
+     * 根据 application.xml 初始化 spring context
+     */
+    public static void init() {
+        initFromXml("application.xml");
+    }
+
+    /**
+     * 根据参数 springXmlFile 初始化 spring context
+     */
+    public static void initFromXml(String springXmlFile) {
         if (context != null)
             return;
-        String xmlFile = String.format("%s-spring.xml", packageId);
-        if (packageId == null)
-            xmlFile = "application.xml";
-        setContext(new ClassPathXmlApplicationContext(xmlFile));
+        setContext(new ClassPathXmlApplicationContext(springXmlFile));
+    }
+
+    /**
+     * 根据 SummerConfiguration.class 初始化 spring context
+     */
+    public static void initOnlyFramework() {
+        if (context != null)
+            return;
+
+        setContext(new AnnotationConfigApplicationContext(SummerConfiguration.class));
     }
 
     @Override
@@ -102,7 +107,6 @@ public class Application implements ApplicationContextAware {
     }
 
     @SuppressWarnings("unchecked")
-    @Deprecated
     public static <T> T getBean(Class<T> requiredType) {
         String[] items = requiredType.getName().split("\\.");
         String itemId = items[items.length - 1];
@@ -135,12 +139,8 @@ public class Application implements ApplicationContextAware {
      * 
      * 如创建ITokenManage，则自动查找 tokenManage, tokenManageDefault
      * 
-     * @param <T>
-     * @param requiredType
-     * @param session
-     * @return
      */
-    public static <T> T getBeanDefault(Class<T> requiredType, ISession session) {
+    public static <T> T getDefaultBean(IHandle handle, Class<T> requiredType) {
         String[] items = requiredType.getName().split("\\.");
         String itemId = items[items.length - 1];
         String classId = itemId;
@@ -152,14 +152,26 @@ public class Application implements ApplicationContextAware {
         // 找不到自定义的，就再查找默认的类
         T result = getBean(requiredType, beanId, beanId + "Default");
         // 自动注入 session
-        if ((session != null) && (result instanceof IHandle)) {
-            ((IHandle) result).setSession(session);
+        if ((handle != null) && (result instanceof IHandle)) {
+            ((IHandle) result).setSession(handle.getSession());
         }
         return result;
     }
 
     public static ISession createSession() {
-        return getBeanDefault(ISession.class, null);
+        return getDefaultBean(null, ISession.class);
+    }
+
+    public static ISession createSession(HttpServletRequest request) {
+        if (request != null) {
+            Object object = request.getAttribute("summer_session");
+            if (object != null)
+                return (ISession) object;
+        }
+        ISession session = getDefaultBean(null, ISession.class);
+        if (session != null)
+            request.setAttribute("summer_session", session);
+        return session;
     }
 
     public static IService getService(IHandle handle, String serviceCode) {
@@ -170,22 +182,18 @@ public class Application implements ApplicationContextAware {
         return bean;
     }
 
-    public static IPassport getPassport(ISession session) {
-        return getBeanDefault(IPassport.class, session);
-    }
-
-    public static IPassport getPassport(IHandle owner) {
-        return getBeanDefault(IPassport.class, owner.getSession());
+    public static IPassport getPassport(IHandle handle) {
+        return getDefaultBean(handle, IPassport.class);
     }
 
     public static ISystemTable getSystemTable() {
-        return getBeanDefault(ISystemTable.class, null);
+        return getDefaultBean(null, ISystemTable.class);
     }
 
-    public static String getLanguage() {
+    public static String getLanguageId() {
         String lang = ServerConfig.getInstance().getProperty(ISession.LANGUAGE_ID);
-        if (lang == null || "".equals(lang) || App_Language.equals(lang)) {
-            return App_Language;
+        if (lang == null || "".equals(lang) || LanguageResource.appLanguage.equals(lang)) {
+            return LanguageResource.appLanguage;
         } else if (LanguageResource.LANGUAGE_EN.equals(lang)) {
             return lang;
         } else {
@@ -207,16 +215,12 @@ public class Application implements ApplicationContextAware {
         return staticPath;
     }
 
-    public static ITokenManage getTokenManage(ISession session) {
-        return getBeanDefault(ITokenManage.class, session);
+    public static ITokenManage getTokenManage(IHandle handle) {
+        return getDefaultBean(handle, ITokenManage.class);
     }
 
-    public static String getHomePage() {
-        return config.getString(Application.FORM_DEFAULT, "default");
-    }
-
-    private static String getAppLanguage() {
-        return LanguageResource.appLanguage;
+    public static IAppConfig getConfig() {
+        return getBean(IAppConfig.class);
     }
 
 }

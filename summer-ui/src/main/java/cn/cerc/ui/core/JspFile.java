@@ -51,7 +51,7 @@ public class JspFile extends AbstractPage {
             return jspFile;
         }
 
-        String rootPath = String.format("/WEB-INF/%s/", config.getString(Application.PATH_FORMS, "forms"));
+        String rootPath = String.format("/WEB-INF/%s/", Application.getConfig().getFormsPath());
         String fileName = jspFile.substring(0, jspFile.indexOf(".jsp"));
         String extName = jspFile.substring(jspFile.indexOf(".jsp") + 1);
         IForm form = getForm();

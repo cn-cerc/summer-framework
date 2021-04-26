@@ -41,7 +41,7 @@ public class DatabaseDictionary {
     }
 
     public DatabaseDictionary() {
-        Application.init(null);
+        Application.initOnlyFramework();;
         handle  = new Handle(Application.createSession());
     }
 
@@ -212,7 +212,7 @@ public class DatabaseDictionary {
     }
 
     public static void main(String[] args) {
-        Application.init(SummerMIS.ID);
+        Application.initOnlyFramework();
         DatabaseDictionary obj = new DatabaseDictionary();
         obj.run();
     }

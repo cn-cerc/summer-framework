@@ -62,8 +62,8 @@ public class StartApp implements Filter {
                 req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
             }
 
-            String redirect = String.format("/%s/%s", config.getString(Application.PATH_FORMS, "forms"),
-                    config.getString(Application.FORM_WELCOME, "welcome"));
+            String redirect = String.format("/%s/%s", Application.getConfig().getFormsPath(),
+                    Application.getConfig().getWelcomePage());
             redirect = resp.encodeRedirectURL(redirect);
             resp.sendRedirect(redirect);
             return;
@@ -80,7 +80,7 @@ public class StartApp implements Filter {
                 form.setResponse((HttpServletResponse) response);
 
                 ISession session = Application.createSession();
-                session.setProperty(Application.sessionId, req.getSession().getId());
+                session.setProperty(Application.SessionId, req.getSession().getId());
                 form.setHandle(new Handle(session));
                 IPage page = form.execute();
                 page.execute();

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.IConnection;
 import cn.cerc.core.ISession;
+import cn.cerc.core.LanguageResource;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -29,25 +30,25 @@ public class SessionDefault implements ISession {
     private Map<String, Object> params = new HashMap<>();
 
     public SessionDefault() {
-        params.put(Application.sessionId, "");
+        params.put(Application.SessionId, "");
         params.put(Application.ProxyUsers, "");
-        params.put(Application.clientIP, "0.0.0.0");
-        params.put(Application.userCode, "");
-        params.put(Application.userName, "");
-        params.put(Application.roleCode, "");
-        params.put(Application.bookNo, "");
-        params.put(ISession.LANGUAGE_ID, Application.App_Language);
+        params.put(Application.ClientIP, "0.0.0.0");
+        params.put(ISession.USER_CODE, "");
+        params.put(ISession.USER_NAME, "");
+        params.put(Application.RoleCode, "");
+        params.put(ISession.CORP_NO, "");
+        params.put(ISession.LANGUAGE_ID, LanguageResource.appLanguage);
         log.debug("new SessionDefault");
     }
 
     @Override
     public String getCorpNo() {
-        return (String) this.getProperty(Application.bookNo);
+        return (String) this.getProperty(ISession.CORP_NO);
     }
 
     @Override
     public boolean logon() {
-        if (this.getProperty(Application.TOKEN) == null) {
+        if (this.getProperty(ISession.TOKEN) == null) {
             return false;
         }
         String corpNo = this.getCorpNo();
@@ -113,7 +114,7 @@ public class SessionDefault implements ISession {
 
     @Override
     public void setProperty(String key, Object value) {
-        if (Application.TOKEN.equals(key)) {
+        if (ISession.TOKEN.equals(key)) {
             if ("{}".equals(value)) {
                 params.put(key, null);
             } else {
@@ -126,12 +127,12 @@ public class SessionDefault implements ISession {
 
     @Override
     public String getUserName() {
-        return (String) this.getProperty(Application.userName);
+        return (String) this.getProperty(ISession.USER_NAME);
     }
 
     @Override
     public String getUserCode() {
-        return (String) this.getProperty(Application.userCode);
+        return (String) this.getProperty(ISession.USER_CODE);
     }
 
     @Override

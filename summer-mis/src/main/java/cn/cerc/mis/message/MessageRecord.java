@@ -4,6 +4,8 @@ import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Record;
 import cn.cerc.mis.SummerMIS;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.IUserMessage;
 import cn.cerc.mis.core.LocalService;
 
 /**
@@ -19,7 +21,7 @@ public class MessageRecord {
     private String subject;
     private StringBuilder content = new StringBuilder();
     private MessageLevel level = MessageLevel.General;
-    private int process;
+    private MessageProcess process;
 
     public MessageRecord() {
 
@@ -61,21 +63,9 @@ public class MessageRecord {
             throw new RuntimeException(res.getString(3, "公司别不允许为空"));
         }
 
-        //TODO 此处需要做进一步抽象
-        LocalService svr = new LocalService(handle, "SvrUserMessages.appendRecord");
-        Record headIn = svr.getDataIn().getHead();
-        headIn.setField("corpNo", sendCorpNo);
-        headIn.setField("userCode", userCode);
-        headIn.setField("level", level.ordinal());
-        headIn.setField("subject", subject);
-        headIn.setField("content", content.toString());
-        headIn.setField("process", process);
-        if (!svr.exec()) {
-            throw new RuntimeException(svr.getMessage());
-        }
-
         // 返回消息的编号
-        return svr.getDataOut().getHead().getString("msgId");
+        IUserMessage um = Application.getBean(handle, IUserMessage.class);
+        return um.appendRecord(sendCorpNo, userCode, level, subject, content.toString(), process);
     }
 
     public String getContent() {
@@ -136,11 +126,11 @@ public class MessageRecord {
         return this;
     }
 
-    public int getProcess() {
+    public MessageProcess getProcess() {
         return process;
     }
 
-    public MessageRecord setProcess(int process) {
+    public MessageRecord setProcess(MessageProcess process) {
         this.process = process;
         return this;
     }

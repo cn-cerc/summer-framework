@@ -148,11 +148,6 @@ public abstract class RemoteService implements IServiceProxy {
     }
 
     @Deprecated
-    public RemoteService() {
-
-    }
-
-    @Deprecated
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
         try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.User.ExportKey, handle.getUserCode(), tmp)) {

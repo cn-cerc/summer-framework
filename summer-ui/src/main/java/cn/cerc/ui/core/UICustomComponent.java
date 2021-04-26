@@ -52,7 +52,6 @@ public class UICustomComponent extends UIComponent {
         this.cssStyle = cssStyle;
     }
 
-    @Deprecated
     protected void outputCss(HtmlWriter html) {
         if (this.cssClass != null) {
             html.print(" class='%s'", cssClass);

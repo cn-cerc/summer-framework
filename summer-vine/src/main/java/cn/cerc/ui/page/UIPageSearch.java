@@ -24,7 +24,6 @@ import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
-import cn.cerc.ui.other.OperaPages;
 import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UIFormHorizontal;
@@ -77,7 +76,7 @@ public class UIPageSearch extends UIPage {
                     item.enrollMenu(form, rightMenus);
                 }
             } else {
-                header.getHomePage().setSite(config.getString(Application.FORM_WELCOME, "welcome"));
+                header.getHomePage().setSite(Application.getConfig().getWelcomePage());
             }
         }
 

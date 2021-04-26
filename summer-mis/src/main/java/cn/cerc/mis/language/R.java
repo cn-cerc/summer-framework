@@ -38,20 +38,20 @@ public class R {
             }
         }
 
-        String language = temp == null ? Application.getLanguage() : (String) temp;
+        String language = temp == null ? Application.getLanguageId() : (String) temp;
 
         try {
-            IAppLanguage obj = Application.getBeanDefault(IAppLanguage.class, handle.getSession());
+            IAppLanguage obj = Application.getDefaultBean(handle, IAppLanguage.class);
             language = obj.getLanguageId(language);
         } catch (Exception e) {
-            language = Application.App_Language;
+            language = LanguageResource.appLanguage;
         }
         return language;
     }
 
     public static String asString(IHandle handle, String text) {
         String language = getLanguageId(handle);
-        if (Application.App_Language.equals(LanguageResource.LANGUAGE_CN)) {
+        if (LanguageResource.appLanguage.equals(LanguageResource.LANGUAGE_CN)) {
             return text;
         }
         if (text == null || "".equals(text.trim())) {
@@ -70,7 +70,7 @@ public class R {
     }
 
     private static void validateKey(IHandle handle, String text, String language) {
-        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
+        ISystemTable systemTable = Application.getSystemTable();
         SqlQuery dsLang = new SqlQuery(handle);
         dsLang.add("select Value_ from %s", systemTable.getLanguage());
         dsLang.add("where Key_='%s'", Utils.safeString(text));
@@ -93,7 +93,7 @@ public class R {
     }
 
     private static String getValue(IHandle handle, String text, String language) {
-        ISystemTable systemTable = Application.getBeanDefault(ISystemTable.class, null);
+        ISystemTable systemTable = Application.getSystemTable();
         SqlQuery dsLang = new SqlQuery(handle);
         dsLang.add("select Key_,max(Value_) as Value_ from %s", systemTable.getLanguage());
         dsLang.add("where Key_='%s'", Utils.safeString(text));
