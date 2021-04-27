@@ -133,7 +133,7 @@ public class UserMessageDefault implements IHandle, IUserMessage {
         
         cdsMsg.edit();
         cdsMsg.setField("Content_", content);
-        cdsMsg.setField("Process_", process);
+        cdsMsg.setField("Process_", process.ordinal());
         if (process == MessageProcess.ok) {
             cdsMsg.setField("Status_", 1);
         }
