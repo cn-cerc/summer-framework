@@ -20,7 +20,7 @@ import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.other.MemoryBuffer;
 
-public class SvrUserLoginTest {
+public class TAppLoginTest {
 
     // 测试帐号找不到时的提示
     @Test(expected = ServiceException.class)

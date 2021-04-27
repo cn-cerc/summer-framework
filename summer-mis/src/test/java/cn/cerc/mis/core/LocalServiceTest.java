@@ -20,7 +20,7 @@ public class LocalServiceTest {
     @Ignore
     public void test() {
         LocalService app = new LocalService(new Handle(session));
-        app.setService("SvrUserLogin.check");
+        app.setService("TAppLogin.Check");
         System.out.println(app.exec());
         System.out.println(app.getMessage());
     }
