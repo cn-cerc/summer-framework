@@ -36,7 +36,7 @@ public class OptionReaderDefault implements IOptionReader, IHandle {
         query.add("and Code_='%s'", Utils.safeString(optionKey));
         query.open();
 
-        return query.eof() ? null : query.getString("Value_");
+        return query.eof() ? defaultValue : query.getString("Value_");
     }
     
     @Override
@@ -49,7 +49,7 @@ public class OptionReaderDefault implements IOptionReader, IHandle {
         query.add("where UserCode_=N'%s' and Code_=N'%s'", userCode, Utils.safeString(optionKey));
         query.open();
 
-        return query.eof() ? null : query.getString("Value_");
+        return query.eof() ? defaultValue : query.getString("Value_");
     }
 
     @Override
