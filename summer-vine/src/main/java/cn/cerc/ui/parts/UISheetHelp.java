@@ -46,6 +46,9 @@ public class UISheetHelp extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
+        if (this.content == null && lines.size() == 0) {
+            return;
+        }
         html.println("<section");
         if (this.getId() != null) {
             html.println(" id=\"%s\"", this.getId());

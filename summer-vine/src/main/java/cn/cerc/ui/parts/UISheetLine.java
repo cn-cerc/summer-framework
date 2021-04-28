@@ -18,6 +18,9 @@ public class UISheetLine extends UISheet {
 
     @Override
     public void output(HtmlWriter html) {
+        if (getComponents().size() == 0) {
+            return;
+        }
         html.println("<section");
         if (this.cssStyle != null) {
             html.print(" style=\"%s\"", this.cssStyle);
