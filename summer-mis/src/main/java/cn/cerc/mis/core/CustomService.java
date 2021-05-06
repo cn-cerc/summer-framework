@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
-import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 
-public class CustomService implements IMultiplService, IRestful {
+public abstract class CustomService extends Handle implements IMultiplService, IRestful {
     private static final Logger log = LoggerFactory.getLogger(CustomService.class);
     private static final ClassResource res = new ClassResource(CustomService.class, SummerMIS.ID);
 
@@ -26,11 +25,9 @@ public class CustomService implements IMultiplService, IRestful {
     private String message = "";
     private StringBuffer msg = null;
     private String restPath;
-    private ISession session;
-    protected IHandle handle;
-
+    
     public CustomService init(CustomService owner, boolean refData) {
-        this.setHandle(owner);
+        this.setSession(owner.getSession());
         if (refData) {
             this.dataIn = owner.getDataIn();
             this.dataOut = owner.getDataOut();
@@ -172,23 +169,6 @@ public class CustomService implements IMultiplService, IRestful {
     public void setFuncCode(String funcCode) {
         this.funcCode = funcCode;
     }
-
-    @Override
-    public String getCorpNo() {
-        if (handle != null)
-            return handle.getCorpNo();
-        else
-            return getSession().getCorpNo();
-    }
-
-    @Override
-    public String getUserCode() {
-        if (handle != null) {
-            return Utils.isNotEmpty(handle.getUserCode()) ? handle.getUserCode() : getSession().getUserCode();
-        } else {
-            return getSession().getUserCode();
-        }
-    }
     
     @Override
     public void setDataIn(DataSet dataIn) {
@@ -208,31 +188,6 @@ public class CustomService implements IMultiplService, IRestful {
     @Override
     public void setRestPath(String restPath) {
         this.restPath = restPath;
-    }
-
-    @Override
-    public ISession getSession() {
-        return session;
-    }
-
-    @Override
-    public void setSession(ISession session) {
-        this.session = session;
-        if (handle == null)
-            handle = new Handle(session);
-    }
-
-    @Override
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
-        if (handle != null) {
-            this.setSession(handle.getSession());
-        }
-    }
-
-    @Override
-    public IHandle getHandle() {
-        return this.handle;
     }
 
 }

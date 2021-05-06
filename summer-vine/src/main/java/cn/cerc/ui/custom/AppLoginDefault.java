@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.ITokenManage;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
@@ -42,7 +41,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
     public void init(IForm form) {
         this.setForm(form);
         this.setJspFile(Application.getConfig().getJspLoginFile());
-        this.setSession(form.getHandle().getSession());
+        this.setSession(form.getSession());
         this.add("homePage", Application.getConfig().getWelcomePage());
         this.add("needVerify", "false");
         String logoUrl = config.getString("vine.mall.logoUrl", "");
@@ -56,17 +55,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
     }
 
     @Override
-    public String checkToken(String token) throws IOException, ServletException {
-        try {
-            log.debug("create session by token {}", token);
-            ITokenManage manage = Application.getDefaultBean(this.getForm(), ITokenManage.class);
-            if (manage.resumeToken(token)) {
-                return null;
-            }
-        } catch (Exception e) {
-            this.add("loginMsg", e.getMessage());
-        }
-        // 返回指定的jsp页面
+    public String getLoginPage() throws IOException, ServletException {
         return this.execute();
     }
 
@@ -83,7 +72,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         req.setAttribute("password", password);
         req.setAttribute("needVerify", "false");
 
-        IUserLoginCheck obj = Application.getDefaultBean(form.getHandle(), IUserLoginCheck.class);
+        IUserLoginCheck obj = Application.getBean(form, IUserLoginCheck.class);
 
         // 如长度大于10表示用手机号码登入
         if (userCode.length() > 10) {

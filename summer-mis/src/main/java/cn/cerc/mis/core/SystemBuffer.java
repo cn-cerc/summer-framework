@@ -1,6 +1,32 @@
 package cn.cerc.mis.core;
 
 public class SystemBuffer {
+
+    /**
+     * 
+     * key = ClassName + UserCode + Version
+     *
+     */
+    public enum UserObject implements IBufferKey {
+        ClassName;
+
+        @Override
+        public int getStartingPoint() {
+            return 0;
+        }
+
+        @Override
+        public int getMinimumNumber() {
+            return 1;
+        }
+
+        @Override
+        public int getMaximumNumber() {
+            return 3;
+        }
+
+    }
+
     public enum Global implements IBufferKey {
         OnlineUsers;
 

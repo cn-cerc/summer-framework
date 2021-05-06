@@ -17,14 +17,12 @@ import cn.cerc.db.core.IHandle;
 
 //@Component
 //@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public abstract class AbstractForm implements IForm {
+public abstract class AbstractForm extends Handle implements IForm {
     private static final Logger log = LoggerFactory.getLogger(AbstractForm.class);
 //    private static final ClassResource res = new ClassResource(AbstractForm.class, SummerMIS.ID);
 //    private static final ClassConfig config = new ClassConfig(AbstractForm.class, SummerMIS.ID);
 
     private String id;
-    private ISession session;
-    protected IHandle handle;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private IClient client;
@@ -44,7 +42,7 @@ public abstract class AbstractForm implements IForm {
     }
 
     public void init(AbstractForm owner) {
-        this.setHandle(owner.getHandle());
+        this.setSession(owner.getSession());
         this.setClient(owner.getClient());
         this.setRequest(owner.getRequest());
         this.setResponse(owner.getResponse());
@@ -79,7 +77,7 @@ public abstract class AbstractForm implements IForm {
             return this.getRequest().getSession();
         }
 
-        return handle.getSession().getProperty(key);
+        return this.getSession().getProperty(key);
     }
 
     @Override
@@ -255,7 +253,7 @@ public abstract class AbstractForm implements IForm {
             if (dataIn.length() > 200) {
                 dataIn = dataIn.substring(0, 200);
             }
-            log.warn("pageCode: {}, tickCount: {}, dataIn: {}", pageCode, totalTime, dataIn);
+            log.warn("{}, tickCount: {}, dataIn: {}", pageCode, totalTime, dataIn);
         }
     }
 
@@ -266,29 +264,6 @@ public abstract class AbstractForm implements IForm {
 
     public String[] getPathVariables() {
         return this.pathVariables;
-    }
-
-    @Override
-    public ISession getSession() {
-        return session;
-    }
-
-    @Override
-    public void setSession(ISession session) {
-        this.session = session;
-    }
-
-    @Override
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
-        if (handle != null) {
-            this.setSession(handle.getSession());
-        }
-    }
-
-    @Override
-    public IHandle getHandle() {
-        return this.handle;
     }
 
     @Override

@@ -2,6 +2,8 @@ package cn.cerc.ui.mvc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
@@ -16,9 +18,9 @@ import cn.cerc.mis.core.LocalService;
 import cn.cerc.ui.SummerUI;
 
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ProxyService extends AbstractForm {
     private static final Logger log = LoggerFactory.getLogger(ProxyService.class);
-    public static final String BEAN_ID = "proxyService";
 
     private static final ClassResource res = new ClassResource(ProxyService.class, SummerUI.ID);
 
@@ -68,4 +70,8 @@ public class ProxyService extends AbstractForm {
         return jsonPage;
     }
 
+    @Override
+    public String getName() {
+        return "远程服务代理";
+    }
 }

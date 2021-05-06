@@ -8,19 +8,17 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 
-public class DirectoryTest {
-    private IHandle handle;
+public class DirectoryTest extends Handle {
 
     @Before
     public void setUp() throws Exception {
-        ISession session = Application.createSession();
-        handle = new Handle(session);
+        ISession session = Application.getSession();
+        setSession(session);
     }
 
     @Test
@@ -56,7 +54,7 @@ public class DirectoryTest {
             return 0;
         }
         ISystemTable systemTable = Application.getSystemTable();
-        SqlQuery dsLang = new SqlQuery(handle);
+        SqlQuery dsLang = new SqlQuery(this);
         dsLang.add("select * from %s", systemTable.getLanguage());
         dsLang.add("where key_='%s' and lang_='en'", text);
         dsLang.open();
@@ -69,9 +67,9 @@ public class DirectoryTest {
             dsLang.setField("supportAndroid_", false);
             dsLang.setField("supportIphone_", false);
             dsLang.setField("enable_", true);
-            dsLang.setField("updateUser_", handle.getUserCode());
+            dsLang.setField("updateUser_", this.getUserCode());
             dsLang.setField("updateDate_", TDateTime.now());
-            dsLang.setField("createUser_", handle.getUserCode());
+            dsLang.setField("createUser_", this.getUserCode());
             dsLang.setField("createDate_", TDateTime.now());
             dsLang.post();
             return 1;

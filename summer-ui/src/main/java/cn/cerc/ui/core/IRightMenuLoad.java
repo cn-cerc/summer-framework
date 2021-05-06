@@ -2,11 +2,10 @@ package cn.cerc.ui.core;
 
 import java.util.List;
 
-import cn.cerc.db.core.IHandle;
-import cn.cerc.ui.mvc.IMenuBar;
+import cn.cerc.mis.core.IForm;
 
-public interface IRightMenuLoad extends IHandle{
+public interface IRightMenuLoad {
 
-    void loadMenu(List<IMenuBar> items);
+    void loadMenu(IForm form, List<UrlRecord> rightMenus);
 
 }

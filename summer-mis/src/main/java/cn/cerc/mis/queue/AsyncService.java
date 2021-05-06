@@ -115,7 +115,7 @@ public class AsyncService implements IServiceProxy {
                 headIn.setField(args[i].toString(), args[i + 1]);
             }
         }
-        headIn.setField("token", Application.getToken(handle));
+        headIn.setField("token", handle.getSession().getToken());
 
         String subject = this.getSubject();
         if ("".equals(subject)) {
@@ -289,4 +289,5 @@ public class AsyncService implements IServiceProxy {
     public String getMsgId() {
         return msgId;
     }
+    
 }

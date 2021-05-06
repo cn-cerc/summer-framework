@@ -23,7 +23,7 @@ public class ExportAccreditManager implements IAccreditManager {
     private String userOptionEnabled(IHandle handle, String optCode) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), optCode)) {
             if (buff.isNull()) {
-                IOptionReader reader = Application.getDefaultBean(handle, IOptionReader.class);
+                IOptionReader reader = Application.getBean(handle, IOptionReader.class);
                 String value = reader.getUserValue(handle.getUserCode(), optCode, "");
                 buff.setField("Value_", value);
             }

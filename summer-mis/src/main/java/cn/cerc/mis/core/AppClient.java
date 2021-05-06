@@ -16,7 +16,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.mis.other.MemoryBuffer;
 
 @Component
-@Scope(WebApplicationContext.SCOPE_SESSION)
+@Scope(WebApplicationContext.SCOPE_REQUEST)
 public class AppClient implements IClient, Serializable {
     private static final Logger log = LoggerFactory.getLogger(AppClient.class);
     private static final long serialVersionUID = -3593077761901636920L;
@@ -153,10 +153,6 @@ public class AppClient implements IClient, Serializable {
     public boolean isPhone() {
         return phone.equals(getDevice()) || android.equals(getDevice()) || iphone.equals(getDevice())
                 || wechat.equals(getDevice());
-    }
-
-    public boolean isNotPhone() {
-        return !isPhone();
     }
 
     public HttpServletRequest getRequest() {

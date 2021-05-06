@@ -16,7 +16,6 @@ import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
 import cn.cerc.db.redis.JedisFactory;
-import cn.cerc.db.core.IHandleOwner;
 import cn.cerc.mis.client.IServiceProxy;
 import cn.cerc.mis.other.MemoryBuffer;
 import redis.clients.jedis.Jedis;
@@ -66,15 +65,15 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
             if (!"SvrSession.byUserCode".equals(this.getService())) {
                 log.debug(this.getService());
             }
-            if (object instanceof IHandleOwner) {
-                ((IHandleOwner) object).setHandle(this.getHandle());
+            if (object instanceof IHandle) {
+                ((IHandle) object).setSession(this.getSession());
             }
             if (ServerConfig.isServerMaster()) {
                 return executeService(object, this.dataIn, this.dataOut);
             }
 
             // 制作临时缓存Key
-            String key = MD5.get(getHandle().getUserCode() + this.getService() + dataIn.getJSON());
+            String key = MD5.get(this.getUserCode() + this.getService() + dataIn.getJSON());
 
             if (bufferRead) {
                 String buffValue = Redis.get(key);
@@ -126,7 +125,7 @@ public class LocalService extends CustomLocalProxy implements IServiceProxy {
 
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
-        try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.User.ExportKey, getHandle().getUserCode(), tmp)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.User.ExportKey, this.getUserCode(), tmp)) {
             buff.setField("data", this.getDataIn().getJSON());
         }
         return tmp;

@@ -13,7 +13,7 @@ public class LocalServiceTest {
     @Before
     public void setUp() {
         Application.initOnlyFramework();
-        session = Application.createSession();
+        session = Application.getSession();
     }
 
     @Test

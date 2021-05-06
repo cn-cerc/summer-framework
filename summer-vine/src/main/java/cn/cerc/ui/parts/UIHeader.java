@@ -9,7 +9,6 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.IUserLanguage;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ITokenManage;
 import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
@@ -24,7 +23,7 @@ import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.mvc.AbstractPage;
 import cn.cerc.ui.phone.Block104;
 
-public class UIHeader extends UICssComponent implements IUserLanguage {
+public class UIHeader extends UICssComponent implements IUserLanguage, IHandle {
     private static final ClassConfig config = new ClassConfig(UIHeader.class, SummerUI.ID);
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
@@ -58,8 +57,7 @@ public class UIHeader extends UICssComponent implements IUserLanguage {
     private UrlRecord exitSystem = null;
     // 菜单模组
     private String moduleCode = null;
-
-    private IHandle handle;
+    private ISession session;
 
     public void setHeadInfo(String logoSrc, String welcome) {
         this.logoSrc = logoSrc;
@@ -87,7 +85,7 @@ public class UIHeader extends UICssComponent implements IUserLanguage {
 
     public UIHeader(AbstractPage page) {
         super(page);
-        this.handle = page.getForm().getHandle();
+        this.setSession(page.getForm().getSession());
 
         String defaultPage = Application.getConfig().getDefaultPage();
         homePage = new UrlRecord(defaultPage, getHomeImage(page));
@@ -98,15 +96,12 @@ public class UIHeader extends UICssComponent implements IUserLanguage {
         IClient client = page.getForm().getClient();
         boolean isShowBar = config.getBoolean("app.ui.head.show", true);
         if (!client.isPhone() && isShowBar) {
-            String token = (String) handle.getSession().getProperty(ISession.TOKEN);
-            ITokenManage manage = Application.getDefaultBean(handle, ITokenManage.class);
-            manage.resumeToken(token);
             currentUser = res.getString(2, "用户");
             leftMenus.add(homePage);
-            this.userName = handle.getSession().getUserName();
-            if (Utils.isNotEmpty(handle.getCorpNo())) {
-                ICorpInfo info = Application.getDefaultBean(handle, ICorpInfo.class);
-                this.corpNoName = info.getShortName();
+            this.userName = this.getSession().getUserName();
+            if (Utils.isNotEmpty(this.getCorpNo())) {
+                ICorpInfo info = Application.getBean(ICorpInfo.class);
+                this.corpNoName = info.getShortName(this);
             }
             logoSrc = getLogo();
             welcome = config.getString("app.welcome.language", res.getString(3, "欢迎使用系统"));
@@ -353,7 +348,17 @@ public class UIHeader extends UICssComponent implements IUserLanguage {
 
     @Override
     public String getLanguageId() {
-        return R.getLanguageId(handle);
+        return R.getLanguageId(this);
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.IConnection;
 import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
+import cn.cerc.core.Record;
 import cn.cerc.db.jiguang.JiguangConnection;
 import cn.cerc.db.mongo.MongoConnection;
 import cn.cerc.db.mssql.MssqlConnection;
@@ -19,15 +20,24 @@ import cn.cerc.db.mysql.MysqlConnection;
 import cn.cerc.db.mysql.SlaveMysqlConnection;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.db.queue.AliyunQueueConnection;
+import cn.cerc.db.redis.JedisFactory;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.CenterService;
+import cn.cerc.mis.core.Handle;
+import cn.cerc.mis.core.SystemBuffer;
+import cn.cerc.mis.other.MemoryBuffer;
+import redis.clients.jedis.Jedis;
 
 @Component
+//@Scope(WebApplicationContext.SCOPE_REQUEST)
+//@Scope(WebApplicationContext.SCOPE_SESSION)
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-// @Scope(WebApplicationContext.SCOPE_REQUEST)
 public class SessionDefault implements ISession {
+    public static final String TOKEN_CREATE_ENTER = "TOKEN_CREATE_STATUS";
     private static final Logger log = LoggerFactory.getLogger(SessionDefault.class);
     private Map<String, IConnection> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
+    private static int currentSize = 0;
 
     public SessionDefault() {
         params.put(Application.SessionId, "");
@@ -39,6 +49,9 @@ public class SessionDefault implements ISession {
         params.put(ISession.CORP_NO, "");
         params.put(ISession.LANGUAGE_ID, LanguageResource.appLanguage);
         log.debug("new SessionDefault");
+        synchronized (this.getClass()) {
+            log.info("current size: {}", ++currentSize);
+        }
     }
 
     @Override
@@ -118,7 +131,13 @@ public class SessionDefault implements ISession {
             if ("{}".equals(value)) {
                 params.put(key, null);
             } else {
-                params.put(key, value);
+                if (value == null || "".equals(value))
+                    params.clear();
+                else {
+                    params.put(key, value);
+                    if (params.get(SessionDefault.TOKEN_CREATE_ENTER) == null)
+                        init((String) value);
+                }
             }
             return;
         }
@@ -147,6 +166,10 @@ public class SessionDefault implements ISession {
                 e.printStackTrace();
             }
         }
+        connections.clear();
+        synchronized (this.getClass()) {
+            log.info("current size: {}", --currentSize);
+        }
     }
 
     public MysqlConnection getConnection() {
@@ -159,6 +182,51 @@ public class SessionDefault implements ISession {
 
     public Map<String, Object> getParams() {
         return params;
+    }
+
+    public void init(String token) {
+        if (token.length() < 10) {
+            throw new RuntimeException("token value error: length < 10");
+        }
+
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.Token.SessionBase, token);
+                Jedis redis = JedisFactory.getJedis()) {
+            if (buff.isNull()) {
+                CenterService svr = new CenterService(new Handle(this));
+                svr.setService("SvrSession.byToken");
+                if (!svr.exec("token", token)) {
+                    log.error("token restore error，{}", svr.getMessage());
+                    params.put(ISession.TOKEN, null);
+                    return;
+                }
+                Record record = svr.getDataOut().getHead();
+                buff.setField("LoginTime_", record.getDateTime("LoginTime_"));
+                buff.setField("UserID_", record.getString("UserID_"));
+                buff.setField("UserCode_", record.getString("UserCode_"));
+                buff.setField("CorpNo_", record.getString("CorpNo_"));
+                buff.setField("UserName_", record.getString("UserName_"));
+                buff.setField("RoleCode_", record.getString("RoleCode_"));
+                buff.setField("ProxyUsers_", record.getString("ProxyUsers_"));
+                buff.setField("Language_", record.getString("Language_"));
+                buff.setField("exists", true);
+            }
+
+            if (buff.getBoolean("exists")) {
+                // 将用户信息赋值到句柄
+                params.put(Application.LoginTime, buff.getDateTime("LoginTime_"));
+                params.put(ISession.CORP_NO, buff.getString("CorpNo_"));
+                params.put(Application.UserId, buff.getString("UserID_"));
+                params.put(ISession.USER_CODE, buff.getString("UserCode_"));
+                params.put(ISession.USER_NAME, buff.getString("UserName_"));
+                params.put(Application.ProxyUsers, buff.getString("ProxyUsers_"));
+                params.put(Application.RoleCode, buff.getString("RoleCode_"));
+                params.put(ISession.LANGUAGE_ID, buff.getString("Language_"));
+
+                // 刷新缓存生命值
+                if (redis != null)
+                    redis.expire(buff.getKey(), buff.getExpires());
+            }
+        }
     }
 
 }

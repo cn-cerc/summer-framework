@@ -13,40 +13,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ITokenManage;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
+import cn.cerc.mis.core.BasicHandle;
 import cn.cerc.mis.core.IRestful;
 import cn.cerc.mis.core.IService;
 import cn.cerc.mis.core.IStatus;
 
-@Deprecated // 请改使用 StartServiceDefault
 public class StartServices extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(StartServices.class);
     private static final ClassResource res = new ClassResource(StartServices.class, SummerMIS.ID);
-    private static final ClassConfig config = new ClassConfig(StartServices.class, SummerMIS.ID);
 
     private static final long serialVersionUID = 1L;
     private static final String sessionId = "sessionId";
     private static Map<String, String> services;
     public final String outMsg = "{\"result\":%s,\"message\":\"%s\"}";
 
-    private static void loadServices(HttpServletRequest req) {
+    private static void loadServices(IHandle handle, HttpServletRequest req) {
         if (services != null) {
             return;
         }
         services = new HashMap<>();
         Application.setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext()));
         for (String serviceCode : Application.getContext().getBeanNamesForType(IRestful.class)) {
-            IRestful service = Application.getBean(IRestful.class, serviceCode);
+            IRestful service = (IRestful) Application.getBean(handle, serviceCode);
             String path = service.getRestPath();
             if (null != path && !"".equals(path)) {
                 services.put(path, serviceCode);
@@ -91,23 +87,20 @@ public class StartServices extends HttpServlet {
         if (null != str && !"[{}]".equals(str)) {
             dataIn.setJSON(str);
         }
-        String serviceCode = getServiceCode(req, method, req.getRequestURI().substring(1), dataIn.getHead());
-        log.info(req.getRequestURI() + " => " + serviceCode);
-        if (serviceCode == null) {
-            respData.setMessage("restful not find: " + req.getRequestURI());
-            resp.getWriter().write(respData.toString());
-            return;
-        }
-        log.debug(serviceCode);
-
-        ISession session = Application.createSession();
-        try { // 执行指定函数
-            ITokenManage manage = Application.getDefaultBean(new Handle(session), ITokenManage.class);
-            manage.resumeToken(req.getParameter("token"));
+        try (BasicHandle handle = new BasicHandle()) { // 执行指定函数
+            ISession session = handle.getSession();
             session.setProperty(sessionId, req.getSession().getId());
-            IHandle handle = new Handle(session);
-            IService bean = Application.getService(handle, serviceCode);
+            String serviceCode = getServiceCode(handle, req, method, req.getRequestURI().substring(1),
+                    dataIn.getHead());
+            log.debug(req.getRequestURI() + " => " + serviceCode);
+            if (serviceCode == null) {
+                respData.setMessage("restful not find: " + req.getRequestURI());
+                resp.getWriter().write(respData.toString());
+                return;
+            }
 
+            session.setProperty(ISession.TOKEN, req.getParameter("token"));
+            IService bean = (IService) Application.getBean(handle, serviceCode);
             if (!bean.checkSecurity(handle)) {
                 respData.setMessage(res.getString(1, "请您先登入系统"));
                 resp.getWriter().write(respData.toString());
@@ -123,14 +116,12 @@ public class StartServices extends HttpServlet {
             log.error(err.getMessage(), err);
             respData.setResult(false);
             respData.setMessage(err.getMessage());
-        } finally {
-            session.close();
         }
         resp.getWriter().write(respData.toString());
     }
 
-    public String getServiceCode(HttpServletRequest req, String method, String uri, Record headIn) {
-        loadServices(req);
+    private String getServiceCode(IHandle handle, HttpServletRequest req, String method, String uri, Record headIn) {
+        loadServices(handle, req);
         String[] paths = uri.split("/");
         if (paths.length < 2) {
             return null;

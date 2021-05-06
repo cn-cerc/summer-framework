@@ -205,10 +205,10 @@ public abstract class UIPage extends AbstractPage {
         String[] params = menuCode.split("\\.");
         String formId = params[0];
         if (Utils.isNotEmpty(this.getForm().getName())) {
-            out.printf("<title>%s</title>", R.asString(form.getHandle(), this.getForm().getName()));
+            out.printf("<title>%s</title>", R.asString(form, this.getForm().getName()));
         } else {
             out.printf("<title>%s</title>",
-                    R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+                    R.asString(form, MenuList.create(this.getForm()).getName(formId)));
         }
 
         // 所有的请求都不发送 referrer

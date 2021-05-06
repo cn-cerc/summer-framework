@@ -9,7 +9,7 @@ public interface IUserOption extends IVineOption {
     default String getOption(IHandle handle) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getUserOption, handle.getUserCode(), getKey())) {
             if (buff.isNull()) {
-                IOptionReader reader = Application.getDefaultBean(handle, IOptionReader.class);
+                IOptionReader reader = Application.getBean(handle, IOptionReader.class);
                 String value = reader.getUserValue(handle.getUserCode(), getKey(), "");
                 buff.setField("Value_", value);
             }

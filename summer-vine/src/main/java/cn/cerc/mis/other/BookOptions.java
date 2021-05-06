@@ -242,7 +242,7 @@ public class BookOptions {
 
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
             if (buff.isNull()) {
-                IOptionReader reader = Application.getDefaultBean(handle, IOptionReader.class);
+                IOptionReader reader = Application.getBean(handle, IOptionReader.class);
                 String value = reader.getCorpValue(handle.getCorpNo(), ACode, defaultValue);
                 buff.setField("Value_", value);
             }
@@ -254,7 +254,7 @@ public class BookOptions {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), ACode)) {
             if (buff.isNull() || "".equals(buff.getString("Value_"))) {
                 log.info("reset buffer.");
-                IOptionReader reader = Application.getDefaultBean(handle, IOptionReader.class);
+                IOptionReader reader = Application.getBean(handle, IOptionReader.class);
                 String value = reader.getCorpValue(handle.getCorpNo(), ACode, defaultValue);
                 buff.setField("Value_", value);
             }

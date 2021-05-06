@@ -1,8 +1,8 @@
 package cn.cerc.mis.core;
 
-import cn.cerc.db.core.IHandle;
+import cn.cerc.core.ISession;
 
-public interface IAppLanguage extends IHandle {
+public interface IAppLanguage {
     
-    String getLanguageId(String defaultValue);
+    String getLanguageId(ISession session, String defaultValue);
 }

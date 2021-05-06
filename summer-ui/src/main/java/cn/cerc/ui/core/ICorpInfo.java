@@ -2,7 +2,7 @@ package cn.cerc.ui.core;
 
 import cn.cerc.db.core.IHandle;
 
-public interface ICorpInfo extends IHandle{
+public interface ICorpInfo {
 
-    String getShortName();
+    String getShortName(IHandle handle);
 }

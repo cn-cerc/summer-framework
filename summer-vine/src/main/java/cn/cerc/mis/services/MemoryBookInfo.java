@@ -3,37 +3,25 @@ package cn.cerc.mis.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
-import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BookVersion;
-import cn.cerc.mis.other.BufferType;
 
 public class MemoryBookInfo {
     private static final Logger log = LoggerFactory.getLogger(MemoryBookInfo.class);
     private static final ClassResource res = new ClassResource(MemoryBookInfo.class, SummerMIS.ID);
 
-    private static final String buffVersion = "5";
-
     public static BookInfoRecord get(IHandle handle, String corpNo) {
         if (Utils.isEmpty(corpNo)) {
             throw new RuntimeException("corpNo is null.");
         }
-        Gson gson = new Gson();
-        String tmp = Redis.get(getBuffKey(corpNo));
-        if (Utils.isNotEmpty(tmp)) {
-            return gson.fromJson(tmp, BookInfoRecord.class);
-        }
-
         
-        ICorpInfoReader reader = Application.getBean(handle, ICorpInfoReader.class);
-        Record record = reader.getCorpInfo(corpNo);
+        ICorpInfoReader reader = Application.getBean(ICorpInfoReader.class);
+        Record record = reader.getCorpInfo(handle.getSession(), corpNo);
         
         BookInfoRecord item = new BookInfoRecord();
         if (record == null) {
@@ -59,7 +47,6 @@ public class MemoryBookInfo {
         item.setEmail(record.getString("Email_"));
         item.setFax(record.getString("Fax_"));
 
-        Redis.set(getBuffKey(corpNo), gson.toJson(item));
         return item;
     }
 
@@ -141,11 +128,9 @@ public class MemoryBookInfo {
         return item.getIndustry();
     }
 
-    public static void clear(String corpNo) {
-        Redis.delete(getBuffKey(corpNo));
+    public static void clear(IHandle handle, String corpNo) {
+        ICorpInfoReader reader = Application.getBean(ICorpInfoReader.class);
+        reader.clearCache(handle, corpNo);
     }
 
-    private static String getBuffKey(String corpNo) {
-        return String.format("%s.%s.%s", BufferType.getOurInfo, corpNo, buffVersion);
-    }
 }

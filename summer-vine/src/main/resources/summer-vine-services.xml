@@ -11,10 +11,6 @@
     <bean id="TAppLogin.verifyMachine" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="verifyMachine" />
     </bean>
-    <!-- 根据手机号，转化成用户帐号 -->
-    <bean id="TAppLogin.getUserCodeByMobile" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
-        <property name="funcCode" value="getTelToUserCode" />
-    </bean>
     <!-- 微信自动登录 -->
     <bean id="TAppLogin.autoLogin" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
         <property name="funcCode" value="autoLogin" />

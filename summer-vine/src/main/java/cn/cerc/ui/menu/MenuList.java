@@ -15,6 +15,7 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.cache.Redis;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.core.CenterService;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.language.R;
 import cn.cerc.mis.other.IDataList;
@@ -23,10 +24,9 @@ import cn.cerc.ui.SummerUI;
 /**
  * 系统菜单缓存 此对象不应该放在框架中
  */
-public class MenuList implements IDataList, IUserLanguage {
+public class MenuList extends Handle implements IDataList, IUserLanguage {
     private final ClassResource res = new ClassResource(this, SummerUI.ID);
 
-    private final IHandle handle;
     private final Map<String, MenuModel> buff = new LinkedHashMap<>();
     private final String buffKey;
     private final int Version = 5;
@@ -36,8 +36,7 @@ public class MenuList implements IDataList, IUserLanguage {
     }
 
     private MenuList(IHandle handle) {
-        super();
-        this.handle = handle;
+        super(handle);
         buffKey = String.format("%d.%s.%d", SystemBufferType.getObject.ordinal(), this.getClass().getName(), Version);
     }
 
@@ -79,7 +78,7 @@ public class MenuList implements IDataList, IUserLanguage {
         }
 
         // 从数据库中读取
-        CenterService svr = new CenterService(handle);
+        CenterService svr = new CenterService(this);
         svr.setService("ApiMenus.getMenus");
         if (!svr.exec()) {
             throw new RuntimeException(svr.getMessage());
@@ -137,6 +136,6 @@ public class MenuList implements IDataList, IUserLanguage {
 
     @Override
     public String getLanguageId() {
-        return R.getLanguageId(this.handle);
+        return R.getLanguageId(this);
     }
 }

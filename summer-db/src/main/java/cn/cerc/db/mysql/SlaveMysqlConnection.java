@@ -3,7 +3,6 @@ package cn.cerc.db.mysql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,7 @@ import cn.cerc.db.SummerDB;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SlaveMysqlConnection extends SqlConnection {
+public class SlaveMysqlConnection extends SqlConnection implements AutoCloseable {
     private static final ClassConfig config = new ClassConfig(SlaveMysqlConnection.class, SummerDB.ID);
     private static final Logger log = LoggerFactory.getLogger(SlaveMysqlConnection.class);
 
@@ -31,6 +30,7 @@ public class SlaveMysqlConnection extends SqlConnection {
     private static String mysql_user;
     private static String mysql_pwd;
 
+    private Connection connection;
     private String url;
 
     static {
@@ -64,19 +64,6 @@ public class SlaveMysqlConnection extends SqlConnection {
         }
     }
 
-    @Override
-    public boolean execute(String sql) {
-        try {
-            log.debug(sql);
-            Statement st = getClient().createStatement();
-            st.execute(sql);
-            return true;
-        } catch (SQLException e) {
-            log.error("error sql: " + sql);
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
     public static String getConnectUrl() {
         if (Utils.isEmpty(mysql_site) || Utils.isEmpty(mysql_database)) {
             throw new RuntimeException("mysql connection error");
@@ -88,7 +75,20 @@ public class SlaveMysqlConnection extends SqlConnection {
 
     @Override
     public void setConfig(IConfig config) {
-        
+
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (connection != null) {
+                log.debug("close connection.");
+                connection.close();
+                connection = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

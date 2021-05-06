@@ -18,9 +18,8 @@ import cn.cerc.db.SummerDB;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MysqlConnection extends SqlConnection {
+public class MysqlConnection extends SqlConnection implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(MysqlConnection.class);
-
     private static final ClassConfig config = new ClassConfig(MysqlConnection.class, SummerDB.ID);
     // IHandle中识别码
     public static final String sessionId = "sqlSession";
@@ -37,6 +36,7 @@ public class MysqlConnection extends SqlConnection {
     private static String mysql_password;
     private static String mysql_serverTimezone;
 
+    private Connection connection;
     private String url;
 
     static {
@@ -71,7 +71,6 @@ public class MysqlConnection extends SqlConnection {
         }
     }
 
-    @Override
     public boolean execute(String sql) {
         try {
             log.debug(sql);
@@ -116,6 +115,19 @@ public class MysqlConnection extends SqlConnection {
     @Override
     public void setConfig(IConfig config) {
 
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (connection != null) {
+                log.debug("close connection.");
+                connection.close();
+                connection = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

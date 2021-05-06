@@ -14,12 +14,11 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.mis.language.R;
 import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.IRightMenuLoad;
 import cn.cerc.ui.core.UICustomComponent;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.menu.MenuList;
-import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
-import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIComponent;
 import cn.cerc.ui.parts.UIHeader;
 
@@ -54,21 +53,19 @@ public class UIPagePhone extends UIPage {
         HttpServletRequest request = getRequest();
 
         IForm form = this.getForm();
-        ISession session = form.getHandle().getSession();
+        ISession session = form.getSession();
         UIHeader header = getHeader();
         if (header != null) {
             if (session.logon()) {
                 List<UrlRecord> rightMenus = header.getRightMenus();
-                RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
-                menus.setHandle(form.getHandle());
-                for (IMenuBar item : menus.getItems()) {
-                    item.enrollMenu(form, rightMenus);
-                }
+                IRightMenuLoad menus = Application.getBean(IRightMenuLoad.class);
+                if (menus != null)
+                    menus.loadMenu(form, rightMenus);
             } else {
                 header.getHomePage().setSite(Application.getConfig().getWelcomePage());
             }
         }
-        
+
         // 系统通知消息
         Component content = this.getContent();
         if (form instanceof AbstractForm) {
@@ -94,10 +91,9 @@ public class UIPagePhone extends UIPage {
         String[] params = menuCode.split("\\.");
         String formId = params[0];
         if (Utils.isNotEmpty(this.getForm().getName())) {
-            out.printf("<title>%s</title>\n", R.asString(form.getHandle(), this.getForm().getName()));
+            out.printf("<title>%s</title>\n", R.asString(form, this.getForm().getName()));
         } else {
-            out.printf("<title>%s</title>\n",
-                    R.asString(form.getHandle(), MenuList.create(this.getForm().getHandle()).getName(formId)));
+            out.printf("<title>%s</title>\n", R.asString(form, MenuList.create(this.getForm()).getName(formId)));
         }
 
         // 所有的请求都不发送 referrer

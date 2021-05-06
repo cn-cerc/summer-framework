@@ -6,8 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.core.Utils;
-import cn.cerc.db.core.IHandle;
+import cn.cerc.core.TDateTime;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.SystemBuffer;
@@ -22,19 +21,10 @@ public class ExportService extends ExportExcel {
 
     private String service;
     private String exportKey;
-    private String corpNo;
-
-    public String getCorpNo() {
-        return corpNo;
-    }
-
-    public void setCorpNo(String corpNo) {
-        this.corpNo = corpNo;
-    }
 
     public ExportService(AbstractForm owner) {
-        super(owner.getResponse());
-        this.setHandle(owner);
+        super(owner, owner.getResponse());
+        this.setSession(owner.getSession());
         HttpServletRequest request = owner.getRequest();
         service = request.getParameter("service");
         exportKey = request.getParameter("exportKey");
@@ -49,14 +39,10 @@ public class ExportService extends ExportExcel {
             throw new RuntimeException(String.format(res.getString(1, "错误的调用：%s"), "exportKey is null"));
         }
 
-        IHandle handle = (IHandle) this.getHandle();
-        if (Utils.isEmpty(this.corpNo)) {
-            this.corpNo = handle.getCorpNo();
-        }
-        PartnerService app = new PartnerService(handle);
-        app.setCorpNo(this.corpNo);
+        PartnerService app = new PartnerService(this);
+        app.setCorpNo(this.getCorpNo());
         app.setService(service);
-        try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.User.ExportKey, handle.getUserCode(), exportKey)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.User.ExportKey, this.getUserCode(), exportKey)) {
             app.getDataIn().close();
             app.getDataIn().setJSON(buff.getString("data"));
         }
@@ -76,4 +62,5 @@ public class ExportService extends ExportExcel {
         this.getTemplate().setDataSet(dataOut);
         super.export();
     }
+    
 }

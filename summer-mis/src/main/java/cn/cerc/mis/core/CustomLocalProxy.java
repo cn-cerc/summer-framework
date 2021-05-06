@@ -5,16 +5,12 @@ import org.springframework.context.ApplicationContext;
 import cn.cerc.core.DataSet;
 import cn.cerc.db.core.IHandle;
 
-public abstract class CustomLocalProxy {
-    private IHandle handle;
+public abstract class CustomLocalProxy extends Handle {
     private String service;
     private String message;
 
     public CustomLocalProxy(IHandle handle) {
-        this.handle = handle;
-        if (handle == null) {
-            throw new RuntimeException("handle is null.");
-        }
+        super(handle);
     }
 
     protected boolean executeService(Object bean, DataSet dataIn, DataSet dataOut) {
@@ -30,8 +26,8 @@ public abstract class CustomLocalProxy {
     }
 
     protected Object getServiceObject() {
-        if (getHandle() == null) {
-            this.setMessage("handle is null.");
+        if (getSession() == null) {
+            this.setMessage("session is null.");
             return null;
         }
         if (getService() == null) {
@@ -47,7 +43,8 @@ public abstract class CustomLocalProxy {
         } else {
             // 读取注解的配置，并自动将第一个字母改为小写
             String beanId = getService().split("\\.")[0];
-            beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
+            if (!beanId.substring(0, 2).toUpperCase().equals(beanId.substring(0, 2)))
+                beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
             if (context.containsBean(beanId)) {
                 bean = context.getBean(beanId);
                 // 支持指定函数
@@ -62,8 +59,8 @@ public abstract class CustomLocalProxy {
             return null;
         }
 
-        if (bean instanceof IService) {
-            ((IService) bean).setHandle(handle);
+        if (bean instanceof IHandle) {
+            ((IHandle) bean).setSession(this.getSession());
         }
         return bean;
     }
@@ -87,14 +84,6 @@ public abstract class CustomLocalProxy {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public IHandle getHandle() {
-        return handle;
-    }
-
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
     }
 
 }

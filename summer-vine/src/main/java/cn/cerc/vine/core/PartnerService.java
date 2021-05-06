@@ -36,7 +36,7 @@ public class PartnerService extends RemoteService {
             return this.executeService(url);
         } else {
             this.initDataIn(args);
-            LocalService svr = new LocalService(new BookHandle(this.getHandle(), this.corpNo));
+            LocalService svr = new LocalService(new BookHandle(this, this.corpNo));
             svr.setService(this.getService());
             svr.setDataIn(getDataIn());
             boolean result = svr.exec();
@@ -48,6 +48,7 @@ public class PartnerService extends RemoteService {
         }
     }
 
+    @Override
     public String getCorpNo() {
         return corpNo;
     }

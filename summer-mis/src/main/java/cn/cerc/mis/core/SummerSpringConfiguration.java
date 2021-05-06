@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = "cn.cerc")
 //@ImportResource("classpath*:summer-mis-spring.xml")
-public class SummerConfiguration {
+public class SummerSpringConfiguration {
     
 }

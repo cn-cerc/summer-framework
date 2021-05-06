@@ -21,16 +21,16 @@ public class ResourceBuffer {
 
     public String get(IHandle handle, String text) {
         if (items.size() == 0) {
-            ILanguageReader reader = Application.getDefaultBean(handle, ILanguageReader.class);
-            if (reader.loadDictionary(items, lang) == 0)
+            ILanguageReader reader = Application.getBean(handle, ILanguageReader.class);
+            if (reader.loadDictionary(handle, items, lang) == 0)
                 log.error("dictionary data can not be found");
         }
         if (items.containsKey(text)) {
             return items.get(text);
         }
 
-        ILanguageReader reader = Application.getDefaultBean(handle, ILanguageReader.class);
-        String result =  reader.getOrSet(lang, text);
+        ILanguageReader reader = Application.getBean(handle, ILanguageReader.class);
+        String result =  reader.getOrSet(handle, lang, text);
         items.put(text, result);
         return result;
     }

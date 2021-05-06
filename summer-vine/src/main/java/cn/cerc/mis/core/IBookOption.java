@@ -18,7 +18,7 @@ public interface IBookOption extends IVineOption {
     default String getValue(IHandle handle, String def) {
         try (MemoryBuffer buff = new MemoryBuffer(BufferType.getVineOptions, handle.getCorpNo(), getKey())) {
             if (buff.isNull()) {
-                IOptionReader reader = Application.getDefaultBean(handle, IOptionReader.class);
+                IOptionReader reader = Application.getBean(handle, IOptionReader.class);
                 String value = reader.getCorpValue(handle.getCorpNo(), getKey(), def);
                 buff.setField("Value_", value);
             }

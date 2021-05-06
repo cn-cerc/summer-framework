@@ -30,7 +30,7 @@ public class BarcodeTemplate extends PrintTemplate {
 
     public static void main(String[] args) {
         // Servlet sample:
-        // ExportPdf export = new ExportPdf(getResponse());
+        // ExportPdf export = new ExportPdf(this, getResponse());
         // export.setTemplateId("BarcodeEAN");
         // BarcodeTemplate bt = (BarcodeTemplate) export.getTemplate();
         // bt.add("2222222220013", "赠品切换条码");

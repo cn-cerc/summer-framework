@@ -55,7 +55,7 @@ public class JspFile extends AbstractPage {
         String fileName = jspFile.substring(0, jspFile.indexOf(".jsp"));
         String extName = jspFile.substring(jspFile.indexOf(".jsp") + 1);
         IForm form = getForm();
-        String langCode = R.getLanguageId(form.getHandle());
+        String langCode = R.getLanguageId(form);
         
         // 检查是否存在 PC 专用版本的jsp文件
         String newFile = String.format("%s-%s.%s", fileName, "pc", extName);

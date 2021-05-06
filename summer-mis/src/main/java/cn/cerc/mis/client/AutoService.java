@@ -2,7 +2,6 @@ package cn.cerc.mis.client;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.IHandleOwner;
 import cn.cerc.mis.core.BookHandle;
 import cn.cerc.mis.core.CustomLocalProxy;
 import cn.cerc.mis.core.ServiceException;
@@ -10,12 +9,10 @@ import cn.cerc.mis.core.ServiceException;
 public class AutoService extends CustomLocalProxy {
     private DataSet dataOut = new DataSet();
     private String message;
-    private IHandle handle;
     private ServiceRecord service;
 
     public AutoService(IHandle handle, String corpNo, String userCode, String service) {
         super(handle);
-        this.handle = handle;
         this.service = new ServiceRecord();
         this.service.setCorpNo(corpNo);
         this.service.setUserCode(userCode);
@@ -50,10 +47,10 @@ public class AutoService extends CustomLocalProxy {
             return false;
         }
 
-        BookHandle handle = new BookHandle(this.handle, service.getCorpNo());
+        BookHandle handle = new BookHandle(this, service.getCorpNo());
         handle.setUserCode(service.getUserCode());
-        if (object instanceof IHandleOwner) {
-            ((IHandleOwner) object).setHandle(handle);
+        if (object instanceof IHandle) {
+            ((IHandle) object).setSession(handle.getSession());
         }
 
         boolean result = executeService(object, service.getDataIn(), dataOut);

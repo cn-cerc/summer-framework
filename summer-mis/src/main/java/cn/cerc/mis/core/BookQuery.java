@@ -6,6 +6,7 @@ import cn.cerc.core.Record;
 import cn.cerc.db.mysql.SqlOperator;
 import cn.cerc.db.mysql.SqlQuery;
 
+@Deprecated
 public class BookQuery extends SqlQuery implements IDataOperator {
     private static final long serialVersionUID = 7447239243975915295L;
     private SqlOperator operator;

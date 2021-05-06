@@ -3,9 +3,8 @@ package cn.cerc.mis.core;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.IHandleOwner;
 
-public interface IService extends IHandle, IHandleOwner {
+public interface IService extends IHandle {
 
     IStatus execute(DataSet dataIn, DataSet dataOut) throws ServiceException;
 

@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.ITokenManage;
 import cn.cerc.mis.SummerMIS;
 
 @Component
@@ -39,45 +37,31 @@ public class FormFactory implements ApplicationContextAware {
         // 设置登录开关
         req.setAttribute("logon", false);
 
-        // 验证菜单是否启停
-        IFormFilter formFilter = Application.getBean(IFormFilter.class, "AppFormFilter");
-        if (formFilter != null) {
-            try {
-                if (formFilter.doFilter(resp, formId, funcCode)) {
-                    return null;
-                }
-            } catch (IOException e) {
-                log.error(e.getMessage());
-                e.printStackTrace();
-            }
-        }
+        // 建立数据库资源
+        try (BasicHandle handle = new BasicHandle()) {
+            req.setAttribute("myappHandle", handle);
+            ISession session = handle.getSession();
+            session.setProperty(Application.SessionId, req.getSession().getId());
+            session.setProperty(ISession.REQUEST, req);
 
-        ISession session = null;
-        try {
             IForm form = getForm(req, resp, formId);
             if (form == null) {
                 outputErrorPage(req, resp, new RuntimeException("error servlet:" + req.getServletPath()));
                 return null;
             }
+            form.setSession(session);
 
             // 设备讯息
             AppClient client = new AppClient();
             client.setRequest(req);
+            session.setProperty(ISession.LANGUAGE_ID, client.getLanguage());
+
             req.setAttribute("_showMenu_", !AppClient.ee.equals(client.getDevice()));
             form.setClient(client);
 
-            // 建立数据库资源
-            session = Application.createSession();
-            IHandle handle = new Handle(session);
-            ITokenManage manage = Application.getDefaultBean(handle, ITokenManage.class);
-            manage.resumeToken((String) req.getSession().getAttribute(RequestData.TOKEN));
-            session.setProperty(Application.SessionId, req.getSession().getId());
-            session.setProperty(ISession.LANGUAGE_ID, client.getLanguage());
             session.setProperty(ISession.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
-            session.setProperty(ISession.REQUEST, req);
-            req.setAttribute("myappHandle", handle);
+
             form.setId(formId);
-            form.setHandle(handle);
 
             // 传递路径变量
             form.setPathVariables(pathVariables);
@@ -99,7 +83,7 @@ public class FormFactory implements ApplicationContextAware {
                 }
             } else {
                 // 登录验证
-                IAppLogin appLogin = Application.getDefaultBean(form, IAppLogin.class);
+                IAppLogin appLogin = Application.getBean(form, IAppLogin.class);
                 if (!appLogin.pass(form)) {
                     return appLogin.getJspFile();
                 }
@@ -110,7 +94,7 @@ public class FormFactory implements ApplicationContextAware {
                 return form.getView(funcCode);
             }
 
-            ISecurityDeviceCheck deviceCheck = Application.getDefaultBean(form, ISecurityDeviceCheck.class);
+            ISecurityDeviceCheck deviceCheck = Application.getBean(form, ISecurityDeviceCheck.class);
             switch (deviceCheck.pass(form)) {
             case PASS:
                 log.debug("{}.{}", formId, funcCode);
@@ -127,10 +111,6 @@ public class FormFactory implements ApplicationContextAware {
         } catch (Exception e) {
             outputErrorPage(req, resp, e);
             return null;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -156,7 +136,7 @@ public class FormFactory implements ApplicationContextAware {
         if (err == null) {
             err = e;
         }
-        IAppErrorPage errorPage = Application.getDefaultBean(null, IAppErrorPage.class);
+        IAppErrorPage errorPage = Application.getBean(IAppErrorPage.class);
         if (errorPage != null) {
             String result = errorPage.getErrorPage(request, response, err);
             if (result != null) {

@@ -5,17 +5,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.client.AutoService;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.IUserMessage;
-import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.message.MessageProcess;
 import cn.cerc.mis.task.AbstractTask;
 
@@ -26,22 +21,20 @@ import cn.cerc.mis.task.AbstractTask;
  */
 public class ProcessService extends AbstractTask {
     private static final Logger log = LoggerFactory.getLogger(ProcessService.class);
-    private static final ClassResource res = new ClassResource(ProcessService.class, SummerMIS.ID);
 
     // 手动执行所有的预约服务
     public static void main(String[] args) {
         Application.initOnlyFramework();
-        ISession session = Application.createSession();
-        IHandle handle = new Handle(session);
+        ISession session = Application.getSession();
 
         ProcessService ps = new ProcessService();
-        ps.setHandle(handle);
+        ps.setSession(session);
         ps.run();
     }
 
     @Override
     public void execute() throws JsonProcessingException {
-        IUserMessage um = Application.getBean(handle, IUserMessage.class);
+        IUserMessage um = Application.getBean(this, IUserMessage.class);
         for (String uid : um.getWaitList()) {
             log.info("开始处理异步任务，UID=" + uid);
             processService(uid);
@@ -53,7 +46,7 @@ public class ProcessService extends AbstractTask {
      */
     private void processService(String taskId) throws JsonProcessingException {
         // 此任务可能被其它主机抢占
-        IUserMessage um = Application.getBean(handle, IUserMessage.class);
+        IUserMessage um = Application.getBean(this, IUserMessage.class);
         Record ds = um.readAsyncService(taskId);
         if (ds == null) {
             return;
@@ -70,7 +63,7 @@ public class ProcessService extends AbstractTask {
         updateTaskprocess(async, taskId, subject);
         try {
             // 执行指定的数据服务
-            AutoService auto = new AutoService(this.handle, corpNo, userCode, async.getService());
+            AutoService auto = new AutoService(this, corpNo, userCode, async.getService());
             auto.getDataIn().appendDataSet(async.getDataIn(), true);
             if (auto.exec()) {
                 async.getDataOut().appendDataSet(auto.getDataOut(), true);
@@ -94,7 +87,7 @@ public class ProcessService extends AbstractTask {
      */
     private void updateTaskprocess(AsyncService async, String msgId, String subject) {
         async.setProcessTime(TDateTime.now().toString());
-        IUserMessage um = Application.getBean(handle, IUserMessage.class);
+        IUserMessage um = Application.getBean(this, IUserMessage.class);
         if (!um.updateAsyncService(msgId, async.toString(), async.getProcess())) {
             throw new RuntimeException(String.format("msgId %s not find.", msgId));
         }

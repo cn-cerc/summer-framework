@@ -39,10 +39,9 @@ public class R {
         }
 
         String language = temp == null ? Application.getLanguageId() : (String) temp;
-
         try {
-            IAppLanguage obj = Application.getDefaultBean(handle, IAppLanguage.class);
-            language = obj.getLanguageId(language);
+            IAppLanguage obj = Application.getBean(IAppLanguage.class);
+            language = obj.getLanguageId(handle.getSession(), language);
         } catch (Exception e) {
             language = LanguageResource.appLanguage;
         }

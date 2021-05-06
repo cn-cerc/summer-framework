@@ -7,13 +7,18 @@ import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 
 public class BookHandle implements IHandle {
-    private ISession owner;
     private ISession session;
     private Map<String, Object> params = new HashMap<>();
 
     public BookHandle(IHandle handle, String corpNo) {
-        this.owner = handle.getSession();
+        init(handle.getSession(), corpNo);
+    }
 
+    public BookHandle(ISession owner, String corpNo) {
+        init(owner, corpNo);
+    }
+
+    private void init(ISession owner, String corpNo) {
         this.session = new ISession() {
             @Override
             public Object getProperty(String key) {
@@ -37,10 +42,9 @@ public class BookHandle implements IHandle {
             public void close() {
                 owner.close();
             }
-
         };
 
-        session.setProperty(ISession.CORP_NO, corpNo);
+        this.session.setProperty(ISession.CORP_NO, corpNo);
     }
 
     public void setUserCode(String userCode) {

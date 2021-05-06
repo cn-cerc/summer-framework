@@ -14,7 +14,7 @@ public class BookQueryTest {
     public void test() {
         ISystemTable systemTable = Application.getSystemTable();
         Application.initOnlyFramework();
-        ISession session = Application.createSession();
+        ISession session = Application.getSession();
         BookQuery ds = new BookQuery(new Handle(session));
         ds.add("select * from %s where CorpNo_='144001'", systemTable.getBookInfo());
         ds.open();

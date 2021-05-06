@@ -11,49 +11,52 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
 import jxl.Workbook;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
-public class ExportExcel {
+public class ExportExcel implements IHandle {
     private static ApplicationContext app;
     public static final String LocalPath = System.getProperty("user.home") + System.getProperty("file.separator");
     private final static String xmlFile = "classpath:export-excel.xml";
     private HttpServletResponse response;
     private String templateId;
     private ExcelTemplate template;
-    private Object handle;
     // 导出是否保存到本地，用于发送邮件时获取，默认false
     private boolean saveLocal = false;
+    private ISession session;
 
     public ExportExcel() {
 
     }
 
-    public ExportExcel(HttpServletResponse response) {
+    public ExportExcel(IHandle handle, HttpServletResponse response) {
+        this.setSession(handle.getSession());
         this.response = response;
     }
 
     public void export() throws IOException, WriteException, AccreditException {
-        if (this.handle == null) {
-            throw new RuntimeException("handle is null");
+        if (this.session == null) {
+            throw new RuntimeException("session is null");
         }
 
         template = this.getTemplate();
 
         IAccreditManager manager = template.getAccreditManager();
         if (manager != null) {
-            if (!manager.isPass(this.handle)) {
+            if (!manager.isPass(this)) {
                 throw new AccreditException(String.format("您没有导出[%s]的权限", manager.getDescribe()));
             }
         }
 
         HistoryWriter writer = template.getHistoryWriter();
         if (writer != null) {
-            writer.start(this.handle, template);
+            writer.start(this, template);
             exportDataSet();
-            writer.finish(this.handle, template);
+            writer.finish(this, template);
         } else {
             exportDataSet();
         }
@@ -135,15 +138,18 @@ public class ExportExcel {
         this.templateId = templateId;
     }
 
-    public Object getHandle() {
-        return handle;
-    }
-
-    public void setHandle(Object handle) {
-        this.handle = handle;
-    }
-
     public void setSaveLocal(boolean saveLocal) {
         this.saveLocal = saveLocal;
     }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
 }

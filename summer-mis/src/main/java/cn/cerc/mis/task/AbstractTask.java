@@ -5,19 +5,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.cerc.core.ISession;
-import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.BasicHandle;
 import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
-import cn.cerc.mis.custom.SessionDefault;
 
 public abstract class AbstractTask extends Handle implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(AbstractTask.class);
+    private BasicHandle handle;
+    private int sessionTimes = 0;
 
     @Autowired
     public ISystemTable systemTable;
     private String describe;
-
-    private ISession session;
 
     /**
      * 缓存过期时间 单位：秒
@@ -54,26 +53,23 @@ public abstract class AbstractTask extends Handle implements Runnable {
      */
     @Override
     public void run() {
-        SessionDefault session = new SessionDefault();
+        if (sessionTimes == 0) {
+            if (handle != null)
+                handle.close();
+
+            sessionTimes = 3600;
+            handle = new BasicHandle();
+        }
+
         try {
-            this.setHandle(new Handle(session));
-            session.setProperty(ISession.USER_CODE, "admin");
+            this.setSession(handle.getSession());
+            handle.getSession().setProperty(ISession.USER_CODE, "admin");
             this.execute();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
-            session.close();
+            sessionTimes--;
         }
-    }
-
-    @Override
-    public ISession getSession() {
-        return session;
-    }
-
-    @Override
-    public void setSession(ISession session) {
-        this.session = session;
     }
 
     // 具体业务逻辑代码

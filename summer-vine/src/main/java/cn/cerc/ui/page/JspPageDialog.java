@@ -16,12 +16,11 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlContent;
+import cn.cerc.ui.core.IRightMenuLoad;
 import cn.cerc.ui.core.MutiGrid;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.grid.AbstractGrid;
 import cn.cerc.ui.grid.MutiPage;
-import cn.cerc.ui.mvc.IMenuBar;
-import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
 import cn.cerc.ui.parts.UIToolbar;
@@ -56,7 +55,7 @@ public class JspPageDialog extends JspPage {
     public String execute() throws ServletException, IOException {
         IForm form = this.getForm();
         HttpServletRequest request = form.getRequest();
-        ISession session = form.getHandle().getSession();
+        ISession session = form.getSession();
         request.setAttribute("passport", session.logon());
         request.setAttribute("logon", session.logon());
 
@@ -64,11 +63,9 @@ public class JspPageDialog extends JspPage {
         if (header != null) {
             if (session.logon()) {
                 List<UrlRecord> rightMenus = header.getRightMenus();
-                RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
-                menus.setHandle(form.getHandle());
-                for (IMenuBar item : menus.getItems()) {
-                    item.enrollMenu(form, rightMenus);
-                }
+                IRightMenuLoad menus = Application.getBean(IRightMenuLoad.class);
+                if (menus != null)
+                    menus.loadMenu(form, rightMenus);
             } else {
                 header.getHomePage().setSite(Application.getConfig().getWelcomePage());
             }

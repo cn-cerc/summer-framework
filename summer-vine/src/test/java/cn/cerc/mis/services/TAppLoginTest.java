@@ -30,13 +30,12 @@ public class TAppLoginTest {
         String userCode = "91100101";
         
         Application.initOnlyFramework();
-        ISession session = Application.createSession();
+        ISession session = Application.getSession();
         session.setProperty(ISession.CORP_NO, corpNo);
         session.setProperty(ISession.USER_CODE, userCode);
-        IHandle handle = new Handle(session);
         
         TAppLogin app = new TAppLogin();
-        app.setHandle(handle);
+        app.setSession(session);
         Record headIn = app.getDataIn().getHead();
         headIn.setField("Account_", userCode);
         assertFalse(app.Check());
@@ -46,13 +45,12 @@ public class TAppLoginTest {
     @Ignore
     public void testCheck2() throws SecurityCheckException {
         Application.initOnlyFramework();
-        ISession session = Application.createSession();
-        IHandle handle = new Handle(session);
+        ISession session = Application.getSession();
         
-        String userCode = handle.getUserCode();
+        String userCode = session.getUserCode();
         TAppLogin app = new TAppLogin();
 
-        app.setHandle(handle);
+        app.setSession(session);
         Record headIn = app.getDataIn().getHead();
         headIn.setField("Account_", userCode);
         boolean ok = app.Check();
@@ -69,13 +67,12 @@ public class TAppLoginTest {
         String userCode = "9110010001";
 
         Application.initOnlyFramework();
-        ISession session = Application.createSession();
+        ISession session = Application.getSession();
         session.setProperty(ISession.CORP_NO, corpNo);
         session.setProperty(ISession.USER_CODE, userCode);
-        IHandle handle = new Handle(session);
         
         TAppLogin app = new TAppLogin();
-        app.setHandle(handle);
+        app.setSession(session);
         Record headIn = app.getDataIn().getHead();
         headIn.setField("Account_", userCode);
         boolean ok = app.Check();
@@ -93,7 +90,7 @@ public class TAppLoginTest {
         String deviceId = "TEST";
         
         Application.initOnlyFramework();
-        ISession session = Application.createSession();
+        ISession session = Application.getSession();
         session.setProperty(ISession.CORP_NO, corpNo);
         session.setProperty(ISession.USER_CODE, userCode);
         IHandle handle = new Handle(session);

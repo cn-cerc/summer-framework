@@ -70,7 +70,7 @@ public class OperaPages extends UISheet implements IUserLanguage {
 
     @Override
     public String getLanguageId() {
-        return R.getLanguageId(form.getHandle());
+        return R.getLanguageId(form);
     }
 
 }

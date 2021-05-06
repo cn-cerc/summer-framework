@@ -28,6 +28,7 @@ import cn.cerc.mis.core.DataValidateException;
 import cn.cerc.mis.core.LocalService;
 import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.core.SystemBufferType;
+import cn.cerc.mis.custom.SessionDefault;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.MemoryBuffer;
 
@@ -187,10 +188,9 @@ public class TAppLogin extends CustomService {
                 dsCorp.edit();
                 dsCorp.setField("Status_", 2);
                 dsCorp.post();
-                MemoryBookInfo.clear(corpNo);
+                MemoryBookInfo.clear(this, corpNo);
             }
 
-            session.setProperty(ISession.TOKEN, Utils.generateToken());
             session.setProperty(Application.UserId, dsUser.getString("ID_"));
             session.setProperty(ISession.CORP_NO, dsUser.getString("CorpNo_"));
             session.setProperty(ISession.USER_CODE, dsUser.getString("Code_"));
@@ -216,7 +216,7 @@ public class TAppLogin extends CustomService {
             getDataOut().getHead().setField("SessionID_", getProperty(ISession.TOKEN));
             getDataOut().getHead().setField("UserID_", getProperty(Application.UserId));
             getDataOut().getHead().setField("UserCode_", getUserCode());
-            getDataOut().getHead().setField("CorpNo_", handle.getCorpNo());
+            getDataOut().getHead().setField("CorpNo_", this.getCorpNo());
             getDataOut().getHead().setField("YGUser", YGLogin);
 
             // 验证成功，将验证次数赋值为0
@@ -249,7 +249,7 @@ public class TAppLogin extends CustomService {
     public boolean getState() {
         getDataOut().getHead().setField("UserID_", getProperty(Application.UserId));
         getDataOut().getHead().setField("UserCode_", getUserCode());
-        getDataOut().getHead().setField("CorpNo_", handle.getCorpNo());
+        getDataOut().getHead().setField("CorpNo_", this.getCorpNo());
         return true;
     }
 
@@ -566,17 +566,25 @@ public class TAppLogin extends CustomService {
                 "update %s set Viability_=-1,LogoutTime_='%s' where Account_='%s' and Viability_>-1",
                 systemTable.getCurrentUser(), TDateTime.now(), getUserCode());
         getConnection().execute(SQLCmd);
+        
+        ISession session = this.getSession();
+        try {
+            session.setProperty(SessionDefault.TOKEN_CREATE_ENTER, "start");
+            session.setProperty(ISession.TOKEN, Utils.generateToken());
+        } finally {
+            session.setProperty(SessionDefault.TOKEN_CREATE_ENTER, null);
+        }
 
         // 增加新的记录
         Record rs = new Record();
-        rs.setField("UserID_", this.getProperty(Application.UserId));
-        rs.setField("CorpNo_", handle.getCorpNo());
-        rs.setField("Account_", getUserCode());
-        rs.setField("LoginID_", this.getProperty(ISession.TOKEN));
+        rs.setField("UserID_", session.getProperty(Application.UserId));
+        rs.setField("CorpNo_", session.getCorpNo());
+        rs.setField("Account_", session.getUserCode());
+        rs.setField("LoginID_", session.getToken());
         rs.setField("Computer_", computer);
-        rs.setField("clientIP_", this.getProperty(Application.ClientIP));
+        rs.setField("clientIP_", session.getProperty(Application.ClientIP));
         rs.setField("LoginTime_", TDateTime.now());
-        rs.setField("ParamValue_", handle.getCorpNo());
+        rs.setField("ParamValue_", this.getCorpNo());
         rs.setField("KeyCardID_", GuidNull);
         rs.setField("Viability_", Utils.intToStr(Max_Viability));
         rs.setField("LoginServer_", ServerConfig.getAppName());

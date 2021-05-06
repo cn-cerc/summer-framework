@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.Handle;
 
 public class SyncDatabase implements IPopProcesser {
     private static final Logger log = LoggerFactory.getLogger(SyncDatabase.class);
@@ -37,7 +38,7 @@ public class SyncDatabase implements IPopProcesser {
         record.delete("__opera");
         record.delete("__error");
 
-        IPushProcesser processer = Application.getBean(IPushProcesser.class, "sync_" + tableCode);
+        IPushProcesser processer = (IPushProcesser) Application.getBean(session, "sync_" + tableCode);
         if (processer == null) {
             processer = new PushTableDefault().setTableCode(tableCode);
         }

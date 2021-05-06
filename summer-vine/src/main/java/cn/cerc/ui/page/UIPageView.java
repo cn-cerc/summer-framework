@@ -11,10 +11,9 @@ import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.code.IFormInfo;
 import cn.cerc.ui.core.Component;
+import cn.cerc.ui.core.IRightMenuLoad;
 import cn.cerc.ui.core.UrlRecord;
-import cn.cerc.ui.mvc.IMenuBar;
 import cn.cerc.ui.mvc.StartForms;
-import cn.cerc.ui.parts.RightMenus;
 import cn.cerc.ui.parts.UIHeader;
 
 public class UIPageView extends UIPage {
@@ -31,7 +30,7 @@ public class UIPageView extends UIPage {
         String[] params = menuCode.split("\\.");
         String formId = params[0];
 
-        IFormInfo menu = Application.getDefaultBean(form, IFormInfo.class);
+        IFormInfo menu = Application.getBean(form, IFormInfo.class);
         this.caption = menu.getFormCaption(this.getForm(), formId, form.getName());
     }
 
@@ -39,16 +38,14 @@ public class UIPageView extends UIPage {
     protected void writeHtml(PrintWriter out) {
         HttpServletRequest request = getRequest();
         IForm form = this.getForm();
-        ISession session = form.getHandle().getSession();
+        ISession session = form.getSession();
         UIHeader header = getHeader();
         if (header != null) {
             if (session.logon()) {
                 List<UrlRecord> rightMenus = header.getRightMenus();
-                RightMenus menus = Application.getBean(RightMenus.class, "RightMenus", "rightMenus");
-                menus.setHandle(form.getHandle());
-                for (IMenuBar item : menus.getItems()) {
-                    item.enrollMenu(form, rightMenus);
-                }
+                IRightMenuLoad menus = Application.getBean(IRightMenuLoad.class);
+                if (menus != null)
+                    menus.loadMenu(form, rightMenus);
             } else {
                 header.getHomePage().setSite(Application.getConfig().getWelcomePage());
             }

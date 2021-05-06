@@ -31,7 +31,7 @@ public class CenterService extends RemoteService {
             return this.executeService(url);
         } else {
             this.initDataIn(args);
-            LocalService svr = new LocalService(this.getHandle());
+            LocalService svr = new LocalService(this);
             svr.setService(this.getService());
             svr.setDataIn(getDataIn());
             boolean result = svr.exec();

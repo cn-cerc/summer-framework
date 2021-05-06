@@ -11,13 +11,14 @@ import org.springframework.context.ApplicationContext;
 
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
+import cn.cerc.ui.parts.UIComponent;
 
 public class SpringCheckBeanId {
     private static final Logger log = LoggerFactory.getLogger(SpringCheckBeanId.class);
     private Map<String, String> items = new HashMap<>();
     private ApplicationContext context;
 
-    public void run() {
+    public void run(boolean mutiName) {
         context = Application.getContext();
         Set<String> lines = new HashSet<>();
         for (String beanId : context.getBeanDefinitionNames()) {
@@ -25,6 +26,8 @@ public class SpringCheckBeanId {
                 check(beanId, lines);
             }
         }
+        if (!mutiName)
+            return;
         for (String className : items.keySet()) {
             log.info("{}, beanId 名字有多个：{}", className, items.get(className));
         }
@@ -68,6 +71,9 @@ public class SpringCheckBeanId {
             if (!path[0].equals(className)) {
                 log.warn("{}, beanId: {} 与类名不一致", object.getClass().getName(), beanId);
             }
+            
+            if(object instanceof UIComponent)
+                continue;
 
             String funcName = path[1];
             if (!(object instanceof CustomService)) {
@@ -94,7 +100,7 @@ public class SpringCheckBeanId {
         // 此下代码须在项目中执行，以便其加载application.xml文件！
         // 用于检测命名异常，修复后可以删除app-services.xml之类的文件
         Application.init();
-        new SpringCheckBeanId().run();
+        new SpringCheckBeanId().run(true);
     }
 
 }

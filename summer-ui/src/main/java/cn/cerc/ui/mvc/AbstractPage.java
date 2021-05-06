@@ -143,7 +143,7 @@ public abstract class AbstractPage extends UIComponent implements IPage, IUserLa
 
     @Override
     public String getLanguageId() {
-        return R.getLanguageId(form.getHandle());
+        return R.getLanguageId(form);
     }
 
 }

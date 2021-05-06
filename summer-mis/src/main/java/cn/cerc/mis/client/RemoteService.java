@@ -13,14 +13,14 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.other.MemoryBuffer;
 
-public abstract class RemoteService implements IServiceProxy {
+public abstract class RemoteService extends Handle implements IServiceProxy {
     private static final Logger log = LoggerFactory.getLogger(RemoteService.class);
     private static final ClassResource res = new ClassResource(RemoteService.class, SummerMIS.ID);
-    private IHandle handle;
     private String service;
     private DataSet dataIn;
     private DataSet dataOut;
@@ -28,7 +28,7 @@ public abstract class RemoteService implements IServiceProxy {
     private String token;
 
     public RemoteService(IHandle handle) {
-        this.handle = handle;
+        super(handle);
     }
 
     protected void initDataIn(Object... args) {
@@ -135,10 +135,6 @@ public abstract class RemoteService implements IServiceProxy {
         this.dataIn = dataIn;
     }
 
-    public IHandle getHandle() {
-        return handle;
-    }
-
     public String getToken() {
         return token;
     }
@@ -150,7 +146,7 @@ public abstract class RemoteService implements IServiceProxy {
     @Deprecated
     public String getExportKey() {
         String tmp = "" + System.currentTimeMillis();
-        try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.User.ExportKey, handle.getUserCode(), tmp)) {
+        try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.User.ExportKey, this.getUserCode(), tmp)) {
             buff.setField("data", this.getDataIn().getJSON());
         }
         return tmp;

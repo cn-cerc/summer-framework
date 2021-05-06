@@ -18,12 +18,12 @@ public class StubHandle extends Handle {
 
     public StubHandle() {
         Application.initOnlyFramework();
-        this.setSession(Application.createSession());
+        this.setSession(Application.getSession());
     }
     
     public StubHandle(String corpNo, String userCode) {
         Application.initOnlyFramework();
-        this.setSession(Application.createSession());
+        this.setSession(Application.getSession());
         getSession().setProperty(ISession.CORP_NO, corpNo);
         getSession().setProperty(ISession.USER_CODE, userCode);
     }

@@ -266,6 +266,6 @@ public class FileUploadPage extends FileUploadBasePage implements IUserLanguage 
 
     @Override
     public String getLanguageId() {
-        return R.getLanguageId(getHandle());
+        return R.getLanguageId(this);
     }
 }

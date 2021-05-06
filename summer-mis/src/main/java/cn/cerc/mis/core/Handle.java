@@ -2,11 +2,9 @@ package cn.cerc.mis.core;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.IHandleOwner;
 
-public class Handle implements IHandle, IHandleOwner {
+public class Handle implements IHandle {
 
-    protected IHandle handle;
     private ISession session;
 
     public Handle() {
@@ -17,9 +15,8 @@ public class Handle implements IHandle, IHandleOwner {
         this.session = session;
     }
 
-    @Override
-    public ISession getSession() {
-        return session;
+    public Handle(IHandle handle) {
+        this.session = handle.getSession();
     }
 
     @Override
@@ -28,16 +25,8 @@ public class Handle implements IHandle, IHandleOwner {
     }
 
     @Override
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
-        if (handle != null) {
-            this.setSession(handle.getSession());
-        }
+    public ISession getSession() {
+        return session;
     }
 
-    @Override
-    public IHandle getHandle() {
-        return this.handle;
-    }
-  
 }

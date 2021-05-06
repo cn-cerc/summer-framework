@@ -16,7 +16,7 @@ public class AsyncServiceTest {
     @Ignore
     public void test_send_get() {
         Application.initOnlyFramework();
-        ISession session = Application.createSession();
+        ISession session = Application.getSession();
         AsyncService app = new AsyncService(new Handle(session));
         app.setService("TAppCreditLine.calCusCreditLimit");
         // app.setTimer(TDateTime.now().getTime());

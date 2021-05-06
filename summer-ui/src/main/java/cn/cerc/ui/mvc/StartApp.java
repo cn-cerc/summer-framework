@@ -16,19 +16,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
-import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
-import cn.cerc.mis.core.IForm;
+import cn.cerc.mis.core.IMobileConfig;
 import cn.cerc.mis.core.IPage;
 import cn.cerc.ui.core.UrlRecord;
 
 public class StartApp implements Filter {
     private static final Logger log = LoggerFactory.getLogger(StartApp.class);
-    private static final ClassConfig config = new ClassConfig(StartApp.class, SummerMIS.ID);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -47,7 +43,7 @@ public class StartApp implements Filter {
             }
         }
         if (url.getUrl().contains("sid")) {
-            log.info("url {}", url.getUrl());
+            log.debug("url {}", url.getUrl());
         }
 
         String uri = req.getRequestURI();
@@ -75,13 +71,13 @@ public class StartApp implements Filter {
                 req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
             }
             try {
-                IForm form = Application.getBean(IForm.class, "mobileConfig", "MobileConfig");
+                ISession session = Application.getSession();
+                session.setProperty(Application.SessionId, req.getSession().getId());
+
+                IMobileConfig form = Application.getBean(IMobileConfig.class);
                 form.setRequest((HttpServletRequest) request);
                 form.setResponse((HttpServletResponse) response);
-
-                ISession session = Application.createSession();
-                session.setProperty(Application.SessionId, req.getSession().getId());
-                form.setHandle(new Handle(session));
+                form.setSession(session);
                 IPage page = form.execute();
                 page.execute();
             } catch (Exception e) {

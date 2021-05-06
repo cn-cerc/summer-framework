@@ -25,7 +25,7 @@ import cn.cerc.mis.core.Handle;
  * <p>
  * 2、请使用eclipse直接格式化xml
  */
-public class DatabaseDictionary {
+public class DatabaseDictionary extends Handle {
 
     private static String DataBase;
     // 获取所有表
@@ -33,20 +33,18 @@ public class DatabaseDictionary {
     // 获取表字段
     private static final String TableColumns = "information_schema.columns";
 
-    private final IHandle handle;
-    
     static {
         ClassConfig config = new ClassConfig();
         DataBase = config.getString("rds.database", "trainingdb");
     }
 
     public DatabaseDictionary() {
-        Application.initOnlyFramework();;
-        handle  = new Handle(Application.createSession());
+        Application.initOnlyFramework();
+        setSession(Application.getSession());
     }
 
     public void run() {
-        SqlQuery ds = new SqlQuery(handle);
+        SqlQuery ds = new SqlQuery(this);
         ds.add("select table_name,table_comment from %s where table_schema='%s'", DataTables, DataBase);
         ds.open();
         try {
@@ -99,7 +97,7 @@ public class DatabaseDictionary {
      * @param tableName 表名
      */
     public void getOneTableInfo(String tableName) {
-        SqlQuery ds = new SqlQuery(handle);
+        SqlQuery ds = new SqlQuery(this);
         ds.add("select table_comment from %s where table_schema='%s'", DataTables, DataBase);
         ds.add("and table_name='%s'", tableName);
         ds.open();
@@ -122,7 +120,7 @@ public class DatabaseDictionary {
     private Object getTableColumns(String tableName) {
         StringBuilder builder2 = new StringBuilder();
         builder2.append("<columns>");
-        SqlQuery ds = new SqlQuery(handle);
+        SqlQuery ds = new SqlQuery(this);
         ds.add("select COLUMN_NAME,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_COMMENT,COLUMN_DEFAULT");
         ds.add("from %s", TableColumns);
         ds.add("where TABLE_SCHEMA='%s' and table_name='%s'", DataBase, tableName);
@@ -164,7 +162,7 @@ public class DatabaseDictionary {
     private Object getTableIndex(String tableName) {
         StringBuilder builder2 = new StringBuilder();
         builder2.append("<indexs>");
-        SqlQuery ds = new SqlQuery(handle);
+        SqlQuery ds = new SqlQuery(this);
         ds.add("show index from %s", tableName);
         ds.open();
         // 读取全部数据再保存

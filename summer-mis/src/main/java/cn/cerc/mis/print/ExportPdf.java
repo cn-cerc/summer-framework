@@ -1,6 +1,8 @@
 package cn.cerc.mis.print;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
 
 import com.itextpdf.text.Chunk;
@@ -17,7 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class ExportPdf {
+public class ExportPdf implements IHandle {
     private static final ClassResource res = new ClassResource(ExportPdf.class, SummerMIS.ID);
 
     private static ApplicationContext app;
@@ -26,7 +28,10 @@ public class ExportPdf {
     private String templateId;
     private PrintTemplate template;
 
-    public ExportPdf(HttpServletResponse response) {
+    private ISession session;
+
+    public ExportPdf(IHandle handle, HttpServletResponse response) {
+        this.setSession(handle.getSession());
         this.response = response;
     }
 
@@ -47,6 +52,7 @@ public class ExportPdf {
                 app = new FileSystemXmlApplicationContext(xmlFile);
             }
             template = app.getBean(templateId, PrintTemplate.class);
+            template.setSession(this.getSession());
         }
         return template;
     }
@@ -142,6 +148,16 @@ public class ExportPdf {
         pdfStream.writeTo(out);
         out.flush();
         response.flushBuffer();
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
 }

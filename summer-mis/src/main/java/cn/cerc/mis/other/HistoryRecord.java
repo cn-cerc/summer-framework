@@ -4,10 +4,10 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.BatchScript;
 import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 
-public class HistoryRecord {
-    private IHandle handle;
+public class HistoryRecord extends Handle {
     private StringBuilder content = new StringBuilder();
     private HistoryLevel level = HistoryLevel.General;
 
@@ -16,14 +16,6 @@ public class HistoryRecord {
 
     public HistoryRecord(String content) {
         this.append(content);
-    }
-
-    public IHandle getHandle() {
-        return handle;
-    }
-
-    public void setHandle(IHandle handle) {
-        this.handle = handle;
     }
 
     public HistoryLevel getLevel() {
