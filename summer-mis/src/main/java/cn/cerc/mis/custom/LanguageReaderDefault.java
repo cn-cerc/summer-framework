@@ -1,5 +1,6 @@
 package cn.cerc.mis.custom;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class LanguageReaderDefault implements ILanguageReader, IMemoryCache {
         }
 
         if (buff == null) {
+            buff = new HashMap<>();
             synchronized (this) {
                 SqlQuery dsLang = new SqlQuery(handle);
                 dsLang.add("select key_,value_ from %s", systemTable.getLanguage());
