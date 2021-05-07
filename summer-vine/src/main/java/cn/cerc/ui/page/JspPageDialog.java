@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.ApplicationContext;
+
 import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.mis.cdn.CDN;
@@ -63,9 +65,13 @@ public class JspPageDialog extends JspPage {
         if (header != null) {
             if (session.logon()) {
                 List<UrlRecord> rightMenus = header.getRightMenus();
-                IRightMenuLoad menus = Application.getBean(IRightMenuLoad.class);
-                if (menus != null)
-                    menus.loadMenu(form, rightMenus);
+                ApplicationContext context = Application.getContext();
+                if (context.getBeanNamesForType(IRightMenuLoad.class).length > 0) {
+                    IRightMenuLoad menus = Application.getBean(IRightMenuLoad.class);
+                    if (menus != null) {
+                        menus.loadMenu(form, rightMenus);
+                    }
+                }
             } else {
                 header.getHomePage().setSite(Application.getConfig().getWelcomePage());
             }
