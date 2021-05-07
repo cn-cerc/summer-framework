@@ -30,8 +30,8 @@ public class LanguageReaderDefault implements ILanguageReader, IMemoryCache {
         }
 
         if (buff == null) {
-            buff = new HashMap<>();
             synchronized (this) {
+                buff = new HashMap<>();
                 SqlQuery dsLang = new SqlQuery(handle);
                 dsLang.add("select key_,value_ from %s", systemTable.getLanguage());
                 dsLang.add("where lang_='%s'", langId);
