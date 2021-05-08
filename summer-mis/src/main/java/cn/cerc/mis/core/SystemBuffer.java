@@ -28,7 +28,7 @@ public class SystemBuffer {
     }
 
     public enum Global implements IBufferKey {
-        OnlineUsers;
+        OnlineUsers, CacheReset;
 
         @Override
         public int getStartingPoint() {

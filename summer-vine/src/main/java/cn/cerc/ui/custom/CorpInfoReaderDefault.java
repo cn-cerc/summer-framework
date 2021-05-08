@@ -10,7 +10,8 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.core.IMemoryCache;
+import cn.cerc.mis.cache.CacheResetMode;
+import cn.cerc.mis.cache.IMemoryCache;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.services.ICorpInfoReader;
 
@@ -19,6 +20,7 @@ public class CorpInfoReaderDefault implements ICorpInfoReader, IMemoryCache {
     @Autowired
     private ISystemTable systemTable;
     private Map<String, Record> items = new ConcurrentHashMap<>();
+    private String beanName;
 
     @Override
     public Record getCorpInfo(ISession session, String corpNo) {
@@ -67,8 +69,18 @@ public class CorpInfoReaderDefault implements ICorpInfoReader, IMemoryCache {
     }
 
     @Override
-    public void resetCache(IHandle handle, boolean isFirst) {
+    public void resetCache(IHandle handle, CacheResetMode resetType, String param) {
         items.clear();
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        this.beanName = name;
+    }
+
+    @Override
+    public String getBeanName() {
+        return beanName;
     }
 
 }

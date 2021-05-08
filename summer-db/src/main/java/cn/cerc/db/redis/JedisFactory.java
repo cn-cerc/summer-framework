@@ -134,4 +134,10 @@ public class JedisFactory {
         }
     }
 
+    public static void close() {
+        items.values().forEach((jf) -> {
+            jf.jedisPool.close();
+        });
+    }
+
 }

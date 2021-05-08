@@ -12,7 +12,8 @@ import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.core.IMemoryCache;
+import cn.cerc.mis.cache.CacheResetMode;
+import cn.cerc.mis.cache.IMemoryCache;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.language.ILanguageReader;
 
@@ -22,6 +23,7 @@ public class LanguageReaderDefault implements ILanguageReader, IMemoryCache {
     @Autowired
     private ISystemTable systemTable;
     private Map<String, String> buff;
+    private String beanName;
 
     @Override
     public int loadDictionary(IHandle handle, Map<String, String> items, String langId) {
@@ -80,11 +82,21 @@ public class LanguageReaderDefault implements ILanguageReader, IMemoryCache {
     }
 
     @Override
-    public void resetCache(IHandle handle, boolean isFirst) {
+    public void resetCache(IHandle handle, CacheResetMode resetType, String param) {
         if (buff != null) {
             buff.clear();
             buff = null;
         }
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        this.beanName = name;
+    }
+
+    @Override
+    public String getBeanName() {
+        return beanName;
     }
 
 }
