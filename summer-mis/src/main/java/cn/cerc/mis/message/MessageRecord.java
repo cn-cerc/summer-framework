@@ -2,11 +2,9 @@ package cn.cerc.mis.message;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.core.Record;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IUserMessage;
-import cn.cerc.mis.core.LocalService;
 
 /**
  * 专用于消息发送

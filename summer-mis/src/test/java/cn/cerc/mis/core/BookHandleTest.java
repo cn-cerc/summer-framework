@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.mis.SummerMIS;
 
 public class BookHandleTest {
 

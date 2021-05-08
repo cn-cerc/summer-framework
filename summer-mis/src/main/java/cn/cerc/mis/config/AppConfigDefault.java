@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.core.Application;
 
 @Component
 public class AppConfigDefault implements IAppConfig {

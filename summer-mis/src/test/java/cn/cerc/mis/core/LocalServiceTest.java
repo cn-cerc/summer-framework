@@ -5,7 +5,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import cn.cerc.core.ISession;
-import cn.cerc.mis.SummerMIS;
 
 public class LocalServiceTest {
     private ISession session;

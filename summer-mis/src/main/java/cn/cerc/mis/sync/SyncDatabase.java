@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
 
 public class SyncDatabase implements IPopProcesser {
     private static final Logger log = LoggerFactory.getLogger(SyncDatabase.class);

@@ -10,9 +10,7 @@ import cn.cerc.core.ClassConfig;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
-import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.Handle;
 
