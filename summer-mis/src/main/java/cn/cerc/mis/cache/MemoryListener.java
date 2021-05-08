@@ -97,8 +97,7 @@ public class MemoryListener implements ServletContextListener, HttpSessionListen
         }
     }
 
-    public static void updateCache(IMemoryCache cache, String param) {
-        String beanId = cache.getBeanName();
+    public static void updateCache(String beanId, String param) {
         try (Jedis jedis = JedisFactory.getJedis()) {
             if (jedis != null)
                 jedis.publish(CacheChannel, param != null ? beanId + ":" + param : beanId);
