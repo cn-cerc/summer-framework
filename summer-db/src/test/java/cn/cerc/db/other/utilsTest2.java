@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class utilsTest2 {
@@ -32,6 +32,6 @@ public class utilsTest2 {
     @Test
     public void testRoundTo() {
         double val = Utils.roundTo(value, -2);
-        assertThat(val, is(expecked));
+        assertEquals(val, is(expecked));
     }
 }
