@@ -60,7 +60,7 @@ public class MemoryListener implements ServletContextListener, HttpSessionListen
         log.info("session MaxInactiveInterval: {}", se.getSession().getMaxInactiveInterval());
         log.info("session: {}", se.getSession());
         // 过期时间设置，单位为秒
-        se.getSession().setMaxInactiveInterval(30);
+//        se.getSession().setMaxInactiveInterval(30);
     }
 
     @Override
