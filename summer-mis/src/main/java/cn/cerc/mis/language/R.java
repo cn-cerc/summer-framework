@@ -83,9 +83,9 @@ public class R {
             dsLang.setField("SupportAndroid_", false);
             dsLang.setField("SupportIphone_", false);
             dsLang.setField("Enable_", true);
-            dsLang.setField("UpdateUser_", handle.getUserCode());
+            dsLang.setField("UpdateUser_", Utils.isEmpty(handle.getUserCode()) ? "admin" : handle.getUserCode());
             dsLang.setField("UpdateDate_", TDateTime.now());
-            dsLang.setField("CreateUser_", handle.getUserCode());
+            dsLang.setField("CreateUser_", Utils.isEmpty(handle.getUserCode()) ? "admin" : handle.getUserCode());
             dsLang.setField("CreateDate_", TDateTime.now());
             dsLang.post();
         }
