@@ -1,5 +1,6 @@
 package cn.cerc.ui.columns;
 
+import cn.cerc.core.Utils;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.IReadonlyOwner;
@@ -41,7 +42,10 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
     }
 
     private void outputCellPhone(HtmlWriter html) {
-        String value = getRecord().getDate(this.getCode()).getDate();
+        String value = getRecord().getString(this.getCode());
+        if (Utils.isNotEmpty(value)) {
+            value = value.substring(0, 10);
+        }
         if (this.readonly) {
             html.print(getName() + "：");
             html.print(value);
@@ -60,11 +64,14 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
     }
 
     private void outputCellWeb(HtmlWriter html) {
-        String value = getRecord().getDate(this.getCode()).getDate();
+        String value = getRecord().getString(this.getCode());
+        if (Utils.isNotEmpty(value)) {
+            value = value.substring(0, 10);
+        }
         if (this.readonly) {
             html.print(value);
         } else {
-            input.setInputType("date");
+            input.setInputType(UIInput.TYPE_DATE);
             input.setValue(value);
             input.output(html);
         }
@@ -72,8 +79,7 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
 
     @Override
     public void outputLine(HtmlWriter html) {
-        String text = getRecord().getDate(this.getCode()).getDate();
-
+        String text = getRecord().getString(this.getCode());
         if (!this.isHidden()) {
             UILabel label = new UILabel();
             label.setFocusTarget(this.getCode());
@@ -84,6 +90,9 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
         input.setReadonly(this.isReadonly());
         input.setId(getCode());
         input.setInputType(UIInput.TYPE_DATE);
+        if (Utils.isNotEmpty(text)) {
+            text = text.substring(0, 10);
+        }
         input.setValue(text);
         input.output(html);
 
