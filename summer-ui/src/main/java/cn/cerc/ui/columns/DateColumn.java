@@ -72,7 +72,7 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
 
     @Override
     public void outputLine(HtmlWriter html) {
-        String text = getRecord().getString(this.getCode());
+        String text = getRecord().getDate(this.getCode()).getDate();
 
         if (!this.isHidden()) {
             UILabel label = new UILabel();
@@ -81,6 +81,7 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
             label.output(html);
         }
 
+        input.setReadonly(this.isReadonly());
         input.setId(getCode());
         input.setInputType(UIInput.TYPE_DATE);
         input.setValue(text);
@@ -124,3 +125,4 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
     }
 
 }
+
