@@ -31,6 +31,7 @@ public class UIViewPanel extends UIOriginComponent {
             this.request = form.getRequest();
         }
         uiform = new UIForm(this);
+        uiform.setCssClass("viewPanel");
         this.content = new UIOriginComponent(uiform);
         submit = new UIButtonSubmit(uiform.getBottom());
         submit.setText("确定");
@@ -46,7 +47,6 @@ public class UIViewPanel extends UIOriginComponent {
             div.output(html);
         }
         
-        uiform.setCssClass("viewPanel");
         uiform.outHead(html);
 
         for (UIComponent component : content) {
