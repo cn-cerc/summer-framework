@@ -25,7 +25,7 @@ import cn.cerc.ui.SummerUI;
  * 系统菜单缓存 此对象不应该放在框架中
  */
 public class MenuList extends Handle implements IDataList, IUserLanguage {
-    private final ClassResource res = new ClassResource(this, SummerUI.ID);
+    private static final ClassResource res = new ClassResource(MenuList.class, SummerUI.ID);
 
     private final Map<String, MenuModel> buff = new LinkedHashMap<>();
     private final String buffKey;

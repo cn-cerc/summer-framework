@@ -18,7 +18,7 @@ import cn.cerc.ui.SummerUI;
  * 文件上传服务
  */
 public class SvrFileUpload extends CustomService implements IUserLanguage {
-    private final ClassResource res = new ClassResource(this, SummerUI.ID);
+    private static final ClassResource res = new ClassResource(SvrFileUpload.class, SummerUI.ID);
 
     /**
      * 文件上传表

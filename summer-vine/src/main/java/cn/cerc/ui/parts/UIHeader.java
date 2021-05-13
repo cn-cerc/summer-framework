@@ -25,7 +25,7 @@ import cn.cerc.ui.phone.Block104;
 
 public class UIHeader extends UICssComponent implements IUserLanguage, IHandle {
     private static final ClassConfig config = new ClassConfig(UIHeader.class, SummerUI.ID);
-    private final ClassResource res = new ClassResource(this, SummerUI.ID);
+    private static final ClassResource res = new ClassResource(UIHeader.class, SummerUI.ID);
 
     private static final int MAX_MENUS = 4;
     private UIAdvertisement advertisement; // 可选

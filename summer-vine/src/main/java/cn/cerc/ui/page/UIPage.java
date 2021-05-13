@@ -30,7 +30,7 @@ import cn.cerc.ui.parts.UISheetHelp;
 import cn.cerc.ui.parts.UIToolbar;
 
 public abstract class UIPage extends AbstractPage {
-    private final ClassResource res = new ClassResource(this, SummerUI.ID);
+    private static final ClassResource res = new ClassResource(UIPage.class, SummerUI.ID);
 
     private List<String> cssFiles = new ArrayList<>();
     private List<String> jsFiles = new ArrayList<>();
@@ -207,8 +207,7 @@ public abstract class UIPage extends AbstractPage {
         if (Utils.isNotEmpty(this.getForm().getName())) {
             out.printf("<title>%s</title>", R.asString(form, this.getForm().getName()));
         } else {
-            out.printf("<title>%s</title>",
-                    R.asString(form, MenuList.create(this.getForm()).getName(formId)));
+            out.printf("<title>%s</title>", R.asString(form, MenuList.create(this.getForm()).getName(formId)));
         }
 
         // 所有的请求都不发送 referrer
