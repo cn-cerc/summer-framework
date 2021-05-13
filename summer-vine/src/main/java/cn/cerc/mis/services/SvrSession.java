@@ -61,13 +61,13 @@ public class SvrSession extends CustomService {
         cdsToken.add("where loginID_='%s'", token);
         cdsToken.open();
         if (cdsToken.eof()) {
-            log.warn("can not find token in database: {}", token);
+            log.warn("can not find token {} in database.", token);
             this.getSession().setProperty(ISession.TOKEN, null);
             return false;
         }
 
         if (cdsToken.getInt("Viability_") <= 0 && !"13100154".equals(cdsToken.getString("UserCode_"))) {
-            log.warn("token expired，please login again {}", token);
+            log.warn("{} token expired，please login again.", token);
             this.getSession().setProperty(ISession.TOKEN, null);
             return false;
         }
