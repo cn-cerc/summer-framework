@@ -195,7 +195,7 @@ public class SessionDefault implements ISession {
                 CenterService svr = new CenterService(new Handle(this));
                 svr.setService("SvrSession.byToken");
                 if (!svr.exec("token", token)) {
-                    log.error("token restore error，{}", svr.getMessage());
+                    log.error("token restore error：{}", svr.getMessage());
                     params.put(ISession.TOKEN, null);
                     return;
                 }

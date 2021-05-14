@@ -45,7 +45,7 @@ public class SvrSession extends CustomService {
     }
 
     /*
-     * 1、从 CurrentUser 表中，取出公司别 CorpNo_ 与 UserCode_ 
+     * 1、从 CurrentUser 表中，取出公司别 CorpNo_ 与 UserCode_
      * 
      * 2、再依据 UserCode_ 从Account表取出 RoleCode_
      * 
@@ -61,13 +61,13 @@ public class SvrSession extends CustomService {
         cdsToken.add("where loginID_='%s'", token);
         cdsToken.open();
         if (cdsToken.eof()) {
-            log.warn("can not find token {} in database.", token);
+            this.setMessage(String.format("%s can not find in database.", token));
             this.getSession().setProperty(ISession.TOKEN, null);
             return false;
         }
 
         if (cdsToken.getInt("Viability_") <= 0 && !"13100154".equals(cdsToken.getString("UserCode_"))) {
-            log.warn("{} token expired，please login again.", token);
+            this.setMessage(String.format("%s died，please login again.", token));
             this.getSession().setProperty(ISession.TOKEN, null);
             return false;
         }
