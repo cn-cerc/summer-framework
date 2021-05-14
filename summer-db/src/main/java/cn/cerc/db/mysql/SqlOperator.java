@@ -51,10 +51,10 @@ public class SqlOperator implements IDataOperator {
         }
     }
 
-    public SqlOperator(IHandle owner){
+    public SqlOperator(IHandle owner) {
         this(owner.getSession());
     }
-    
+
     // 根据 sql 获取数据库表名
     public static String findTableName(String sql) {
         String result = null;
@@ -138,7 +138,12 @@ public class SqlOperator implements IDataOperator {
             if (searchKeys.contains(updateKey)) {
                 BigInteger uidvalue = findAutoUid(conn);
                 log.debug("自增列uid value：" + uidvalue);
-                record.setField(updateKey, uidvalue);
+
+                if (uidvalue.intValue() <= Integer.MAX_VALUE) {
+                    record.setField(updateKey, uidvalue.intValue());
+                } else {
+                    record.setField(updateKey, uidvalue);
+                }
             }
 
             return result > 0;
