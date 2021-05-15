@@ -130,7 +130,6 @@ public class ProcessTimerTask extends TimerTask implements ApplicationContextAwa
             session.setProperty(Application.ClientIP, "0.0.0.0");
             session.setProperty(Application.UserId, record.getString("UserID_"));
             session.setProperty(Application.LoginTime, record.getDateTime("LoginTime_"));
-            session.setProperty(Application.RoleCode, record.getString("RoleCode_"));
             session.setProperty(Application.ProxyUsers, record.getString("ProxyUsers_"));
             session.setProperty(ISession.USER_NAME, record.getString("UserName_"));
             session.setProperty(ISession.LANGUAGE_ID, record.getString("Language_"));

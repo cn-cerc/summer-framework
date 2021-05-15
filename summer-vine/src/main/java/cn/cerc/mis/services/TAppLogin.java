@@ -194,11 +194,6 @@ public class TAppLogin extends CustomService {
             session.setProperty(Application.UserId, dsUser.getString("ID_"));
             session.setProperty(ISession.CORP_NO, dsUser.getString("CorpNo_"));
             session.setProperty(ISession.USER_CODE, dsUser.getString("Code_"));
-            if (dsUser.getBoolean("DiyRole_")) {
-                session.setProperty(Application.RoleCode, dsUser.getString("Code_"));
-            } else {
-                session.setProperty(Application.RoleCode, dsUser.getString("RoleCode_"));
-            }
 
             // 更新当前用户总数
             updateCurrentUser(device_name, headIn.getString("Screen_"), headIn.getString("Language_"));

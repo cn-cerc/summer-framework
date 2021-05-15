@@ -45,7 +45,6 @@ public class SessionDefault implements ISession {
         params.put(Application.ClientIP, "0.0.0.0");
         params.put(ISession.USER_CODE, "");
         params.put(ISession.USER_NAME, "");
-        params.put(Application.RoleCode, "");
         params.put(ISession.CORP_NO, "");
         params.put(ISession.LANGUAGE_ID, LanguageResource.appLanguage);
         log.debug("new SessionDefault");
@@ -219,7 +218,6 @@ public class SessionDefault implements ISession {
                 params.put(ISession.USER_CODE, buff.getString("UserCode_"));
                 params.put(ISession.USER_NAME, buff.getString("UserName_"));
                 params.put(Application.ProxyUsers, buff.getString("ProxyUsers_"));
-                params.put(Application.RoleCode, buff.getString("RoleCode_"));
                 params.put(ISession.LANGUAGE_ID, buff.getString("Language_"));
 
                 // 刷新缓存生命值

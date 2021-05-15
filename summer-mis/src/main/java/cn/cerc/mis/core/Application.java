@@ -30,8 +30,6 @@ public class Application implements ApplicationContextAware {
     // FIXME 如下2个常量需要取消其引用，改为直接使用ISession
     @Deprecated
     public static final String UserId = "UserID";
-    @Deprecated
-    public static final String RoleCode = "RoleCode";
     // 签核代理用户列表，代理多个用户以半角逗号隔开
     public static final String ProxyUsers = "ProxyUsers";
     // 客户端代码
