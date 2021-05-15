@@ -123,6 +123,8 @@ public class Application implements ApplicationContextAware {
     }
 
     public static <T> T getBean(IHandle handle, Class<T> requiredType) {
+        if (context.getBeanNamesForType(requiredType).length == 0)
+            return null;
         T bean = context.getBean(requiredType);
         if ((handle != null) && (bean instanceof IHandle))
             ((IHandle) bean).setSession(handle.getSession());
@@ -130,6 +132,8 @@ public class Application implements ApplicationContextAware {
     }
 
     public static Object getBean(IHandle handle, String beanId) {
+        if (!context.containsBean(beanId))
+            return null;
         Object bean = context.getBean(beanId);
         if ((handle != null) && (bean instanceof IHandle))
             ((IHandle) bean).setSession(handle.getSession());
@@ -137,6 +141,8 @@ public class Application implements ApplicationContextAware {
     }
 
     public static Object getBean(ISession session, String beanId) {
+        if (!context.containsBean(beanId))
+            return null;
         Object bean = context.getBean(beanId);
         if ((session != null) && (bean instanceof IHandle))
             ((IHandle) bean).setSession(session);
