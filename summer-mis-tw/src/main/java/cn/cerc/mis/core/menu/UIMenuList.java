@@ -1,4 +1,4 @@
-package cn.cerc.mis.core;
+package cn.cerc.mis.core.menu;
 
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;

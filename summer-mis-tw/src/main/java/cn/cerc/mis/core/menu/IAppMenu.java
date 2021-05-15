@@ -1,4 +1,4 @@
-package cn.cerc.mis.core;
+package cn.cerc.mis.core.menu;
 
 import cn.cerc.db.core.IHandle;
 
