@@ -17,17 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import cn.cerc.core.ClassConfig;
 import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.FormFactory;
 import cn.cerc.mis.core.RequestData;
-import cn.cerc.ui.SummerUI;
 
 public class StartForms implements Filter {
     private static final Logger log = LoggerFactory.getLogger(StartForms.class);
-    private static final ClassConfig config = new ClassConfig(StartForms.class, SummerUI.ID);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -89,7 +86,8 @@ public class StartForms implements Filter {
             return;
         }
 
-        ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext());
+        ApplicationContext context = WebApplicationContextUtils
+                .getRequiredWebApplicationContext(req.getServletContext());
         FormFactory factory = context.getBean(FormFactory.class);
 
         // 2、处理Url请求

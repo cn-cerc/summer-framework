@@ -47,12 +47,14 @@ public class BookHandle implements IHandle {
         this.session.setProperty(ISession.CORP_NO, corpNo);
     }
 
-    public void setUserCode(String userCode) {
+    public BookHandle setUserCode(String userCode) {
         session.setProperty(ISession.USER_CODE, userCode);
+        return this;
     }
 
-    public void setUserName(String userName) {
+    public BookHandle setUserName(String userName) {
         session.setProperty(ISession.USER_NAME, userName);
+        return this;
     }
 
     @Override
