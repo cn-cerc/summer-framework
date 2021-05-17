@@ -51,6 +51,23 @@ public class MemoryListener implements ServletContextListener, HttpSessionListen
     public void contextDestroyed(ServletContextEvent sce) {
         subthread.requestStop();
         JedisFactory.close();
+
+        // 通知所有的单例重启缓存
+        Application.setContext(context);
+        for (String beanId : context.getBeanDefinitionNames()) {
+            if (context.isSingleton(beanId)) {
+                Object bean = context.getBean(beanId);
+                if (bean instanceof IShutdown) {
+                    ((IShutdown) bean).shutdown();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
         log.info("tomcat 已经关闭");
     }
 
