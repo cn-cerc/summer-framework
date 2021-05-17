@@ -22,7 +22,7 @@ import cn.cerc.db.core.ServerConfig;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class AliyunQueueConnection implements IConnection {
+public class AliyunQueueConnection implements IConnection, AutoCloseable {
     private static final ClassResource res = new ClassResource(AliyunQueueConnection.class, SummerDB.ID);
     private static final Logger log = LoggerFactory.getLogger(AliyunQueueConnection.class);
 
@@ -54,13 +54,16 @@ public class AliyunQueueConnection implements IConnection {
             String userCode = config.getProperty(AliyunQueueConnection.AccessKeyId, null);
             String password = config.getProperty(AliyunQueueConnection.AccessKeySecret, null);
             if (server == null) {
-                throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccountEndpoint));
+                throw new RuntimeException(
+                        String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccountEndpoint));
             }
             if (userCode == null) {
-                throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeyId));
+                throw new RuntimeException(
+                        String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeyId));
             }
             if (password == null) {
-                throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeySecret));
+                throw new RuntimeException(
+                        String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeySecret));
             }
             if (account == null) {
                 account = new CloudAccount(userCode, password, server);
@@ -186,6 +189,14 @@ public class AliyunQueueConnection implements IConnection {
     @Override
     public void setConfig(IConfig config) {
         this.config = config;
+    }
+
+    @Override
+    public void close() {
+        if (client != null) {
+            client.close();
+            client = null;
+        }
     }
 
 }
