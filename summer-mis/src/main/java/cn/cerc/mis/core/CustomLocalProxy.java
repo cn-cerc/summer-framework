@@ -35,34 +35,12 @@ public abstract class CustomLocalProxy extends Handle {
             return null;
         }
 
-        // 读取xml中的配置
-        Object bean = null;
-        ApplicationContext context = Application.getContext();
-        if (context.containsBean(getService())) {
-            bean = context.getBean(this.getService());
-        } else {
-            // 读取注解的配置，并自动将第一个字母改为小写
-            String beanId = getService().split("\\.")[0];
-            if (!beanId.substring(0, 2).toUpperCase().equals(beanId.substring(0, 2)))
-                beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
-            if (context.containsBean(beanId)) {
-                bean = context.getBean(beanId);
-                // 支持指定函数
-                if (bean instanceof IMultiplService) {
-                    IMultiplService cs = ((IMultiplService) bean);
-                    cs.setFuncCode(getService().split("\\.")[1]);
-                }
-            }
-        }
-        if (bean == null) {
-            this.setMessage(String.format("bean %s not find", getService()));
+        try {
+            return Application.getService(this, getService());
+        } catch (ClassNotFoundException e) {
+            this.setMessage(e.getMessage());
             return null;
         }
-
-        if (bean instanceof IHandle) {
-            ((IHandle) bean).setSession(this.getSession());
-        }
-        return bean;
     }
 
     public String getService() {
