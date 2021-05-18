@@ -22,7 +22,7 @@ import cn.cerc.db.core.ServerConfig;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class AliyunQueueConnection implements IConnection, AutoCloseable {
+public class AliyunQueueConnection implements IConnection {
     private static final ClassResource res = new ClassResource(AliyunQueueConnection.class, SummerDB.ID);
     private static final Logger log = LoggerFactory.getLogger(AliyunQueueConnection.class);
 
@@ -191,7 +191,6 @@ public class AliyunQueueConnection implements IConnection, AutoCloseable {
         this.config = config;
     }
 
-    @Override
     public void close() {
         if (client != null) {
             client.close();
