@@ -101,10 +101,14 @@ public class Application implements ApplicationContextAware {
     }
 
     public static <T> T getBean(Class<T> requiredType) {
+        if (context.getBeanNamesForType(requiredType).length == 0)
+            return null;
         return context.getBean(requiredType);
     }
 
     public static Object getBean(String beanId) {
+        if (!context.containsBean(beanId))
+            return null;
         return context.getBean(beanId);
     }
 
