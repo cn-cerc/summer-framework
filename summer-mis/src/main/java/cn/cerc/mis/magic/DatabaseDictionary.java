@@ -1,5 +1,6 @@
 package cn.cerc.mis.magic;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -8,11 +9,15 @@ import java.util.Map;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
+import cn.cerc.mis.vcl.TApplication;
+import cn.cerc.mis.vcl.TButton;
+import cn.cerc.mis.vcl.TMainForm;
 
 /**
  * 建立数据库字典
@@ -23,27 +28,43 @@ import cn.cerc.mis.core.Handle;
  * <p>
  * 2、请使用eclipse直接格式化xml
  */
-public class DatabaseDictionary extends Handle {
+@SuppressWarnings("serial")
+public class DatabaseDictionary extends TMainForm implements IHandle {
 
-    private static String DataBase;
+    private static String Database;
     // 获取所有表
     private static final String DataTables = "information_schema.tables";
     // 获取表字段
     private static final String TableColumns = "information_schema.columns";
+    private final TButton button;
+    private ISession session;
 
     static {
         ClassConfig config = new ClassConfig();
-        DataBase = config.getString("rds.database", "trainingdb");
+        Database = config.getString("rds.database", "trainingdb");
     }
 
     public DatabaseDictionary() {
-        Application.initOnlyFramework();
-        setSession(Application.getSession());
+        super();
+        this.setTitle("重置数据库字典");
+
+        button = new TButton(this);
+        button.setText("执行同步");
+
+        button.setOnClick((ActionEvent e) -> {
+            try (ISession session = Application.getSession()) {
+                this.setSession(session);
+                this.run();
+                this.getStatusBar().setText("数据字典创建完成");
+            }
+        });
+
+        this.getStatusBar().setText("请点击执行按钮开始重新生成数据字典！");
     }
 
     public void run() {
         SqlQuery ds = new SqlQuery(this);
-        ds.add("select table_name,table_comment from %s where table_schema='%s'", DataTables, DataBase);
+        ds.add("select table_name,table_comment from %s where table_schema='%s'", DataTables, Database);
         ds.open();
         try {
             File file = new File(".\\src\\test\\resources\\database.xml");
@@ -52,9 +73,10 @@ public class DatabaseDictionary extends Handle {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             writer.write("<?xml-stylesheet type=\"text/xsl\" href=\"Database.xsl\"?>");
-            writer.write("<database xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"Database.xsd\">");
+            writer.write(
+                    "<database xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"Database.xsd\">");
             writer.write("<caption>系统数据库结构</caption>");
-            writer.write(String.format("<name>%s</name>", DataBase));
+            writer.write(String.format("<name>%s</name>", Database));
             writer.write("<tables>");
             while (ds.fetch()) {
                 String tableName = ds.getString("table_name");
@@ -92,11 +114,12 @@ public class DatabaseDictionary extends Handle {
 
     /**
      * 获取单个表字段、索引信息
+     * 
      * @param tableName 表名
      */
     public void getOneTableInfo(String tableName) {
         SqlQuery ds = new SqlQuery(this);
-        ds.add("select table_comment from %s where table_schema='%s'", DataTables, DataBase);
+        ds.add("select table_comment from %s where table_schema='%s'", DataTables, Database);
         ds.add("and table_name='%s'", tableName);
         ds.open();
 
@@ -121,15 +144,15 @@ public class DatabaseDictionary extends Handle {
         SqlQuery ds = new SqlQuery(this);
         ds.add("select COLUMN_NAME,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_COMMENT,COLUMN_DEFAULT");
         ds.add("from %s", TableColumns);
-        ds.add("where TABLE_SCHEMA='%s' and table_name='%s'", DataBase, tableName);
+        ds.add("where TABLE_SCHEMA='%s' and table_name='%s'", Database, tableName);
         ds.open();
         while (ds.fetch()) {
             StringBuilder builder3 = new StringBuilder();
             builder3.append("<column ");
-    
+
             String code = ds.getString("COLUMN_NAME");
             builder3.append(String.format("code=\"%s\"", code));
-            
+
             String dataType = ds.getString("COLUMN_TYPE");
             if (dataType.contains("unsigned")) {
                 dataType = dataType.substring(0, dataType.indexOf(")") + 1);
@@ -144,12 +167,12 @@ public class DatabaseDictionary extends Handle {
             String def = ds.getString("COLUMN_DEFAULT");
             builder3.append(String.format(" default=\"%s\"", def));
             builder3.append(">");
-    
+
             builder3.append("<comment>");
             String name = ds.getString("COLUMN_COMMENT");
             builder3.append(name);
             builder3.append("</comment>");
-    
+
             builder3.append("</column>");
             builder2.append(builder3);
         }
@@ -190,14 +213,14 @@ public class DatabaseDictionary extends Handle {
             builder3.append("<index ");
             if (non_unique == 0 && keyName.equals("PRIMARY")) {
                 builder3.append("type=\"primary\"");
-            } else if (non_unique == 0){
+            } else if (non_unique == 0) {
                 builder3.append("type=\"unique\"");
             } else {
                 builder3.append("type=\"normal\"");
             }
             builder3.append(String.format(" code=\"%s\">", record.getString("Key_name")));
             while (dataIn.fetch()) {
-                builder3.append(String.format("<field sort=\"%s\" code=\"%s\" />", 
+                builder3.append(String.format("<field sort=\"%s\" code=\"%s\" />",
                         "A".equals(dataIn.getString("Collation")) ? "ASC" : "null", dataIn.getString("Column_name")));
             }
             builder3.append("</index>");
@@ -207,9 +230,21 @@ public class DatabaseDictionary extends Handle {
         return builder2.toString();
     }
 
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
     public static void main(String[] args) {
         Application.initOnlyFramework();
-        DatabaseDictionary obj = new DatabaseDictionary();
-        obj.run();
+        TApplication app = new TApplication();
+        app.createForm(DatabaseDictionary.class);
+        app.run();
     }
+
 }
