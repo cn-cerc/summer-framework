@@ -1,6 +1,7 @@
 package cn.cerc.mis.vcl;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,6 +15,7 @@ public class TStatusBar extends JPanel {
         label = new JLabel();
         label.setVisible(true);
         this.add(label);
+        this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setBackground(new Color(200,200,200));
         label.setText("please");
     }

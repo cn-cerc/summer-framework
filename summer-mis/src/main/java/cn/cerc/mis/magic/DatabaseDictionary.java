@@ -1,11 +1,17 @@
 package cn.cerc.mis.magic;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.DataSet;
@@ -17,7 +23,11 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.vcl.TApplication;
 import cn.cerc.mis.vcl.TButton;
+import cn.cerc.mis.vcl.TEdit;
+import cn.cerc.mis.vcl.TLabel;
 import cn.cerc.mis.vcl.TMainForm;
+import cn.cerc.mis.vcl.TPanel;
+import cn.cerc.mis.vcl.TStatusBar;
 
 /**
  * 建立数据库字典
@@ -30,41 +40,66 @@ import cn.cerc.mis.vcl.TMainForm;
  */
 @SuppressWarnings("serial")
 public class DatabaseDictionary extends TMainForm implements IHandle {
-
-    private static String Database;
     // 获取所有表
     private static final String DataTables = "information_schema.tables";
     // 获取表字段
     private static final String TableColumns = "information_schema.columns";
-    private final TButton button;
-    private ISession session;
+    private static final ClassConfig config = new ClassConfig();
 
-    static {
-        ClassConfig config = new ClassConfig();
-        Database = config.getString("rds.database", "trainingdb");
-    }
+    private final TButton btnSubmit;
+    private final JTextField edtServer;
+    private final TEdit edtAccount;
+    private final TEdit edtPassword;
+    private final TEdit edtDatabase;
+    private ISession session;
 
     public DatabaseDictionary() {
         super();
         this.setTitle("重置数据库字典");
 
-        button = new TButton(this);
-        button.setText("执行同步");
+        this.getContent().setLayout(new GridLayout(2, 1));
+        TStatusBar statusBar = this.getStatusBar();
 
-        button.setOnClick((ActionEvent e) -> {
+        TPanel gridInput = new TPanel(this);
+        gridInput.setLayout(new GridLayout(5, 2));
+
+        gridInput.add(new JPanel());
+        gridInput.add(new JPanel());
+
+        new TLabel(new TPanel(gridInput).setAlign(FlowLayout.RIGHT)).setText("请输入服务器地址：");
+        edtServer = new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
+
+        new TLabel(new TPanel(gridInput).setAlign(FlowLayout.RIGHT)).setText("请输入用户名：");
+        edtAccount = new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
+
+        new TLabel(new TPanel(gridInput).setAlign(FlowLayout.RIGHT)).setText("请输入密码：");
+        edtPassword = new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
+
+        new TLabel(new TPanel(gridInput).setAlign(FlowLayout.RIGHT)).setText("请输入数据库名称：");
+        edtDatabase = new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
+        edtDatabase.setText(config.getString("rds.database", "trainingdb"));
+
+        btnSubmit = new TButton(new TPanel(this));
+        btnSubmit.setText("执行同步");
+        btnSubmit.addActionListener((ActionEvent e) -> {
+            if (edtServer.getText().trim().length() == 0) {
+                statusBar.setText("服务器地址不允许为空！");
+                return;
+            }
+
             try (ISession session = Application.getSession()) {
                 this.setSession(session);
                 this.run();
-                this.getStatusBar().setText("数据字典创建完成");
+                statusBar.setText("数据字典创建完成");
             }
         });
 
-        this.getStatusBar().setText("请点击执行按钮开始重新生成数据字典！");
+        statusBar.setText("请点击执行按钮开始重新生成数据字典！");
     }
 
     public void run() {
         SqlQuery ds = new SqlQuery(this);
-        ds.add("select table_name,table_comment from %s where table_schema='%s'", DataTables, Database);
+        ds.add("select table_name,table_comment from %s where table_schema='%s'", DataTables, edtDatabase.getText());
         ds.open();
         try {
             File file = new File(".\\src\\test\\resources\\database.xml");
@@ -76,7 +111,7 @@ public class DatabaseDictionary extends TMainForm implements IHandle {
             writer.write(
                     "<database xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"Database.xsd\">");
             writer.write("<caption>系统数据库结构</caption>");
-            writer.write(String.format("<name>%s</name>", Database));
+            writer.write(String.format("<name>%s</name>", edtDatabase.getText()));
             writer.write("<tables>");
             while (ds.fetch()) {
                 String tableName = ds.getString("table_name");
@@ -119,7 +154,7 @@ public class DatabaseDictionary extends TMainForm implements IHandle {
      */
     public void getOneTableInfo(String tableName) {
         SqlQuery ds = new SqlQuery(this);
-        ds.add("select table_comment from %s where table_schema='%s'", DataTables, Database);
+        ds.add("select table_comment from %s where table_schema='%s'", DataTables, edtDatabase.getText());
         ds.add("and table_name='%s'", tableName);
         ds.open();
 
@@ -144,7 +179,7 @@ public class DatabaseDictionary extends TMainForm implements IHandle {
         SqlQuery ds = new SqlQuery(this);
         ds.add("select COLUMN_NAME,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_COMMENT,COLUMN_DEFAULT");
         ds.add("from %s", TableColumns);
-        ds.add("where TABLE_SCHEMA='%s' and table_name='%s'", Database, tableName);
+        ds.add("where TABLE_SCHEMA='%s' and table_name='%s'", edtDatabase.getText(), tableName);
         ds.open();
         while (ds.fetch()) {
             StringBuilder builder3 = new StringBuilder();
