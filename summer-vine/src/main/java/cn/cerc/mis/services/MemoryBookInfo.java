@@ -8,6 +8,7 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
+import cn.cerc.mis.cache.MemoryListener;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BookVersion;
 
@@ -55,7 +56,7 @@ public class MemoryBookInfo {
      */
     public static boolean exist(IHandle handle, String corpNo) {
         BookInfoRecord book = MemoryBookInfo.get(handle, corpNo);
-        return Utils.isNotEmpty(book.getShortName());
+        return !Utils.isEmpty(book.getShortName());
     }
 
     /**
@@ -129,8 +130,7 @@ public class MemoryBookInfo {
     }
 
     public static void clear(IHandle handle, String corpNo) {
-        ICorpInfoReader reader = Application.getBean(ICorpInfoReader.class);
-        reader.clearCache(handle, corpNo);
+        MemoryListener.updateCache("corpInfoReaderDefault", corpNo);
     }
 
 }

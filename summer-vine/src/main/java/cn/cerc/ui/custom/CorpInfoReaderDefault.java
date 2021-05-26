@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
+import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.cache.CacheResetMode;
@@ -55,22 +56,19 @@ public class CorpInfoReaderDefault implements ICorpInfoReader, IMemoryCache {
             result.setField("Currency_", ds.getString("Currency_"));
             result.setField("Email_", ds.getString("CorpMailbox_"));
             result.setField("Fax_", ds.getString("Fax_"));
-            
+
             items.put(corpNo, result);
             return result;
         }        
     }
-    
-    @Override
-    public void clearCache(IHandle handle, String corpNo) {
-        synchronized (this) {
-            items.remove(corpNo);
-        }
-    }
 
     @Override
     public void resetCache(IHandle handle, CacheResetMode resetType, String param) {
-        items.clear();
+        if (!Utils.isEmpty(param)) {
+            items.remove(param);
+        } else {
+            items.clear();
+        }
     }
 
     @Override
