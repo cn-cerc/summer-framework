@@ -29,7 +29,7 @@ public class SyncDatabase implements IPopProcesser {
     }
 
     @Override
-    public boolean popRecord(ISession session, Record record) {
+    public boolean popRecord(ISession session, Record record, boolean isQueue) {
         String tableCode = record.getString("__table");
         int opera = record.getInt("__opera");
         int error = record.getInt("__error");
@@ -43,23 +43,30 @@ public class SyncDatabase implements IPopProcesser {
         }
         processer.setSession(session);
 
-        boolean result;
-        switch (SyncOpera.values()[opera]) {
-        case Append:
-            result = processer.appendRecord(record);
-            break;
-        case Delete:
-            result = processer.deleteRecord(record);
-            break;
-        case Update:
-            result = processer.updateRecord(record);
-            break;
-        case Reset:
-            result = processer.resetRecord(record);
-            break;
-        default:
-            throw new RuntimeException("not support opera.");
+        boolean result = false;
+        try {
+            switch (SyncOpera.values()[opera]) {
+            case Append:
+                result = processer.appendRecord(record);
+                break;
+            case Delete:
+                result = processer.deleteRecord(record);
+                break;
+            case Update:
+                result = processer.updateRecord(record);
+                break;
+            case Reset:
+                result = processer.resetRecord(record);
+                break;
+            default:
+                throw new RuntimeException("not support opera.");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
+
+        if (isQueue) // 如果是以MQ为引擎，则不需要进行异常处理，直接上MQ控制台查看异常
+            return result;
 
         if (!result) {
             record.setField("__table", tableCode);

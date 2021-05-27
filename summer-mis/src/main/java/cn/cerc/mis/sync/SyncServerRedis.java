@@ -11,44 +11,74 @@ import cn.cerc.mis.other.MemoryBuffer;
 import redis.clients.jedis.Jedis;
 
 public class SyncServerRedis implements ISyncServer {
+
     private static final Logger log = LoggerFactory.getLogger(SyncServerRedis.class);
 
-    private SyncServer pushQueue;
-    private SyncServer popQueue;
+    private SyncServer pushFrom;
+    private SyncServer pushTo;
 
+    private SyncServer popFrom;
+    private SyncServer popTo;
+
+    public void initPushQueue(SyncServer pushFrom, SyncServer pushTo) {
+        this.pushFrom = pushFrom;
+        this.pushTo = pushTo;
+    }
+
+    public void initPopQueue(SyncServer popFrom, SyncServer popTo) {
+        this.popFrom = popFrom;
+        this.popTo = popTo;
+    }
+
+    /**
+     * 从左边推入
+     */
     @Override
     public void push(ISession session, Record record) {
-        if (pushQueue == null)
-            throw new RuntimeException("pushQueue is null");
-        String buffKey = MemoryBuffer.buildKey(pushQueue);
-        String configKey = "sync." + pushQueue.name().toLowerCase();
+        if (pushFrom == null)
+            throw new RuntimeException("pushFrom is null");
+        if (pushTo == null)
+            throw new RuntimeException("pushTo is null");
+
+        String buffKey = MemoryBuffer.buildKey(pushFrom);
+        String configKey = "sync." + pushFrom.name().toLowerCase() + "-to-" + pushTo.name().toLowerCase();
         try (Jedis jedis = JedisFactory.getJedis(configKey)) {
-            // 从左边推入
             jedis.lpush(buffKey, record.toString());
         }
     }
 
+    /**
+     * 从右边推入
+     */
     @Override
     public void repush(ISession session, Record record) {
-        if (popQueue == null)
-            throw new RuntimeException("popQueue is null");
-        String buffKey = MemoryBuffer.buildKey(popQueue);
-        String configKey = "sync." + popQueue.name().toLowerCase();
+        if (popFrom == null)
+            throw new RuntimeException("popFrom is null");
+        if (popTo == null)
+            throw new RuntimeException("popTo is null");
+
+        String buffKey = MemoryBuffer.buildKey(popFrom);
+        String configKey = "sync." + popFrom.name().toLowerCase() + "-to-" + popTo.name().toLowerCase();
         try (Jedis jedis = JedisFactory.getJedis(configKey)) {
-            // 从右边推入
             jedis.rpush(buffKey, record.toString());
         }
     }
 
+    /**
+     * 从右边取出
+     */
     @Override
     public int pop(ISession session, IPopProcesser popProcesser, int maxRecords) {
-        if (popQueue == null)
-            throw new RuntimeException("popQueue is null");
-        String buffKey = MemoryBuffer.buildKey(popQueue);
-        String configKey = "sync." + popQueue.name().toLowerCase();
+        if (popFrom == null)
+            throw new RuntimeException("popFrom is null");
+        if (popTo == null)
+            throw new RuntimeException("popTo is null");
+
+        String buffKey = MemoryBuffer.buildKey(popFrom);
+        String configKey = "sync." + popFrom.name().toLowerCase() + "-to-" + popTo.name().toLowerCase();
+
         try (Jedis jedis = JedisFactory.getJedis(configKey)) {
             for (int i = 0; i < maxRecords; i++) {
-                // 从右边取出
                 String data = jedis.rpop(buffKey);
                 if (data == null) {
                     return i;
@@ -57,7 +87,7 @@ public class SyncServerRedis implements ISyncServer {
                 Record record = new Record();
                 record.setJSON(data);
                 try {
-                    popProcesser.popRecord(session, record);
+                    popProcesser.popRecord(session, record, false);
                 } catch (Exception e) {
                     log.error(record.toString());
                     e.printStackTrace();
@@ -65,22 +95,6 @@ public class SyncServerRedis implements ISyncServer {
             }
         }
         return maxRecords;
-    }
-
-    public SyncServer getPushQueue() {
-        return pushQueue;
-    }
-
-    public void setPushQueue(SyncServer pushQueue) {
-        this.pushQueue = pushQueue;
-    }
-
-    public SyncServer getPopQueue() {
-        return popQueue;
-    }
-
-    public void setPopQueue(SyncServer popQueue) {
-        this.popQueue = popQueue;
     }
 
 }

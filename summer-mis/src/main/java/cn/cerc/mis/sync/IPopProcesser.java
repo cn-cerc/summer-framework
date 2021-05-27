@@ -5,6 +5,6 @@ import cn.cerc.core.Record;
 
 public interface IPopProcesser {
 
-    boolean popRecord(ISession session, Record record);
+    boolean popRecord(ISession session, Record record, boolean isQueue);
 
 }
