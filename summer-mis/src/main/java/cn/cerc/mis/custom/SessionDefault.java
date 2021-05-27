@@ -9,21 +9,20 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import cn.cerc.core.IConnection;
 import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
 import cn.cerc.core.Record;
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.jiguang.JiguangConnection;
-import cn.cerc.db.mongo.MongoConnection;
-import cn.cerc.db.mssql.MssqlConnection;
-import cn.cerc.db.mysql.MysqlConnection;
-import cn.cerc.db.mysql.SlaveMysqlConnection;
+import cn.cerc.db.mongo.MongoDB;
+import cn.cerc.db.mssql.MssqlServer;
+import cn.cerc.db.mysql.MysqlServerMaster;
+import cn.cerc.db.mysql.MysqlServerSlave;
 import cn.cerc.db.oss.OssConnection;
-import cn.cerc.db.queue.AliyunQueueConnection;
+import cn.cerc.db.queue.QueueServer;
 import cn.cerc.db.redis.JedisFactory;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CenterService;
-import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.other.MemoryBuffer;
 import redis.clients.jedis.Jedis;
@@ -35,7 +34,7 @@ import redis.clients.jedis.Jedis;
 public class SessionDefault implements ISession {
     public static final String TOKEN_CREATE_ENTER = "TOKEN_CREATE_STATUS";
     private static final Logger log = LoggerFactory.getLogger(SessionDefault.class);
-    private Map<String, IConnection> connections = new HashMap<>();
+    private Map<String, Object> connections = new HashMap<>();
     private Map<String, Object> params = new HashMap<>();
     private static int currentSize = 0;
 
@@ -49,7 +48,8 @@ public class SessionDefault implements ISession {
         params.put(ISession.LANGUAGE_ID, LanguageResource.appLanguage);
         log.debug("new SessionDefault");
         synchronized (this.getClass()) {
-            log.info("current size: {}", ++currentSize);
+            ++currentSize;
+//            log.info("current size: {}", currentSize);
         }
     }
 
@@ -79,21 +79,21 @@ public class SessionDefault implements ISession {
                 return connections.get(key);
             }
 
-            if (MysqlConnection.sessionId.equals(key)) {
-                MysqlConnection obj = new MysqlConnection();
-                connections.put(MysqlConnection.sessionId, obj);
+            if (MysqlServerMaster.SessionId.equals(key)) {
+                MysqlServerMaster obj = new MysqlServerMaster();
+                connections.put(MysqlServerMaster.SessionId, obj);
                 return connections.get(key);
             }
 
-            if (SlaveMysqlConnection.sessionId.equals(key)) {
-                SlaveMysqlConnection obj = new SlaveMysqlConnection();
-                connections.put(SlaveMysqlConnection.sessionId, obj);
+            if (MysqlServerSlave.SessionId.equals(key)) {
+                MysqlServerSlave obj = new MysqlServerSlave();
+                connections.put(MysqlServerSlave.SessionId, obj);
                 return connections.get(key);
             }
 
-            if (MssqlConnection.sessionId.equals(key)) {
-                MysqlConnection obj = new MysqlConnection();
-                connections.put(MysqlConnection.sessionId, obj);
+            if (MssqlServer.SessionId.equals(key)) {
+                MysqlServerMaster obj = new MysqlServerMaster();
+                connections.put(MysqlServerMaster.SessionId, obj);
                 return connections.get(key);
             }
 
@@ -103,15 +103,15 @@ public class SessionDefault implements ISession {
                 return connections.get(key);
             }
 
-            if (AliyunQueueConnection.sessionId.equals(key)) {
-                AliyunQueueConnection obj = new AliyunQueueConnection();
-                connections.put(AliyunQueueConnection.sessionId, obj);
+            if (QueueServer.SessionId.equals(key)) {
+                QueueServer obj = new QueueServer();
+                connections.put(QueueServer.SessionId, obj);
                 return connections.get(key);
             }
 
-            if (MongoConnection.sessionId.equals(key)) {
-                MongoConnection obj = new MongoConnection();
-                connections.put(MongoConnection.sessionId, obj);
+            if (MongoDB.SessionId.equals(key)) {
+                MongoDB obj = new MongoDB();
+                connections.put(MongoDB.SessionId, obj);
                 return connections.get(key);
             }
 
@@ -167,16 +167,9 @@ public class SessionDefault implements ISession {
         }
         connections.clear();
         synchronized (this.getClass()) {
-            log.info("current size: {}", --currentSize);
+            --currentSize;
+//            log.info("current size: {}", currentSize);
         }
-    }
-
-    public MysqlConnection getConnection() {
-        return (MysqlConnection) getProperty(MysqlConnection.sessionId);
-    }
-
-    public Map<String, IConnection> getConnections() {
-        return connections;
     }
 
     public Map<String, Object> getParams() {

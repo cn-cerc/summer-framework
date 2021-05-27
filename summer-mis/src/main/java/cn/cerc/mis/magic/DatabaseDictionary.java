@@ -19,6 +19,8 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.mssql.MssqlServer;
+import cn.cerc.db.mysql.MysqlServerMaster;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.vcl.TApplication;
@@ -87,7 +89,41 @@ public class DatabaseDictionary extends TMainForm implements IHandle {
                 return;
             }
 
-            try (ISession session = Application.getSession()) {
+            try (ISession session = new ISession() {
+                private MysqlServerMaster mysql;
+
+                @Override
+                public Object getProperty(String key) {
+                    if (MssqlServer.SessionId.equals(key)) {
+                        if (mysql == null)
+                            mysql = new MysqlServerMaster();
+                        return mysql;
+                    } else
+                        return null;
+                }
+
+                @Override
+                public void setProperty(String key, Object value) {
+
+                }
+
+                @Override
+                public boolean logon() {
+                    return false;
+                }
+
+                @Override
+                public void close() {
+                    if (mysql != null) {
+                        try {
+                            mysql.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        mysql = null;
+                    }
+                }
+            }) {
                 this.setSession(session);
                 this.run();
                 statusBar.setText("数据字典创建完成");

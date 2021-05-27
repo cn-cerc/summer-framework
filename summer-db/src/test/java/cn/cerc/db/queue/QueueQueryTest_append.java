@@ -1,17 +1,20 @@
 package cn.cerc.db.queue;
 
-import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
-public class QueueQueryTest_append {
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
+
+public class QueueQueryTest_append implements IHandle {
     private QueueQuery dataSet;
-    private StubHandleText handle;
+    private ISession session;
 
     @Before
     public void setUp() {
-        handle = new StubHandleText();
-        dataSet = new QueueQuery(handle);
+        session = new StubSession();
+        dataSet = new QueueQuery(this);
     }
 
     @Test
@@ -37,5 +40,15 @@ public class QueueQueryTest_append {
         dataSet.setField("queueBodyData5", "queueBodyData5");
 
         dataSet.save();
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 }

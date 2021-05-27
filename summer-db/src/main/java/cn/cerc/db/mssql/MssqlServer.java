@@ -17,12 +17,11 @@ import cn.cerc.db.core.ServerConfig;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MssqlConnection implements IConnection, AutoCloseable {
-    private static final Logger log = LoggerFactory.getLogger(MssqlConnection.class);
+public class MssqlServer implements IConnection, AutoCloseable {
+    private static final Logger log = LoggerFactory.getLogger(MssqlServer.class);
 
     // IHandle中识别码
-    public static final String sessionId = "mssqlSession";
-    public static final String dataSource = "mssqlDataSource";
+    public static final String SessionId = "mssqlSession";
 
     private String url;
     private String user;
@@ -31,7 +30,7 @@ public class MssqlConnection implements IConnection, AutoCloseable {
 
     private IConfig config;
 
-    public MssqlConnection() {
+    public MssqlServer() {
         config = ServerConfig.getInstance();
     }
 
@@ -46,11 +45,6 @@ public class MssqlConnection implements IConnection, AutoCloseable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public String getClientId() {
-        return MssqlConnection.sessionId;
     }
 
     @Override
@@ -73,14 +67,6 @@ public class MssqlConnection implements IConnection, AutoCloseable {
             throw new RuntimeException(e);
         }
 
-    }
-
-    @Override
-    public void setConfig(IConfig config) {
-        if (this.config != config) {
-            url = null;
-        }
-        this.config = config;
     }
 
     public String getConnectUrl() {

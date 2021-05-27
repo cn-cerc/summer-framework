@@ -180,18 +180,8 @@ public class OssConnection implements IConnection {
         return site;
     }
 
-    @Override
-    public String getClientId() {
-        return sessionId;
-    }
-
     public IConfig getConfig() {
         return config;
-    }
-
-    @Override
-    public void setConfig(IConfig config) {
-        this.config = config;
     }
 
 }

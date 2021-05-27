@@ -6,34 +6,22 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 
 public class Transaction implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(Transaction.class);
 
-    private Connection connection;
+    private SqlClient client;
     private boolean active = false;
     private boolean locked = false;
 
-    public Transaction(Connection connection) {
-        setConn(connection);
-    }
-
-    public Transaction(ISession session) {
-        MysqlConnection cn = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
-        setConn(cn.getClient());
-    }
-
     public Transaction(IHandle owner) {
-        this(owner.getSession());
-    }
-    
-    private void setConn(Connection conn) {
-        this.connection = conn;
+        MysqlServerMaster mysql = owner.getMysql();
+        this.client = mysql.getClient();
         try {
-            if (conn.getAutoCommit()) {
-                conn.setAutoCommit(false);
+            Connection connection = client.getConnection();
+            if (connection.getAutoCommit()) {
+                connection.setAutoCommit(false);
                 this.active = true;
             }
         } catch (SQLException e) {
@@ -43,14 +31,14 @@ public class Transaction implements AutoCloseable {
     }
 
     public boolean commit() {
-        if (!active) {
+        if (!active)
             return false;
-        }
-        if (locked) {
+
+        if (locked)
             throw new RuntimeException("Transaction locked is true");
-        }
+
         try {
-            connection.commit();
+            client.getConnection().commit();
             locked = true;
             return true;
         } catch (SQLException e) {
@@ -61,16 +49,18 @@ public class Transaction implements AutoCloseable {
 
     @Override
     public void close() {
-        if (!active) {
-            return;
-        }
         try {
-            try {
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
+            if (active) {
+                Connection connection = client.getConnection();
+                try {
+                    connection.rollback();
+                } finally {
+                    connection.setAutoCommit(true);
+                }
             }
+            client.close();
         } catch (SQLException e) {
+            client.close();
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }

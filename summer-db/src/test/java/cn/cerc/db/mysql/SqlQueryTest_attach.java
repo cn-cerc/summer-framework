@@ -1,18 +1,21 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.Record;
-import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SqlQueryTest_attach {
+import cn.cerc.core.ISession;
+import cn.cerc.core.Record;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
+
+public class SqlQueryTest_attach implements IHandle {
     private SqlQuery ds;
-    private StubHandleText handle;
+    private ISession session;
 
     @Before
     public void setUp() {
-        handle = new StubHandleText();
-        ds = new SqlQuery(handle);
+        session = new StubSession();
+        ds = new SqlQuery(this);
     }
 
     @Test
@@ -24,6 +27,16 @@ public class SqlQueryTest_attach {
         for (Record record : ds) {
             System.out.println(record.toString());
         }
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
 }

@@ -8,35 +8,33 @@ import com.aliyun.mns.model.Message;
 import com.google.gson.JsonSyntaxException;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
+import cn.cerc.core.SqlText;
 import cn.cerc.db.SummerDB;
-import cn.cerc.db.core.DataQuery;
 import cn.cerc.db.core.IHandle;
 
-public class QueueQuery extends DataQuery {
+public class QueueQuery extends DataSet implements IHandle {
     private static final ClassResource res = new ClassResource(QueueQuery.class, SummerDB.ID);
     private static final Logger log = LoggerFactory.getLogger(QueueQuery.class);
-
     private static final long serialVersionUID = 7781788221337787366L;
     private QueueOperator operator;
     private String queueCode;
-    private AliyunQueueConnection connection;
+    private QueueServer connection;
     private CloudQueue queue;
     private String receiptHandle;
     private QueueMode queueMode = QueueMode.append;
+    private SqlText sqlText;
+    private boolean active;
+    private ISession session;
 
-    public QueueQuery(ISession session) {
-        super(session);
-        this.setBatchSave(true);
-        this.connection = (AliyunQueueConnection) session.getProperty(AliyunQueueConnection.sessionId);
+    public QueueQuery(IHandle handle) {
+        super();
+        this.session = handle.getSession();
+        this.connection = (QueueServer) getSession().getProperty(QueueServer.SessionId);
     }
 
-    public QueueQuery(IHandle owner) {
-        this(owner.getSession());
-    }
-
-    @Override
-    public DataQuery open() {
+    public QueueQuery open() {
         if (queueCode == null) {
             queueCode = getOperator().findTableName(this.getSqlText().getText());
             queue = connection.openQueue(queueCode);
@@ -64,13 +62,12 @@ public class QueueQuery extends DataQuery {
         return this;
     }
 
-    @Override
     public void save() {
         if (this.queueMode != QueueMode.append) {
             throw new RuntimeException(res.getString(1, "当前作业模式下，不允许保存"));
         }
         connection.append(queue, getJSON());
-        log.info("message save success");
+        log.debug("message save success");
     }
 
     /**
@@ -100,20 +97,11 @@ public class QueueQuery extends DataQuery {
         return queue.isQueueExist();
     }
 
-    @Override
     public QueueOperator getOperator() {
         if (operator == null) {
             operator = new QueueOperator();
         }
         return operator;
-    }
-
-    @Override
-    public final void setBatchSave(boolean batchSave) {
-        super.setBatchSave(batchSave);
-        if (!batchSave) {
-            throw new RuntimeException("QueueQuery.batchSave can not be false");
-        }
     }
 
     public QueueMode getQueueMode() {
@@ -124,16 +112,36 @@ public class QueueQuery extends DataQuery {
         this.queueMode = queueMode;
     }
 
-    @Override
     public QueueQuery add(String sql) {
-        super.add(sql);
+        sqlText.add(sql);
+        return this;
+    }
+
+    public QueueQuery add(String format, Object... args) {
+        sqlText.add(format, args);
         return this;
     }
 
     @Override
-    public QueueQuery add(String format, Object... args) {
-        super.add(format, args);
-        return this;
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public SqlText getSqlText() {
+        return sqlText;
     }
 
 }

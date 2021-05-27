@@ -1,19 +1,22 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class MongoQueryTest {
-    private StubHandleText handle;
+import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
+
+public class MongoQueryTest implements IHandle {
+    private ISession session;
     private MongoQuery ds;
 
     @Before
     public void setUp() throws Exception {
-        handle = new StubHandleText();
-        ds = new MongoQuery(handle);
+        session = new StubSession();
+        ds = new MongoQuery(this);
     }
 
     @Test
@@ -104,5 +107,15 @@ public class MongoQueryTest {
         System.out.println(ds);
         while (!ds.eof())
             ds.delete();
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 }

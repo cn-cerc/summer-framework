@@ -18,10 +18,10 @@ import cn.cerc.db.core.IHandle;
 
 public class MongoOperator implements IDataOperator {
     private String tableName;
-    private MongoConnection connection;
+    private MongoDB connection;
 
     public MongoOperator(ISession session) {
-        this.connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
+        this.connection = (MongoDB) session.getProperty(MongoDB.SessionId);
     }
 
     public MongoOperator(IHandle owner) {

@@ -6,6 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import cn.cerc.core.ISession;
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.core.IHandle;
 
 public class BookHandleTest {

@@ -1,7 +1,7 @@
 package cn.cerc.mis.task;
 
 import cn.cerc.core.TDateTime;
-import cn.cerc.db.mysql.MysqlConnection;
+import cn.cerc.db.mysql.MysqlServerMaster;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class TaskTrackCurrentUser extends AbstractTask {
     @Override
     public void execute() {
         // 清理在线用户记录表
-        MysqlConnection conn = this.getConnection();
+        MysqlServerMaster conn = this.getMysql();
 
         // 删除超过100天的登录记录
         conn.execute(String.format("delete from %s where datediff(now(),LoginTime_)>100", systemTable.getCurrentUser()));

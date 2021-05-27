@@ -8,9 +8,9 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
 import cn.cerc.core.TDateTime;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 
 public class DirectoryTest extends Handle {

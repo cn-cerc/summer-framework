@@ -177,7 +177,7 @@ public class TAppLogin extends CustomService {
             String sql = String.format(
                     "update %s set LastTime_=now() where UserCode_='%s' and MachineCode_='%s' and Used_=1",
                     systemTable.getDeviceVerify(), userCode, deviceId);
-            getConnection().execute(sql);
+            getMysql().execute(sql);
 
             // 若该帐套是待安装，则改为已启用
             SqlQuery dsCorp = new SqlQuery(this);
@@ -235,7 +235,7 @@ public class TAppLogin extends CustomService {
         }
 
         String token = (String) getProperty(ISession.TOKEN);
-        getConnection().execute(String.format("Update %s Set Viability_=-1,LogoutTime_=now() where LoginID_='%s'",
+        getMysql().execute(String.format("Update %s Set Viability_=-1,LogoutTime_=now() where LoginID_='%s'",
                 systemTable.getCurrentUser(), token));
         return true;
     }
@@ -560,7 +560,7 @@ public class TAppLogin extends CustomService {
         String SQLCmd = String.format(
                 "update %s set Viability_=-1,LogoutTime_='%s' where Account_='%s' and Viability_>-1",
                 systemTable.getCurrentUser(), TDateTime.now(), getUserCode());
-        getConnection().execute(SQLCmd);
+        getMysql().execute(SQLCmd);
         
         ISession session = this.getSession();
         try {

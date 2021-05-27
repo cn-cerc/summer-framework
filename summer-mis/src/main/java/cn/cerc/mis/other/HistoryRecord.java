@@ -1,10 +1,10 @@
 package cn.cerc.mis.other;
 
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.core.Utils;
 import cn.cerc.db.mysql.BatchScript;
 import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 
 public class HistoryRecord extends Handle {

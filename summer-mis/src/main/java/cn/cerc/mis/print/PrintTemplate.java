@@ -18,7 +18,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
-import cn.cerc.mis.core.Handle;
+import cn.cerc.db.core.Handle;
 import cn.cerc.mis.excel.output.Column;
 
 public class PrintTemplate extends Handle {

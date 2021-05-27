@@ -1,7 +1,6 @@
-package cn.cerc.mis.core;
+package cn.cerc.db.core;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.IHandle;
 
 public class Handle implements IHandle {
 

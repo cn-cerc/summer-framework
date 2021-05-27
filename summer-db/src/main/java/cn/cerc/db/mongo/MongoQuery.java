@@ -19,33 +19,29 @@ import cn.cerc.core.DataSetState;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
+import cn.cerc.core.SqlText;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
-import cn.cerc.db.core.DataQuery;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlOperator;
 
-public class MongoQuery extends DataQuery {
+public class MongoQuery extends DataSet implements IHandle {
     private static final long serialVersionUID = -1262005194419604476L;
     private static final ClassResource res = new ClassResource(MongoQuery.class, SummerDB.ID);
-
-    private MongoConnection connection = null;
+    private MongoDB connection = null;
     // 数据库保存操作执行对象
     private IDataOperator operator;
-    // 仅当batchSave为true时，delList才有记录存在
-    private List<Record> delList = new ArrayList<>();
+    private ISession session;
+    private boolean active;
+    private final SqlText sqlText = new SqlText();
 
-    public MongoQuery(ISession session) {
-        super(session);
-        connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
+    public MongoQuery(IHandle handle) {
+        super();
+        this.session = handle.getSession();
+        connection = (MongoDB) getSession().getProperty(MongoDB.SessionId);
     }
 
-    public MongoQuery(IHandle owner) {
-        this(owner.getSession());
-    }
-
-    @Override
-    public DataQuery open() {
+    public MongoQuery open() {
         String table = SqlOperator.findTableName(this.getSqlText().getText());
         // 查找业务ID对应的数据
         MongoCollection<Document> coll = connection.getClient().getCollection(table);
@@ -197,9 +193,6 @@ public class MongoQuery extends DataQuery {
 
     @Override
     public void post() {
-        if (this.isBatchSave()) {
-            return;
-        }
         Record record = this.getCurrent();
         if (record.getState() == DataSetState.dsInsert) {
             beforePost();
@@ -214,7 +207,7 @@ public class MongoQuery extends DataQuery {
 
     private IDataOperator getDefaultOperator() {
         if (operator == null) {
-            MongoOperator obj = new MongoOperator(this.session);
+            MongoOperator obj = new MongoOperator(this);
             obj.setTableName(SqlOperator.findTableName(this.getSqlText().getText()));
             operator = obj;
         }
@@ -228,40 +221,9 @@ public class MongoQuery extends DataQuery {
         if (record.getState() == DataSetState.dsInsert) {
             return;
         }
-        if (this.isBatchSave()) {
-            delList.add(record);
-        } else {
-            getDefaultOperator().delete(record);
-        }
+        getDefaultOperator().delete(record);
     }
 
-    @Override
-    public void save() {
-        if (!this.isBatchSave()) {
-            throw new RuntimeException("batchSave is false");
-        }
-        IDataOperator operator = getDefaultOperator();
-        // 先执行删除
-        for (Record record : delList) {
-            operator.delete(record);
-        }
-        delList.clear();
-        // 再执行增加、修改
-        this.first();
-        while (this.fetch()) {
-            if (this.getState().equals(DataSetState.dsInsert)) {
-                beforePost();
-                operator.insert(this.getCurrent());
-                super.post();
-            } else if (this.getState().equals(DataSetState.dsEdit)) {
-                beforePost();
-                operator.update(this.getCurrent());
-                super.post();
-            }
-        }
-    }
-
-    @Override
     public IDataOperator getOperator() {
         return operator;
     }
@@ -329,15 +291,35 @@ public class MongoQuery extends DataQuery {
         return (Map<String, Object>) value;
     }
 
-    @Override
     public MongoQuery add(String sql) {
-        super.add(sql);
+        sqlText.add(sql);
+        return this;
+    }
+
+    public MongoQuery add(String format, Object... args) {
+        sqlText.add(format, args);
         return this;
     }
 
     @Override
-    public MongoQuery add(String format, Object... args) {
-        super.add(format, args);
-        return this;
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public SqlText getSqlText() {
+        return sqlText;
     }
 }

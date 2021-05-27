@@ -19,13 +19,16 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ClassData;
 import cn.cerc.core.ClassFactory;
+import cn.cerc.core.ISession;
 import cn.cerc.core.SqlText;
 import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.mysql.SqlClient;
 import cn.cerc.db.mysql.UpdateMode;
 import cn.cerc.db.redis.JedisFactory;
 import redis.clients.jedis.Jedis;
 
-public abstract class BigTable<T extends BigRecord> {
+public abstract class BigTable<T extends BigRecord> implements IHandle {
     private static final Logger log = LoggerFactory.getLogger(BigTable.class);
 
     // 有变动待保存数据，保存完后会自动清除
@@ -43,7 +46,8 @@ public abstract class BigTable<T extends BigRecord> {
     private Thread storageThread;
     private BigControl control;
     private UpdateMode updateMode = UpdateMode.loose;
-    private boolean debugConnection = false;
+
+    private ISession session;
 
     public BigTable(BigControl control) {
         super();
@@ -61,7 +65,8 @@ public abstract class BigTable<T extends BigRecord> {
                 items.put(key, value);
             });
             BigOperator.copy(items, obj2);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException e) {
             throw new RuntimeException(e);
         }
         return obj2;
@@ -166,33 +171,34 @@ public abstract class BigTable<T extends BigRecord> {
 
     private int loadRecords(String sqlText) {
         int total = 0;
-        try (BigConnection handle = new BigConnection()) {
-            Statement stat = handle.get().createStatement();
-            log.debug(sqlText.replaceAll("\r\n", " "));
-            stat.execute(sqlText.replace("\\", "\\\\"));
-            try (ResultSet rs = stat.getResultSet()) {
-                // 取得字段清单
-                ResultSetMetaData meta = rs.getMetaData();
-                // 取得所有数据
-                if (!rs.first()) {
-                    return 0;
+        try (SqlClient client = this.getMysql().getClient()) {
+            try (Statement stat = client.createStatement()) {
+                log.debug(sqlText.replaceAll("\r\n", " "));
+                stat.execute(sqlText.replace("\\", "\\\\"));
+                try (ResultSet rs = stat.getResultSet()) {
+                    // 取得字段清单
+                    ResultSetMetaData meta = rs.getMetaData();
+                    // 取得所有数据
+                    if (!rs.first()) {
+                        return 0;
+                    }
+                    do {
+                        total++;
+                        Map<String, Object> items = new HashMap<>();
+                        for (int i = 1; i <= meta.getColumnCount(); i++) {
+                            String key = meta.getColumnName(i);
+                            // System.out.println(rs.getObject(key) + ":" + rs.getObject(i));
+                            items.put(key, rs.getObject(key));
+                        }
+                        try {
+                            T obj = clazz.getDeclaredConstructor().newInstance();
+                            BigOperator.copy(items, obj);
+                            this.put(obj);
+                        } catch (InstantiationException | IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    } while (rs.next());
                 }
-                do {
-                    total++;
-                    Map<String, Object> items = new HashMap<>();
-                    for (int i = 1; i <= meta.getColumnCount(); i++) {
-                        String key = meta.getColumnName(i);
-                        // System.out.println(rs.getObject(key) + ":" + rs.getObject(i));
-                        items.put(key, rs.getObject(key));
-                    }
-                    try {
-                        T obj = clazz.getDeclaredConstructor().newInstance();
-                        BigOperator.copy(items, obj);
-                        this.put(obj);
-                    } catch (InstantiationException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                } while (rs.next());
             }
         } catch (Exception e1) {
             log.error(sqlText);
@@ -203,8 +209,8 @@ public abstract class BigTable<T extends BigRecord> {
 
     public void saveInsert(T record, boolean saveToDatabase) {
         if (saveToDatabase) {
-            try (BigConnection handle = new BigConnection(debugConnection)) {
-                BigInsertSql.exec(handle.get(), record, false);
+            try (SqlClient client = this.getMysql().getClient()) {
+                BigInsertSql.exec(client.getConnection(), record, false);
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error(e.getMessage());
@@ -281,13 +287,13 @@ public abstract class BigTable<T extends BigRecord> {
             throw new RuntimeException("tableName is null");
         }
 
-        try (BigConnection handle = new BigConnection(debugConnection)) {
+        try (SqlClient client = this.getMysql().getClient()) {
             // opera.setPreview(true);
             int total = 0;
             // update
             for (T srcRecord : updateList.keySet()) {
                 T newRecord = updateList.get(srcRecord);
-                BigUpdateSql.exec(handle.get(), srcRecord, newRecord, updateMode, false);
+                BigUpdateSql.exec(client.getConnection(), srcRecord, newRecord, updateMode, false);
                 updateList.remove(srcRecord);
                 total++;
                 if (maxSize > 0 && total == maxSize) {
@@ -297,7 +303,7 @@ public abstract class BigTable<T extends BigRecord> {
             // delete
             for (String key : deleteList.keySet()) {
                 T record = deleteList.get(key);
-                BigDeleteSql.exec(handle.get(), record, false);
+                BigDeleteSql.exec(client.getConnection(), record, false);
                 deleteList.remove(key);
                 total++;
                 if (maxSize > 0 && total == maxSize) {
@@ -537,12 +543,14 @@ public abstract class BigTable<T extends BigRecord> {
         this.updateMode = updateMode;
     }
 
-    public boolean isDebugConnection() {
-        return debugConnection;
+    @Override
+    public ISession getSession() {
+        return session;
     }
 
-    public void setDebugConnection(boolean debugConnection) {
-        this.debugConnection = debugConnection;
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
 }

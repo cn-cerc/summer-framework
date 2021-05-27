@@ -32,4 +32,14 @@ public interface IAppConfig {
     // 返回 form 的路径，默认为 services
     String getServicesPath();
 
+    @Deprecated
+    default String getFormWelcome() {
+        return getWelcomePage();
+    }
+
+    @Deprecated
+    default String getFormDefault() {
+        return getDefaultPage();
+    }
+
 }

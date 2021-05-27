@@ -1,8 +1,8 @@
 package cn.cerc.mis.mail;
 
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.queue.AliyunQueueConnection;
-import cn.cerc.mis.core.Handle;
+import cn.cerc.db.queue.QueueServer;
 
 import com.aliyun.mns.client.CloudQueue;
 import com.google.gson.Gson;
@@ -22,7 +22,7 @@ public class MailRecord extends Handle implements Serializable {
     }
 
     public boolean send() {
-        AliyunQueueConnection sess = (AliyunQueueConnection) this.getSession().getProperty(AliyunQueueConnection.sessionId);
+        QueueServer sess = (QueueServer) this.getSession().getProperty(QueueServer.SessionId);
         CloudQueue queue = sess.openQueue(AppMailQueue.queueSendMail);
         return sess.append(queue, this.toString());
     }

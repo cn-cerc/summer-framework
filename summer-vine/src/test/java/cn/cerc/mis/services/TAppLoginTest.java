@@ -10,11 +10,11 @@ import org.junit.Test;
 
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.DataValidateException;
-import cn.cerc.mis.core.Handle;
 import cn.cerc.mis.core.ISystemTable;
 import cn.cerc.mis.core.ServiceException;
 import cn.cerc.mis.core.SystemBufferType;

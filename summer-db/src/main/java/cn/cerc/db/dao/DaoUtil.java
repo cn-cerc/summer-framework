@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.mysql.SqlQuery;
 
 public class DaoUtil {
@@ -162,7 +163,7 @@ public class DaoUtil {
         sb.append("public class " + className + "{").append("\r\n");
         sb.append("\r\n");
 
-        SqlQuery ds = new SqlQuery(session);
+        SqlQuery ds = new SqlQuery(new Handle(session));
         ds.add("select * from " + tableName);
         ds.getSqlText().setMaximum(1);
         ds.open();

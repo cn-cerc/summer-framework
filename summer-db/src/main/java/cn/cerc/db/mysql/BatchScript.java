@@ -7,17 +7,17 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 
-public class BatchScript {
+public class BatchScript implements IHandle {
     private static final Logger log = LoggerFactory.getLogger(BatchScript.class);
 
     private StringBuffer items = new StringBuffer();
     private ISession session;
-    private MysqlConnection connection;
+    private MysqlServerMaster connection;
     private boolean newLine = false;
 
     public BatchScript(ISession session) {
         this.session = session;
-        this.connection = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
+        this.connection = this.getMysql();
     }
 
     public BatchScript(IHandle owner) {
@@ -79,7 +79,7 @@ public class BatchScript {
         for (String item : tmp) {
             if (!"".equals(item.trim())) {
                 log.debug(item.trim() + ";");
-                SqlQuery ds = new SqlQuery(session);
+                SqlQuery ds = new SqlQuery(this);
                 ds.add(item.trim());
                 ds.open();
                 if (ds.eof()) {
@@ -120,5 +120,15 @@ public class BatchScript {
     public BatchScript clean() {
         items = new StringBuffer();
         return this;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 }

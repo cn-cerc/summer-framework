@@ -56,7 +56,7 @@ public class UserMessageDefault implements IHandle, IUserMessage {
         // 若为异步任务消息请求
         if (level == MessageLevel.Service) {
             // 若已存在同一公司别同一种回算请求在排队或者执行中，则不重复插入回算请求
-            SqlQuery ds2 = new SqlQuery(session);
+            SqlQuery ds2 = new SqlQuery(this);
             ds2.setMaximum(1);
             ds2.add("select UID_ from %s ", systemTable.getUserMessages());
             ds2.add("where CorpNo_='%s' ", corpNo);

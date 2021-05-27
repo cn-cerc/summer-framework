@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.core.LanguageResource;
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.core.IAppConfig;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
@@ -42,6 +43,20 @@ public class Application implements ApplicationContextAware {
     private static String staticPath;
     // spring context
     private static ApplicationContext context;
+    @Deprecated
+    public static final String clientIP = "clientIP";
+    @Deprecated
+    public static final String loginTime = "loginTime";
+    @Deprecated
+    public static final String roleCode = "roleCode";
+    @Deprecated
+    public static final String userCode = ISession.USER_CODE;
+    @Deprecated
+    public static final String userId = UserId;
+    @Deprecated
+    public static final String token = ISession.TOKEN;
+    @Deprecated
+    public static final String bookNo = ISession.CORP_NO;
 
     static {
         staticPath = config.getString("app.static.path", "");
@@ -152,42 +167,43 @@ public class Application implements ApplicationContextAware {
     }
 
     /**
-     * 返回指定的service对象，若为空时会抛出 ClassNotFoundException 
+     * 返回指定的service对象，若为空时会抛出 ClassNotFoundException
+     * 
      * @param handle
      * @param serviceCode
-     * @throws ClassNotFoundException 
+     * @throws ClassNotFoundException
      */
     public static IService getService(IHandle handle, String serviceCode) throws ClassNotFoundException {
-            if (serviceCode == null) 
-                throw new ClassNotFoundException("serviceCode is null.");
+        if (serviceCode == null)
+            throw new ClassNotFoundException("serviceCode is null.");
 
-            // 读取xml中的配置
-            Object bean = null;
-            if (context.containsBean(serviceCode)) {
-                bean = context.getBean(serviceCode, IService.class);
+        // 读取xml中的配置
+        Object bean = null;
+        if (context.containsBean(serviceCode)) {
+            bean = context.getBean(serviceCode, IService.class);
+        } else {
+            // 读取注解的配置，并自动将第一个字母改为小写
+            String beanId = serviceCode.split("\\.")[0];
+            if (!beanId.substring(0, 2).toUpperCase().equals(beanId.substring(0, 2)))
+                beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
+            if (context.containsBean(beanId)) {
+                bean = context.getBean(beanId, IService.class);
+                // 支持指定函数
+                if (bean instanceof IMultiplService) {
+                    IMultiplService cs = ((IMultiplService) bean);
+                    cs.setFuncCode(serviceCode.split("\\.")[1]);
+                }
             } else {
-                // 读取注解的配置，并自动将第一个字母改为小写
-                String beanId = serviceCode.split("\\.")[0];
-                if (!beanId.substring(0, 2).toUpperCase().equals(beanId.substring(0, 2)))
-                    beanId = beanId.substring(0, 1).toLowerCase() + beanId.substring(1);
-                if (context.containsBean(beanId)) {
-                    bean = context.getBean(beanId, IService.class);
-                    // 支持指定函数
-                    if (bean instanceof IMultiplService) {
-                        IMultiplService cs = ((IMultiplService) bean);
-                        cs.setFuncCode(serviceCode.split("\\.")[1]);
-                    }
-                }else {
-                    throw new RuntimeException(String.format("bean %s not find", serviceCode));
-                }                    
+                throw new RuntimeException(String.format("bean %s not find", serviceCode));
             }
+        }
 
-            if (bean instanceof IHandle) {
-                ((IHandle) bean).setSession(handle.getSession());
-            }
-            return (IService) bean;
+        if (bean instanceof IHandle) {
+            ((IHandle) bean).setSession(handle.getSession());
+        }
+        return (IService) bean;
     }
-    
+
     public static IPassport getPassport(IHandle handle) {
         return getBean(handle, IPassport.class);
     }
@@ -205,6 +221,11 @@ public class Application implements ApplicationContextAware {
 
     public static String getStaticPath() {
         return staticPath;
+    }
+
+    @Deprecated
+    public static IHandle getHandle() {
+        return new Handle(getSession());
     }
 
 }

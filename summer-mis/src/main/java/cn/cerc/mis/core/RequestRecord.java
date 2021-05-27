@@ -7,6 +7,7 @@ import cn.cerc.core.TDateTime;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
 
 public class RequestRecord implements IRecord {
     private HttpServletRequest req = null;
@@ -98,14 +99,8 @@ public class RequestRecord implements IRecord {
     }
 
     public boolean hasDateTime(String field) {
-        String val = req.getParameter(field);
-        if (val == null) {
-            return false;
-        }
-        if ("".equals(val)) {
-            return false;
-        }
-        return TDateTime.getFormat(val) != null;
+        TDateTime dt = new TDateTime(req.getParameter(field));
+        return !dt.isEmpty();
     }
 
     @Override

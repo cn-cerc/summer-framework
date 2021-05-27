@@ -11,15 +11,18 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.core.ISession;
 import cn.cerc.mis.SummerMIS;
 
 public class RequestData {
     private static final Logger log = LoggerFactory.getLogger(RequestData.class);
     private static final ClassResource res = new ClassResource(RequestData.class, SummerMIS.ID);
-
-    // FIXME: 2019/12/7 sid 应该改为 token
-    public static final String TOKEN = "sid";
-    public static final String WEBCLIENT = "webclient";
+    @Deprecated
+    public static final String TOKEN = ISession.TOKEN;
+    @Deprecated
+    public static final String appSession_Key = ISession.TOKEN;
+    @Deprecated
+    public static final String WEBCLIENT = Application.WebClient;
 
     private final String token;
     private String param;

@@ -12,6 +12,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import cn.cerc.db.mysql.MysqlServerMaster;
+import cn.cerc.db.mysql.MysqlServerSlave;
 import cn.cerc.db.redis.JedisFactory;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.BasicHandle;
@@ -30,13 +32,14 @@ public class MemoryListener implements ServletContextListener, HttpSessionListen
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        log.info("tomcat 启动完成");
-
         context = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
 
         subthread = new CacheResetMonitor();
         subthread.setName("CacheReset-monitor");
         subthread.start();
+
+        MysqlServerMaster.openPool();
+        MysqlServerSlave.openPool();
 
         ApplicationContext context = WebApplicationContextUtils
                 .getRequiredWebApplicationContext(sce.getServletContext());
@@ -45,46 +48,59 @@ public class MemoryListener implements ServletContextListener, HttpSessionListen
         } else {
             log.error("application context null.");
         }
+        log.info("tomcat 启动完成");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        subthread.requestStop();
+        if (subthread != null) {
+            subthread.requestStop();
+            subthread = null;
+        }
         JedisFactory.close();
 
         // 通知所有的单例重启缓存
-        Application.setContext(context);
-        for (String beanId : context.getBeanDefinitionNames()) {
-            if (context.isSingleton(beanId)) {
-                Object bean = context.getBean(beanId);
-                if (bean instanceof IShutdown) {
-                    ((IShutdown) bean).shutdown();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        if (context != null) {
+            Application.setContext(context);
+            for (String beanId : context.getBeanDefinitionNames()) {
+                if (context.isSingleton(beanId)) {
+                    Object bean = context.getBean(beanId);
+                    if (bean instanceof IShutdown) {
+                        ((IShutdown) bean).shutdown();
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
         }
+
+        MysqlServerMaster.closePool();
+        MysqlServerSlave.closePool();
 
         log.info("tomcat 已经关闭");
     }
 
     @Override
     public synchronized void sessionCreated(HttpSessionEvent se) {
-        log.info("session current size: {}", ++count);
-        log.info("session MaxInactiveInterval: {}", se.getSession().getMaxInactiveInterval());
-        log.info("session: {}", se.getSession());
+        ++count;
+        if (count % 10 == 0)
+            log.info("session current size: {}", count);
+        log.debug("session MaxInactiveInterval: {}", se.getSession().getMaxInactiveInterval());
+        log.debug("session: {}", se.getSession());
         // 过期时间设置，单位为秒
 //        se.getSession().setMaxInactiveInterval(30);
     }
 
     @Override
     public synchronized void sessionDestroyed(HttpSessionEvent se) {
-        log.info("session: {}", se.getSession());
-        log.info("session MaxInactiveInterval: {}", se.getSession().getMaxInactiveInterval());
-        log.info("session current size: {}", --count);
+        log.debug("session: {}", se.getSession());
+        log.debug("session MaxInactiveInterval: {}", se.getSession().getMaxInactiveInterval());
+        --count;
+        if (count % 10 == 0)
+            log.info("session current size: {}", count);
 
         if (count != 0)
             return;

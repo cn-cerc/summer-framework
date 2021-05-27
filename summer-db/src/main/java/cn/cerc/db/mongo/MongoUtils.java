@@ -13,11 +13,11 @@ import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
 
 public class MongoUtils {
-    private MongoConnection connection;
+    private MongoDB connection;
     private MongoDatabase database;
 
     public MongoUtils(ISession session) {
-        connection = (MongoConnection) session.getProperty(MongoConnection.sessionId);
+        connection = (MongoDB) session.getProperty(MongoDB.SessionId);
         database = connection.getClient();
     }
 

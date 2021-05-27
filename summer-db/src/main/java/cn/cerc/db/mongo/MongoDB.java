@@ -16,8 +16,8 @@ import cn.cerc.db.core.ServerConfig;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MongoConnection implements IConnection, AutoCloseable {
-    private static final Logger log = LoggerFactory.getLogger(MongoConnection.class);
+public class MongoDB implements IConnection, AutoCloseable {
+    private static final Logger log = LoggerFactory.getLogger(MongoDB.class);
 
     public static final String mgdb_dbname = "mgdb.dbname";
     public static final String mgdb_username = "mgdb.username";
@@ -26,14 +26,14 @@ public class MongoConnection implements IConnection, AutoCloseable {
     public static final String mgdb_enablerep = "mgdb.enablerep";
     public static final String mgdb_replicaset = "mgdb.replicaset";
     public static final String mgdb_maxpoolsize = "mgdb.maxpoolsize";
-    public static final String sessionId = "mongoSession";
+    public static final String SessionId = "mongoSession";
 
     private static MongoClient pool;
     private static String dbname;
     private MongoDatabase database;
     private IConfig config;
 
-    public MongoConnection() {
+    public MongoDB() {
         config = ServerConfig.getInstance();
     }
 
@@ -43,24 +43,24 @@ public class MongoConnection implements IConnection, AutoCloseable {
             return database;
         }
 
-        if (MongoConnection.pool == null) {
-            dbname = config.getProperty(MongoConnection.mgdb_dbname);
+        if (MongoDB.pool == null) {
+            dbname = config.getProperty(MongoDB.mgdb_dbname);
             StringBuffer sb = new StringBuffer();
             sb.append("mongodb://");
             // userName
-            sb.append(config.getProperty(MongoConnection.mgdb_username));
+            sb.append(config.getProperty(MongoDB.mgdb_username));
             // password
-            sb.append(":").append(config.getProperty(MongoConnection.mgdb_password));
+            sb.append(":").append(config.getProperty(MongoDB.mgdb_password));
             // ip
-            sb.append("@").append(config.getProperty(MongoConnection.mgdb_site));
+            sb.append("@").append(config.getProperty(MongoDB.mgdb_site));
             // database
-            sb.append("/").append(config.getProperty(MongoConnection.mgdb_dbname));
+            sb.append("/").append(config.getProperty(MongoDB.mgdb_dbname));
 
-            if ("true".equals(config.getProperty(MongoConnection.mgdb_enablerep))) {
+            if ("true".equals(config.getProperty(MongoDB.mgdb_enablerep))) {
                 // replacaset
-                sb.append("?").append("replicaSet=").append(config.getProperty(MongoConnection.mgdb_replicaset));
+                sb.append("?").append("replicaSet=").append(config.getProperty(MongoDB.mgdb_replicaset));
                 // poolsize
-                sb.append("&").append("maxPoolSize=").append(config.getProperty(MongoConnection.mgdb_maxpoolsize));
+                sb.append("&").append("maxPoolSize=").append(config.getProperty(MongoDB.mgdb_maxpoolsize));
                 sb.append("&").append("connectTimeoutMS=").append("3000");
                 sb.append("&").append("serverSelectionTimeoutMS=").append("3000");
                 log.info("Connect to the MongoDB sharded cluster:" + sb.toString());
@@ -79,18 +79,8 @@ public class MongoConnection implements IConnection, AutoCloseable {
         }
     }
 
-    @Override
-    public String getClientId() {
-        return sessionId;
-    }
-
     public IConfig getConfig() {
         return config;
-    }
-
-    @Override
-    public void setConfig(IConfig config) {
-        this.config = config;
     }
 
 }

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,17 +39,8 @@ public class MssqlOperator implements IDataOperator {
 
     public MssqlOperator(ISession session) {
         super();
-        MssqlConnection conn = (MssqlConnection) session.getProperty(MssqlConnection.sessionId);
-        DataSource dataSource = (DataSource) session.getProperty(MssqlConnection.dataSource);
-        try {
-            if (dataSource == null) {
-                conntion = conn.getClient();
-            } else {
-                conntion = dataSource.getConnection();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        MssqlServer conn = (MssqlServer) session.getProperty(MssqlServer.SessionId);
+        conntion = conn.getClient();
     }
 
     public MssqlOperator(IHandle owner) {

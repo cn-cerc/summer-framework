@@ -2,30 +2,30 @@ package cn.cerc.db.oss;
 
 import java.io.ByteArrayInputStream;
 
+import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.DataQuery;
+import cn.cerc.core.SqlText;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.queue.OssOperator;
 
-public class OssQuery extends DataQuery {
-    private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public class OssQuery extends DataSet implements IHandle {
     private OssConnection connection;
     private OssOperator operator;
     // 文件名称
     private String fileName;
     private OssMode ossMode = OssMode.create;
+    private ISession session;
+    private SqlText sqlText;
+    private boolean active;
 
-    public OssQuery(ISession session) {
-        super(session);
-        connection = (OssConnection) this.session.getProperty(OssConnection.sessionId);
+    public OssQuery(IHandle handle) {
+        super();
+        this.session = handle.getSession();
+        connection = (OssConnection) getSession().getProperty(OssConnection.sessionId);
     }
 
-    public OssQuery(IHandle owner) {
-        this(owner.getSession());
-    }
-
-    @Override
-    public DataQuery open() {
+    public OssQuery open() {
         try {
             this.fileName = getOperator().findTableName(this.getSqlText().getText());
             if (ossMode == OssMode.readWrite) {
@@ -48,13 +48,11 @@ public class OssQuery extends DataQuery {
         connection.delete(this.fileName);
     }
 
-    @Override
     public void save() {
         String content = this.getJSON();
         connection.upload(fileName, new ByteArrayInputStream(content.getBytes()));
     }
 
-    @Override
     public OssOperator getOperator() {
         if (operator == null) {
             operator = new OssOperator();
@@ -70,16 +68,36 @@ public class OssQuery extends DataQuery {
         this.ossMode = ossMode;
     }
 
-    @Override
     public OssQuery add(String sql) {
-        super.add(sql);
+        sqlText.add(sql);
+        return this;
+    }
+
+    public OssQuery add(String format, Object... args) {
+        sqlText.add(format, args);
         return this;
     }
 
     @Override
-    public OssQuery add(String format, Object... args) {
-        super.add(format, args);
-        return this;
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public SqlText getSqlText() {
+        return sqlText;
     }
 
 }

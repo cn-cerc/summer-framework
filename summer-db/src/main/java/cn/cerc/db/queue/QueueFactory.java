@@ -16,23 +16,23 @@ public class QueueFactory {
     private static ClassConfig config = new ClassConfig();
 
     static {
-        String server = config.getProperty(AliyunQueueConnection.AccountEndpoint);
-        String userCode = config.getProperty(AliyunQueueConnection.AccessKeyId);
-        String password = config.getProperty(AliyunQueueConnection.AccessKeySecret);
-        String token = config.getProperty(AliyunQueueConnection.SecurityToken);
+        String server = config.getProperty(QueueServer.AccountEndpoint);
+        String userCode = config.getProperty(QueueServer.AccessKeyId);
+        String password = config.getProperty(QueueServer.AccessKeySecret);
+        String token = config.getProperty(QueueServer.SecurityToken);
         if (server == null) {
             throw new RuntimeException(
-                    String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccountEndpoint));
+                    String.format(res.getString(1, "%s 配置为空"), QueueServer.AccountEndpoint));
         }
         if (userCode == null) {
-            throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeyId));
+            throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), QueueServer.AccessKeyId));
         }
         if (password == null) {
             throw new RuntimeException(
-                    String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeySecret));
+                    String.format(res.getString(1, "%s 配置为空"), QueueServer.AccessKeySecret));
         }
         if (token == null) {
-            throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.SecurityToken));
+            throw new RuntimeException(String.format(res.getString(1, "%s 配置为空"), QueueServer.SecurityToken));
         }
         if (account == null) {
             account = new CloudAccount(userCode, password, server, token);

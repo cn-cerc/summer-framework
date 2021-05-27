@@ -8,48 +8,40 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.DataSetState;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
-import cn.cerc.db.core.DataQuery;
+import cn.cerc.core.SqlText;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.mysql.BigdataException;
 
-public class MssqlQuery extends DataQuery {
+@SuppressWarnings("serial")
+public class MssqlQuery extends DataSet implements IHandle {
     private static final Logger log = LoggerFactory.getLogger(MssqlQuery.class);
-
-    private static final long serialVersionUID = 889285738942368226L;
-
-    private MssqlConnection connection;
-
-    private DataSource dataSource;
-
+    private MssqlServer connection;
     // 若数据有取完，则为true，否则为false
     private boolean fetchFinish;
-
     // 数据库保存操作执行对象
     private MssqlOperator operator;
-
     // 仅当batchSave为true时，delList才有记录存在
     private List<Record> delList = new ArrayList<>();
+    private ISession session;
+    private boolean active;
+    private SqlText sqlText;
+    private boolean batchSave;
 
-    public MssqlQuery(ISession session) {
-        super(session);
-        this.connection = (MssqlConnection) session.getProperty(MssqlConnection.sessionId);
-        this.dataSource = (DataSource) session.getProperty(MssqlConnection.dataSource);
+    public MssqlQuery(IHandle handle) {
+        super();
+        this.session = handle.getSession();
+        this.connection = (MssqlServer) getSession().getProperty(MssqlServer.SessionId);
         this.getSqlText().setSupportMssql(true);
-    }
-
-    public MssqlQuery(IHandle session) {
-        this(session.getSession());
     }
 
     @Override
@@ -59,8 +51,7 @@ public class MssqlQuery extends DataQuery {
         super.close();
     }
 
-    @Override
-    public DataQuery open() {
+    public MssqlQuery open() {
         if (connection == null) {
             throw new RuntimeException("MssqlConnection is null");
         }
@@ -136,15 +127,7 @@ public class MssqlQuery extends DataQuery {
     }
 
     private Statement getStatement() throws SQLException {
-        try {
-            if (this.dataSource == null) {
-                return this.connection.getClient().createStatement();
-            } else {
-                return this.dataSource.getConnection().createStatement();
-            }
-        } catch (SQLException e) {
-            throw e;
-        }
+        return this.connection.getClient().createStatement();
     }
 
     public int getMaximum() {
@@ -156,12 +139,10 @@ public class MssqlQuery extends DataQuery {
         return this;
     }
 
-    @Override
     public boolean getActive() {
         return active;
     }
 
-    @Override
     public MssqlQuery setActive(boolean value) {
         if (value) {
             if (!this.active) {
@@ -205,7 +186,6 @@ public class MssqlQuery extends DataQuery {
         }
     }
 
-    @Override
     public void save() {
         if (!this.isBatchSave()) {
             throw new RuntimeException("batchSave is false");
@@ -233,7 +213,7 @@ public class MssqlQuery extends DataQuery {
 
     public MssqlOperator getDefaultOperator() {
         if (operator == null) {
-            MssqlOperator def = new MssqlOperator(this.session);
+            MssqlOperator def = new MssqlOperator(this);
             String sql = this.getSqlText().getText();
             if (sql != null) {
                 def.setTableName(MssqlOperator.findTableName(sql));
@@ -288,7 +268,6 @@ public class MssqlQuery extends DataQuery {
         this.getSqlText().clear();
     }
 
-    @Override
     public IDataOperator getOperator() {
         return operator;
     }
@@ -302,18 +281,6 @@ public class MssqlQuery extends DataQuery {
     }
 
     @Override
-    public MssqlQuery add(String sql) {
-        super.add(sql);
-        return this;
-    }
-
-    @Override
-    public MssqlQuery add(String format, Object... args) {
-        super.add(format, args);
-        return this;
-    }
-
-    @Override
     public String toString() {
         StringBuilder build = new StringBuilder();
         build.append(String.format("[%s]%n", this.getClass().getName()));
@@ -323,5 +290,37 @@ public class MssqlQuery extends DataQuery {
         log.info("mssql {}", build.toString());
         return build.toString();
     }
+    
+    public MssqlQuery add(String sql) {
+        sqlText.add(sql);
+        return this;
+    }
 
+    public MssqlQuery add(String format, Object... args) {
+        sqlText.add(format, args);
+        return this;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
+
+    public SqlText getSqlText() {
+        return sqlText;
+    }
+
+    // 是否批量保存
+    public boolean isBatchSave() {
+        return batchSave;
+    }
+
+    public void setBatchSave(boolean batchSave) {
+        this.batchSave = batchSave;
+    }
 }

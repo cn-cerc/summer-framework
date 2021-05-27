@@ -22,7 +22,7 @@ public class MemoryBookInfo {
         }
         
         ICorpInfoReader reader = Application.getBean(ICorpInfoReader.class);
-        Record record = reader.getCorpInfo(handle.getSession(), corpNo);
+        Record record = reader.getCorpInfo(handle, corpNo);
         
         BookInfoRecord item = new BookInfoRecord();
         if (record == null) {

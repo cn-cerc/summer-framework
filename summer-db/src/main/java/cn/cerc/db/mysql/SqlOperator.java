@@ -10,17 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.core.IDataOperator;
-import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.IHandle;
 
-public class SqlOperator implements IDataOperator {
+public class SqlOperator {
     private static final Logger log = LoggerFactory.getLogger(SqlOperator.class);
 
     private String updateKey = "UID_";
@@ -29,30 +25,15 @@ public class SqlOperator implements IDataOperator {
     private boolean preview = false;
     private List<String> searchKeys = new ArrayList<>();
     private UpdateMode updateMode = UpdateMode.strict;
-    private Connection conntion;
+    private IHandle handle = null;
 
-    public SqlOperator(Connection conntion) {
+    public SqlOperator() {
         super();
-        this.conntion = conntion;
     }
 
-    public SqlOperator(ISession session) {
+    public SqlOperator(IHandle handle) {
         super();
-        DataSource dataSource = (DataSource) session.getProperty(MysqlConnection.dataSource);
-        try {
-            if (dataSource == null) {
-                MysqlConnection conn = (MysqlConnection) session.getProperty(MysqlConnection.sessionId);
-                conntion = conn.getClient();
-            } else {
-                conntion = dataSource.getConnection();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public SqlOperator(IHandle owner) {
-        this(owner.getSession());
+        this.handle = handle;
     }
 
     // 根据 sql 获取数据库表名
@@ -77,23 +58,24 @@ public class SqlOperator implements IDataOperator {
 
         return result;
     }
+//
+//    public boolean insert(String tableName, String primaryKey, Record record) {
+//        this.setTableName(tableName);
+//        this.setPrimaryKey(primaryKey);
+//        return this.insert(record);
+//    }
 
-    private Connection getConnection() {
-        return conntion;
-    }
-
-    public boolean insert(String tableName, String primaryKey, Record record) {
-        this.setTableName(tableName);
-        this.setPrimaryKey(primaryKey);
-        return this.insert(record);
-    }
-
-    @Override
+    @Deprecated
     public boolean insert(Record record) {
+        try (SqlClient client = handle.getMysql().getClient()) {
+            return insert(client.getConnection(), record);
+        }
+    }
+
+    public boolean insert(Connection conn, Record record) {
         if (record.getFieldDefs().size() == 0) {
             throw new RuntimeException("字段为空");
         }
-        Connection conn = getConnection();
         try (BuildStatement bs = new BuildStatement(conn)) {
             if (searchKeys.size() == 0) {
                 initPrimaryKeys(conn, record);
@@ -154,8 +136,14 @@ public class SqlOperator implements IDataOperator {
         }
     }
 
-    @Override
+    @Deprecated
     public boolean update(Record record) {
+        try (SqlClient client = handle.getMysql().getClient()) {
+            return update(client.getConnection(), record);
+        }
+    }
+
+    public boolean update(Connection conn, Record record) {
         if (!record.isModify()) {
             return false;
         }
@@ -164,7 +152,6 @@ public class SqlOperator implements IDataOperator {
             return false;
         }
 
-        Connection conn = getConnection();
         try (BuildStatement bs = new BuildStatement(conn)) {
             if (this.searchKeys.size() == 0) {
                 initPrimaryKeys(conn, record);
@@ -246,11 +233,17 @@ public class SqlOperator implements IDataOperator {
         }
     }
 
-    @Override
+    @Deprecated
     public boolean delete(Record record) {
-        try (BuildStatement bs = new BuildStatement(conntion)) {
+        try (SqlClient client = handle.getMysql().getClient()) {
+            return delete(client.getConnection(), record);
+        }
+    }
+
+    public boolean delete(Connection conn, Record record) {
+        try (BuildStatement bs = new BuildStatement(conn)) {
             if (this.searchKeys.size() == 0) {
-                initPrimaryKeys(conntion, record);
+                initPrimaryKeys(conn, record);
             }
             if (searchKeys.size() == 0) {
                 throw new RuntimeException("primary keys  not exists");

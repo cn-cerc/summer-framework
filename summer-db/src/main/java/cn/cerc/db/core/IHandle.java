@@ -1,7 +1,11 @@
 package cn.cerc.db.core;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import cn.cerc.core.ISession;
-import cn.cerc.db.mysql.MysqlConnection;
+import cn.cerc.db.mysql.MysqlServerMaster;
+import cn.cerc.db.mysql.SqlClient;
 
 public interface IHandle {
 
@@ -17,8 +21,32 @@ public interface IHandle {
         return getSession().getUserCode();
     }
 
-    default MysqlConnection getConnection() {
-        return (MysqlConnection) getSession().getProperty(MysqlConnection.sessionId);
+    default MysqlServerMaster getMysql() {
+        return (MysqlServerMaster) getSession().getProperty(MysqlServerMaster.SessionId);
     }
 
+    /**
+     * 若执行sql指令后，有返回一条或一条记录以上，则为true，否则为false;
+     */
+    default boolean DBExists(String sql) {
+        try (SqlClient client = getMysql().getClient()) {
+            try (Statement st = client.createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql)) {
+                    return rs.next();
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Deprecated
+    default void setProperty(String key, Object value) {
+        getSession().setProperty(key, value);
+    }
+
+    @Deprecated
+    default void setHandle(IHandle handle) {
+        this.setSession(handle.getSession());
+    }
 }

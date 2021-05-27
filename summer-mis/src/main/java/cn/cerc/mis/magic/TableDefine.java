@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.cerc.core.ISession;
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.mysql.SqlQuery;
 
 public class TableDefine implements Iterable<FieldDefine> {
@@ -15,7 +16,7 @@ public class TableDefine implements Iterable<FieldDefine> {
     private String comment;
 
     public void init(ISession session, String dbName) {
-        SqlQuery ds = new SqlQuery(session);
+        SqlQuery ds = new SqlQuery(new Handle(session));
         ds.add("select COLUMN_NAME,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_COMMENT,COLUMN_DEFAULT");
         ds.add("from %s", DatabaseDefine.TableColumns);
         ds.add("where TABLE_SCHEMA='%s' and table_name='%s'", dbName, this.getCode());

@@ -22,16 +22,16 @@ import cn.cerc.db.core.ServerConfig;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class AliyunQueueConnection implements IConnection {
-    private static final ClassResource res = new ClassResource(AliyunQueueConnection.class, SummerDB.ID);
-    private static final Logger log = LoggerFactory.getLogger(AliyunQueueConnection.class);
+public class QueueServer implements IConnection {
+    private static final ClassResource res = new ClassResource(QueueServer.class, SummerDB.ID);
+    private static final Logger log = LoggerFactory.getLogger(QueueServer.class);
 
     public static final String AccountEndpoint = "mns.accountendpoint";
     public static final String AccessKeyId = "mns.accesskeyid";
     public static final String AccessKeySecret = "mns.accesskeysecret";
     public static final String SecurityToken = "mns.securitytoken";
     // IHandle中识别码
-    public static final String sessionId = "aliyunQueueSession";
+    public static final String SessionId = "aliyunQueueSession";
 
     // 默认不可见时间
     private static int visibilityTimeout = 50;
@@ -39,7 +39,7 @@ public class AliyunQueueConnection implements IConnection {
     private static CloudAccount account;
     private IConfig config;
 
-    public AliyunQueueConnection() {
+    public QueueServer() {
         config = ServerConfig.getInstance();
     }
 
@@ -50,20 +50,20 @@ public class AliyunQueueConnection implements IConnection {
         }
 
         if (account == null) {
-            String server = config.getProperty(AliyunQueueConnection.AccountEndpoint, null);
-            String userCode = config.getProperty(AliyunQueueConnection.AccessKeyId, null);
-            String password = config.getProperty(AliyunQueueConnection.AccessKeySecret, null);
+            String server = config.getProperty(QueueServer.AccountEndpoint, null);
+            String userCode = config.getProperty(QueueServer.AccessKeyId, null);
+            String password = config.getProperty(QueueServer.AccessKeySecret, null);
             if (server == null) {
                 throw new RuntimeException(
-                        String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccountEndpoint));
+                        String.format(res.getString(1, "%s 配置为空"), QueueServer.AccountEndpoint));
             }
             if (userCode == null) {
                 throw new RuntimeException(
-                        String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeyId));
+                        String.format(res.getString(1, "%s 配置为空"), QueueServer.AccessKeyId));
             }
             if (password == null) {
                 throw new RuntimeException(
-                        String.format(res.getString(1, "%s 配置为空"), AliyunQueueConnection.AccessKeySecret));
+                        String.format(res.getString(1, "%s 配置为空"), QueueServer.AccessKeySecret));
             }
             if (account == null) {
                 account = new CloudAccount(userCode, password, server);
@@ -177,18 +177,8 @@ public class AliyunQueueConnection implements IConnection {
         log.debug("new receipt handle: " + newReceiptHandle);
     }
 
-    @Override
-    public String getClientId() {
-        return sessionId;
-    }
-
     public IConfig getConfig() {
         return config;
-    }
-
-    @Override
-    public void setConfig(IConfig config) {
-        this.config = config;
     }
 
     public void close() {

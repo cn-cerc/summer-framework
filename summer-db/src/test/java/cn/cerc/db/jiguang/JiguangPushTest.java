@@ -6,15 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.StubHandleText;
+import cn.cerc.db.core.StubSession;
 
 public class JiguangPushTest {
-    private StubHandleText handle;
+    private StubSession handle;
     private static final Logger log = LoggerFactory.getLogger(JiguangPushTest.class);
 
     @Before
     public void setUp() throws Exception {
-        handle = new StubHandleText();
+        handle = new StubSession();
     }
 
     @Test

@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
@@ -24,12 +23,12 @@ public class CorpInfoReaderDefault implements ICorpInfoReader, IMemoryCache {
     private String beanName;
 
     @Override
-    public Record getCorpInfo(ISession session, String corpNo) {
+    public Record getCorpInfo(IHandle handle, String corpNo) {
         if (items.containsKey(corpNo))
             return items.get(corpNo);
 
         synchronized (this) {
-            SqlQuery ds = new SqlQuery(session);
+            SqlQuery ds = new SqlQuery(handle);
             ds.add("select CorpNo_,Type_,ShortName_,Name_,Address_,Tel_,Status_,Industry_,FastTel_,Currency_,");
             ds.add("ManagerPhone_,StartHost_,Contact_,Authentication_,CorpMailbox_,Fax_");
             ds.add("from %s where CorpNo_=N'%s'", systemTable.getBookInfo(), corpNo);

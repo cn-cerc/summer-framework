@@ -44,18 +44,8 @@ public class JiguangConnection implements IConnection {
         return client;
     }
 
-    @Override
-    public String getClientId() {
-        return sessionId;
-    }
-
     public IConfig getConfig() {
         return config;
-    }
-
-    @Override
-    public void setConfig(IConfig config) {
-        this.config = config;
     }
 
 }

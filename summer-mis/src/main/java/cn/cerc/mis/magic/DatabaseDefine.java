@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
+import cn.cerc.db.core.Handle;
 import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.mis.SummerMIS;
 import cn.cerc.mis.custom.SessionDefault;
@@ -31,7 +32,7 @@ public class DatabaseDefine implements Iterable<TableDefine> {
 
             String dbName = config.getString("rds.database", null);
             if (dbName != null) {
-                SqlQuery ds = new SqlQuery(session);
+                SqlQuery ds = new SqlQuery(new Handle(session));
                 ds.add("select table_name,table_comment from %s where table_schema='%s'", DataTables, dbName);
                 ds.open();
                 while (ds.fetch()) {

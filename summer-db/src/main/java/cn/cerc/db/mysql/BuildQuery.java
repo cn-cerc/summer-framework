@@ -18,7 +18,7 @@ import cn.cerc.db.core.IHandle;
  *
  * @author 张弓
  */
-public class BuildQuery {
+public class BuildQuery implements IHandle {
     public static final String vbCrLf = "\r\n";
     private SqlQuery dataSet;
     private List<String> sqlWhere = new ArrayList<>();
@@ -243,7 +243,7 @@ public class BuildQuery {
 
     public SqlQuery getDataSet() {
         if (this.dataSet == null) {
-            this.dataSet = new SqlQuery(session);
+            this.dataSet = new SqlQuery(this);
         }
         return this.dataSet;
     }
@@ -251,7 +251,6 @@ public class BuildQuery {
     public void setDataSet(SqlQuery dataSet) {
         this.dataSet = dataSet;
     }
-
 
     @Override
     public String toString() {
@@ -305,18 +304,18 @@ public class BuildQuery {
     }
 
     public SqlQuery open() {
-        SqlQuery ds = getDataSet();
-        ds.getSqlText().clear();
-        ds.add(this.getSelectCommand());
-        ds.open();
-        return ds;
+        return open(false);
     }
 
     public SqlQuery openReadonly() {
+        return open(true);
+    }
+
+    public SqlQuery open(boolean slaveServer) {
         SqlQuery ds = getDataSet();
         ds.getSqlText().clear();
         ds.add(this.getSelectCommand());
-        ds.openReadonly();
+        ds.open(slaveServer);
         return ds;
     }
 
@@ -386,5 +385,15 @@ public class BuildQuery {
 
     public void setOrderText(String orderText) {
         this.orderText = orderText;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 }

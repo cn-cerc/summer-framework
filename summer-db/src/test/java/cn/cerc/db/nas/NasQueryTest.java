@@ -5,18 +5,20 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.db.core.StubHandleText;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
 
-public class NasQueryTest {
+public class NasQueryTest implements IHandle {
     private static final Logger log = LoggerFactory.getLogger(NasQueryTest.class);
 
     private NasQuery ds;
-    private StubHandleText handle;
+    private ISession session;
 
     @Before
     public void setUp() {
-        handle = new StubHandleText();
-        ds = new NasQuery(handle);
+        session = new StubSession();
+        ds = new NasQuery(this);
     }
 
     /**
@@ -77,4 +79,13 @@ public class NasQueryTest {
         ds.delete();
     }
 
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
 }

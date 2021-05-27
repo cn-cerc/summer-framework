@@ -1,42 +1,28 @@
 package cn.cerc.db.core;
 
-import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.db.jiguang.JiguangConnection;
-import cn.cerc.db.mongo.MongoConnection;
-import cn.cerc.db.mssql.MssqlConnection;
-import cn.cerc.db.mysql.MysqlConnection;
+import cn.cerc.db.mongo.MongoDB;
+import cn.cerc.db.mssql.MssqlServer;
+import cn.cerc.db.mysql.MysqlServerMaster;
 import cn.cerc.db.oss.OssConnection;
-import cn.cerc.db.queue.AliyunQueueConnection;
+import cn.cerc.db.queue.QueueServer;
 
-public class StubHandleText implements ISession {
-    private MysqlConnection mysqlSession;
-    private MssqlConnection mssqlConnection;
-    private MongoConnection mgConn;
-    private AliyunQueueConnection queConn;
+public class StubSession implements ISession {
+    private MysqlServerMaster mysql;
+    private MssqlServer mssqlConnection;
+    private MongoDB mgConn;
+    private QueueServer queConn;
     private OssConnection ossConn;
     private JiguangConnection pushConn;
 
-    public StubHandleText() {
-        ClassConfig config = new ClassConfig();
-
-        mysqlSession = new MysqlConnection();
-        mysqlSession.setConfig(config);
-
-        mssqlConnection = new MssqlConnection();
-        mssqlConnection.setConfig(config);
-
-        mgConn = new MongoConnection();
-        mgConn.setConfig(config);
-
-        queConn = new AliyunQueueConnection();
-        queConn.setConfig(config);
-
+    public StubSession() {
+        mysql = new MysqlServerMaster();
+        mssqlConnection = new MssqlServer();
+        mgConn = new MongoDB();
+        queConn = new QueueServer();
         ossConn = new OssConnection();
-        ossConn.setConfig(config);
-
         pushConn = new JiguangConnection();
-        pushConn.setConfig(config);
     }
 
     @Override
@@ -51,14 +37,14 @@ public class StubHandleText implements ISession {
 
     @Override
     public Object getProperty(String key) {
-        if (MysqlConnection.sessionId.equals(key))
-            return mysqlSession;
-        if (MssqlConnection.sessionId.equals(key)) {
+        if (MysqlServerMaster.SessionId.equals(key))
+            return mysql;
+        if (MssqlServer.SessionId.equals(key)) {
             return mssqlConnection;
         }
-        if (MongoConnection.sessionId.equals(key))
+        if (MongoDB.SessionId.equals(key))
             return mgConn;
-        if (AliyunQueueConnection.sessionId.equals(key))
+        if (QueueServer.SessionId.equals(key))
             return queConn;
         if (OssConnection.sessionId.equals(key))
             return ossConn;
@@ -87,13 +73,13 @@ public class StubHandleText implements ISession {
 
     @Override
     public void close() {
-        if (mysqlSession != null) {
+        if (mysql != null) {
             try {
-                mysqlSession.close();
+                mysql.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mysqlSession = null;
+            mysql = null;
         }
     }
 
