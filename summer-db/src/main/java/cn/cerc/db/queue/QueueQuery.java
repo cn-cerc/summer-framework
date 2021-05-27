@@ -24,7 +24,7 @@ public class QueueQuery extends DataSet implements IHandle {
     private CloudQueue queue;
     private String receiptHandle;
     private QueueMode queueMode = QueueMode.append;
-    private SqlText sqlText;
+    private SqlText sqlText = new SqlText();
     private boolean active;
     private ISession session;
 

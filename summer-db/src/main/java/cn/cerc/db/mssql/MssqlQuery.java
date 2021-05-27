@@ -34,7 +34,7 @@ public class MssqlQuery extends DataSet implements IHandle {
     private List<Record> delList = new ArrayList<>();
     private ISession session;
     private boolean active;
-    private SqlText sqlText;
+    private SqlText sqlText = new SqlText();
     private boolean batchSave;
 
     public MssqlQuery(IHandle handle) {

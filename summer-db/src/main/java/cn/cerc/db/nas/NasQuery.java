@@ -24,7 +24,7 @@ public class NasQuery extends DataSet implements IHandle {
     private String fileName;
     private QueueOperator operator;
     private NasModel nasMode = NasModel.create;
-    private SqlText sqlText;
+    private SqlText sqlText = new SqlText();
     private boolean active;
     private ISession session;
 

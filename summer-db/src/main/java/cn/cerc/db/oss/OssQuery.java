@@ -16,7 +16,7 @@ public class OssQuery extends DataSet implements IHandle {
     private String fileName;
     private OssMode ossMode = OssMode.create;
     private ISession session;
-    private SqlText sqlText;
+    private SqlText sqlText = new SqlText();
     private boolean active;
 
     public OssQuery(IHandle handle) {
