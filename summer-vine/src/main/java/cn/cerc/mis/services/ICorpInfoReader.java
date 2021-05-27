@@ -1,6 +1,7 @@
 package cn.cerc.mis.services;
 
 import cn.cerc.core.Record;
+import cn.cerc.db.core.IHandle;
 
 public interface ICorpInfoReader {
 
