@@ -22,6 +22,7 @@ import cn.cerc.db.mysql.SqlQuery;
 import cn.cerc.db.mysql.Transaction;
 import cn.cerc.db.oss.OssConnection;
 import cn.cerc.mis.SummerMIS;
+import cn.cerc.mis.cache.MemoryListener;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.CustomService;
 import cn.cerc.mis.core.DataValidateException;
@@ -31,6 +32,7 @@ import cn.cerc.mis.core.SystemBufferType;
 import cn.cerc.mis.custom.SessionDefault;
 import cn.cerc.mis.other.BookVersion;
 import cn.cerc.mis.other.MemoryBuffer;
+import cn.cerc.ui.custom.CorpInfoReaderDefault;
 
 /**
  * 用于用户登录
@@ -188,7 +190,7 @@ public class TAppLogin extends CustomService {
                 dsCorp.edit();
                 dsCorp.setField("Status_", 2);
                 dsCorp.post();
-                MemoryBookInfo.clear(this, corpNo);
+                MemoryListener.refresh(CorpInfoReaderDefault.class, corpNo);
             }
 
             session.setProperty(Application.UserId, dsUser.getString("ID_"));

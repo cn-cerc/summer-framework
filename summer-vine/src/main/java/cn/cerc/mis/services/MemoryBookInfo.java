@@ -8,7 +8,6 @@ import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.cache.MemoryListener;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.other.BookVersion;
 
@@ -127,10 +126,6 @@ public class MemoryBookInfo {
             throw new RuntimeException(String.format(res.getString(1, "没有找到注册的帐套 %s"), corpNo));
         }
         return item.getIndustry();
-    }
-
-    public static void clear(IHandle handle, String corpNo) {
-        MemoryListener.updateCache("corpInfoReaderDefault", corpNo);
     }
 
 }
