@@ -1,7 +1,8 @@
 package cn.cerc.mis.core;
 
 public class DataValidateException extends ServiceException {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -5965584243989194951L;
 
     public DataValidateException(String errorMsg) {
         super(errorMsg);
