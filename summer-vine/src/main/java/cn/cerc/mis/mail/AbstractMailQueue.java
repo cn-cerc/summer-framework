@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 
 import cn.cerc.db.queue.QueueServer;
 
-public abstract class AbstractMailQueue {
+public class AbstractMailQueue {
     private final Address to = new Address();
     private String subject;
     private String content;
