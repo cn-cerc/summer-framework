@@ -1,6 +1,5 @@
 package cn.cerc.db.dao;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 

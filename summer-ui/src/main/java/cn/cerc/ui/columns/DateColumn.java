@@ -43,7 +43,7 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
 
     private void outputCellPhone(HtmlWriter html) {
         String value = getRecord().getString(this.getCode());
-        if (Utils.isNotEmpty(value)) {
+        if (!Utils.isEmpty(value)) {
             value = value.substring(0, 10);
         }
         if (this.readonly) {
@@ -65,7 +65,7 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
 
     private void outputCellWeb(HtmlWriter html) {
         String value = getRecord().getString(this.getCode());
-        if (Utils.isNotEmpty(value)) {
+        if (!Utils.isEmpty(value)) {
             value = value.substring(0, 10);
         }
         if (this.readonly) {
@@ -90,7 +90,7 @@ public class DateColumn extends AbstractColumn implements IDataColumn {
         input.setReadonly(this.isReadonly());
         input.setId(getCode());
         input.setInputType(UIInput.TYPE_DATE);
-        if (Utils.isNotEmpty(text)) {
+        if (!Utils.isEmpty(text)) {
             text = text.substring(0, 10);
         }
         input.setValue(text);

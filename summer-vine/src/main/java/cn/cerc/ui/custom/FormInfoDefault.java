@@ -14,7 +14,7 @@ public class FormInfoDefault implements IFormInfo {
     @Override
     public String getFormCaption(IForm form, String formId, String defaultValue) {
         //FIXME 不得对函数使用R.asString，此处需要改进! ZhangGong 2021/3/16
-        if (Utils.isNotEmpty(form.getName())) {
+        if (!Utils.isEmpty(form.getName())) {
             return R.asString(form, form.getName());
         } else {
             return R.asString(form, MenuList.create(form).getName(formId));

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
@@ -42,6 +43,7 @@ import cn.cerc.ui.custom.CorpInfoReaderDefault;
 public class TAppLogin extends CustomService {
     private static final Logger log = LoggerFactory.getLogger(TAppLogin.class);
     private static final ClassResource res = new ClassResource(TAppLogin.class, SummerMIS.ID);
+    private static final ClassConfig config = new ClassConfig(TAppLogin.class, null);
 
     public static int TimeOut = 5; // 效验代码超时时间（分钟）
     private static String GuidNull = "";
@@ -84,7 +86,6 @@ public class TAppLogin extends CustomService {
         }
 
         String corpNo = dsUser.getString("CorpNo_");
-        ServerConfig config = ServerConfig.getInstance();
         String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
         // 判断该手机号绑定的账号，是否有supCorpNo的下游，专用App登录
         if (!"".equals(supCorpNo)) {
@@ -201,8 +202,8 @@ public class TAppLogin extends CustomService {
             updateCurrentUser(device_name, headIn.getString("Screen_"), headIn.getString("Language_"));
 
             try (MemoryBuffer Buff = new MemoryBuffer(SystemBuffer.User.SessionInfo,
-                    (String) getProperty(Application.UserId), deviceId)) {
-                Buff.setField("UserID_", getProperty(Application.UserId));
+                    (String) session.getProperty(Application.UserId), deviceId)) {
+                Buff.setField("UserID_", session.getProperty(Application.UserId));
                 Buff.setField("UserCode_", getUserCode());
                 Buff.setField("UserName_", getSession().getUserName());
                 Buff.setField("LoginTime_", session.getProperty(Application.LoginTime));
@@ -210,8 +211,8 @@ public class TAppLogin extends CustomService {
                 Buff.setField("VerifyMachine", false);
             }
             // 返回值于前台
-            getDataOut().getHead().setField("SessionID_", getProperty(ISession.TOKEN));
-            getDataOut().getHead().setField("UserID_", getProperty(Application.UserId));
+            getDataOut().getHead().setField("SessionID_", session.getProperty(ISession.TOKEN));
+            getDataOut().getHead().setField("UserID_", session.getProperty(Application.UserId));
             getDataOut().getHead().setField("UserCode_", getUserCode());
             getDataOut().getHead().setField("CorpNo_", this.getCorpNo());
             getDataOut().getHead().setField("YGUser", YGLogin);
@@ -231,12 +232,12 @@ public class TAppLogin extends CustomService {
      * @return 暂未使用
      */
     public boolean ExitSystem() {
-        if (getProperty(Application.UserId) != null) {
+        if (getSession().getProperty(Application.UserId) != null) {
             // TODO 此处的key有问题
-            MemoryBuffer.delete(SystemBuffer.User.SessionInfo, (String) getProperty(Application.UserId), "webclient");
+            MemoryBuffer.delete(SystemBuffer.User.SessionInfo, (String) getSession().getProperty(Application.UserId), "webclient");
         }
 
-        String token = (String) getProperty(ISession.TOKEN);
+        String token = (String) getSession().getProperty(ISession.TOKEN);
         getMysql().execute(String.format("Update %s Set Viability_=-1,LogoutTime_=now() where LoginID_='%s'",
                 systemTable.getCurrentUser(), token));
         return true;
@@ -244,7 +245,7 @@ public class TAppLogin extends CustomService {
 
     // 获取登录状态
     public boolean getState() {
-        getDataOut().getHead().setField("UserID_", getProperty(Application.UserId));
+        getDataOut().getHead().setField("UserID_", getSession().getProperty(Application.UserId));
         getDataOut().getHead().setField("UserCode_", getUserCode());
         getDataOut().getHead().setField("CorpNo_", this.getCorpNo());
         return true;
@@ -260,7 +261,6 @@ public class TAppLogin extends CustomService {
 
         String token1 = headIn.getString("token");
         // 加入ABCD是为了仅允许内部调用
-        ServerConfig config = ServerConfig.getInstance();
         String token2 = config.getProperty(OssConnection.oss_accessKeySecret, "") + "ABCD";
         // 如果不是内部调用，则返回false
         if (!token2.equals(token1)) {
@@ -589,7 +589,7 @@ public class TAppLogin extends CustomService {
         rs.setField("Language_", language);
         SqlOperator opear = new SqlOperator(this);
         opear.setTableName(systemTable.getCurrentUser());
-        opear.insert(rs);
+        opear.insert(this.getMysql().getClient().getConnection(), rs);
     }
 
 }

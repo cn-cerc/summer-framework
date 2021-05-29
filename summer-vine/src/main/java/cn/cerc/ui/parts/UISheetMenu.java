@@ -61,7 +61,7 @@ public class UISheetMenu extends UISheet {
                 String hrip = "hrip:" + url.getUrl();
                 html.print(" <a href='%s' class='erp_menu'/><img src='%s' role='icon'/></a>", hrip, "images/menu/erp-blue.png");
             }
-            if (Utils.isNotEmpty(url.getArrow())) {
+            if (!Utils.isEmpty(url.getArrow())) {
                 html.println("<img src='%s' role='arrow' />", url.getArrow());
             }
             html.println("</li>");

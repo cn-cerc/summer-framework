@@ -185,12 +185,12 @@ public abstract class UIPage extends AbstractPage {
         if (item == null) {
             return toolBar;
         }
-        if (Utils.isNotEmpty(item.getRemark())) {
+        if (!Utils.isEmpty(item.getRemark())) {
             UISheetHelp section = new UISheetHelp(toolBar);
             section.setCaption(res.getString(1, "菜单描述"));
             section.addLine("%s", item.getRemark());
         }
-        if (Utils.isNotEmpty(item.getDeadline())) {
+        if (!Utils.isEmpty(item.getDeadline())) {
             UISheetHelp section = new UISheetHelp(toolBar);
             section.setCaption(res.getString(2, "停用时间"));
             section.addLine("<font color='red'>%s</font>", item.getDeadline());
@@ -204,7 +204,7 @@ public abstract class UIPage extends AbstractPage {
         String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
         String[] params = menuCode.split("\\.");
         String formId = params[0];
-        if (Utils.isNotEmpty(this.getForm().getName())) {
+        if (!Utils.isEmpty(this.getForm().getName())) {
             out.printf("<title>%s</title>", R.asString(form, this.getForm().getName()));
         } else {
             out.printf("<title>%s</title>", R.asString(form, MenuList.create(this.getForm()).getName(formId)));

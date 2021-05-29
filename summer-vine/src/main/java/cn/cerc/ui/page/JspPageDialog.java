@@ -89,7 +89,7 @@ public class JspPageDialog extends JspPage {
                     header.initHeader();
                     this.getRequest().setAttribute("logoSrc", header.getLogoSrc());
                     this.getRequest().setAttribute("welcomeLanguage", header.getWelcome());
-                    if (Utils.isNotEmpty(header.getUserName())) {
+                    if (!Utils.isEmpty(header.getUserName())) {
                         this.getRequest().setAttribute("exitSystem", header.getExitSystem());
                         this.getRequest().setAttribute("userName", header.getUserName());
                         this.getRequest().setAttribute("currentUser", header.getCurrentUser());

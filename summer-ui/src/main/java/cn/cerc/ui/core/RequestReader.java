@@ -15,7 +15,7 @@ public class RequestReader {
 
     public boolean hasValue(INameOwner owner) {
         String value = request.getParameter(owner.getName());
-        return Utils.isNotEmpty(value);
+        return !Utils.isEmpty(value);
     }
 
     public String getString(INameOwner owner, String defaultValue) {

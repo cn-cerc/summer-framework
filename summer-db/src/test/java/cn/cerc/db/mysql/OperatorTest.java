@@ -19,7 +19,6 @@ public class OperatorTest implements IHandle {
     @Before
     public void setUp() {
         session = new StubSession();
-        new SqlOperator(this);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class OperatorTest implements IHandle {
             record.setField("Code_", "code1");
             record.setField("Name_", "new");
             record.setField("Value_", i + 1);
-            obj.insert(record);
+            obj.insert(this.getMysql().getClient().getConnection(), record);
         }
     }
 

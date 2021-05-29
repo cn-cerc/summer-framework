@@ -87,7 +87,7 @@ public class UIPageModify extends UIPage {
         String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
         String[] params = menuCode.split("\\.");
         String formId = params[0];
-        if (Utils.isNotEmpty(this.getForm().getName())) {
+        if (!Utils.isEmpty(this.getForm().getName())) {
             out.printf("<title>%s</title>\n", R.asString(form, this.getForm().getName()));
         } else {
             out.printf("<title>%s</title>\n", R.asString(form, MenuList.create(this.getForm()).getName(formId)));

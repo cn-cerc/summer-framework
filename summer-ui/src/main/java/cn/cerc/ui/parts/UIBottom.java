@@ -45,7 +45,7 @@ public class UIBottom extends UICssComponent {
         if (this.getId() != null) {
             html.print(" id=\"%s\"", this.getId());
         }
-        if (Utils.isNotEmpty(this.getTarget())) {
+        if (!Utils.isEmpty(this.getTarget())) {
             html.print(" target=\"%s\"", this.target);
         }
         if (this.getCssClass() != null) {

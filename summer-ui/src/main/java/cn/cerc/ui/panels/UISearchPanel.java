@@ -68,7 +68,7 @@ public class UISearchPanel extends UIOriginComponent {
 
     public String readAll() {
         String result = request.getParameter(submit.getName());
-        if (Utils.isNotEmpty(result)) {
+        if (!Utils.isEmpty(result)) {
             // 将用户值或缓存值存入到dataSet中
             for (UIComponent component : this.filterPanel) {
                 if (component instanceof IArrayColumn) {

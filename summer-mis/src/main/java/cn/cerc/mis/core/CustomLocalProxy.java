@@ -1,7 +1,5 @@
 package cn.cerc.mis.core;
 
-import org.springframework.context.ApplicationContext;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.db.core.Handle;
 import cn.cerc.db.core.IHandle;

@@ -98,7 +98,7 @@ public class SvrFileUpload extends CustomService implements IUserLanguage {
             ds.open();
             DataValidateException.stopRun(res.getString(10, "删除失败，文件不存在！"), ds.eof());
 
-            OssConnection oss = (OssConnection) getProperty(OssConnection.sessionId);
+            OssConnection oss = (OssConnection) getSession().getProperty(OssConnection.sessionId);
 
             while (ds.fetch()) {
                 oss.delete(ds.getString("Path_"));

@@ -1,7 +1,7 @@
 package cn.cerc.ui.page;
 
+import cn.cerc.core.ISession;
 import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.RequestData;
 import cn.cerc.ui.parts.UIDocument;
 import cn.cerc.ui.parts.UIMenuList;
 
@@ -63,7 +63,7 @@ public class JspPageLike extends JspPageDialog {
     }
 
     public void setSessionKey(Object value) {
-        super.put(RequestData.TOKEN, value);
+        super.put(ISession.TOKEN, value);
     }
 
     public void setOnlineUsers(int value) {

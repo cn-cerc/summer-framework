@@ -141,7 +141,7 @@ public class ExcelTemplate {
             DateTime item = new DateTime(col, row, (Date) column.getValue(), new WritableCellFormat(df2));
             sheet.addCell(item);
         } else if (column instanceof ImageColumn) {
-            if (oss != null && Utils.isNotEmpty(column.getValue().toString())) {
+            if (oss != null && !Utils.isEmpty(column.getValue().toString())) {
                 String imageUrl = column.getValue().toString();
                 try {
                     // 截取https://ossBucket.ossSite后面的部分

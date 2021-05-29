@@ -68,7 +68,7 @@ public class UIHeader extends UICssComponent implements IUserLanguage, IHandle {
         String homeImg = config.getClassProperty("icon.home", "");
         if (owner.getForm().getClient().isPhone()) {
             String phoneIndex = config.getString("app.phone.home.image", null);
-            if (Utils.isNotEmpty(homeImg)) {
+            if (!Utils.isEmpty(homeImg)) {
                 homeImg = phoneIndex;
             }
         }
@@ -77,7 +77,7 @@ public class UIHeader extends UICssComponent implements IUserLanguage, IHandle {
 
     private String getLogo() {
         String logo = config.getString("app.logo.src", null);
-        if (Utils.isNotEmpty(logo)) {
+        if (!Utils.isEmpty(logo)) {
             return CDN.get(logo);
         }
         return CDN.get(config.getClassProperty("icon.logo", ""));
@@ -99,7 +99,7 @@ public class UIHeader extends UICssComponent implements IUserLanguage, IHandle {
             currentUser = res.getString(2, "用户");
             leftMenus.add(homePage);
             this.userName = this.getSession().getUserName();
-            if (Utils.isNotEmpty(this.getCorpNo())) {
+            if (!Utils.isEmpty(this.getCorpNo())) {
                 ICorpInfo info = Application.getBean(ICorpInfo.class);
                 this.corpNoName = info.getShortName(this);
             }

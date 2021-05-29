@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Utils;
-import cn.cerc.db.core.ServerConfig;
 import cn.cerc.mis.core.AbstractForm;
 import cn.cerc.mis.core.AppClient;
 import cn.cerc.mis.core.Application;
@@ -30,11 +30,11 @@ import cn.cerc.ui.parts.UIHeader;
 public class UIPagePhone extends UIPage {
     private String searchWaitingId = "";
     private UIComponent body;
+    private static final ClassConfig config = new ClassConfig(UIPagePhone.class, null);
 
     public UIPagePhone(IForm form) {
         super();
         setForm(form);
-        ServerConfig config = ServerConfig.getInstance();
         initCssFile();
         this.addCssFile(config.getProperty("phone-block.css", "jui/phone/phone-block.css"));
         initJsFile();
@@ -90,7 +90,7 @@ public class UIPagePhone extends UIPage {
         String menuCode = StartForms.getRequestCode(this.getForm().getRequest());
         String[] params = menuCode.split("\\.");
         String formId = params[0];
-        if (Utils.isNotEmpty(this.getForm().getName())) {
+        if (!Utils.isEmpty(this.getForm().getName())) {
             out.printf("<title>%s</title>\n", R.asString(form, this.getForm().getName()));
         } else {
             out.printf("<title>%s</title>\n", R.asString(form, MenuList.create(this.getForm()).getName(formId)));

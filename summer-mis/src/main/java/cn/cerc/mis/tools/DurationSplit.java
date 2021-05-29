@@ -2,6 +2,7 @@ package cn.cerc.mis.tools;
 
 import cn.cerc.core.TDateTime;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Iterator;
 
@@ -20,8 +21,8 @@ public class DurationSplit implements Iterable<DurationSection>, Iterator<Durati
         }
     }
 
-    public static void main(String[] args) {
-        DurationSplit duration = new DurationSplit(TDateTime.fromDate("2016-07-01"), TDateTime.fromYearMonth("201609"));
+    public static void main(String[] args) throws ParseException {
+        DurationSplit duration = new DurationSplit(TDateTime.StrToDate("2016-07-01"), TDateTime.StrToDate("201609"));
         for (DurationSection section : duration) {
             System.out.println(String.format("beginDate: %s, endDate: %s", section.getDateFrom(), section.getDateTo()));
         }

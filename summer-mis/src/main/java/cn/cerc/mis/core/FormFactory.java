@@ -13,7 +13,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import cn.cerc.core.ClassConfig;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.ISession;
 import cn.cerc.mis.SummerMIS;
@@ -21,7 +20,6 @@ import cn.cerc.mis.SummerMIS;
 @Component
 public class FormFactory implements ApplicationContextAware {
     private static final Logger log = LoggerFactory.getLogger(FormFactory.class);
-    private static final ClassConfig config = new ClassConfig(FormFactory.class, SummerMIS.ID);
     // FIXME: 此处资源文件引用特殊，需要连动所有项目一起才能修改
     private static final ClassResource res = new ClassResource(Application.class, SummerMIS.ID);
     private ApplicationContext context;
@@ -59,7 +57,7 @@ public class FormFactory implements ApplicationContextAware {
             req.setAttribute("_showMenu_", !AppClient.ee.equals(client.getDevice()));
             form.setClient(client);
 
-            session.setProperty(ISession.TOKEN, req.getSession().getAttribute(RequestData.TOKEN));
+            session.setProperty(ISession.TOKEN, req.getSession().getAttribute(ISession.TOKEN));
 
             form.setId(formId);
 

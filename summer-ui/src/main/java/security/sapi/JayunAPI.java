@@ -40,7 +40,7 @@ public class JayunAPI {
         this.curl = new Curl();
 
         String appKey = config.getString(JAYUN_APP_KEY, null);
-        if (Utils.isNotEmpty(appKey)) {
+        if (!Utils.isEmpty(appKey)) {
             this.put("appKey", appKey);
         }
     }

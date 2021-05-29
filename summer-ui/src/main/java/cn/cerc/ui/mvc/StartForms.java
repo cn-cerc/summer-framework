@@ -17,11 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import cn.cerc.core.ISession;
 import cn.cerc.mis.config.AppStaticFileDefault;
 import cn.cerc.mis.config.ApplicationConfig;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.FormFactory;
-import cn.cerc.mis.core.RequestData;
 
 public class StartForms implements Filter {
     private static final Logger log = LoggerFactory.getLogger(StartForms.class);
@@ -114,7 +114,7 @@ public class StartForms implements Filter {
                 if (args.length == 3) {
                     url = args[2];
                 } else {
-                    String token = (String) req.getAttribute(RequestData.TOKEN);
+                    String token = (String) req.getAttribute(ISession.TOKEN);
                     if (token != null && !"".equals(token)) {
                         url = Application.getConfig().getDefaultPage();
                     } else {

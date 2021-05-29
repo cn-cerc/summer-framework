@@ -1,6 +1,5 @@
 package cn.cerc.mis.magic;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -50,8 +49,6 @@ public class DatabaseDictionary extends TMainForm implements IHandle {
 
     private final TButton btnSubmit;
     private final JTextField edtServer;
-    private final TEdit edtAccount;
-    private final TEdit edtPassword;
     private final TEdit edtDatabase;
     private ISession session;
 
@@ -72,10 +69,10 @@ public class DatabaseDictionary extends TMainForm implements IHandle {
         edtServer = new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
 
         new TLabel(new TPanel(gridInput).setAlign(FlowLayout.RIGHT)).setText("请输入用户名：");
-        edtAccount = new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
+        new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
 
         new TLabel(new TPanel(gridInput).setAlign(FlowLayout.RIGHT)).setText("请输入密码：");
-        edtPassword = new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
+        new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
 
         new TLabel(new TPanel(gridInput).setAlign(FlowLayout.RIGHT)).setText("请输入数据库名称：");
         edtDatabase = new TEdit(new TPanel(gridInput).setAlign(FlowLayout.LEFT));
@@ -263,7 +260,7 @@ public class DatabaseDictionary extends TMainForm implements IHandle {
         while (ds.fetch()) {
             String keyName = ds.getString("Key_name");
             DataSet dataIn = items.get(keyName);
-            if (dataIn == null && Utils.isNotEmpty(keyName)) {
+            if (dataIn == null && !Utils.isEmpty(keyName)) {
                 dataIn = new DataSet();
                 dataIn.getHead().copyValues(ds.getCurrent(), "Non_unique", "Key_name");
                 items.put(keyName, dataIn);

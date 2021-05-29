@@ -7,7 +7,6 @@ import cn.cerc.core.TDateTime;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.ParseException;
 
 public class RequestRecord implements IRecord {
     private HttpServletRequest req = null;

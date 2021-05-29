@@ -64,7 +64,7 @@ public class AppClient implements IClient, Serializable {
 
     @Override
     public String getId() {
-        return this.deviceId == null ? RequestData.WEBCLIENT : this.deviceId;
+        return this.deviceId == null ? Application.WebClient : this.deviceId;
     }
 
     public void setId(String value) {
@@ -129,7 +129,7 @@ public class AppClient implements IClient, Serializable {
      * TODO: 2019/12/7 考虑要不要加上缓存一起清空
      */
     public void clear() {
-        if (Utils.isNotEmpty(token)) {
+        if (!Utils.isEmpty(token)) {
             try (MemoryBuffer buff = new MemoryBuffer(SystemBuffer.Token.DeviceInfo, token)) {
                 buff.clear();
             }
@@ -191,9 +191,9 @@ public class AppClient implements IClient, Serializable {
         request.getSession().setAttribute(ISession.LANGUAGE_ID, this.languageId);
 
         // 取得并保存token
-        String token = request.getParameter(RequestData.TOKEN);// 获取客户端的 token
+        String token = request.getParameter(ISession.TOKEN);// 获取客户端的 token
         if (token == null || "".equals(token)) {
-            token = (String) request.getSession().getAttribute(RequestData.TOKEN); // 获取服务端的 token
+            token = (String) request.getSession().getAttribute(ISession.TOKEN); // 获取服务端的 token
             // 设置token
             if (Utils.isEmpty(token)) {
                 log.debug("get token from request attribute is empty");
@@ -228,8 +228,8 @@ public class AppClient implements IClient, Serializable {
         log.debug("sessionID 2: {}", request.getSession().getId());
 
         this.token = token;
-        request.getSession().setAttribute(RequestData.TOKEN, this.token);
-        request.setAttribute(RequestData.TOKEN, this.token == null ? "" : this.token);
+        request.getSession().setAttribute(ISession.TOKEN, this.token);
+        request.setAttribute(ISession.TOKEN, this.token == null ? "" : this.token);
     }
 
     /**

@@ -77,7 +77,7 @@ public class UITextBox extends UICssComponent {
             html.print(" autocomplete=\"off\"");
         }
 
-        if (Utils.isNotEmpty(this.accept)) {
+        if (!Utils.isEmpty(this.accept)) {
             html.print(" accept='%s'", this.accept);
         }
 

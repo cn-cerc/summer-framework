@@ -92,7 +92,7 @@ public class UIAppendPanel extends UIOriginComponent {
 
     public String readAll() {
         submitValue = request.getParameter(submit.getName());
-        if (Utils.isNotEmpty(submitValue)) {
+        if (!Utils.isEmpty(submitValue)) {
             for (UIComponent component : this.inputPanel) {
                 if (component instanceof IArrayColumn) {
                     IArrayColumn column = (IArrayColumn) component;

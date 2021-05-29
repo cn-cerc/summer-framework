@@ -8,13 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.Curl;
 import cn.cerc.db.core.Handle;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.mis.SummerMIS;
-import cn.cerc.mis.core.RequestData;
 import cn.cerc.mis.core.SystemBuffer;
 import cn.cerc.mis.other.MemoryBuffer;
 
@@ -53,7 +53,7 @@ public abstract class RemoteService extends Handle implements IServiceProxy {
         try {
             Curl curl = new Curl();
             curl.put("dataIn", getDataIn().getJSON());
-            curl.put(RequestData.TOKEN, this.token);
+            curl.put(ISession.TOKEN, this.token);
             log.debug("url {}", site);
             log.debug("params {}", curl.getParameters());
 
