@@ -24,23 +24,27 @@ public abstract class AbstractMailProcessor {
         if (message == null) {
             return;
         }
-        String body = message.getMessageBody();
-        if (body == null)
-            queue.deleteMessage(message.getReceiptHandle());
 
-        Gson gson = new Gson();
-        AbstractMailQueue record = gson.fromJson(body, AbstractMailQueue.class);
+        while (message != null) {
+            String body = message.getMessageBody();
+            if (body == null)
+                queue.deleteMessage(message.getReceiptHandle());
 
-        MailSender sender = new MailSender();
-        sender.setToAddress(record.getTo().getAddress());
-        sender.setSubject(record.getSubject());
-        sender.setContent(record.getContent());
-        try {
-            sender.send();
-            queue.deleteMessage(message.getReceiptHandle());
-        } catch (UnsupportedEncodingException | MessagingException | GeneralSecurityException e) {
-            queue.deleteMessage(message.getReceiptHandle());
-            log.error(e.getMessage(), e);
+            Gson gson = new Gson();
+            AbstractMailQueue record = gson.fromJson(body, AbstractMailQueue.class);
+
+            MailSender sender = new MailSender();
+            sender.setToAddress(record.getTo().getAddress());
+            sender.setSubject(record.getSubject());
+            sender.setContent(record.getContent());
+            try {
+                sender.send();
+                queue.deleteMessage(message.getReceiptHandle());
+            } catch (UnsupportedEncodingException | MessagingException | GeneralSecurityException e) {
+                queue.deleteMessage(message.getReceiptHandle());
+                log.error(e.getMessage(), e);
+            }
+            message = queue.popMessage();
         }
     }
 
