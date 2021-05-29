@@ -1,9 +1,12 @@
 package cn.cerc.db.core;
 
+import com.google.gson.annotations.Expose;
+
 import cn.cerc.core.ISession;
 
 public class Handle implements IHandle {
 
+    @Expose(serialize = false, deserialize = false)
     private ISession session;
 
     public Handle() {
