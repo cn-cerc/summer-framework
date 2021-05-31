@@ -28,7 +28,7 @@ public class ProcessQueueDefault extends AbstractTask {
     public void execute() throws Exception {
         QueueQuery query = new QueueQuery(this);
         query.setQueueMode(QueueMode.recevie);
-        query.add("select * from %s ", QueueDB.CALCULATION);
+        query.add("select * from %s ", QueueDB.SUMMER);
         query.open();
         if (!query.getActive()) {
             return;

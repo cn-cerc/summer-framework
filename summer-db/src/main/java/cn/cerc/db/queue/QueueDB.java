@@ -13,7 +13,7 @@ public class QueueDB {
     /**
      * 回算队列
      **/
-    public static final String CALCULATION = "calculation";
+    public static final String SUMMER = "summer";
 
     /**
      * 资料同步

@@ -127,7 +127,7 @@ public class AsyncService implements IServiceProxy {
             // 返回消息的编号插入到阿里云消息队列
             QueueQuery ds = new QueueQuery(handle);
             ds.setQueueMode(QueueMode.append);
-            ds.add("select * from %s", QueueDB.CALCULATION);
+            ds.add("select * from %s", QueueDB.SUMMER);
             ds.open();
             ds.appendDataSet(this.getDataIn(), true);
             ds.getHead().setField("_queueId_", msgId);
