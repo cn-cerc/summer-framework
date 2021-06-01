@@ -57,7 +57,7 @@ public abstract class MysqlServer implements IConnection, AutoCloseable {
         // 使用线程池创建
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try {
-            dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
+            dataSource.setDriverClass(MysqlConfig.JdbcDriver);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

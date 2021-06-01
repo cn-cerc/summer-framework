@@ -38,7 +38,7 @@ public class MysqlServerMaster extends MysqlServer {
         try { // 不使用线程池直接创建
             if (connection != null)
                 return new ConnectionCertificate(connection, false);
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(MysqlConfig.JdbcDriver);
             connection = DriverManager.getConnection(config.getConnectUrl(), config.getUser(), config.getPassword());
             return new ConnectionCertificate(connection, false);
         } catch (SQLException e) {

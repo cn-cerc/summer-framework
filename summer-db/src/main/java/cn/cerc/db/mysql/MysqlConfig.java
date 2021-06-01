@@ -28,7 +28,12 @@ public class MysqlConfig {
     private static final String rds_MaxIdleTime = "rds.MaxIdleTime"; // default 7800s
     private static final String rds_IdleConnectionTestPeriod = "rds.IdleConnectionTestPeriod"; // default 9s
     public static final ClassConfig appConfig = new ClassConfig();
+    public static final String JdbcDriver;
     private Properties config;
+    
+    static {
+        JdbcDriver = appConfig.getProperty("rds.jdbc.driver", "com.mysql.cj.jdbc.Driver");
+    }
 
     public MysqlConfig() {
         super();

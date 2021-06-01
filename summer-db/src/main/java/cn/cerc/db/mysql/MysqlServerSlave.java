@@ -63,7 +63,7 @@ public class MysqlServerSlave extends MysqlServer {
         if (connection != null)
             return new ConnectionCertificate(connection, false);
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(MysqlConfig.JdbcDriver);
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
