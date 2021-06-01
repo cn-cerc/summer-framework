@@ -19,8 +19,7 @@ import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlContent;
 import cn.cerc.ui.core.IRightMenuLoad;
 import cn.cerc.ui.core.UrlRecord;
-import cn.cerc.ui.grid.AbstractGrid;
-import cn.cerc.ui.grid.GridFactory;
+import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.menu.MenuList;
 import cn.cerc.ui.mvc.StartForms;
@@ -149,8 +148,8 @@ public class UIPageSearch extends UIPage {
         return search;
     }
 
-    public AbstractGrid createGrid(UIComponent owner, DataSet dataSet) {
-        AbstractGrid grid = GridFactory.build(this.getForm(), owner);
+    public DataGrid createGrid(UIComponent owner, DataSet dataSet) {
+        DataGrid grid = new DataGrid(this.getForm(), owner);
         grid.setDataSet(dataSet);
         pages = grid.getPages();
         return grid;
@@ -164,7 +163,7 @@ public class UIPageSearch extends UIPage {
         this.searchWaitingId = searchWaitingId;
     }
 
-    public void add(String id, AbstractGrid grid) {
+    public void add(String id, DataGrid grid) {
         getRequest().setAttribute(id, grid);
         pages = grid.getPages();
     }

@@ -21,7 +21,7 @@ import cn.cerc.ui.core.HtmlContent;
 import cn.cerc.ui.core.IRightMenuLoad;
 import cn.cerc.ui.core.MutiGrid;
 import cn.cerc.ui.core.UrlRecord;
-import cn.cerc.ui.grid.AbstractGrid;
+import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.MutiPage;
 import cn.cerc.ui.parts.UIFooter;
 import cn.cerc.ui.parts.UIHeader;
@@ -149,7 +149,7 @@ public class JspPageDialog extends JspPage {
         pages = grid.getPages();
     }
 
-    public void add(String id, AbstractGrid grid) {
+    public void add(String id, DataGrid grid) {
         put(id, grid);
         pages = grid.getPages();
     }

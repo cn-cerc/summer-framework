@@ -34,8 +34,7 @@ import cn.cerc.ui.fields.DateTimeField;
 import cn.cerc.ui.fields.ItField;
 import cn.cerc.ui.fields.StringField;
 import cn.cerc.ui.fields.UploadField;
-import cn.cerc.ui.grid.AbstractGrid;
-import cn.cerc.ui.grid.PhoneGrid;
+import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.page.UIPageSearch;
 import cn.cerc.ui.page.upload.FileUploadBasePage;
 import cn.cerc.ui.parts.UIFormHorizontal;
@@ -102,7 +101,7 @@ public class FileUploadPage extends FileUploadBasePage implements IUserLanguage 
             ServerConfig config = ServerConfig.getInstance();
             String ossSite = config.getProperty("oss.site") + "/";
 
-            AbstractGrid gird = jspPage.createGrid(jspPage.getContent(), svr.getDataOut());
+            DataGrid gird = jspPage.createGrid(jspPage.getContent(), svr.getDataOut());
             ItField it = new ItField(gird);
             it.setWidth(1);
             StringField fileFld = new StringField(gird, res.getString(9, "文件名"), "Name_", 3);
@@ -133,10 +132,9 @@ public class FileUploadPage extends FileUploadBasePage implements IUserLanguage 
             });
 
             // 手机版
-            if (gird instanceof PhoneGrid) {
-                PhoneGrid phoneGrid = (PhoneGrid) gird;
-                phoneGrid.addLine().addItem(it, fileFld, sizeFld);
-                phoneGrid.addLine().addItem(dateFld, opearFld);
+            if (this.getClient().isPhone()) {
+                gird.addLine().addItem(it, fileFld, sizeFld);
+                gird.addLine().addItem(dateFld, opearFld);
             }
 
             String msg = buff.getString("msg");

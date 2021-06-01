@@ -3,10 +3,11 @@ package cn.cerc.ui.grid;
 import cn.cerc.mis.core.IForm;
 import cn.cerc.ui.parts.UIComponent;
 
+@Deprecated
 public class GridFactory {
 
-    public static AbstractGrid build(IForm form, UIComponent owner) {
-        AbstractGrid grid;
+    public static DataGrid build(IForm form, UIComponent owner) {
+        DataGrid grid;
         if (form.getClient().isPhone()) {
             grid = new PhoneGrid(form, owner);
         } else {
@@ -14,4 +15,5 @@ public class GridFactory {
         }
         return grid;
     }
+    
 }

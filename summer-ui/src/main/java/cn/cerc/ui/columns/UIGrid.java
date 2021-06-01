@@ -22,7 +22,7 @@ import cn.cerc.ui.vcl.table.UITr;
 
 public class UIGrid extends UIOriginComponent implements IReadonlyOwner {
     private static final ClassResource res = new ClassResource(DataGrid.class, SummerUI.ID);
-    private final double MaxWidth = 600;
+    private static final double MaxWidth = 600;
     // 专用于电脑
     private List<UIGridLine> gridLines = new ArrayList<>();
     // 专用于手机

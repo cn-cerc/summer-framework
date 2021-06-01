@@ -149,6 +149,7 @@ public abstract class AbstractField extends UICssComponent implements IField, IN
         return this;
     }
 
+    @Override
     public String getName() {
         return name;
     }
