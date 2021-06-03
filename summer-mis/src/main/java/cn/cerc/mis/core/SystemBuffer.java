@@ -47,7 +47,7 @@ public class SystemBuffer {
     }
 
     public enum Token implements IBufferKey {
-        DeviceInfo, SessionBase;
+        DeviceInfo, SessionBase, UserMessage;
 
         @Override
         public int getStartingPoint() {
