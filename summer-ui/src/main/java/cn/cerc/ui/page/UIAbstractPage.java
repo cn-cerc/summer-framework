@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 
+import cn.cerc.core.ClassConfig;
+import cn.cerc.mis.SummerMIS;
+import cn.cerc.mis.cdn.CDN;
 import cn.cerc.mis.core.Application;
 import cn.cerc.mis.core.IClient;
 import cn.cerc.mis.core.IForm;
@@ -19,6 +22,8 @@ import cn.cerc.ui.core.UIOriginComponent;
 import cn.cerc.ui.parts.UIComponent;
 
 public abstract class UIAbstractPage extends UIComponent implements IPage, IOriginOwner {
+    protected static final ClassConfig config = new ClassConfig(UIAbstractPage.class, SummerMIS.ID);
+
     private List<String> cssFiles = new ArrayList<>();
     private List<String> jsFiles = new ArrayList<>();
     private UIComponent header; // 头部区域，剩下的均为下部区域
@@ -70,15 +75,17 @@ public abstract class UIAbstractPage extends UIComponent implements IPage, IOrig
         // 加入脚本文件
         String device = this.getForm().getClient().isPhone() ? "phone" : "pc";
         String staticPath = Application.getStaticPath();
+        String version = config.getString(CDN.BROWSER_CACHE_VERSION, "1.0.0.0");
         for (String file : getJsFiles()) {
             String[] args = file.split("\\.");
-            out.println(String.format("<script src=\"%s%s-%s.%s\"></script>", staticPath, args[0], device, args[1]));
+            out.println(String.format("<script src=\"%s%s-%s.%s?v=%s\"></script>", staticPath, args[0], device, args[1],
+                    version));
         }
         // 加入样式文件
         for (String file : cssFiles) {
             String[] args = file.split("\\.");
-            out.println(String.format("<link href=\"%s%s-%s.%s\" rel=\"stylesheet\">", staticPath, args[0], device,
-                    args[1]));
+            out.println(String.format("<link href=\"%s%s-%s.%s?v=%s\" rel=\"stylesheet\">", staticPath, args[0], device,
+                    args[1], version));
         }
 
         if (defineHead != null) {
