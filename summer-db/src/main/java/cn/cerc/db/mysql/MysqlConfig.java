@@ -32,7 +32,7 @@ public class MysqlConfig {
     private Properties config;
     
     static {
-        JdbcDriver = appConfig.getProperty("rds.jdbc.driver", "com.mysql.cj.jdbc.Driver");
+        JdbcDriver = appConfig.getProperty("spring.datasource.driver-class-name", "com.mysql.cj.jdbc.Driver");
     }
 
     public MysqlConfig() {
