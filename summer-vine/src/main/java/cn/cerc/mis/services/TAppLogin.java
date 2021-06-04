@@ -86,25 +86,6 @@ public class TAppLogin extends CustomService {
         }
 
         String corpNo = dsUser.getString("CorpNo_");
-        String supCorpNo = config.getProperty("vine.mall.supCorpNo", "");
-        // 判断该手机号绑定的账号，是否有supCorpNo的下游，专用App登录
-        if (!"".equals(supCorpNo)) {
-            SqlQuery ds = new SqlQuery(this);
-            ds.add("select oi.CorpNo_,oi.ShortName_,a.Code_,a.Name_ from %s a ", systemTable.getUserInfo());
-            ds.add("inner join %s oi on a.CorpNo_=oi.CorpNo_", systemTable.getBookInfo());
-            ds.add("inner join scmnetaccredit na on na.SupCode_='%s' and na.CusCode_=oi.CorpNo_", supCorpNo);
-            ds.add("where a.Enabled_=1 and oi.Status_<3 ");
-            if (!"".equals(dsUser.getString("Mobile_"))) {
-                ds.add("and a.Mobile_='%s'", dsUser.getString("Mobile_"));
-            } else {
-                ds.add("and a.Code_='%s'", userCode);
-            }
-            ds.open();
-            if (ds.eof()) {
-                throw new SecurityCheckException(String.format(res.getString(3, "您不是该上游%s的下游客户，不允许登录！"), supCorpNo));
-            }
-        }
-
         BookInfoRecord buff = MemoryBookInfo.get(this, corpNo);
         if (buff == null) {
             throw new SecurityCheckException(String.format(res.getString(4, "没有找到注册的帐套 %s"), corpNo));

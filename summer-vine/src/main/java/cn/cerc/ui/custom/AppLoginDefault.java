@@ -48,10 +48,6 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         if (!"".equals(logoUrl)) {
             this.add("logoUrl", logoUrl);
         }
-        String supCorpNo = config.getString("vine.mall.supCorpNo", "");
-        if (!"".equals(supCorpNo)) {
-            this.add("supCorpNo", supCorpNo);
-        }
     }
 
     @Override
@@ -72,20 +68,19 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         req.setAttribute("password", password);
         req.setAttribute("needVerify", "false");
 
-        IUserLoginCheck obj = Application.getBean(form, IUserLoginCheck.class);
+        IUserLoginCheck loginCheck = Application.getBean(form, IUserLoginCheck.class);
 
         // 如长度大于10表示用手机号码登入
         if (userCode.length() > 10) {
             String oldCode = userCode;
-            userCode = obj.getUserCode(oldCode);
+            userCode = loginCheck.getUserCode(oldCode);
             log.debug(String.format("将手机号 %s 转化成帐号 %s", oldCode, userCode));
         }
 
-        log.debug(String.format("进行用户帐号(%s)与密码认证", userCode));
         // 进行用户名、密码认证
-        String IP = AppClient.getIP(this.getRequest());
-        if (obj.check(userCode, password, deviceId, IP, form.getClient().getLanguage())) {
-            String token = obj.getToken();
+        String clientIP = AppClient.getIP(this.getRequest());
+        if (loginCheck.check(userCode, password, deviceId, clientIP, form.getClient().getLanguage())) {
+            String token = loginCheck.getToken();
             if (token != null && !"".equals(token)) {
                 log.debug(String.format("认证成功，取得sid(%s)", token));
                 ((AppClient) this.getForm().getClient()).setToken(token);
@@ -95,7 +90,7 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
         } else {
             // 登录验证失败
             log.debug(String.format("用户帐号(%s)与密码认证失败", userCode));
-            req.getSession().setAttribute("loginMsg", obj.getMessage());
+            req.getSession().setAttribute("loginMsg", loginCheck.getMessage());
             return this.execute();
         }
         return null;
