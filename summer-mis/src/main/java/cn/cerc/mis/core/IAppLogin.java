@@ -35,11 +35,8 @@ public interface IAppLogin extends IHandle {
         } else if (!form.getSession().logon()) {
             loginJspFile = getLoginPage();
         }
-        setJspFile(loginJspFile);
         return loginJspFile == null;
     }
-
-    void setJspFile(String loginJspFile);
 
     String getJspFile();
 

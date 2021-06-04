@@ -87,13 +87,13 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
             }
             req.getSession().setAttribute("loginMsg", "");
             req.getSession().setAttribute("mobile", "");
+            return null;
         } else {
             // 登录验证失败
             log.debug(String.format("用户帐号(%s)与密码认证失败", userCode));
             req.getSession().setAttribute("loginMsg", loginCheck.getMessage());
             return this.execute();
         }
-        return null;
     }
 
     @Override
