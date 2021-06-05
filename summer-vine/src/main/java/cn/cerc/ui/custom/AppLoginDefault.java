@@ -52,7 +52,9 @@ public class AppLoginDefault extends JspPage implements IAppLogin {
 
     @Override
     public String getLoginPage() throws IOException, ServletException {
-        return this.execute();
+        String result = this.execute();
+        this.setJspFile(result);
+        return result;
     }
 
     @Override
