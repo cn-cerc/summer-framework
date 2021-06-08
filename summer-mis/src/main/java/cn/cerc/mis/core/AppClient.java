@@ -233,10 +233,9 @@ public class AppClient implements IClient, Serializable {
     }
 
     /**
-     * @param request HttpServletRequest
-     * @return 获取客户端的访问地址
+     * 获取客户端的访问地址
      */
-    public static String getIP(HttpServletRequest request) {
+    public static String getClientIP(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");

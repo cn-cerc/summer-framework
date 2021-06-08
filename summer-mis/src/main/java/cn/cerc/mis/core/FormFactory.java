@@ -64,30 +64,30 @@ public class FormFactory implements ApplicationContextAware {
             // 传递路径变量
             form.setPathVariables(pathVariables);
 
-            // 当前Form需要安全检查
+            // 匿名访问
             if (form.allowGuestUser()) {
                 return form.getView(funcCode);
             }
 
-            // 用户已登录系统
-            if (session.logon()) {
-                // 权限检查
-                if (!Application.getPassport(form).pass(form)) {
-                    resp.setContentType("text/html;charset=UTF-8");
-                    JsonPage output = new JsonPage(form);
-                    output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
-                    output.execute();
-                    return null;
-                }
-            } else {
+            // 是否登录
+            if (!session.logon()) {
                 // 登录验证
                 IAppLogin appLogin = Application.getBean(form, IAppLogin.class);
-                if (!appLogin.pass(form)) {
-                    return appLogin.getJspFile();
-                }
+                String loginView = appLogin.getLoginView(form);
+                if (loginView != null)
+                    return loginView;
             }
 
-            // 设备校验
+            // 权限检查
+            if (!Application.getPassport(form).pass(form)) {
+                resp.setContentType("text/html;charset=UTF-8");
+                JsonPage output = new JsonPage(form);
+                output.setResultMessage(false, res.getString(1, "对不起，您没有权限执行此功能！"));
+                output.execute();
+                return null;
+            }
+
+            // 设备检查
             if (form.isSecurityDevice()) {
                 return form.getView(funcCode);
             }

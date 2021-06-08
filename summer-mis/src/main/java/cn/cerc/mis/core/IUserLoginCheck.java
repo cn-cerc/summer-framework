@@ -5,10 +5,7 @@ import cn.cerc.db.core.IHandle;
 public interface IUserLoginCheck extends IHandle {
 
     // 登录验证
-    boolean check(String userCode, String password, String machineCode, String clientIP, String language);
-
-    // 返回 token
-    String getToken();
+    String createToken(String userCode, String password, String machineCode, String clientIP, String language);
 
     // 返回手机号
     String getMobile();

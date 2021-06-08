@@ -17,19 +17,13 @@ import cn.cerc.mis.SummerMIS;
 public class RequestData {
     private static final Logger log = LoggerFactory.getLogger(RequestData.class);
     private static final ClassResource res = new ClassResource(RequestData.class, SummerMIS.ID);
-    @Deprecated
-    public static final String TOKEN = ISession.TOKEN;
-    @Deprecated
-    public static final String appSession_Key = ISession.TOKEN;
-    @Deprecated
-    public static final String WEBCLIENT = Application.WebClient;
 
     private final String token;
     private String param;
     private String serviceCode;
 
     public RequestData(HttpServletRequest request) {
-        this.token = request.getParameter(RequestData.TOKEN);
+        this.token = request.getParameter(ISession.TOKEN);
         this.serviceCode = request.getParameter("class");
         if (this.serviceCode == null) {
             try {
