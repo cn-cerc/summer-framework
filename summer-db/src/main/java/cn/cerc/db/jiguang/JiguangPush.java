@@ -44,16 +44,6 @@ public class JiguangPush {
         this(owner.getSession());
     }
 
-    /**
-     * 发送给所有设备
-     */
-    public void send() {
-        // 发送给安卓
-        send(ClientType.Android, null);
-        // 发送给IOS
-        send(ClientType.IOS, null);
-    }
-
     public void send(ClientType clientType, String clientId) {
         this.send(clientType, clientId, "default");
     }
@@ -93,15 +83,7 @@ public class JiguangPush {
         ).build();
         // 设置生产环境
         builder.setOptions(Options.newBuilder().setApnsProduction(true).build()).build();
-        sendMessage(builder.build());
-    }
-
-    /**
-     * 发送一条讯息
-     *
-     * @param payload
-     */
-    private void sendMessage(PushPayload payload) {
+        PushPayload payload = builder.build();
         try {
             PushResult result = connection.getClient().sendPush(payload);
             log.info("Got result - " + result);

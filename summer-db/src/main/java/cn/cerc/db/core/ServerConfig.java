@@ -7,6 +7,7 @@ import cn.cerc.db.SummerDB;
 public enum ServerConfig implements IConfig {
 
     INSTANCE;
+
     private static final ClassConfig config = new ClassConfig(ServerConfig.class, SummerDB.ID);
 
     public static ServerConfig getInstance() {
