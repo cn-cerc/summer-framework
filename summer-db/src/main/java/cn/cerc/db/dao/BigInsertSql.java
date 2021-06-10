@@ -25,11 +25,11 @@ import cn.cerc.db.mysql.BuildStatement;
 public class BigInsertSql {
     private static final Logger log = LoggerFactory.getLogger(BigInsertSql.class);
 
-    public static boolean exec(Connection conn, Object oldRecord, boolean preview) {
+    public static boolean exec(Connection connection, Object oldRecord, boolean preview) {
         String lastCommand = null;
         ClassData classData = ClassFactory.get(oldRecord.getClass());
         String updateKey = classData.getUpdateKey();
-        try (BuildStatement bs = new BuildStatement(conn)) {
+        try (BuildStatement bs = new BuildStatement(connection)) {
             Map<String, Object> items = new LinkedHashMap<>();
             BigOperator.copy(oldRecord, (key, value) -> {
                 items.put(key, value);
@@ -68,7 +68,7 @@ public class BigInsertSql {
 
             int result = ps.executeUpdate();
 
-            BigInteger uidvalue = findAutoUid(conn);
+            BigInteger uidvalue = findAutoUid(connection);
             if (uidvalue == null) {
                 throw new RuntimeException("未获取:" + updateKey);
             }

@@ -10,14 +10,18 @@ public interface BigRecord extends Serializable {
      * @param base   基础数据
      * @param record 新的数据
      */
-    void merge(BigRecord base, BigRecord record);
+    default void mergeValue(BigRecord baseRecord, BigRecord newRecord) {
+        throw new RuntimeException("not support mergeValue");
+    }
 
     /**
-     * 针对field，求出self - record的差值
+     * 针对field，求出self - oldRecord的差值，返回值不允许为空
      *
      * @param field  字段名称
      * @param record 对象数据
      * @return 返回差值
      */
-    Object getDiffValue(String field, BigRecord record);
+    default Object getDiffValue(String field, BigRecord oldRecord) {
+        return null;
+    }
 }

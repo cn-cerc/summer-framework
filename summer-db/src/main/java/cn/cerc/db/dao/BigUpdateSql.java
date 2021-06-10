@@ -60,6 +60,8 @@ public class BigUpdateSql {
                         Object value = null;
                         if (newValue instanceof BigRecord && oldValue instanceof BigRecord) {
                             value = ((BigRecord) newValue).getDiffValue(field, (BigRecord) oldValue);
+                            if (value == null)
+                                throw new RuntimeException("getDiffValue is null");
                         } else {
                             String typeName = classData.getFields().get(field).getType().getName();
                             value = getDiffValue(typeName, oldValue, newValue);

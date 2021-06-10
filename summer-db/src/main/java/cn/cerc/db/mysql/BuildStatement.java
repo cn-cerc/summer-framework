@@ -17,14 +17,14 @@ import java.util.List;
  * @author 张弓
  */
 public class BuildStatement implements AutoCloseable {
-    private Connection conn;
+    private Connection connection;
     private StringBuilder build = new StringBuilder();
     private PreparedStatement ps = null;
     private List<Object> items = new ArrayList<>();
     private SimpleDateFormat sdf;
 
-    public BuildStatement(Connection conn) {
-        this.conn = conn;
+    public BuildStatement(Connection connection) {
+        this.connection = connection;
     }
 
     public BuildStatement append(String sql) {
@@ -57,7 +57,7 @@ public class BuildStatement implements AutoCloseable {
             throw new RuntimeException("ps not is null");
         }
 
-        ps = conn.prepareStatement(build.toString());
+        ps = connection.prepareStatement(build.toString());
 
         // sql占位符赋值，从1开始
         int i = 0;

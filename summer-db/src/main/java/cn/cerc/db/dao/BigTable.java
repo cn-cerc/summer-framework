@@ -226,7 +226,7 @@ public abstract class BigTable<T extends BigRecord> implements IHandle {
 
             T lastRecord = updateList.get(srcRecord); // n52
             if (lastRecord != null) {
-                newRecord.merge(srcRecord, lastRecord);
+                newRecord.mergeValue(srcRecord, lastRecord);
             }
 
             updateList.put(srcRecord, newRecord); // n50, n56
