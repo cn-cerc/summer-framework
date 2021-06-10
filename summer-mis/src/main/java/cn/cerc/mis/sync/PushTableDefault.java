@@ -37,7 +37,7 @@ public class PushTableDefault implements IPushProcesser {
         ds.add("where UID_=%d", record.getInt("UID_"));
         ds.open();
         if (ds.eof())
-            return false;
+            return true;
 
         if (!this.onDelete(ds.getCurrent()))
             return false;
