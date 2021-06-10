@@ -71,7 +71,7 @@ public class StubPerson implements BigRecord {
     }
 
     @Override
-    public void merge(BigRecord base, BigRecord record) {
+    public void mergeValue(BigRecord base, BigRecord record) {
         // before:
         // this.num = 54
         // base.num = 50
