@@ -74,6 +74,9 @@ public class FormFactory implements ApplicationContextAware {
                 // 登录验证
                 IAppLogin appLogin = Application.getBean(form, IAppLogin.class);
                 String loginView = appLogin.getLoginView(form);
+                if ("".equals(loginView)) {
+                    return null;
+                }
                 if (loginView != null)
                     return loginView;
             }
