@@ -66,10 +66,12 @@ public class SyncServerQueue implements ISyncServer {
         String queueCode = popFrom.name().toLowerCase() + "-to-" + popTo.name().toLowerCase();
         QueueServer mns = (QueueServer) session.getProperty(QueueServer.SessionId);
         CloudQueue queue = mns.openQueue(queueCode);
-        Message msg = queue.popMessage();
 
-        // 队列中有多少消息就处理多少
-        while (msg != null) {
+        for (int i = 0; i < maxRecords; i++) {
+            Message msg = queue.popMessage();
+            if (msg == null) {
+                return 0;
+            }
             String receiptHandle = msg.getReceiptHandle();
             String body = msg.getMessageBody();
             if (body == null) {
@@ -80,13 +82,15 @@ public class SyncServerQueue implements ISyncServer {
             Record record = new Record();
             record.setJSON(body);
             try {
-                if (popProcesser.popRecord(session, record, true))
+                if (popProcesser.popRecord(session, record, true)) {
                     queue.deleteMessage(receiptHandle);
+                } else {
+                    log.error("处理失败 {}", body);
+                }
             } catch (Exception e) {
                 log.error(record.toString());
                 e.printStackTrace();
             }
-            msg = queue.popMessage();
         }
         return 0;
     }
