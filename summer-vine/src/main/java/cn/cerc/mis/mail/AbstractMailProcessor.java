@@ -33,12 +33,12 @@ public abstract class AbstractMailProcessor {
             Gson gson = new Gson();
             AbstractMailQueue record = gson.fromJson(body, AbstractMailQueue.class);
 
-            MailSender sender = new MailSender();
-            sender.setToAddress(record.getTo().getAddress());
-            sender.setSubject(record.getSubject());
-            sender.setContent(record.getContent());
+            AliyunMailClient client = new AliyunMailClient();
+            client.setTo(record.getTo().getAddress());
+            client.setSubject(record.getSubject());
+            client.setContent(record.getContent());
             try {
-                sender.send();
+                client.send();
                 queue.deleteMessage(message.getReceiptHandle());
             } catch (UnsupportedEncodingException | MessagingException | GeneralSecurityException e) {
                 queue.deleteMessage(message.getReceiptHandle());
