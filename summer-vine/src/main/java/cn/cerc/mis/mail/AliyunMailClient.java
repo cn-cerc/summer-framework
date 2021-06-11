@@ -55,6 +55,10 @@ public class AliyunMailClient {
         properties.put("mail.transport.protocol", "smtp");
         properties.put("mail.smtp.auth", "true");
 
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.port", "465");
+
         session = Session.getInstance(properties);
         session.setDebug(false);
     }
