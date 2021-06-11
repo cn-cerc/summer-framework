@@ -70,7 +70,7 @@ public class SyncServerQueue implements ISyncServer {
         for (int i = 0; i < maxRecords; i++) {
             Message msg = queue.popMessage();
             if (msg == null) {
-                return 0;
+                return i;
             }
             String receiptHandle = msg.getReceiptHandle();
             String body = msg.getMessageBody();
@@ -92,7 +92,7 @@ public class SyncServerQueue implements ISyncServer {
                 e.printStackTrace();
             }
         }
-        return 0;
+        return maxRecords;
     }
 
 }
