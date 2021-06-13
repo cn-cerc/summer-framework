@@ -1,10 +1,5 @@
 package cn.cerc.mis.mail;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-
-import javax.mail.MessagingException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,17 +28,13 @@ public abstract class AbstractMailProcessor {
             Gson gson = new Gson();
             AbstractMailQueue record = gson.fromJson(body, AbstractMailQueue.class);
 
-            AliyunMailClient client = new AliyunMailClient();
-            client.setTo(record.getTo().getAddress());
+            Mail client = new SmtpServer().createMail(record.getTo().getAddress());
             client.setSubject(record.getSubject());
             client.setContent(record.getContent());
-            try {
-                client.send();
+            if (client.send())
                 queue.deleteMessage(message.getReceiptHandle());
-            } catch (UnsupportedEncodingException | MessagingException | GeneralSecurityException e) {
-                queue.deleteMessage(message.getReceiptHandle());
-                log.error(e.getMessage(), e);
-            }
+            else
+                log.error("messageBody: {}", body);
             message = queue.popMessage();
         }
     }
