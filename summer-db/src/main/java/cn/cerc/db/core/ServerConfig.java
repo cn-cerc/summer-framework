@@ -31,7 +31,7 @@ public enum ServerConfig implements IConfig {
 
     // 正式环境
     public static boolean isServerMaster() {
-        String tmp = config.getString("version", "beta");
+        String tmp = config.getString("version", "develop"); 
         if ("release".equals(tmp)) {
             return true;
         }
@@ -40,7 +40,7 @@ public enum ServerConfig implements IConfig {
 
     // 测试环境
     public static boolean isServerBeta() {
-        String tmp = config.getString("version", "beta");
+        String tmp = config.getString("version", "develop");
         return "beta".equals(tmp);
     }
 
