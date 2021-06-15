@@ -60,8 +60,8 @@ public class BuildQuery implements IHandle {
      * like '%05559255%' or UpdateUser_ like '%05559255%' or Address_ like
      * '%05559255%' or Mobile_ like '%$i8OknluCnFsW$%' )
      *
-     * @param items
-     * @return
+     * @param items 数据库语句拼接
+     * @return BuildQuery
      */
     public BuildQuery byLink(Map<String, List<String>> items) {
         if (items == null) {

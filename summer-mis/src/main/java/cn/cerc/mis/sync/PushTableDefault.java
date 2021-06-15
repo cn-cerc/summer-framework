@@ -12,78 +12,87 @@ public class PushTableDefault implements IPushProcesser {
     private ISession session;
     private String tableCode;
 
+    /**
+     * 1-数据不存在
+     * 数据已存在
+     * 2 网络异常
+     * 3-继承类编写错误
+     * 4、参数设置错误
+     * 5-不满足写入条件
+     * 6-java异常
+     */
     @Override
     public boolean appendRecord(Record record) {
-        SqlQuery ds = new SqlQuery(this);
-        ds.add("select * from %s", tableCode);
-        ds.add("where UID_=%d", record.getInt("UID_"));
-        ds.open();
-        if (!ds.eof())
-            return false;
+        SqlQuery query = new SqlQuery(this);
+        query.add("select * from %s", tableCode);
+        query.add("where UID_=%d", record.getInt("UID_"));
+        query.open();
+        if (!query.eof())
+            return true;
         if (!this.onAppend(record))
             return false;
-        ds.getDefaultOperator().setUpdateKey("");
-        ds.append();
-        ds.copyRecord(record, ds.getFieldDefs());
-        ds.post();
+        query.getDefaultOperator().setUpdateKey("");
+        query.append();
+        query.copyRecord(record, query.getFieldDefs());
+        query.post();
 
         return true;
     }
 
     @Override
     public boolean deleteRecord(Record record) {
-        SqlQuery ds = new SqlQuery(this);
-        ds.add("select * from %s", tableCode);
-        ds.add("where UID_=%d", record.getInt("UID_"));
-        ds.open();
-        if (ds.eof())
+        SqlQuery query = new SqlQuery(this);
+        query.add("select * from %s", tableCode);
+        query.add("where UID_=%d", record.getInt("UID_"));
+        query.open();
+        if (query.eof())
             return true;
 
-        if (!this.onDelete(ds.getCurrent()))
+        if (!this.onDelete(query.getCurrent()))
             return false;
 
-        ds.delete();
+        query.delete();
         return true;
     }
 
     @Override
     public boolean updateRecord(Record record) {
-        SqlQuery ds = new SqlQuery(this);
-        ds.add("select * from %s", tableCode);
-        ds.add("where UID_=%d", record.getInt("UID_"));
-        ds.open();
-        if (ds.eof())
+        SqlQuery query = new SqlQuery(this);
+        query.add("select * from %s", tableCode);
+        query.add("where UID_=%d", record.getInt("UID_"));
+        query.open();
+        if (query.eof())
             return false;
 
-        if (!this.onUpdate(ds.getCurrent(), record))
+        if (!this.onUpdate(query.getCurrent(), record))
             return false;
 
-        ds.edit();
-        ds.copyRecord(record, ds.getFieldDefs());
-        ds.post();
+        query.edit();
+        query.copyRecord(record, query.getFieldDefs());
+        query.post();
         return true;
     }
 
     @Override
     public boolean resetRecord(Record record) {
-        SqlQuery ds = new SqlQuery(this);
-        ds.add("select * from %s", tableCode);
-        ds.add("where UID_=%d", record.getInt("UID_"));
-        ds.open();
+        SqlQuery query = new SqlQuery(this);
+        query.add("select * from %s", tableCode);
+        query.add("where UID_=%d", record.getInt("UID_"));
+        query.open();
 
-        if (ds.eof()) {
+        if (query.eof()) {
             if (!this.onAppend(record))
                 return false;
-            ds.getDefaultOperator().setUpdateKey("");
-            ds.append();
-            ds.copyRecord(record, ds.getFieldDefs());
-            ds.post();
+            query.getDefaultOperator().setUpdateKey("");
+            query.append();
+            query.copyRecord(record, query.getFieldDefs());
+            query.post();
         } else {
-            if (!this.onUpdate(ds.getCurrent(), record))
+            if (!this.onUpdate(query.getCurrent(), record))
                 return false;
-            ds.edit();
-            ds.copyRecord(record, ds.getFieldDefs());
-            ds.post();
+            query.edit();
+            query.copyRecord(record, query.getFieldDefs());
+            query.post();
         }
         return true;
     }

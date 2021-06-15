@@ -61,7 +61,6 @@ public class Curl {
     private String responseContent = null;
     private static final Logger log = LoggerFactory.getLogger(Curl.class);
 
-
     public String sendGet(String reqUrl) {
         StringBuilder result = new StringBuilder();
         BufferedReader in = null;
@@ -131,7 +130,8 @@ public class Curl {
             for (Entry<String, Object> stringObjectEntry : parameters.entrySet()) {
                 params.append(((Entry<?, ?>) stringObjectEntry).getKey().toString());
                 params.append("=");
-                params.append(URLEncoder.encode(((Entry<?, ?>) stringObjectEntry).getValue().toString(), this.requestEncoding));
+                params.append(URLEncoder.encode(((Entry<?, ?>) stringObjectEntry).getValue().toString(),
+                        this.requestEncoding));
                 params.append("&");
             }
 
@@ -385,12 +385,6 @@ public class Curl {
         return this;
     }
 
-    /**
-     * 请改使用 put 方法
-     * @param key
-     * @param value
-     * @return
-     */
     @Deprecated
     public Curl putParameter(String key, Object value) {
         return this.put(key, value);

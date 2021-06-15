@@ -36,6 +36,8 @@ public class JedisFactory {
 
     /**
      * 创建默认的 RedisServer
+     * 
+     * @return JedisFactory
      */
     public static JedisFactory create() {
         return create(null);
@@ -45,6 +47,8 @@ public class JedisFactory {
      * 创建 RedisServer
      *
      * @param configId 用于在配置文件中区分不同的redis服务器的连接参数，取值如：sync，若为 null 则返回缺省配置
+     * 
+     * @return JedisFactory
      */
     public static JedisFactory create(String configId) {
         if (items.containsKey(configId)) {
@@ -61,6 +65,8 @@ public class JedisFactory {
      * 返回 RedisServer 的 Jedis
      *
      * @param configId 用于在配置文件中区分不同的redis服务器的连接参数，取值如：sync，若为 null 则返回缺省配置
+     * 
+     * @return Jedis
      */
     public static Jedis getJedis(String configId) {
         return create(configId).getResource();
@@ -68,6 +74,8 @@ public class JedisFactory {
 
     /**
      * 返回默认RedisServer的Jedis
+     * 
+     * @return Jedis
      */
     public static Jedis getJedis() {
         return create(null).getResource();

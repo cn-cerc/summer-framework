@@ -27,6 +27,10 @@ public interface IHandle {
 
     /**
      * 若执行sql指令后，有返回一条或一条记录以上，则为true，否则为false;
+     * 
+     * @param sql sql执行语句
+     * 
+     * @return database exit
      */
     default boolean DBExists(String sql) {
         try (SqlClient client = getMysql().getClient()) {
