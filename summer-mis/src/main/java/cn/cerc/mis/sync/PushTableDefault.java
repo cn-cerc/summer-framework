@@ -14,12 +14,19 @@ public class PushTableDefault implements IPushProcesser {
 
     /**
      * 1-数据不存在
+     * <p>
      * 数据已存在
+     * <p>
      * 2 网络异常
+     * <p>
      * 3-继承类编写错误
+     * <p>
      * 4、参数设置错误
+     * <p>
      * 5-不满足写入条件
+     * <p>
      * 6-java异常
+     * <p>
      */
     @Override
     public boolean appendRecord(Record record) {
@@ -27,15 +34,16 @@ public class PushTableDefault implements IPushProcesser {
         query.add("select * from %s", tableCode);
         query.add("where UID_=%d", record.getInt("UID_"));
         query.open();
-        if (!query.eof())
-            return true;
+        if (!query.eof()) {
+            log.error("append error！table {}, uid {}, record {}", tableCode, record.getInt("UID_"), record);
+            return false;
+        }
         if (!this.onAppend(record))
             return false;
         query.getDefaultOperator().setUpdateKey("");
         query.append();
         query.copyRecord(record, query.getFieldDefs());
         query.post();
-
         return true;
     }
 
@@ -45,8 +53,10 @@ public class PushTableDefault implements IPushProcesser {
         query.add("select * from %s", tableCode);
         query.add("where UID_=%d", record.getInt("UID_"));
         query.open();
-        if (query.eof())
-            return true;
+        if (query.eof()) {
+            log.error("delete error！table {}, uid {}, record {}", tableCode, record.getInt("UID_"), record);
+            return false;
+        }
 
         if (!this.onDelete(query.getCurrent()))
             return false;
@@ -61,8 +71,10 @@ public class PushTableDefault implements IPushProcesser {
         query.add("select * from %s", tableCode);
         query.add("where UID_=%d", record.getInt("UID_"));
         query.open();
-        if (query.eof())
+        if (query.eof()) {
+            log.error("update error！ table {}, uid {}, record {}", tableCode, record.getInt("UID_"), record);
             return false;
+        }
 
         if (!this.onUpdate(query.getCurrent(), record))
             return false;

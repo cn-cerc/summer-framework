@@ -82,11 +82,10 @@ public class SyncServerQueue implements ISyncServer {
             Record record = new Record();
             record.setJSON(body);
             try {
-                if (popProcesser.popRecord(session, record, true)) {
-                    queue.deleteMessage(receiptHandle);
-                } else {
-                    log.error("处理失败 {}", body);
+                if (!popProcesser.popRecord(session, record, true)) {
+                    log.error("{} 处理失败，请检查数据源和帐套信息 {}", receiptHandle, body);
                 }
+                queue.deleteMessage(receiptHandle);
             } catch (Exception e) {
                 log.error(record.toString());
                 e.printStackTrace();
