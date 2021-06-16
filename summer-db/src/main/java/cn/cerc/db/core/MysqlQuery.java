@@ -271,7 +271,6 @@ public class MysqlQuery extends DataSet implements IHandle {
         return this.sqlText.getText();
     }
 
-    @Deprecated
     public final SqlText getSqlText() {
         return this.sqlText;
     }

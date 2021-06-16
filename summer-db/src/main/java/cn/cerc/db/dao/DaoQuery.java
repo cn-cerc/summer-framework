@@ -1,9 +1,8 @@
 package cn.cerc.db.dao;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 
-import cn.cerc.core.Record;
+import cn.cerc.core.RecordUtils;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.MysqlQuery;
@@ -15,11 +14,11 @@ public class DaoQuery<T> extends MysqlQuery {
     @SuppressWarnings("unchecked")
     public DaoQuery(IHandle handle) {
         super(handle);
-        this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        ParameterizedType ptype = (ParameterizedType) getClass().getGenericSuperclass();
+        this.clazz = (Class<T>) ptype.getActualTypeArguments()[0];
         this.setSqlText(new SqlText(this.clazz));
     }
-    
-    @Deprecated
+
     public DaoQuery(IHandle handle, Class<T> clazz) {
         super(handle);
         this.clazz = clazz;
@@ -32,7 +31,7 @@ public class DaoQuery<T> extends MysqlQuery {
             ((DaoEvent) item).beforePost();
         }
         this.append();
-        DaoUtil.copy(item, this.getCurrent());
+        RecordUtils.copyToRecord(item, this.getCurrent());
         this.post();
     }
 
@@ -42,21 +41,12 @@ public class DaoQuery<T> extends MysqlQuery {
             ((DaoEvent) item).beforePost();
         }
         this.edit();
-        DaoUtil.copy(item, this.getCurrent());
+        RecordUtils.copyToRecord(item, this.getCurrent());
         this.post();
     }
 
     public T read() {
-        T obj = null;
-        try {
-            obj = this.clazz.getDeclaredConstructor().newInstance();
-            Record record = this.getCurrent();
-            DaoUtil.copy(record, obj);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
-        }
-        return obj;
+        return this.getCurrent().asObject(clazz);
     }
 
 }
