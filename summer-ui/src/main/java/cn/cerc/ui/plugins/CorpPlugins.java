@@ -108,8 +108,11 @@ public class CorpPlugins {
      * @return 如返回 RedirectPage 对象
      */
     public final static IPage getRedirectPage(AbstractForm form) {
-        IRedirectPage plugins = getBean(form, IRedirectPage.class);
-        return plugins != null ? plugins.getPage() : null;
+        IPlugins plugins = getBean(form, IPlugins.class);
+        if (!(plugins instanceof IRedirectPage)) {
+            return null;
+        }
+        return plugins != null ? ((IRedirectPage) plugins).getPage() : null;
     }
 
     /**
@@ -118,10 +121,13 @@ public class CorpPlugins {
      * @return 返回自定义 service 或 defaultService
      */
     public static String getService(AbstractForm form, String defaultService) {
-        IServiceDefine plugins = getBean(form, IServiceDefine.class);
+        IPlugins plugins = getBean(form, IPlugins.class);
         if (plugins == null)
             return defaultService;
-        String result = plugins.getService();
+        if (!(plugins instanceof IServiceDefine)) {
+            return defaultService;
+        }
+        String result = ((IServiceDefine) plugins).getService();
         return result != null ? result : defaultService;
     }
 
