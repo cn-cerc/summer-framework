@@ -43,7 +43,12 @@ public class MysqlQuery extends DataSet implements IHandle {
     // sqlcommand指令
     private SqlText sqlText = new SqlText();
 
+    public MysqlQuery() {
+        super();
+    }
+
     public MysqlQuery(IHandle handle) {
+        super();
         this.session = handle.getSession();
     }
 
