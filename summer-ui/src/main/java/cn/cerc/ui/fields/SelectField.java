@@ -1,19 +1,20 @@
 package cn.cerc.ui.fields;
 
-import cn.cerc.core.ClassResource;
-import cn.cerc.core.Record;
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
-import cn.cerc.ui.parts.UIComponent;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import cn.cerc.core.ClassResource;
+import cn.cerc.core.Record;
+import cn.cerc.ui.SummerUI;
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.IFormatColumn;
+import cn.cerc.ui.parts.UIComponent;
 
 /**
  * 列表下拉框组件（不适用搜索查询表单）
  */
-public class SelectField extends AbstractField implements IColumn {
-    private static final ClassResource res = new ClassResource("summer-ui", SelectField.class);
+public class SelectField extends AbstractField implements IFormatColumn {
+    private static final ClassResource res = new ClassResource(SelectField.class, SummerUI.ID);
 
     private String trueText = res.getString(1, "是");
     private String falseText = res.getString(2, "否");

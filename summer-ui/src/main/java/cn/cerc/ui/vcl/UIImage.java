@@ -1,27 +1,41 @@
 package cn.cerc.ui.vcl;
 
+import cn.cerc.core.Utils;
+import cn.cerc.mis.core.Application;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UIImage extends UIComponent {
+public class UIImage extends UICssComponent {
     private String width;
     private String height;
     private String src;
     private String role;
     private String onclick;
     private String alt;
+    private AliyunOssProcess process;
+    private String staticPath;
 
     public UIImage() {
         super();
+        this.staticPath = Application.getStaticPath();
     }
 
     public UIImage(UIComponent owner) {
         super(owner);
+        this.staticPath = Application.getStaticPath();
     }
 
     @Override
     public void output(HtmlWriter html) {
-        html.print("<img src='%s'", this.src);
+        html.print("<img src='%s%s", this.staticPath != null ? staticPath : "", this.src);
+        if (this.staticPath != null && this.process != null && !Utils.isEmpty(process.getCommand())) {
+            html.print("?x-oss-process=image%s", process.getCommand());
+        }
+        html.print("'");
+        if (getId() != null) {
+            html.print(" id='%s'", getId());
+        }
         if (role != null) {
             html.print(" role='%s'", this.role);
         }
@@ -38,7 +52,7 @@ public class UIImage extends UIComponent {
             html.print(" onclick='%s'", this.onclick);
         }
         super.outputCss(html);
-        html.println("/>");
+        html.print("/>");
     }
 
     public String getWidth() {
@@ -68,6 +82,15 @@ public class UIImage extends UIComponent {
         return this;
     }
 
+    /**
+     * 阿里云OSS图片压缩
+     */
+    public UIImage setSrc(String src, int width) {
+        this.src = src;
+        this.getProcess().setWidth(width);
+        return this;
+    }
+
     public String getRole() {
         return role;
     }
@@ -93,4 +116,23 @@ public class UIImage extends UIComponent {
         this.alt = alt;
         return this;
     }
+
+    public String getStaticPath() {
+        return staticPath;
+    }
+
+    public void setStaticPath(String staticPath) {
+        this.staticPath = staticPath;
+    }
+
+    public AliyunOssProcess getProcess() {
+        if (process == null)
+            process = new AliyunOssProcess();
+        return process;
+    }
+
+    public void setProcess(AliyunOssProcess process) {
+        this.process = process;
+    }
+
 }

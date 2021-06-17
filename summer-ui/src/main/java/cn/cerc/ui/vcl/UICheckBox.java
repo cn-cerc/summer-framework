@@ -2,13 +2,14 @@ package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
 /**
  * 单选框
  *
  * @author 张弓
  */
-public class UICheckBox extends UIComponent {
+public class UICheckBox extends UICssComponent {
     private String name;
     private String type;
     private String value;

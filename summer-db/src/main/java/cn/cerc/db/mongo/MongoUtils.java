@@ -1,21 +1,28 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.core.IHandle;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+
 public class MongoUtils {
-    private MongoConnection connection;
+    private MongoDB connection;
     private MongoDatabase database;
 
-    public MongoUtils(IHandle handle) {
-        connection = (MongoConnection) handle.getProperty(MongoConnection.sessionId);
+    public MongoUtils(ISession session) {
+        connection = (MongoDB) session.getProperty(MongoDB.SessionId);
         database = connection.getClient();
+    }
+
+    public MongoUtils(IHandle owner) {
+        this(owner.getSession());
     }
 
     // 获取Collection by name

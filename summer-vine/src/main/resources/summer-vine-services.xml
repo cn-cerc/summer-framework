@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!-- 登入系统 -->
+    <bean id="TAppLogin.Check" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+        <property name="funcCode" value="Check" />
+    </bean>
+    <!-- 校验硬件码 -->
+    <bean id="TAppLogin.verifyMachine" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+        <property name="funcCode" value="verifyMachine" />
+    </bean>
+    <!-- 微信自动登录 -->
+    <bean id="TAppLogin.autoLogin" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+        <property name="funcCode" value="autoLogin" />
+    </bean>
+    <!-- 发送校验码 -->
+    <bean id="TAppLogin.sendVerifyCode" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+        <property name="funcCode" value="sendVerifyCode" />
+    </bean>
+    <!-- 获取当前登录状态(client.exe使用) -->
+    <bean id="TAppLogin.getState" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+        <property name="funcCode" value="getState" />
+    </bean>
+    <!-- 退出系统 -->
+    <bean id="TAppLogin.ExitSystem" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+        <property name="funcCode" value="ExitSystem" />
+    </bean>
+    <!-- 获取设备信息 -->
+    <bean id="TAppLogin.getMachInfo" class="cn.cerc.mis.services.TAppLogin" scope="prototype">
+        <property name="funcCode" value="getMachInfo" />
+    </bean>
+
+    <!-- 根据token，取得当前用户代码、帐套等基本资料 -->
+    <bean id="SvrSession.byToken" class="cn.cerc.mis.services.SvrSession" scope="prototype">
+        <property name="funcCode" value="byToken" />
+    </bean>
+    <!-- 根据用户帐号，取得当前用户姓名、帐套等基本资料 -->
+    <bean id="SvrSession.byUserCode" class="cn.cerc.mis.services.SvrSession" scope="prototype">
+        <property name="funcCode" value="byUserCode" />
+    </bean>
+    
+    <!-- 文件上传服务 -->
+    <bean id="SvrFileUpload.search" class="cn.cerc.mis.services.SvrFileUpload" scope="prototype">
+        <property name="funcCode" value="search" />
+    </bean>
+    <bean id="SvrFileUpload.delete" class="cn.cerc.mis.services.SvrFileUpload" scope="prototype">
+        <property name="funcCode" value="delete" />
+    </bean>
+    <bean id="SvrFileUpload.append" class="cn.cerc.mis.services.SvrFileUpload" scope="prototype">
+        <property name="funcCode" value="append" />
+    </bean>
+</beans>

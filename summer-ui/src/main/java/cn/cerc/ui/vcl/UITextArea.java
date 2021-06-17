@@ -1,7 +1,9 @@
 package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 import cn.cerc.ui.vcl.ext.UISpan;
 
 /**
@@ -9,10 +11,11 @@ import cn.cerc.ui.vcl.ext.UISpan;
  *
  * @author 黄荣君
  */
-public class UITextArea extends UIComponent {
+//FIXME 应改为 UITextarea，ZhangGong 2021/3/19
+public class UITextArea extends UICssComponent implements INameOwner {
     private UISpan caption;
     private String name;
-    private String text;
+    private StringBuffer lines = new StringBuffer();
     private String placeholder;
     private int cols;// 列
     private int rows;// 行
@@ -39,6 +42,8 @@ public class UITextArea extends UIComponent {
         }
         if (getName() != null) {
             html.print("name='%s' ", name);
+        } else if (this.getId() != null) {
+            html.print("name='%s' ", this.getId());
         }
         if (getRows() != 0) {
             html.print("rows='%s' ", rows);
@@ -62,7 +67,7 @@ public class UITextArea extends UIComponent {
         html.print(">");
 
         if (getText() != null) {
-            html.print(text);
+            html.print(lines.toString());
         }
         html.print("</textarea>");
     }
@@ -80,6 +85,8 @@ public class UITextArea extends UIComponent {
     }
 
     public String getName() {
+        if(name == null)
+            name = getId();
         return name;
     }
 
@@ -89,12 +96,21 @@ public class UITextArea extends UIComponent {
     }
 
     public String getText() {
-        return text;
+        return lines.toString();
     }
 
     public UITextArea setText(String text) {
-        this.text = text;
+        this.lines = new StringBuffer(text);
         return this;
+    }
+    
+    public UITextArea append(String text) {
+        this.lines = lines.append(text).append("\n");
+        return this;
+    }
+    
+    public UITextArea append(String format, Object... args) {
+        return this.append(String.format(format, args));
     }
 
     public String getPlaceholder() {

@@ -1,6 +1,7 @@
 package cn.cerc.ui.phone;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
@@ -13,7 +14,7 @@ import cn.cerc.ui.vcl.ext.UISpan;
  * @author 郭向军
  */
 public class Block120 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block120.class);
+    private static final ClassResource res = new ClassResource(Block120.class, SummerUI.ID);
 
     private UISpan title = new UISpan();
     private UIImage rightImage = new UIImage();

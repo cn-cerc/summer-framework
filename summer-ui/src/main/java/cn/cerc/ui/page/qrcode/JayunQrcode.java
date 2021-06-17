@@ -2,7 +2,8 @@ package cn.cerc.ui.page.qrcode;
 
 import cn.cerc.core.MD5;
 import cn.cerc.db.core.ServerConfig;
-import cn.cerc.security.sapi.JayunAPI;
+import security.sapi.JayunAPI;
+
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,7 @@ public class JayunQrcode {
         String sign = getSign(appKey, appSecret, action, timestamp);
 
         if (!sign.equals(reqSign)) {
+            //TODO 此处应使用 ClassResource
             JayunMessage msg = new JayunMessage(false, "签名失败");
             echo(msg);
             return;

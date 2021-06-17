@@ -5,12 +5,11 @@
     <parent>
         <groupId>cn.cerc</groupId>
         <artifactId>summer-server</artifactId>
-        <version>3.0.1</version>
+        <version>3.4.1</version>
     </parent>
 
     <artifactId>summer-ui</artifactId>
     <packaging>jar</packaging>
-
     <description>summer-ui</description>
 
     <build>
@@ -43,12 +42,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>summer-mvc</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>summer-security</artifactId>
+            <artifactId>summer-mis</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

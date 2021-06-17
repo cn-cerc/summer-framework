@@ -1,6 +1,6 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.db.core.StubHandleText;
+import cn.cerc.db.core.StubSession;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,11 +9,11 @@ import static org.junit.Assert.assertEquals;
 public class BuildQueryTest {
 
     private BuildQuery bs;
-    private StubHandleText handle;
+    private StubSession handle;
 
     @Before
     public void setUp() {
-        handle = new StubHandleText();
+        handle = new StubSession();
         bs = new BuildQuery(handle);
     }
 

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.cerc</groupId>
     <artifactId>summer-server</artifactId>
-    <version>3.0.1</version>
+    <version>3.4.1</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>summer-db</module>
-        <module>summer-mvc</module>
-        <module>summer-security</module>
+        <module>summer-mis</module>
         <module>summer-ui</module>
+        <module>summer-vine</module>
         <module>summer-mis-cn</module>
         <module>summer-mis-tw</module>
         <module>summer-mis-sg</module>
@@ -94,7 +93,7 @@
             <dependency>
                 <groupId>cn.cerc</groupId>
                 <artifactId>summer-core</artifactId>
-                <version>2.2.2</version>
+                <version>2.7.0</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code.gson</groupId>
@@ -105,11 +104,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>1.7.28</version>
-            </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.12</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -160,8 +154,8 @@
             <!-- 阿里云短信服务 -->
             <dependency>
                 <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-                <version>2.1.0</version>
+                <artifactId>dysmsapi20170525</artifactId>
+                <version>2.0.1</version>
             </dependency>
             <!-- 阿里云队列 -->
             <dependency>
@@ -277,6 +271,11 @@
                 <version>${org.springframework.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
                 <version>${quartz.version}</version>
@@ -319,7 +318,7 @@
                 <artifactId>jackson-dataformat-xml</artifactId>
                 <version>2.10.3</version>
             </dependency>
-            <!-- aliyun-log-sdk-->
+            <!-- aliyun-log-sdk -->
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>

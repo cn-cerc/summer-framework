@@ -1,22 +1,24 @@
 package cn.cerc.db.mssql;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MssqlQueryTest {
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
 
-    private IHandle handle;
+public class MssqlQueryTest implements IHandle {
+
+    private ISession session;
 
     @Before
     public void setUP() {
-        handle = new StubHandleText();
+        session = new StubSession();
     }
 
     @Test
     public void test_append() {
-        MssqlQuery query = new MssqlQuery(handle);
+        MssqlQuery query = new MssqlQuery(this);
         query.add("select * from Dept where Code_='%s'", "191220");
         query.open();
         if (!query.eof()) {
@@ -37,4 +39,13 @@ public class MssqlQueryTest {
 //        query.post();
     }
 
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
 }

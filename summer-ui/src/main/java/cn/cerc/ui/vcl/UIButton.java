@@ -1,9 +1,11 @@
 package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.INameOwner;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UIButton extends UIComponent {
+public class UIButton extends UICssComponent implements INameOwner {
     private String name;
     private String value;
     private String text;
@@ -21,12 +23,14 @@ public class UIButton extends UIComponent {
 
     @Override
     public void output(HtmlWriter html) {
-        html.print("<button ");
+        html.print("<button");
         if (getId() != null) {
             html.print(String.format(" id=\"%s\"", getId()));
         }
         if (name != null) {
             html.print(String.format(" name=\"%s\"", name));
+        } else if (this.getId() != null) {
+            html.print(String.format(" name=\"%s\"", getId()));
         }
         if (value != null) {
             html.print(String.format(" value=\"%s\"", value));
@@ -55,6 +59,7 @@ public class UIButton extends UIComponent {
         return this;
     }
 
+    @Override
     public String getName() {
         return name;
     }

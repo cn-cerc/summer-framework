@@ -1,20 +1,24 @@
 package cn.cerc.db.nas;
 
-import cn.cerc.db.core.StubHandleText;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
-public class NasQueryTest {
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
+
+public class NasQueryTest implements IHandle {
+    private static final Logger log = LoggerFactory.getLogger(NasQueryTest.class);
 
     private NasQuery ds;
-    private StubHandleText handle;
+    private ISession session;
 
     @Before
     public void setUp() {
-        handle = new StubHandleText();
-        ds = new NasQuery(handle);
+        session = new StubSession();
+        ds = new NasQuery(this);
     }
 
     /**
@@ -75,4 +79,13 @@ public class NasQueryTest {
         ds.delete();
     }
 
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
+    }
 }

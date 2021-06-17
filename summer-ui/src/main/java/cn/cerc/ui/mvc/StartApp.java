@@ -1,14 +1,7 @@
 package cn.cerc.ui.mvc;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.db.core.IAppConfig;
-import cn.cerc.mis.config.ApplicationConfig;
-import cn.cerc.mis.core.AppClient;
-import cn.cerc.mis.core.Application;
-import cn.cerc.mis.core.IForm;
-import cn.cerc.mis.core.IPage;
-import cn.cerc.ui.core.UrlRecord;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,12 +11,20 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
 
-@Slf4j
-@Deprecated // 请改使用 StartAppDefault
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import cn.cerc.core.ISession;
+import cn.cerc.mis.core.AppClient;
+import cn.cerc.mis.core.Application;
+import cn.cerc.mis.core.IMobileConfig;
+import cn.cerc.mis.core.IPage;
+import cn.cerc.ui.core.UrlRecord;
+
 public class StartApp implements Filter {
+    private static final Logger log = LoggerFactory.getLogger(StartApp.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -42,11 +43,11 @@ public class StartApp implements Filter {
             }
         }
         if (url.getUrl().contains("sid")) {
-            log.info("url {}", url.getUrl());
+            log.debug("url {}", url.getUrl());
         }
 
         String uri = req.getRequestURI();
-        Application.get(req);
+        Application.setContext(WebApplicationContextUtils.getRequiredWebApplicationContext(req.getServletContext()));
 
         // 处理默认首页问题
         if ("/".equals(uri)) {
@@ -54,12 +55,11 @@ public class StartApp implements Filter {
                 req.getSession().setAttribute(AppClient.CLIENT_ID, req.getParameter(AppClient.CLIENT_ID));
             }
             if (req.getParameter(AppClient.DEVICE) != null) {
-                req.getSession().setAttribute(AppClient.DEVICE,
-                        req.getParameter(AppClient.DEVICE));
+                req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
             }
 
-            IAppConfig conf = Application.getAppConfig();
-            String redirect = String.format("%s%s", ApplicationConfig.App_Path, conf.getFormWelcome());
+            String redirect = String.format("/%s/%s", Application.getConfig().getFormsPath(),
+                    Application.getConfig().getWelcomePage());
             redirect = resp.encodeRedirectURL(redirect);
             resp.sendRedirect(redirect);
             return;
@@ -68,22 +68,16 @@ public class StartApp implements Filter {
                 req.getSession().setAttribute(AppClient.CLIENT_ID, req.getParameter(AppClient.CLIENT_ID));
             }
             if (req.getParameter(AppClient.DEVICE) != null) {
-                req.getSession().setAttribute(AppClient.DEVICE,
-                        req.getParameter(AppClient.DEVICE));
+                req.getSession().setAttribute(AppClient.DEVICE, req.getParameter(AppClient.DEVICE));
             }
             try {
-                IForm form;
-                if (Application.get(req).containsBean("mobileConfig")) {
-                    form = Application.getBean("mobileConfig", IForm.class);
-                } else {
-                    form = Application.getBean("MobileConfig", IForm.class);
-                }
+                ISession session = Application.getSession();
+                session.setProperty(Application.SessionId, req.getSession().getId());
+
+                IMobileConfig form = Application.getBean(IMobileConfig.class);
                 form.setRequest((HttpServletRequest) request);
                 form.setResponse((HttpServletResponse) response);
-
-                IHandle handle = Application.getHandle();
-                handle.setProperty(Application.sessionId, req.getSession().getId());
-                form.setHandle(handle);
+                form.setSession(session);
                 IPage page = form.execute();
                 page.execute();
             } catch (Exception e) {
@@ -96,12 +90,12 @@ public class StartApp implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-
+        log.info("{} init.", this.getClass().getName());
     }
 
     @Override
     public void destroy() {
-
+        log.info("{} destroy.", this.getClass().getName());
     }
 
 }

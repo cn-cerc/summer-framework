@@ -1,20 +1,27 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Utils;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
-public class BatchScript {
+import cn.cerc.core.ISession;
+import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
+
+public class BatchScript implements IHandle {
+    private static final Logger log = LoggerFactory.getLogger(BatchScript.class);
 
     private StringBuffer items = new StringBuffer();
-    private IHandle handle;
-    private MysqlConnection connection;
+    private ISession session;
+    private MysqlServerMaster connection;
     private boolean newLine = false;
 
-    public BatchScript(IHandle handle) {
-        this.handle = handle;
-        this.connection = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
+    public BatchScript(ISession session) {
+        this.session = session;
+        this.connection = this.getMysql();
+    }
+
+    public BatchScript(IHandle owner) {
+        this(owner.getSession());
     }
 
     public BatchScript addSemicolon() {
@@ -72,7 +79,7 @@ public class BatchScript {
         for (String item : tmp) {
             if (!"".equals(item.trim())) {
                 log.debug(item.trim() + ";");
-                SqlQuery ds = new SqlQuery(handle);
+                SqlQuery ds = new SqlQuery(this);
                 ds.add(item.trim());
                 ds.open();
                 if (ds.eof()) {
@@ -110,7 +117,18 @@ public class BatchScript {
         return tmp[i].trim();
     }
 
-    public void clean() {
+    public BatchScript clean() {
         items = new StringBuffer();
+        return this;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 }

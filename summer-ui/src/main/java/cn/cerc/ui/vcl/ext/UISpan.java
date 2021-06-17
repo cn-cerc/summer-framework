@@ -2,8 +2,9 @@ package cn.cerc.ui.vcl.ext;
 
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UISpan extends UIComponent {
+public class UISpan extends UICssComponent {
     private String text;
     private String role;
     private String onclick;
@@ -51,43 +52,49 @@ public class UISpan extends UIComponent {
         return text;
     }
 
-    public void setText(String text) {
+    public UISpan setText(String text) {
         this.text = text;
+        return this;
     }
 
-    public void setText(String format, Object... args) {
+    public UISpan setText(String format, Object... args) {
         this.text = String.format(format, args);
+        return this;
     }
 
     public String getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public UISpan setRole(String role) {
         this.role = role;
+        return this;
     }
 
     public String getOnclick() {
         return onclick;
     }
 
-    public void setOnclick(String onclick) {
+    public UISpan setOnclick(String onclick) {
         this.onclick = onclick;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public UISpan setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     public String getTarget() {
         return target;
     }
 
-    public void setTarget(String target) {
+    public UISpan setTarget(String target) {
         this.target = target;
+        return this;
     }
 }

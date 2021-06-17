@@ -2,8 +2,9 @@ package cn.cerc.ui.other;
 
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UrlMenu extends UIComponent {
+public class UrlMenu extends UICssComponent {
     private String name;
     private String url;
 

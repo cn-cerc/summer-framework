@@ -1,27 +1,30 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.db.core.StubHandleText;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
 
-public class SqlQueryTest_save {
-    private StubHandleText handle;
-    private MysqlConnection conn;
+public class SqlQueryTest_save implements IHandle {
+    private ISession session;
+    private MysqlServerMaster conn;
 
     @Before
     public void setUp() {
-        handle = new StubHandleText();
-        conn = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
+        session = new StubSession();
+        conn = this.getMysql();
     }
 
     @Test
     @Ignore
     public void test_delete() {
         conn.execute("delete from temp");
-        SqlQuery ds = new SqlQuery(handle);
+        SqlQuery ds = new SqlQuery(this);
         ds.setBatchSave(true);
         System.out.println("before insert, record count: " + getTotal("temp"));
 
@@ -62,7 +65,7 @@ public class SqlQueryTest_save {
     }
 
     private void insertTest(boolean batchSave) {
-        SqlQuery ds = new SqlQuery(handle);
+        SqlQuery ds = new SqlQuery(this);
         ds.setBatchSave(batchSave);
         ds.add("select * from temp");
         ds.open();
@@ -89,9 +92,19 @@ public class SqlQueryTest_save {
     }
 
     private int getTotal(String table) {
-        SqlQuery ds = new SqlQuery(handle);
+        SqlQuery ds = new SqlQuery(this);
         ds.add("select count(*) as total from %s", table);
         ds.open();
         return ds.getInt("total");
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 }

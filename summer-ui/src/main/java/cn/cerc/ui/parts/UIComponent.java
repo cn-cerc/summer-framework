@@ -1,11 +1,13 @@
 package cn.cerc.ui.parts;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import cn.cerc.ui.core.Component;
 import cn.cerc.ui.core.HtmlWriter;
 
-public class UIComponent extends Component {
-    protected String cssClass;
-    protected String cssStyle;
+public abstract class UIComponent extends Component implements Iterable<UIComponent> {
 
     public UIComponent() {
         super();
@@ -15,29 +17,7 @@ public class UIComponent extends Component {
         super(owner);
     }
 
-    public String getCssClass() {
-        return cssClass;
-    }
-
-    public void setCssClass(String cssClass) {
-        this.cssClass = cssClass;
-    }
-
-    public String getCssStyle() {
-        return cssStyle;
-    }
-
-    public void setCssStyle(String cssStyle) {
-        this.cssStyle = cssStyle;
-    }
-
-    public void output(HtmlWriter html) {
-        for (Component component : this.getComponents()) {
-            if (component instanceof UIComponent) {
-                ((UIComponent) component).output(html);
-            }
-        }
-    }
+    public abstract void output(HtmlWriter html);
 
     @Override
     public final String toString() {
@@ -46,12 +26,15 @@ public class UIComponent extends Component {
         return html.toString();
     }
 
-    protected void outputCss(HtmlWriter html) {
-        if (this.cssClass != null) {
-            html.print(" class='%s'", cssClass);
+    @Override
+    public Iterator<UIComponent> iterator() {
+        List<UIComponent> list = new ArrayList<>();
+        for(Component component: this.getComponents()) {
+            if(component instanceof UIComponent) {
+                list.add((UIComponent) component);
+            }
         }
-        if (this.cssStyle != null) {
-            html.print(" style='%s'", cssStyle);
-        }
+        return list.iterator();
     }
+
 }

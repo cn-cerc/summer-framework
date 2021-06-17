@@ -101,6 +101,12 @@ public class UrlRecord {
         this.name = name;
     }
 
+    @Deprecated
+    public UrlRecord addParam(String key, String value) {
+        this.putParam(key, value);
+        return this;
+    }
+
     public UrlRecord putParam(String key, String value) {
         params.put(key, value);
         return this;
@@ -218,10 +224,7 @@ public class UrlRecord {
     }
 
     public enum Target {
-        _blank,
-        _self,
-        _parent,
-        _top;
+        _blank, _self, _parent, _top;
     }
 
 }

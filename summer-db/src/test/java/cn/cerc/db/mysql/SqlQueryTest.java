@@ -1,23 +1,27 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.db.core.StubHandleText;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 
-@Slf4j
-public class SqlQueryTest {
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
+
+public class SqlQueryTest implements IHandle {
+    private static final Logger log = LoggerFactory.getLogger(SqlQueryTest.class);
 
     private String userInfo;
     private SqlQuery ds;
-    private StubHandleText handle;
+    private ISession session;
 
     @Before
     public void setUp() {
-        handle = new StubHandleText();
-        ds = new SqlQuery(handle);
+        session = new StubSession();
+        ds = new SqlQuery(this);
         userInfo = "Account";
     }
 
@@ -66,6 +70,16 @@ public class SqlQueryTest {
         log.info(ds.getSqlText().getText());
         ds.open();
 
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 
 }

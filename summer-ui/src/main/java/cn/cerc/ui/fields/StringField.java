@@ -2,13 +2,13 @@ package cn.cerc.ui.fields;
 
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.fields.editor.ColumnEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.parts.UIComponent;
 
-public class StringField extends AbstractField implements IColumn {
+public class StringField extends AbstractField implements IFormatColumn {
     private ColumnEditor editor;
 
     public StringField(UIComponent owner, String name, String field) {

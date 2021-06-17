@@ -3,13 +3,13 @@ package cn.cerc.ui.fields;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.fields.editor.CheckEditor;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.other.SearchItem;
 import cn.cerc.ui.parts.UIComponent;
 
-public class BooleanField extends AbstractField implements SearchItem, IColumn {
+public class BooleanField extends AbstractField implements SearchItem, IFormatColumn {
     private String trueText = "是";
     private String falseText = "否";
     private String title;

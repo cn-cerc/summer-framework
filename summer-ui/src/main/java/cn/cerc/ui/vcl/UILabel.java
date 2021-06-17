@@ -2,9 +2,10 @@ package cn.cerc.ui.vcl;
 
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
-public class UILabel extends UIComponent {
-    private String caption;
+public class UILabel extends UICssComponent {
+    private String text;
     private String url;
     private String focusTarget;
 
@@ -16,15 +17,15 @@ public class UILabel extends UIComponent {
         super();
     }
 
-    public UILabel(String caption, String url) {
+    public UILabel(String text) {
         super();
-        this.caption = caption;
-        this.url = url;
+        this.text = text;
     }
 
-    public UILabel(String caption) {
+    public UILabel(String text, String url) {
         super();
-        this.caption = caption;
+        this.text = text;
+        this.url = url;
     }
 
     public String getFocusTarget() {
@@ -43,26 +44,64 @@ public class UILabel extends UIComponent {
                 html.print(" for='%s'", focusTarget);
             }
             super.outputCss(html);
-            html.print(">%s</label>", this.caption);
+            if (this.url != null)
+                html.print(" href='%s'");
+            html.print(">");
+            for (UIComponent item : this)
+                item.output(html);
+            if (this.text != null)
+                html.print(this.text);
+            html.print("</label>");
         } else {
-            html.print("<a href='%s'>%s</a>", this.url, this.caption);
+            html.print("<a");
+            super.outputCss(html);
+            if (this.url != null)
+                html.print(" href='%s'", this.url);
+            html.print(">");
+            for (UIComponent item : this)
+                item.output(html);
+            if (this.text != null)
+                html.print(this.text);
+            html.print("</a>");
         }
     }
 
+    /**
+     * 请改使用 getText
+     * 
+     * @return 返回 text 值
+     */
+    @Deprecated
     public String getCaption() {
-        return caption;
+        return text;
     }
 
+    /**
+     * 请改使用 setText
+     * 
+     * @param caption 设置 text 的值
+     */
+    @Deprecated
     public void setCaption(String caption) {
-        this.caption = caption;
+        this.text = caption;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public UILabel setText(String text) {
+        this.text = text;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public UILabel setUrl(String url) {
         this.url = url;
+        return this;
     }
 
 }

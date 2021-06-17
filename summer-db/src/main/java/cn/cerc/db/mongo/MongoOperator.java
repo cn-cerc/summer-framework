@@ -1,24 +1,31 @@
 package cn.cerc.db.mongo;
 
-import cn.cerc.core.IDataOperator;
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDateTime;
+import java.util.Date;
+
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import org.bson.Document;
-import org.bson.types.ObjectId;
 
-import java.util.Date;
+import cn.cerc.core.IDataOperator;
+import cn.cerc.core.ISession;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.IHandle;
 
 public class MongoOperator implements IDataOperator {
     private String tableName;
-    private MongoConnection connection;
+    private MongoDB connection;
 
-    public MongoOperator(IHandle handle) {
-        this.connection = (MongoConnection) handle.getProperty(MongoConnection.sessionId);
+    public MongoOperator(ISession session) {
+        this.connection = (MongoDB) session.getProperty(MongoDB.SessionId);
+    }
+
+    public MongoOperator(IHandle owner) {
+        this(owner.getSession());
     }
 
     @Override
@@ -58,8 +65,7 @@ public class MongoOperator implements IDataOperator {
 
     private Document getValue(Record record) {
         Document doc = new Document();
-        for (int i = 0; i < record.getFieldDefs().size(); i++) {
-            String field = record.getFieldDefs().getFields().get(i);
+        for(String field : record.getFieldDefs()) {
             if ("_id".equals(field)) {
                 continue;
             }

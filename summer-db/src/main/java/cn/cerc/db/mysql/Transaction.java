@@ -1,37 +1,27 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IHandle;
-import lombok.extern.slf4j.Slf4j;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@Slf4j
-public class Transaction implements AutoCloseable {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    private Connection conn;
+import cn.cerc.db.core.IHandle;
+
+public class Transaction implements AutoCloseable {
+    private static final Logger log = LoggerFactory.getLogger(Transaction.class);
+
+    private SqlClient client;
     private boolean active = false;
     private boolean locked = false;
 
-    public Transaction(Connection conn) {
-        this.conn = conn;
+    public Transaction(IHandle owner) {
+        MysqlServerMaster mysql = owner.getMysql();
+        this.client = mysql.getClient();
         try {
-            if (conn.getAutoCommit()) {
-                conn.setAutoCommit(false);
-                this.active = true;
-            }
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Transaction(IHandle handle) {
-        MysqlConnection cn = (MysqlConnection) handle.getProperty(MysqlConnection.sessionId);
-        this.conn = cn.getClient();
-        try {
-            if (conn.getAutoCommit()) {
-                conn.setAutoCommit(false);
+            Connection connection = client.getConnection();
+            if (connection.getAutoCommit()) {
+                connection.setAutoCommit(false);
                 this.active = true;
             }
         } catch (SQLException e) {
@@ -41,14 +31,14 @@ public class Transaction implements AutoCloseable {
     }
 
     public boolean commit() {
-        if (!active) {
+        if (!active)
             return false;
-        }
-        if (locked) {
+
+        if (locked)
             throw new RuntimeException("Transaction locked is true");
-        }
+
         try {
-            conn.commit();
+            client.getConnection().commit();
             locked = true;
             return true;
         } catch (SQLException e) {
@@ -59,16 +49,18 @@ public class Transaction implements AutoCloseable {
 
     @Override
     public void close() {
-        if (!active) {
-            return;
-        }
         try {
-            try {
-                conn.rollback();
-            } finally {
-                conn.setAutoCommit(true);
+            if (active) {
+                Connection connection = client.getConnection();
+                try {
+                    connection.rollback();
+                } finally {
+                    connection.setAutoCommit(true);
+                }
             }
+            client.close();
         } catch (SQLException e) {
+            client.close();
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }

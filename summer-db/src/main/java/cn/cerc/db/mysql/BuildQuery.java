@@ -1,34 +1,39 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.IHandle;
-import cn.cerc.core.Record;
-import cn.cerc.core.TDateTime;
-import cn.cerc.core.Utils;
+import static cn.cerc.core.Utils.safeString;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static cn.cerc.core.Utils.safeString;
+import cn.cerc.core.ISession;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDateTime;
+import cn.cerc.core.Utils;
+import cn.cerc.db.core.IHandle;
 
 /**
  * 用于组合生成select指令，便于多条件查询编写
  *
  * @author 张弓
  */
-public class BuildQuery {
+public class BuildQuery implements IHandle {
     public static final String vbCrLf = "\r\n";
     private SqlQuery dataSet;
     private List<String> sqlWhere = new ArrayList<>();
     private List<String> sqlText = new ArrayList<>();
     private String orderText;
     private String sql;
-    private IHandle handle;
+    private ISession session;
 
-    public BuildQuery(IHandle handle) {
+    public BuildQuery(ISession session) {
         super();
-        this.handle = handle;
+        this.session = session;
+    }
+
+    public BuildQuery(IHandle owner) {
+        this(owner.getSession());
     }
 
     /**
@@ -51,17 +56,12 @@ public class BuildQuery {
      * <p>
      * 生成 SQL 的指令如下：
      * <p>
-     * and (
-     * CusCode_ like '%05559255%'
-     * or SalesCode_ like '%05559255%'
-     * or AppUser_ like '%05559255%'
-     * or UpdateUser_ like '%05559255%'
-     * or Address_ like '%05559255%'
-     * or Mobile_ like '%$i8OknluCnFsW$%'
-     * )
+     * and ( CusCode_ like '%05559255%' or SalesCode_ like '%05559255%' or AppUser_
+     * like '%05559255%' or UpdateUser_ like '%05559255%' or Address_ like
+     * '%05559255%' or Mobile_ like '%$i8OknluCnFsW$%' )
      *
-     * @param items
-     * @return
+     * @param items 数据库语句拼接
+     * @return BuildQuery
      */
     public BuildQuery byLink(Map<String, List<String>> items) {
         if (items == null) {
@@ -243,13 +243,21 @@ public class BuildQuery {
 
     public SqlQuery getDataSet() {
         if (this.dataSet == null) {
-            this.dataSet = new SqlQuery(handle);
+            this.dataSet = new SqlQuery(this);
         }
         return this.dataSet;
     }
 
     public void setDataSet(SqlQuery dataSet) {
         this.dataSet = dataSet;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("[%s]%n", this.getClass().getName()));
+        builder.append(String.format("CommandText:%s%n", this.getCommandText()));
+        return builder.toString();
     }
 
     protected String getSelectCommand() {
@@ -296,21 +304,22 @@ public class BuildQuery {
     }
 
     public SqlQuery open() {
-        SqlQuery ds = getDataSet();
-        ds.getSqlText().clear();
-        ds.add(this.getSelectCommand());
-        ds.open();
-        return ds;
+        return open(false);
     }
 
     public SqlQuery openReadonly() {
+        return open(true);
+    }
+
+    public SqlQuery open(boolean slaveServer) {
         SqlQuery ds = getDataSet();
         ds.getSqlText().clear();
         ds.add(this.getSelectCommand());
-        ds.openReadonly();
+        ds.open(slaveServer);
         return ds;
     }
 
+    @Deprecated
     public SqlQuery open(Record head, Record foot) {
         SqlQuery ds = getDataSet();
         if (!head.exists("__offset__")) {
@@ -327,6 +336,7 @@ public class BuildQuery {
         return ds;
     }
 
+    @Deprecated
     public SqlQuery openReadonly(Record head, Record foot) {
         SqlQuery ds = getDataSet();
         if (head.exists("__offset__")) {
@@ -341,7 +351,6 @@ public class BuildQuery {
         return ds;
     }
 
-    // @Override
     public void close() {
         sql = null;
         sqlText.clear();
@@ -376,5 +385,15 @@ public class BuildQuery {
 
     public void setOrderText(String orderText) {
         this.orderText = orderText;
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 }

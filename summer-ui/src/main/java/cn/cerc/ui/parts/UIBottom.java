@@ -3,7 +3,7 @@ package cn.cerc.ui.parts;
 import cn.cerc.core.Utils;
 import cn.cerc.ui.core.HtmlWriter;
 
-public class UIBottom extends UIComponent {
+public class UIBottom extends UICssComponent {
     private String caption;
     private String url;
     private String target;
@@ -45,7 +45,7 @@ public class UIBottom extends UIComponent {
         if (this.getId() != null) {
             html.print(" id=\"%s\"", this.getId());
         }
-        if (Utils.isNotEmpty(this.getTarget())) {
+        if (!Utils.isEmpty(this.getTarget())) {
             html.print(" target=\"%s\"", this.target);
         }
         if (this.getCssClass() != null) {

@@ -1,10 +1,9 @@
 package cn.cerc.ui.core;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Component {
+public abstract class Component {
     private List<Component> components = new ArrayList<>();
     private Component owner;
 
@@ -27,9 +26,6 @@ public class Component {
     public void addComponent(Component component) {
         if (!components.contains(component)) {
             components.add(component);
-            if (component.getId() == null) {
-                component.setId("component" + components.size());
-            }
         }
     }
 
@@ -58,17 +54,6 @@ public class Component {
             owner.addComponent(this);
         }
         return this;
-    }
-
-    public <T> T create(Class<T> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
-        T obj = clazz.getDeclaredConstructor().newInstance();
-        if (!(obj instanceof Component)) {
-            throw new RuntimeException("仅支持Component及其子数，不支持创建类型: " + clazz.getName());
-        }
-        Component item = (Component) obj;
-        item.setOwner(this);
-        return obj;
     }
 
 }

@@ -3,10 +3,11 @@ package cn.cerc.ui.vcl;
 import cn.cerc.core.DataSet;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
 
 import java.util.LinkedHashMap;
 
-public class UIComboBox extends UIComponent {
+public class UIComboBox extends UICssComponent {
     private LinkedHashMap<String, String> options = new LinkedHashMap<>(6);
     private String selectId;
     private String name;

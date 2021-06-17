@@ -1,13 +1,5 @@
 package cn.cerc.db.dao;
 
-import cn.cerc.core.ClassData;
-import cn.cerc.core.ClassFactory;
-import cn.cerc.db.mysql.BuildStatement;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
@@ -19,14 +11,25 @@ import java.sql.Statement;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Slf4j
-public class BigInsertSql {
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
-    public static boolean exec(Connection conn, Object oldRecord, boolean preview) {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.ClassData;
+import cn.cerc.core.ClassFactory;
+import cn.cerc.db.mysql.BuildStatement;
+
+public class BigInsertSql {
+    private static final Logger log = LoggerFactory.getLogger(BigInsertSql.class);
+
+    public static boolean exec(Connection connection, Object oldRecord, boolean preview) {
         String lastCommand = null;
         ClassData classData = ClassFactory.get(oldRecord.getClass());
         String updateKey = classData.getUpdateKey();
-        try (BuildStatement bs = new BuildStatement(conn)) {
+        try (BuildStatement bs = new BuildStatement(connection)) {
             Map<String, Object> items = new LinkedHashMap<>();
             BigOperator.copy(oldRecord, (key, value) -> {
                 items.put(key, value);
@@ -65,7 +68,7 @@ public class BigInsertSql {
 
             int result = ps.executeUpdate();
 
-            BigInteger uidvalue = findAutoUid(conn);
+            BigInteger uidvalue = findAutoUid(connection);
             if (uidvalue == null) {
                 throw new RuntimeException("未获取:" + updateKey);
             }

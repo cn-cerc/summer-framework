@@ -1,6 +1,13 @@
 package cn.cerc.db.jiguang;
 
-import cn.cerc.core.IHandle;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.cerc.core.ISession;
+import cn.cerc.db.core.IHandle;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
@@ -12,13 +19,9 @@ import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
-import lombok.extern.slf4j.Slf4j;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-@Slf4j
 public class JiguangPush {
+    private static final Logger log = LoggerFactory.getLogger(JiguangPush.class);
 
     private JiguangConnection connection;
     // 消息id，回调时使用
@@ -33,18 +36,12 @@ public class JiguangPush {
     public JiguangPush() {
     }
 
-    public JiguangPush(IHandle handle) {
-        this.connection = (JiguangConnection) handle.getProperty(JiguangConnection.sessionId);
+    public JiguangPush(ISession session) {
+        this.connection = (JiguangConnection) session.getProperty(JiguangConnection.sessionId);
     }
 
-    /**
-     * 发送给所有设备
-     */
-    public void send() {
-        // 发送给安卓
-        send(ClientType.Android, null);
-        // 发送给IOS
-        send(ClientType.IOS, null);
+    public JiguangPush(IHandle owner) {
+        this(owner.getSession());
     }
 
     public void send(ClientType clientType, String clientId) {
@@ -86,15 +83,7 @@ public class JiguangPush {
         ).build();
         // 设置生产环境
         builder.setOptions(Options.newBuilder().setApnsProduction(true).build()).build();
-        sendMessage(builder.build());
-    }
-
-    /**
-     * 发送一条讯息
-     *
-     * @param payload
-     */
-    private void sendMessage(PushPayload payload) {
+        PushPayload payload = builder.build();
         try {
             PushResult result = connection.getClient().sendPush(payload);
             log.info("Got result - " + result);

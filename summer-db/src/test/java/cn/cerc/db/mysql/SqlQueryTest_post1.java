@@ -1,20 +1,23 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.PostFieldException;
-import cn.cerc.core.TDateTime;
-import cn.cerc.db.core.StubHandleText;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class SqlQueryTest_post1 {
+import cn.cerc.core.ISession;
+import cn.cerc.core.PostFieldException;
+import cn.cerc.core.TDateTime;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.StubSession;
+
+public class SqlQueryTest_post1 implements IHandle {
     private SqlQuery ds;
-    private StubHandleText conn;
+    private ISession session;
 
     @Before
     public void setUp() {
-        conn = new StubHandleText();
-        ds = new SqlQuery(conn);
+        session = new StubSession();
+        ds = new SqlQuery(this);
     }
 
     @Test(expected = PostFieldException.class)
@@ -40,5 +43,15 @@ public class SqlQueryTest_post1 {
         ds.setField("Test", "aOK");
         ds.setField("UpdateDate_", TDateTime.now().incDay(-1));
         ds.post();
+    }
+
+    @Override
+    public ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(ISession session) {
+        this.session = session;
     }
 }

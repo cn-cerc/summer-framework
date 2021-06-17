@@ -2,8 +2,8 @@ package cn.cerc.ui.grid.lines;
 
 import cn.cerc.ui.core.DataSource;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.RowCell;
 
@@ -47,8 +47,8 @@ public class ChildGridLine extends AbstractGridLine {
                 if (obj instanceof AbstractField) {
                     String resultHtml = "";
                     AbstractField field = (AbstractField) obj;
-                    if (field instanceof IColumn) {
-                        resultHtml = ((IColumn) field).format(dataSource.getDataSet().getCurrent());
+                    if (field instanceof IFormatColumn) {
+                        resultHtml = ((IFormatColumn) field).format(dataSource.getDataSet().getCurrent());
                     } else {
                         HtmlWriter tempHtml = new HtmlWriter();
                         outputField(tempHtml, field);

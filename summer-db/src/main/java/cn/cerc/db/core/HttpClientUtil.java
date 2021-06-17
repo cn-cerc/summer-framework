@@ -1,6 +1,8 @@
 package cn.cerc.db.core;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -13,12 +15,11 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-@Slf4j
 public class HttpClientUtil {
+    private static final Logger log = LoggerFactory.getLogger(HttpClientUtil.class);
 
     public static String post(String url, String json) {
         try (CloseableHttpClient http = HttpClients.createDefault()) {

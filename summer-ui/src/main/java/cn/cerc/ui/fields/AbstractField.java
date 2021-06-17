@@ -1,20 +1,26 @@
 package cn.cerc.ui.fields;
 
-import cn.cerc.core.Record;
-import cn.cerc.core.TDate;
-import cn.cerc.core.TDateTime;
-import cn.cerc.ui.UIConfig;
-import cn.cerc.ui.core.DataSource;
-import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IField;
-import cn.cerc.ui.other.BuildText;
-import cn.cerc.ui.other.BuildUrl;
-import cn.cerc.ui.parts.UIComponent;
-import cn.cerc.ui.vcl.UIText;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public abstract class AbstractField extends UIComponent implements IField {
+import cn.cerc.core.ClassConfig;
+import cn.cerc.core.Record;
+import cn.cerc.core.TDate;
+import cn.cerc.core.TDateTime;
+import cn.cerc.mis.cdn.CDN;
+import cn.cerc.ui.SummerUI;
+import cn.cerc.ui.core.DataSource;
+import cn.cerc.ui.core.HtmlWriter;
+import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.INameOwner;
+import cn.cerc.ui.other.BuildText;
+import cn.cerc.ui.other.BuildUrl;
+import cn.cerc.ui.parts.UIComponent;
+import cn.cerc.ui.parts.UICssComponent;
+import cn.cerc.ui.vcl.UIText;
+
+public abstract class AbstractField extends UICssComponent implements IField, INameOwner {
+    private static final ClassConfig config = new ClassConfig(AbstractField.class, SummerUI.ID);
     // 数据库相关
     protected String field;
     // 自定义取值
@@ -143,6 +149,7 @@ public abstract class AbstractField extends UIComponent implements IField {
         return this;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -293,7 +300,7 @@ public abstract class AbstractField extends UIComponent implements IField {
                 if (this.icon != null) {
                     html.print("<img src=\"%s\">", this.icon);
                 } else {
-                    html.print("<img src=\"%s\">", UIConfig.searchIocn);
+                    html.print("<img src=\"%s\">", CDN.get(config.getClassProperty("icon", "")));
                 }
 
                 html.print("</a>");

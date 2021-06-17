@@ -1,6 +1,7 @@
 package cn.cerc.ui.phone;
 
 import cn.cerc.core.ClassResource;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
 import cn.cerc.ui.core.UrlRecord;
 import cn.cerc.ui.parts.UIComponent;
@@ -17,7 +18,7 @@ import java.util.Map;
  * 文字信息（最多6行）
  */
 public class Block604 extends UIComponent {
-    private static final ClassResource res = new ClassResource("summer-ui", Block604.class);
+    private static final ClassResource res = new ClassResource(Block604.class, SummerUI.ID);
 
     private UILabel title;
     private UrlRecord url;
@@ -26,7 +27,7 @@ public class Block604 extends UIComponent {
     public Block604(UIComponent owner) {
         super(owner);
         title = new UILabel();
-        title.setCaption("(title)");
+        title.setText("(title)");
     }
 
     @Override

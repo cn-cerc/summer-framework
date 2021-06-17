@@ -1,22 +1,23 @@
 package cn.cerc.ui.fields.editor;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.Record;
+import cn.cerc.ui.SummerUI;
 import cn.cerc.ui.core.HtmlWriter;
-import cn.cerc.ui.core.IColumn;
 import cn.cerc.ui.core.IField;
+import cn.cerc.ui.core.IFormatColumn;
 import cn.cerc.ui.fields.AbstractField;
 import cn.cerc.ui.grid.DataGrid;
 import cn.cerc.ui.grid.lines.AbstractGridLine;
 import cn.cerc.ui.grid.lines.MasterGridLine;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ColumnEditor {
-    private static final ClassResource res = new ClassResource("summer-ui", ColumnEditor.class);
+    private static final ClassResource res = new ClassResource(ColumnEditor.class, SummerUI.ID);
 
     private AbstractField owner;
     private boolean init = false;
@@ -57,7 +58,7 @@ public class ColumnEditor {
             dataSet = gridLine.getDataSet();
             columns = new ArrayList<>();
             for (IField field : gridLine.getFields()) {
-                if (field instanceof IColumn) {
+                if (field instanceof IFormatColumn) {
                     if (((AbstractField) field).isReadonly()) {
                         continue;
                     }
