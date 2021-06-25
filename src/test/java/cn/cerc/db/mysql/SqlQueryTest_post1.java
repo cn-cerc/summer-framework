@@ -11,13 +11,13 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.StubSession;
 
 public class SqlQueryTest_post1 implements IHandle {
-    private SqlQuery ds;
+    private MysqlQuery ds;
     private ISession session;
 
     @Before
     public void setUp() {
         session = new StubSession();
-        ds = new SqlQuery(this);
+        ds = new MysqlQuery(this);
     }
 
     @Test(expected = PostFieldException.class)

@@ -11,7 +11,7 @@ import cn.cerc.db.core.IHandle;
 public class Transaction implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(Transaction.class);
 
-    private SqlClient client;
+    private MysqlClient client;
     private boolean active = false;
     private boolean locked = false;
 

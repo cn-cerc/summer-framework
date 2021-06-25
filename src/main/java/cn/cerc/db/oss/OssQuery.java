@@ -27,7 +27,7 @@ public class OssQuery extends DataSet implements IHandle {
 
     public OssQuery open() {
         try {
-            this.fileName = getOperator().findTableName(this.getSqlText().getText());
+            this.fileName = SqlText.findTableName(this.getSqlText().getText());
             if (ossMode == OssMode.readWrite) {
                 String value = connection.getContent(this.fileName);
                 if (value != null) {

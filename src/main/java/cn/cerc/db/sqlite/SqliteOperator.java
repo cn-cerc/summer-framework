@@ -1,4 +1,4 @@
-package cn.cerc.db.mysql;
+package cn.cerc.db.sqlite;
 
 import java.math.BigInteger;
 import java.sql.Connection;
@@ -6,85 +6,39 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.Record;
-import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.SqlOperator;
+import cn.cerc.db.mysql.BuildStatement;
+import cn.cerc.db.mysql.UpdateMode;
 
-public class SqlOperator {
-    private static final Logger log = LoggerFactory.getLogger(SqlOperator.class);
-
-    private String updateKey = "UID_";
-    private String tableName;
+public class SqliteOperator extends SqlOperator {
+    private static final Logger log = LoggerFactory.getLogger(SqliteOperator.class);
     private String lastCommand;
-    private boolean preview = false;
-    private List<String> searchKeys = new ArrayList<>();
-    private UpdateMode updateMode = UpdateMode.strict;
-    private IHandle handle = null;
-
-    public SqlOperator() {
+    
+    public SqliteOperator() {
         super();
+        this.setUpdateKey("id");
     }
 
-    public SqlOperator(IHandle handle) {
-        super();
-        this.handle = handle;
-    }
-
-    // 根据 sql 获取数据库表名
-    public static String findTableName(String sql) {
-        String result = null;
-        String[] items = sql.split("[ \r\n]");
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].toLowerCase().contains("from")) {
-                // 如果取到form后 下一个记录为数据库表名
-                while (items[i + 1] == null || "".equals(items[i + 1].trim())) {
-                    // 防止取到空值
-                    i++;
-                }
-                result = items[++i]; // 获取数据库表名
-                break;
-            }
-        }
-
-        if (result == null) {
-            throw new RuntimeException("sql command error");
-        }
-
-        return result;
-    }
-//
-//    public boolean insert(String tableName, String primaryKey, Record record) {
-//        this.setTableName(tableName);
-//        this.setPrimaryKey(primaryKey);
-//        return this.insert(record);
-//    }
-
-    @Deprecated
-    public boolean insert(Record record) {
-        try (SqlClient client = handle.getMysql().getClient()) {
-            return insert(client.getConnection(), record);
-        }
-    }
-
-    public boolean insert(Connection conn, Record record) {
+    @Override
+    public boolean insert(Connection connection, Record record) {
         if (record.getFieldDefs().size() == 0) {
             throw new RuntimeException("字段为空");
         }
-        try (BuildStatement bs = new BuildStatement(conn)) {
+        try (BuildStatement bs = new BuildStatement(connection)) {
             if (searchKeys.size() == 0) {
-                initPrimaryKeys(conn, record);
+                initPrimaryKeys(connection, record);
             }
 
-            bs.append("insert into ").append(tableName).append(" (");
+            bs.append("insert into ").append(getTableName()).append(" (");
             int i = 0;
             for (String field : record.getItems().keySet()) {
-                if (!updateKey.equals(field)) {
+                if (!getUpdateKey().equals(field)) {
                     i++;
                     if (i > 1) {
                         bs.append(",");
@@ -95,7 +49,7 @@ public class SqlOperator {
             bs.append(") values (");
             i = 0;
             for (String field : record.getItems().keySet()) {
-                if (!updateKey.equals(field)) {
+                if (!getUpdateKey().equals(field)) {
                     i++;
                     if (i == 1) {
                         bs.append("?", record.getField(field));
@@ -108,7 +62,7 @@ public class SqlOperator {
 
             PreparedStatement ps = bs.build();
             lastCommand = bs.getCommand();
-            if (preview) {
+            if (isDebug()) {
                 log.info(lastCommand);
                 return false;
             } else {
@@ -117,14 +71,14 @@ public class SqlOperator {
 
             int result = ps.executeUpdate();
 
-            if (searchKeys.contains(updateKey)) {
-                BigInteger uidvalue = findAutoUid(conn);
+            if (searchKeys.contains(getUpdateKey())) {
+                BigInteger uidvalue = findAutoUid(connection);
                 log.debug("自增列uid value：" + uidvalue);
 
                 if (uidvalue.intValue() <= Integer.MAX_VALUE) {
-                    record.setField(updateKey, uidvalue.intValue());
+                    record.setField(getUpdateKey(), uidvalue.intValue());
                 } else {
-                    record.setField(updateKey, uidvalue);
+                    record.setField(getUpdateKey(), uidvalue);
                 }
             }
 
@@ -136,14 +90,8 @@ public class SqlOperator {
         }
     }
 
-    @Deprecated
-    public boolean update(Record record) {
-        try (SqlClient client = handle.getMysql().getClient()) {
-            return update(client.getConnection(), record);
-        }
-    }
-
-    public boolean update(Connection conn, Record record) {
+    @Override
+    public boolean update(Connection connection, Record record) {
         if (!record.isModify()) {
             return false;
         }
@@ -152,21 +100,21 @@ public class SqlOperator {
             return false;
         }
 
-        try (BuildStatement bs = new BuildStatement(conn)) {
+        try (BuildStatement bs = new BuildStatement(connection)) {
             if (this.searchKeys.size() == 0) {
-                initPrimaryKeys(conn, record);
+                initPrimaryKeys(connection, record);
             }
             if (searchKeys.size() == 0) {
                 throw new RuntimeException("primary keys not exists");
             }
-            if (!searchKeys.contains(updateKey)) {
-                log.warn(String.format("not find primary key %s in %s", updateKey, this.tableName));
+            if (!searchKeys.contains(getUpdateKey())) {
+                log.warn(String.format("not find primary key %s in %s", getUpdateKey(), getTableName()));
             }
-            bs.append("update ").append(tableName);
+            bs.append("update ").append(getTableName());
             // 加入set条件
             int i = 0;
             for (String field : delta.keySet()) {
-                if (!updateKey.equals(field)) {
+                if (!getUpdateKey().equals(field)) {
                     i++;
                     bs.append(i == 1 ? " set " : ",");
                     bs.append(field);
@@ -197,7 +145,7 @@ public class SqlOperator {
             if (pkCount == 0) {
                 throw new RuntimeException("primary keys value not exists");
             }
-            if (updateMode == UpdateMode.strict) {
+            if (getUpdateMode() == UpdateMode.strict) {
                 for (String field : delta.keySet()) {
                     if (!searchKeys.contains(field)) {
                         i++;
@@ -214,7 +162,7 @@ public class SqlOperator {
 
             PreparedStatement ps = bs.build();
             lastCommand = bs.getCommand();
-            if (preview) {
+            if (isDebug()) {
                 log.info(lastCommand);
                 return false;
             }
@@ -233,32 +181,26 @@ public class SqlOperator {
         }
     }
 
-    @Deprecated
-    public boolean delete(Record record) {
-        try (SqlClient client = handle.getMysql().getClient()) {
-            return delete(client.getConnection(), record);
-        }
-    }
-
-    public boolean delete(Connection conn, Record record) {
-        try (BuildStatement bs = new BuildStatement(conn)) {
+    @Override
+    public boolean delete(Connection connection, Record record) {
+        try (BuildStatement bs = new BuildStatement(connection)) {
             if (this.searchKeys.size() == 0) {
-                initPrimaryKeys(conn, record);
+                initPrimaryKeys(connection, record);
             }
             if (searchKeys.size() == 0) {
-                throw new RuntimeException("primary keys  not exists");
+                throw new RuntimeException("primary keys not exists");
             }
-            if (!searchKeys.contains(updateKey)) {
-                log.warn(String.format("not find primary key %s in %s", updateKey, this.tableName));
+            if (!searchKeys.contains(getUpdateKey())) {
+                log.warn(String.format("not find primary key %s in %s", getUpdateKey(), getTableName()));
             }
 
-            bs.append("delete from ").append(tableName);
+            bs.append("delete from ").append(getTableName());
             int i = 0;
             Map<String, Object> delta = record.getDelta();
             for (String pk : searchKeys) {
                 Object value = delta.containsKey(pk) ? delta.get(pk) : record.getField(pk);
                 if (value == null) {
-                    throw new RuntimeException("主键值为空");
+                    throw new RuntimeException("primary key is null");
                 }
                 i++;
                 bs.append(i == 1 ? " where " : " and ");
@@ -266,7 +208,7 @@ public class SqlOperator {
             }
             PreparedStatement ps = bs.build();
             lastCommand = bs.getCommand();
-            if (preview) {
+            if (isDebug()) {
                 log.info(lastCommand);
                 return false;
             } else {
@@ -283,34 +225,19 @@ public class SqlOperator {
 
     private void initPrimaryKeys(Connection conn, Record record) throws SQLException {
         for (String key : record.getFieldDefs()) {
-            if (updateKey.equalsIgnoreCase(key)) {
-                if (!updateKey.equals(key)) {
-                    throw new RuntimeException(String.format("%s <> %s", updateKey, key));
+            if (getUpdateKey().equalsIgnoreCase(key)) {
+                if (!getUpdateKey().equals(key)) {
+                    throw new RuntimeException(String.format("%s <> %s", getUpdateKey(), key));
                 }
-                searchKeys.add(updateKey);
+                searchKeys.add(getUpdateKey());
                 break;
-            }
-        }
-        if (searchKeys.size() == 0) {
-            String[] pks = getKeyByDB(conn, tableName).split(";");
-            if (pks.length == 0) {
-                throw new RuntimeException("获取不到主键PK");
-            }
-            for (String pk : pks) {
-                if (updateKey.equalsIgnoreCase(pk)) {
-                    if (!updateKey.equals(pk)) {
-                        throw new RuntimeException(String.format("%s <> %s", updateKey, pk));
-                    }
-                    searchKeys.add(pk);
-                    break;
-                }
             }
         }
     }
 
     private BigInteger findAutoUid(Connection conn) {
         BigInteger result = null;
-        String sql = "SELECT LAST_INSERT_ID() ";
+        String sql = "select last_insert_rowid() newid";
         Statement stmt = null;
         ResultSet rs = null;
         try {
@@ -351,79 +278,8 @@ public class SqlOperator {
         return result;
     }
 
-    private String getKeyByDB(Connection conn, String tableName) throws SQLException {
-        StringBuffer result = new StringBuffer();
-        try (BuildStatement bs = new BuildStatement(conn)) {
-            bs.append("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS ");
-            bs.append("where table_name= ? AND COLUMN_KEY= 'PRI' ", tableName);
-            PreparedStatement ps = bs.build();
-            log.debug(ps.toString().split(":")[1].trim());
-            ResultSet rs = ps.executeQuery();
-            int i = 0;
-            while (rs.next()) {
-                i++;
-                if (i > 1) {
-                    result.append(";");
-                }
-                result.append(rs.getString("COLUMN_NAME"));
-            }
-            return result.toString();
-        }
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
     public String getLastCommand() {
         return lastCommand;
-    }
-
-    public boolean isPreview() {
-        return preview;
-    }
-
-    public void setPreview(boolean preview) {
-        this.preview = preview;
-    }
-
-    @Deprecated // 请改使用 getSearchKeys
-    public List<String> getPrimaryKeys() {
-        return searchKeys;
-    }
-
-    public List<String> getSearchKeys() {
-        return searchKeys;
-    }
-
-    public UpdateMode getUpdateMode() {
-        return updateMode;
-    }
-
-    public void setUpdateMode(UpdateMode updateMode) {
-        this.updateMode = updateMode;
-    }
-
-    @Deprecated // 请改使用 getUpdateKey
-    public String getPrimaryKey() {
-        return updateKey;
-    }
-
-    @Deprecated // 请改使用 setUpdateKey
-    public void setPrimaryKey(String primaryKey) {
-        this.updateKey = primaryKey;
-    }
-
-    public String getUpdateKey() {
-        return updateKey;
-    }
-
-    public void setUpdateKey(String updateKey) {
-        this.updateKey = updateKey;
     }
 
 }

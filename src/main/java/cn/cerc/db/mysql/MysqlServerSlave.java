@@ -25,7 +25,7 @@ public class MysqlServerSlave extends MysqlServer {
     private static final MysqlConfig config;
     //
     private Connection connection;
-    private SqlClient client;
+    private MysqlClient client;
 
     static {
         config = new MysqlConfig();
@@ -90,9 +90,9 @@ public class MysqlServerSlave extends MysqlServer {
     }
 
     @Override
-    public SqlClient getClient() {
+    public MysqlClient getClient() {
         if (client == null) {
-            client = new SqlClient(this, dataSource != null);
+            client = new MysqlClient(this, dataSource != null);
         }
         return client.incReferenced();
     }

@@ -36,7 +36,7 @@ public class QueueQuery extends DataSet implements IHandle {
 
     public QueueQuery open() {
         if (queueCode == null) {
-            queueCode = getOperator().findTableName(this.getSqlText().getText());
+            queueCode = SqlText.findTableName(this.getSqlText().getText());
             queue = connection.openQueue(queueCode);
         }
         if (null == queueCode || "".equals(queueCode)) {

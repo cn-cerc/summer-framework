@@ -4,18 +4,20 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SqlClient implements AutoCloseable {
+import cn.cerc.db.core.ConnectionClient;
+
+public class MysqlClient implements ConnectionClient {
     private int count = 0;
     private final MysqlServer mysql;
     private Connection connection;
     private boolean isPool;
 
-    public SqlClient(MysqlServer mysql, boolean isPool) {
+    public MysqlClient(MysqlServer mysql, boolean isPool) {
         this.mysql = mysql;
         this.isPool = isPool;
     }
 
-    public SqlClient incReferenced() {
+    public MysqlClient incReferenced() {
         if (isPool) {
             ++count;
 //            System.out.println("referenced count(create)= " + count);
@@ -40,6 +42,7 @@ public class SqlClient implements AutoCloseable {
         }
     }
 
+    @Override
     public final Connection getConnection() {
         if (connection == null) {
             ConnectionCertificate item = mysql.createConnection();

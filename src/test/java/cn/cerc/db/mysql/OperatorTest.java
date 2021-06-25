@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
+import cn.cerc.core.SqlText;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.StubSession;
 
@@ -26,7 +27,7 @@ public class OperatorTest implements IHandle {
     public void test_2_insert_new() {
         MysqlServerMaster conn = this.getMysql();
         conn.execute("delete from temp where name_='new'");
-        SqlQuery ds = new SqlQuery(this);
+        MysqlQuery ds = new MysqlQuery(this);
         ds.getSqlText().setMaximum(0);
         ds.add("select * from temp");
         ds.open();
@@ -42,7 +43,7 @@ public class OperatorTest implements IHandle {
     @Test
     @Ignore
     public void test_3_insert_new() {
-        SqlOperator obj = new SqlOperator(this);
+        MysqlOperator obj = new MysqlOperator(this);
         obj.setTableName("temp");
         for (int i = 0; i < maxTest; i++) {
             Record record = new Record();
@@ -57,7 +58,7 @@ public class OperatorTest implements IHandle {
     @Test
     @Ignore
     public void test_4_update_new() {
-        SqlQuery ds = new SqlQuery(this);
+        MysqlQuery ds = new MysqlQuery(this);
         ds.add("select * from temp");
         ds.open();
         while (ds.fetch()) {
@@ -71,7 +72,7 @@ public class OperatorTest implements IHandle {
     @Test
     @Ignore
     public void test_6_delete_new() {
-        SqlQuery ds = new SqlQuery(this);
+        MysqlQuery ds = new MysqlQuery(this);
         ds.add("select * from temp where Name_='new'");
         ds.open();
         while (!ds.eof())
@@ -82,15 +83,15 @@ public class OperatorTest implements IHandle {
     @Ignore
     public void test_findTableName() {
         String sql = "select * from Dept";
-        assertEquals(SqlOperator.findTableName(sql), "Dept");
+        assertEquals(SqlText.findTableName(sql), "Dept");
         sql = "select * from \r\n Dept";
-        assertEquals(SqlOperator.findTableName(sql), "Dept");
+        assertEquals(SqlText.findTableName(sql), "Dept");
         sql = "select * from \r\nDept";
-        assertEquals(SqlOperator.findTableName(sql), "Dept");
+        assertEquals(SqlText.findTableName(sql), "Dept");
         sql = "select * from\r\n Dept";
-        assertEquals(SqlOperator.findTableName(sql), "Dept");
+        assertEquals(SqlText.findTableName(sql), "Dept");
         sql = "select * FROM Dept";
-        assertEquals(SqlOperator.findTableName(sql), "Dept");
+        assertEquals(SqlText.findTableName(sql), "Dept");
     }
 
     @Override

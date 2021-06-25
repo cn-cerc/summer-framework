@@ -12,15 +12,26 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.IConfig;
-import cn.cerc.core.IConnection;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.db.core.SqlServer;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class MssqlServer implements IConnection, AutoCloseable {
+public class MssqlServer implements SqlServer, AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(MssqlServer.class);
 
-    // IHandle中识别码
+    // 数据库连接
+    public static final String MSSQL_SITE = "mssql.site";
+    // 数据库端口
+    public static final String MSSQL_PORT = "mssql.port";
+    // 数据库名称
+    public static final String MSSQL_DATABASE = "mssql.database";
+    // 数据库用户
+    public static final String MSSQL_USERNAME = "mssql.username";
+    // 数据库密码
+    public static final String MSSQL_PASSWORD = "mssql.password";
+
+    // ISession 中识别码
     public static final String SessionId = "mssqlSession";
 
     private String url;
@@ -70,12 +81,12 @@ public class MssqlServer implements IConnection, AutoCloseable {
     }
 
     public String getConnectUrl() {
-        String site = config.getProperty(MssqlConfig.MSSQL_SITE, "127.0.0.1");
-        String port = config.getProperty(MssqlConfig.MSSQL_PORT, "1433");
-        String database = config.getProperty(MssqlConfig.MSSQL_DATABASE, "appdb");
+        String site = config.getProperty(MssqlServer.MSSQL_SITE, "127.0.0.1");
+        String port = config.getProperty(MssqlServer.MSSQL_PORT, "1433");
+        String database = config.getProperty(MssqlServer.MSSQL_DATABASE, "appdb");
 
-        user = config.getProperty(MssqlConfig.MSSQL_USERNAME, "appdb_user");
-        password = config.getProperty(MssqlConfig.MSSQL_PASSWORD, "appdb_password");
+        user = config.getProperty(MssqlServer.MSSQL_USERNAME, "appdb_user");
+        password = config.getProperty(MssqlServer.MSSQL_PASSWORD, "appdb_password");
 
         if (site == null || database == null || user == null || password == null) {
             throw new RuntimeException("mssql connection error.");
@@ -85,15 +96,16 @@ public class MssqlServer implements IConnection, AutoCloseable {
         return String.format("jdbc:sqlserver://%s:%s;databaseName=%s", site, port, database);
     }
 
+    @Override
     public boolean execute(String sql) {
+        log.debug(sql);
         try {
-            log.info("execute mssql: ", sql);
             Statement st = getClient().createStatement();
             st.execute(sql);
             return true;
         } catch (SQLException e) {
             log.error("error mssql: {}", sql);
-            throw new RuntimeException(e.getMessage());
+            return false;
         }
     }
 

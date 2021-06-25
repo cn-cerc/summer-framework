@@ -24,7 +24,7 @@ public class SqlQueryTest_save implements IHandle {
     @Ignore
     public void test_delete() {
         conn.execute("delete from temp");
-        SqlQuery ds = new SqlQuery(this);
+        MysqlQuery ds = new MysqlQuery(this);
         ds.setBatchSave(true);
         System.out.println("before insert, record count: " + getTotal("temp"));
 
@@ -65,7 +65,7 @@ public class SqlQueryTest_save implements IHandle {
     }
 
     private void insertTest(boolean batchSave) {
-        SqlQuery ds = new SqlQuery(this);
+        MysqlQuery ds = new MysqlQuery(this);
         ds.setBatchSave(batchSave);
         ds.add("select * from temp");
         ds.open();
@@ -92,7 +92,7 @@ public class SqlQueryTest_save implements IHandle {
     }
 
     private int getTotal(String table) {
-        SqlQuery ds = new SqlQuery(this);
+        MysqlQuery ds = new MysqlQuery(this);
         ds.add("select count(*) as total from %s", table);
         ds.open();
         return ds.getInt("total");

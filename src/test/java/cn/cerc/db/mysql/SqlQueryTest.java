@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.ISession;
+import cn.cerc.db.core.BigdataException;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.StubSession;
 
@@ -15,13 +16,13 @@ public class SqlQueryTest implements IHandle {
     private static final Logger log = LoggerFactory.getLogger(SqlQueryTest.class);
 
     private String userInfo;
-    private SqlQuery ds;
+    private MysqlQuery ds;
     private ISession session;
 
     @Before
     public void setUp() {
         session = new StubSession();
-        ds = new SqlQuery(this);
+        ds = new MysqlQuery(this);
         userInfo = "Account";
     }
 

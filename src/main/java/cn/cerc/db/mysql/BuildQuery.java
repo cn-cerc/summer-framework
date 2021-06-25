@@ -20,7 +20,7 @@ import cn.cerc.db.core.IHandle;
  */
 public class BuildQuery implements IHandle {
     public static final String vbCrLf = "\r\n";
-    private SqlQuery dataSet;
+    private MysqlQuery dataSet;
     private List<String> sqlWhere = new ArrayList<>();
     private List<String> sqlText = new ArrayList<>();
     private String orderText;
@@ -241,14 +241,14 @@ public class BuildQuery implements IHandle {
         return this;
     }
 
-    public SqlQuery getDataSet() {
+    public MysqlQuery getDataSet() {
         if (this.dataSet == null) {
-            this.dataSet = new SqlQuery(this);
+            this.dataSet = new MysqlQuery(this);
         }
         return this.dataSet;
     }
 
-    public void setDataSet(SqlQuery dataSet) {
+    public void setDataSet(MysqlQuery dataSet) {
         this.dataSet = dataSet;
     }
 
@@ -303,16 +303,16 @@ public class BuildQuery implements IHandle {
         }
     }
 
-    public SqlQuery open() {
+    public MysqlQuery open() {
         return open(false);
     }
 
-    public SqlQuery openReadonly() {
+    public MysqlQuery openReadonly() {
         return open(true);
     }
 
-    public SqlQuery open(boolean slaveServer) {
-        SqlQuery ds = getDataSet();
+    private MysqlQuery open(boolean slaveServer) {
+        MysqlQuery ds = getDataSet();
         ds.getSqlText().clear();
         ds.add(this.getSelectCommand());
         ds.open(slaveServer);
@@ -320,8 +320,8 @@ public class BuildQuery implements IHandle {
     }
 
     @Deprecated
-    public SqlQuery open(Record head, Record foot) {
-        SqlQuery ds = getDataSet();
+    public MysqlQuery open(Record head, Record foot) {
+        MysqlQuery ds = getDataSet();
         if (!head.exists("__offset__")) {
         } else {
             this.setOffset(head.getInt("__offset__"));
@@ -332,13 +332,13 @@ public class BuildQuery implements IHandle {
         if (foot == null) {
             return ds;
         }
-        foot.setField("__finish__", ds.getFetchFinish());
+        foot.setField("__finish__", ds.isFetchFinish());
         return ds;
     }
 
     @Deprecated
-    public SqlQuery openReadonly(Record head, Record foot) {
-        SqlQuery ds = getDataSet();
+    public MysqlQuery openReadonly(Record head, Record foot) {
+        MysqlQuery ds = getDataSet();
         if (head.exists("__offset__")) {
             this.setOffset(head.getInt("__offset__"));
         }
@@ -346,7 +346,7 @@ public class BuildQuery implements IHandle {
         ds.add(this.getSelectCommand());
         ds.openReadonly();
         if (foot != null) {
-            foot.setField("__finish__", ds.getFetchFinish());
+            foot.setField("__finish__", ds.isFetchFinish());
         }
         return ds;
     }

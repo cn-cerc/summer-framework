@@ -1,4 +1,4 @@
-package cn.cerc.db.mysql;
+package cn.cerc.db.core;
 
 import java.io.Serializable;
 
@@ -22,7 +22,7 @@ public class BigdataException extends RuntimeException implements Serializable {
     }
 
     public static void check(DataSet dataset, int rows) {
-        if (rows > (MAX_RECORDS + 1)) {
+        if ((MAX_RECORDS > -1) && (rows > (MAX_RECORDS + 1))) {
             throw new BigdataException(dataset, rows);
         }
     }

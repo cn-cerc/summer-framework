@@ -10,7 +10,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.RecordUtils;
 import cn.cerc.db.core.Handle;
-import cn.cerc.db.mysql.SqlQuery;
+import cn.cerc.db.mysql.MysqlQuery;
 
 public class DaoUtil {
     // 将obj的数据，复制到record中
@@ -51,7 +51,7 @@ public class DaoUtil {
         sb.append("public class " + className + "{").append("\r\n");
         sb.append("\r\n");
 
-        SqlQuery ds = new SqlQuery(new Handle(session));
+        MysqlQuery ds = new MysqlQuery(new Handle(session));
         ds.add("select * from " + tableName);
         ds.getSqlText().setMaximum(1);
         ds.open();

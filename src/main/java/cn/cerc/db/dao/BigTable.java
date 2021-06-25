@@ -23,7 +23,7 @@ import cn.cerc.core.ISession;
 import cn.cerc.core.SqlText;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.mysql.SqlClient;
+import cn.cerc.db.mysql.MysqlClient;
 import cn.cerc.db.mysql.UpdateMode;
 import cn.cerc.db.redis.JedisFactory;
 import redis.clients.jedis.Jedis;
@@ -171,7 +171,7 @@ public abstract class BigTable<T extends BigRecord> implements IHandle {
 
     private int loadRecords(String sqlText) {
         int total = 0;
-        try (SqlClient client = this.getMysql().getClient()) {
+        try (MysqlClient client = this.getMysql().getClient()) {
             try (Statement stat = client.createStatement()) {
                 log.debug(sqlText.replaceAll("\r\n", " "));
                 stat.execute(sqlText.replace("\\", "\\\\"));
@@ -209,7 +209,7 @@ public abstract class BigTable<T extends BigRecord> implements IHandle {
 
     public void saveInsert(T record, boolean saveToDatabase) {
         if (saveToDatabase) {
-            try (SqlClient client = this.getMysql().getClient()) {
+            try (MysqlClient client = this.getMysql().getClient()) {
                 BigInsertSql.exec(client.getConnection(), record, false);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -287,7 +287,7 @@ public abstract class BigTable<T extends BigRecord> implements IHandle {
             throw new RuntimeException("tableName is null");
         }
 
-        try (SqlClient client = this.getMysql().getClient()) {
+        try (MysqlClient client = this.getMysql().getClient()) {
             // opera.setPreview(true);
             int total = 0;
             // update

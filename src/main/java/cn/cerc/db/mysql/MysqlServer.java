@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mchange.v2.resourcepool.TimeoutException;
 
-import cn.cerc.core.IConnection;
+import cn.cerc.db.core.SqlServer;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public abstract class MysqlServer implements IConnection, AutoCloseable {
+public abstract class MysqlServer implements SqlServer, AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(MysqlServer.class);
     // 标记栏位，为兼容历史delphi写法
     private int tag;
@@ -26,20 +26,22 @@ public abstract class MysqlServer implements IConnection, AutoCloseable {
     public abstract ConnectionCertificate createConnection();
 
     public abstract String getServer();
-    
-    public abstract String getDatabase();
-    
-    @Override
-    public abstract SqlClient getClient();
 
-    public final void execute(String sql) {
+    public abstract String getDatabase();
+
+    @Override
+    public abstract MysqlClient getClient();
+
+    @Override
+    public final boolean execute(String sql) {
         log.debug(sql);
-        try (SqlClient client = getClient()) {
+        try (MysqlClient client = getClient()) {
             try (Statement st = client.createStatement()) {
                 st.execute(sql);
+                return true;
             } catch (SQLException e) {
                 log.error("error sql: " + sql);
-                throw new RuntimeException(e.getMessage());
+                return false;
             }
         }
     }

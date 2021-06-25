@@ -5,7 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import cn.cerc.core.RecordUtils;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.MysqlQuery;
+import cn.cerc.db.mysql.MysqlQuery;
 
 @SuppressWarnings("serial")
 public class DaoQuery<T> extends MysqlQuery {

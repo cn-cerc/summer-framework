@@ -37,7 +37,7 @@ public class NasQuery extends DataSet implements IHandle {
         try {
             this.fileName = this.getSqlText().getText().substring(this.getSqlText().getText().indexOf("select") + 6,
                     this.getSqlText().getText().indexOf("from")).trim();
-            this.filePath = getOperator().findTableName(this.getSqlText().getText());
+            this.filePath = SqlText.findTableName(this.getSqlText().getText());
         } catch (Exception e) {
             throw new RuntimeException("command suggest: select fileName from filePath");
         }

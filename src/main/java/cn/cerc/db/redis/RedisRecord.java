@@ -1,4 +1,4 @@
-package cn.cerc.db.cache;
+package cn.cerc.db.redis;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,8 +11,8 @@ import cn.cerc.core.Record;
 import cn.cerc.core.TDate;
 import cn.cerc.core.TDateTime;
 
-public class CacheQuery implements IRecord {
-    private static final Logger log = LoggerFactory.getLogger(CacheQuery.class);
+public class RedisRecord implements IRecord {
+    private static final Logger log = LoggerFactory.getLogger(RedisRecord.class);
 
     private String key;
     private boolean existsData = false;
@@ -23,6 +23,28 @@ public class CacheQuery implements IRecord {
 
     // 缓存对象
     private boolean connected;
+
+
+    public RedisRecord() {
+        super();
+    }
+
+    public RedisRecord(Class<?> clazz) {
+        super();
+        this.setKey(clazz.getName());
+    }
+
+    public RedisRecord(Object... keys) {
+        super();
+        StringBuffer str = new StringBuffer();
+        for (int i = 0; i < keys.length; i++) {
+            if (i > 0) {
+                str.append(".");
+            }
+            str.append(keys[i]);
+        }
+        setKey(str.toString());
+    }
 
     public final void post() {
         if (this.modified) {
@@ -48,7 +70,7 @@ public class CacheQuery implements IRecord {
         return key;
     }
 
-    public CacheQuery setKey(String key) {
+    public RedisRecord setKey(String key) {
         if (this.key != null) {
             throw new RuntimeException("[CacheQuery] param init error");
         }

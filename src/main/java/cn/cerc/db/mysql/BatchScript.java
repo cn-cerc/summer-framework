@@ -79,7 +79,7 @@ public class BatchScript implements IHandle {
         for (String item : tmp) {
             if (!"".equals(item.trim())) {
                 log.debug(item.trim() + ";");
-                SqlQuery ds = new SqlQuery(this);
+                MysqlQuery ds = new MysqlQuery(this);
                 ds.add(item.trim());
                 ds.open();
                 if (ds.eof()) {

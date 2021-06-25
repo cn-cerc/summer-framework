@@ -1,33 +1,29 @@
-package cn.cerc.db.mssql;
+package cn.cerc.db.mysql;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.core.ClassResource;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
-import cn.cerc.core.Utils;
-import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.SqlOperator;
-import cn.cerc.db.mysql.BuildStatement;
-import cn.cerc.db.mysql.UpdateMode;
 
-public class MssqlOperator extends SqlOperator {
-    private static final ClassResource res = new ClassResource(MssqlOperator.class, SummerDB.ID);
-    private static final Logger log = LoggerFactory.getLogger(MssqlOperator.class);
-
+public class MysqlOperator extends SqlOperator {
+    private static final Logger log = LoggerFactory.getLogger(MysqlOperator.class);
     private String lastCommand;
     private final IHandle handle;
 
-    public MssqlOperator(IHandle handle) {
+    public MysqlOperator(IHandle handle) {
         super();
-        this.setUpdateKey("UpdateKey_");
+        this.setUpdateKey("UID_");
         this.handle = handle;
     }
 
@@ -37,16 +33,10 @@ public class MssqlOperator extends SqlOperator {
     }
 
     @Deprecated
-    public boolean insert(String tableName, String primaryKey, Record record) {
-        this.setTableName(tableName);
-        this.setPrimaryKey(primaryKey);
-        return this.insert(record);
-    }
-
-    @Deprecated
     public boolean insert(Record record) {
-        MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return insert(conn.getClient(), record);
+        try (MysqlClient client = handle.getMysql().getClient()) {
+            return insert(client.getConnection(), record);
+        }
     }
 
     @Override
@@ -57,10 +47,6 @@ public class MssqlOperator extends SqlOperator {
         try (BuildStatement bs = new BuildStatement(connection)) {
             if (searchKeys.size() == 0) {
                 initPrimaryKeys(connection, record);
-            }
-
-            if ("".equals(record.getString(this.getUpdateKey()))) {
-                record.setField(this.getUpdateKey(), Utils.newGuid());
             }
 
             bs.append("insert into ").append(getTableName()).append(" (");
@@ -90,7 +76,6 @@ public class MssqlOperator extends SqlOperator {
 
             PreparedStatement ps = bs.build();
             lastCommand = bs.getCommand();
-
             if (isDebug()) {
                 log.info(lastCommand);
                 return false;
@@ -100,11 +85,16 @@ public class MssqlOperator extends SqlOperator {
 
             int result = ps.executeUpdate();
 
-//            if (searchKeys.contains(updateKey)) {
-//                BigInteger uidvalue = findAutoUid(conn);
-//                log.debug("自增列uid value：" + uidvalue);
-//                record.setField(updateKey, uidvalue);
-//            }
+            if (searchKeys.contains(getUpdateKey())) {
+                BigInteger uidvalue = findAutoUid(connection);
+                log.debug("自增列uid value：" + uidvalue);
+
+                if (uidvalue.intValue() <= Integer.MAX_VALUE) {
+                    record.setField(getUpdateKey(), uidvalue.intValue());
+                } else {
+                    record.setField(getUpdateKey(), uidvalue);
+                }
+            }
 
             return result > 0;
         } catch (SQLException e) {
@@ -116,8 +106,9 @@ public class MssqlOperator extends SqlOperator {
 
     @Deprecated
     public boolean update(Record record) {
-        MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return update(conn.getClient(), record);
+        try (MysqlClient client = handle.getMysql().getClient()) {
+            return update(client.getConnection(), record);
+        }
     }
 
     @Override
@@ -199,7 +190,7 @@ public class MssqlOperator extends SqlOperator {
 
             if (ps.executeUpdate() != 1) {
                 log.error(lastCommand);
-                throw new RuntimeException(res.getString(1, "当前记录已被其它用户修改或不存在，更新失败"));
+                throw new RuntimeException("当前记录已被其它用户修改或不存在，更新失败");
             } else {
                 log.debug(lastCommand);
                 return true;
@@ -213,8 +204,9 @@ public class MssqlOperator extends SqlOperator {
 
     @Deprecated
     public boolean delete(Record record) {
-        MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return delete(conn.getClient(), record);
+        try (MysqlClient client = handle.getMysql().getClient()) {
+            return delete(client.getConnection(), record);
+        }
     }
 
     @Override
@@ -270,13 +262,87 @@ public class MssqlOperator extends SqlOperator {
             }
         }
         if (searchKeys.size() == 0) {
-            throw new RuntimeException("the primary keys can not be found");
+            String[] pks = getKeyByDB(conn, getTableName()).split(";");
+            if (pks.length == 0) {
+                throw new RuntimeException("获取不到主键PK");
+            }
+            for (String pk : pks) {
+                if (getUpdateKey().equalsIgnoreCase(pk)) {
+                    if (!getUpdateKey().equals(pk)) {
+                        throw new RuntimeException(String.format("%s <> %s", getUpdateKey(), pk));
+                    }
+                    searchKeys.add(pk);
+                    break;
+                }
+            }
+        }
+    }
+
+    private BigInteger findAutoUid(Connection conn) {
+        BigInteger result = null;
+        String sql = "SELECT LAST_INSERT_ID() ";
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                Object obj = rs.getObject(1);
+                if (obj instanceof BigInteger) {
+                    result = (BigInteger) obj;
+                } else {
+                    result = BigInteger.valueOf(rs.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage());
+            }
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+        if (result == null) {
+            throw new RuntimeException("未获取UID");
+        }
+        return result;
+    }
+
+    private String getKeyByDB(Connection conn, String tableName) throws SQLException {
+        StringBuffer result = new StringBuffer();
+        try (BuildStatement bs = new BuildStatement(conn)) {
+            bs.append("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS ");
+            bs.append("where table_name= ? AND COLUMN_KEY= 'PRI' ", tableName);
+            PreparedStatement ps = bs.build();
+            log.debug(ps.toString().split(":")[1].trim());
+            ResultSet rs = ps.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                i++;
+                if (i > 1) {
+                    result.append(";");
+                }
+                result.append(rs.getString("COLUMN_NAME"));
+            }
+            return result.toString();
         }
     }
 
     public String getLastCommand() {
         return lastCommand;
     }
-
 
 }

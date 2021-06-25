@@ -16,21 +16,20 @@ import com.mongodb.client.MongoCollection;
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetState;
-import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.mysql.SqlOperator;
+import cn.cerc.db.core.NosqlOperator;
 
 public class MongoQuery extends DataSet implements IHandle {
     private static final long serialVersionUID = -1262005194419604476L;
     private static final ClassResource res = new ClassResource(MongoQuery.class, SummerDB.ID);
     private MongoDB connection = null;
     // 数据库保存操作执行对象
-    private IDataOperator operator;
+    private NosqlOperator operator;
     private ISession session;
     private boolean active;
     private final SqlText sqlText = new SqlText();
@@ -42,7 +41,7 @@ public class MongoQuery extends DataSet implements IHandle {
     }
 
     public MongoQuery open() {
-        String table = SqlOperator.findTableName(this.getSqlText().getText());
+        String table = SqlText.findTableName(this.getSqlText().getText());
         // 查找业务ID对应的数据
         MongoCollection<Document> coll = connection.getClient().getCollection(table);
         // 增加查询条件
@@ -205,10 +204,10 @@ public class MongoQuery extends DataSet implements IHandle {
         }
     }
 
-    private IDataOperator getDefaultOperator() {
+    private NosqlOperator getDefaultOperator() {
         if (operator == null) {
             MongoOperator obj = new MongoOperator(this);
-            obj.setTableName(SqlOperator.findTableName(this.getSqlText().getText()));
+            obj.setTableName(SqlText.findTableName(this.getSqlText().getText()));
             operator = obj;
         }
         return operator;
@@ -224,11 +223,11 @@ public class MongoQuery extends DataSet implements IHandle {
         getDefaultOperator().delete(record);
     }
 
-    public IDataOperator getOperator() {
+    public NosqlOperator getOperator() {
         return operator;
     }
 
-    public void setOperator(IDataOperator operator) {
+    public void setOperator(NosqlOperator operator) {
         this.operator = operator;
     }
 

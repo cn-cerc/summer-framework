@@ -1,6 +1,5 @@
-package cn.cerc.db.cache;
+package cn.cerc.db.redis;
 
-import cn.cerc.db.redis.JedisFactory;
 import redis.clients.jedis.Jedis;
 
 public class Redis {

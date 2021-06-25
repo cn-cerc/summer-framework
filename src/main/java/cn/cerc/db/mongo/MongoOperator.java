@@ -10,13 +10,13 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
-import cn.cerc.core.IDataOperator;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.TDateTime;
 import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.NosqlOperator;
 
-public class MongoOperator implements IDataOperator {
+public class MongoOperator implements NosqlOperator {
     private String tableName;
     private MongoDB connection;
 

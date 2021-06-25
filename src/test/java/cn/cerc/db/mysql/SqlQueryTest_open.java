@@ -8,13 +8,13 @@ import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.StubSession;
 
 public class SqlQueryTest_open implements IHandle {
-    private SqlQuery ds;
+    private MysqlQuery ds;
     private ISession session;
 
     @Before
     public void setUp() {
         session = new StubSession();
-        ds = new SqlQuery(this);
+        ds = new MysqlQuery(this);
         ds.getSqlText().setMaximum(1);
         ds.add("select CorpNo_,CWCode_,PartCode_ from TranB1B where CorpNo_='%s'", "911001");
     }

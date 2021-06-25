@@ -1,35 +1,12 @@
 package cn.cerc.db.queue;
 
 import cn.cerc.core.ClassResource;
-import cn.cerc.core.IDataOperator;
 import cn.cerc.core.Record;
 import cn.cerc.db.SummerDB;
+import cn.cerc.db.core.NosqlOperator;
 
-public class QueueOperator implements IDataOperator {
+public class QueueOperator implements NosqlOperator {
     private static final ClassResource res = new ClassResource(QueueOperator.class, SummerDB.ID);
-
-    // 根据 sql 获取数据库表名
-    public String findTableName(String sql) {
-        String result = null;
-        String[] items = sql.split("[ \r\n]");
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].toLowerCase().contains("from")) {
-                // 如果取到form后 下一个记录为数据库表名
-                while (items[i + 1] == null || "".equals(items[i + 1].trim())) {
-                    // 防止取到空值
-                    i++;
-                }
-                result = items[++i]; // 获取数据库表名
-                break;
-            }
-        }
-
-        if (result == null) {
-            throw new RuntimeException("sql command error");
-        }
-
-        return result;
-    }
 
     @Override
     public boolean insert(Record record) {

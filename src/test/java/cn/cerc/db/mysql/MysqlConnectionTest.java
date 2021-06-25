@@ -12,7 +12,7 @@ public class MysqlConnectionTest {
             public void run() {
                 IHandle handle = new Handle(new StubSession());
                 try (Transaction tx = new Transaction(handle)) {
-                    SqlQuery ds = new SqlQuery(handle);
+                    MysqlQuery ds = new MysqlQuery(handle);
                     ds.add("select * from sql_test");
                     ds.open();
 //                    while (ds.fetch()) {
