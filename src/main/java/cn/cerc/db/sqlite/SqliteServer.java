@@ -20,10 +20,12 @@ public class SqliteServer implements SqlServer {
     private static final Logger log = LoggerFactory.getLogger(SqliteServer.class);
     private List<String> tables;
     private String database;
+    private String path;
 
     public SqliteServer() {
         super();
         this.database = config.getProperty("sqlite.database", null);
+        this.path = System.getProperty("user.home") + System.getProperty("file.separator");
     }
 
     public SqliteServer(String database) {
@@ -36,7 +38,7 @@ public class SqliteServer implements SqlServer {
             Class.forName("org.sqlite.JDBC");
             if (Utils.isEmpty(this.database))
                 throw new RuntimeException("sqlite.database is empty");
-            return DriverManager.getConnection("jdbc:sqlite:" + this.database);
+            return DriverManager.getConnection("jdbc:sqlite:" + this.path + this.database);
         } catch (ClassNotFoundException | SQLException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e.getMessage());
@@ -146,6 +148,10 @@ public class SqliteServer implements SqlServer {
         query.open();
         while (query.fetch())
             System.out.println(query.getCurrent());
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public static void main(String[] args) {
