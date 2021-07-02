@@ -239,13 +239,4 @@ public abstract class SqlQuery extends DataSet {
 
     protected abstract SqlOperator getDefaultOperator();
 
-    @Override
-    public String toString() {
-        StringBuffer sl = new StringBuffer();
-        sl.append(String.format("[%s]%n", this.getClass().getName()));
-        sl.append(String.format("CommandText:%s%n", this.getSqlText().getText()));
-        sl.append(String.format("RecordCount:%d%n", this.size()));
-        sl.append(String.format("RecNo:%d%n", this.getRecNo()));
-        return sl.toString();
-    }
 }
