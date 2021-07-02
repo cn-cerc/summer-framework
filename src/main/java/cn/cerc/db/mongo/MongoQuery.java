@@ -15,7 +15,7 @@ import com.mongodb.client.MongoCollection;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.core.DataSetState;
+import cn.cerc.core.RecordState;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
@@ -65,7 +65,7 @@ public class MongoQuery extends DataSet implements IHandle {
                     record.setField(field, doc.get(field));
                 }
             }
-            record.setState(DataSetState.dsNone);
+            record.setState(RecordState.dsNone);
         }
         this.first();
         this.active = true;
@@ -193,11 +193,11 @@ public class MongoQuery extends DataSet implements IHandle {
     @Override
     public void post() {
         Record record = this.getCurrent();
-        if (record.getState() == DataSetState.dsInsert) {
+        if (record.getState() == RecordState.dsInsert) {
             beforePost();
             getDefaultOperator().insert(record);
             super.post();
-        } else if (record.getState() == DataSetState.dsEdit) {
+        } else if (record.getState() == RecordState.dsEdit) {
             beforePost();
             getDefaultOperator().update(record);
             super.post();
@@ -217,7 +217,7 @@ public class MongoQuery extends DataSet implements IHandle {
     public void delete() {
         Record record = this.getCurrent();
         super.delete();
-        if (record.getState() == DataSetState.dsInsert) {
+        if (record.getState() == RecordState.dsInsert) {
             return;
         }
         getDefaultOperator().delete(record);
@@ -248,7 +248,7 @@ public class MongoQuery extends DataSet implements IHandle {
             for (String key : item.keySet()) {
                 record.setField(key, item.get(key));
             }
-            record.setState(DataSetState.dsNone);
+            record.setState(RecordState.dsNone);
         }
         return dataSet;
     }

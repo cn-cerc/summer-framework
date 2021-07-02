@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
-import cn.cerc.core.DataSetState;
+import cn.cerc.core.RecordState;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
@@ -77,7 +77,7 @@ public abstract class SqlQuery extends DataSet {
                     String fn = rs.getMetaData().getColumnLabel(i);
                     record.setField(fn, rs.getObject(fn));
                 }
-                record.setState(DataSetState.dsNone);
+                record.setState(RecordState.dsNone);
                 this.append(record);
             }
             BigdataException.check(this, this.size());
@@ -90,7 +90,7 @@ public abstract class SqlQuery extends DataSet {
     public final void delete() {
         Record record = this.getCurrent();
         super.delete();
-        if (record.getState() == DataSetState.dsInsert) {
+        if (record.getState() == RecordState.dsInsert) {
             return;
         }
         if (this.isBatchSave()) {
@@ -111,7 +111,7 @@ public abstract class SqlQuery extends DataSet {
             return;
         }
         Record record = this.getCurrent();
-        if (record.getState() == DataSetState.dsInsert) {
+        if (record.getState() == RecordState.dsInsert) {
             beforePost();
             try (ConnectionClient client = getConnectionClient()) {
                 getOperator().insert(client.getConnection(), record);
@@ -120,7 +120,7 @@ public abstract class SqlQuery extends DataSet {
                 throw new RuntimeException(e.getMessage());
             }
             super.post();
-        } else if (record.getState() == DataSetState.dsEdit) {
+        } else if (record.getState() == RecordState.dsEdit) {
             beforePost();
             try (ConnectionClient client = getConnectionClient()) {
                 getOperator().update(client.getConnection(), record);

@@ -7,7 +7,7 @@ import java.sql.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.core.DataSetState;
+import cn.cerc.core.RecordState;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.db.core.ConnectionClient;
@@ -87,11 +87,11 @@ public class MysqlQuery extends SqlQuery implements IHandle {
             // 再执行增加、修改
             this.first();
             while (this.fetch()) {
-                if (this.getState().equals(DataSetState.dsInsert)) {
+                if (this.getCurrent().getState().equals(RecordState.dsInsert)) {
                     beforePost();
                     operator.insert(client.getConnection(), this.getCurrent());
                     super.post();
-                } else if (this.getState().equals(DataSetState.dsEdit)) {
+                } else if (this.getCurrent().getState().equals(RecordState.dsEdit)) {
                     beforePost();
                     operator.update(client.getConnection(), this.getCurrent());
                     super.post();

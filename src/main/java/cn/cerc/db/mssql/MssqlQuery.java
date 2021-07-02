@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
-import cn.cerc.core.DataSetState;
+import cn.cerc.core.RecordState;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
@@ -123,7 +123,7 @@ public class MssqlQuery extends DataSet implements IHandle {
                     String fn = rs.getMetaData().getColumnLabel(i);
                     record.setField(fn, rs.getObject(fn));
                 }
-                record.setState(DataSetState.dsNone);
+                record.setState(RecordState.dsNone);
                 this.append(record);
             }
         } finally {
@@ -135,7 +135,7 @@ public class MssqlQuery extends DataSet implements IHandle {
     public void delete() {
         Record record = this.getCurrent();
         super.delete();
-        if (record.getState() == DataSetState.dsInsert) {
+        if (record.getState() == RecordState.dsInsert) {
             return;
         }
         if (this.isBatchSave()) {
@@ -151,11 +151,11 @@ public class MssqlQuery extends DataSet implements IHandle {
             return;
         }
         Record record = this.getCurrent();
-        if (record.getState() == DataSetState.dsInsert) {
+        if (record.getState() == RecordState.dsInsert) {
             beforePost();
             insertStorage(record);
             super.post();
-        } else if (record.getState() == DataSetState.dsEdit) {
+        } else if (record.getState() == RecordState.dsEdit) {
             beforePost();
             updateStorage(record);
             super.post();
@@ -197,11 +197,11 @@ public class MssqlQuery extends DataSet implements IHandle {
         // 再执行增加、修改
         this.first();
         while (this.fetch()) {
-            if (this.getState().equals(DataSetState.dsInsert)) {
+            if (this.getCurrent().getState().equals(RecordState.dsInsert)) {
                 beforePost();
                 operator.insert(client.getClient(), this.getCurrent());
                 super.post();
-            } else if (this.getState().equals(DataSetState.dsEdit)) {
+            } else if (this.getCurrent().getState().equals(RecordState.dsEdit)) {
                 beforePost();
                 operator.update(client.getClient(), this.getCurrent());
                 super.post();
