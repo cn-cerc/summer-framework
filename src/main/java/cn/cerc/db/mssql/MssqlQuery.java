@@ -263,17 +263,6 @@ public class MssqlQuery extends DataSet implements IHandle {
         return fetchFinish;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder build = new StringBuilder();
-        build.append(String.format("[%s]%n", this.getClass().getName()));
-        build.append(String.format("CommandText:%s%n", this.getSqlText().getText()));
-        build.append(String.format("RecordCount:%d%n", this.size()));
-        build.append(String.format("RecNo:%d%n", this.getRecNo()));
-        log.info("mssql {}", build.toString());
-        return build.toString();
-    }
-
     public MssqlQuery add(String sql) {
         sqlText.add(sql);
         return this;
