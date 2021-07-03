@@ -83,4 +83,9 @@ public class StubSession implements ISession {
         }
     }
 
+    @Override
+    public void loadToken(String token) {
+        throw new RuntimeException("not support loadToken");
+    }
+
 }
