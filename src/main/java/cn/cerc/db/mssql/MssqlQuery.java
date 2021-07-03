@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
-import cn.cerc.core.RecordState;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
+import cn.cerc.core.RecordState;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.core.BigdataException;
 import cn.cerc.db.core.IHandle;
@@ -29,6 +29,8 @@ public class MssqlQuery extends DataSet implements IHandle {
     private boolean active;
     // 若数据有取完，则为true，否则为false
     private boolean fetchFinish;
+    // 在变更时，是否需要同步保存到数据库中
+    private boolean storage;
     // 数据库保存操作执行对象
     private SqlOperator operator;
     // 仅当batchSave为true时，delList才有记录存在
@@ -56,38 +58,39 @@ public class MssqlQuery extends DataSet implements IHandle {
         super.close();
     }
 
-    public MssqlQuery open() {
-        if (client == null) {
+    public final MssqlQuery open() {
+        this.storage = true;
+        open(false);
+        return this;
+    }
+
+    public final MssqlQuery openReadonly() {
+        this.storage = false;
+        open(true);
+        return this;
+    }
+
+    public void open(boolean slaveServer) {
+        if (client == null)
             throw new RuntimeException("MssqlConnection is null");
-        }
 
+        this.fetchFinish = true;
         String sql = getSqlText().getCommand();
-        Statement st = null;
         try {
-            this.fetchFinish = true;
-            st = this.getStatement();
-            log.debug(sql.replaceAll("\r\n", " "));
-            sql = sql.replace("\\", "\\\\");
+            try (Statement st = this.getStatement()) {
+                log.debug(sql.replaceAll("\r\n", " "));
+                sql = sql.replace("\\", "\\\\");
 
-            try (ResultSet rs = st.executeQuery(sql)) {
-                // 取出所有数据
-                append(rs);
-                this.first();
-                this.setActive(true);
-                return this;
+                try (ResultSet rs = st.executeQuery(sql)) {
+                    // 取出所有数据
+                    append(rs);
+                    this.first();
+                    this.setActive(true);
+                }
             }
         } catch (SQLException e) {
             log.error(sql);
             throw new RuntimeException(e.getMessage());
-        } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                st = null;
-            }
         }
     }
 
@@ -147,9 +150,8 @@ public class MssqlQuery extends DataSet implements IHandle {
 
     @Override
     public void post() {
-        if (this.isBatchSave()) {
+        if (this.isBatchSave()) 
             return;
-        }
         Record record = this.getCurrent();
         if (record.getState() == RecordState.dsInsert) {
             beforePost();
@@ -185,28 +187,28 @@ public class MssqlQuery extends DataSet implements IHandle {
     }
 
     public void save() {
-        if (!this.isBatchSave()) {
+        if (!this.isBatchSave())
             throw new RuntimeException("batchSave is false");
-        }
-        SqlOperator operator = getOperator();
-        // 先执行删除
-        for (Record record : delList) {
-            operator.delete(client.getClient(), record);
-        }
-        delList.clear();
-        // 再执行增加、修改
-        this.first();
-        while (this.fetch()) {
-            if (this.getCurrent().getState().equals(RecordState.dsInsert)) {
-                beforePost();
-                operator.insert(client.getClient(), this.getCurrent());
-                super.post();
-            } else if (this.getCurrent().getState().equals(RecordState.dsEdit)) {
-                beforePost();
-                operator.update(client.getClient(), this.getCurrent());
-                super.post();
+        if (this.isStorage()) {
+            SqlOperator operator = getOperator();
+            // 先执行删除
+            for (Record record : delList)
+                operator.delete(client.getClient(), record);
+            // 再执行增加、修改
+            this.first();
+            while (this.fetch()) {
+                if (this.getCurrent().getState().equals(RecordState.dsInsert)) {
+                    beforePost();
+                    operator.insert(client.getClient(), this.getCurrent());
+                    super.post();
+                } else if (this.getCurrent().getState().equals(RecordState.dsEdit)) {
+                    beforePost();
+                    operator.update(client.getClient(), this.getCurrent());
+                    super.post();
+                }
             }
         }
+        delList.clear();
     }
 
     public SqlOperator getOperator() {
@@ -297,18 +299,25 @@ public class MssqlQuery extends DataSet implements IHandle {
     }
 
     private void insertStorage(Record record) {
-        getOperator().insert(client.getClient(), record);
+        if (this.isStorage())
+            getOperator().insert(client.getClient(), record);
     }
 
     private void updateStorage(Record record) {
-        getOperator().update(client.getClient(), record);
+        if (this.isStorage())
+            getOperator().update(client.getClient(), record);
     }
 
     private void deleteStorage(Record record) {
-        getOperator().delete(client.getClient(), record);
+        if (this.isStorage())
+            getOperator().delete(client.getClient(), record);
     }
 
     private SqlOperator getDefaultOperator() {
         return new MssqlOperator(this);
+    }
+
+    public boolean isStorage() {
+        return storage;
     }
 }

@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
-import cn.cerc.core.RecordState;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.Record;
+import cn.cerc.core.RecordState;
 import cn.cerc.core.SqlText;
 
 @SuppressWarnings("serial")
@@ -23,6 +23,8 @@ public abstract class SqlQuery extends DataSet {
     private boolean active = false;
     // 若数据有取完，则为true，否则为false
     private boolean fetchFinish;
+    // 在变更时，是否需要同步保存到数据库中
+    private boolean storage;
     // 使用只读数据源
     protected boolean slaveServer;
     // 仅当batchSave为true时，delList才有记录存在
@@ -35,21 +37,25 @@ public abstract class SqlQuery extends DataSet {
     private SqlText sqlText = new SqlText();
 
     @Override
-    public void close() {
+    public final void close() {
         this.setActive(false);
         this.operator = null;
         super.close();
     }
 
-    public SqlQuery open() {
+    public final SqlQuery open() {
+        this.storage = true;
         open(false);
         return this;
     }
 
-    public SqlQuery openReadonly() {
+    public final SqlQuery openReadonly() {
+        this.storage = false;
         open(true);
         return this;
     }
+
+    protected abstract void open(boolean slaveServer);
 
     protected void append(ResultSet rs) throws SQLException {
         DataSetEvent onAfterAppend = this.getOnAfterAppend();
@@ -96,11 +102,13 @@ public abstract class SqlQuery extends DataSet {
         if (this.isBatchSave()) {
             delList.add(record);
         } else {
-            try (ConnectionClient client = getConnectionClient()) {
-                getOperator().delete(client.getConnection(), record);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                throw new RuntimeException(e.getMessage());
+            if (this.isStorage()) {
+                try (ConnectionClient client = getConnectionClient()) {
+                    getOperator().delete(client.getConnection(), record);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    throw new RuntimeException(e.getMessage());
+                }
             }
         }
     }
@@ -113,20 +121,24 @@ public abstract class SqlQuery extends DataSet {
         Record record = this.getCurrent();
         if (record.getState() == RecordState.dsInsert) {
             beforePost();
-            try (ConnectionClient client = getConnectionClient()) {
-                getOperator().insert(client.getConnection(), record);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                throw new RuntimeException(e.getMessage());
+            if (this.isStorage()) {
+                try (ConnectionClient client = getConnectionClient()) {
+                    getOperator().insert(client.getConnection(), record);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    throw new RuntimeException(e.getMessage());
+                }
             }
             super.post();
         } else if (record.getState() == RecordState.dsEdit) {
             beforePost();
-            try (ConnectionClient client = getConnectionClient()) {
-                getOperator().update(client.getConnection(), record);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                throw new RuntimeException(e.getMessage());
+            if (this.isStorage()) {
+                try (ConnectionClient client = getConnectionClient()) {
+                    getOperator().update(client.getConnection(), record);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    throw new RuntimeException(e.getMessage());
+                }
             }
             super.post();
         }
@@ -223,12 +235,14 @@ public abstract class SqlQuery extends DataSet {
     public final boolean isFetchFinish() {
         return fetchFinish;
     }
+    
+    public final boolean isStorage() {
+        return storage;
+    }
 
     protected final void setFetchFinish(boolean fetchFinish) {
         this.fetchFinish = fetchFinish;
     }
-
-    protected abstract void open(boolean slaveServer);
 
     /**
      * 注意：必须使用try finally结构！！！
