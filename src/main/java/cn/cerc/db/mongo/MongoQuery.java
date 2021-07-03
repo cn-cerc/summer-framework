@@ -15,9 +15,9 @@ import com.mongodb.client.MongoCollection;
 
 import cn.cerc.core.ClassResource;
 import cn.cerc.core.DataSet;
-import cn.cerc.core.RecordState;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
+import cn.cerc.core.RecordState;
 import cn.cerc.core.SqlText;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
@@ -191,39 +191,26 @@ public class MongoQuery extends DataSet implements IHandle {
     }
 
     @Override
-    public void post() {
-        Record record = this.getCurrent();
-        if (record.getState() == RecordState.dsInsert) {
-            beforePost();
-            getDefaultOperator().insert(record);
-            super.post();
-        } else if (record.getState() == RecordState.dsEdit) {
-            beforePost();
-            getDefaultOperator().update(record);
-            super.post();
-        }
+    protected final void insertStorage(Record record) {
+        getOperator().insert(record);
     }
 
-    private NosqlOperator getDefaultOperator() {
+    @Override
+    protected final void updateStorage(Record record) {
+        getOperator().update(record);
+    }
+
+    @Override
+    protected final void deleteStorage(Record record) {
+        getOperator().delete(record);
+    }
+
+    private NosqlOperator getOperator() {
         if (operator == null) {
             MongoOperator obj = new MongoOperator(this);
             obj.setTableName(SqlText.findTableName(this.getSqlText().getText()));
             operator = obj;
         }
-        return operator;
-    }
-
-    @Override
-    public void delete() {
-        Record record = this.getCurrent();
-        super.delete();
-        if (record.getState() == RecordState.dsInsert) {
-            return;
-        }
-        getDefaultOperator().delete(record);
-    }
-
-    public NosqlOperator getOperator() {
         return operator;
     }
 

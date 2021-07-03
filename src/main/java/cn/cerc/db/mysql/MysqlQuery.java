@@ -74,27 +74,25 @@ public class MysqlQuery extends SqlQuery implements IHandle {
     }
 
     public final void save() {
-        if (!this.isBatchSave()) {
+        if (!this.isBatchSave()) 
             throw new RuntimeException("batchSave is false");
-        }
         if (this.isStorage()) {
-            SqlOperator operator = getOperator();
             try (MysqlClient client = getMysql().getClient()) {
+                SqlOperator operator = getOperator();
                 // 先执行删除
-                for (Record record : delList) {
+                for (Record record : delList)
                     operator.delete(client.getConnection(), record);
-                }
                 // 再执行增加、修改
                 this.first();
                 while (this.fetch()) {
                     if (this.getCurrent().getState().equals(RecordState.dsInsert)) {
                         beforePost();
                         operator.insert(client.getConnection(), this.getCurrent());
-                        super.post();
+                        afterPost();
                     } else if (this.getCurrent().getState().equals(RecordState.dsEdit)) {
                         beforePost();
                         operator.update(client.getConnection(), this.getCurrent());
-                        super.post();
+                        afterPost();
                     }
                 }
             }

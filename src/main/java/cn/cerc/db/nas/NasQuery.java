@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.ISession;
+import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import cn.cerc.core.Utils;
 import cn.cerc.db.core.IHandle;
@@ -59,7 +60,7 @@ public class NasQuery extends DataSet implements IHandle {
 
     // 删除文件或目录
     @Override
-    public void delete() {
+    protected final void deleteStorage(Record record) {
         File file = FileUtils.getFile(this.filePath, this.fileName);
         FileUtils.deleteQuietly(file);
         log.info("文件:" + file.getPath() + "删除成功");

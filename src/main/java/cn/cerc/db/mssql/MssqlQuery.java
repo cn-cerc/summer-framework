@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,15 +27,8 @@ public class MssqlQuery extends DataSet implements IHandle {
     private boolean active;
     // 若数据有取完，则为true，否则为false
     private boolean fetchFinish;
-    // 在变更时，是否需要同步保存到数据库中
-    private boolean storage;
-    // 数据库保存操作执行对象
     private SqlOperator operator;
-    // 仅当batchSave为true时，delList才有记录存在
-    private List<Record> delList = new ArrayList<>();
     private ISession session;
-    // 批次保存模式，默认为post与delete立即保存
-    private boolean batchSave = false;
     private SqlText sqlText = new SqlText();
 
     public MssqlQuery() {
@@ -59,13 +50,13 @@ public class MssqlQuery extends DataSet implements IHandle {
     }
 
     public final MssqlQuery open() {
-        this.storage = true;
+        this.setStorage(true);
         open(false);
         return this;
     }
 
     public final MssqlQuery openReadonly() {
-        this.storage = false;
+        this.setStorage(false);
         open(true);
         return this;
     }
@@ -95,9 +86,9 @@ public class MssqlQuery extends DataSet implements IHandle {
     }
 
     private void append(ResultSet rs) throws SQLException {
-        DataSetEvent onAfterAppend = this.getOnAfterAppend();
+        DataSetEvent afterAppend = this.getAfterAppend();
         try {
-            this.setOnAfterAppend(null);
+            this.onAfterAppend(null);
 
             // 取得字段清单
             ResultSetMetaData meta = rs.getMetaData();
@@ -130,37 +121,7 @@ public class MssqlQuery extends DataSet implements IHandle {
                 this.append(record);
             }
         } finally {
-            this.setOnAfterAppend(onAfterAppend);
-        }
-    }
-
-    @Override
-    public void delete() {
-        Record record = this.getCurrent();
-        super.delete();
-        if (record.getState() == RecordState.dsInsert) {
-            return;
-        }
-        if (this.isBatchSave()) {
-            delList.add(record);
-        } else {
-            deleteStorage(record);
-        }
-    }
-
-    @Override
-    public void post() {
-        if (this.isBatchSave()) 
-            return;
-        Record record = this.getCurrent();
-        if (record.getState() == RecordState.dsInsert) {
-            beforePost();
-            insertStorage(record);
-            super.post();
-        } else if (record.getState() == RecordState.dsEdit) {
-            beforePost();
-            updateStorage(record);
-            super.post();
+            this.onAfterAppend(afterAppend);
         }
     }
 
@@ -186,7 +147,7 @@ public class MssqlQuery extends DataSet implements IHandle {
         return this;
     }
 
-    public void save() {
+    public final void save() {
         if (!this.isBatchSave())
             throw new RuntimeException("batchSave is false");
         if (this.isStorage()) {
@@ -200,11 +161,11 @@ public class MssqlQuery extends DataSet implements IHandle {
                 if (this.getCurrent().getState().equals(RecordState.dsInsert)) {
                     beforePost();
                     operator.insert(client.getClient(), this.getCurrent());
-                    super.post();
+                    afterPost();
                 } else if (this.getCurrent().getState().equals(RecordState.dsEdit)) {
                     beforePost();
                     operator.update(client.getClient(), this.getCurrent());
-                    super.post();
+                    afterPost();
                 }
             }
         }
@@ -224,6 +185,17 @@ public class MssqlQuery extends DataSet implements IHandle {
 
     public void setOperator(MssqlOperator operator) {
         this.operator = operator;
+    }
+
+    // 是否批量保存
+    @Override
+    public final boolean isBatchSave() {
+        return super.isBatchSave();
+    }
+
+    @Override
+    public final void setBatchSave(boolean batchSave) {
+        super.setBatchSave(batchSave);
     }
 
     // 追加相同数据表的其它记录，与已有记录合并
@@ -289,35 +261,23 @@ public class MssqlQuery extends DataSet implements IHandle {
         return sqlText;
     }
 
-    // 是否批量保存
-    public boolean isBatchSave() {
-        return batchSave;
+    @Override
+    protected final void insertStorage(Record record) {
+        getOperator().insert(client.getClient(), record);
     }
 
-    public void setBatchSave(boolean batchSave) {
-        this.batchSave = batchSave;
+    @Override
+    protected final void updateStorage(Record record) {
+        getOperator().update(client.getClient(), record);
     }
 
-    private void insertStorage(Record record) {
-        if (this.isStorage())
-            getOperator().insert(client.getClient(), record);
-    }
-
-    private void updateStorage(Record record) {
-        if (this.isStorage())
-            getOperator().update(client.getClient(), record);
-    }
-
-    private void deleteStorage(Record record) {
-        if (this.isStorage())
-            getOperator().delete(client.getClient(), record);
+    @Override
+    protected final void deleteStorage(Record record) {
+        getOperator().delete(client.getClient(), record);
     }
 
     private SqlOperator getDefaultOperator() {
         return new MssqlOperator(this);
     }
 
-    public boolean isStorage() {
-        return storage;
-    }
 }

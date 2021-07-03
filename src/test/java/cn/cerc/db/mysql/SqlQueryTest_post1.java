@@ -36,7 +36,7 @@ public class SqlQueryTest_post1 implements IHandle {
     public void post() {
         ds.add("select * from Dept where CorpNo_='%s'", "144001");
         ds.open();
-        ds.setOnBeforePost(ds -> {
+        ds.onBeforePost(ds -> {
             System.out.println("before post");
         });
         ds.edit();

@@ -6,9 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.FieldDefs;
@@ -18,21 +15,16 @@ import cn.cerc.core.SqlText;
 
 @SuppressWarnings("serial")
 public abstract class SqlQuery extends DataSet {
-    private static final Logger log = LoggerFactory.getLogger(SqlQuery.class);
     // 数据集是否有打开
     private boolean active = false;
     // 若数据有取完，则为true，否则为false
     private boolean fetchFinish;
-    // 在变更时，是否需要同步保存到数据库中
-    private boolean storage;
     // 使用只读数据源
     protected boolean slaveServer;
     // 仅当batchSave为true时，delList才有记录存在
     protected List<Record> delList = new ArrayList<>();
     // 数据库保存操作执行对象
     private SqlOperator operator;
-    // 批次保存模式，默认为post与delete立即保存
-    private boolean batchSave = false;
     // SqlCommand 指令
     private SqlText sqlText = new SqlText();
 
@@ -44,13 +36,13 @@ public abstract class SqlQuery extends DataSet {
     }
 
     public final SqlQuery open() {
-        this.storage = true;
+        this.setStorage(true);
         open(false);
         return this;
     }
 
     public final SqlQuery openReadonly() {
-        this.storage = false;
+        this.setStorage(false);
         open(true);
         return this;
     }
@@ -58,9 +50,9 @@ public abstract class SqlQuery extends DataSet {
     protected abstract void open(boolean slaveServer);
 
     protected void append(ResultSet rs) throws SQLException {
-        DataSetEvent onAfterAppend = this.getOnAfterAppend();
+        DataSetEvent afterAppend = this.getAfterAppend();
         try {
-            this.setOnAfterAppend(null);
+            this.onAfterAppend(null);
             // 取得字段清单
             ResultSetMetaData meta = rs.getMetaData();
             FieldDefs defs = this.getFieldDefs();
@@ -88,59 +80,28 @@ public abstract class SqlQuery extends DataSet {
             }
             BigdataException.check(this, this.size());
         } finally {
-            this.setOnAfterAppend(onAfterAppend);
+            this.onAfterAppend(afterAppend);
         }
     }
 
     @Override
-    public final void delete() {
-        Record record = this.getCurrent();
-        super.delete();
-        if (record.getState() == RecordState.dsInsert) {
-            return;
+    protected final void insertStorage(Record record) throws Exception {
+        try (ConnectionClient client = getConnectionClient()) {
+            getOperator().insert(client.getConnection(), record);
         }
-        if (this.isBatchSave()) {
-            delList.add(record);
-        } else {
-            if (this.isStorage()) {
-                try (ConnectionClient client = getConnectionClient()) {
-                    getOperator().delete(client.getConnection(), record);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                    throw new RuntimeException(e.getMessage());
-                }
-            }
+    }
+    
+    @Override
+    protected final void updateStorage(Record record) throws Exception {
+        try (ConnectionClient client = getConnectionClient()) {
+            getOperator().update(client.getConnection(), record);
         }
     }
 
     @Override
-    public final void post() {
-        if (this.isBatchSave()) {
-            return;
-        }
-        Record record = this.getCurrent();
-        if (record.getState() == RecordState.dsInsert) {
-            beforePost();
-            if (this.isStorage()) {
-                try (ConnectionClient client = getConnectionClient()) {
-                    getOperator().insert(client.getConnection(), record);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                    throw new RuntimeException(e.getMessage());
-                }
-            }
-            super.post();
-        } else if (record.getState() == RecordState.dsEdit) {
-            beforePost();
-            if (this.isStorage()) {
-                try (ConnectionClient client = getConnectionClient()) {
-                    getOperator().update(client.getConnection(), record);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                    throw new RuntimeException(e.getMessage());
-                }
-            }
-            super.post();
+    protected final void deleteStorage(Record record) throws Exception {
+        try (ConnectionClient client = getConnectionClient()) {
+            getOperator().delete(client.getConnection(), record);
         }
     }
 
@@ -160,12 +121,14 @@ public abstract class SqlQuery extends DataSet {
     }
 
     // 是否批量保存
+    @Override
     public final boolean isBatchSave() {
-        return batchSave;
+        return super.isBatchSave();
     }
 
+    @Override
     public final void setBatchSave(boolean batchSave) {
-        this.batchSave = batchSave;
+        super.setBatchSave(batchSave);
     }
 
     /**
@@ -228,10 +191,6 @@ public abstract class SqlQuery extends DataSet {
 
     public final boolean isFetchFinish() {
         return fetchFinish;
-    }
-    
-    public final boolean isStorage() {
-        return storage;
     }
 
     protected final void setFetchFinish(boolean fetchFinish) {
