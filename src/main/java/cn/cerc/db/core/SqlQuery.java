@@ -196,12 +196,6 @@ public abstract class SqlQuery extends DataSet {
         this.sqlText = sqlText;
     }
 
-    @Deprecated // 请改使用 getSqlText().clear
-    public final SqlQuery emptyCommand() {
-        this.sqlText.clear();
-        return this;
-    }
-
     public final boolean isActive() {
         return active;
     }
