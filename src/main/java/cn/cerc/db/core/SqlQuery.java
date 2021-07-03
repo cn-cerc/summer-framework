@@ -50,9 +50,9 @@ public abstract class SqlQuery extends DataSet {
     protected abstract void open(boolean slaveServer);
 
     protected void append(ResultSet rs) throws SQLException {
-        DataSetEvent afterAppend = this.getAfterAppend();
+        DataSetEvent afterAppend = this.getOnAppend();
         try {
-            this.onAfterAppend(null);
+            this.onAppend(null);
             // 取得字段清单
             ResultSetMetaData meta = rs.getMetaData();
             FieldDefs defs = this.getFieldDefs();
@@ -80,7 +80,7 @@ public abstract class SqlQuery extends DataSet {
             }
             BigdataException.check(this, this.size());
         } finally {
-            this.onAfterAppend(afterAppend);
+            this.onAppend(afterAppend);
         }
     }
 

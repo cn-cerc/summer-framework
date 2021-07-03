@@ -82,25 +82,25 @@ public class MysqlQuery extends SqlQuery implements IHandle {
                 client = getMysql().getClient();
             // 先执行删除
             for (Record record : delList) {
-                beforeDelete(record);
+                doBeforeDelete(record);
                 if (this.isStorage())
                     getOperator().delete(client.getConnection(), record);
-                afterDelete(record);
+                doAfterDelete(record);
             }
             // 再执行增加、修改
             this.first();
             while (this.fetch()) {
                 Record reccord = this.getCurrent();
                 if (reccord.getState().equals(RecordState.dsInsert)) {
-                    beforePost(reccord);
+                    doBeforePost(reccord);
                     if (this.isStorage())
                         getOperator().insert(client.getConnection(), reccord);
-                    afterPost(reccord);
+                    doAfterPost(reccord);
                 } else if (reccord.getState().equals(RecordState.dsEdit)) {
-                    beforePost(reccord);
+                    doBeforePost(reccord);
                     if (this.isStorage())
                         getOperator().update(client.getConnection(), reccord);
-                    afterPost(reccord);
+                    doAfterPost(reccord);
                 }
             }
             delList.clear();

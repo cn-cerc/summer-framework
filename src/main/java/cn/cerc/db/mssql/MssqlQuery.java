@@ -86,9 +86,9 @@ public class MssqlQuery extends DataSet implements IHandle {
     }
 
     private void append(ResultSet rs) throws SQLException {
-        DataSetEvent afterAppend = this.getAfterAppend();
+        DataSetEvent afterAppend = this.getOnAppend();
         try {
-            this.onAfterAppend(null);
+            this.onAppend(null);
 
             // 取得字段清单
             ResultSetMetaData meta = rs.getMetaData();
@@ -121,7 +121,7 @@ public class MssqlQuery extends DataSet implements IHandle {
                 this.append(record);
             }
         } finally {
-            this.onAfterAppend(afterAppend);
+            this.onAppend(afterAppend);
         }
     }
 
@@ -152,25 +152,25 @@ public class MssqlQuery extends DataSet implements IHandle {
             throw new RuntimeException("batchSave is false");
         // 先执行删除
         for (Record record : delList) {
-            beforeDelete(record);
+            doBeforeDelete(record);
             if (this.isStorage())
                 getOperator().delete(client.getClient(), record);
-            afterDelete(record);
+            doAfterDelete(record);
         }
         // 再执行增加、修改
         this.first();
         while (this.fetch()) {
             Record record = this.getCurrent();
             if (record.getState().equals(RecordState.dsInsert)) {
-                beforePost(record);
+                doBeforePost(record);
                 if (this.isStorage())
                     getOperator().insert(client.getClient(), this.getCurrent());
-                afterPost(record);
+                doAfterPost(record);
             } else if (record.getState().equals(RecordState.dsEdit)) {
-                beforePost(record);
+                doBeforePost(record);
                 if (this.isStorage())
                     getOperator().update(client.getClient(), this.getCurrent());
-                afterPost(record);
+                doAfterPost(record);
             }
         }
         delList.clear();
