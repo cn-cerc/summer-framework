@@ -150,23 +150,27 @@ public class MssqlQuery extends DataSet implements IHandle {
     public final void save() {
         if (!this.isBatchSave())
             throw new RuntimeException("batchSave is false");
-        if (this.isStorage()) {
-            SqlOperator operator = getOperator();
-            // 先执行删除
-            for (Record record : delList)
-                operator.delete(client.getClient(), record);
-            // 再执行增加、修改
-            this.first();
-            while (this.fetch()) {
-                if (this.getCurrent().getState().equals(RecordState.dsInsert)) {
-                    beforePost();
-                    operator.insert(client.getClient(), this.getCurrent());
-                    afterPost();
-                } else if (this.getCurrent().getState().equals(RecordState.dsEdit)) {
-                    beforePost();
-                    operator.update(client.getClient(), this.getCurrent());
-                    afterPost();
-                }
+        // 先执行删除
+        for (Record record : delList) {
+            beforeDelete(record);
+            if (this.isStorage())
+                getOperator().delete(client.getClient(), record);
+            afterDelete(record);
+        }
+        // 再执行增加、修改
+        this.first();
+        while (this.fetch()) {
+            Record record = this.getCurrent();
+            if (record.getState().equals(RecordState.dsInsert)) {
+                beforePost(record);
+                if (this.isStorage())
+                    getOperator().insert(client.getClient(), this.getCurrent());
+                afterPost(record);
+            } else if (record.getState().equals(RecordState.dsEdit)) {
+                beforePost(record);
+                if (this.isStorage())
+                    getOperator().update(client.getClient(), this.getCurrent());
+                afterPost(record);
             }
         }
         delList.clear();
