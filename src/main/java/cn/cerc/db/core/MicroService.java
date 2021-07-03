@@ -1,5 +1,7 @@
 package cn.cerc.db.core;
 
+import java.io.IOException;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -67,15 +69,22 @@ public class MicroService extends Curl {
      */
     public boolean post(String serviceCode) {
         String url = getServiceUrl(serviceCode);
-        String text = this.doPost(url);
-        this.response = JsonParser.parseString(text).getAsJsonObject();
-        if (response.has("result")) {
-            this.result = response.get("result").getAsBoolean();
+        this.response = null;
+        try {
+            String text = this.doPost(url);
+            this.response = JsonParser.parseString(text).getAsJsonObject();
+            if (response.has("result")) {
+                this.result = response.get("result").getAsBoolean();
+            }
+            if (response.has("message")) {
+                this.message = response.get("message").getAsString();
+            }
+            return this.result;
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.message = e.getMessage();
+            return false;
         }
-        if (response.has("message")) {
-            this.message = response.get("message").getAsString();
-        }
-        return this.result;
     }
 
     private String getServiceUrl(String serviceCode) {
