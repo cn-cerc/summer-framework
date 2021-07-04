@@ -2,7 +2,6 @@ package cn.cerc.db.mysql;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import cn.cerc.db.core.ConnectionClient;
 
@@ -53,10 +52,6 @@ public class MysqlClient implements ConnectionClient {
             this.connection = item.getConnection();
         }
         return connection;
-    }
-
-    public final Statement createStatement() throws SQLException {
-        return getConnection().createStatement();
     }
 
 }

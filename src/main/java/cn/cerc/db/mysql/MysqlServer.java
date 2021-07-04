@@ -38,7 +38,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
     public final boolean execute(String sql) {
         log.debug(sql);
         try (MysqlClient client = getClient()) {
-            try (Statement st = client.createStatement()) {
+            try (Statement st = client.getConnection().createStatement()) {
                 st.execute(sql);
                 return true;
             } catch (SQLException e) {
@@ -56,7 +56,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
         this.tag = tag;
     }
 
-    public static final ComboPooledDataSource createDataSource(MysqlConfig config) {
+    protected static final ComboPooledDataSource createDataSource(MysqlConfig config) {
         log.info("create pool to: " + config.getHost());
         // 使用线程池创建
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
@@ -85,7 +85,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
         return dataSource;
     }
 
-    public static final Connection getPoolConnection(ComboPooledDataSource dataSource) {
+    protected static final Connection getPoolConnection(ComboPooledDataSource dataSource) {
         Connection result = null;
         try {
             result = dataSource.getConnection();
