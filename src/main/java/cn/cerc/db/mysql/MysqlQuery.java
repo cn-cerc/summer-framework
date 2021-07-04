@@ -32,11 +32,11 @@ public class MysqlQuery extends SqlQuery implements IHandle {
     @Override
     protected void open(boolean slaveServer) {
         this.setSlaveServer(slaveServer);
+        this.setFetchFinish(true);
         String sql = getSqlText().getCommand();
         log.debug(sql.replaceAll("\r\n", " "));
         try (MysqlClient client = getMysqlServer().getClient()) {
             try (Statement st = client.createStatement()) {
-                setFetchFinish(true);
                 try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
                     // 取出所有数据
                     append(rs);

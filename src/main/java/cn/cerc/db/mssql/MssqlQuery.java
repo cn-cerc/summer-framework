@@ -1,35 +1,24 @@
 package cn.cerc.db.mssql;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.cerc.core.DataSet;
-import cn.cerc.core.DataSetEvent;
-import cn.cerc.core.FieldDefs;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.RecordState;
 import cn.cerc.core.SqlText;
-import cn.cerc.db.core.BigdataException;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.SqlOperator;
+import cn.cerc.db.core.SqlQuery;
 
 @SuppressWarnings("serial")
-public class MssqlQuery extends DataSet implements IHandle {
+public class MssqlQuery extends SqlQuery implements IHandle {
     private static final Logger log = LoggerFactory.getLogger(MssqlQuery.class);
-    private MssqlServer client;
-    private boolean active;
-    // 若数据有取完，则为true，否则为false
-    private boolean fetchFinish;
-    private SqlOperator operator;
     private ISession session;
-    private SqlText sqlText = new SqlText();
 
     public MssqlQuery() {
         super();
@@ -38,41 +27,18 @@ public class MssqlQuery extends DataSet implements IHandle {
     public MssqlQuery(IHandle handle) {
         super();
         this.session = handle.getSession();
-        this.client = (MssqlServer) getSession().getProperty(MssqlServer.SessionId);
         this.getSqlText().setServerType(SqlText.SERVERTYPE_MSSQL);
     }
 
     @Override
-    public void close() {
-        setActive(false);
-        this.operator = null;
-        super.close();
-    }
-
-    public final MssqlQuery open() {
-        this.setStorage(true);
-        open(false);
-        return this;
-    }
-
-    public final MssqlQuery openReadonly() {
-        this.setStorage(false);
-        open(true);
-        return this;
-    }
-
-    public void open(boolean slaveServer) {
-        if (client == null)
-            throw new RuntimeException("MssqlConnection is null");
-
-        this.fetchFinish = true;
+    protected void open(boolean slaveServer) {
+        this.setSlaveServer(slaveServer);
+        this.setFetchFinish(true);
         String sql = getSqlText().getCommand();
-        try {
-            try (Statement st = this.getStatement()) {
-                log.debug(sql.replaceAll("\r\n", " "));
-                sql = sql.replace("\\", "\\\\");
-
-                try (ResultSet rs = st.executeQuery(sql)) {
+        log.debug(sql.replaceAll("\r\n", " "));
+        try (MssqlClient client = getConnectionClient()){
+            try (Statement st = client.getConnection().createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
                     // 取出所有数据
                     append(rs);
                     this.first();
@@ -85,121 +51,44 @@ public class MssqlQuery extends DataSet implements IHandle {
         }
     }
 
-    private void append(ResultSet rs) throws SQLException {
-        DataSetEvent afterAppend = this.getOnAppend();
-        try {
-            this.onAppend(null);
-
-            // 取得字段清单
-            ResultSetMetaData meta = rs.getMetaData();
-            FieldDefs defs = this.getFieldDefs();
-            for (int i = 1; i <= meta.getColumnCount(); i++) {
-                String field = meta.getColumnLabel(i);
-                if (!defs.exists(field)) {
-                    defs.add(field);
-                }
-            }
-
-            // 取得所有数据
-            int total = this.size();
-            while (rs.next()) {
-                total++;
-                if (getSqlText().getMaximum() > -1) {
-                    BigdataException.check(this, total - this.size());
-                }
-
-                if (this.getMaximum() > -1 && this.getMaximum() < total) {
-                    this.fetchFinish = false;
-                    break;
-                }
-                Record record = this.newRecord();
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    String fn = rs.getMetaData().getColumnLabel(i);
-                    record.setField(fn, rs.getObject(fn));
-                }
-                record.setState(RecordState.dsNone);
-                this.append(record);
-            }
-        } finally {
-            this.onAppend(afterAppend);
-        }
-    }
-
-    private Statement getStatement() throws SQLException {
-        return this.client.getClient().createStatement();
-    }
-
-    public int getMaximum() {
-        return getSqlText().getMaximum();
-    }
-
-    public MssqlQuery setMaximum(int maximum) {
-        getSqlText().setMaximum(maximum);
-        return this;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    protected MssqlQuery setActive(boolean value) {
-        this.active = value;
-        return this;
-    }
-
     public final void save() {
         if (!this.isBatchSave())
             throw new RuntimeException("batchSave is false");
-        // 先执行删除
-        for (Record record : delList) {
-            doBeforeDelete(record);
+        MssqlClient client = null;
+        try {
             if (this.isStorage())
-                getOperator().delete(client.getClient(), record);
-            doAfterDelete(record);
-        }
-        // 再执行增加、修改
-        this.first();
-        while (this.fetch()) {
-            Record record = this.getCurrent();
-            if (record.getState().equals(RecordState.dsInsert)) {
-                doBeforePost(record);
-                if (this.isStorage())
-                    getOperator().insert(client.getClient(), this.getCurrent());
-                doAfterPost(record);
-            } else if (record.getState().equals(RecordState.dsEdit)) {
-                doBeforePost(record);
-                if (this.isStorage())
-                    getOperator().update(client.getClient(), this.getCurrent());
-                doAfterPost(record);
+                client = getConnectionClient();
+            // 先执行删除
+            for (Record record : delList) {
+                doBeforeDelete(record);
+                if (this.isStorage()) {
+                    getOperator().delete(client.getConnection(), record);
+                }
+                doAfterDelete(record);
+            }
+            // 再执行增加、修改
+            this.first();
+            while (this.fetch()) {
+                Record record = this.getCurrent();
+                if (record.getState().equals(RecordState.dsInsert)) {
+                    doBeforePost(record);
+                    if (this.isStorage())
+                        getOperator().insert(client.getConnection(), this.getCurrent());
+                    doAfterPost(record);
+                } else if (record.getState().equals(RecordState.dsEdit)) {
+                    doBeforePost(record);
+                    if (this.isStorage())
+                        getOperator().update(client.getConnection(), this.getCurrent());
+                    doAfterPost(record);
+                }
+            }
+            delList.clear();
+        } finally {
+            if (client != null) {
+                client.close();
+                client = null;
             }
         }
-        delList.clear();
-    }
-
-    public SqlOperator getOperator() {
-        if (operator == null)
-            operator = getDefaultOperator();
-        if (operator.getTableName() == null) {
-            String sql = this.getSqlText().getText();
-            if (sql != null)
-                operator.setTableName(SqlText.findTableName(sql));
-        }
-        return operator;
-    }
-
-    public void setOperator(MssqlOperator operator) {
-        this.operator = operator;
-    }
-
-    // 是否批量保存
-    @Override
-    public final boolean isBatchSave() {
-        return super.isBatchSave();
-    }
-
-    @Override
-    public final void setBatchSave(boolean batchSave) {
-        super.setBatchSave(batchSave);
     }
 
     // 追加相同数据表的其它记录，与已有记录合并
@@ -210,18 +99,11 @@ public class MssqlQuery extends DataSet implements IHandle {
             this.open();
             return this.size();
         }
-        if (client == null) {
-            throw new RuntimeException("SqlSession is null");
-        }
-        Connection conn = client.getClient();
-        if (conn == null) {
-            throw new RuntimeException("Connection is null");
-        }
-        try {
-            try (Statement st = conn.createStatement()) {
-                log.debug(sql.replaceAll("\r\n", " "));
-                st.execute(sql.replace("\\", "\\\\"));
-                try (ResultSet rs = st.getResultSet()) {
+
+        log.debug(sql.replaceAll("\r\n", " "));
+        try (MssqlClient client = getConnectionClient();){
+            try (Statement st = client.getConnection().createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
                     int oldSize = this.size();
                     append(rs);
                     return this.size() - oldSize;
@@ -230,25 +112,6 @@ public class MssqlQuery extends DataSet implements IHandle {
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    public void clear() {
-        close();
-        this.getSqlText().clear();
-    }
-
-    public boolean getFetchFinish() {
-        return fetchFinish;
-    }
-
-    public MssqlQuery add(String sql) {
-        sqlText.add(sql);
-        return this;
-    }
-
-    public MssqlQuery add(String format, Object... args) {
-        sqlText.add(format, args);
-        return this;
     }
 
     @Override
@@ -261,27 +124,15 @@ public class MssqlQuery extends DataSet implements IHandle {
         this.session = session;
     }
 
-    public SqlText getSqlText() {
-        return sqlText;
-    }
-
     @Override
-    protected final void insertStorage(Record record) {
-        getOperator().insert(client.getClient(), record);
-    }
-
-    @Override
-    protected final void updateStorage(Record record) {
-        getOperator().update(client.getClient(), record);
-    }
-
-    @Override
-    protected final void deleteStorage(Record record) {
-        getOperator().delete(client.getClient(), record);
-    }
-
-    private SqlOperator getDefaultOperator() {
+    protected SqlOperator getDefaultOperator() {
         return new MssqlOperator(this);
+    }
+
+    @Override
+    protected MssqlClient getConnectionClient() {
+        MssqlServer server = (MssqlServer) getSession().getProperty(MssqlServer.SessionId);
+        return new MssqlClient(server.getClient());
     }
 
 }
