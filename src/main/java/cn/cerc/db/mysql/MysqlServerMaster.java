@@ -21,7 +21,7 @@ public class MysqlServerMaster extends MysqlServer {
     //
     private Connection connection;
     private MysqlClient client;
-    
+
     static {
         config = new MysqlConfig();
         if (config.getMaxPoolSize() > 0)

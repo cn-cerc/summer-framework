@@ -37,8 +37,11 @@ public class MssqlQuery extends SqlQuery implements IHandle {
 
     @Override
     protected MssqlClient getConnectionClient() {
-        MssqlServer server = (MssqlServer) getSession().getProperty(MssqlServer.SessionId);
-        return new MssqlClient(server.getClient());
+        return getServer().getClient();
+    }
+
+    public MssqlServer getServer() {
+        return (MssqlServer) getSession().getProperty(MssqlServer.SessionId);
     }
 
 }

@@ -58,8 +58,7 @@ public class MssqlServer implements SqlServer, AutoCloseable {
         }
     }
 
-    @Override
-    public Connection getClient() {
+    public Connection getConnection() {
         if (connection != null) {
             return connection;
         }
@@ -100,13 +99,18 @@ public class MssqlServer implements SqlServer, AutoCloseable {
     public boolean execute(String sql) {
         log.debug(sql);
         try {
-            Statement st = getClient().createStatement();
+            Statement st = getConnection().createStatement();
             st.execute(sql);
             return true;
         } catch (SQLException e) {
             log.error("error mssql: {}", sql);
             return false;
         }
+    }
+
+    @Override
+    public MssqlClient getClient() {
+        return new MssqlClient(this.getConnection());
     }
 
 }

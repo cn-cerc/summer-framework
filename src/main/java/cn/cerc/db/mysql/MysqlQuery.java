@@ -26,7 +26,7 @@ public class MysqlQuery extends SqlQuery implements IHandle {
 
     @Override
     protected ConnectionClient getConnectionClient() {
-        return getMysqlServer().getClient();
+        return getServer().getClient();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class MysqlQuery extends SqlQuery implements IHandle {
         return session;
     }
 
-    private final MysqlServer getMysqlServer() {
+    private final MysqlServer getServer() {
         MysqlServer master = (MysqlServer) getSession().getProperty(MysqlServerMaster.SessionId);
         if (!slaveServer)
             return master;
