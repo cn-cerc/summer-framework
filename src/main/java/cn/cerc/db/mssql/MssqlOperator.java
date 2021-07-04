@@ -266,7 +266,7 @@ public class MssqlOperator extends SqlOperator {
     }
 
     private void initPrimaryKeys(Connection conn, Record record) throws SQLException {
-        for (String key : record.getFieldDefs()) {
+        for (String key : record.getFieldDefs().getFields()) {
             if (getUpdateKey().equalsIgnoreCase(key)) {
                 if (!getUpdateKey().equals(key)) {
                     throw new RuntimeException(String.format("%s <> %s", getUpdateKey(), key));
