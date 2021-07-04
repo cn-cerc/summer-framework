@@ -14,11 +14,6 @@ public class SqliteQuery extends SqlQuery {
     }
 
     @Override
-    protected SqlOperator getDefaultOperator() {
-        return new SqliteOperator();
-    }
-
-    @Override
     public SqliteServer getServer() {
         if (server == null)
             server = new SqliteServer();
@@ -28,4 +23,10 @@ public class SqliteQuery extends SqlQuery {
     public void setServer(SqliteServer server) {
         this.server = server;
     }
+
+    @Override
+    protected SqlOperator getDefaultOperator() {
+        return new SqliteOperator();
+    }
+
 }

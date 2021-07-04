@@ -19,11 +19,6 @@ public class MysqlQuery extends SqlQuery implements IHandle {
     }
 
     @Override
-    protected SqlOperator getDefaultOperator() {
-        return new MysqlOperator(this);
-    }
-
-    @Override
     public final ISession getSession() {
         return session;
     }
@@ -46,6 +41,11 @@ public class MysqlQuery extends SqlQuery implements IHandle {
             return master;
         else
             return salve;
+    }
+
+    @Override
+    protected SqlOperator getDefaultOperator() {
+        return new MysqlOperator(this);
     }
 
 }

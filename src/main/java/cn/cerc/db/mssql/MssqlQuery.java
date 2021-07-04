@@ -31,13 +31,13 @@ public class MssqlQuery extends SqlQuery implements IHandle {
     }
 
     @Override
-    protected SqlOperator getDefaultOperator() {
-        return new MssqlOperator(this);
+    public MssqlServer getServer() {
+        return (MssqlServer) getSession().getProperty(MssqlServer.SessionId);
     }
 
     @Override
-    public MssqlServer getServer() {
-        return (MssqlServer) getSession().getProperty(MssqlServer.SessionId);
+    protected SqlOperator getDefaultOperator() {
+        return new MssqlOperator(this);
     }
 
 }
