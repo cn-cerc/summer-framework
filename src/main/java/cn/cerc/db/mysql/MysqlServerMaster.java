@@ -30,7 +30,7 @@ public class MysqlServerMaster extends MysqlServer {
 
     @Override
     public ConnectionCertificate createConnection() {
-        if (dataSource != null) { // 使用线程池创建
+        if (isPool()) { // 使用线程池创建
             Connection result = MysqlServer.getPoolConnection(dataSource);
             if (result != null)
                 return new ConnectionCertificate(result, true);
@@ -51,9 +51,13 @@ public class MysqlServerMaster extends MysqlServer {
     @Override
     public MysqlClient getClient() {
         if (client == null) {
-            client = new MysqlClient(this, dataSource != null);
+            client = new MysqlClient(this, isPool());
         }
         return client.incReferenced();
+    }
+
+    public final boolean isPool() {
+        return dataSource != null;
     }
 
     @Override

@@ -9,15 +9,15 @@ public class MysqlClient implements ConnectionClient {
     private int count = 0;
     private final MysqlServer mysql;
     private Connection connection;
-    private boolean isPool;
+    private boolean pool;
 
     public MysqlClient(MysqlServer mysql, boolean isPool) {
         this.mysql = mysql;
-        this.isPool = isPool;
+        this.pool = isPool;
     }
 
     public MysqlClient incReferenced() {
-        if (isPool) {
+        if (pool) {
             ++count;
 //            System.out.println("referenced count(create)= " + count);
         }
@@ -26,7 +26,7 @@ public class MysqlClient implements ConnectionClient {
 
     @Override
     public void close() {
-        if (isPool) {
+        if (pool) {
             if (--count == 0) {
                 try {
                     if (connection != null) {
@@ -46,12 +46,16 @@ public class MysqlClient implements ConnectionClient {
         if (connection == null) {
             ConnectionCertificate item = mysql.createConnection();
             if (!item.isPoolCreated()) {
-                isPool = false;
+                pool = false;
                 count = 0;
             }
             this.connection = item.getConnection();
         }
         return connection;
+    }
+
+    public boolean isPool() {
+        return pool;
     }
 
 }
