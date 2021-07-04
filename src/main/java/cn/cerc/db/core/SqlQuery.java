@@ -212,6 +212,15 @@ public abstract class SqlQuery extends DataSet implements IHandle {
         }
     }
 
+    /**
+     * 注意：必须使用try finally结构！！！
+     * 
+     * @return 返回 ConnectionClient 接口对象
+     */
+    private final ConnectionClient getConnectionClient() {
+        return (ConnectionClient) getServer().getClient();
+    }
+
     public final SqlOperator getOperator() {
         if (operator == null)
             operator = getServer().getDefaultOperator(this);
@@ -294,15 +303,6 @@ public abstract class SqlQuery extends DataSet implements IHandle {
 
     protected final void setFetchFinish(boolean fetchFinish) {
         this.fetchFinish = fetchFinish;
-    }
-
-    /**
-     * 注意：必须使用try finally结构！！！
-     * 
-     * @return 返回 ConnectionClient 接口对象
-     */
-    protected final ConnectionClient getConnectionClient() {
-        return (ConnectionClient) getServer().getClient();
     }
 
     protected abstract SqlServer getServer();
