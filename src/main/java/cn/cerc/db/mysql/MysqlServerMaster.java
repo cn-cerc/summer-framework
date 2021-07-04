@@ -25,7 +25,7 @@ public class MysqlServerMaster extends MysqlServer {
     }
 
     @Override
-    public Connection getConnection() {
+    public Connection createConnection() {
         if (isPool()) // 使用线程池创建
             return MysqlServer.getPoolConnection(dataSource);
 

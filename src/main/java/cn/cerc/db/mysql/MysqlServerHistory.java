@@ -27,7 +27,7 @@ public class MysqlServerHistory extends MysqlServer {
     }
 
     @Override
-    public Connection getConnection() {
+    public Connection createConnection() {
         // 不使用线程池直接创建
         try {
             if (getConnection() == null) {

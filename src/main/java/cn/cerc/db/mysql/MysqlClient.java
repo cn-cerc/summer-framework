@@ -48,7 +48,7 @@ public class MysqlClient implements ConnectionClient {
                 pool = false;
                 count = 0;
             }
-            this.connection = mysql.getConnection();
+            this.connection = mysql.createConnection();
         }
         return connection;
     }

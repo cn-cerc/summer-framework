@@ -34,12 +34,13 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
 
     @Override
     public final MysqlClient getClient() {
-        if (client == null) 
+        if (client == null)
             client = new MysqlClient(this, this.isPool());
         return client.incReferenced();
     }
 
-    public abstract Connection getConnection();
+    public abstract Connection createConnection();
+
     public abstract boolean isPool();
 
     @Override
@@ -114,7 +115,11 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
         return new MysqlOperator(handle);
     }
 
-    protected void setConnection(Connection connection) {
+    protected final Connection getConnection() {
+        return connection;
+    }
+
+    protected final void setConnection(Connection connection) {
         this.connection = connection;
     }
 
