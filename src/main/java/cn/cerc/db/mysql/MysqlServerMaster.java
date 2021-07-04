@@ -17,7 +17,6 @@ public class MysqlServerMaster extends MysqlServer {
     public static final String SessionId = "sqlSession";
     private static ComboPooledDataSource dataSource;
     private static final MysqlConfig config;
-    private Connection connection;
 
     static {
         config = new MysqlConfig();
@@ -29,15 +28,15 @@ public class MysqlServerMaster extends MysqlServer {
     public Connection getConnection() {
         if (isPool()) // 使用线程池创建
             return MysqlServer.getPoolConnection(dataSource);
-        
+
         try {
             // 不使用线程池直接创建
-            if (connection == null) {
+            if (getConnection() == null) {
                 Class.forName(MysqlConfig.JdbcDriver);
-                connection = DriverManager.getConnection(config.getConnectUrl(), config.getUser(),
-                        config.getPassword());
+                setConnection(
+                        DriverManager.getConnection(config.getConnectUrl(), config.getUser(), config.getPassword()));
             }
-            return connection;
+            return getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e.getCause());
         } catch (ClassNotFoundException e) {
@@ -58,18 +57,6 @@ public class MysqlServerMaster extends MysqlServer {
     @Override
     public String getDatabase() {
         return config.getDatabase();
-    }
-
-    @Override
-    public void close() {
-        if (connection != null) {
-            try {
-                connection.close();
-                connection = null;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static void openPool() {

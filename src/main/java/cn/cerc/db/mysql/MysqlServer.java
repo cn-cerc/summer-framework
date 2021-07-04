@@ -23,6 +23,7 @@ import cn.cerc.db.core.SqlServer;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class MysqlServer implements SqlServer, AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(MysqlServer.class);
+    private Connection connection;
     private MysqlClient client;
     // 标记栏位，为兼容历史delphi写法
     private int tag;
@@ -111,6 +112,22 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
     @Override
     public SqlOperator getDefaultOperator(IHandle handle) {
         return new MysqlOperator(handle);
+    }
+
+    protected void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    @Override
+    public final void close() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

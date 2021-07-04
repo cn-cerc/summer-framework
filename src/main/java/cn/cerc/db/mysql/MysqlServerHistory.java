@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 public class MysqlServerHistory extends MysqlServer {
     private static final Logger log = LoggerFactory.getLogger(MysqlServerHistory.class);
     private MysqlConfig config = new MysqlConfig();
-    private Connection connection;
 
     public MysqlServerHistory(String database) {
         super();
@@ -31,30 +30,18 @@ public class MysqlServerHistory extends MysqlServer {
     public Connection getConnection() {
         // 不使用线程池直接创建
         try {
-            if (connection == null) {
+            if (getConnection() == null) {
                 Class.forName(MysqlConfig.JdbcDriver);
-                connection = DriverManager.getConnection(config.getConnectUrl(), config.getUser(),
-                        config.getPassword());
+                setConnection(
+                        DriverManager.getConnection(config.getConnectUrl(), config.getUser(), config.getPassword()));
             }
-            return connection;
+            return getConnection();
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void close() throws Exception {
-        if (connection != null) {
-            try {
-                connection.close();
-                connection = null;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
