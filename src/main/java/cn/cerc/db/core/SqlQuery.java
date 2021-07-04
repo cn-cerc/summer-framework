@@ -3,8 +3,12 @@ package cn.cerc.db.core;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
@@ -15,6 +19,7 @@ import cn.cerc.core.SqlText;
 
 @SuppressWarnings("serial")
 public abstract class SqlQuery extends DataSet {
+    private static final Logger log = LoggerFactory.getLogger(SqlQuery.class);
     // 数据集是否有打开
     private boolean active = false;
     // 若数据有取完，则为true，否则为false
@@ -47,7 +52,25 @@ public abstract class SqlQuery extends DataSet {
         return this;
     }
 
-    protected abstract void open(boolean slaveServer);
+    private final void open(boolean slaveServer) {
+        this.setSlaveServer(slaveServer);
+        this.setFetchFinish(true);
+        String sql = getSqlText().getCommand();
+        log.debug(sql.replaceAll("\r\n", " "));
+        try (ConnectionClient client = getConnectionClient()) {
+            try (Statement st = client.getConnection().createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
+                    // 取出所有数据
+                    append(rs);
+                    this.first();
+                    this.setActive(true);
+                }
+            }
+        } catch (Exception e) {
+            log.error(sql);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     protected void append(ResultSet rs) throws SQLException {
         DataSetEvent afterAppend = this.getOnAppend();

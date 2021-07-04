@@ -29,27 +29,6 @@ public class MysqlQuery extends SqlQuery implements IHandle {
         this.session = handle.getSession();
     }
 
-    @Override
-    protected void open(boolean slaveServer) {
-        this.setSlaveServer(slaveServer);
-        this.setFetchFinish(true);
-        String sql = getSqlText().getCommand();
-        log.debug(sql.replaceAll("\r\n", " "));
-        try (MysqlClient client = getMysqlServer().getClient()) {
-            try (Statement st = client.createStatement()) {
-                try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
-                    // 取出所有数据
-                    append(rs);
-                    this.first();
-                    this.setActive(true);
-                }
-            } catch (SQLException e) {
-                log.error(sql);
-                throw new RuntimeException(e.getMessage());
-            }
-        }
-    }
-
     // 追加相同数据表的其它记录，与已有记录合并
     public final int attach(String sql) {
         if (!this.isActive()) {

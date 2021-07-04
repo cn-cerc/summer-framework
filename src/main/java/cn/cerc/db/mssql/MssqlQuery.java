@@ -30,27 +30,6 @@ public class MssqlQuery extends SqlQuery implements IHandle {
         this.getSqlText().setServerType(SqlText.SERVERTYPE_MSSQL);
     }
 
-    @Override
-    protected void open(boolean slaveServer) {
-        this.setSlaveServer(slaveServer);
-        this.setFetchFinish(true);
-        String sql = getSqlText().getCommand();
-        log.debug(sql.replaceAll("\r\n", " "));
-        try (MssqlClient client = getConnectionClient()){
-            try (Statement st = client.getConnection().createStatement()) {
-                try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
-                    // 取出所有数据
-                    append(rs);
-                    this.first();
-                    this.setActive(true);
-                }
-            }
-        } catch (SQLException e) {
-            log.error(sql);
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
     public final void save() {
         if (!this.isBatchSave())
             throw new RuntimeException("batchSave is false");
@@ -101,7 +80,7 @@ public class MssqlQuery extends SqlQuery implements IHandle {
         }
 
         log.debug(sql.replaceAll("\r\n", " "));
-        try (MssqlClient client = getConnectionClient();){
+        try (MssqlClient client = getConnectionClient()) {
             try (Statement st = client.getConnection().createStatement()) {
                 try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
                     int oldSize = this.size();
