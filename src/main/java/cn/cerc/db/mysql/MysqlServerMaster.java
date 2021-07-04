@@ -21,7 +21,7 @@ public class MysqlServerMaster extends MysqlServer {
     //
     private Connection connection;
     private MysqlClient client;
-    
+
     static {
         config = new MysqlConfig();
         if (config.getMaxPoolSize() > 0)
@@ -57,8 +57,8 @@ public class MysqlServerMaster extends MysqlServer {
     }
 
     @Override
-    public String getServer() {
-        return config.getServer();
+    public String getHost() {
+        return config.getHost();
     }
 
     @Override

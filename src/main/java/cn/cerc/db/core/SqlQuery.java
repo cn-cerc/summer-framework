@@ -13,25 +13,45 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.FieldDefs;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.RecordState;
 import cn.cerc.core.SqlText;
 
 @SuppressWarnings("serial")
-public abstract class SqlQuery extends DataSet {
+public abstract class SqlQuery extends DataSet implements IHandle {
     private static final Logger log = LoggerFactory.getLogger(SqlQuery.class);
     // 数据集是否有打开
     private boolean active = false;
     // 若数据有取完，则为true，否则为false
     private boolean fetchFinish;
-    // 使用只读数据源
-    protected boolean slaveServer;
     // 仅当batchSave为true时，delList才有记录存在
-    protected List<Record> delList = new ArrayList<>();
+    private List<Record> delList = new ArrayList<>();
     // 数据库保存操作执行对象
     private SqlOperator operator;
     // SqlCommand 指令
     private SqlText sqlText = new SqlText();
+    // 运行环境
+    private ISession session;
+
+    public SqlQuery() {
+        super();
+    }
+
+    public SqlQuery(IHandle handle) {
+        super();
+        this.session = handle.getSession();
+    }
+
+    @Override
+    public final ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public final void setSession(ISession session) {
+        this.session = session;
+    }
 
     @Override
     public final void close() {
@@ -41,19 +61,17 @@ public abstract class SqlQuery extends DataSet {
     }
 
     public final SqlQuery open() {
-        this.setStorage(true);
-        open(false);
-        return this;
-    }
-
-    public final SqlQuery openReadonly() {
-        this.setStorage(false);
         open(true);
         return this;
     }
 
-    private final void open(boolean slaveServer) {
-        this.setSlaveServer(slaveServer);
+    public final SqlQuery openReadonly() {
+        open(false);
+        return this;
+    }
+
+    private final void open(boolean masterServer) {
+        this.setStorage(masterServer);
         this.setFetchFinish(true);
         String sql = getSqlText().getCommand();
         log.debug(sql.replaceAll("\r\n", " "));
@@ -72,7 +90,73 @@ public abstract class SqlQuery extends DataSet {
         }
     }
 
-    protected void append(ResultSet rs) throws SQLException {
+    // 追加相同数据表的其它记录，与已有记录合并
+    public final int attach(String sql) {
+        if (!this.isActive()) {
+            this.clear();
+            this.add(sql);
+            this.open();
+            return this.size();
+        }
+
+        log.debug(sql.replaceAll("\r\n", " "));
+        try (ConnectionClient client = getConnectionClient()) {
+            try (Statement st = client.getConnection().createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
+                    int oldSize = this.size();
+                    append(rs);
+                    return this.size() - oldSize;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public final void save() {
+        if (!this.isBatchSave())
+            throw new RuntimeException("batchSave is false");
+        ConnectionClient client = null;
+        try {
+            if (this.isStorage())
+                client = getConnectionClient();
+            // 先执行删除
+            for (Record record : delList) {
+                doBeforeDelete(record);
+                if (this.isStorage())
+                    getOperator().delete(client.getConnection(), record);
+                doAfterDelete(record);
+            }
+            // 再执行增加、修改
+            this.first();
+            while (this.fetch()) {
+                Record record = this.getCurrent();
+                if (record.getState().equals(RecordState.dsInsert)) {
+                    doBeforePost(record);
+                    if (this.isStorage())
+                        getOperator().insert(client.getConnection(), record);
+                    doAfterPost(record);
+                } else if (record.getState().equals(RecordState.dsEdit)) {
+                    doBeforePost(record);
+                    if (this.isStorage())
+                        getOperator().update(client.getConnection(), record);
+                    doAfterPost(record);
+                }
+            }
+            delList.clear();
+        } finally {
+            if (client != null) {
+                try {
+                    client.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                client = null;
+            }
+        }
+    }
+
+    private void append(ResultSet rs) throws SQLException {
         DataSetEvent afterAppend = this.getOnAppend();
         try {
             this.onAppend(null);
@@ -113,7 +197,7 @@ public abstract class SqlQuery extends DataSet {
             getOperator().insert(client.getConnection(), record);
         }
     }
-    
+
     @Override
     protected final void updateStorage(Record record) throws Exception {
         try (ConnectionClient client = getConnectionClient()) {
@@ -128,9 +212,18 @@ public abstract class SqlQuery extends DataSet {
         }
     }
 
+    /**
+     * 注意：必须使用try finally结构！！！
+     * 
+     * @return 返回 ConnectionClient 接口对象
+     */
+    private final ConnectionClient getConnectionClient() {
+        return (ConnectionClient) getServer().getClient();
+    }
+
     public final SqlOperator getOperator() {
         if (operator == null)
-            operator = getDefaultOperator();
+            operator = getServer().getDefaultOperator(this);
         if (operator.getTableName() == null) {
             String sql = this.getSqlText().getText();
             if (sql != null)
@@ -178,7 +271,7 @@ public abstract class SqlQuery extends DataSet {
         return this.sqlText;
     }
 
-    public final void setSqlText(SqlText sqlText) {
+    protected final void setSqlText(SqlText sqlText) {
         this.sqlText = sqlText;
     }
 
@@ -186,16 +279,8 @@ public abstract class SqlQuery extends DataSet {
         return active;
     }
 
-    protected void setActive(boolean value) {
+    private final void setActive(boolean value) {
         this.active = value;
-    }
-
-    public final boolean isSlaveServer() {
-        return slaveServer;
-    }
-
-    public final void setSlaveServer(boolean slaveServer) {
-        this.slaveServer = slaveServer;
     }
 
     public final void clear() {
@@ -220,13 +305,6 @@ public abstract class SqlQuery extends DataSet {
         this.fetchFinish = fetchFinish;
     }
 
-    /**
-     * 注意：必须使用try finally结构！！！
-     * 
-     * @return 返回 ConnectionClient 接口对象
-     */
-    protected abstract ConnectionClient getConnectionClient();
-
-    protected abstract SqlOperator getDefaultOperator();
+    protected abstract SqlServer getServer();
 
 }

@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.ClassConfig;
 import cn.cerc.core.Utils;
 import cn.cerc.db.SummerDB;
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.SqlOperator;
 import cn.cerc.db.core.SqlServer;
 
 public class SqliteServer implements SqlServer {
@@ -193,6 +195,11 @@ public class SqliteServer implements SqlServer {
         query2.delete();
         query2.post();
         showTable("user", "删除后");
+    }
+
+    @Override
+    public SqlOperator getDefaultOperator(IHandle handle) {
+        return new SqliteOperator();
     }
 
 }

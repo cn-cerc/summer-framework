@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mchange.v2.resourcepool.TimeoutException;
 
+import cn.cerc.db.core.IHandle;
+import cn.cerc.db.core.SqlOperator;
 import cn.cerc.db.core.SqlServer;
 
 @Component
@@ -25,7 +27,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
 
     public abstract ConnectionCertificate createConnection();
 
-    public abstract String getServer();
+    public abstract String getHost();
 
     public abstract String getDatabase();
 
@@ -55,7 +57,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
     }
 
     public static final ComboPooledDataSource createDataSource(MysqlConfig config) {
-        log.info("create pool to: " + config.getServer());
+        log.info("create pool to: " + config.getHost());
         // 使用线程池创建
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try {
@@ -97,6 +99,11 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
                 log.warn(e.getMessage(), e);
         }
         return result;
+    }
+
+    @Override
+    public SqlOperator getDefaultOperator(IHandle handle) {
+        return new MysqlOperator(handle);
     }
 
 }
