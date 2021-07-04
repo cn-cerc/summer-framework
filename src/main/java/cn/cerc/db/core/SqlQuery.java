@@ -271,7 +271,7 @@ public abstract class SqlQuery extends DataSet implements IHandle {
         return this.sqlText;
     }
 
-    public final void setSqlText(SqlText sqlText) {
+    protected final void setSqlText(SqlText sqlText) {
         this.sqlText = sqlText;
     }
 
