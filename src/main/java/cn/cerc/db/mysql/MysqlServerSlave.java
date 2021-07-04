@@ -25,7 +25,6 @@ public class MysqlServerSlave extends MysqlServer {
     private static final MysqlConfig config;
     //
     private Connection connection;
-    private MysqlClient client;
 
     static {
         config = new MysqlConfig();
@@ -53,28 +52,30 @@ public class MysqlServerSlave extends MysqlServer {
     }
 
     @Override
-    public ConnectionCertificate createConnection() {
-        if (dataSource != null) { // 使用线程池创建
-            Connection result = MysqlServer.getPoolConnection(dataSource);
-            if (result != null)
-                return new ConnectionCertificate(result, true);
-        }
+    public Connection getConnection() {
+        if (isPool()) // 使用线程池创建
+            return MysqlServer.getPoolConnection(dataSource);
+
         // 不使用线程池直接创建
-        if (connection != null)
-            return new ConnectionCertificate(connection, false);
         try {
-            Class.forName(MysqlConfig.JdbcDriver);
+            if (connection == null) {
+                Class.forName(MysqlConfig.JdbcDriver);
+                connection = DriverManager.getConnection(config.getConnectUrl(), config.getUser(),
+                        config.getPassword());
+            }
+            return connection;
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
-        }
-        try {
-            connection = DriverManager.getConnection(config.getConnectUrl(), config.getUser(), config.getPassword());
-            return new ConnectionCertificate(connection, false);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean isPool() {
+        return dataSource != null;
     }
 
     @Override
@@ -87,14 +88,6 @@ public class MysqlServerSlave extends MysqlServer {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public MysqlClient getClient() {
-        if (client == null) {
-            client = new MysqlClient(this, dataSource != null);
-        }
-        return client.incReferenced();
     }
 
     @Override
@@ -117,4 +110,5 @@ public class MysqlServerSlave extends MysqlServer {
             dataSource = null;
         }
     }
+
 }

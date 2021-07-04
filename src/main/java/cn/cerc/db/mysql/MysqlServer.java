@@ -23,17 +23,23 @@ import cn.cerc.db.core.SqlServer;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class MysqlServer implements SqlServer, AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(MysqlServer.class);
+    private MysqlClient client;
     // 标记栏位，为兼容历史delphi写法
     private int tag;
-
-    public abstract ConnectionCertificate createConnection();
 
     public abstract String getHost();
 
     public abstract String getDatabase();
 
     @Override
-    public abstract ConnectionClient getClient();
+    public final MysqlClient getClient() {
+        if (client == null) 
+            client = new MysqlClient(this, this.isPool());
+        return client.incReferenced();
+    }
+
+    public abstract Connection getConnection();
+    public abstract boolean isPool();
 
     @Override
     public final boolean execute(String sql) {

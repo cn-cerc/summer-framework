@@ -15,12 +15,9 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 public class MysqlServerMaster extends MysqlServer {
     // IHandle中识别码
     public static final String SessionId = "sqlSession";
-    //
     private static ComboPooledDataSource dataSource;
     private static final MysqlConfig config;
-    //
     private Connection connection;
-    private MysqlClient client;
 
     static {
         config = new MysqlConfig();
@@ -29,18 +26,18 @@ public class MysqlServerMaster extends MysqlServer {
     }
 
     @Override
-    public ConnectionCertificate createConnection() {
-        if (isPool()) { // 使用线程池创建
-            Connection result = MysqlServer.getPoolConnection(dataSource);
-            if (result != null)
-                return new ConnectionCertificate(result, true);
-        }
-        try { // 不使用线程池直接创建
-            if (connection != null)
-                return new ConnectionCertificate(connection, false);
-            Class.forName(MysqlConfig.JdbcDriver);
-            connection = DriverManager.getConnection(config.getConnectUrl(), config.getUser(), config.getPassword());
-            return new ConnectionCertificate(connection, false);
+    public Connection getConnection() {
+        if (isPool()) // 使用线程池创建
+            return MysqlServer.getPoolConnection(dataSource);
+        
+        try {
+            // 不使用线程池直接创建
+            if (connection == null) {
+                Class.forName(MysqlConfig.JdbcDriver);
+                connection = DriverManager.getConnection(config.getConnectUrl(), config.getUser(),
+                        config.getPassword());
+            }
+            return connection;
         } catch (SQLException e) {
             throw new RuntimeException(e.getCause());
         } catch (ClassNotFoundException e) {
@@ -49,13 +46,6 @@ public class MysqlServerMaster extends MysqlServer {
     }
 
     @Override
-    public MysqlClient getClient() {
-        if (client == null) {
-            client = new MysqlClient(this, isPool());
-        }
-        return client.incReferenced();
-    }
-
     public final boolean isPool() {
         return dataSource != null;
     }

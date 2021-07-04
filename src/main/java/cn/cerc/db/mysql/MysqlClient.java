@@ -44,12 +44,11 @@ public class MysqlClient implements ConnectionClient {
     @Override
     public final Connection getConnection() {
         if (connection == null) {
-            ConnectionCertificate item = mysql.createConnection();
-            if (!item.isPoolCreated()) {
+            if (!mysql.isPool()) {
                 pool = false;
                 count = 0;
             }
-            this.connection = item.getConnection();
+            this.connection = mysql.getConnection();
         }
         return connection;
     }
