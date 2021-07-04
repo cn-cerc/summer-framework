@@ -43,10 +43,10 @@ public class MysqlOperator extends SqlOperator {
 
     @Override
     public boolean insert(Connection connection, Record record) {
-        if (record.getFieldDefs().size() == 0) {
-            throw new RuntimeException("sql field is null");
-        }
         List<String> fields = record.getFieldDefs().getFields(FieldType.Storage);
+        if (fields.size() == 0) 
+            throw new RuntimeException("storage field is empty");
+        
         try (BuildStatement bs = new BuildStatement(connection)) {
             if (searchKeys.size() == 0) {
                 initPrimaryKeys(connection, record);
@@ -129,6 +129,9 @@ public class MysqlOperator extends SqlOperator {
         }
 
         List<String> fields = record.getFieldDefs().getFields(FieldType.Storage);
+        if (fields.size() == 0) 
+            throw new RuntimeException("storage field is empty");
+
         try (BuildStatement bs = new BuildStatement(connection)) {
             if (this.searchKeys.size() == 0) {
                 initPrimaryKeys(connection, record);
@@ -226,6 +229,9 @@ public class MysqlOperator extends SqlOperator {
     @Override
     public boolean delete(Connection connection, Record record) {
         List<String> fields = record.getFieldDefs().getFields(FieldType.Storage);
+        if (fields.size() == 0) 
+            throw new RuntimeException("storage field is empty");
+        
         try (BuildStatement bs = new BuildStatement(connection)) {
             if (this.searchKeys.size() == 0) {
                 initPrimaryKeys(connection, record);
