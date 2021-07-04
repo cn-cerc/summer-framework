@@ -5,6 +5,8 @@ import cn.cerc.db.core.SqlQuery;
 
 @SuppressWarnings("serial")
 public class MysqlQuery extends SqlQuery implements IHandle {
+    private MysqlServer master;
+    private MysqlServer salve;
 
     public MysqlQuery() {
         super();
@@ -16,17 +18,18 @@ public class MysqlQuery extends SqlQuery implements IHandle {
 
     @Override
     public final MysqlServer getServer() {
-        MysqlServer master = (MysqlServer) getSession().getProperty(MysqlServerMaster.SessionId);
+        if (master == null)
+            master = (MysqlServer) getSession().getProperty(MysqlServerMaster.SessionId);
         if (!slaveServer)
             return master;
-
-        MysqlServer salve = (MysqlServer) getSession().getProperty(MysqlServerSlave.SessionId);
-        if (salve == null)
-            return master;
-        if (salve.getHost().equals(master.getHost()))
-            return master;
-        else
-            return salve;
+        if (salve == null) {
+            salve = (MysqlServer) getSession().getProperty(MysqlServerSlave.SessionId);
+            if (salve == null)
+                salve = master;
+            if (salve.getHost().equals(master.getHost()))
+                salve = master;
+        }
+        return salve;
     }
 
 }
