@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.FieldDefs;
+import cn.cerc.core.FieldMeta.FieldType;
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.RecordState;
@@ -165,9 +166,8 @@ public abstract class SqlQuery extends DataSet implements IHandle {
             FieldDefs defs = this.getFieldDefs();
             for (int i = 1; i <= meta.getColumnCount(); i++) {
                 String field = meta.getColumnLabel(i);
-                if (!defs.exists(field)) {
-                    defs.add(field);
-                }
+                if (!defs.exists(field))
+                    defs.add(field, FieldType.Storage);
             }
             // 取得所有数据
             int total = this.size();
