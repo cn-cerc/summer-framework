@@ -315,7 +315,10 @@ public class BuildQuery implements IHandle {
         MysqlQuery ds = getDataSet();
         ds.getSqlText().clear();
         ds.add(this.getSelectCommand());
-        ds.open(slaveServer);
+        if (!slaveServer)
+            ds.open();
+        else
+            ds.openReadonly();
         return ds;
     }
 

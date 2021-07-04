@@ -95,6 +95,49 @@ public abstract class SqlQuery extends DataSet {
         }
     }
 
+    public final void save() {
+        if (!this.isBatchSave())
+            throw new RuntimeException("batchSave is false");
+        ConnectionClient client = null;
+        try {
+            if (this.isStorage())
+                client = getConnectionClient();
+            // 先执行删除
+            for (Record record : delList) {
+                doBeforeDelete(record);
+                if (this.isStorage())
+                    getOperator().delete(client.getConnection(), record);
+                doAfterDelete(record);
+            }
+            // 再执行增加、修改
+            this.first();
+            while (this.fetch()) {
+                Record record = this.getCurrent();
+                if (record.getState().equals(RecordState.dsInsert)) {
+                    doBeforePost(record);
+                    if (this.isStorage())
+                        getOperator().insert(client.getConnection(), record);
+                    doAfterPost(record);
+                } else if (record.getState().equals(RecordState.dsEdit)) {
+                    doBeforePost(record);
+                    if (this.isStorage())
+                        getOperator().update(client.getConnection(), record);
+                    doAfterPost(record);
+                }
+            }
+            delList.clear();
+        } finally {
+            if (client != null) {
+                try {
+                    client.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                client = null;
+            }
+        }
+    }
+
     protected void append(ResultSet rs) throws SQLException {
         DataSetEvent afterAppend = this.getOnAppend();
         try {
