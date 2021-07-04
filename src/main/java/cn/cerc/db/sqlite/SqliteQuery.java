@@ -1,7 +1,6 @@
 package cn.cerc.db.sqlite;
 
 import cn.cerc.core.SqlText;
-import cn.cerc.db.core.ConnectionClient;
 import cn.cerc.db.core.SqlOperator;
 import cn.cerc.db.core.SqlQuery;
 
@@ -20,10 +19,6 @@ public class SqliteQuery extends SqlQuery {
     }
 
     @Override
-    protected ConnectionClient getConnectionClient() {
-        return getServer().getClient();
-    }
-
     public SqliteServer getServer() {
         if (server == null)
             server = new SqliteServer();

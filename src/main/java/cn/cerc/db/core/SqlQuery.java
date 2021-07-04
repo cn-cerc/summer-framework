@@ -285,13 +285,17 @@ public abstract class SqlQuery extends DataSet {
     protected final void setFetchFinish(boolean fetchFinish) {
         this.fetchFinish = fetchFinish;
     }
-
+    
     /**
      * 注意：必须使用try finally结构！！！
      * 
      * @return 返回 ConnectionClient 接口对象
      */
-    protected abstract ConnectionClient getConnectionClient();
+    protected final ConnectionClient getConnectionClient() {
+        return (ConnectionClient) getServer().getClient();
+    }
+
+    protected abstract SqlServer getServer();
 
     protected abstract SqlOperator getDefaultOperator();
 

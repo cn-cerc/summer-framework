@@ -1,7 +1,6 @@
 package cn.cerc.db.mysql;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.core.ConnectionClient;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.SqlOperator;
 import cn.cerc.db.core.SqlQuery;
@@ -25,16 +24,17 @@ public class MysqlQuery extends SqlQuery implements IHandle {
     }
 
     @Override
-    protected ConnectionClient getConnectionClient() {
-        return getServer().getClient();
-    }
-
-    @Override
     public final ISession getSession() {
         return session;
     }
 
-    private final MysqlServer getServer() {
+    @Override
+    public final void setSession(ISession session) {
+        this.session = session;
+    }
+
+    @Override
+    public final MysqlServer getServer() {
         MysqlServer master = (MysqlServer) getSession().getProperty(MysqlServerMaster.SessionId);
         if (!slaveServer)
             return master;
@@ -48,8 +48,4 @@ public class MysqlQuery extends SqlQuery implements IHandle {
             return salve;
     }
 
-    @Override
-    public final void setSession(ISession session) {
-        this.session = session;
-    }
 }
