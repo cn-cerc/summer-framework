@@ -19,9 +19,9 @@ public class MysqlQuery extends SqlQuery implements IHandle {
 
     @Override
     public final MysqlServer getServer() {
-        if(server != null)
+        if (server != null)
             return server;
-        
+
         if (master == null)
             master = (MysqlServer) getSession().getProperty(MysqlServerMaster.SessionId);
         if (this.isStorage()) {
