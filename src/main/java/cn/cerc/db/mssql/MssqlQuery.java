@@ -1,12 +1,5 @@
 package cn.cerc.db.mssql;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.RecordState;
@@ -17,7 +10,6 @@ import cn.cerc.db.core.SqlQuery;
 
 @SuppressWarnings("serial")
 public class MssqlQuery extends SqlQuery implements IHandle {
-    private static final Logger log = LoggerFactory.getLogger(MssqlQuery.class);
     private ISession session;
 
     public MssqlQuery() {
@@ -67,29 +59,6 @@ public class MssqlQuery extends SqlQuery implements IHandle {
                 client.close();
                 client = null;
             }
-        }
-    }
-
-    // 追加相同数据表的其它记录，与已有记录合并
-    public int attach(String sql) {
-        if (!this.isActive()) {
-            this.clear();
-            this.add(sql);
-            this.open();
-            return this.size();
-        }
-
-        log.debug(sql.replaceAll("\r\n", " "));
-        try (MssqlClient client = getConnectionClient()) {
-            try (Statement st = client.getConnection().createStatement()) {
-                try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
-                    int oldSize = this.size();
-                    append(rs);
-                    return this.size() - oldSize;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 

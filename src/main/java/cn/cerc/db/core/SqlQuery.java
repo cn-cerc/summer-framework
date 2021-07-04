@@ -72,6 +72,29 @@ public abstract class SqlQuery extends DataSet {
         }
     }
 
+    // 追加相同数据表的其它记录，与已有记录合并
+    public final int attach(String sql) {
+        if (!this.isActive()) {
+            this.clear();
+            this.add(sql);
+            this.open();
+            return this.size();
+        }
+
+        log.debug(sql.replaceAll("\r\n", " "));
+        try (ConnectionClient client = getConnectionClient()) {
+            try (Statement st = client.getConnection().createStatement()) {
+                try (ResultSet rs = st.executeQuery(sql.replace("\\", "\\\\"))) {
+                    int oldSize = this.size();
+                    append(rs);
+                    return this.size() - oldSize;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     protected void append(ResultSet rs) throws SQLException {
         DataSetEvent afterAppend = this.getOnAppend();
         try {
