@@ -5,6 +5,7 @@ import cn.cerc.db.core.SqlQuery;
 
 @SuppressWarnings("serial")
 public class MysqlQuery extends SqlQuery implements IHandle {
+    private MysqlServer server;
     private MysqlServer master;
     private MysqlServer salve;
 
@@ -18,6 +19,9 @@ public class MysqlQuery extends SqlQuery implements IHandle {
 
     @Override
     public final MysqlServer getServer() {
+        if(server != null)
+            return server;
+        
         if (master == null)
             master = (MysqlServer) getSession().getProperty(MysqlServerMaster.SessionId);
         if (this.isStorage()) {
@@ -32,6 +36,10 @@ public class MysqlQuery extends SqlQuery implements IHandle {
             }
             return salve;
         }
+    }
+
+    protected void setServer(MysqlServer server) {
+        this.server = server;
     }
 
 }
