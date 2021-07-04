@@ -37,13 +37,6 @@ public class MssqlOperator extends SqlOperator {
     }
 
     @Deprecated
-    public boolean insert(String tableName, String primaryKey, Record record) {
-        this.setTableName(tableName);
-        this.setPrimaryKey(primaryKey);
-        return this.insert(record);
-    }
-
-    @Deprecated
     public boolean insert(Record record) {
         MssqlServer server = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
         try (MssqlClient client = server.getClient()) {
