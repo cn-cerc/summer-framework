@@ -20,17 +20,18 @@ public class MysqlQuery extends SqlQuery implements IHandle {
     public final MysqlServer getServer() {
         if (master == null)
             master = (MysqlServer) getSession().getProperty(MysqlServerMaster.SessionId);
-        if (this.isMasterServer())
+        if (this.isStorage()) {
             return master;
-
-        if (salve == null) {
-            salve = (MysqlServer) getSession().getProperty(MysqlServerSlave.SessionId);
-            if (salve == null)
-                salve = master;
-            if (salve.getHost().equals(master.getHost()))
-                salve = master;
+        } else {
+            if (salve == null) {
+                salve = (MysqlServer) getSession().getProperty(MysqlServerSlave.SessionId);
+                if (salve == null)
+                    salve = master;
+                if (salve.getHost().equals(master.getHost()))
+                    salve = master;
+            }
+            return salve;
         }
-        return salve;
     }
 
 }

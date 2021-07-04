@@ -25,8 +25,6 @@ public abstract class SqlQuery extends DataSet implements IHandle {
     private boolean active = false;
     // 若数据有取完，则为true，否则为false
     private boolean fetchFinish;
-    // 使用只读数据源
-    private boolean masterServer;
     // 仅当batchSave为true时，delList才有记录存在
     private List<Record> delList = new ArrayList<>();
     // 数据库保存操作执行对象
@@ -73,7 +71,6 @@ public abstract class SqlQuery extends DataSet implements IHandle {
     }
 
     private final void open(boolean masterServer) {
-        this.setMasterServer(masterServer);
         this.setStorage(masterServer);
         this.setFetchFinish(true);
         String sql = getSqlText().getCommand();
@@ -275,14 +272,6 @@ public abstract class SqlQuery extends DataSet implements IHandle {
 
     protected void setActive(boolean value) {
         this.active = value;
-    }
-
-    public final boolean isMasterServer() {
-        return masterServer;
-    }
-
-    public final void setMasterServer(boolean masterServer) {
-        this.masterServer = masterServer;
     }
 
     public final void clear() {
