@@ -6,11 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.cerc.core.FieldMeta.FieldType;
 import cn.cerc.core.Record;
 import cn.cerc.core.SqlText;
 import cn.cerc.db.core.IHandle;
@@ -44,6 +46,7 @@ public class MysqlOperator extends SqlOperator {
         if (record.getFieldDefs().size() == 0) {
             throw new RuntimeException("sql field is null");
         }
+        List<String> fields = record.getFieldDefs().getFields(FieldType.Data);
         try (BuildStatement bs = new BuildStatement(connection)) {
             if (searchKeys.size() == 0) {
                 initPrimaryKeys(connection, record);
@@ -53,22 +56,26 @@ public class MysqlOperator extends SqlOperator {
             int i = 0;
             for (String field : record.getItems().keySet()) {
                 if (!getUpdateKey().equals(field)) {
-                    i++;
-                    if (i > 1) {
-                        bs.append(",");
+                    if (fields.contains(field)) {
+                        i++;
+                        if (i > 1) {
+                            bs.append(",");
+                        }
+                        bs.append(field);
                     }
-                    bs.append(field);
                 }
             }
             bs.append(") values (");
             i = 0;
             for (String field : record.getItems().keySet()) {
                 if (!getUpdateKey().equals(field)) {
-                    i++;
-                    if (i == 1) {
-                        bs.append("?", record.getField(field));
-                    } else {
-                        bs.append(",?", record.getField(field));
+                    if (fields.contains(field)) {
+                        i++;
+                        if (i == 1) {
+                            bs.append("?", record.getField(field));
+                        } else {
+                            bs.append(",?", record.getField(field));
+                        }
                     }
                 }
             }
@@ -121,6 +128,7 @@ public class MysqlOperator extends SqlOperator {
             return false;
         }
 
+        List<String> fields = record.getFieldDefs().getFields(FieldType.Data);
         try (BuildStatement bs = new BuildStatement(connection)) {
             if (this.searchKeys.size() == 0) {
                 initPrimaryKeys(connection, record);
@@ -136,13 +144,15 @@ public class MysqlOperator extends SqlOperator {
             int i = 0;
             for (String field : delta.keySet()) {
                 if (!getUpdateKey().equals(field)) {
-                    i++;
-                    bs.append(i == 1 ? " set " : ",");
-                    bs.append(field);
-                    if (field.indexOf("+") >= 0 || field.indexOf("-") >= 0) {
-                        bs.append("?", record.getField(field));
-                    } else {
-                        bs.append("=?", record.getField(field));
+                    if (fields.contains(field)) {
+                        i++;
+                        bs.append(i == 1 ? " set " : ",");
+                        bs.append(field);
+                        if (field.indexOf("+") >= 0 || field.indexOf("-") >= 0) {
+                            bs.append("?", record.getField(field));
+                        } else {
+                            bs.append("=?", record.getField(field));
+                        }
                     }
                 }
             }
@@ -153,14 +163,16 @@ public class MysqlOperator extends SqlOperator {
             i = 0;
             int pkCount = 0;
             for (String field : searchKeys) {
-                i++;
-                bs.append(i == 1 ? " where " : " and ").append(field);
-                Object value = delta.containsKey(field) ? delta.get(field) : record.getField(field);
-                if (value != null) {
-                    bs.append("=?", value);
-                    pkCount++;
-                } else {
-                    throw new RuntimeException("primaryKey not is null: " + field);
+                if (fields.contains(field)) {
+                    i++;
+                    bs.append(i == 1 ? " where " : " and ").append(field);
+                    Object value = delta.containsKey(field) ? delta.get(field) : record.getField(field);
+                    if (value != null) {
+                        bs.append("=?", value);
+                        pkCount++;
+                    } else {
+                        throw new RuntimeException("primaryKey not is null: " + field);
+                    }
                 }
             }
             if (pkCount == 0) {
@@ -169,13 +181,15 @@ public class MysqlOperator extends SqlOperator {
             if (getUpdateMode() == UpdateMode.strict) {
                 for (String field : delta.keySet()) {
                     if (!searchKeys.contains(field)) {
-                        i++;
-                        bs.append(i == 1 ? " where " : " and ").append(field);
-                        Object value = delta.get(field);
-                        if (value != null) {
-                            bs.append("=?", value);
-                        } else {
-                            bs.append(" is null ");
+                        if (fields.contains(field)) {
+                            i++;
+                            bs.append(i == 1 ? " where " : " and ").append(field);
+                            Object value = delta.get(field);
+                            if (value != null) {
+                                bs.append("=?", value);
+                            } else {
+                                bs.append(" is null ");
+                            }
                         }
                     }
                 }
@@ -211,6 +225,7 @@ public class MysqlOperator extends SqlOperator {
 
     @Override
     public boolean delete(Connection connection, Record record) {
+        List<String> fields = record.getFieldDefs().getFields(FieldType.Data);
         try (BuildStatement bs = new BuildStatement(connection)) {
             if (this.searchKeys.size() == 0) {
                 initPrimaryKeys(connection, record);
@@ -225,14 +240,16 @@ public class MysqlOperator extends SqlOperator {
             bs.append("delete from ").append(getTableName());
             int i = 0;
             Map<String, Object> delta = record.getDelta();
-            for (String pk : searchKeys) {
-                Object value = delta.containsKey(pk) ? delta.get(pk) : record.getField(pk);
+            for (String field : searchKeys) {
+                Object value = delta.containsKey(field) ? delta.get(field) : record.getField(field);
                 if (value == null) {
                     throw new RuntimeException("primary key is null");
                 }
-                i++;
-                bs.append(i == 1 ? " where " : " and ");
-                bs.append(pk).append("=? ", value);
+                if (fields.contains(field)) {
+                    i++;
+                    bs.append(i == 1 ? " where " : " and ");
+                    bs.append(field).append("=? ", value);
+                }
             }
             PreparedStatement ps = bs.build();
             lastCommand = bs.getCommand();
