@@ -252,15 +252,15 @@ public class MssqlOperator extends SqlOperator {
             bs.append("delete from ").append(getTableName());
             int i = 0;
             Map<String, Object> delta = record.getDelta();
-            for (String pk : searchKeys) {
-                Object value = delta.containsKey(pk) ? delta.get(pk) : record.getField(pk);
+            for (String field : searchKeys) {
+                Object value = delta.containsKey(field) ? delta.get(field) : record.getField(field);
                 if (value == null) {
                     throw new RuntimeException("primary key is null");
                 }
                 if (fields.contains(field)) {
                     i++;
                     bs.append(i == 1 ? " where " : " and ");
-                    bs.append(pk).append("=? ", value);
+                    bs.append(field).append("=? ", value);
                 }
             }
             PreparedStatement ps = bs.build();
