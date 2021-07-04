@@ -45,8 +45,10 @@ public class MssqlOperator extends SqlOperator {
 
     @Deprecated
     public boolean insert(Record record) {
-        MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return insert(conn.getConnection(), record);
+        MssqlServer server = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
+        try (MssqlClient client = server.getClient()) {
+            return insert(client.getConnection(), record);
+        }
     }
 
     @Override
@@ -116,8 +118,10 @@ public class MssqlOperator extends SqlOperator {
 
     @Deprecated
     public boolean update(Record record) {
-        MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return update(conn.getConnection(), record);
+        MssqlServer server = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
+        try (MssqlClient client = server.getClient()) {
+            return update(client.getConnection(), record);
+        }
     }
 
     @Override
@@ -213,8 +217,10 @@ public class MssqlOperator extends SqlOperator {
 
     @Deprecated
     public boolean delete(Record record) {
-        MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return delete(conn.getConnection(), record);
+        MssqlServer server = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
+        try (MssqlClient client = server.getClient()) {
+            return delete(client.getConnection(), record);
+        }
     }
 
     @Override
@@ -277,6 +283,5 @@ public class MssqlOperator extends SqlOperator {
     public String getLastCommand() {
         return lastCommand;
     }
-
 
 }
