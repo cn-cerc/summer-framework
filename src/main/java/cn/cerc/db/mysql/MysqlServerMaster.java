@@ -57,8 +57,8 @@ public class MysqlServerMaster extends MysqlServer {
     }
 
     @Override
-    public String getServer() {
-        return config.getServer();
+    public String getHost() {
+        return config.getHost();
     }
 
     @Override

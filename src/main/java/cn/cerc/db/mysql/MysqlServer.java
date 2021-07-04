@@ -27,7 +27,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
 
     public abstract ConnectionCertificate createConnection();
 
-    public abstract String getServer();
+    public abstract String getHost();
 
     public abstract String getDatabase();
 
@@ -57,7 +57,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
     }
 
     public static final ComboPooledDataSource createDataSource(MysqlConfig config) {
-        log.info("create pool to: " + config.getServer());
+        log.info("create pool to: " + config.getHost());
         // 使用线程池创建
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try {

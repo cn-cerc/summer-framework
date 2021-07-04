@@ -40,7 +40,7 @@ public class MysqlConfig {
         config = new Properties(appConfig.getProperties());
     }
 
-    public String getServer() {
+    public String getHost() {
         return config.getProperty(rds_site, "127.0.0.1:3306");
     }
 
@@ -154,7 +154,7 @@ public class MysqlConfig {
     }
 
     public boolean isConfigNull() {
-        return Utils.isEmpty(getServer()) || Utils.isEmpty(getDatabase()) || Utils.isEmpty(getServerTimezone());
+        return Utils.isEmpty(getHost()) || Utils.isEmpty(getDatabase()) || Utils.isEmpty(getServerTimezone());
     }
 
     public String getConnectUrl() {
@@ -163,7 +163,7 @@ public class MysqlConfig {
 
         return String.format(
                 "jdbc:mysql://%s/%s?useSSL=false&autoReconnect=true&autoCommit=false&useUnicode=true&characterEncoding=utf8&serverTimezone=%s",
-                getServer(), getDatabase(), getServerTimezone());
+                getHost(), getDatabase(), getServerTimezone());
     }
 
 }

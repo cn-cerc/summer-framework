@@ -34,7 +34,7 @@ public class MysqlServerSlave extends MysqlServer {
         final ClassConfig appConfig = MysqlConfig.appConfig;
 
         // mysql 连接相关，在未设置时，将与master库相同
-        final String server = config.getServer();
+        final String server = config.getHost();
         final String database = config.getDatabase();
         final String user = config.getUser();
         final String password = config.getPassword();
@@ -98,8 +98,8 @@ public class MysqlServerSlave extends MysqlServer {
     }
 
     @Override
-    public String getServer() {
-        return config.getServer();
+    public String getHost() {
+        return config.getHost();
     }
 
     @Override
