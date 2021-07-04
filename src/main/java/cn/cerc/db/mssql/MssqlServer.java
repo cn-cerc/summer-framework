@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import cn.cerc.core.IConfig;
+import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.ServerConfig;
+import cn.cerc.db.core.SqlOperator;
 import cn.cerc.db.core.SqlServer;
 
 @Component
@@ -111,6 +113,11 @@ public class MssqlServer implements SqlServer, AutoCloseable {
     @Override
     public MssqlClient getClient() {
         return new MssqlClient(this.getConnection());
+    }
+
+    @Override
+    public SqlOperator getDefaultOperator(IHandle handle) {
+        return new MssqlOperator(handle);
     }
 
 }

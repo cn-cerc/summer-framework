@@ -13,12 +13,13 @@ import org.slf4j.LoggerFactory;
 import cn.cerc.core.DataSet;
 import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.FieldDefs;
+import cn.cerc.core.ISession;
 import cn.cerc.core.Record;
 import cn.cerc.core.RecordState;
 import cn.cerc.core.SqlText;
 
 @SuppressWarnings("serial")
-public abstract class SqlQuery extends DataSet {
+public abstract class SqlQuery extends DataSet implements IHandle {
     private static final Logger log = LoggerFactory.getLogger(SqlQuery.class);
     // 数据集是否有打开
     private boolean active = false;
@@ -32,6 +33,26 @@ public abstract class SqlQuery extends DataSet {
     private SqlOperator operator;
     // SqlCommand 指令
     private SqlText sqlText = new SqlText();
+    private ISession session;
+
+    public SqlQuery() {
+        super();
+    }
+
+    public SqlQuery(IHandle handle) {
+        super();
+        this.session = handle.getSession();
+    }
+
+    @Override
+    public final ISession getSession() {
+        return session;
+    }
+
+    @Override
+    public final void setSession(ISession session) {
+        this.session = session;
+    }
 
     @Override
     public final void close() {
@@ -179,7 +200,7 @@ public abstract class SqlQuery extends DataSet {
             getOperator().insert(client.getConnection(), record);
         }
     }
-    
+
     @Override
     protected final void updateStorage(Record record) throws Exception {
         try (ConnectionClient client = getConnectionClient()) {
@@ -196,7 +217,7 @@ public abstract class SqlQuery extends DataSet {
 
     public final SqlOperator getOperator() {
         if (operator == null)
-            operator = getDefaultOperator();
+            operator = getServer().getDefaultOperator(this);
         if (operator.getTableName() == null) {
             String sql = this.getSqlText().getText();
             if (sql != null)
@@ -285,7 +306,7 @@ public abstract class SqlQuery extends DataSet {
     protected final void setFetchFinish(boolean fetchFinish) {
         this.fetchFinish = fetchFinish;
     }
-    
+
     /**
      * 注意：必须使用try finally结构！！！
      * 
@@ -296,7 +317,5 @@ public abstract class SqlQuery extends DataSet {
     }
 
     protected abstract SqlServer getServer();
-
-    protected abstract SqlOperator getDefaultOperator();
 
 }

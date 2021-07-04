@@ -1,7 +1,6 @@
 package cn.cerc.db.sqlite;
 
 import cn.cerc.core.SqlText;
-import cn.cerc.db.core.SqlOperator;
 import cn.cerc.db.core.SqlQuery;
 
 @SuppressWarnings("serial")
@@ -22,11 +21,6 @@ public class SqliteQuery extends SqlQuery {
 
     public void setServer(SqliteServer server) {
         this.server = server;
-    }
-
-    @Override
-    protected SqlOperator getDefaultOperator() {
-        return new SqliteOperator();
     }
 
 }

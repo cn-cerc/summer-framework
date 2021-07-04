@@ -1,31 +1,17 @@
 package cn.cerc.db.mysql;
 
-import cn.cerc.core.ISession;
 import cn.cerc.db.core.IHandle;
-import cn.cerc.db.core.SqlOperator;
 import cn.cerc.db.core.SqlQuery;
 
 @SuppressWarnings("serial")
 public class MysqlQuery extends SqlQuery implements IHandle {
-    private ISession session;
 
     public MysqlQuery() {
         super();
     }
 
     public MysqlQuery(IHandle handle) {
-        super();
-        this.session = handle.getSession();
-    }
-
-    @Override
-    public final ISession getSession() {
-        return session;
-    }
-
-    @Override
-    public final void setSession(ISession session) {
-        this.session = session;
+        super(handle);
     }
 
     @Override
@@ -41,11 +27,6 @@ public class MysqlQuery extends SqlQuery implements IHandle {
             return master;
         else
             return salve;
-    }
-
-    @Override
-    protected SqlOperator getDefaultOperator() {
-        return new MysqlOperator(this);
     }
 
 }
