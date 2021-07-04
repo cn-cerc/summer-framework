@@ -156,7 +156,7 @@ public abstract class SqlQuery extends DataSet implements IHandle {
         }
     }
 
-    protected void append(ResultSet rs) throws SQLException {
+    private void append(ResultSet rs) throws SQLException {
         DataSetEvent afterAppend = this.getOnAppend();
         try {
             this.onAppend(null);
@@ -279,7 +279,7 @@ public abstract class SqlQuery extends DataSet implements IHandle {
         return active;
     }
 
-    protected void setActive(boolean value) {
+    private final void setActive(boolean value) {
         this.active = value;
     }
 
