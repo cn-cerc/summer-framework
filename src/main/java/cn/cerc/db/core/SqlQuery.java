@@ -26,13 +26,14 @@ public abstract class SqlQuery extends DataSet implements IHandle {
     // 若数据有取完，则为true，否则为false
     private boolean fetchFinish;
     // 使用只读数据源
-    protected boolean slaveServer;
+    private boolean masterServer;
     // 仅当batchSave为true时，delList才有记录存在
-    protected List<Record> delList = new ArrayList<>();
+    private List<Record> delList = new ArrayList<>();
     // 数据库保存操作执行对象
     private SqlOperator operator;
     // SqlCommand 指令
     private SqlText sqlText = new SqlText();
+    // 运行环境
     private ISession session;
 
     public SqlQuery() {
@@ -62,19 +63,18 @@ public abstract class SqlQuery extends DataSet implements IHandle {
     }
 
     public final SqlQuery open() {
-        this.setStorage(true);
-        open(false);
-        return this;
-    }
-
-    public final SqlQuery openReadonly() {
-        this.setStorage(false);
         open(true);
         return this;
     }
 
-    private final void open(boolean slaveServer) {
-        this.setSlaveServer(slaveServer);
+    public final SqlQuery openReadonly() {
+        open(false);
+        return this;
+    }
+
+    private final void open(boolean masterServer) {
+        this.setMasterServer(masterServer);
+        this.setStorage(masterServer);
         this.setFetchFinish(true);
         String sql = getSqlText().getCommand();
         log.debug(sql.replaceAll("\r\n", " "));
@@ -277,12 +277,12 @@ public abstract class SqlQuery extends DataSet implements IHandle {
         this.active = value;
     }
 
-    public final boolean isSlaveServer() {
-        return slaveServer;
+    public final boolean isMasterServer() {
+        return masterServer;
     }
 
-    public final void setSlaveServer(boolean slaveServer) {
-        this.slaveServer = slaveServer;
+    public final void setMasterServer(boolean masterServer) {
+        this.masterServer = masterServer;
     }
 
     public final void clear() {

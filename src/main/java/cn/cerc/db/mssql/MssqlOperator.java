@@ -46,7 +46,7 @@ public class MssqlOperator extends SqlOperator {
     @Deprecated
     public boolean insert(Record record) {
         MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return insert(conn.getClient(), record);
+        return insert(conn.getConnection(), record);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class MssqlOperator extends SqlOperator {
     @Deprecated
     public boolean update(Record record) {
         MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return update(conn.getClient(), record);
+        return update(conn.getConnection(), record);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class MssqlOperator extends SqlOperator {
     @Deprecated
     public boolean delete(Record record) {
         MssqlServer conn = (MssqlServer) handle.getSession().getProperty(MssqlServer.SessionId);
-        return delete(conn.getClient(), record);
+        return delete(conn.getConnection(), record);
     }
 
     @Override
