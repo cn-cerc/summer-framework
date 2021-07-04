@@ -172,7 +172,7 @@ public abstract class BigTable<T extends BigRecord> implements IHandle {
     private int loadRecords(String sqlText) {
         int total = 0;
         try (MysqlClient client = this.getMysql().getClient()) {
-            try (Statement stat = client.createStatement()) {
+            try (Statement stat = client.getConnection().createStatement()) {
                 log.debug(sqlText.replaceAll("\r\n", " "));
                 stat.execute(sqlText.replace("\\", "\\\\"));
                 try (ResultSet rs = stat.getResultSet()) {

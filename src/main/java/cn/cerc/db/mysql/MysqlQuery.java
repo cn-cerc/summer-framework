@@ -38,7 +38,9 @@ public class MysqlQuery extends SqlQuery implements IHandle {
         }
     }
 
-    protected void setServer(MysqlServer server) {
+    public void setServer(MysqlServer server) {
+        if (this.isActive())
+            throw new RuntimeException("server change fail on active");
         this.server = server;
     }
 

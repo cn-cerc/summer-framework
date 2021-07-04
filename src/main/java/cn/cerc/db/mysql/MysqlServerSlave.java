@@ -19,13 +19,9 @@ import cn.cerc.core.ClassConfig;
 public class MysqlServerSlave extends MysqlServer {
     // IHandle中识别码
     public static final String SessionId = "slaveSqlSession";
-    //
     private static final Logger log = LoggerFactory.getLogger(MysqlServerSlave.class);
     private static ComboPooledDataSource dataSource;
     private static final MysqlConfig config;
-    //
-    private Connection connection;
-    private MysqlClient client;
 
     static {
         config = new MysqlConfig();
@@ -53,24 +49,21 @@ public class MysqlServerSlave extends MysqlServer {
     }
 
     @Override
-    public ConnectionCertificate createConnection() {
-        if (dataSource != null) { // 使用线程池创建
-            Connection result = MysqlServer.getPoolConnection(dataSource);
-            if (result != null)
-                return new ConnectionCertificate(result, true);
-        }
+    public Connection createConnection() {
+        if (isPool()) // 使用线程池创建
+            return MysqlServer.getPoolConnection(dataSource);
+
         // 不使用线程池直接创建
-        if (connection != null)
-            return new ConnectionCertificate(connection, false);
         try {
-            Class.forName(MysqlConfig.JdbcDriver);
+            if (getConnection() == null) {
+                Class.forName(MysqlConfig.JdbcDriver);
+                setConnection(
+                        DriverManager.getConnection(config.getConnectUrl(), config.getUser(), config.getPassword()));
+            }
+            return getConnection();
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
-        }
-        try {
-            connection = DriverManager.getConnection(config.getConnectUrl(), config.getUser(), config.getPassword());
-            return new ConnectionCertificate(connection, false);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
@@ -78,23 +71,8 @@ public class MysqlServerSlave extends MysqlServer {
     }
 
     @Override
-    public void close() {
-        if (connection != null) {
-            try {
-                connection.close();
-                connection = null;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public MysqlClient getClient() {
-        if (client == null) {
-            client = new MysqlClient(this, dataSource != null);
-        }
-        return client.incReferenced();
+    public boolean isPool() {
+        return dataSource != null;
     }
 
     @Override
@@ -117,4 +95,5 @@ public class MysqlServerSlave extends MysqlServer {
             dataSource = null;
         }
     }
+
 }

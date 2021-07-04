@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mchange.v2.resourcepool.TimeoutException;
 
+import cn.cerc.db.core.ConnectionClient;
 import cn.cerc.db.core.IHandle;
 import cn.cerc.db.core.SqlOperator;
 import cn.cerc.db.core.SqlServer;
@@ -22,29 +23,37 @@ import cn.cerc.db.core.SqlServer;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class MysqlServer implements SqlServer, AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(MysqlServer.class);
+    private Connection connection;
+    private MysqlClient client;
     // 标记栏位，为兼容历史delphi写法
     private int tag;
-
-    public abstract ConnectionCertificate createConnection();
 
     public abstract String getHost();
 
     public abstract String getDatabase();
 
     @Override
-    public abstract MysqlClient getClient();
+    public final MysqlClient getClient() {
+        if (client == null)
+            client = new MysqlClient(this, this.isPool());
+        return client.incReferenced();
+    }
+
+    public abstract Connection createConnection();
+
+    public abstract boolean isPool();
 
     @Override
     public final boolean execute(String sql) {
         log.debug(sql);
-        try (MysqlClient client = getClient()) {
-            try (Statement st = client.createStatement()) {
+        try (ConnectionClient client = getClient()) {
+            try (Statement st = client.getConnection().createStatement()) {
                 st.execute(sql);
                 return true;
-            } catch (SQLException e) {
-                log.error("error sql: " + sql);
-                return false;
             }
+        } catch (Exception e) {
+            log.error("error sql: " + sql);
+            return false;
         }
     }
 
@@ -56,7 +65,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
         this.tag = tag;
     }
 
-    public static final ComboPooledDataSource createDataSource(MysqlConfig config) {
+    protected static final ComboPooledDataSource createDataSource(MysqlConfig config) {
         log.info("create pool to: " + config.getHost());
         // 使用线程池创建
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
@@ -85,7 +94,7 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
         return dataSource;
     }
 
-    public static final Connection getPoolConnection(ComboPooledDataSource dataSource) {
+    protected static final Connection getPoolConnection(ComboPooledDataSource dataSource) {
         Connection result = null;
         try {
             result = dataSource.getConnection();
@@ -104,6 +113,26 @@ public abstract class MysqlServer implements SqlServer, AutoCloseable {
     @Override
     public SqlOperator getDefaultOperator(IHandle handle) {
         return new MysqlOperator(handle);
+    }
+
+    protected final Connection getConnection() {
+        return connection;
+    }
+
+    protected final void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    @Override
+    public final void close() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

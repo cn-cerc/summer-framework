@@ -60,7 +60,7 @@ public class MssqlServer implements SqlServer, AutoCloseable {
         }
     }
 
-    public Connection getConnection() {
+    public final Connection getConnection() {
         if (connection != null) {
             return connection;
         }
@@ -81,7 +81,7 @@ public class MssqlServer implements SqlServer, AutoCloseable {
 
     }
 
-    public String getConnectUrl() {
+    public final String getConnectUrl() {
         String site = config.getProperty(MssqlServer.MSSQL_SITE, "127.0.0.1");
         String port = config.getProperty(MssqlServer.MSSQL_PORT, "1433");
         String database = config.getProperty(MssqlServer.MSSQL_DATABASE, "appdb");
@@ -98,7 +98,7 @@ public class MssqlServer implements SqlServer, AutoCloseable {
     }
 
     @Override
-    public boolean execute(String sql) {
+    public final boolean execute(String sql) {
         log.debug(sql);
         try {
             Statement st = getConnection().createStatement();

@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import cn.cerc.core.ISession;
-import cn.cerc.db.mysql.MysqlServerMaster;
 import cn.cerc.db.mysql.MysqlClient;
+import cn.cerc.db.mysql.MysqlServerMaster;
 
 public interface IHandle {
 
@@ -34,7 +34,7 @@ public interface IHandle {
      */
     default boolean DBExists(String sql) {
         try (MysqlClient client = getMysql().getClient()) {
-            try (Statement st = client.createStatement()) {
+            try (Statement st = client.getConnection().createStatement()) {
                 try (ResultSet rs = st.executeQuery(sql)) {
                     return rs.next();
                 }
