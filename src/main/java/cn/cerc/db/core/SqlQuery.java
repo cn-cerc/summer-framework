@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.cerc.core.DataSet;
-import cn.cerc.core.DataSetEvent;
 import cn.cerc.core.FieldDefs;
 import cn.cerc.core.FieldMeta.FieldType;
 import cn.cerc.core.ISession;
@@ -158,37 +157,32 @@ public abstract class SqlQuery extends DataSet implements IHandle {
     }
 
     private void append(ResultSet rs) throws SQLException {
-        DataSetEvent afterAppend = this.getOnAppend();
-        try {
-            this.onAppend(null);
-            // 取得字段清单
-            ResultSetMetaData meta = rs.getMetaData();
-            FieldDefs defs = this.getFieldDefs();
-            for (int i = 1; i <= meta.getColumnCount(); i++) {
-                String field = meta.getColumnLabel(i);
-                if (!defs.exists(field))
-                    defs.add(field, FieldType.Storage);
-            }
-            // 取得所有数据
-            int total = this.size();
-            while (rs.next()) {
-                total++;
-                if (this.getMaximum() > -1 && this.getMaximum() < total) {
-                    setFetchFinish(false);
-                    break;
-                }
-                Record record = this.newRecord();
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    String fn = rs.getMetaData().getColumnLabel(i);
-                    record.setField(fn, rs.getObject(fn));
-                }
-                record.setState(RecordState.dsNone);
-                this.append(record);
-            }
-            BigdataException.check(this, this.size());
-        } finally {
-            this.onAppend(afterAppend);
+        // 取得字段清单
+        ResultSetMetaData meta = rs.getMetaData();
+        FieldDefs defs = this.getFieldDefs();
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            String field = meta.getColumnLabel(i);
+            if (!defs.exists(field))
+                defs.add(field, FieldType.Storage);
         }
+        // 取得所有数据
+        int total = this.size();
+        while (rs.next()) {
+            total++;
+            if (this.getMaximum() > -1 && this.getMaximum() < total) {
+                setFetchFinish(false);
+                break;
+            }
+            Record record = this.newRecord();
+            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                String fn = rs.getMetaData().getColumnLabel(i);
+                record.setField(fn, rs.getObject(fn));
+            }
+            record.setState(RecordState.dsNone);
+            this.getRecords().add(record);
+            this.last();
+        }
+        BigdataException.check(this, this.size());
     }
 
     @Override
