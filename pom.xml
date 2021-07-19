@@ -347,8 +347,6 @@
             </snapshots>
         </repository>
     </repositories>
-
-    <!-- 私服发布 -->
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
