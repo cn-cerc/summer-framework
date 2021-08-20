@@ -7,11 +7,11 @@ cd summer-model
 mvn clean install
 
 cd ..
-cd summer-view
+cd summer-controller
 mvn clean install
 
 cd ..
-cd summer-controller
+cd summer-view
 mvn clean install
 
 cd ..
