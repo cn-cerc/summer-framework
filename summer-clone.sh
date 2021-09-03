@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone git@gitee.com:mimrc/summer-framework.git
+cd ..
 
 git clone git@gitee.com:mimrc/summer-model.git
 
