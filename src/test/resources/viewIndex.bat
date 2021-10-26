@@ -1,1 +1,0 @@
-start D:\myvine\vine2015\delphi-vcl\target\site\cobertura\index.html
