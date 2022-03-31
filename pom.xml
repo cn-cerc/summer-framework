@@ -14,7 +14,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <org.springframework.version>4.3.25.RELEASE</org.springframework.version>
+        <org.springframework.version>5.3.18</org.springframework.version>
         <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
         <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
         <quartz.version>2.3.2</quartz.version>
