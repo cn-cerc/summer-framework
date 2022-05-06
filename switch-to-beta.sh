@@ -4,12 +4,12 @@ git checkout beta
 git pull
 
 cd ..
-cd summer-model
+cd summer-data
 git checkout beta
 git pull
 
 cd ..
-cd summer-controller
+cd summer-mis
 git checkout beta
 git pull
 
