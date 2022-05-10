@@ -4,12 +4,12 @@ git pull
 mvn clean deploy
 
 cd ..
-cd summer-model
+cd summer-data
 git pull
 mvn clean deploy
 
 cd ..
-cd summer-controller
+cd summer-mis
 git pull
 mvn clean deploy
 
