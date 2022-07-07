@@ -6,7 +6,7 @@
 
     <groupId>cn.cerc</groupId>
     <artifactId>summer-framework</artifactId>
-    <version>11.2.0-SNAPSHOT</version>
+    <version>11.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -18,7 +18,7 @@
         <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
         <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
         <quartz.version>2.3.2</quartz.version>
-        <summer-framework.version>11.2.0-SNAPSHOT</summer-framework.version>
+        <summer-framework.version>11.3.0-SNAPSHOT</summer-framework.version>
     </properties>
 
     <build>
@@ -135,7 +135,7 @@
             <dependency>
                 <groupId>org.mongodb</groupId>
                 <artifactId>mongo-java-driver</artifactId>
-                <version>3.12.3</version>
+                <version>3.12.11</version>
             </dependency>
             <!-- 阿里云SDK核心库 -->
             <dependency>
@@ -330,6 +330,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.1</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.13</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

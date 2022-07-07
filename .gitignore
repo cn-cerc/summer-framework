@@ -1,35 +1,31 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
+.DS_Store
 .springBeans
-.sts4-cache
+*.log
+*.bak
+bin/
+classes/
+target/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# Eclipse
+.settings
+.classpath
+.project
+spring-*/src/main/java/META-INF/MANIFEST.MF
+
+# IntelliJ IDEA
 *.iml
 *.ipr
+*.iws
+.idea
+out/
+test-output/
+atlassian-ide-plugin.xml
+.gradletasknamecache
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
+*.settings/
+*bin/
+*target/
 
-### VS Code ###
-.vscode/
 *rebel.xml
 
-### macOS ###
-*.DS_Store
+*.factorypath
