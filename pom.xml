@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.cerc</groupId>
@@ -17,6 +15,7 @@
         <org.springframework.version>4.3.25.RELEASE</org.springframework.version>
         <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
         <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
+        <postgresql-jdbc.version>42.4.2</postgresql-jdbc.version>
         <quartz.version>2.3.2</quartz.version>
         <summer-framework.version>11.3.2-SNAPSHOT</summer-framework.version>
     </properties>
@@ -126,6 +125,11 @@
                 <groupId>com.microsoft.sqlserver</groupId>
                 <artifactId>mssql-jdbc</artifactId>
                 <version>${mssql-jdbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql-jdbc.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-configuration</groupId>
