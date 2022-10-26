@@ -1,24 +1,24 @@
 #!/bin/bash
 
+git checkout develop
 git pull
-mvn clean deploy
 
 cd ..
 cd summer-data
+git checkout develop
 git pull
-mvn clean deploy
 
 cd ..
 cd summer-mis
+git checkout develop
 git pull
-mvn clean deploy
 
 cd ..
 cd summer-view
+git checkout develop
 git pull
-mvn clean deploy
 
 cd ..
 cd summer-local
+git checkout develop
 git pull
-mvn clean deploy
