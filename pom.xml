@@ -177,7 +177,7 @@
             <dependency>
                 <groupId>c3p0</groupId>
                 <artifactId>c3p0</artifactId>
-                <version>0.9.1.2</version>
+                <version>0.9.1</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.jexcelapi</groupId>
