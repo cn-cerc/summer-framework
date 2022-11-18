@@ -353,6 +353,11 @@
                 <version>5.0.0</version>
             </dependency>
             <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>5.7.3</version>
+            </dependency>
+            <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>tea-openapi</artifactId>
                 <version>0.2.7</version>
