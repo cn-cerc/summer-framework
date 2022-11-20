@@ -348,24 +348,9 @@
                 <version>3.8.0</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.rocketmq</groupId>
-                <artifactId>rocketmq-client-java</artifactId>
-                <version>5.0.0</version>
-            </dependency>
-            <dependency>
                 <groupId>com.rabbitmq</groupId>
                 <artifactId>amqp-client</artifactId>
                 <version>5.7.3</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>tea-openapi</artifactId>
-                <version>0.2.7</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>openapiutil</artifactId>
-                <version>0.1.14</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
