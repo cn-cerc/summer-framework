@@ -15,7 +15,7 @@
         <org.springframework.version>4.3.25.RELEASE</org.springframework.version>
         <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
         <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
-        <postgresql-jdbc.version>42.4.2</postgresql-jdbc.version>
+        <postgresql-jdbc.version>42.4.3</postgresql-jdbc.version>
         <quartz.version>2.3.2</quartz.version>
         <summer-framework.version>17.1.0-SNAPSHOT</summer-framework.version>
     </properties>
