@@ -4,7 +4,7 @@
 
     <groupId>cn.cerc</groupId>
     <artifactId>summer-framework</artifactId>
-    <version>17.1.1-SNAPSHOT</version>
+    <version>17.1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -17,7 +17,7 @@
         <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
         <postgresql-jdbc.version>42.4.2</postgresql-jdbc.version>
         <quartz.version>2.3.2</quartz.version>
-        <summer-framework.version>17.1.1-SNAPSHOT</summer-framework.version>
+        <summer-framework.version>17.1.2-SNAPSHOT</summer-framework.version>
     </properties>
 
     <build>
