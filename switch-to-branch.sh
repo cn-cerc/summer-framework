@@ -1,24 +1,26 @@
 #!/bin/bash
 
-git checkout beta
+branch=$1
+
+git checkout $branch
 git pull
 
 cd ..
 cd summer-data
-git checkout beta
+git checkout $branch
 git pull
 
 cd ..
 cd summer-mis
-git checkout beta
+git checkout $branch
 git pull
 
 cd ..
 cd summer-view
-git checkout beta
+git checkout $branch
 git pull
 
 cd ..
 cd summer-local
-git checkout beta
+git checkout $branch
 git pull

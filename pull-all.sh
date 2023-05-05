@@ -1,24 +1,20 @@
 #!/bin/bash
 
-git checkout develop
+# 下载所有的项目
 git pull
 
 cd ..
 cd summer-data
-git checkout develop
 git pull
 
 cd ..
 cd summer-mis
-git checkout develop
 git pull
 
 cd ..
 cd summer-view
-git checkout develop
 git pull
 
 cd ..
 cd summer-local
-git checkout develop
 git pull
