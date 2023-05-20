@@ -136,10 +136,11 @@
                 <artifactId>commons-configuration</artifactId>
                 <version>1.10</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-sync -->
             <dependency>
                 <groupId>org.mongodb</groupId>
-                <artifactId>mongo-java-driver</artifactId>
-                <version>3.12.11</version>
+                <artifactId>mongodb-driver-sync</artifactId>
+                <version>4.9.1</version>
             </dependency>
             <!-- 阿里云SDK核心库 -->
             <dependency>
