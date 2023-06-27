@@ -1,23 +1,25 @@
 #!/bin/bash
 
-mvn clean install
+pwd
+git pull
+mvn -T 1C clean install
 
 cd ..
 cd summer-data
 git pull
-mvn clean install
+mvn -T 1C clean install
 
 cd ..
 cd summer-mis
 git pull
-mvn clean install
+mvn -T 1C clean install
 
 cd ..
 cd summer-view
 git pull
-mvn clean install
+mvn -T 1C clean install
 
 cd ..
 cd summer-local
 git pull
-mvn clean install
+mvn -T 1C clean install
