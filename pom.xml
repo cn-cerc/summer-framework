@@ -17,7 +17,7 @@
         <mssql-jdbc.version>7.4.1.jre8</mssql-jdbc.version>
         <postgresql-jdbc.version>42.4.2</postgresql-jdbc.version>
         <quartz.version>2.3.2</quartz.version>
-        <summer-framework.version>17.1.5-beta-SNAPSHOT</summer-framework.version>
+        <summer-framework.version>17.1.5-alpha-SNAPSHOT</summer-framework.version>
     </properties>
 
     <build>
