@@ -169,11 +169,6 @@
                 <version>3.23.3</version>
             </dependency>
             <dependency>
-                <groupId>com.huaweicloud</groupId>
-                <artifactId>esdk-obs-java-bundle</artifactId>
-                <version>${huawei-obs.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>cn.jpush.api</groupId>
                 <artifactId>jpush-client</artifactId>
                 <version>3.3.4</version>
