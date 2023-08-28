@@ -6,7 +6,7 @@
 
     <groupId>cn.cerc</groupId>
     <artifactId>summer-framework</artifactId>
-    <version>17.1.4-SNAPSHOT</version>
+    <version>17.2.6</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -187,10 +187,11 @@
                 <artifactId>jedis</artifactId>
                 <version>4.4.1</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
             <dependency>
-                <groupId>c3p0</groupId>
-                <artifactId>c3p0</artifactId>
-                <version>0.9.1</version>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>5.0.1</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.jexcelapi</groupId>
@@ -311,22 +312,36 @@
                 <artifactId>activemq-core</artifactId>
                 <version>5.7.0</version>
             </dependency>
-            <!-- Jackson -->
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.10.5.1</version>
+                <version>2.15.2</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.15.2</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.15.2</version>
+            </dependency>
+            <!--
+            https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>2.15.2</version>
             </dependency>
             <!-- aliyun-log-sdk -->
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
                 <version>3.16.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun.openservices</groupId>
-                <artifactId>aliyun-log-log4j-appender</artifactId>
-                <version>0.1.12</version>
             </dependency>
             <dependency>
                 <groupId>commons-logging</groupId>
