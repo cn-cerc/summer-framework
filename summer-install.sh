@@ -3,6 +3,7 @@
 pwd
 git pull
 mvn -T 1C clean install
+cd ..
 
 projects="
   summer-data
