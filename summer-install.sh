@@ -3,23 +3,19 @@
 pwd
 git pull
 mvn -T 1C clean install
-
 cd ..
-cd summer-data
-git pull
-mvn -T 1C clean install
 
-cd ..
-cd summer-mis
-git pull
-mvn -T 1C clean install
+projects="
+  summer-data
+  summer-mis
+  summer-view
+  summer-local
+  "
 
-cd ..
-cd summer-view
-git pull
-mvn -T 1C clean install
-
-cd ..
-cd summer-local
-git pull
-mvn -T 1C clean install
+for project in $projects
+do
+  cd $project
+  git pull
+  mvn -T 1C clean install
+  cd ..
+done
