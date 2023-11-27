@@ -2,10 +2,19 @@
 
 cd ..
 
-git clone git@gitee.com:mimrc/summer-data.git
+# 定义仓库列表
+projects="
+  summer-framework
+  summer-data
+  summer-mis
+  summer-view
+  summer-local
+  summer-sample
+  "
 
-git clone git@gitee.com:mimrc/summer-mis.git
+for project in $projects
+do
+  git clone git@gitee.com:mimrc/"$project".git &
+done
 
-git clone git@gitee.com:mimrc/summer-view.git
-
-git clone git@gitee.com:mimrc/summer-local.git
+wait

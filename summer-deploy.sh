@@ -14,7 +14,7 @@ projects="
 
 for project in $projects
 do
-  cd $project
+  cd "$project" || exit
   git pull
   mvn -T 1C clean deploy
   cd ..
