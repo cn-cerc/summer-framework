@@ -2,7 +2,7 @@
 
 pwd
 git pull
-mvn -T 1C clean install
+mvn clean install -T 1C -Dmaven.test.skip=true -Dmaven.compile.fork=true
 cd ..
 
 projects="
@@ -16,6 +16,6 @@ for project in $projects
 do
   cd "$project" || exit
   git pull
-  mvn -T 1C clean install
+  mvn clean install -T 1C -Dmaven.test.skip=true -Dmaven.compile.fork=true
   cd ..
 done
