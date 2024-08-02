@@ -6,7 +6,7 @@
 
     <groupId>cn.cerc</groupId>
     <artifactId>summer-framework</artifactId>
-    <version>17.24.73</version>
+    <version>17.24.74</version>
     <packaging>pom</packaging>
 
     <properties>
